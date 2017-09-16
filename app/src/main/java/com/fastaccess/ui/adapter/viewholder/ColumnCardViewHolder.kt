@@ -6,6 +6,8 @@ import android.widget.TextView
 import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.ProjectCardModel
+import com.fastaccess.data.dao.PullsIssuesParser
+import com.fastaccess.helper.ParseDateFormat
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
@@ -24,9 +26,22 @@ class ColumnCardViewHolder private constructor(item: View, adapter: BaseRecycler
     }
 
     override fun bind(t: ProjectCardModel) {
-        title.text = t.note
-        addedBy.text = itemView.context.getString(R.string.card_added_by, t.creator?.login)
-        editCard.visibility = if (isOwner) View.VISIBLE else View.GONE
+        title.text = if (t.note.isNullOrBlank()) {
+            val issue = PullsIssuesParser.getForIssue(t.contentUrl)
+            if (issue != null) {
+                "${issue.login}/${issue.repoId}/${issue.number}"
+            } else {
+                val pr = PullsIssuesParser.getForPullRequest(t.contentUrl)
+                if (pr != null) {
+                    "${pr.login}/${pr.repoId}/${pr.number}"
+                } else {
+                    "(FastHub) - to be fixed by GitHub! Sorry!"
+                }
+            }
+        } else {
+            t.note
+        }
+        addedBy.text = itemView.context.getString(R.string.card_added_by, t.creator?.login, ParseDateFormat.getTimeAgo(t.createdAt))
     }
 
     companion object {

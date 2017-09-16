@@ -15,7 +15,7 @@ public class ProjectCardModel implements Parcelable {
     private String url;
     private String columnUrl;
     private String contentUrl;
-    private int id;
+    private Integer id;
     private String note;
     private User creator;
     private Date createdAt;
@@ -85,26 +85,26 @@ public class ProjectCardModel implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
+    public ProjectCardModel() {}
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
         dest.writeString(this.columnUrl);
         dest.writeString(this.contentUrl);
-        dest.writeInt(this.id);
+        dest.writeValue(this.id);
         dest.writeString(this.note);
         dest.writeParcelable(this.creator, flags);
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
     }
 
-    public ProjectCardModel() {}
-
     protected ProjectCardModel(Parcel in) {
         this.url = in.readString();
         this.columnUrl = in.readString();
         this.contentUrl = in.readString();
-        this.id = in.readInt();
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.note = in.readString();
         this.creator = in.readParcelable(User.class.getClassLoader());
         long tmpCreatedAt = in.readLong();
@@ -113,7 +113,7 @@ public class ProjectCardModel implements Parcelable {
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
     }
 
-    public static final Parcelable.Creator<ProjectCardModel> CREATOR = new Parcelable.Creator<ProjectCardModel>() {
+    public static final Creator<ProjectCardModel> CREATOR = new Creator<ProjectCardModel>() {
         @Override public ProjectCardModel createFromParcel(Parcel source) {return new ProjectCardModel(source);}
 
         @Override public ProjectCardModel[] newArray(int size) {return new ProjectCardModel[size];}

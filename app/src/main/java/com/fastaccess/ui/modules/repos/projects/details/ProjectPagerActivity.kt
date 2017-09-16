@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import butterknife.BindView
 import com.airbnb.lottie.LottieAnimationView
+import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
 import com.fastaccess.data.dao.NameParser
@@ -25,9 +26,9 @@ import com.fastaccess.ui.widgets.CardsPagerTransformerBasic
 
 class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPresenter>(), ProjectPagerMvp.View {
 
-
     @BindView(R.id.pager) lateinit var pager: ViewPager
     @BindView(R.id.loading) lateinit var loading: LottieAnimationView
+    @State var isProgressShowing = false
 
     override fun canBack(): Boolean = true
 
@@ -38,7 +39,7 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
     override fun onInitPager(list: List<ProjectColumnModel>) {
         hideProgress()
         pager.adapter = FragmentsPagerAdapter(supportFragmentManager, FragmentPagerAdapterModel
-                .buildForProjectColumns(list, presenter.isCollaborator))
+                .buildForProjectColumns(list, presenter.viewerCanUpdate))
     }
 
     override fun showMessage(titleRes: Int, msgRes: Int) {
@@ -57,11 +58,13 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
     }
 
     override fun showProgress(resId: Int) {
+        isProgressShowing = true
         loading.visibility = View.VISIBLE
         loading.playAnimation()
     }
 
     override fun hideProgress() {
+        isProgressShowing = false
         loading.cancelAnimation()
         loading.visibility = View.GONE
     }
@@ -87,9 +90,13 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (isProgressShowing) {
+            showProgress(0)
+        } else {
+            hideProgress()
+        }
         pager.clipToPadding = false
         val pageMargin = resources.getDimensionPixelSize(R.dimen.spacing_normal)
         pager.pageMargin = pageMargin
@@ -103,6 +110,11 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
         } else {
             onInitPager(presenter.getColumns())
         }
+    }
+
+    override fun onDeletePage(model: ProjectColumnModel) {
+        presenter.getColumns().remove(model)
+        onInitPager(presenter.getColumns())
     }
 
     companion object {
@@ -121,6 +133,5 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
         }
 
     }
-
 
 }

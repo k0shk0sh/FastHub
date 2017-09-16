@@ -21,7 +21,7 @@ class ProjectPagerPresenter : BasePresenter<ProjectPagerMvp.View>(), ProjectPage
     @com.evernote.android.state.State var projectId: Long = -1
     @com.evernote.android.state.State var repoId: String = ""
     @com.evernote.android.state.State var login: String = ""
-    @com.evernote.android.state.State var isCollaborator: Boolean = false
+    @com.evernote.android.state.State var viewerCanUpdate: Boolean = false
 
     override fun getColumns(): ArrayList<ProjectColumnModel> = columns
 
@@ -30,7 +30,7 @@ class ProjectPagerPresenter : BasePresenter<ProjectPagerMvp.View>(), ProjectPage
         makeRestCall(Observable.zip(RestProvider.getProjectsService(isEnterprise).getProjectColumns(projectId),
                 RestProvider.getRepoService(isEnterprise).isCollaborator(login, repoId, Login.getUser().login),
                 BiFunction { items: Pageable<ProjectColumnModel>, response: Response<Boolean> ->
-                    isCollaborator = response.code() == 204
+                    viewerCanUpdate = response.code() == 204
                     return@BiFunction items
                 })
                 .flatMap {

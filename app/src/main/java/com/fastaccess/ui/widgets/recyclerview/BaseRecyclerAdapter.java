@@ -131,7 +131,11 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     public void addItem(M item) {
         removeProgress();
         data.add(item);
-        notifyItemInserted(data.size() - 1);
+        if (data.size() == 0) {
+            notifyDataSetChanged();
+        } else {
+            notifyItemInserted(data.size() - 1);
+        }
     }
 
     @SuppressWarnings("WeakerAccess") public void addItems(@NonNull List<M> items) {

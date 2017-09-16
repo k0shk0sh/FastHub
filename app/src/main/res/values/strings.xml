@@ -564,5 +564,6 @@
     <string name="projects">Projects</string>
     <string name="no_projects">No Projects</string>
     <string name="no_cards">No Cards</string>
-    <string name="card_added_by">Added by %s</string>
+    <string name="card_added_by">Added by %s %s</string>
+    <string name="too_large_changes">Changes are large, please open in browser</string>
 </resources>

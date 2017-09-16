@@ -27,7 +27,9 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
     val pages = arrayListOf<String>()
 
     override fun onItemClick(position: Int, v: View, item: RepoProjectsOpenQuery.Node) {
-        ProjectPagerActivity.startActivity(v.context, login, repoId, item.number().toLong())
+        item.databaseId()?.let {
+            ProjectPagerActivity.startActivity(v.context, login, repoId, it.toLong())
+        }
     }
 
     override fun onItemLongClick(position: Int, v: View?, item: RepoProjectsOpenQuery.Node?) {}
@@ -114,7 +116,7 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
                                     it.onEach {
                                         val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
                                         val node = RepoProjectsOpenQuery.Node(it.__typename(), it.name(), it.number(), it.body(),
-                                                it.createdAt(), it.id(), it.viewerCanUpdate(), columns)
+                                                it.createdAt(), it.id(), it.viewerCanUpdate(), columns, it.databaseId())
                                         toConvert.add(node)
                                     }
                                     list.addAll(toConvert)

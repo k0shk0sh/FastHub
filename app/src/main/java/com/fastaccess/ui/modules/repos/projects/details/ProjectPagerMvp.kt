@@ -9,7 +9,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp
  */
 interface ProjectPagerMvp {
 
-    interface View : BaseMvp.FAView {
+    interface View : BaseMvp.FAView, DeletePageListener {
         fun onInitPager(list: List<ProjectColumnModel>)
     }
 
@@ -19,5 +19,9 @@ interface ProjectPagerMvp {
         fun onRetrieveColumns()
 
         fun getColumns(): ArrayList<ProjectColumnModel>
+    }
+
+    interface DeletePageListener {
+        fun onDeletePage(model: ProjectColumnModel)
     }
 }

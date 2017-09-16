@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.repos.projects.columns
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v4.widget.SwipeRefreshLayout
@@ -11,11 +12,15 @@ import com.fastaccess.data.dao.ProjectCardModel
 import com.fastaccess.data.dao.ProjectColumnModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
+import com.fastaccess.helper.Logger
 import com.fastaccess.provider.rest.loadmore.OnLoadMore
 import com.fastaccess.ui.adapter.ColumnCardAdapter
 import com.fastaccess.ui.base.BaseFragment
+import com.fastaccess.ui.modules.repos.projects.crud.ProjectCurdDialogFragment
+import com.fastaccess.ui.modules.repos.projects.details.ProjectPagerMvp
 import com.fastaccess.ui.widgets.FontTextView
 import com.fastaccess.ui.widgets.StateLayout
+import com.fastaccess.ui.widgets.dialog.MessageDialogView
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
 
@@ -33,11 +38,38 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
 
     private var onLoadMore: OnLoadMore<Long>? = null
     private val adapter by lazy { ColumnCardAdapter(presenter.getCards(), isOwner()) }
+    private var pageCallback: ProjectPagerMvp.DeletePageListener? = null
 
-    @OnClick(R.id.editColumn) fun onEditColumn() {}
-    @OnClick(R.id.deleteColumn) fun onDeleteColumn() {}
-    @OnClick(R.id.addCard) fun onAddCard() {}
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        pageCallback = when {
+            parentFragment is ProjectPagerMvp.DeletePageListener -> parentFragment as ProjectPagerMvp.DeletePageListener
+            context is ProjectPagerMvp.DeletePageListener -> context
+            else -> null
+        }
+    }
+
+    override fun onDetach() {
+        pageCallback = null
+        super.onDetach()
+    }
+
+    @OnClick(R.id.editColumn) fun onEditColumn() {
+        ProjectCurdDialogFragment.newInstance(getColumn().name)
+                .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+    }
+
+    @OnClick(R.id.deleteColumn) fun onDeleteColumn() {
+        MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
+                false, MessageDialogView.getYesNoBundle(context))
+                .show(childFragmentManager, MessageDialogView.TAG)
+    }
+
+    @OnClick(R.id.addCard) fun onAddCard() {
+        ProjectCurdDialogFragment.newInstance(isCard = true)
+                .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+    }
 
     override fun onNotifyAdapter(items: List<ProjectCardModel>?, page: Int) {
         hideProgress()
@@ -111,14 +143,84 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
         super.onDestroyView()
     }
 
+    override fun onCreatedOrEdited(text: String, isCard: Boolean, position: Int) {
+        Logger.e(text, isCard, position)
+        if (!isCard) {
+            columnName.text = text
+            presenter.onEditOrDeleteColumn(text, getColumn())
+        } else {
+            if (position == -1) {
+                presenter.createCard(text, getColumn().id)
+            } else {
+                presenter.editCard(text, adapter.getItem(position), position)
+            }
+        }
+    }
+
+    override fun onMessageDialogActionClicked(isOk: Boolean, bundle: Bundle?) {
+        super.onMessageDialogActionClicked(isOk, bundle)
+        if (isOk) {
+            if (bundle != null) {
+                if (bundle.containsKey(BundleConstant.ID)) {
+                    val position = bundle.getInt(BundleConstant.ID)
+                    presenter.onDeleteCard(position, adapter.getItem(position))
+                } else {
+                    presenter.onEditOrDeleteColumn(null, getColumn())
+                }
+            } else {
+                presenter.onEditOrDeleteColumn(null, getColumn())
+            }
+        }
+    }
+
+    override fun deleteColumn() {
+        pageCallback?.onDeletePage(getColumn())
+        hideBlockingProgress()
+    }
+
+    override fun showBlockingProgress() {
+        super.showProgress(0)
+    }
+
+    override fun hideBlockingProgress() {
+        super.hideProgress()
+    }
+
+    override fun isOwner(): Boolean = arguments.getBoolean(BundleConstant.EXTRA)
+
+    override fun onDeleteCard(position: Int) {
+        val yesNoBundle = MessageDialogView.getYesNoBundle(context)
+        yesNoBundle.putInt(BundleConstant.ID, position)
+        MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
+                false, yesNoBundle).show(childFragmentManager, MessageDialogView.TAG)
+    }
+
+    override fun onEditCard(note: String?, position: Int) {
+        ProjectCurdDialogFragment.newInstance(note, true, position)
+                .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+    }
+
+    override fun addCard(it: ProjectCardModel) {
+        hideBlockingProgress()
+        adapter.addItem(it, 0)
+    }
+
+    override fun updateCard(response: ProjectCardModel, position: Int) {
+        hideBlockingProgress()
+        adapter.swapItem(response, position)
+    }
+
+    override fun onRemoveCard(position: Int) {
+        hideBlockingProgress()
+        adapter.removeItem(position)
+    }
+
     private fun showReload() {
         hideProgress()
         stateLayout.showReload(adapter.itemCount)
     }
 
     private fun getColumn(): ProjectColumnModel = arguments.getParcelable(BundleConstant.ITEM)
-
-    private fun isOwner(): Boolean = arguments.getBoolean(BundleConstant.EXTRA)
 
     companion object {
         fun newInstance(column: ProjectColumnModel, isCollaborator: Boolean): ProjectColumnFragment {
