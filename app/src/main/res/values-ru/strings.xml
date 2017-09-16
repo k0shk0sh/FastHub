@@ -426,5 +426,13 @@
     <string name="google_play_service_error">Сервисы Google Play недоступны</string>
     <string name="edit_gist">Редактировать Gist</string>
     <string name="content">Содержимое</string>
-    <string name="expand">expand</string>
+    <string name="copy_sha">Копировать SHA-1</string>
+    <string name="view_as_code">Открыть как код</string>
+    <string name="app_animation_summary">Отключить внутрипрограммные анимации везде.</string>
+    <string name="app_animation_title">Отключить анимации</string>
+    <string name="can_not_merge_pr">Этот PR не может быть объединён сейчас.</string>
+    <string name="projects">Проекты</string>
+    <string name="no_projects">Проекты отсутствуют</string>
+    <string name="no_cards">Карточки отсутствуют</string>
+    <string name="card_added_by">Добавлено %s</string>
 </resources>
