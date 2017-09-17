@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -159,16 +160,18 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onScrollChanged(boolean reachedTop, int scroll) {
-        if (getPresenter().isRepo() && appBarLayout != null && bottomNavigation != null && webView != null) {
-            boolean shouldExpand = webView.getScrollY() == 0;
-            if (!isAppBarMoving && shouldExpand != isAppBarExpanded) {
-                isAppBarMoving = true;
-                isAppBarExpanded = shouldExpand;
-                bottomNavigation.setExpanded(shouldExpand, true);
-                appBarLayout.setExpanded(shouldExpand, true);
-                webView.setNestedScrollingEnabled(shouldExpand);
-                if (shouldExpand)
-                    webView.onTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP, 0, 0, 0));
+        if (AppHelper.isDeviceAnimationEnabled(getContext())) {
+            if (getPresenter().isRepo() && appBarLayout != null && bottomNavigation != null && webView != null) {
+                boolean shouldExpand = webView.getScrollY() == 0;
+                if (!isAppBarMoving && shouldExpand != isAppBarExpanded) {
+                    isAppBarMoving = true;
+                    isAppBarExpanded = shouldExpand;
+                    bottomNavigation.setExpanded(shouldExpand, true);
+                    appBarLayout.setExpanded(shouldExpand, true);
+                    webView.setNestedScrollingEnabled(shouldExpand);
+                    if (shouldExpand)
+                        webView.onTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP, 0, 0, 0));
+                }
             }
         }
     }
@@ -207,16 +210,20 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     @Override public void onStart() {
         super.onStart();
-        if (appBarLayout != null && !isAppBarListener) {
-            appBarLayout.addOnOffsetChangedListener(this);
-            isAppBarListener = true;
+        if (AppHelper.isDeviceAnimationEnabled(getContext())) {
+            if (appBarLayout != null && !isAppBarListener) {
+                appBarLayout.addOnOffsetChangedListener(this);
+                isAppBarListener = true;
+            }
         }
     }
 
     @Override public void onStop() {
-        if (appBarLayout != null && isAppBarListener) {
-            appBarLayout.removeOnOffsetChangedListener(this);
-            isAppBarListener = false;
+        if (AppHelper.isDeviceAnimationEnabled(getContext())) {
+            if (appBarLayout != null && isAppBarListener) {
+                appBarLayout.removeOnOffsetChangedListener(this);
+                isAppBarListener = false;
+            }
         }
         super.onStop();
     }
