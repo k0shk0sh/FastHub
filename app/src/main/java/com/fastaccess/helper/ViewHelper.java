@@ -100,6 +100,10 @@ public class ViewHelper {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, dp, context.getResources().getDisplayMetrics());
     }
 
+    public static int dpToPx(Context context, float dp) {
+        return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
+    }
+
     public static void tintDrawable(@NonNull Drawable drawable, @ColorInt int color) {
         drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }

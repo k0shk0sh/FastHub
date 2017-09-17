@@ -7,6 +7,7 @@ import android.support.transition.TransitionManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,6 +18,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
@@ -81,6 +83,15 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
                                        @NonNull OnToggleView onToggleView, boolean showEmojies, @NonNull ReactionsCallback reactionsCallback,
                                        String repoOwner, String poster) {
         super(itemView, adapter);
+        if (adapter != null && adapter.getRowWidth() == 0) {
+            itemView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override public boolean onPreDraw() {
+                    itemView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    adapter.setRowWidth(itemView.getWidth() - ViewHelper.dpToPx(itemView.getContext(), 48));
+                    return false;
+                }
+            });
+        }
         this.viewGroup = viewGroup;
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
@@ -153,7 +164,8 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             String body = commentsModel.getBodyHtml();
-            HtmlHelper.htmlIntoTextView(comment, body, viewGroup.getWidth());
+            int width = adapter != null ? adapter.getRowWidth() : 0;
+            HtmlHelper.htmlIntoTextView(comment, body, width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }

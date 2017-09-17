@@ -145,7 +145,7 @@ public class ReadNotificationService extends IntentService {
 
     private NotificationCompat.Builder getNotification() {
         if (notification == null) {
-            notification = new NotificationCompat.Builder(this)
+            notification = new NotificationCompat.Builder(this, "read-notification")
                     .setContentTitle(getString(R.string.marking_as_read))
                     .setSmallIcon(R.drawable.ic_sync)
                     .setProgress(0, 100, true);

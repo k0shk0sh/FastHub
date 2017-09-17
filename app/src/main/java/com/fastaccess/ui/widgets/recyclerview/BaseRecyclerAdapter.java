@@ -29,7 +29,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     private boolean showedGuide;
     private GuideListener guideListener;
     private boolean progressAdded;
-
+    private int rowWidth;
 
     protected BaseRecyclerAdapter() {
         this(new ArrayList<>());
@@ -208,6 +208,17 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void setGuideListener(GuideListener guideListener) {
         this.guideListener = guideListener;
+    }
+
+    public int getRowWidth() {
+        return rowWidth;
+    }
+
+    public void setRowWidth(int rowWidth) {
+        if (this.rowWidth == 0) {
+            this.rowWidth = rowWidth;
+            notifyDataSetChanged();
+        }
     }
 
     private boolean isShowedGuide() {

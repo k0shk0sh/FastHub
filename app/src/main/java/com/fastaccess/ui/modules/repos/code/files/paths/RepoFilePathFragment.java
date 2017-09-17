@@ -27,6 +27,7 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
 import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerFragment;
 import com.fastaccess.ui.modules.repos.git.EditRepoFileActivity;
@@ -49,6 +50,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @BindView(R.id.toParentFolder) View toParentFolder;
     @BindView(R.id.branches) FontTextView branches;
     @BindView(R.id.addFile) View addFile;
+    private RepoPagerMvp.View repoCallback;
 
     @State String ref;
 
@@ -72,6 +74,20 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
                 .put(BundleConstant.EXTRA_FOUR, forceAppendPath)
                 .end());
         return view;
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        repoCallback = null;
+        super.onDetach();
     }
 
     @OnClick(R.id.addFile) void onAddFile() {
@@ -112,14 +128,6 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @OnClick(R.id.branches) void onBranchesClicked() {
         BranchesPagerFragment.Companion.newInstance(getPresenter().login, getPresenter().repoId)
                 .show(getChildFragmentManager(), "BranchesFragment");
-    }
-
-    @Override public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override public void onDetach() {
-        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<RepoFile> items, int page) {
@@ -210,7 +218,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
             getPresenter().onFragmentCreated(getArguments());
         }
         branches.setText(getPresenter().getDefaultBranch());
-        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().login)) {
+        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().login) || (repoCallback != null && repoCallback.isCollaborator())) {
             addFile.setVisibility(View.VISIBLE);
         }
     }

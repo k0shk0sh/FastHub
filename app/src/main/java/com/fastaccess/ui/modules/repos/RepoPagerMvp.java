@@ -72,6 +72,8 @@ public interface RepoPagerMvp {
         void openUserProfile();
 
         void onScrolled(boolean isUp);
+
+        boolean isCollaborator();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BottomNavigation.OnMenuItemSelectionListener {

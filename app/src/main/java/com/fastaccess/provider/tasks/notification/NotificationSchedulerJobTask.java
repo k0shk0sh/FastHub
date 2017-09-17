@@ -238,10 +238,8 @@ public class NotificationSchedulerJobTask extends JobService {
     private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor, boolean toNotificationActivity) {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
                 new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName(),
+        NotificationCompat.Builder builder = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName(),
                 thread.getRepository() != null ? thread.getRepository().getFullName() : "general")
-                .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
-                .setSound(PrefGetter.getNotificationSound(), AudioManager.STREAM_NOTIFICATION)
                 .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))
@@ -252,8 +250,12 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setColor(accentColor)
                 .setGroup(NOTIFICATION_GROUP_ID)
-                .setGroupSummary(true)
-                .build();
+                .setGroupSummary(true);
+        if (PrefGetter.isNotificationSoundEnabled()) {
+            builder.setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setSound(PrefGetter.getNotificationSound(), AudioManager.STREAM_NOTIFICATION);
+        }
+        return builder.build();
     }
 
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message, @NonNull String channelName) {
