@@ -26,6 +26,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -252,9 +253,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             if (bundle == null) {
                 CommentRequestModel commentRequestModel = new CommentRequestModel();
                 commentRequestModel.setBody(text);
-                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(pullRequest.getLogin(), pullRequest.getRepoId(),
-                        pullRequest.getNumber(), commentRequestModel), comment -> sendToView(view -> view.addComment(TimelineModel.constructComment
-                        (comment))));
+                manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise()).createIssueComment(pullRequest.getLogin(),
+                        pullRequest.getRepoId(), pullRequest.getNumber(), commentRequestModel))
+                        .doOnSubscribe(disposable -> sendToView(view -> view.showBlockingProgress(0)))
+                        .subscribe(comment -> sendToView(view -> view.addComment(TimelineModel.constructComment(comment))),
+                                throwable -> {
+                                    onError(throwable);
+                                    sendToView(PullRequestTimelineMvp.View::onHideBlockingProgress);
+                                }));
             }
         }
     }

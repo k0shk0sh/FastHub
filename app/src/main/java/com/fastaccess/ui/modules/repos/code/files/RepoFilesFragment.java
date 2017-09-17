@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.code.files;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import com.fastaccess.ui.adapter.RepoFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 import com.fastaccess.ui.modules.repos.git.EditRepoFileActivity;
@@ -53,6 +55,21 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     private RepoFilesAdapter adapter;
     private Login login;
     private RepoFilePathFragment parentFragment;
+    private RepoPagerMvp.View repoCallback;
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        repoCallback = null;
+        super.onDetach();
+    }
 
     @Override public void onNotifyAdapter() {
         hideProgress();
@@ -90,7 +107,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
             login = Login.getUser();
         }
         if (refresh.isRefreshing()) return;
-        boolean isOwner = login.getLogin().equals(getPresenter().login);
+        boolean isOwner = login.getLogin().equals(getPresenter().login) || (repoCallback != null && repoCallback.isCollaborator());
         PopupMenu popup = new PopupMenu(getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.download_share_menu, popup.getMenu());

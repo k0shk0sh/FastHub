@@ -42,6 +42,8 @@ interface GistCommentsMvp {
         void onAddNewComment(@NonNull Comment comment);
 
         @NonNull ArrayList<String> getNamesToTag();
+
+        void hideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

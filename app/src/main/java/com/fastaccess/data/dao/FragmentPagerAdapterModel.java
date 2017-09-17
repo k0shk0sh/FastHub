@@ -69,10 +69,16 @@ import lombok.Setter;
 
     String title;
     Fragment fragment;
+    String key;
 
     private FragmentPagerAdapterModel(String title, Fragment fragment) {
+        this(title, fragment, null);
+    }
+
+    public FragmentPagerAdapterModel(String title, Fragment fragment, String key) {
         this.title = title;
         this.fragment = fragment;
+        this.key = key;
     }
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForProfile(@NonNull Context context, @NonNull String login) {
@@ -245,7 +251,20 @@ import lombok.Setter;
     @NonNull public static List<FragmentPagerAdapterModel> buildForProjectColumns(@NonNull List<ProjectColumnModel> models, boolean isCollaborator) {
         return Stream.of(models)
                 .map(projectColumnModel -> new FragmentPagerAdapterModel("", ProjectColumnFragment.Companion
-                        .newInstance(projectColumnModel, isCollaborator)))
+                        .newInstance(projectColumnModel, isCollaborator), String.valueOf(projectColumnModel.getId())))
                 .toList();
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FragmentPagerAdapterModel that = (FragmentPagerAdapterModel) o;
+
+        return key != null ? key.equals(that.key) : that.key == null;
+    }
+
+    @Override public int hashCode() {
+        return key != null ? key.hashCode() : 0;
     }
 }

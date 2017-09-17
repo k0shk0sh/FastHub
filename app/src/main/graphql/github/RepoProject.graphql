@@ -15,6 +15,7 @@ repository(owner: $owner, name: $name) {
         columns(first: 1) {
           totalCount
         }
+        databaseId
       }
     }
   }
@@ -36,6 +37,7 @@ repository(owner: $owner, name: $name) {
         columns(first: 1) {
           totalCount
         }
+        databaseId
       }
     }
   }

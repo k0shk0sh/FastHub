@@ -203,7 +203,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     }
 
     @Override public void addComment(@NonNull Comment newComment) {
-        hideProgress();
+        hideBlockingProgress();
         if (adapter != null) {
             adapter.addItem(TimelineModel.constructComment(newComment));
         }
@@ -296,5 +296,10 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
 
     @NonNull @Override public ArrayList<String> getNamesToTags() {
         return CommentsHelper.getUsersByTimeline(adapter.getData());
+    }
+
+    @Override public void hideBlockingProgress() {
+        hideProgress();
+        super.hideProgress();
     }
 }

@@ -427,4 +427,23 @@ APP
     <string name="disable_auto_gif_summary">停用 GIF 自動播放</string>
     <string name="disable_auto_gif_title">停用 GIF 自動播放</string>
 	<string name="english_please">請用英文來提交你的請求</string>
+    <string name="enterprise_login_warning">請登入到GitHub帳號以使用所有的api功能。否則透過企業帳號向GitHub api發送token將會被拒絕。</string>
+    <string name="not_match">不匹配</string>
+    <string name="original_poster">原發布者</string>
+    <string name="cancel_reviews">取消 Reviews</string>
+    <string name="request_changes">請求更改</string>
+    <string name="google_play_service_error">Google Play 服務不可用</string>
+    <string name="edit_gist">編輯Gist</string>
+    <string name="content">內容</string>
+    <string name="expand">展開</string>
+    <string name="copy_sha">複製 SHA-1</string>
+    <string name="view_as_code">以程式碼檢視</string>
+    <string name="app_animation_title">停用 App 內部動畫</string>
+    <string name="app_animation_summary">在每個地方停用 App 內部動畫</string>
+    <string name="can_not_merge_pr">這個 PR 目前沒辦法被 merge</string>
+    <string name="projects">" 專案"</string>
+    <string name="no_projects">沒有專案</string>
+    <string name="no_cards">沒有卡</string>
+    <string name="card_added_by">由 %s 新增</string>
+    <string name="no_orgs_dialog_title">找不到您的組織嗎?</string>
 </resources>

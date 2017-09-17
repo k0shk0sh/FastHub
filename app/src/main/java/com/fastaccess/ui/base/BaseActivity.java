@@ -31,6 +31,7 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -157,8 +158,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             boolean logout = bundle.getBoolean("logout");
             if (logout) {
                 onRequireLogin();
-//                if(App.getInstance().getGoogleApiClient().isConnected())
-//                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
             }
         }
     }//pass
@@ -196,6 +195,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void hideProgress() {
         ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
                 ProgressDialogFragment.TAG);
+        Logger.e(fragment);
         if (fragment != null) {
             isProgressShowing = false;
             fragment.dismiss();

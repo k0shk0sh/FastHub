@@ -51,13 +51,20 @@ public class MarkDownProvider {
             if (width > 0) {
                 render(textView, markdown, width);
             } else {
-                textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override public void onGlobalLayout() {
-                        textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                textView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override public boolean onPreDraw() {
+                        textView.getViewTreeObserver().removeOnPreDrawListener(this);
                         render(textView, markdown, textView.getMeasuredWidth());
+                        return true;
                     }
                 });
             }
+        }
+    }
+
+    public static void setMdText(@NonNull TextView textView, String markdown, int width) {
+        if (!InputHelper.isEmpty(markdown)) {
+            render(textView, markdown, width);
         }
     }
 

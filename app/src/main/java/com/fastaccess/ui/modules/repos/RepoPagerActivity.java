@@ -500,6 +500,10 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
     }
 
+    @Override public boolean isCollaborator() {
+        return getPresenter().isRepoOwner();
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.repo_menu, menu);
         return super.onCreateOptionsMenu(menu);

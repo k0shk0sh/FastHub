@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class ProjectColumnModel implements Parcelable {
 
-    private long id;
+    private Long id;
     private String name;
     private String url;
     private String projectUrl;
@@ -75,10 +75,12 @@ public class ProjectColumnModel implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
+    public ProjectColumnModel() {}
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
+        dest.writeValue(this.id);
         dest.writeString(this.name);
         dest.writeString(this.url);
         dest.writeString(this.projectUrl);
@@ -87,10 +89,8 @@ public class ProjectColumnModel implements Parcelable {
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
     }
 
-    public ProjectColumnModel() {}
-
     protected ProjectColumnModel(Parcel in) {
-        this.id = in.readLong();
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.name = in.readString();
         this.url = in.readString();
         this.projectUrl = in.readString();
@@ -106,4 +106,17 @@ public class ProjectColumnModel implements Parcelable {
 
         @Override public ProjectColumnModel[] newArray(int size) {return new ProjectColumnModel[size];}
     };
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProjectColumnModel that = (ProjectColumnModel) o;
+
+        return id != null ? id.equals(that.id) : that.id == null;
+    }
+
+    @Override public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

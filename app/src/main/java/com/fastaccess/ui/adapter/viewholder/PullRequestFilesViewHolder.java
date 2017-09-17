@@ -20,6 +20,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:29 PM
@@ -104,8 +105,13 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
             if (adapter != null) {
                 CommitFileChanges model = (CommitFileChanges) adapter.getItem(position);
                 if (model.getLinesModel() != null && !model.getLinesModel().isEmpty()) {
-                    patch.setAdapter(new CommitLinesAdapter(model.getLinesModel(), this));
-                    patch.setVisibility(View.VISIBLE);
+                    if (model.getLinesModel().size() <= 100) {
+                        patch.setAdapter(new CommitLinesAdapter(model.getLinesModel(), this));
+                        patch.setVisibility(View.VISIBLE);
+                    } else {
+                        Toasty.warning(itemView.getContext(),itemView.getResources().getString(R.string.too_large_changes)).show();
+                        return;
+                    }
                 } else {
                     patch.swapAdapter(null, true);
                     patch.setVisibility(View.GONE);

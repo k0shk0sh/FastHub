@@ -104,5 +104,6 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
         return timelineModel != null ? timelineModel.getType() : super.getItemViewType(position);
     }
 
+
 }
 

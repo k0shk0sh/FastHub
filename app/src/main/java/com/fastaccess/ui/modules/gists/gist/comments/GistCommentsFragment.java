@@ -198,13 +198,18 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     }
 
     @Override public void onAddNewComment(@NonNull Comment comment) {
-        hideProgress();
+        hideBlockingProgress();
         adapter.addItem(comment);
         if (commentsCallback != null) commentsCallback.onClearEditText();
     }
 
     @NonNull @Override public ArrayList<String> getNamesToTag() {
         return CommentsHelper.getUsers(adapter.getData());
+    }
+
+    @Override public void hideBlockingProgress() {
+        hideProgress();
+        super.hideProgress();
     }
 
     @Override public void onDestroyView() {

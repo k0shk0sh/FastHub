@@ -39,9 +39,7 @@
                 android:layout_gravity="top"
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_micro"
-                android:src="@drawable/ic_overflow"
-                android:tint="@color/white"
-                android:visibility="gone"/>
+                android:src="@drawable/ic_overflow"/>
 
         </LinearLayout>
 
