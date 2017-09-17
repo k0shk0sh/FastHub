@@ -59,6 +59,8 @@ public interface IssueTimelineMvp {
         void addNewComment(@NonNull TimelineModel timelineModel);
 
         @NonNull ArrayList<String> getNamesToTag();
+
+        void onHideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,

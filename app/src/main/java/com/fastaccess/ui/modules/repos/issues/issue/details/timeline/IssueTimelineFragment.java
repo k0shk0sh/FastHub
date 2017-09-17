@@ -266,13 +266,18 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void addNewComment(@NonNull TimelineModel timelineModel) {
-        hideProgress();
+        onHideBlockingProgress();
         adapter.addItem(timelineModel);
         if (commentsCallback != null) commentsCallback.onClearEditText();
     }
 
     @NonNull @Override public ArrayList<String> getNamesToTag() {
         return CommentsHelper.getUsersByTimeline(adapter.getData());
+    }
+
+    @Override public void onHideBlockingProgress() {
+        hideProgress();
+        super.hideProgress();
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

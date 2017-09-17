@@ -77,6 +77,8 @@ public interface PullRequestTimelineMvp {
         void addComment(@NonNull TimelineModel timelineModel);
 
         @NonNull ArrayList<String> getNamesToTag();
+
+        void onHideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
