@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
@@ -23,13 +24,13 @@ android {
         }
     }
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 403
-        versionName "4.0.3"
+        versionCode 420
+        versionName "4.2.0"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
         buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
@@ -95,6 +96,7 @@ android {
 
     dexOptions {
         jumboMode true
+        javaMaxHeapSize "4g"
     }
 
     testOptions {
@@ -128,10 +130,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
     implementation "com.github.bumptech.glide:glide:3.7.0"
-//    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
     implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
-    implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
+    implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
@@ -145,26 +146,35 @@ dependencies {
     implementation 'com.github.nightwhistler:HtmlSpanner:0.4'
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
-    implementation 'com.atlassian.commonmark:commonmark:0.9.0'
+    implementation "com.atlassian.commonmark:commonmark:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
     implementation "com.google.firebase:firebase-messaging:${gms}"
-    implementation "com.google.android.gms:play-services-ads:${gms}"
     implementation "com.google.firebase:firebase-database:${gms}"
+    implementation "com.google.android.gms:play-services-base:${gms}"
     implementation('com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0') { transitive = false }
     implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0') { transitive = false }
-    implementation 'com.firebase:firebase-jobdispatcher:0.7.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') { transitive = true }
     implementation "com.github.miguelbcr:RxBillingService:0.0.3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'org.jsoup:jsoup:1.10.2'
     implementation "com.evernote:android-state:${state_version}"
     implementation "petrov.kristiyan:colorpicker-library:1.1.4"
+    implementation 'com.apollographql.apollo:apollo-rx2-support:0.4.0'
+    implementation 'com.jaredrummler:android-device-names:1.1.4'
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
+    implementation 'com.airbnb.android:lottie:2.2.0'
+    implementation project(path: ':jobdispatcher')
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    kapt "io.requery:requery-processor:${requery}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
     kapt "com.evernote:android-state-processor:${state_version}"
     kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     kapt "org.projectlombok:lombok:${lombokVersion}"
+    kapt "io.requery:requery-processor:${requery}"
 //    testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
@@ -177,4 +187,5 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
 }
 
+apply plugin: 'ManifestClasspath'
 apply plugin: 'com.google.gms.google-services'

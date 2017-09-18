@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewAnimationUtils
+import butterknife.BindView
+import butterknife.OnClick
 import com.fastaccess.R
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
 import com.fastaccess.helper.PrefGetter
@@ -13,10 +15,10 @@ import com.fastaccess.ui.adapter.FragmentsPagerAdapter
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
+import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.theme.fragment.ThemeFragmentMvp
 import com.fastaccess.ui.widgets.CardsPagerTransformerBasic
 import com.fastaccess.ui.widgets.ViewPagerView
-import com.fastaccess.ui.widgets.bindView
 
 
 /**
@@ -25,11 +27,14 @@ import com.fastaccess.ui.widgets.bindView
 
 class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>(), ThemeFragmentMvp.ThemeListener {
 
-    val pager: ViewPagerView by bindView(R.id.pager)
-    val parentLayout: View by bindView(R.id.parentLayout)
+    @BindView(R.id.pager) lateinit var pager: ViewPagerView
+    @BindView(R.id.parentLayout) lateinit var parentLayout: View
+
+    @OnClick(R.id.premium) fun onOpenPremium() {
+        PremiumActivity.startActivity(this)
+    }
 
     override fun layout(): Int = R.layout.theme_viewpager
-
 
     override fun isTransparent(): Boolean = false
 

@@ -5,11 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -31,6 +33,7 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     @BindView(R.id.comment) FontTextView comment;
     @BindView(R.id.toggleHolder) View toggleHolder;
     @BindView(R.id.toggle) AppCompatImageView toggle;
+    private final ViewGroup viewGroup;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggleHolder) {
@@ -40,16 +43,27 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         }
     }
 
-    private CommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private CommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, @NonNull ViewGroup viewGroup) {
         super(itemView, adapter);
+        if (adapter != null && adapter.getRowWidth() == 0) {
+            itemView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override public boolean onPreDraw() {
+                    itemView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    adapter.setRowWidth(itemView.getWidth() - ViewHelper.dpToPx(itemView.getContext(), 48));
+                    return false;
+                }
+            });
+        }
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         toggleHolder.setOnClickListener(this);
         toggle.setOnClickListener(this);
+        toggle.setOnLongClickListener(this);
+        this.viewGroup = viewGroup;
     }
 
     public static CommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter) {
-        return new CommentsViewHolder(getView(viewGroup, R.layout.no_emojies_comments_row_item), adapter);
+        return new CommentsViewHolder(getView(viewGroup, R.layout.no_emojies_comments_row_item), adapter, viewGroup);
     }
 
     @Override public void bind(@NonNull Comment commentsModel) {
@@ -60,7 +74,8 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
             avatar.setUrl(null, null, false, false);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());
+            int width = adapter != null ? adapter.getRowWidth() : 0;
+            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml(), width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }

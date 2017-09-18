@@ -47,7 +47,7 @@ class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> 
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -58,7 +58,7 @@ class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> 
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(ProfileFollowersMvp.View::hideProgress);
-            return;
+            return false;
         }
         makeRestCall(RestProvider.getUserService(isEnterprise()).getFollowers(parameter, page),
                 response -> {
@@ -68,6 +68,7 @@ class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> 
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<User> getFollowers() {

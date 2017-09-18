@@ -35,8 +35,6 @@ interface CommitCommentsMvp {
 
         void onEditComment(@NonNull Comment item);
 
-        void onStartNewComment();
-
         void onShowDeleteMsg(long id);
 
         void onTagUser(@Nullable User user);
@@ -46,6 +44,14 @@ interface CommitCommentsMvp {
         void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId);
 
         void addComment(@NonNull Comment newComment);
+
+        void showReload();
+
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
+
+        @NonNull List<String> getNamesToTags();
+
+        void hideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -68,6 +74,8 @@ interface CommitCommentsMvp {
         boolean isPreviouslyReacted(long commentId, int vId);
 
         boolean isCallingApi(long id, int vId);
+
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
     }
 
 

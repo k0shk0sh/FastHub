@@ -49,7 +49,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -57,9 +57,9 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoReleasesMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
+        if (repoId == null || login == null) return false;
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getReleases(login, repoId, page),
                 response -> {
                     if (response.getItems() == null || response.getItems().isEmpty()) {
@@ -68,6 +68,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
                     }
                     onResponse(response);
                 });
+        return true;
 
     }
 

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.LongStream;
 import com.annimon.stream.Stream;
 import com.fastaccess.App;
@@ -19,6 +20,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -134,12 +136,13 @@ import static com.fastaccess.data.dao.model.Gist.OWNER_NAME;
         return url != null ? url.hashCode() : 0;
     }
 
-    @NonNull public List<FilesListModel> getFilesAsList() {
-        List<FilesListModel> models = new ArrayList<>();
+    @NonNull public ArrayList<FilesListModel> getFilesAsList() {
         if (files != null) {
-            models.addAll(files.values());
+            return Stream.of(files)
+                    .map(Map.Entry::getValue)
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
-        return models;
+        return new ArrayList<>();
     }
 
     @NonNull public SpannableBuilder getDisplayTitle(boolean isFromProfile) {

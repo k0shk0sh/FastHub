@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
+
 /**
  * Created by Kosh on 8/2/2015. copyrights are reserved @
  */
@@ -14,16 +16,14 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     private int previousTotalItemCount = 0;
     private boolean loading = true;
     private int startingPageIndex = 0;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager layoutManager;
+    private BaseRecyclerAdapter adapter;
+    private boolean newlyAdded = true;
 
     public InfiniteScroll() {}
 
-    public InfiniteScroll(RecyclerView.LayoutManager layoutManager) {
-        initLayoutManager(layoutManager);
-    }
-
     private void initLayoutManager(RecyclerView.LayoutManager layoutManager) {
-        this.mLayoutManager = layoutManager;
+        this.layoutManager = layoutManager;
         if (layoutManager instanceof GridLayoutManager) {
             visibleThreshold = visibleThreshold * ((GridLayoutManager) layoutManager).getSpanCount();
         } else if (layoutManager instanceof StaggeredGridLayoutManager) {
@@ -44,18 +44,30 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     }
 
     @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        if (mLayoutManager == null) {
+        if (newlyAdded) {
+            newlyAdded = false;
+            return;
+        }
+        onScrolled(dy > 0);
+        if (layoutManager == null) {
             initLayoutManager(recyclerView.getLayoutManager());
         }
+        if (adapter == null) {
+            if (recyclerView.getAdapter() instanceof BaseRecyclerAdapter) {
+                adapter = (BaseRecyclerAdapter) recyclerView.getAdapter();
+            }
+        }
+        if (adapter != null && adapter.isProgressAdded()) return;
+
         int lastVisibleItemPosition = 0;
-        int totalItemCount = mLayoutManager.getItemCount();
-        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
-            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
+        int totalItemCount = layoutManager.getItemCount();
+        if (layoutManager instanceof StaggeredGridLayoutManager) {
+            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(null);
             lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
-        } else if (mLayoutManager instanceof GridLayoutManager) {
-            lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        } else if (mLayoutManager instanceof LinearLayoutManager) {
-            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        } else if (layoutManager instanceof GridLayoutManager) {
+            lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+        } else if (layoutManager instanceof LinearLayoutManager) {
+            lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
         }
         if (totalItemCount < previousTotalItemCount) {
             this.currentPage = this.startingPageIndex;
@@ -70,8 +82,11 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
         }
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
             currentPage++;
-            onLoadMore(currentPage, totalItemCount);
+            boolean isCallingApi = onLoadMore(currentPage, totalItemCount);
             loading = true;
+            if (adapter != null && isCallingApi) {
+                adapter.addProgress();
+            }
         }
     }
 
@@ -87,7 +102,9 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
         this.loading = true;
     }
 
-    public abstract void onLoadMore(int page, int totalItemsCount);
+    public abstract boolean onLoadMore(int page, int totalItemsCount);
+
+    public void onScrolled(boolean isUp) {}
 
 }
 

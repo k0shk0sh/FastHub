@@ -16,9 +16,9 @@ interface ViewerMvp {
 
     interface View extends BaseMvp.FAView, PrettifyWebView.OnContentChangedListener {
 
-        void onSetImageUrl(@NonNull String url);
+        void onSetImageUrl(@NonNull String url, boolean isSvg);
 
-        void onSetMdText(@NonNull String text, String baseUrl);
+        void onSetMdText(@NonNull String text, String baseUrl, boolean replace);
 
         void onSetCode(@NonNull String text);
 
@@ -29,11 +29,15 @@ interface ViewerMvp {
         void onShowMdProgress();
 
         void openUrl(@NonNull String url);
+
+        void onViewAsCode();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
         void onHandleIntent(@Nullable Bundle intent);
+
+        void onLoadContentAsStream();
 
         String downloadedStream();
 

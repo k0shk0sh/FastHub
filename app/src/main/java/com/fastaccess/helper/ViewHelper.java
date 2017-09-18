@@ -100,6 +100,10 @@ public class ViewHelper {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, dp, context.getResources().getDisplayMetrics());
     }
 
+    public static int dpToPx(Context context, float dp) {
+        return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
+    }
+
     public static void tintDrawable(@NonNull Drawable drawable, @ColorInt int color) {
         drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
@@ -108,7 +112,7 @@ public class ViewHelper {
         return new RippleDrawable(ColorStateList.valueOf(pressedColor), getRippleMask(normalColor), getRippleMask(normalColor));
     }
 
-    @Nullable private static Drawable getRippleMask(int color) {
+    @NonNull private static Drawable getRippleMask(int color) {
         float[] outerRadii = new float[8];
         Arrays.fill(outerRadii, 3);
         RoundRectShape r = new RoundRectShape(outerRadii, null, null);
@@ -204,6 +208,5 @@ public class ViewHelper {
 
     @NonNull public static TextView getTabTextView(@NonNull TabLayout tabs, int tabIndex) {
         return (TextView) (((LinearLayout) ((LinearLayout) tabs.getChildAt(0)).getChildAt(tabIndex)).getChildAt(1));
-
     }
 }

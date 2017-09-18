@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
@@ -50,14 +51,14 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || parameter == null || lastPage == 0) {
             sendToView(GistCommentsMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getGistService(isEnterprise()).getGistComments(parameter, page),
@@ -68,6 +69,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                     }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Comment> getComments() {
@@ -102,6 +104,17 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         }
     }
 
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle, String gistId) {
+        CommentRequestModel model = new CommentRequestModel();
+        model.setBody(text);
+        manageDisposable(RxHelper.getObservable(RestProvider.getGistService(isEnterprise()).createGistComment(gistId, model))
+                .doOnSubscribe(disposable -> sendToView(view -> view.showBlockingProgress(0)))
+                .subscribe(comment -> sendToView(view -> view.onAddNewComment(comment)), throwable -> {
+                    onError(throwable);
+                    sendToView(GistCommentsMvp.View::hideBlockingProgress);
+                }));
+    }
+
     @Override public void onItemClick(int position, View v, Comment item) {
         if (getView() == null) return;
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
@@ -126,10 +139,14 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
     }
 
     @Override public void onItemLongClick(int position, View v, Comment item) {
-        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), Login.getUser().getLogin())) {
-            if (getView() != null) getView().onShowDeleteMsg(item.getId());
+        if (v.getId() == R.id.toggle) {
+            if (getView() != null) getView().onReply(item.getUser(), item.getBody());
         } else {
-            onItemClick(position, v, item);
+            if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), Login.getUser().getLogin())) {
+                if (getView() != null) getView().onShowDeleteMsg(item.getId());
+            } else {
+                onItemClick(position, v, item);
+            }
         }
     }
 }

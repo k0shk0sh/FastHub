@@ -41,7 +41,7 @@ class OrgMembersPresenter extends BasePresenter<OrgMembersMvp.View> implements O
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -52,13 +52,14 @@ class OrgMembersPresenter extends BasePresenter<OrgMembersMvp.View> implements O
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(OrgMembersMvp.View::hideProgress);
-            return;
+            return false;
         }
         makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgMembers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<User> getFollowers() {

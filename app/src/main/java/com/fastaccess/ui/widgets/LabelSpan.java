@@ -45,7 +45,7 @@ public class LabelSpan extends ReplacementSpan {
     private final int color;
     private final SpanDimensions dims;
 
-    public LabelSpan(int color, @NonNull SpanDimensions dims) {
+    private LabelSpan(int color, @NonNull SpanDimensions dims) {
         this.color = color;
         txtPaint.bgColor = color;
         this.dims = dims;

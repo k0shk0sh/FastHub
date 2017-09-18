@@ -4,16 +4,18 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
+import com.apollographql.apollo.ApolloClient;
 import com.fastaccess.data.dao.model.Models;
+import com.fastaccess.helper.DeviceNameGetter;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
+import com.fastaccess.provider.fabric.FabricProvider;
+import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
-import io.fabric.sdk.android.Fabric;
 import io.requery.Persistable;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.meta.EntityModel;
@@ -32,6 +34,7 @@ import shortbread.Shortbread;
 public class App extends Application {
     private static App instance;
     private ReactiveEntityStore<Persistable> dataStore;
+    private ApolloClient apolloClient;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -44,26 +47,17 @@ public class App extends Application {
     }
 
     private void init() {
-        initFabric();
+        FabricProvider.initFabric(this);
         RxBillingService.register(this);
         deleteDatabase("database.db");
-        getDataStore();//init requery before anything.
+        getDataStore();
         setupPreference();
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();
-    }
-
-    private void initFabric() {
-        Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics.Builder()
-                        .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                        .build())
-                .debuggable(BuildConfig.DEBUG)
-                .build();
-        Fabric.with(fabric);
+        DeviceNameGetter.getInstance().loadDevice();
     }
 
     private void setupPreference() {
@@ -78,7 +72,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 11);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 13);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);
@@ -86,5 +80,15 @@ public class App extends Application {
             dataStore = ReactiveSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }
         return dataStore;
+    }
+
+    public ApolloClient getApolloClient() {
+        if (apolloClient == null) {
+            apolloClient = ApolloClient.builder()
+                    .serverUrl("https://" + (PrefGetter.isEnterprise() ? PrefGetter.getEnterpriseUrl() : "api.github.com") + "/graphql")
+                    .okHttpClient(RestProvider.provideOkHttpClient())
+                    .build();
+        }
+        return apolloClient;
     }
 }

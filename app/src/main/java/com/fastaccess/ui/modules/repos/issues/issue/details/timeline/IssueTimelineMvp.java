@@ -38,7 +38,7 @@ public interface IssueTimelineMvp {
 
         void onRemove(@NonNull TimelineModel timelineModel);
 
-        void onStartNewComment();
+        void onStartNewComment(String text);
 
         void onShowDeleteMsg(long id);
 
@@ -53,6 +53,14 @@ public interface IssueTimelineMvp {
         @Nullable Issue getIssue();
 
         void onUpdateHeader();
+
+        void onHandleComment(String text, @Nullable Bundle bundle);
+
+        void addNewComment(@NonNull TimelineModel timelineModel);
+
+        @NonNull ArrayList<String> getNamesToTag();
+
+        void onHideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
@@ -69,5 +77,7 @@ public interface IssueTimelineMvp {
         void onHandleReaction(@IdRes int viewId, long id, @ReactionsProvider.ReactionType int reactionType);
 
         boolean isCallingApi(long id, int vId);
+
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
     }
 }

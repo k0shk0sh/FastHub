@@ -7,6 +7,7 @@ import android.support.transition.TransitionManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,11 +18,12 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
-import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -56,6 +58,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.comment) FontTextView comment;
     @BindView(R.id.reactionsText) FontTextView reactionsText;
     @BindView(R.id.owner) FontTextView owner;
+    @BindView(R.id.pathText) FontTextView pathText;
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
@@ -76,10 +79,19 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
-    private TimelineCommentsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
+    private TimelineCommentsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable IssuesTimelineAdapter adapter,
                                        @NonNull OnToggleView onToggleView, boolean showEmojies, @NonNull ReactionsCallback reactionsCallback,
                                        String repoOwner, String poster) {
         super(itemView, adapter);
+        if (adapter != null && adapter.getRowWidth() == 0) {
+            itemView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override public boolean onPreDraw() {
+                    itemView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    adapter.setRowWidth(itemView.getWidth() - ViewHelper.dpToPx(itemView.getContext(), 48));
+                    return false;
+                }
+            });
+        }
         this.viewGroup = viewGroup;
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
@@ -89,6 +101,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
+        commentMenu.setOnLongClickListener(this);
         toggleHolder.setOnClickListener(this);
         toggle.setOnClickListener(this);
         laugh.setOnClickListener(this);
@@ -105,7 +118,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         heart.setOnClickListener(this);
     }
 
-    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
+    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuesTimelineAdapter adapter,
                                                          @NonNull OnToggleView onToggleView, boolean showEmojies,
                                                          @NonNull ReactionsCallback reactionsCallback, String repoOwner, String poster) {
         return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), viewGroup, adapter,
@@ -118,32 +131,41 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
                     false, LinkParserHelper.isEnterprise(commentsModel.getHtmlUrl()));
             name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
-            boolean isRepoOwner = TextUtils.equals(commentsModel.getUser().getLogin(), repoOwner);
-            if (isRepoOwner) {
+            if (commentsModel.getAuthorAssociation() != null && !"none".equalsIgnoreCase(commentsModel.getAuthorAssociation())) {
+                owner.setText(commentsModel.getAuthorAssociation().toLowerCase());
                 owner.setVisibility(View.VISIBLE);
-                owner.setText(R.string.owner);
             } else {
-                boolean isPoster = TextUtils.equals(commentsModel.getUser().getLogin(), poster);
-                if (isPoster) {
+                boolean isRepoOwner = TextUtils.equals(commentsModel.getUser().getLogin(), repoOwner);
+                if (isRepoOwner) {
                     owner.setVisibility(View.VISIBLE);
-                    owner.setText(R.string.original_poster);
+                    owner.setText(R.string.owner);
                 } else {
-                    owner.setText(null);
-                    owner.setVisibility(View.GONE);
+                    boolean isPoster = TextUtils.equals(commentsModel.getUser().getLogin(), poster);
+                    if (isPoster) {
+                        owner.setVisibility(View.VISIBLE);
+                        owner.setText(R.string.original_poster);
+                    } else {
+                        owner.setText(null);
+                        owner.setVisibility(View.GONE);
+                    }
                 }
             }
         } else {
             avatar.setUrl(null, null, false, false);
             name.setText(null);
         }
+        if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
+            pathText.setVisibility(View.VISIBLE);
+            pathText.setText(String.format("Commented on %s#L%s", commentsModel.getPath(),
+                    commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()));
+        } else {
+            pathText.setText("");
+            pathText.setVisibility(View.GONE);
+        }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             String body = commentsModel.getBodyHtml();
-            if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
-                body = "<small color='grey'><i>Commented at <b>line(" +
-                        (commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()) + ")</b> in "
-                        + commentsModel.getPath() + "</i></small><br/>" + body;
-            }
-            HtmlHelper.htmlIntoTextView(comment, body);
+            int width = adapter != null ? adapter.getRowWidth() : 0;
+            HtmlHelper.htmlIntoTextView(comment, body, width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }

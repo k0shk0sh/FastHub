@@ -21,6 +21,7 @@ import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerFragme
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -35,18 +36,29 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.branches) FontTextView branches;
     private OnLoadMore onLoadMore;
     private CommitsAdapter adapter;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static RepoCommitsFragment newInstance(@NonNull String repoId, @NonNull String login, @NonNull String branch) {
-        RepoCommitsFragment view = new RepoCommitsFragment();
-        view.setArguments(Bundler.start()
+        return newInstance(repoId, login, branch, null);
+    }
+
+    public static RepoCommitsFragment newInstance(@NonNull String repoId, @NonNull String login, @NonNull String branch,
+                                                  @Nullable String path) {
+        return newInstance(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, branch)
+                .put(BundleConstant.EXTRA_THREE, path)
                 .end());
+    }
+
+    public static RepoCommitsFragment newInstance(@NonNull Bundle bundle) {
+        RepoCommitsFragment view = new RepoCommitsFragment();
+        view.setArguments(bundle);
         return view;
     }
 
@@ -106,6 +118,7 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
             onRefresh();
         }
         branches.setText(getPresenter().branch);
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public RepoCommitsPresenter providePresenter() {

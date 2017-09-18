@@ -34,13 +34,17 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.emoji.EmojiParser;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
+import com.fastaccess.ui.adapter.ProfilePinnedReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 import com.fastaccess.ui.widgets.AvatarLayout;
+import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
+import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
 
@@ -48,6 +52,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import github.GetPinnedReposQuery;
 
 import static android.view.Gravity.TOP;
 import static android.view.View.GONE;
@@ -74,16 +79,19 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.email) FontTextView email;
     @BindView(R.id.link) FontTextView link;
     @BindView(R.id.joined) FontTextView joined;
-    @BindView(R.id.following) FontTextView following;
-    @BindView(R.id.followers) FontTextView followers;
+    @BindView(R.id.following) FontButton following;
+    @BindView(R.id.followers) FontButton followers;
     @BindView(R.id.progress) View progress;
     @BindView(R.id.followBtn) Button followBtn;
-    @State User userModel;
     @BindView(R.id.orgsList) DynamicRecyclerView orgsList;
     @BindView(R.id.orgsCard) CardView orgsCard;
     @BindView(R.id.parentView) NestedScrollView parentView;
     @BindView(R.id.contributionView) GitHubContributionsView contributionView;
     @BindView(R.id.contributionCard) CardView contributionCard;
+    @BindView(R.id.pinnedReposTextView) FontTextView pinnedReposTextView;
+    @BindView(R.id.pinnedList) DynamicRecyclerView pinnedList;
+    @BindView(R.id.pinnedReposCard) CardView pinnedReposCard;
+    @State User userModel;
     private ProfilePagerMvp.View profileCallback;
 
     public static ProfileOverviewFragment newInstance(@NonNull String login) {
@@ -127,6 +135,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
+        onInitPinnedRepos(getPresenter().getNodes());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -218,12 +227,14 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
         followers.setText(SpannableBuilder.builder()
                 .append(getString(R.string.followers))
-                .append("\n")
-                .bold(String.valueOf(userModel.getFollowers())));
+                .append(" (")
+                .bold(String.valueOf(userModel.getFollowers()))
+                .append(")"));
         following.setText(SpannableBuilder.builder()
                 .append(getString(R.string.following))
-                .append("\n")
-                .bold(String.valueOf(userModel.getFollowing())));
+                .append(" (")
+                .bold(String.valueOf(userModel.getFollowing()))
+                .append(")"));
     }
 
     @Override public void invalidateFollowBtn() {
@@ -267,6 +278,27 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override public void onImagePosted(@Nullable String link) {
         hideProgress();
+    }
+
+    @Override public void onInitPinnedRepos(@NonNull List<GetPinnedReposQuery.Node> nodes) {
+        if (pinnedReposTextView == null) return;
+        if (!nodes.isEmpty()) {
+            pinnedReposTextView.setVisibility(VISIBLE);
+            pinnedReposCard.setVisibility(VISIBLE);
+            ProfilePinnedReposAdapter adapter = new ProfilePinnedReposAdapter(nodes);
+            adapter.setListener(new BaseViewHolder.OnItemClickListener<GetPinnedReposQuery.Node>() {
+                @Override public void onItemClick(int position, View v, GetPinnedReposQuery.Node item) {
+                    SchemeParser.launchUri(getContext(), item.url().toString());
+                }
+
+                @Override public void onItemLongClick(int position, View v, GetPinnedReposQuery.Node item) {}
+            });
+            pinnedList.addDivider();
+            pinnedList.setAdapter(adapter);
+        } else {
+            pinnedReposTextView.setVisibility(GONE);
+            pinnedReposCard.setVisibility(GONE);
+        }
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -331,5 +363,4 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
                 (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
     }
-
 }

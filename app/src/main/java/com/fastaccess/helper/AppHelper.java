@@ -4,9 +4,12 @@ import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +35,9 @@ public class AppHelper {
 
     public static void hideKeyboard(@NonNull View view) {
         InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Nullable public static Fragment getFragmentByTag(@NonNull FragmentManager fragmentManager, @NonNull String tag) {
@@ -45,41 +50,57 @@ public class AppHelper {
 
     public static void cancelNotification(@NonNull Context context, int id) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(id);
+        if (notificationManager != null) {
+            notificationManager.cancel(id);
+        }
     }
 
     public static void cancelAllNotifications(@NonNull Context context) {
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
+        }
     }
 
     public static void copyToClipboard(@NonNull Context context, @NonNull String uri) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), uri);
-        clipboard.setPrimaryClip(clip);
-        Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(clip);
+            Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
+        }
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {
         @PrefGetter.ThemeType int themeType = PrefGetter.getThemeType(resources);
-        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD || themeType == PrefGetter.BLUISH;
+        return themeType != PrefGetter.LIGHT;
     }
 
     public static String getFastHubIssueTemplate(boolean enterprise) {
         String brand = (!isEmulator()) ? Build.BRAND : "Android Emulator";
-        String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
+        String model = (!isEmulator()) ? DeviceNameGetter.getInstance().getDeviceName() : "Android Emulator";
         StringBuilder builder = new StringBuilder()
                 .append("**FastHub Version: ").append(BuildConfig.VERSION_NAME).append(enterprise ? " Enterprise**" : "**").append("  \n")
                 .append(!isInstalledFromPlaySore(App.getInstance()) ? "**APK Source: Unknown**  \n" : "")
                 .append("**Android Version: ").append(String.valueOf(Build.VERSION.RELEASE)).append(" (SDK: ")
                 .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
                 .append("**Device Information:**").append("  \n")
-                .append("- **" + (!model.equalsIgnoreCase(brand) ? "Manufacturer" : "Manufacturer&Brand") + ":** ").append(Build.MANUFACTURER)
+                .append("- **")
+                .append(!model.equalsIgnoreCase(brand) ? "Manufacturer" : "Manufacturer&Brand")
+                .append(":** ")
+                .append(Build.MANUFACTURER)
                 .append("  \n");
         if (!(model.equalsIgnoreCase(brand) || "google".equals(Build.BRAND))) {
             builder.append("- **Brand:** ").append(brand).append("  \n");
         }
         builder.append("- **Model:** ").append(model).append("  \n")
                 .append("---").append("\n\n");
+        if (!Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
+            builder.append("<!--")
+                    .append(App.getInstance().getString(R.string.english_please))
+                    .append("-->")
+                    .append("\n");
+        }
         return builder.toString();
     }
 
@@ -127,14 +148,10 @@ public class AppHelper {
     }
 
     public static String getDeviceName() {
-        String brand = Build.BRAND;
-        String model = Build.MODEL;
-        if (model.startsWith(brand)) {
-            return InputHelper.capitalizeFirstLetter(model);
-        } else if (isEmulator()) {
+        if (isEmulator()) {
             return "Android Emulator";
         }
-        return brand.equalsIgnoreCase(model) ? InputHelper.capitalizeFirstLetter(model) : InputHelper.capitalizeFirstLetter(brand) + " " + model;
+        return DeviceNameGetter.getInstance().getDeviceName();
     }
 
     public static boolean isEmulator() {
@@ -154,7 +171,19 @@ public class AppHelper {
     }
 
     public static boolean isGoogleAvailable(@NonNull Context context) {
-        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
-        return status != ConnectionResult.SERVICE_DISABLED && status == ConnectionResult.SUCCESS;
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return applicationInfo != null && applicationInfo.enabled &&
+                GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    }
+
+    public static boolean isDeviceAnimationEnabled(@NonNull Context context) {
+        float duration = Settings.Global.getFloat(context.getContentResolver(), Settings.Global.ANIMATOR_DURATION_SCALE, 1);
+        float transition = Settings.Global.getFloat(context.getContentResolver(), Settings.Global.TRANSITION_ANIMATION_SCALE, 1);
+        return (duration != 0 && transition != 0);
     }
 }

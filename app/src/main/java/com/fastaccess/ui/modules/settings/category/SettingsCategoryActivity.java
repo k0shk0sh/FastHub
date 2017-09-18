@@ -41,7 +41,7 @@ public class SettingsCategoryActivity extends BaseActivity implements SettingsCa
             settingsType = bundle.getInt(BundleConstant.ITEM);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.settingsContainer, new SettingsCategoryFragment())
+                    .replace(R.id.settingsContainer, new SettingsCategoryFragment(), "SettingsCategoryFragment")
                     .commit();
         }
         setTitle(title);

@@ -7,14 +7,17 @@ import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CreateIssueModel;
 import com.fastaccess.data.dao.IssueRequestModel;
+import com.fastaccess.data.dao.IssuesPageable;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -25,7 +28,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import io.reactivex.Observable;
 
 public interface IssueService {
 
@@ -48,6 +50,12 @@ public interface IssueService {
     @GET("repos/{owner}/{repo}/issues/{issue_number}/events?per_page=100")
     Observable<Pageable<IssueEvent>> getTimeline(@Path("owner") String owner, @Path("repo") String repo,
                                                  @Path("issue_number") int issue_number);
+
+    @GET("repos/{owner}/{repo}/issues/{issue_number}/timeline?per_page=100")
+    @Headers("Accept: application/vnd.github.mockingbird-preview,application/vnd.github.VERSION.full+json," +
+            " application/vnd.github.squirrel-girl-preview")
+    Observable<IssuesPageable<JsonObject>> getTimeline(@Path("owner") String owner, @Path("repo") String repo,
+                                                       @Path("issue_number") int issue_number, @Query("page") int page);
 
     @POST("repos/{owner}/{repo}/issues")
     Observable<Issue> createIssue(@Path("owner") String owner, @Path("repo") String repo,

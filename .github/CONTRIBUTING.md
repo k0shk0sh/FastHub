@@ -1,6 +1,14 @@
+# How to submit Issue/Feature Request to *FastHub*
+
+- Make sure the included template is filled ( using FastHub will fill them up automatically ). 
+- If you planning to report multiple FRs/Issues that falls under the same feature __PLEASE REPORT THEM IN ONE TICKET__.
+- Make sure you are always on latest (FastHub/About & Click on version name).
+- Make sure the issue doesn't exists, lets keep things clean & tidy here :).  
+
+
 # How to contribute & build *FastHub*
 
-If you have a question in mind, feel free to come our public [Slack](https://rebrand.ly/fasthub) channel.
+If you have a question in mind, feel free to come our public [Slack](http://rebrand.ly/fasthub) channel.
 
 ### Optional
 

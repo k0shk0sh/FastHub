@@ -50,7 +50,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -61,7 +61,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(OrgReposMvp.View::hideProgress);
-            return;
+            return false;
         }
         filterOptions.setOrg(true);
         makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgRepos(parameter, filterOptions.getQueryMap(), page),
@@ -72,6 +72,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Repo> getRepos() {

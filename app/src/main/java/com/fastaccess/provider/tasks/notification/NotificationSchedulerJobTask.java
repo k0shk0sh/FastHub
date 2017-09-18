@@ -1,20 +1,20 @@
+
 package com.fastaccess.provider.tasks.notification;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.annimon.stream.Stream;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
@@ -91,6 +91,7 @@ public class NotificationSchedulerJobTask extends JobService {
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
         if (AppHelper.isGoogleAvailable(context)) {
             FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            dispatcher.cancel(SINGLE_JOB_ID);
             if (cancel) dispatcher.cancel(JOB_ID);
             if (duration == -1) {
                 dispatcher.cancel(JOB_ID);
@@ -189,21 +190,13 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, String iconUrl) {
-        if (!InputHelper.isEmpty(iconUrl)) {
-            withoutComments(null, thread, context, accentColor);
-        } else {
-            Glide.with(context).load(iconUrl).asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            withoutComments(resource, thread, context, accentColor);
-                        }
-                    });
-        }
+        withoutComments(thread, context, accentColor);
     }
 
-    private void withoutComments(Bitmap bitmap, Notification thread, Context context, int accentColor) {
-        android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
-                .setLargeIcon(bitmap == null ? BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher) : bitmap)
+    private void withoutComments(Notification thread, Context context, int accentColor) {
+        android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName(),
+                thread.getRepository() != null ? thread.getRepository().getFullName() : "general")
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))
@@ -218,20 +211,13 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void getNotificationWithComment(Context context, int accentColor, Notification thread, Comment comment, String url) {
-        if (!InputHelper.isEmpty(url)) {
-            Glide.with(context).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    withComments(resource, comment, context, thread, accentColor);
-                }
-            });
-        } else {
-            withComments(null, comment, context, thread, accentColor);
-        }
+        withComments(comment, context, thread, accentColor);
     }
 
-    private void withComments(Bitmap bitmap, Comment comment, Context context, Notification thread, int accentColor) {
-        android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody())
-                .setLargeIcon(bitmap == null ? BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher) : bitmap)
+    private void withComments(Comment comment, Context context, Notification thread, int accentColor) {
+        android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody(),
+                thread.getRepository() != null ? thread.getRepository().getFullName() : "general")
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .setBigContentTitle(comment.getUser() != null ? comment.getUser().getLogin() : "")
@@ -252,9 +238,8 @@ public class NotificationSchedulerJobTask extends JobService {
     private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor, boolean toNotificationActivity) {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
                 new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
-                .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
-                .setSound(PrefGetter.getNotificationSound())
+        NotificationCompat.Builder builder = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName(),
+                thread.getRepository() != null ? thread.getRepository().getFullName() : "general")
                 .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))
@@ -265,12 +250,16 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setColor(accentColor)
                 .setGroup(NOTIFICATION_GROUP_ID)
-                .setGroupSummary(true)
-                .build();
+                .setGroupSummary(true);
+        if (PrefGetter.isNotificationSoundEnabled()) {
+            builder.setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setSound(PrefGetter.getNotificationSound(), AudioManager.STREAM_NOTIFICATION);
+        }
+        return builder.build();
     }
 
-    private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
-        return new NotificationCompat.Builder(this, title)
+    private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message, @NonNull String channelName) {
+        return new NotificationCompat.Builder(this, channelName)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);
@@ -278,7 +267,15 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private void showNotification(long id, android.app.Notification notification) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(InputHelper.getSafeIntId(id), notification);
+        if (notificationManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = new NotificationChannel(String.valueOf(id),
+                        notification.getChannelId(), NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.setShowBadge(true);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+            notificationManager.notify(InputHelper.getSafeIntId(id), notification);
+        }
     }
 
     private PendingIntent getReadOnlyPendingIntent(long id, @NonNull String url) {

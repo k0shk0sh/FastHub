@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
@@ -36,6 +37,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State String sha;
+    @com.evernote.android.state.State boolean isCollaborator;
 
 
     @Override public int getCurrentPage() {
@@ -54,21 +56,33 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(CommitCommentsMvp.View::hideProgress);
-            return;
+            return false;
+        }
+        if (page == 1) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId,
+                    Login.getUser().getLogin())
+                    .doOnNext(booleanResponse -> isCollaborator = booleanResponse.code() == 204));
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommitComments(login, repoId, sha, page)
-                .flatMap(listResponse -> {
-                    lastPage = listResponse.getLast();
-                    return Observable.just(TimelineModel.construct(listResponse.getItems()));
-                }), listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
+                        .flatMap(listResponse -> {
+                            lastPage = listResponse.getLast();
+                            return TimelineModel.construct(listResponse.getItems());
+                        })
+                        .doOnComplete(() -> {
+                            if (lastPage <= 1) {
+                                sendToView(CommitCommentsMvp.View::showReload);
+                            }
+                        }),
+                listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
+        return true;
     }
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
@@ -103,7 +117,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
             manageDisposable(RxHelper.getObservable(Comment.getCommitComments(repoId(), login(), sha).toObservable())
-                    .flatMap(comments -> Observable.just(TimelineModel.construct(comments)))
+                    .flatMap(TimelineModel::construct)
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(CommitCommentsMvp.View::hideProgress);
@@ -130,6 +144,18 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         return getReactionsProvider().isCallingApi(id, vId);
     }
 
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        CommentRequestModel model = new CommentRequestModel();
+        model.setBody(text);
+        manageDisposable(RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).postCommitComment(login, repoId, sha, model))
+                .doOnSubscribe(disposable -> sendToView(view -> view.showBlockingProgress(0)))
+                .subscribe(comment -> sendToView(view -> view.addComment(comment)),
+                        throwable -> {
+                            onError(throwable);
+                            sendToView(CommitCommentsMvp.View::hideBlockingProgress);
+                        }));
+    }
+
     @Override public void onItemClick(int position, View v, TimelineModel timelineModel) {
         if (getView() != null) {
             Comment item = timelineModel.getComment();
@@ -137,7 +163,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                 PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                 popupMenu.inflate(R.menu.comments_menu);
                 String username = Login.getUser().getLogin();
-                boolean isOwner = CommentsHelper.isOwner(username, login, item.getUser().getLogin());
+                boolean isOwner = CommentsHelper.isOwner(username, login, item.getUser().getLogin()) || isCollaborator;
                 popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                 popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                 popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -160,12 +186,17 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, TimelineModel item) {
-        ReactionTypes reactionTypes = ReactionTypes.get(v.getId());
-        if (reactionTypes != null) {
-            if (getView() != null) getView().showReactionsPopup(reactionTypes, login, repoId, item.getComment().getId());
+    @Override public void onItemLongClick(int position, View v, TimelineModel timelineModel) {
+        if (v.getId() == R.id.commentMenu) {
+            Comment item = timelineModel.getComment();
+            if (getView() != null) getView().onReply(item.getUser(), item.getBody());
         } else {
-            onItemClick(position, v, item);
+            ReactionTypes reactionTypes = ReactionTypes.get(v.getId());
+            if (reactionTypes != null) {
+                if (getView() != null) getView().showReactionsPopup(reactionTypes, login, repoId, timelineModel.getComment().getId());
+            } else {
+                onItemClick(position, v, timelineModel);
+            }
         }
     }
 

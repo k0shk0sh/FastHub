@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
@@ -10,142 +11,104 @@
 
     <include layout="@layout/appbar_elevation_dark"/>
 
-    <ScrollView
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_xs_large"
+        android:layout_marginTop="@dimen/spacing_xs_large"
+        app:cardBackgroundColor="?card_background"
+        app:contentPaddingBottom="@dimen/spacing_normal"
+        app:contentPaddingLeft="@dimen/spacing_xs_large"
+        app:contentPaddingRight="@dimen/spacing_xs_large"
+        app:contentPaddingTop="@dimen/spacing_normal">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/description"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="3"/>
+
+        </android.support.design.widget.TextInputLayout>
+    </android.support.v7.widget.CardView>
+
+    <FrameLayout
+        android:id="@+id/addFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_normal"
+        android:background="@drawable/bottom_border"
+        android:foreground="?selectableItemBackground"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingStart="@dimen/spacing_xs_large"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_add"
+            android:gravity="start|center"
+            android:text="@string/add"/>
+    </FrameLayout>
+
+    <fragment
+        android:id="@+id/files"
+        android:name="com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:layout_behavior="@string/scroll_behavior">
+        app:layoutManager="@string/linear_layout_manager"
+        tools:layout="@layout/micro_grid_refresh_list"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonsHolder"
+        android:orientation="vertical">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_border"
+            android:gravity="center"
+            android:padding="@dimen/spacing_xs_large"
+            android:text="@string/submit_as"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_xs_large">
+            android:orientation="horizontal">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/createSecretGist"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xs_large"
-                android:text="@string/gist_description"/>
+                android:layout_margin="@dimen/fab_margin"
+                android:contentDescription="@string/create_secret_gist"
+                android:src="@drawable/ic_incognito"
+                android:tint="@color/white"/>
 
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/createPublicGist"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xs_large"
-                app:cardBackgroundColor="?card_background"
-                app:contentPaddingBottom="@dimen/spacing_normal"
-                app:contentPaddingLeft="@dimen/spacing_xs_large"
-                app:contentPaddingRight="@dimen/spacing_xs_large"
-                app:contentPaddingTop="@dimen/spacing_normal">
+                android:layout_margin="@dimen/fab_margin"
+                android:contentDescription="@string/create_public_gist"
+                android:src="@drawable/ic_brower"
+                android:tint="@color/white"/>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/description"
-                        android:inputType="textMultiLine|textCapSentences"/>
-
-                </android.support.design.widget.TextInputLayout>
-            </android.support.v7.widget.CardView>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xs_large"
-                android:text="@string/file"/>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xs_large"
-                app:cardBackgroundColor="?card_background"
-                app:contentPaddingBottom="@dimen/spacing_normal"
-                app:contentPaddingLeft="@dimen/spacing_xs_large"
-                app:contentPaddingRight="@dimen/spacing_xs_large"
-                app:contentPaddingTop="@dimen/spacing_normal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/fileName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/file_name_hint"
-                            android:inputType="textCapSentences"
-                            android:maxLines="1"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-
-                    <com.fastaccess.ui.widgets.FontTextView
-                        android:id="@+id/fileContent"
-                        style="@style/Widget.AppCompat.EditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs_large"
-                        android:hint="@string/type_here"
-                        android:paddingBottom="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_xs_large"/>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                style="@style/Base.TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bottom_border"
-                android:gravity="center"
-                android:padding="@dimen/spacing_xs_large"
-                android:text="@string/submit_as"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/createSecretGist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:src="@drawable/ic_incognito"
-                    android:tint="@color/white"/>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/createPublicGist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:src="@drawable/ic_brower"
-                    android:tint="@color/white"/>
-
-            </LinearLayout>
         </LinearLayout>
-
-    </ScrollView>
-
-    <include layout="@layout/add_banner_layout"/>
+    </LinearLayout>
 
 </LinearLayout>

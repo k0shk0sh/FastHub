@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -17,6 +18,8 @@ import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
  */
@@ -27,6 +30,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State String branch;
+    @com.evernote.android.state.State String path;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -52,7 +56,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -60,25 +64,29 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoCommitsMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommits(login, repoId, branch, page),
-                response -> {
-                    if (response != null && response.getItems() != null) {
-                        lastPage = response.getLast();
-                        if (getCurrentPage() == 1) {
-                            manageDisposable(Commit.save(response.getItems(), repoId, login));
-                        }
-                    }
-                    sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
-                });
+        if (repoId == null || login == null) return false;
+        Observable<Pageable<Commit>> observable = InputHelper.isEmpty(path)
+                                                  ? RestProvider.getRepoService(isEnterprise()).getCommits(login, repoId, branch, page)
+                                                  : RestProvider.getRepoService(isEnterprise()).getCommits(login, repoId, branch, path, page);
+        makeRestCall(observable, response -> {
+            if (response != null && response.getItems() != null) {
+                lastPage = response.getLast();
+                if (getCurrentPage() == 1) {
+                    manageDisposable(Commit.save(response.getItems(), repoId, login));
+                }
+            }
+            sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
+        });
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
+        path = bundle.getString(BundleConstant.EXTRA_THREE);
         if (!InputHelper.isEmpty(branch)) {
             getCommitCount(branch);
         }

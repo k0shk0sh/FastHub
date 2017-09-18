@@ -6,18 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spacing_micro"
-    android:foreground="?attr/selectableItemBackground"
+    android:foreground="?selectableItemBackground"
     android:stateListAnimator="@animator/cardview_selector"
-    app:cardBackgroundColor="?card_background">
+    app:cardBackgroundColor="?card_background"
+    app:contentPaddingBottom="@dimen/spacing_normal"
+    app:contentPaddingLeft="@dimen/spacing_xs_large"
+    app:contentPaddingRight="@dimen/spacing_xs_large"
+    app:contentPaddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/spacing_normal"
-        android:paddingEnd="@dimen/spacing_xs_large"
-        android:paddingStart="@dimen/spacing_xs_large"
-        android:paddingTop="@dimen/spacing_normal">
+        android:orientation="vertical">
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/fileName"
@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/right_border"
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="JAVASCRIPT"/>
 
@@ -51,12 +52,28 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.4"
-                android:background="@drawable/left_border"
+                android:background="@drawable/right_border"
                 android:gravity="center"
                 android:paddingEnd="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_normal"
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="500 KB"/>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_trash"/>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_edit"/>
         </LinearLayout>
     </LinearLayout>
 

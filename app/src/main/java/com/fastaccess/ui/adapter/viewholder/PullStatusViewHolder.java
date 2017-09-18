@@ -1,6 +1,5 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
@@ -12,6 +11,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.types.StatusStateType;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -45,12 +45,20 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
     }
 
     @Override public void bind(@NonNull PullRequestStatusModel pullRequestStatusModel) {
+        Logger.e(pullRequestStatusModel.getState(), pullRequestStatusModel.isMergable());
         if (pullRequestStatusModel.getState() != null) {
             StatusStateType stateType = pullRequestStatusModel.getState();
             stateImage.setImageResource(stateType.getDrawableRes());
             if (stateType == StatusStateType.failure) {
                 stateImage.tintDrawableColor(red);
-                status.setText(R.string.checks_failed);
+                if (pullRequestStatusModel.isMergable()) {
+                    status.setText(R.string.checks_failed);
+                } else {
+                    status.setText(SpannableBuilder.builder()
+                            .append(status.getResources().getString(R.string.checks_failed))
+                            .append("\n")
+                            .append(status.getResources().getString(R.string.can_not_merge_pr)));
+                }
             } else if (stateType == StatusStateType.pending) {
                 if (pullRequestStatusModel.isMergable()) {
                     stateImage.setImageResource(R.drawable.ic_check_small);
@@ -73,15 +81,14 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
         if (pullRequestStatusModel.getStatuses() != null && !pullRequestStatusModel.getStatuses().isEmpty()) {
             SpannableBuilder builder = SpannableBuilder.builder();
             Stream.of(pullRequestStatusModel.getStatuses())
-                    .filter(statusesModel -> statusesModel.getState() != null)
+                    .filter(statusesModel -> statusesModel != null && statusesModel.getState() != null && statusesModel.getTargetUrl() != null)
                     .forEach(statusesModel -> {
-                        builder.append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()));
                         if (!InputHelper.isEmpty(statusesModel.getTargetUrl())) {
+                            builder.append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()));
                             builder.append(" ")
+                                    .append(statusesModel.getContext() != null ? statusesModel.getContext() + " " : "")
                                     .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(), statusesModel.getTargetUrl()))
                                     .append("\n");
-                        } else {
-                            builder.append("\n");
                         }
                     });
             if (!InputHelper.isEmpty(builder)) {

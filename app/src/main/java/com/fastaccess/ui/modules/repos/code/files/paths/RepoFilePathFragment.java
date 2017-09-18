@@ -1,6 +1,8 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,16 +15,22 @@ import com.annimon.stream.Objects;
 import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.BranchesModel;
+import com.fastaccess.data.dao.EditRepoFileModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
 import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerFragment;
+import com.fastaccess.ui.modules.repos.git.EditRepoFileActivity;
 import com.fastaccess.ui.modules.search.repos.files.SearchFileActivity;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -41,6 +49,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @BindView(R.id.recycler) RecyclerView recycler;
     @BindView(R.id.toParentFolder) View toParentFolder;
     @BindView(R.id.branches) FontTextView branches;
+    @BindView(R.id.addFile) View addFile;
+    private RepoPagerMvp.View repoCallback;
 
     @State String ref;
 
@@ -64,6 +74,31 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
                 .put(BundleConstant.EXTRA_FOUR, forceAppendPath)
                 .end());
         return view;
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        repoCallback = null;
+        super.onDetach();
+    }
+
+    @OnClick(R.id.addFile) void onAddFile() {
+        if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+            RepoFile repoFile = !adapter.isEmpty() ? adapter.getItem(adapter.getItemCount() - 1) : null;
+            EditRepoFileModel fileModel = new EditRepoFileModel(getPresenter().login, getPresenter().repoId,
+                    repoFile != null ? repoFile.getPath() : "", ref, repoFile != null ? repoFile.getSha() : "", null, null, false);
+            EditRepoFileActivity.Companion.startForResult(this, fileModel, isEnterprise());
+        } else {
+            PremiumActivity.Companion.startActivity(getContext());
+        }
     }
 
     @OnClick(R.id.downloadRepoFiles) void onDownloadRepoFiles() {
@@ -93,14 +128,6 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @OnClick(R.id.branches) void onBranchesClicked() {
         BranchesPagerFragment.Companion.newInstance(getPresenter().login, getPresenter().repoId)
                 .show(getChildFragmentManager(), "BranchesFragment");
-    }
-
-    @Override public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override public void onDetach() {
-        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<RepoFile> items, int page) {
@@ -191,6 +218,9 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
             getPresenter().onFragmentCreated(getArguments());
         }
         branches.setText(getPresenter().getDefaultBranch());
+        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().login) || (repoCallback != null && repoCallback.isCollaborator())) {
+            addFile.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
@@ -238,6 +268,13 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         branches.setText(ref);
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, true, null);
         onBackClicked();
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == EditRepoFileActivity.Companion.getEDIT_RQ()) {
+            getRepoFilesView().onRefresh();
+        }
     }
 
     private void showReload() {

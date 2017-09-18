@@ -20,6 +20,8 @@ import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
+import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public interface PullRequestTimelineMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
             OnToggleView, ReactionsCallback {
 
-        void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
+        @CallOnMainThread void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
 
         @NonNull OnLoadMore<PullRequest> getLoadMore();
 
@@ -48,14 +50,9 @@ public interface PullRequestTimelineMvp {
 
         void onRemove(@NonNull TimelineModel timelineModel);
 
-        void onStartNewComment();
-
         void onShowDeleteMsg(long id);
 
         void onReply(User user, String message);
-
-        void onReplyOrCreateReview(@Nullable User user, @Nullable String message, int groupPosition, int childPosition,
-                                   @NonNull EditReviewCommentModel model);
 
         void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, @ReactionsProvider
                 .ReactionType int reactionType);
@@ -69,6 +66,19 @@ public interface PullRequestTimelineMvp {
         @Nullable PullRequest getPullRequest();
 
         void onUpdateHeader();
+
+        @CallOnMainThread void showReload();
+
+        void onHandleComment(String text, @Nullable Bundle bundle);
+
+        void onReplyOrCreateReview(@Nullable User user, @Nullable String message, int groupPosition, int childPosition,
+                                   @NonNull EditReviewCommentModel model);
+
+        void addComment(@NonNull TimelineModel timelineModel);
+
+        @NonNull ArrayList<String> getNamesToTag();
+
+        void onHideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
@@ -87,5 +97,7 @@ public interface PullRequestTimelineMvp {
         boolean isMerged(PullRequest pullRequest);
 
         boolean isCallingApi(long id, int vId);
+
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
     }
 }

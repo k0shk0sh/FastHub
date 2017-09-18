@@ -168,20 +168,6 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         return PullRequest.getMergeBy(pullRequest, context, false);
     }
 
-    @Override public void onLoadLabels() {
-        manageDisposable(
-                RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
-                        .doOnSubscribe(disposable -> onSubscribed(false))
-                        .subscribe(response -> {
-                            if (response.getItems() != null && !response.getItems().isEmpty()) {
-                                sendToView(view -> view.onLabelsRetrieved(response.getItems()));
-                            } else {
-                                sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
-                            }
-                        }, throwable -> sendToView(view -> view.showMessage(R.string.error, R.string.no_labels)))
-        );
-    }
-
     @Override public void onPutLabels(@NonNull ArrayList<LabelModel> labels) {
         makeRestCall(RestProvider.getIssueService(isEnterprise()).putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)

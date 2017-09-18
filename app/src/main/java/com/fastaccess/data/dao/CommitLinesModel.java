@@ -35,6 +35,7 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
     public int rightLineNo;
     public boolean noNewLine;
     public int position;
+    private boolean hasCommentedOn;
 
     @NonNull public static List<CommitLinesModel> getLines(@Nullable String text) {
         ArrayList<CommitLinesModel> models = new ArrayList<>();
@@ -82,7 +83,7 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
                         token = token.replace("\\ No newline at end of file", "");
                     }
                     models.add(new CommitLinesModel(token, color, token.startsWith("@@") || !addLeft ? -1 : leftLineNo,
-                            token.startsWith("@@") || !addRight ? -1 : rightLineNo, index != -1, position));
+                            token.startsWith("@@") || !addRight ? -1 : rightLineNo, index != -1, position, false));
                 }
             }
         }
@@ -100,7 +101,7 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
         dest.writeInt(this.position);
     }
 
-    protected CommitLinesModel(Parcel in) {
+    private CommitLinesModel(Parcel in) {
         this.text = in.readString();
         this.color = in.readInt();
         this.leftLineNo = in.readInt();

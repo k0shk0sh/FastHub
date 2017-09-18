@@ -81,11 +81,11 @@ public class DonationActivity extends BaseActivity {
         if (AppHelper.isGoogleAvailable(this)) {
             DonateActivity.Companion.start(this, productKey);
         } else {
-            showErrorMessage(getString(R.string.common_google_play_services_unsupported_text));
+            showErrorMessage(getString(R.string.google_play_service_error));
         }
     }
 
-    protected void checkPurchase() {
+    private void checkPurchase() {
         ((BasePresenter) getPresenter()).manageViewDisposable(RxBillingService.getInstance(this, BuildConfig.DEBUG)
                 .getPurchases(ProductType.IN_APP)
                 .subscribe((purchases, throwable) -> {

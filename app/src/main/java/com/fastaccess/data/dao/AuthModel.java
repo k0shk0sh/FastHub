@@ -40,7 +40,7 @@ public class AuthModel implements Parcelable {
         dest.writeString(this.otpCode);
     }
 
-    protected AuthModel(Parcel in) {
+    private AuthModel(Parcel in) {
         this.clientId = in.readString();
         this.clientSecret = in.readString();
         this.redirectUri = in.readString();

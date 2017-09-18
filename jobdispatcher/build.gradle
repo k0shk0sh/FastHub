@@ -1,0 +1,79 @@
+apply plugin: "com.android.library"
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "0.8.0"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+
+    defaultPublishConfig "release"
+    publishNonDefault true
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+
+    sourceSets {
+        // A set of testing helpers that are shared across test types
+        testLib     { java.srcDir("src/main") }
+        test        { java.srcDir("src/testLib") } // Robolectric tests
+        androidTest { java.srcDir("src/testLib") } // Android (e2e) tests
+    }
+}
+
+dependencies {
+    // The main library only depends on the Android support lib
+    compile "com.android.support:support-v4:26.0.1"
+
+    def junit = 'junit:junit:4.12'
+    def robolectric = 'org.robolectric:robolectric:3.3.2'
+
+    // The common test library uses JUnit
+    testLibCompile junit
+
+    // The unit tests are written using JUnit, Robolectric, and Mockito
+    testCompile junit
+    testCompile robolectric
+    testCompile 'org.mockito:mockito-core:2.2.5'
+
+    // The Android (e2e) tests are written using JUnit and the test support lib
+    androidTestCompile junit
+    androidTestCompile 'com.android.support.test:runner:0.5'
+}
+
+task javadocs(type: Javadoc) {
+    description "Generate Javadocs"
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+    failOnError false
+}
+
+task javadocsJar(type: Jar, dependsOn: javadocs) {
+    description "Package Javadocs into a jar"
+    classifier = "javadoc"
+    from javadocs.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    description "Package sources into a jar"
+    classifier = "sources"
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task aar(dependsOn: "assembleRelease") {
+    group "artifact"
+    description "Builds the library AARs"
+}

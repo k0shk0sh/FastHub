@@ -23,6 +23,7 @@ import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity
 import com.fastaccess.ui.modules.trending.TrendingActivity
 import com.fastaccess.ui.modules.user.UserPagerActivity
 import com.fastaccess.ui.widgets.AvatarLayout
@@ -33,14 +34,14 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 /**
  * Created by Kosh on 09 Jul 2017, 3:50 PM
  */
-class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?, val accountsNav: NavigationView?)
+class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: NavigationView?, private val accountsNav: NavigationView?)
     : BaseViewHolder.OnItemClickListener<Login> {
 
-    var menusHolder: ViewGroup? = null
-    val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
-    val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
-    val pinnedListAdapter = PinnedReposAdapter(true)
-    val userModel: Login? = Login.getUser()
+    private var menusHolder: ViewGroup? = null
+    private val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
+    private val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+    private val pinnedListAdapter = PinnedReposAdapter(true)
+    private val userModel: Login? = Login.getUser()
 
     init {
         menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)
@@ -113,14 +114,13 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         }
         val adapter = LoginAdapter(true)
         view.getPresenter().manageViewDisposable(Login.getAccounts()
-                .doFinally {
-                    when (!adapter.isEmpty) {
-                        true -> {
-                            toggleAccountsLayout.visibility = View.VISIBLE
-                            adapter.listener = this
-                            recyclerView.adapter = adapter
-                        }
-                        else -> toggleAccountsLayout.visibility = View.GONE
+                .doOnComplete {
+                    if (!adapter.isEmpty) {
+                        toggleAccountsLayout.visibility = View.VISIBLE
+                        adapter.listener = this
+                        recyclerView.adapter = adapter
+                    } else {
+                        toggleAccountsLayout.visibility = View.GONE
                     }
                 }
                 .subscribe({ adapter.addItem(it) }, ::print))
@@ -164,7 +164,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
             if (!view.isFinishing()) {
                 when {
                     item.itemId == R.id.navToRepo -> view.onNavToRepoClicked()
-                    item.itemId == R.id.gists -> GistsListActivity.startActivity(view, false)
+                    item.itemId == R.id.gists -> GistsListActivity.startActivity(view)
                     item.itemId == R.id.pinnedMenu -> PinnedReposActivity.startActivity(view)
                     item.itemId == R.id.mainView -> {
                         val intent = Intent(view, MainActivity::class.java)
@@ -180,6 +180,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
                     item.itemId == R.id.orgs -> view.onOpenOrgsDialog()
                     item.itemId == R.id.notifications -> view.startActivity(Intent(view, NotificationActivity::class.java))
                     item.itemId == R.id.trending -> view.startActivity(Intent(view, TrendingActivity::class.java))
+                    item.itemId == R.id.reportBug -> view.startActivity(CreateIssueActivity.startForResult(view))
                 }
             }
         }, 250)
@@ -190,7 +191,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     override fun onItemClick(position: Int, v: View, item: Login) {
         view.getPresenter().manageViewDisposable(RxHelper.getObservable(Login.onMultipleLogin(item, item.isIsEnterprise, false))
                 .doOnSubscribe { view.showProgress(0) }
-                .doFinally { view.hideProgress() }
+                .doOnComplete { view.hideProgress() }
                 .subscribe({ view.onRestartApp() }, ::println))
     }
 }

@@ -11,15 +11,16 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullReqeustMvp;
+import com.fastaccess.ui.modules.reviews.changes.ReviewChangesMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:21 AM
@@ -29,11 +30,10 @@ public interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
             AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback,
-            IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback {
+            IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback,
+            CommentEditorFragment.CommentListener, ReviewChangesMvp.ReviewSubmissionCallback {
 
         void onSetupIssue(boolean update);
-
-        void onLabelsRetrieved(@NonNull List<LabelModel> items);
 
         void showSuccessIssueActionMsg(boolean isClose);
 
@@ -73,8 +73,6 @@ public interface PullRequestPagerMvp {
         @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
         void onMerge(String s, String msg);
-
-        void onLoadLabels();
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
 

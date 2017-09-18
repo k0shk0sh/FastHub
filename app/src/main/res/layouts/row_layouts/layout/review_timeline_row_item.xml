@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fastaccess.ui.widgets.ForegroundRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/layout_margin"
     android:layout_marginStart="@dimen/layout_margin"
-    android:layout_marginTop="@dimen/spacing_normal"
-    android:clipChildren="false"
-    android:foreground="?selectableItemBackground">
+    android:layout_marginTop="@dimen/spacing_normal">
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/stateImage"
@@ -24,9 +23,11 @@
         tools:src="@drawable/ic_issue_opened"/>
 
     <android.support.design.internal.ForegroundLinearLayout
+        android:id="@+id/reviewHolder"
         style="?timeLineBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/stateImage"
@@ -78,5 +79,4 @@
                 tools:visibility="visible"/>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>
-
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

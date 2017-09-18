@@ -9,26 +9,26 @@
     android:layout_marginStart="@dimen/spacing_xs_large"
     android:layout_marginTop="@dimen/spacing_normal"
     android:background="?card_background"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/spacing_micro"
     android:paddingTop="@dimen/spacing_normal">
 
-    <com.fastaccess.ui.widgets.ForegroundImageView
-        android:id="@+id/stateImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/avatar_margin"
-        android:layout_marginStart="@dimen/avatar_margin"
-        android:minHeight="24dp"
-        android:minWidth="24dp"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/ic_issue_opened"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/stateImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:minHeight="24dp"
+            android:minWidth="24dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_issue_opened"/>
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/status"
@@ -36,15 +36,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:text="Hello World"/>
-
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/statuses"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
+            android:paddingStart="@dimen/spacing_xs_large"
+            android:paddingEnd="@dimen/spacing_xs_large"
             tools:text="Hello World"/>
 
     </LinearLayout>
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/statuses"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_xs_large"
+        tools:text="Hello World"/>
 </LinearLayout>

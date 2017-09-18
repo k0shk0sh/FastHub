@@ -116,7 +116,6 @@
                     android:layout_gravity="center"
                     android:hint="@string/add_comment"
                     android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"/>
 

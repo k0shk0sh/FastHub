@@ -142,16 +142,15 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise()).editIssue(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
-                    .doOnNext(issue -> {
+                    .subscribe(issue -> {
                         if (issue != null) {
                             sendToView(view -> view.showSuccessIssueActionMsg(currentIssue.getState() == IssueState.open));
                             issue.setRepoId(issueModel.getRepoId());
                             issue.setLogin(issueModel.getLogin());
                             issueModel = issue;
-                            sendToView(view -> view.onSetupIssue(true));
+                            sendToView(view -> view.onSetupIssue(false));
                         }
-                    })
-                    .subscribe(issue -> {/**/}, this::onError));
+                    }, this::onError));
         }
     }
 
@@ -173,23 +172,6 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             sendToView(IssuePagerMvp.View::hideProgress);
         });
 
-    }
-
-    @Override public void onLoadLabels() {
-        manageDisposable(
-                RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
-                        .doOnSubscribe(disposable -> onSubscribed(false))
-                        .doOnNext(response -> {
-                            if (response.getItems() != null && !response.getItems().isEmpty()) {
-                                sendToView(view -> view.onLabelsRetrieved(response.getItems()));
-                            } else {
-                                sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
-                            }
-                        })
-                        .subscribe(labelModelPageable -> {/**/}, throwable -> {
-                            sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
-                        })
-        );
     }
 
     @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {

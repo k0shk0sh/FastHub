@@ -13,24 +13,26 @@ import lombok.Setter;
  */
 
 @Getter @Setter public class CommentRequestModel implements Parcelable {
-    private String body;
-    @SerializedName("in_reply_to") private Long inReplyTo;
-    private String path;
-    private Integer position;
-    private Integer line;
+    public String body;
+    @SerializedName("in_reply_to") public Long inReplyTo;
+    public String path;
+    public Integer position;
+    public Integer line;
 
     public CommentRequestModel() {}
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         CommentRequestModel that = (CommentRequestModel) o;
-        return position == that.position && (path != null ? path.equals(that.path) : that.path == null);
+        return (path != null ? path.equals(that.path) : that.path == null) &&
+                (position != null ? position.equals(that.position) : that.position == null);
     }
 
     @Override public int hashCode() {
         int result = path != null ? path.hashCode() : 0;
-        result = 31 * result + position;
+        result = 31 * result + (position != null ? position.hashCode() : 0);
         return result;
     }
 
@@ -44,7 +46,7 @@ import lombok.Setter;
         dest.writeValue(this.line);
     }
 
-    protected CommentRequestModel(Parcel in) {
+    private CommentRequestModel(Parcel in) {
         this.body = in.readString();
         this.inReplyTo = (Long) in.readValue(Long.class.getClassLoader());
         this.path = in.readString();

@@ -3,7 +3,7 @@
     <string name="in_progress">Загрузка, подождите…</string>
     <string name="action">Действия</string>
     <string name="settings">Настройки</string>
-    <string name="discard">Отменить</string>
+    <string name="discard">Сбросить</string>
     <string name="cancel">Отмена</string>
     <string name="ok">OK</string>
     <string name="no_data">Доступные данные отсутствуют</string>
@@ -55,6 +55,7 @@
     <string name="contributors">Вкладчики</string>
     <string name="contributions">Вклады</string>
     <string name="by"></string>
+    <string name="english_please">Пожалуйста, в отзыве используйте английский язык.</string>
     <string name="close_issue">Закрыть Вопрос</string>
     <string name="re_open_issue">Открыть Вопрос</string>
     <string name="re_open">Открыть</string>
@@ -88,7 +89,7 @@
     <string name="changes">Изменения</string>
     <string name="status">Статус</string>
     <string name="confirm_message">Вы уверены?</string>
-    <string name="success">Успех</string>
+    <string name="success">Успешно</string>
     <string name="to">в</string>
     <string name="error_deleting_comment">Ошибка удаления комментария</string>
     <string name="delete">Удалить</string>
@@ -212,14 +213,14 @@
     <string name="commits_reflected">Фиксации были переключены на выбранную ветвь</string>
     <string name="general_settings">Основные</string>
     <string name="background_job_summary">Выберите, как часто FastHub будет проверять наличие новых уведомлений</string>
-    <string name="background_job_title">Интервал синхронизации уведомлений</string>
+    <string name="background_job_title">Интервал синхронизации</string>
     <string name="every">Каждые</string>
     <string name="behavior">Поведение</string>
     <string name="customization">Персонализация</string>
     <string name="recycler_view_animation_summary">Включить анимации списка</string>
     <string name="recycler_view_animation_title">Анимации списка</string>
     <string name="back_button_summary">Отключить диалог, который предотвращал случайный выход из FastHub</string>
-    <string name="back_button_title">Нажмите ещё раз для выхода</string>
+    <string name="back_button_title">Откл. диалог при выходе</string>
     <string name="restore">Восстановить</string>
     <string name="backup">Создать резервную копию</string>
     <string name="backed_up">Копия успешно создана!</string>
@@ -227,10 +228,10 @@
     <string name="permission_failed">Доступ не предоставлен.</string>
     <string name="backup_summary">Последнее обновление: %s</string>
     <string name="now">Сейчас</string>
-    <string name="unsaved_data_warning">Все несохранённые изменения будут отменены</string>
+    <string name="unsaved_data_warning">Все несохранённые изменения будут сброшены.</string>
     <string name="private_repo">Частный</string>
     <string name="rect_avatar_summary">Использовать скруглённые квадратные аватары вместо круглых</string>
-    <string name="rect_avatar_title">Закруглённые аватары</string>
+    <string name="rect_avatar_title">Квадратные аватары</string>
     <string name="rate_app">Оценить это приложение</string>
     <string name="author">Автор</string>
     <string name="fork_github">Клонировать на GitHub</string>
@@ -255,12 +256,12 @@
     <string name="forking_gist">Клонирование Gist\'a</string>
     <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию (OAuth)</string>
     <string name="or_character">ИЛИ</string>
-    <string name="mark_notification_title">Отключить статус о прочтении</string>
-    <string name="mark_notification_summary">Отключить маркировку как прочтённое до клика на уведомление.</string>
-    <string name="theme_title">Выбрать тему оформления</string>
+    <string name="mark_notification_title">Отключить автопрочтение</string>
+    <string name="mark_notification_summary">Отключить автопрочтение без клика на уведомление.</string>
+    <string name="theme_title">Тема оформления</string>
     <string name="theme_summary">Выбрать тему по умолчанию</string>
-    <string name="theme_color_summary">Выберите цвет акцента темы</string>
-    <string name="theme_color_title">Цвет акцента темы</string>
+    <string name="theme_color_summary">Выбрать акцентный цвет темы</string>
+    <string name="theme_color_title">Акцентный цвет</string>
     <string name="website">Веб-сайт</string>
     <string name="support_development">Поддержать разработку</string>
     <string name="success_purchase_message">Спасибо за то, что Вы есть!</string>
@@ -344,8 +345,8 @@
     <string name="wrap_code_summary">Переносить строки в средстве просмотра кода по умолчанию</string>
     <string name="wrap_code_title">Перенос строк</string>
     <string name="open_source_libs">Библиотеки с открытым исходным кодом</string>
-    <string name="enable_notification_sound_summary">Включить звуковые опевещения при получении новых уведомлений.</string>
-    <string name="enable_notification_sound_title">Включить звуковые опевещения</string>
+    <string name="enable_notification_sound_summary">Включить звуковые оповещения при получении новых уведомлений.</string>
+    <string name="enable_notification_sound_title">Звуковые оповещения</string>
     <string name="enable_notification_title">Включить уведомления</string>
     <string name="login_with_personal_token">Войти при помощи личного токена</string>
     <string name="personal_token">Личный токен</string>
@@ -360,7 +361,7 @@
     <string name="support_with_5_00">Пожертвовать $5.00</string>
     <string name="support_with_10_00">Пожертвовать $10.00</string>
     <string name="support_with_20_00">Пожертвовать $20.00</string>
-    <string name="app_language">Язык приложения</string>
+    <string name="app_language">Язык</string>
     <string name="language">Язык</string>
     <string name="choose_language_title">Выберите язык</string>
     <string name="choose_language_summary">Выберите нужный язык</string>
@@ -404,8 +405,8 @@
     <string name="milestone_added">Цель успешно добавлена</string>
     <string name="feed">Обновления</string>
     <string name="premium_theme">Премиальная тема</string>
-    <string name="choose_code_theme">Выбрать цвет. палитру кода</string>
-    <string name="enterprise_login_warning">Пожалуйста, выполните вход в свою учётную запись GitHub используя метод (OAuth), чтобы не возникали проблемы в работе с API GitHub.
+    <string name="choose_code_theme">Цвет. палитра кода</string>
+    <string name="enterprise_login_warning">Пожалуйста, выполните вход в свою учётную запись GitHub, чтобы не возникали проблемы в работе с API GitHub.
         В противном случае авторизация будет сбрасываться каждый раз, когда вы будете выходить за рамки GitHub Enterprise.
         Это случается из-за того, что токен, передаваемый серверам GitHub, имеет доступ только к вашему аккаунту Enterprise.</string>
     <string name="add_account">Добавить уч. запись</string>
@@ -416,5 +417,22 @@
     <string name="original_poster">Автор</string>
     <string name="cancel_reviews">Отменить обзоры</string>
     <string name="colored_navbar_summary">Отключить цвет панели навигации при использовании тем</string>
-    <string name="colored_navbar_title">Отключить цвет панели навигации</string>
+    <string name="colored_navbar_title">Бесцветная нав. панель</string>
+    <string name="sound_chooser_summary">Установить пользовательский звук уведомлений</string>
+    <string name="sound_chooser_title">Звук уведомлений</string>
+    <string name="disable_auto_gif_summary">Отключить автоматическое проигрывание GIF</string>
+    <string name="disable_auto_gif_title">Откл. автопроигрывание GIF</string>
+    <string name="request_changes">запросил(а) изменения</string>
+    <string name="google_play_service_error">Сервисы Google Play недоступны</string>
+    <string name="edit_gist">Редактировать Gist</string>
+    <string name="content">Содержимое</string>
+    <string name="copy_sha">Копировать SHA-1</string>
+    <string name="view_as_code">Открыть как код</string>
+    <string name="app_animation_summary">Отключить внутрипрограммные анимации везде.</string>
+    <string name="app_animation_title">Отключить анимации</string>
+    <string name="can_not_merge_pr">Этот PR не может быть объединён сейчас.</string>
+    <string name="projects">Проекты</string>
+    <string name="no_projects">Проекты отсутствуют</string>
+    <string name="no_cards">Карточки отсутствуют</string>
+    <string name="card_added_by">Добавлено %s</string>
 </resources>

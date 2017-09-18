@@ -21,6 +21,7 @@ import com.fastaccess.ui.modules.repos.extras.milestone.create.CreateMilestoneDi
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private MilestonesAdapter adapter;
     private MilestoneMvp.OnMilestoneSelected onMilestoneSelected;
 
@@ -112,6 +114,7 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
         }
         stateLayout.setOnReloadListener(v -> getPresenter().onLoadMilestones(login, repo));
         refresh.setOnRefreshListener(() -> getPresenter().onLoadMilestones(login, repo));
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void showProgress(@StringRes int resId) {

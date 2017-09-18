@@ -147,10 +147,14 @@
         <item name="icon_color">#212121</item>
         <item name="comment_box_style">@style/CommentBoxLight</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundLight</item>
+        <item name="patch_addition">@color/light_patch_addition_color</item>
+        <item name="patch_deletion">@color/light_patch_deletion_color</item>
+        <item name="patch_ref">@color/light_patch_ref_color</item>
+        <item name="dividerColor">@color/lightDivider</item>
+        <item name="android:windowBackground">@color/lightWindowBackground</item>
         <item name="colorPrimary">@color/light_primary</item>
         <item name="colorPrimaryDark">@color/light_primary_dark</item>
         <item name="colorAccent">@color/light_accent</item>
-        <item name="android:windowBackground">@color/lightWindowBackground</item>
     </style>
 
     <style name="DialogThemeLight.Red" parent="DialogThemeLight">

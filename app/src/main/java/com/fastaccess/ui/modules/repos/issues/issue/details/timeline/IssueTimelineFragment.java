@@ -19,21 +19,24 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
-import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 import com.fastaccess.ui.modules.repos.reactions.ReactionsDialogFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
-import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,12 +51,13 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
-    @BindView(R.id.fastScroller) RecyclerFastScroller fastScroller;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
-    private IssuePullsTimelineAdapter adapter;
+    private IssuesTimelineAdapter adapter;
     private OnLoadMore<Issue> onLoadMore;
     private IssuePagerMvp.IssuePrCallback<Issue> issueCallback;
+    private CommentEditorFragment.CommentListener commentsCallback;
 
     @NonNull public static IssueTimelineFragment newInstance() {
         return new IssueTimelineFragment();
@@ -66,13 +70,22 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         } else if (context instanceof IssuePagerMvp.IssuePrCallback) {
             issueCallback = (IssuePagerMvp.IssuePrCallback) context;
         } else {
-            throw new IllegalArgumentException(String.format("%s or parent fragment must implement IssuePagerMvp.IssuePrCallback", context.getClass()
-                    .getSimpleName()));
+            throw new IllegalArgumentException(String.format("%s or parent fragment must implement IssuePagerMvp.IssuePrCallback",
+                    context.getClass().getSimpleName()));
+        }
+        if (getParentFragment() instanceof CommentEditorFragment.CommentListener) {
+            commentsCallback = (CommentEditorFragment.CommentListener) getParentFragment();
+        } else if (context instanceof CommentEditorFragment.CommentListener) {
+            commentsCallback = (CommentEditorFragment.CommentListener) context;
+        } else {
+            throw new IllegalArgumentException(String.format("%s or parent fragment must implement CommentEditorFragment.CommentListener",
+                    context.getClass().getSimpleName()));
         }
     }
 
     @Override public void onDetach() {
         issueCallback = null;
+        commentsCallback = null;
         super.onDetach();
     }
 
@@ -90,6 +103,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             adapter.subList(1, adapter.getItemCount());
         }
         adapter.addItems(items);
+        Logger.e(adapter.getItemCount());
     }
 
     @NonNull @Override public OnLoadMore<Issue> getLoadMore() {
@@ -101,7 +115,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.fab_micro_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -109,10 +123,10 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             throw new NullPointerException("Issue went missing!!!");
         }
         if (issueCallback != null && issueCallback.getData() != null) {
-            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true,
+            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(), this, true,
                     this, issueCallback.getData().getLogin(), issueCallback.getData().getUser().getLogin());
         } else {
-            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true,
+            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(), this, true,
                     this, "", "");
         }
         recycler.setVerticalScrollBarEnabled(false);
@@ -122,7 +136,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         stateLayout.setOnReloadListener(this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        fastScroller.setOnLoadMore(getLoadMore());
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
@@ -172,7 +185,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 .put(BundleConstant.EXTRA_THREE, getIssue().getNumber())
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_ISSUE_COMMENT_EXTRA)
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.EDIT_ISSUE_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
@@ -185,7 +198,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         adapter.removeItem(timelineModel);
     }
 
-    @Override public void onStartNewComment() {
+    @Override public void onStartNewComment(String text) {
         onTagUser(null);
     }
 
@@ -199,20 +212,9 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void onTagUser(@Nullable User user) {
-        if (getIssue() == null) return;
-        Intent intent = new Intent(getContext(), EditorActivity.class);
-        intent.putExtras(Bundler
-                .start()
-                .put(BundleConstant.ID, getIssue().getRepoId())
-                .put(BundleConstant.EXTRA_TWO, getIssue().getLogin())
-                .put(BundleConstant.EXTRA_THREE, getIssue().getNumber())
-                .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
-                .end());
-        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
-        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+        if (commentsCallback != null) if (user != null) {
+            commentsCallback.onTagUser(user.getLogin());
+        }
     }
 
     @Override public void onReply(User user, String message) {
@@ -224,13 +226,14 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 .put(BundleConstant.EXTRA_TWO, getIssue().getLogin())
                 .put(BundleConstant.EXTRA_THREE, getIssue().getNumber())
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.NEW_ISSUE_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login,
@@ -256,6 +259,25 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @Override public void onUpdateHeader() {
         if (getIssue() == null) return;
         onSetHeader(TimelineModel.constructHeader(getIssue()));
+    }
+
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        getPresenter().onHandleComment(text, bundle);
+    }
+
+    @Override public void addNewComment(@NonNull TimelineModel timelineModel) {
+        onHideBlockingProgress();
+        adapter.addItem(timelineModel);
+        if (commentsCallback != null) commentsCallback.onClearEditText();
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        return CommentsHelper.getUsersByTimeline(adapter.getData());
+    }
+
+    @Override public void onHideBlockingProgress() {
+        hideProgress();
+        super.hideProgress();
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

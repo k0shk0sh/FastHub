@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
@@ -19,8 +19,14 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
+import com.github.b3er.rxfirebase.database.RxFirebaseDatabase;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
-import io.reactivex.Observable;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Single;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -32,6 +38,7 @@ import static com.fastaccess.helper.AppHelper.getFragmentByTag;
 public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
 
     MainPresenter() {
+        checkBlackListed();
         setEnterprise(PrefGetter.isEnterprise());
         manageDisposable(RxHelper.getObservable(RestProvider.getUserService(isEnterprise()).getUser())
                 .flatMap(login -> {
@@ -47,17 +54,18 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                 })
                 .flatMap(login -> RxHelper.getObservable(RestProvider.getNotificationService(isEnterprise())
                         .getNotifications(ParseDateFormat.getLastWeekDate())))
-                .flatMap(notificationPageable -> {
-                    if (notificationPageable != null && notificationPageable.getItems() == null && !notificationPageable.getItems().isEmpty()) {
-                        manageDisposable(Notification.save(notificationPageable.getItems()));
-                        return Observable.just(Stream.of(notificationPageable.getItems()).anyMatch(Notification::isUnread));
+                .flatMapSingle(notificationPageable -> {
+                    if (notificationPageable != null && (notificationPageable.getItems() != null && !notificationPageable.getItems().isEmpty())) {
+                        return Notification.saveAsSingle(notificationPageable.getItems());
+                    } else {
+                        Notification.deleteAll();
                     }
-                    return Observable.empty();
+                    return Single.just(true);
                 })
-                .subscribe(unread -> sendToView(view -> {
+                .subscribe(unread -> {/**/}, Throwable::printStackTrace/*fail silently*/, () -> sendToView(view -> {
                     view.onInvalidateNotification();
                     view.onUpdateDrawerMenuHeader();
-                }), Throwable::printStackTrace/*fail silently*/));
+                })));
     }
 
     @Override public boolean canBackPress(@NonNull DrawerLayout drawerLayout) {
@@ -133,4 +141,28 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
     }
 
     @Override public void onMenuItemReselect(@IdRes int id, int position, boolean fromUser) {}
+
+    private void checkBlackListed() {
+        manageDisposable(RxHelper.getSingle(RxFirebaseDatabase
+                .data(FirebaseDatabase.getInstance().getReference().child("black_listed")))
+                .map(dataSnapshot -> {
+                    boolean exists = false;
+                    Login login = Login.getUser();
+                    Logger.e(dataSnapshot);
+                    if (login != null) {
+                        if (dataSnapshot != null && dataSnapshot.exists()) {
+                            List<String> values = dataSnapshot.getValue(new GenericTypeIndicator<ArrayList<String>>() {});
+                            if (values != null && !values.isEmpty()) {
+                                exists = values.contains(Login.getUser().getLogin());
+                            }
+                        }
+                    }
+                    return exists;
+                })
+                .subscribe(exists -> {
+                    if (exists) {
+                        sendToView(MainMvp.View::onUserIsBlackListed);
+                    }
+                }, Throwable::printStackTrace));
+    }
 }

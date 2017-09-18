@@ -6,11 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.rx2.Rx2Apollo;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.ApolloProdivder;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
@@ -20,6 +23,7 @@ import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import java.util.ArrayList;
 import java.util.List;
 
+import github.GetPinnedReposQuery;
 import io.reactivex.Observable;
 
 /**
@@ -30,7 +34,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @com.evernote.android.state.State boolean isSuccessResponse;
     @com.evernote.android.state.State boolean isFollowing;
     @com.evernote.android.state.State String login;
-    @com.evernote.android.state.State ArrayList<User> userOrgs = new ArrayList<>();
+    private ArrayList<User> userOrgs = new ArrayList<>();
+    private ArrayList<GetPinnedReposQuery.Node> nodes = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
 
@@ -83,9 +88,12 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         }
         login = bundle.getString(BundleConstant.EXTRA);
         if (login != null) {
-            loadOrgs();
-//            loadUrlBackgroundImage();
-            makeRestCall(RestProvider.getUserService(isEnterprise()).getUser(login), userModel -> {
+            makeRestCall(RestProvider.getUserService(isEnterprise())
+                    .getUser(login)
+                    .doOnComplete(() -> {
+                        loadPinnedRepos(login);
+                        loadOrgs();
+                    }), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {
                     userModel.save(userModel);
@@ -95,6 +103,29 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                 }
             });
         }
+    }
+
+    @SuppressWarnings("ConstantConditions") private void loadPinnedRepos(@NonNull String login) {
+        ApolloCall<GetPinnedReposQuery.Data> apolloCall = ApolloProdivder.INSTANCE.getApollo(isEnterprise())
+                .query(GetPinnedReposQuery.builder()
+                        .login(login)
+                        .build());
+        manageDisposable(RxHelper.getObservable(Rx2Apollo.from(apolloCall))
+                .filter(dataResponse -> !dataResponse.hasErrors())
+                .flatMap(dataResponse -> {
+                    if (dataResponse.data() != null && dataResponse.data().user() != null) {
+                        return Observable.fromIterable(dataResponse.data().user().pinnedRepositories().edges());
+                    }
+                    return Observable.empty();
+                })
+                .map(GetPinnedReposQuery.Edge::node)
+                .toList()
+                .toObservable()
+                .subscribe(nodes1 -> {
+                    nodes.clear();
+                    nodes.addAll(nodes1);
+                    sendToView(view -> view.onInitPinnedRepos(nodes));
+                }, Throwable::printStackTrace));
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
@@ -132,6 +163,10 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     @NonNull @Override public ArrayList<ContributionsDay> getContributions() {
         return contributions;
+    }
+
+    @NonNull @Override public ArrayList<GetPinnedReposQuery.Node> getNodes() {
+        return nodes;
     }
 
     @NonNull @Override public String getLogin() {

@@ -9,21 +9,26 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
-import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.timeline.GenericEvent;
+import com.fastaccess.data.dao.timeline.SourceModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
+import com.fastaccess.provider.timeline.TimelineConverter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 
 import java.util.ArrayList;
@@ -42,6 +47,7 @@ import lombok.Getter;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    @com.evernote.android.state.State boolean isCollaborator;
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
@@ -49,14 +55,14 @@ import lombok.Getter;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (getView() != null) {
+            Issue issue = getView().getIssue();
+            if (issue == null) return;
             if (item.getType() == TimelineModel.COMMENT) {
-                if (getView().getIssue() == null) return;
-                Issue issue = getView().getIssue();
                 if (v.getId() == R.id.commentMenu) {
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, issue.getLogin(), item.getComment().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, issue.getLogin(), item.getComment().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -77,16 +83,39 @@ import lombok.Getter;
                     onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
                 }
             } else if (item.getType() == TimelineModel.EVENT) {
-                IssueEvent issueEventModel = item.getEvent();
+                GenericEvent issueEventModel = item.getGenericEvent();
                 if (issueEventModel.getCommitUrl() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
+                } else if (issueEventModel.getLabel() != null) {
+                    FilterIssuesActivity.startActivity(v, issue.getLogin(), issue.getRepoId(), true,
+                            true, isEnterprise(), "label:\"" + issueEventModel.getLabel().getName() + "\"");
+                } else if (issueEventModel.getMilestone() != null) {
+                    FilterIssuesActivity.startActivity(v, issue.getLogin(), issue.getRepoId(), true,
+                            true, isEnterprise(), "milestone:\"" + issueEventModel.getMilestone().getTitle() + "\"");
+                } else if (issueEventModel.getAssignee() != null) {
+                    FilterIssuesActivity.startActivity(v, issue.getLogin(), issue.getRepoId(), true,
+                            true, isEnterprise(), "assignee:\"" + issueEventModel.getAssignee().getLogin() + "\"");
+                } else {
+                    SourceModel sourceModel = issueEventModel.getSource();
+                    if (sourceModel != null) {
+                        if (sourceModel.getCommit() != null) {
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getCommit().getUrl());
+                        } else if (sourceModel.getPullRequest() != null) {
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getPullRequest().getUrl());
+                        } else if (sourceModel.getIssue() != null) {
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getIssue().getHtmlUrl());
+                        } else if (sourceModel.getRepository() != null) {
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getRepository().getUrl());
+                        }
+                    }
                 }
             } else if (item.getType() == TimelineModel.HEADER) {
                 if (v.getId() == R.id.commentMenu) {
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, item.getIssue().getLogin(), item.getIssue().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, item.getIssue().getLogin(),
+                            item.getIssue().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
@@ -113,20 +142,25 @@ import lombok.Getter;
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
         if (getView() == null) return;
         if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
-            if (getView().getIssue() == null) return;
-            Issue issue = getView().getIssue();
-            String login = issue.getLogin();
-            String repoId = issue.getRepoId();
-            if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                ReactionTypes type = ReactionTypes.get(v.getId());
-                if (type != null) {
-                    if (item.getType() == TimelineModel.HEADER) {
-                        getView().showReactionsPopup(type, login, repoId, item.getIssue().getNumber(), true);
+            if (v.getId() == R.id.commentMenu && item.getType() == TimelineModel.COMMENT) {
+                Comment comment = item.getComment();
+                if (getView() != null) getView().onReply(comment.getUser(), comment.getBody());
+            } else {
+                if (getView().getIssue() == null) return;
+                Issue issue = getView().getIssue();
+                String login = issue.getLogin();
+                String repoId = issue.getRepoId();
+                if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
+                    ReactionTypes type = ReactionTypes.get(v.getId());
+                    if (type != null) {
+                        if (item.getType() == TimelineModel.HEADER) {
+                            getView().showReactionsPopup(type, login, repoId, item.getIssue().getNumber(), true);
+                        } else {
+                            getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), false);
+                        }
                     } else {
-                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), false);
+                        onItemClick(position, v, item);
                     }
-                } else {
-                    onItemClick(position, v, item);
                 }
             }
         } else {
@@ -175,6 +209,26 @@ import lombok.Getter;
         return getReactionsProvider().isCallingApi(id, vId);
     }
 
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        if (getView() == null) return;
+        Issue issue = getView().getIssue();
+        if (issue != null) {
+            if (bundle == null) {
+                CommentRequestModel commentRequestModel = new CommentRequestModel();
+                commentRequestModel.setBody(text);
+                manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise()).createIssueComment(issue.getLogin(), issue
+                                .getRepoId(),
+                        issue.getNumber(), commentRequestModel))
+                        .doOnSubscribe(disposable -> sendToView(view -> view.showBlockingProgress(0)))
+                        .subscribe(comment -> sendToView(view -> view.addNewComment(TimelineModel.constructComment(comment))),
+                                throwable -> {
+                                    onError(throwable);
+                                    sendToView(IssueTimelineMvp.View::onHideBlockingProgress);
+                                }));
+            }
+        }
+    }
+
     @NonNull private ReactionsProvider getReactionsProvider() {
         if (reactionsProvider == null) {
             reactionsProvider = new ReactionsProvider();
@@ -198,10 +252,10 @@ import lombok.Getter;
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Issue parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Issue parameter) {
         if (parameter == null) {
             sendToView(BaseMvp.FAView::hideProgress);
-            return;
+            return false;
         }
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
@@ -209,28 +263,28 @@ import lombok.Getter;
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(IssueTimelineMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         String login = parameter.getLogin();
         String repoId = parameter.getRepoId();
-        int number = parameter.getNumber();
-        Observable<List<TimelineModel>> observable;
-        if (page > 1) {
-            observable = RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page)
-                    .map(comments -> {
-                        lastPage = comments != null ? comments.getLast() : 0;
-                        return TimelineModel.construct(comments != null ? comments.getItems() : null);
-                    });
-        } else {
-            observable = Observable.zip(RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number),
-                    RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page),
-                    (issueEventPageable, commentPageable) -> {
-                        lastPage = commentPageable != null ? commentPageable.getLast() : 0;
-                        return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,
-                                issueEventPageable != null ? issueEventPageable.getItems() : null);
-                    });
+        if (page == 1) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId,
+                    Login.getUser().getLogin())
+                    .doOnNext(booleanResponse -> isCollaborator = booleanResponse.code() == 204));
         }
-        makeRestCall(observable, models -> sendToView(view -> view.onNotifyAdapter(models, page)));
+        int number = parameter.getNumber();
+        Observable<List<TimelineModel>> observable = RestProvider.getIssueService(isEnterprise())
+                .getTimeline(login, repoId, number, page)
+                .flatMap(response -> {
+                    if (response != null) {
+                        lastPage = response.getLast();
+                    }
+                    return TimelineConverter.INSTANCE.convert(response != null ? response.getItems() : null);
+                })
+                .toList()
+                .toObservable();
+        makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));
+        return true;
     }
 }

@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -170,29 +171,46 @@ public class PrettifyWebView extends NestedWebView {
         return lineNo;
     }
 
-    public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
+    public void setGithubContentWithReplace(@NonNull String source, @Nullable String baseUrl, boolean replace) {
         setGithubContent(source, baseUrl, false);
+        addJavascriptInterface(new MarkDownInterceptorInterface(this, false), "Android");
+        String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()), false, replace);
+        post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling) {
         setGithubContent(source, baseUrl, toggleNestScrolling, true);
     }
 
-    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling, boolean enableBridge) {
-        if (enableBridge) addJavascriptInterface(new MarkDownInterceptorInterface(this, toggleNestScrolling), "Android");
-        String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()));
+    public void setWikiContent(@NonNull String source, @Nullable String baseUrl) {
+        addJavascriptInterface(new MarkDownInterceptorInterface(this, true), "Android");
+        String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()), AppHelper.isNightMode
+                (getResources()), true);
         post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }
 
-    public void loadImage(@NonNull String url) {
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling, boolean enableBridge) {
+        if (enableBridge) addJavascriptInterface(new MarkDownInterceptorInterface(this, toggleNestScrolling), "Android");
+        String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()),
+                AppHelper.isNightMode(getResources()), false);
+        post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
+    }
+
+    public void loadImage(@NonNull String url, boolean isSvg) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
-        String html = "<html><head><style>img{display: inline; height: auto; max-width: 100%;}</style></head><body><img src=\"" + url +
-                "\"/></body></html>";
+        String html;
+        if (isSvg) {
+            html = url;
+        } else {
+            html = "<html><head><style>img{display: inline; height: auto; max-width: 100%;}</style></head><body>" +
+                    "<img src=\"" + url + "\"/></body></html>";
+        }
+        Logger.e(html);
         loadData(html, "text/html", null);
     }
 

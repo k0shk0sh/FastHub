@@ -44,19 +44,21 @@ class InsetDividerDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
             RecyclerView.ViewHolder viewHolder = parent.getChildViewHolder(child);
-            boolean canDivide = toDivide == null || viewHolder.getClass() == toDivide;
-            if (canDivide) {
-                int position = parent.getChildAdapterPosition(child);
-                if (child.isActivated() || (i + 1 < childCount && parent.getChildAt(i + 1).isActivated())) {
-                    continue;
-                }
-                if (position != (state.getItemCount() - 1)) {
-                    lines[i * 4] = inset == 0 ? inset : inset + lm.getDecoratedLeft(child);
-                    lines[(i * 4) + 2] = lm.getDecoratedRight(child);
-                    int y = lm.getDecoratedBottom(child) + (int) child.getTranslationY() - height;
-                    lines[(i * 4) + 1] = y;
-                    lines[(i * 4) + 3] = y;
-                    hasDividers = true;
+            if (!(viewHolder instanceof ProgressBarViewHolder)) {
+                boolean canDivide = toDivide == null || viewHolder.getClass() == toDivide;
+                if (canDivide) {
+                    int position = parent.getChildAdapterPosition(child);
+                    if (child.isActivated() || (i + 1 < childCount && parent.getChildAt(i + 1).isActivated())) {
+                        continue;
+                    }
+                    if (position != (state.getItemCount() - 1)) {
+                        lines[i * 4] = inset == 0 ? inset : inset + lm.getDecoratedLeft(child);
+                        lines[(i * 4) + 2] = lm.getDecoratedRight(child);
+                        int y = lm.getDecoratedBottom(child) + (int) child.getTranslationY() - height;
+                        lines[(i * 4) + 1] = y;
+                        lines[(i * 4) + 3] = y;
+                        hasDividers = true;
+                    }
                 }
             }
         }

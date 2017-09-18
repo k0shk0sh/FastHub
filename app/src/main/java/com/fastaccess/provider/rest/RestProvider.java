@@ -13,10 +13,12 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.service.ContentService;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.data.service.OrganizationService;
+import com.fastaccess.data.service.ProjectsService;
 import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
@@ -58,10 +60,11 @@ public class RestProvider {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .disableHtmlEscaping()
             .setPrettyPrinting()
             .create();
 
-    private static OkHttpClient provideOkHttpClient() {
+    public static OkHttpClient provideOkHttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder client = new OkHttpClient.Builder();
             if (BuildConfig.DEBUG) {
@@ -177,6 +180,23 @@ public class RestProvider {
         return provideRetrofit(enterprise).create(SearchService.class);
     }
 
+    @NonNull public static SlackService getSlackService() {
+        return new Retrofit.Builder()
+                .baseUrl("https://ok13pknpj4.execute-api.eu-central-1.amazonaws.com/prod/")
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(SlackService.class);
+    }
+
+    @NonNull public static ContentService getContentService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(ContentService.class);
+    }
+
+    @NonNull public static ProjectsService getProjectsService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(ProjectsService.class);
+    }
+
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {
         ResponseBody body = null;
         if (throwable instanceof HttpException) {
@@ -188,15 +208,6 @@ public class RestProvider {
             } catch (Exception ignored) {}
         }
         return null;
-    }
-
-    @NonNull public static SlackService getSlackService() {
-        return new Retrofit.Builder()
-                .baseUrl("https://ok13pknpj4.execute-api.eu-central-1.amazonaws.com/prod/")
-                .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-                .create(SlackService.class);
     }
 
     public static void clearHttpClient() {

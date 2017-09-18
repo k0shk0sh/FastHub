@@ -9,8 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.evernote.android.state.State;
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
@@ -108,6 +110,9 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
         if (isLoggedIn() && Notification.hasUnreadNotifications()) {
             ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
+        } else {
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications)
+                    .setIcon(R.drawable.ic_notifications_none).getIcon(), ViewHelper.getIconColor(this));
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -135,6 +140,11 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public void onInvalidateNotification() {
         invalidateOptionsMenu();
+    }
+
+    @Override public void onUserIsBlackListed() {
+        Toast.makeText(App.getInstance(), "You are blacklisted, please contact the dev", Toast.LENGTH_LONG).show();
+        finish();
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_app_shortcut_issues, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")

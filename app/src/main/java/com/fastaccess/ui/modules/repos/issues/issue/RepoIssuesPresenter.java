@@ -20,6 +20,8 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
  */
@@ -56,10 +58,10 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable IssueState parameter) {
+    @Override public boolean onCallApi(int page, @Nullable IssueState parameter) {
         if (parameter == null) {
             sendToView(RepoIssuesMvp.View::hideProgress);
-            return;
+            return false;
         }
         this.issueState = parameter;
         if (page == 1) {
@@ -69,31 +71,37 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoIssuesMvp.View::hideProgress);
-            return;
+            return false;
         }
         String sortBy = "created";
         if (isLastUpdated) {
             sortBy = "updated";
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService(isEnterprise()).getRepositoryIssues(login, repoId, parameter.name(), sortBy, page),
-                issues -> {
-                    lastPage = issues.getLast();
-                    List<Issue> filtered = Stream.of(issues.getItems())
-                            .filter(issue -> issue.getPullRequest() == null)
-                            .toList();
-                    if (getCurrentPage() == 1) {
-                        manageDisposable(Issue.save(filtered, repoId, login));
-                    }
-                    sendToView(view -> view.onNotifyAdapter(filtered, page));
-                });
-    }
-
-    private void onCallCountApi(@NonNull IssueState issueState) {
-        manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise())
-                .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, false), 1))
-                .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
-                        Throwable::printStackTrace));
+        String finalSortBy = sortBy;
+        makeRestCall(RestProvider.getIssueService(isEnterprise())
+                        .getRepositoryIssues(login, repoId, parameter.name(), sortBy, page)
+                        .flatMap(issues -> {
+                            lastPage = issues.getLast();
+                            List<Issue> filtered = Stream.of(issues.getItems())
+                                    .filter(issue -> issue.getPullRequest() == null)
+                                    .toList();
+                            if (filtered != null) {
+                                if (filtered.size() < 10 && issues.getNext() > 1) {
+                                    setCurrentPage(getCurrentPage() + 1);
+                                    return grabMoreIssues(filtered, parameter.name(), finalSortBy, getCurrentPage());
+                                }
+                                return Observable.just(filtered);
+                            }
+                            return Observable.just(new ArrayList<Issue>());
+                        })
+                        .doOnNext(filtered -> {
+                            if (getCurrentPage() == 1) {
+                                Issue.save(filtered, repoId, login);
+                            }
+                        }),
+                issues -> sendToView(view -> view.onNotifyAdapter(issues, page)));
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle, @NonNull IssueState issueState) {
@@ -143,4 +151,33 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     @Override public void onItemLongClick(int position, View v, Issue item) {
         if (getView() != null) getView().onShowIssuePopup(item);
     }
+
+    private void onCallCountApi(@NonNull IssueState issueState) {
+        manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise())
+                .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, false), 1))
+                .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
+                        Throwable::printStackTrace));
+    }
+
+    private Observable<List<Issue>> grabMoreIssues(@NonNull List<Issue> issues, @NonNull String state, @NonNull String sortBy, int page) {
+        return RestProvider.getIssueService(isEnterprise()).getRepositoryIssues(login, repoId, state, sortBy, page)
+                .flatMap(issuePageable -> {
+                    if (issuePageable != null) {
+                        lastPage = issuePageable.getLast();
+                        List<Issue> filtered = Stream.of(issuePageable.getItems())
+                                .filter(issue -> issue.getPullRequest() == null)
+                                .toList();
+                        if (filtered != null) {
+                            issues.addAll(filtered);
+                            if (issues.size() < 10 && issuePageable.getNext() > 1) {
+                                setCurrentPage(getCurrentPage() + 1);
+                                return grabMoreIssues(issues, state, sortBy, getCurrentPage());
+                            }
+                            return Observable.just(filtered);
+                        }
+                    }
+                    return Observable.just(new ArrayList<Issue>());
+                });
+    }
+
 }

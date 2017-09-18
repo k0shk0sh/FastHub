@@ -25,6 +25,13 @@ public class LinearManager extends LinearLayoutManager {
     @Override public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         try {
             super.onLayoutChildren(recycler, state);
-        } catch (IndexOutOfBoundsException ignored) {}
+        } catch (Exception ignored) {}
     }
+
+    @Override public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
+        try {
+            super.onMeasure(recycler, state, widthSpec, heightSpec);
+        } catch (Exception ignored) {}
+    }
+
 }

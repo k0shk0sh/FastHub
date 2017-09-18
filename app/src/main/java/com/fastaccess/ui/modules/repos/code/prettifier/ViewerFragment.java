@@ -8,16 +8,17 @@ import android.support.design.widget.AppBarLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -30,7 +31,7 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
  * Created by Kosh on 28 Nov 2016, 9:27 PM
  */
 
-public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter> implements ViewerMvp.View {
+public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter> implements ViewerMvp.View, AppBarLayout.OnOffsetChangedListener {
 
     public static final String TAG = ViewerFragment.class.getSimpleName();
 
@@ -39,7 +40,9 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private AppBarLayout appBarLayout;
     private BottomNavigation bottomNavigation;
-    private boolean scrolledTop = true;
+    private boolean isAppBarMoving;
+    private boolean isAppBarExpanded = true;
+    private boolean isAppBarListener;
     @State boolean isWrap = PrefGetter.isWrapCode();
 
     public static ViewerFragment newInstance(@NonNull String url, @Nullable String htmlUrl) {
@@ -64,17 +67,17 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         return fragmentView;
     }
 
-    @Override public void onSetImageUrl(@NonNull String url) {
-        webView.loadImage(url);
+    @Override public void onSetImageUrl(@NonNull String url, boolean isSvg) {
+        webView.loadImage(url, isSvg);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
         getActivity().invalidateOptionsMenu();
     }
 
-    @Override public void onSetMdText(@NonNull String text, String baseUrl) {
+    @Override public void onSetMdText(@NonNull String text, String baseUrl, boolean replace) {
         webView.setVisibility(View.VISIBLE);
         loader.setIndeterminate(false);
-        webView.setGithubContent(text, baseUrl);
+        webView.setGithubContentWithReplace(text, baseUrl, replace);
         webView.setOnContentChangedListener(this);
         getActivity().invalidateOptionsMenu();
     }
@@ -105,6 +108,10 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     @Override public void openUrl(@NonNull String url) {
         ActivityHelper.startCustomTab(getActivity(), url);
+    }
+
+    @Override public void onViewAsCode() {
+        getPresenter().onLoadContentAsStream();
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -153,18 +160,18 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onScrollChanged(boolean reachedTop, int scroll) {
-        if (getPresenter().isRepo()) {
-            if (appBarLayout != null && bottomNavigation != null) {
-                if (scroll <= (appBarLayout.getTotalScrollRange() / 2)) {
-                    scrolledTop = true;
-                    bottomNavigation.setExpanded(true, true);
-                    appBarLayout.setExpanded(true, true);
-                } else if (scroll >= appBarLayout.getTotalScrollRange() && scrolledTop) {
-                    bottomNavigation.setExpanded(false, true);
-                    appBarLayout.setExpanded(false, true);
-                    scrolledTop = false;
+        if (AppHelper.isDeviceAnimationEnabled(getContext())) {
+            if (getPresenter().isRepo() && appBarLayout != null && bottomNavigation != null && webView != null) {
+                boolean shouldExpand = webView.getScrollY() == 0;
+                if (!isAppBarMoving && shouldExpand != isAppBarExpanded) {
+                    isAppBarMoving = true;
+                    isAppBarExpanded = shouldExpand;
+                    bottomNavigation.setExpanded(shouldExpand, true);
+                    appBarLayout.setExpanded(shouldExpand, true);
+                    webView.setNestedScrollingEnabled(shouldExpand);
+                    if (shouldExpand)
+                        webView.onTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP, 0, 0, 0));
                 }
-                webView.setNestedScrollingEnabled(scroll <= (appBarLayout.getTotalScrollRange() * 2));
             }
         }
     }
@@ -179,7 +186,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             getPresenter().onHandleIntent(getArguments());
         } else {
             if (getPresenter().isMarkDown()) {
-                onSetMdText(getPresenter().downloadedStream(), getPresenter().url());
+                onSetMdText(getPresenter().downloadedStream(), getPresenter().url(), false);
             } else {
                 onSetCode(getPresenter().downloadedStream());
             }
@@ -193,7 +200,32 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         if (getPresenter().isRepo()) {
             appBarLayout = getActivity().findViewById(R.id.appbar);
             bottomNavigation = getActivity().findViewById(R.id.bottomNavigation);
+
+            if (appBarLayout != null && !isAppBarListener) {
+                appBarLayout.addOnOffsetChangedListener(this);
+                isAppBarListener = true;
+            }
         }
+    }
+
+    @Override public void onStart() {
+        super.onStart();
+        if (AppHelper.isDeviceAnimationEnabled(getContext())) {
+            if (appBarLayout != null && !isAppBarListener) {
+                appBarLayout.addOnOffsetChangedListener(this);
+                isAppBarListener = true;
+            }
+        }
+    }
+
+    @Override public void onStop() {
+        if (AppHelper.isDeviceAnimationEnabled(getContext())) {
+            if (appBarLayout != null && isAppBarListener) {
+                appBarLayout.removeOnOffsetChangedListener(this);
+                isAppBarListener = false;
+            }
+        }
+        super.onStop();
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -234,5 +266,11 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         if (!isVisibleToUser && appBarLayout != null) {
             appBarLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        verticalOffset = Math.abs(verticalOffset);
+        if (verticalOffset == 0 || verticalOffset == appBarLayout.getTotalScrollRange())
+            isAppBarMoving = false;
     }
 }

@@ -116,8 +116,6 @@
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingTop="@dimen/spacing_normal"
                         tools:text="Username"/>
 
                 </android.support.v7.widget.CardView>
@@ -154,8 +152,6 @@
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingTop="@dimen/spacing_normal"
                         tools:text="Label 1"/>
 
                 </android.support.v7.widget.CardView>
@@ -206,8 +202,6 @@
                             style="@style/TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/spacing_normal"
-                            android:paddingTop="@dimen/spacing_normal"
                             tools:text="Label 1"/>
                     </LinearLayout>
 
@@ -220,6 +214,7 @@
     <LinearLayout
         android:id="@+id/commentSection"
         android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:baselineAligned="false"
