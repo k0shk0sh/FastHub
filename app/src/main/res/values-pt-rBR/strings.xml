@@ -1,7 +1,7 @@
-<resources>
+﻿<resources>
     <string name="in_progress">Carregando, por favor aguarde…</string>
     <string name="action">Ação</string>
-    <string name="settings">Configuraçoes</string>
+    <string name="settings">Configurações</string>
     <string name="discard">Descartar</string>
     <string name="cancel">Cancelar</string>
     <string name="ok">OK</string>
@@ -429,4 +429,14 @@
     <string name="view_as_code">Ver como código</string>
     <string name="app_animation_title">Animações no App</string>
     <string name="app_animation_summary">Desabilitar todas as animações no App.</string>
+    <string name="english_please">Por favor envie seu pedido em inglês.</string>
+    <string name="open_new_window">Abrir em nova janela</string>
+    <string name="projects">Projetos</string>
+    <string name="project">Projeto</string>
+    <string name="card_added_by">Adicionado por %s %s</string>
+    <string name="no_projects">Sem Projetos</string>
+    <string name="no_cards">Sem Cartões</string>
+    <string name="too_large_changes">Muitas diferenças para exibir. Por favor, veja-os via navegador</string>
+    <string name="no_orgs_dialog_title">Não encontra suas Organizações\?</string>
+    <string name="can_not_merge_pr">Este PR não pode ser merged agora.</string>
 </resources>
