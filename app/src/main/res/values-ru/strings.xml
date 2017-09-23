@@ -434,5 +434,7 @@
     <string name="projects">Проекты</string>
     <string name="no_projects">Проекты отсутствуют</string>
     <string name="no_cards">Карточки отсутствуют</string>
-    <string name="card_added_by">Добавлено %s</string>
+    <string name="card_added_by">Добавлено %s %s</string>
+    <string name="too_large_changes">Слишком много изменений для отображения. Посмотрите их, пожалуйста, в браузере</string>
+    <string name="project">Проект</string>
 </resources>
