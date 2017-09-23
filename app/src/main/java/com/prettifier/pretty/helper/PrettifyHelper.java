@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 public class PrettifyHelper {
 
-    @NonNull private static String getHtmlContent(@NonNull String css, @NonNull String text, @NonNull boolean wrap, boolean isDark) {
+    @NonNull private static String getHtmlContent(@NonNull String css, @NonNull String text, boolean wrap, boolean isDark) {
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +

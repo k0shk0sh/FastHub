@@ -28,7 +28,7 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
 
     override fun onItemClick(position: Int, v: View, item: RepoProjectsOpenQuery.Node) {
         item.databaseId()?.let {
-            ProjectPagerActivity.startActivity(v.context, login, repoId, it.toLong())
+            ProjectPagerActivity.startActivity(v.context, login, repoId, it.toLong(), isEnterprise)
         }
     }
 
@@ -77,6 +77,7 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
                         val list = arrayListOf<RepoProjectsOpenQuery.Node>()
                         it.data()?.repository()?.let {
                             it.projects().let {
+                                lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
                                 pages.clear()
                                 count = it.totalCount()
                                 it.edges()?.let {
@@ -106,6 +107,7 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
                         val list = arrayListOf<RepoProjectsOpenQuery.Node>()
                         it.data()?.repository()?.let {
                             it.projects().let {
+                                lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
                                 pages.clear()
                                 count = it.totalCount()
                                 it.edges()?.let {

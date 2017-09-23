@@ -568,4 +568,47 @@
     <string name="card_added_by">Added by %s %s</string>
     <string name="too_large_changes">Changes are large, please open in browser</string>
     <string name="project">Project</string>
+    <string name="please_read">PLEASE READ!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Why can\'t I see my <b>Organizations</b> either <i>Private</i> or <i>Public</i> ones?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button,
+        alternatively login via <b>Access Token</b> which will ease this setup.</p>
+
+        <h5>• I tried to login via Access Token &amp; OTP but it does not work?</h5>
+        <p>You can\'t login via Access Token &amp; OTP all together due to the lifetime of the OTP code, you\'ll be required to login in every few seconds.</p>
+
+        <h5>• Why my Private Repo &amp; Enterprise Wiki does not show up?</h5>
+        <p>It\'s due to FastHub scraping GitHub Wiki page &amp; Private Repos require session token that FastHub doesn\'t have.</p>
+
+        <h5>• I login with Enterprise account but can\'t interact with anything other than my Enterprise GitHub?</h5>\n
+        <p>Well, logically, you can\'t access anything else other than your Enterprise, but FastHub made that possible but can\'t do much about it,
+        in most cases since your login credential doesn\'t exists in GitHub server. But in <b>few</b>
+        cases your GitHub account Oauth token will do the trick.</p>
+
+        <h5>• I\'m having problems editing Issues/PRs?</h5>
+        <p>If you are editing a public Org repo, then please contact your Org to grant access to FastHub or use Access Token to login!.</p>
+
+        <h5>• I\'m blocked from using FastHub, WHY?</h5>
+        <p>Simply, because you did rate FastHub low because you wanted this and that and never updated your review, well,
+         why would you keep using it anyway?</p>
+
+        <h5>• I\'m having this issue or I want this &amp; that!!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to
+        search before posting something that is duplicated as that will result to it being closed immediately.</p>
+
+        <i><font color="red">Message from the developer of FastHub,</font></i>\n
+
+        <h3>Hello Dear Developers,</h3>\n
+        <p style="text-align:justify;">
+            As you might know <b>FastHub</b> is an open source App &amp; has grow so fast and that\'s because of the help from the community and you
+            guys.\nReviewing <b>FastHub</b> low in the PlayStore because you want to report an issue or request any feature will result to it being
+            ignored.\nAs developers I think we understand how much effort does it take to make an App like <b>FastHub</b>.\nSome don\'t get that at all
+            and instead of reporting issues/features in <b>FastHub</b>\'s repo they rate FastHub low in the PlayStore thinking that this will force
+            the developer (ME) to implement and fix their stuff so they update their review, but this doesn\'t happen, instead they either never
+            update their review or they\'ll request something else <i>(so typical)</i>.\nPlease do report Issues &amp; Features in FastHub repo, open
+            up the drawer menu &amp; click on the Report Issue &amp; it\'ll be posted directly to FastHub repo whereI can help/assist you.
+        </p>
+    ]]></string>
+    <string name="faq">FAQ</string>
 </resources>

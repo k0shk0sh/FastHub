@@ -98,10 +98,12 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
             hideProgress()
         }
         pager.clipToPadding = false
+        val partialWidth = resources.getDimensionPixelSize(R.dimen.spacing_xs_large)
         val pageMargin = resources.getDimensionPixelSize(R.dimen.spacing_normal)
+        val pagerPadding = partialWidth + pageMargin
         pager.pageMargin = pageMargin
         pager.setPageTransformer(true, CardsPagerTransformerBasic(4, 10))
-        pager.setPadding(pageMargin, pageMargin, pageMargin, pageMargin)
+        pager.setPadding(pagerPadding, pagerPadding, pagerPadding, pagerPadding)
 
         if (savedInstanceState == null) {
             presenter.onActivityCreated(intent)
@@ -119,16 +121,17 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
     }
 
     companion object {
-        fun startActivity(context: Context, login: String, repoId: String, projectId: Long) {
-            context.startActivity(getIntent(context, login, repoId, projectId))
+        fun startActivity(context: Context, login: String, repoId: String, projectId: Long, isEnterprise: Boolean = false) {
+            context.startActivity(getIntent(context, login, repoId, projectId, isEnterprise))
         }
 
-        fun getIntent(context: Context, login: String, repoId: String, projectId: Long): Intent {
+        fun getIntent(context: Context, login: String, repoId: String, projectId: Long, isEnterprise: Boolean = false): Intent {
             val intent = Intent(context, ProjectPagerActivity::class.java)
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.ID, projectId)
                     .put(BundleConstant.ITEM, repoId)
                     .put(BundleConstant.EXTRA, login)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                     .end())
             return intent
         }

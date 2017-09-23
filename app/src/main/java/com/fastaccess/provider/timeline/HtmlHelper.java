@@ -86,7 +86,7 @@ public class HtmlHelper {
         mySpanner.setStripExtraWhiteSpace(true);
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, theme));
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, theme));
-        mySpanner.registerHandler("img", new DrawableHandler(textView));
+        mySpanner.registerHandler("img", new DrawableHandler(textView, width));
         mySpanner.registerHandler("g-emoji", new EmojiHandler());
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
@@ -116,15 +116,14 @@ public class HtmlHelper {
     }
 
     @ColorInt public static int getWindowBackground(@PrefGetter.ThemeType int theme) {
-        switch (theme) {
-            case PrefGetter.AMLOD:
-                return Color.parseColor("#0B162A");
-            case PrefGetter.BLUISH:
-                return Color.parseColor("#111C2C");
-            case PrefGetter.DARK:
-                return Color.parseColor("#22252A");
-            default:
-                return Color.parseColor("#EEEEEE");
+        if (theme == PrefGetter.AMLOD) {
+            return Color.parseColor("#0B162A");
+        } else if (theme == PrefGetter.BLUISH) {
+            return Color.parseColor("#111C2C");
+        } else if (theme == PrefGetter.DARK) {
+            return Color.parseColor("#22252A");
+        } else {
+            return Color.parseColor("#EEEEEE");
         }
     }
 

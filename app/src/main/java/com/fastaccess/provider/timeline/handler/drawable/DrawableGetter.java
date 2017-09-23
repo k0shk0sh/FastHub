@@ -21,11 +21,13 @@ import java.util.Set;
 public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
     private WeakReference<TextView> container;
     private final Set<GlideDrawableTarget> cachedTargets;
+    private final int width;
 
-    public DrawableGetter(TextView tv) {
+    public DrawableGetter(TextView tv, int width) {
         tv.setTag(R.id.drawable_callback, this);
         this.container = new WeakReference<>(tv);
         this.cachedTargets = new HashSet<>();
+        this.width = width;
     }
 
     @Override public Drawable getDrawable(@NonNull String url) {
@@ -35,7 +37,7 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
             final GenericRequestBuilder load = Glide.with(context)
                     .load(url)
                     .dontAnimate();
-            final GlideDrawableTarget target = new GlideDrawableTarget(urlDrawable, container);
+            final GlideDrawableTarget target = new GlideDrawableTarget(urlDrawable, container, width);
             load.into(target);
             cachedTargets.add(target);
         }

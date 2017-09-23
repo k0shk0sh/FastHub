@@ -103,6 +103,7 @@ public class PrefGetter {
     private static final String ENTERPRISE_URL = "enterprise_url";
     private static final String NOTIFICATION_SOUND_PATH = "notification_sound_path";
     private static final String DISABLE_AUTO_PLAY_GIF = "disable_auto_play_gif";
+    private static final String PLAY_STORE_REVIEW_ACTIVITY = "play_store_review_activity";
 
     public static void setToken(@Nullable String token) {
         PrefHelper.set(TOKEN, token);
@@ -467,5 +468,13 @@ public class PrefGetter {
 
     public static boolean isAppAnimationDisabled() {
         return PrefHelper.getBoolean("app_animation");
+    }
+
+    public static boolean isPlayStoreWarningShowed() {
+        return PrefHelper.getBoolean(PLAY_STORE_REVIEW_ACTIVITY);
+    }
+
+    public static void setPlayStoreWarningShowed() {
+        PrefHelper.set(PLAY_STORE_REVIEW_ACTIVITY, true);
     }
 }

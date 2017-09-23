@@ -23,6 +23,10 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 
 public class ProgressDialogFragment extends BaseDialogFragment {
 
+    public ProgressDialogFragment() {
+        suppressAnimation = true;
+    }
+
     public static final String TAG = ProgressDialogFragment.class.getSimpleName();
 
     @NonNull public static ProgressDialogFragment newInstance(@NonNull Resources resources, @StringRes int msgId, boolean isCancelable) {

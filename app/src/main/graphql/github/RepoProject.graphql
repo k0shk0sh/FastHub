@@ -5,6 +5,11 @@ repository(owner: $owner, name: $name) {
       edges {
         cursor
       }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
       nodes {
         name
         number
@@ -26,6 +31,11 @@ repository(owner: $owner, name: $name) {
       totalCount
       edges {
         cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
       }
       nodes {
         name
