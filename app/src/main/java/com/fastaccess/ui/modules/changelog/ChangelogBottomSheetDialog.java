@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.changelog;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -59,6 +60,13 @@ public class ChangelogBottomSheetDialog extends BaseMvpBottomSheetDialogFragment
 
     @NonNull @Override public ChangelogPresenter providePresenter() {
         return new ChangelogPresenter();
+    }
+
+    @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
     }
 
     private void showChangelog(String html) {
