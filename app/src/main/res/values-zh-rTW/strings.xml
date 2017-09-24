@@ -426,14 +426,14 @@ APP
     <string name="sound_chooser_title">選擇通知提示聲</string>
     <string name="disable_auto_gif_summary">停用 GIF 自動播放</string>
     <string name="disable_auto_gif_title">停用 GIF 自動播放</string>
-	<string name="english_please">請用英文來提交你的請求</string>
-    <string name="enterprise_login_warning">請登入到GitHub帳號以使用所有的api功能。否則透過企業帳號向GitHub api發送token將會被拒絕。</string>
+    <string name="english_please">請用英文來提交你的請求</string>
+    <string name="enterprise_login_warning">請登入到 GitHub 帳號以使用所有的 api 功能。否則透過企業帳號向 GitHub api 發送 token 將會被拒絕。</string>
     <string name="not_match">不匹配</string>
     <string name="original_poster">原發布者</string>
     <string name="cancel_reviews">取消 Reviews</string>
     <string name="request_changes">請求更改</string>
     <string name="google_play_service_error">Google Play 服務不可用</string>
-    <string name="edit_gist">編輯Gist</string>
+    <string name="edit_gist">編輯 Gist</string>
     <string name="content">內容</string>
     <string name="expand">展開</string>
     <string name="copy_sha">複製 SHA-1</string>
@@ -441,9 +441,54 @@ APP
     <string name="app_animation_title">停用 App 內部動畫</string>
     <string name="app_animation_summary">在每個地方停用 App 內部動畫</string>
     <string name="can_not_merge_pr">這個 PR 目前沒辦法被 merge</string>
-    <string name="projects">" 專案"</string>
+    <string name="projects">專案</string>
     <string name="no_projects">沒有專案</string>
     <string name="no_cards">沒有卡</string>
     <string name="card_added_by">由 %s 新增</string>
     <string name="no_orgs_dialog_title">找不到您的組織嗎?</string>
+    <string name="open_new_window">在新視窗中開啟</string>
+    <string name="too_large_changes">差異太多無法顯示。請於瀏覽器檢視它們</string>
+    <string name="project">專案</string>
+    <string name="fasthub_faq_description">FAQ</string>
+    <string name="faq">
+        <![CDATA[
+        <h5>• 為何我無法看到我的 <b>組織</b> 的 <i>私人</i> / <i>公開</i> 的東西?</h5>
+        <p>打開 https://github.com/settings/applications 並找到 FastHub， 點擊它並滑到 Organization access 並點擊 Grant 按鈕，
+        或是透過 <b>Access Token</b> 登入將不需要做這件事</p>
+
+        <h5>• 我試著透過 Access Token &amp; OTP 登入，但沒作用?</h5>
+        <p>你不能透過 Access Token &amp; OTP 登入，因為 OTP code 的時限緣故， 你會需要在幾秒鐘內登入。</p>
+
+        <h5>• 為何我的私人&amp;企業的 Repo Wiki 無法顯示?</h5>
+        <p>因為 FastHub 在擷取 GitHub Wiki &amp; 私人 Repos 時需要 session token ，但 FastHub 沒有。</p>
+
+        <h5>• 使用企業帳號時無法與任何其他非我的企業的東西互動?</h5>\n
+        <p>邏輯上來說，你無法存取任何東西非你的企業的東西，不過 FastHub 讓它能成功存取，但沒辦法再做到更多了。
+        在大部分的情況下你的登入認證不存在於 GitHub 的伺服器上。
+        但在少數情形之下你的 GitHub 帳號的 Oauth token 能達成這個技巧。</p>
+
+        <h5>• 我在編輯 Issues/PRs 遇到困難?</h5>
+        <p>如果你正在編輯一個公開組職的 Repo ，請聯絡你的組織以取得權限給 FastHub 或是使用 Access Token 來登入!</p>
+
+        <h5>• 我被禁止使用 FastHub 了，為什麼?</h5>
+        <p>很簡單，因為想要某些功能而給了 FastHub 低評價卻從來不更新你的評價。
+        所以為何你要繼續使用呢?</p>
+		
+        <h5>• 我有困難/我想要有新功能!!</h5>
+        <p>前往 https://github.com/k0shk0sh/FastHub/issues/new 並創建一個 bug/feature requests 的 issue。
+		我非常鼓勵你在發布某些東西前先搜尋有沒有重複的，否則會被馬上關閉。</p>
+
+        <i><font color="red">給 FastHub 開發者們的訊息</font></i>\n
+
+        <h3>開發者們你好,</h3>\n
+        <p style="text-align:justify;">
+            你應該知道 <b>FastHub</b> 是一個成長很快開源的 App &amp; 是因為許多來自社群的幫助以及你們。
+			\n因為想要回報 issue 或是 request 而在 Play商店 給 <b>FastHub</b> 低評價將會被忽略。
+			\n作為一個開發者我想我們應該知道開發一個像是 <b>FastHub</b> 要付出多大的努力。
+			\n有些人不知道要在 FastHub 的 Repo 回報而是在 Play商店 給低評價並且認為這會強制開發者(我) 去實作及修復他們想要的東西，而他們會更新評價。
+			\n但是這並沒有發生過，他們不是不修改評價就是要求其他功能<i>(如此典型)</i>。
+			\n請於 FastHub repo 回報 Issue & Features，打開側欄功能表並點擊"回報 Issue"，這將會被直接發布在 FastHub repo (我能夠幫助和協助你的地方)。
+        </p>
+    ]]></string>
+    <string name="please_read">請閱讀!</string>
 </resources>
