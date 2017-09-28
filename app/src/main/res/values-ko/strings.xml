@@ -139,7 +139,7 @@
     <string name="star_hint">저장소 즐겨찾기/즐겨찾기해제</string>
     <string name="watch">구독</string>
     <string name="watch_hint">저장소 구독/구독해제</string>
-    <string name="pin_repo_hint">사이드바에서 더 빨리 액세스 할 수 있도록 저장소를 고정하세요</string>
+    <string name="pin_repo_hint">사이드바에서 더 빨리 액세스 할 수 있도록 저장소를 바로가기에 등록하세요</string>
     <string name="dismiss_all">모두 닫기</string>
     <string name="no_url">URL을 찾을 수 없습니다</string>
     <string name="last_updated">마지막 업데이트</string>
@@ -153,7 +153,7 @@
     <string name="mark_all_as_read">모두 읽음으로 표시</string>
     <string name="all_notifications">모든 알림</string>
     <string name="unread">읽지 않음</string>
-    <string name="all">모든</string>
+    <string name="all">전체</string>
     <string name="delete_repo">저장소 삭제</string>
     <string name="delete_repo_warning">저장소 삭제는 되돌릴 수 없습니다</string>
     <string name="thirty_minutes">30분</string>
@@ -247,13 +247,13 @@
     <string name="support_development">개발 지원</string>
     <string name="success_purchase_message">대단히 감사합니다!</string>
     <string name="change_theme_warning">테마가 제대로 적용되지 않으면, 앱을 수동으로 재시작해주세요</string>
-    <string name="pin">고정</string>
-    <string name="pinned">고정됨</string>
-    <string name="unpin">고정해제</string>
-    <string name="empty_pinned_repos">아직 고정된 저장소가 없으므로 여기에서 볼 수 있도록 고정하세요.\nP.S: 많이 액세스할수록 저장소는 위에 배치될 것입니다.</string>
+    <string name="pin">북마크</string>
+    <string name="pinned">바로가기</string>
+    <string name="unpin">바로가기 삭제</string>
+    <string name="empty_pinned_repos">아직 바로가기 저장소가 없으므로 여기에서 볼 수 있도록 등록하세요.\nP.S: 많이 액세스할수록 저장소는 위에 배치될 것입니다.</string>
     <string name="yes">네</string>
     <string name="no">아니요</string>
-    <string name="no_feeds">Feeds 없음</string>
+    <string name="no_feeds">소식 없음</string>
     <string name="no_gists">Gists 없음</string>
     <string name="no_comments">덧글 없음</string>
     <string name="no_notifications">알림 없음</string>
@@ -279,9 +279,9 @@
     <string name="changelog">변경사항</string>
     <string name="notifications_hint">클릭하여 알림 목록을 열거나 옆으로 밀어 닫으세요</string>
     <string name="home_long_click_hint">길게 누르면 어디서나 기본 화면으로 이동합니다</string>
-    <string name="created">생성됨</string>
-    <string name="assigned">담당됨</string>
-    <string name="mentioned">언급됨</string>
+    <string name="created">생성</string>
+    <string name="assigned">담당</string>
+    <string name="mentioned">언급</string>
     <string name="name">이름</string>
     <string name="color">색상</string>
     <string name="create_label">꼬리표 샹성</string>
@@ -293,7 +293,7 @@
     <string name="no_members">구성원 없음</string>
     <string name="no_teams">팀 없음</string>
     <string name="no_orgs">조직 없음</string>
-    <string name="no_orgs_dialog_title">너의 조직을 찾을 수 없습니까?</string>
+    <string name="no_orgs_dialog_title">조직을 찾을 수 없습니까?</string>
     <string name="mark_as_read">읽음으로 표시</string>
     <string name="animations">효과</string>
     <string name="dialog_animation_summary">팝업 효과를 활성화합니다</string>
@@ -321,7 +321,7 @@
     <string name="no_reactions">반응 없음</string>
     <string name="reactions">반응</string>
     <string name="wrap_content">줄 바꿈</string>
-    <string name="wrap_code_summary">기본적으로 코드 뷰어에서 코드 줄 바꿈</string>
+    <string name="wrap_code_summary">기본적으로 코드 뷰어에서 코드 줄 바꿈을 실행합니다</string>
     <string name="wrap_code_title">코드 줄 바꿈</string>
     <string name="open_source_libs">오픈소스 라이브러리</string>
     <string name="enable_notification_sound_summary">알림음을 활성화합니다</string>
@@ -330,15 +330,15 @@
     <string name="login_with_personal_token">개인 토큰으로 로그인</string>
     <string name="personal_token">개인 토큰</string>
     <string name="basic_login">기본 인증으로 로그인</string>
-    <string name="no_orgs_description">실제로 조직에 속해 있고 여기에서 볼 수 없다면 다음 링크를 따르십시오.
+    <string name="no_orgs_description">조직에 속해 있고 여기에서 볼 수 없다면 다음 링크를 따르세요.
         \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: 조직에 FastHub 엑세스 권한을 부여하고 액세스 토큰을 사용해서 로그인할 수 있습니다.\n또한 https://github.com/settings/applications에서 FastHub를 찾아 조직 액세스로 스크롤 한 다음 승인 버튼을 클릭하세요.</string>
     <string name="insert">삽입</string>
     <string name="select">선택</string>
     <string name="select_picture">사진 선택</string>
-    <string name="support_with_2_00">$2.00 지원</string>
-    <string name="support_with_5_00">$5.00 지원</string>
-    <string name="support_with_10_00">$10.00 지원</string>
-    <string name="support_with_20_00">$20.00 지원</string>
+    <string name="support_with_2_00">$2.00 기부</string>
+    <string name="support_with_5_00">$5.00 기부</string>
+    <string name="support_with_10_00">$10.00 기부</string>
+    <string name="support_with_20_00">$20.00 기부</string>
     <string name="app_language">언어</string>
     <string name="language">언어</string>
     <string name="choose_language_title">언어 선택</string>
@@ -347,7 +347,7 @@
     <string name="from">from</string>
     <string name="in_value">in</string>
     <string name="subscribe">구독</string>
-    <string name="repo_issues_is_disabled">이 저장소에서 이슈가 사용 중지되었습니다</string>
+    <string name="repo_issues_is_disabled">이슈가 비활성화된 저장소입니다</string>
     <string name="access_token">엑세스 토큰</string>
     <string name="basic_authentication">기본 인증</string>
     <string name="choose_your_login_type">로그인 종류 선택</string>
@@ -381,10 +381,10 @@
     <string name="edit_banner">배너 선택</string>
     <string name="image_error">이미지 불러오기 오류, 다시 시도하세요</string>
     <string name="trending">급상승</string>
-    <string name="not_really_working">GitHub 제한 때문에 emojies로 정렬이 실제로 작동하지 않습니다</string>
+    <string name="not_really_working">GitHub 제한 때문에 emojies로 정렬이 작동하지 않습니다</string>
     <string name="scroll_up">위로 스크롤</string>
     <string name="scroll_down">아래로 스크롤</string>
-    <string name="participated">참여됨</string>
+    <string name="participated">참여</string>
     <string name="todo_checked">모두 선택됨</string>
     <string name="todo_unchecked">모두 선택 취소됨</string>
     <string name="divider">구분선</string>
@@ -398,9 +398,9 @@
     <string name="assignee_added">담당자 추가 성공</string>
     <string name="reviewer_added">검토자 추가 성공</string>
     <string name="milestone_added">이정표 추가 성공</string>
-    <string name="feed">Feed</string>
+    <string name="feed">소식</string>
     <string name="premium_theme">프리미엄 테마</string>
-    <string name="choose_code_theme">코드 색상 표</string>
+    <string name="choose_code_theme">문법 강조기 테마</string>
     <string name="enterprise_login_warning">GitHub API의 모든 항목에 액세스하려면 GitHub 계정에 로그인하십시오. 
         그렇지 않으면 GitHub API로 전송 된 토큰은 엔터프라이즈 계정에서 전송되기 때문에 Enterprise GitHub가 아닌 
         다른 항목에 액세스 할 때마다 강제 로그아웃 될 수 있습니다.</string>
@@ -427,4 +427,12 @@
     <string name="app_animation_title">앱 애니메이션</string>
     <string name="app_animation_summary">모든 앱 애니메이션을 비활성화합니다</string>
     <string name="can_not_merge_pr">이 풀 리퀘스트는 현재 병합될 수 없습니다</string>
+    <string name="projects">프로젝트</string>
+    <string name="no_projects">프로젝트 없음</string>
+    <string name="no_cards">카드 없음</string>
+    <string name="card_added_by">%s %s가 추가함</string>
+    <string name="too_large_changes">변경사항이 너무 많습니다. 브라우저로 보세요</string>
+    <string name="project">프로젝트</string>
+    <string name="please_read">읽어주세요</string>
+    <string name="faq">자주하는 질문</string>
 </resources>
