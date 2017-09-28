@@ -23,6 +23,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 @AllArgsConstructor public class DrawableHandler extends TagNodeHandler {
 
     private TextView textView;
+    private int width;
 
     @SuppressWarnings("ConstantConditions") private boolean isNull() {
         return textView == null;
@@ -33,10 +34,9 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
         if (!InputHelper.isEmpty(src)) {
             builder.append("￼");
             if (isNull()) return;
-            CenterSpan centerSpan = new CenterSpan();
-            DrawableGetter imageGetter = new DrawableGetter(textView);
-            builder.setSpan(centerSpan, start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+            DrawableGetter imageGetter = new DrawableGetter(textView, width);
             builder.setSpan(new ImageSpan(imageGetter.getDrawable(src)), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new CenterSpan(), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
             appendNewLine(builder);
         }
     }

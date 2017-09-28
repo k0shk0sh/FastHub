@@ -37,6 +37,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     protected BaseMvp.FAView callback;
 
     @Nullable private Unbinder unbinder;
+    protected boolean suppressAnimation = false;
 
     @LayoutRes protected abstract int fragmentLayout();
 
@@ -71,6 +72,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void dismiss() {
+        if(suppressAnimation){
+            super.dismiss();
+            return;
+        }
         if (PrefGetter.isAppAnimationDisabled()) {
             super.dismiss();
         } else {

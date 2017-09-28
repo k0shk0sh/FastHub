@@ -47,6 +47,7 @@ class EmojiAdapter(listener: BaseViewHolder.OnItemClickListener<Emoji>)
                 return results
             }
 
+            @Suppress("UNCHECKED_CAST")
             override fun publishResults(var1: CharSequence, results: Filter.FilterResults) {
                 results.values?.let {
                     insertItems(it as List<Emoji>)

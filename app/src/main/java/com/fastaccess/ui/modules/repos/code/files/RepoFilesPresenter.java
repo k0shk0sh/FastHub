@@ -77,6 +77,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
                 .flatMap(response -> {
                     if (response != null && response.getItems() != null) {
                         return Observable.fromIterable(response.getItems())
+                                .filter(repoFile -> repoFile.getType() != null)
                                 .sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
                     }
                     return Observable.empty();

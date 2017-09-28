@@ -56,6 +56,10 @@
             android:icon="@drawable/ic_bug"
             android:title="@string/report_issue"/>
         <item
+            android:id="@+id/faq"
+            android:icon="@drawable/ic_info"
+            android:title="@string/faq"/>
+        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings"/>

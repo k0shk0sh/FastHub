@@ -8,6 +8,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,6 +18,7 @@ import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
@@ -72,6 +74,15 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
                                      @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
                                      String repoOwner, String poster) {
         super(itemView, adapter);
+        if (adapter != null && adapter.getRowWidth() == 0) {
+            itemView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override public boolean onPreDraw() {
+                    itemView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    adapter.setRowWidth(itemView.getWidth() - ViewHelper.dpToPx(itemView.getContext(), 48));
+                    return false;
+                }
+            });
+        }
         this.onToggleView = onToggleView;
         this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
@@ -108,24 +119,30 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
             avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser()
                     .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getHtmlUrl()));
             name.setText(commentModel.getUser().getLogin());
-            boolean isRepoOwner = TextUtils.equals(commentModel.getUser().getLogin(), repoOwner);
-            if (isRepoOwner) {
+            if (commentModel.getAuthorAssociation() != null && !"none".equalsIgnoreCase(commentModel.getAuthorAssociation())) {
+                owner.setText(commentModel.getAuthorAssociation().toLowerCase());
                 owner.setVisibility(View.VISIBLE);
-                owner.setText(R.string.owner);
             } else {
-                boolean isPoster = TextUtils.equals(commentModel.getUser().getLogin(), poster);
-                if (isPoster) {
+                boolean isRepoOwner = TextUtils.equals(commentModel.getUser().getLogin(), repoOwner);
+                if (isRepoOwner) {
                     owner.setVisibility(View.VISIBLE);
-                    owner.setText(R.string.original_poster);
+                    owner.setText(R.string.owner);
                 } else {
-                    owner.setText(null);
-                    owner.setVisibility(View.GONE);
+                    boolean isPoster = TextUtils.equals(commentModel.getUser().getLogin(), poster);
+                    if (isPoster) {
+                        owner.setVisibility(View.VISIBLE);
+                        owner.setText(R.string.original_poster);
+                    } else {
+                        owner.setText(null);
+                        owner.setVisibility(View.GONE);
+                    }
                 }
             }
         }
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(), viewGroup.getWidth());
+            int width = adapter != null ? adapter.getRowWidth() : 0;
+            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(),  width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }

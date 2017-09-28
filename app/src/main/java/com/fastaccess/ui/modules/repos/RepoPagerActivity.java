@@ -39,6 +39,7 @@ import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.scheme.LinkParserHelper;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -340,7 +341,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
         this.navType = navType;
         //noinspection WrongConstant
-        if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
+        try {
+            if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
+        } catch (Exception ignored) {}
         showHideFab();
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
@@ -367,8 +370,11 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
         showWhich = -1;
         setTaskName(getPresenter().getRepo().getFullName());
-        bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
+        if (repoModel.isHasProjects()) {
+            bottomNavigation.inflateMenu(R.menu.repo_with_project_bottom_nav_menu);
+        }
+        bottomNavigation.setOnMenuItemClickListener(getPresenter());
         if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
             tagsIcon.setVisibility(View.VISIBLE);
             topicsList.setAdapter(new TopicsAdapter(repoModel.getTopics()));
@@ -496,6 +502,10 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
     }
 
+    @Override public boolean isCollaborator() {
+        return getPresenter().isRepoOwner();
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.repo_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -529,7 +539,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         } else if (item.getItemId() == R.id.originalRepo) {
             if (getPresenter().getRepo() != null && getPresenter().getRepo().getParent() != null) {
                 Repo parent = getPresenter().getRepo().getParent();
-                RepoPagerActivity.startRepoPager(this, new NameParser(parent.getHtmlUrl()));
+                SchemeParser.launchUri(this, parent.getHtmlUrl());
             }
             return true;
         } else if (item.getItemId() == R.id.deleteRepo) {

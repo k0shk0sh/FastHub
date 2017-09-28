@@ -18,6 +18,6 @@ class ReviewChangesPresenter : BasePresenter<ReviewChangesMvp.View>(), ReviewCha
             } else {
                 sendToView { it.onErrorSubmitting() }
             }
-        })
+        }, false)
     }
 }

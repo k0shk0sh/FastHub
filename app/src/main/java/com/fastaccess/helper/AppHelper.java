@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,7 +35,9 @@ public class AppHelper {
 
     public static void hideKeyboard(@NonNull View view) {
         InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Nullable public static Fragment getFragmentByTag(@NonNull FragmentManager fragmentManager, @NonNull String tag) {
@@ -47,18 +50,25 @@ public class AppHelper {
 
     public static void cancelNotification(@NonNull Context context, int id) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(id);
+        if (notificationManager != null) {
+            notificationManager.cancel(id);
+        }
     }
 
     public static void cancelAllNotifications(@NonNull Context context) {
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
+        }
     }
 
     public static void copyToClipboard(@NonNull Context context, @NonNull String uri) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), uri);
-        clipboard.setPrimaryClip(clip);
-        Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(clip);
+            Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
+        }
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {
@@ -86,7 +96,7 @@ public class AppHelper {
         builder.append("- **Model:** ").append(model).append("  \n")
                 .append("---").append("\n\n");
         if (!Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
-            builder.append("<--")
+            builder.append("<!--")
                     .append(App.getInstance().getString(R.string.english_please))
                     .append("-->")
                     .append("\n");
@@ -169,5 +179,11 @@ public class AppHelper {
         }
         return applicationInfo != null && applicationInfo.enabled &&
                 GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    }
+
+    public static boolean isDeviceAnimationEnabled(@NonNull Context context) {
+        float duration = Settings.Global.getFloat(context.getContentResolver(), Settings.Global.ANIMATOR_DURATION_SCALE, 1);
+        float transition = Settings.Global.getFloat(context.getContentResolver(), Settings.Global.TRANSITION_ANIMATION_SCALE, 1);
+        return (duration != 0 && transition != 0);
     }
 }

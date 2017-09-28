@@ -40,6 +40,7 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -224,11 +225,9 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     }
 
     @Override public void onAddComment(@NonNull Comment newComment) {
-        if (pager != null && pager.getAdapter() != null) {
-            CommitCommentsFragment fragment = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
-            if (fragment != null) {
-                fragment.addComment(newComment);
-            }
+        CommitCommentsFragment fragment = getCommitCommentsFragment();
+        if (fragment != null) {
+            fragment.addComment(newComment);
         }
     }
 
@@ -246,15 +245,30 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     }
 
     @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
-        if (pager == null || pager.getAdapter() == null) return;
-        CommitCommentsFragment view = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
-        if (view != null) {
-            view.onHandleComment(text, bundle);
+        CommitCommentsFragment fragment = getCommitCommentsFragment();
+        if (fragment != null) {
+            fragment.onHandleComment(text, bundle);
         }
     }
 
     @Override public void onTagUser(@NonNull String username) {
         commentEditorFragment.onAddUserName(username);
+    }
+
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
+    }
+
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        CommitCommentsFragment fragment = getCommitCommentsFragment();
+        if (fragment != null) {
+            return fragment.getNamesToTags();
+        }
+        return new ArrayList<>();
     }
 
     private void hideShowFab() {
@@ -265,7 +279,9 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         }
     }
 
-    @Override public void onCreateComment(String text, Bundle bundle) {
-
+    private CommitCommentsFragment getCommitCommentsFragment() {
+        if (pager != null & pager.getAdapter() != null)
+            return (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+        return null;
     }
 }

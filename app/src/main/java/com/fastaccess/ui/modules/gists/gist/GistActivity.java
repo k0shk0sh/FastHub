@@ -40,6 +40,8 @@ import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -267,8 +269,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
-        if (pager == null || pager.getAdapter() == null) return;
-        GistCommentsFragment view = (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+        GistCommentsFragment view = getGistCommentsFragment();
         if (view != null) {
             view.onHandleComment(text, bundle);
         }
@@ -278,6 +279,24 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         commentEditorFragment.onAddUserName(username);
     }
 
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
+    }
+
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        GistCommentsFragment view = getGistCommentsFragment();
+        if (view != null) return view.getNamesToTag();
+        return new ArrayList<>();
+    }
+
+    @Nullable private GistCommentsFragment getGistCommentsFragment() {
+        if (pager == null || pager.getAdapter() == null) return null;
+        return (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+    }
 
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
@@ -285,9 +304,5 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         } else {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
-    }
-
-    @Override public void onCreateComment(String text, Bundle bundle) {
-
     }
 }

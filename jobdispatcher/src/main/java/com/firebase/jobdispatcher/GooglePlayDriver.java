@@ -20,7 +20,10 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+
 import com.firebase.jobdispatcher.FirebaseJobDispatcher.ScheduleResult;
 
 /**
@@ -28,7 +31,8 @@ import com.firebase.jobdispatcher.FirebaseJobDispatcher.ScheduleResult;
  * services installed. This backend does not do any availability checks and any uses should be
  * guarded with a call to {@code GoogleApiAvailability#isGooglePlayServicesAvailable(android.content.Context)}
  *
- * @see <a href="https://developers.google.com/android/reference/com/google/android/gms/common/GoogleApiAvailability#isGooglePlayServicesAvailable(android.content.Context)">GoogleApiAvailability</a>
+ * @see
+ * <a href="https://developers.google.com/android/reference/com/google/android/gms/common/GoogleApiAvailability#isGooglePlayServicesAvailable(android.content.Context)">GoogleApiAvailability</a>
  */
 public final class GooglePlayDriver implements Driver {
     static final String BACKEND_PACKAGE = "com.google.android.gms";
@@ -62,12 +66,6 @@ public final class GooglePlayDriver implements Driver {
      * Turns Jobs into Bundles.
      */
     private final GooglePlayJobWriter mWriter;
-    /**
-     * This is hardcoded to true to avoid putting an unnecessary dependency on the Google Play
-     * services library.
-     */
-    //TODO: this is an unsatisfying solution
-    private final boolean mAvailable = true;
 
     /**
      * Instantiates a new GooglePlayDriver.
@@ -81,8 +79,15 @@ public final class GooglePlayDriver implements Driver {
 
     @Override
     public boolean isAvailable() {
-        return mAvailable;
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = mContext.getPackageManager().getApplicationInfo(BACKEND_PACKAGE, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return applicationInfo != null && applicationInfo.enabled;
     }
+
 
     /**
      * Schedules the provided Job.

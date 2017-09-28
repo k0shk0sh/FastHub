@@ -193,7 +193,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         if (reactionsModel != null) {
             appendEmojies(reactionsModel);
         }
-        if (description != null && !description.trim().isEmpty()) {
+        if (!InputHelper.isEmpty(description)) {
             HtmlHelper.htmlIntoTextView(comment, description, viewGroup.getWidth());
         } else {
             comment.setText(R.string.no_description_provided);

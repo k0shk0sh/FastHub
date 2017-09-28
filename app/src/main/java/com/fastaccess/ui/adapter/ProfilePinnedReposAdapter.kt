@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import com.fastaccess.ui.adapter.viewholder.ProfilePinnedReposViewHolder
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
-import pr.GetPinnedReposQuery
+import github.GetPinnedReposQuery
 import java.text.NumberFormat
 
 /**

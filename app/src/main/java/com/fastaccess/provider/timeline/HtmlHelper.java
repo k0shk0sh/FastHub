@@ -1,9 +1,6 @@
 package com.fastaccess.provider.timeline;
 
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -11,11 +8,11 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.HapticFeedbackConstants;
-import android.view.ViewTreeObserver;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -47,16 +44,7 @@ public class HtmlHelper {
 
     public static void htmlIntoTextView(@NonNull TextView textView, @NonNull String html, int width) {
         registerClickEvent(textView);
-        if (textView.getMeasuredWidth() > 0) {
-            textView.setText(initHtml(textView, getActualWidth(textView)).fromHtml(format(html).toString()));
-        } else {
-            textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override public void onGlobalLayout() {
-                    textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    textView.setText(initHtml(textView, getActualWidth(textView)).fromHtml(format(html).toString()));
-                }
-            });
-        }
+        textView.setText(initHtml(textView, width).fromHtml(format(html).toString()));
     }
 
     private static void registerClickEvent(@NonNull TextView textView) {
@@ -71,9 +59,7 @@ public class HtmlHelper {
             menu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()) {
                     case R.id.copy:
-                        ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("URL", url);
-                        clipboard.setPrimaryClip(clip);
+                        AppHelper.copyToClipboard(view.getContext(), url);
                         return true;
                     case R.id.open:
                         SchemeParser.launchUri(view.getContext(), Uri.parse(url));
@@ -91,10 +77,6 @@ public class HtmlHelper {
         });
     }
 
-    private static int getActualWidth(TextView textView) {
-        return textView.getMeasuredWidth() - (convertDpToPx(textView.getContext(), 16));
-    }
-
     private static HtmlSpanner initHtml(@NonNull TextView textView, int width) {
         @PrefGetter.ThemeType int theme = PrefGetter.getThemeType();
         @ColorInt int windowBackground = getWindowBackground(theme);
@@ -104,7 +86,7 @@ public class HtmlHelper {
         mySpanner.setStripExtraWhiteSpace(true);
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, theme));
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, theme));
-        mySpanner.registerHandler("img", new DrawableHandler(textView));
+        mySpanner.registerHandler("img", new DrawableHandler(textView, width));
         mySpanner.registerHandler("g-emoji", new EmojiHandler());
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
@@ -124,23 +106,24 @@ public class HtmlHelper {
         mySpanner.registerHandler("hr", new HrHandler(windowBackground, width, false));
         mySpanner.registerHandler("emoji", new EmojiHandler());
         mySpanner.registerHandler("mention", new LinkHandler());
-        TableHandler tableHandler = new TableHandler();
-        tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
-        tableHandler.setTableWidth(width);
-        mySpanner.registerHandler("table", tableHandler);
+        if (width > 0) {
+            TableHandler tableHandler = new TableHandler();
+            tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
+            tableHandler.setTableWidth(width);
+            mySpanner.registerHandler("table", tableHandler);
+        }
         return mySpanner;
     }
 
     @ColorInt public static int getWindowBackground(@PrefGetter.ThemeType int theme) {
-        switch (theme) {
-            case PrefGetter.AMLOD:
-                return Color.parseColor("#0B162A");
-            case PrefGetter.BLUISH:
-                return Color.parseColor("#111C2C");
-            case PrefGetter.DARK:
-                return Color.parseColor("#22252A");
-            default:
-                return Color.parseColor("#EEEEEE");
+        if (theme == PrefGetter.AMLOD) {
+            return Color.parseColor("#0B162A");
+        } else if (theme == PrefGetter.BLUISH) {
+            return Color.parseColor("#111C2C");
+        } else if (theme == PrefGetter.DARK) {
+            return Color.parseColor("#22252A");
+        } else {
+            return Color.parseColor("#EEEEEE");
         }
     }
 
@@ -214,9 +197,4 @@ public class HtmlHelper {
             length = input.length();
         }
     }
-
-    private static int convertDpToPx(Context context, float dp) {
-        return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
-    }
-
 }

@@ -18,6 +18,7 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
+import com.fastaccess.provider.timeline.CommentsHelper
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -47,7 +48,6 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     @OnClick(R.id.sendComment) internal fun onComment() {
         if (!InputHelper.isEmpty(getEditText())) {
             commentListener?.onSendActionClicked(InputHelper.toString(getEditText()), arguments?.getBundle(BundleConstant.ITEM))
-            getEditText().setText("")
             ViewHelper.hideKeyboard(getEditText())
             arguments = null
         }
@@ -58,6 +58,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.FOR_RESULT_EXTRA)
                 .put(BundleConstant.EXTRA, getEditText().text.toString())
+                .putStringArrayList("participants", commentListener?.getNamesToTag())
                 .end())
         startActivityForResult(intent, BundleConstant.REQUEST_CODE)
     }
@@ -158,6 +159,8 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         fun onCreateComment(text: String, bundle: Bundle?) {}
         fun onSendActionClicked(text: String, bundle: Bundle?)
         fun onTagUser(username: String)
+        fun onClearEditText()
+        fun getNamesToTag(): ArrayList<String>?
     }
 
     companion object {
@@ -168,9 +171,5 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
             }
             return fragment
         }
-    }
-
-    fun hideSendButton() {
-        if (sendComment != null) sendComment.visibility = View.GONE
     }
 }

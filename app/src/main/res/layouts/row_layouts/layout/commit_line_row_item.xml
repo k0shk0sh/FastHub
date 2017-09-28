@@ -45,6 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_micro"
             android:fontFamily="monospace"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal"
             android:textColor="?android:textColorPrimary"
             tools:text="Per guest prepare a handfull teaspoons of soy sauce with squeezed sausages for dessert."/>
 

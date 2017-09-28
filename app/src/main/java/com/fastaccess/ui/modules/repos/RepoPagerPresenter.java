@@ -18,7 +18,10 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
+import com.fastaccess.ui.modules.repos.projects.RepoProjectsFragmentPager;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
+
+import io.reactivex.Observable;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 
@@ -34,20 +37,27 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State Repo repo;
     @com.evernote.android.state.State int navTyp;
+    @com.evernote.android.state.State boolean isCollaborator;
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
-        makeRestCall(RestProvider.getRepoService(isEnterprise()).getRepo(login(), repoId()), repoModel -> {
-            this.repo = repoModel;
-            manageDisposable(this.repo.save(repo));
-            updatePinned(repoModel);
-            sendToView(view -> {
-                view.onInitRepo();
-                view.onNavigationChanged(navTyp);
-            });
-            onCheckStarring();
-            onCheckWatching();
-        });
+        makeRestCall(Observable.zip(RestProvider.getRepoService(isEnterprise()).getRepo(login(), repoId()),
+                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
+                (repo1, booleanResponse) -> {
+                    isCollaborator = booleanResponse.code() == 204;
+                    return repo1;
+                }),
+                repoModel -> {
+                    this.repo = repoModel;
+                    manageDisposable(this.repo.save(repo));
+                    updatePinned(repoModel);
+                    sendToView(view -> {
+                        view.onInitRepo();
+                        view.onNavigationChanged(navTyp);
+                    });
+                    onCheckStarring();
+                    onCheckWatching();
+                });
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
@@ -100,7 +110,10 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     }
 
     @Override public boolean isRepoOwner() {
-        return (getRepo() != null && getRepo().getOwner() != null) && getRepo().getOwner().getLogin().equals(Login.getUser().getLogin());
+        if (getRepo() != null && getRepo().getOwner() != null) {
+            return getRepo().getOwner().getLogin().equals(Login.getUser().getLogin()) || isCollaborator;
+        }
+        return false;
     }
 
     @Override public void onWatch() {
@@ -185,6 +198,8 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 AppHelper.getFragmentByTag(fragmentManager, RepoIssuesPagerFragment.TAG);
         RepoPullRequestPagerFragment pullRequestPagerView = (RepoPullRequestPagerFragment)
                 AppHelper.getFragmentByTag(fragmentManager, RepoPullRequestPagerFragment.TAG);
+        RepoProjectsFragmentPager projectsFragmentPager = (RepoProjectsFragmentPager) AppHelper.getFragmentByTag(fragmentManager,
+                RepoProjectsFragmentPager.Companion.getTAG());
         if (getRepo() == null) {
             sendToView(RepoPagerMvp.View::onFinishActivity);
             return;
@@ -217,6 +232,13 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                     onAddAndHide(fragmentManager, RepoPullRequestPagerFragment.newInstance(repoId(), login()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestPagerView, currentVisible);
+                }
+                break;
+            case RepoPagerMvp.PROJECTS:
+                if (projectsFragmentPager == null) {
+                    onAddAndHide(fragmentManager, RepoProjectsFragmentPager.Companion.newInstance(repoId(), login()), currentVisible);
+                } else {
+                    onShowHideFragment(fragmentManager, projectsFragmentPager, currentVisible);
                 }
                 break;
         }

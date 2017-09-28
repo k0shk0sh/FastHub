@@ -35,6 +35,7 @@ class MarkDownLayout : LinearLayout {
     var markdownListener: MarkdownListener? = null
 
     @BindView(R.id.editorIconsHolder) lateinit var editorIconsHolder: HorizontalScrollView
+    @BindView(R.id.addEmoji) lateinit var addEmojiView: View
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -61,12 +62,14 @@ class MarkDownLayout : LinearLayout {
                     editText.isEnabled = false
                     MarkDownProvider.setMdText(editText, InputHelper.toString(editText))
                     editorIconsHolder.visibility = View.INVISIBLE
+                    addEmojiView.visibility = View.INVISIBLE
                     ViewHelper.hideKeyboard(editText)
                 } else {
                     editText.setText(it.getSavedText())
                     editText.setSelection(editText.text.length)
                     editText.isEnabled = true
                     editorIconsHolder.visibility = View.VISIBLE
+                    addEmojiView.visibility = View.VISIBLE
                     ViewHelper.showKeyboard(editText)
                 }
             }
@@ -84,8 +87,10 @@ class MarkDownLayout : LinearLayout {
                     Snackbar.make(this, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show()
                 } else {
                     when {
-                        v.id == R.id.link -> EditorLinkImageDialogFragment.newInstance(true).show(it.fragmentManager(), "BannerDialogFragment")
-                        v.id == R.id.image -> EditorLinkImageDialogFragment.newInstance(false).show(it.fragmentManager(), "BannerDialogFragment")
+                        v.id == R.id.link -> EditorLinkImageDialogFragment.newInstance(true)
+                                .show(it.fragmentManager(), "EditorLinkImageDialogFragment")
+                        v.id == R.id.image -> EditorLinkImageDialogFragment.newInstance(false)
+                                .show(it.fragmentManager(), "EditorLinkImageDialogFragment")
                         v.id == R.id.addEmoji -> {
                             ViewHelper.hideKeyboard(it.getEditText())
                             EmojiBottomSheet().show(it.fragmentManager(), "EmojiBottomSheet")
@@ -137,12 +142,7 @@ class MarkDownLayout : LinearLayout {
         markdownListener?.getEditText()?.let { editText ->
             ViewHelper.showKeyboard(editText)
             emoji?.let {
-                editText.setText(if (editText.text.isNullOrEmpty()) {
-                    ":${it.aliases[0]}:"
-                } else {
-                    "${editText.text} :${it.aliases[0]}:"
-                })
-                editText.setSelection(editText.text.length)
+                MarkDownProvider.insertAtCursor(editText, ":${it.aliases[0]}:")
             }
         }
     }
@@ -158,7 +158,6 @@ class MarkDownLayout : LinearLayout {
             if (isLink) {
                 MarkDownProvider.addLink(it.getEditText(), InputHelper.toString(title), InputHelper.toString(link))
             } else {
-                it.getEditText().setText(String.format("%s\n", it.getEditText().text))
                 MarkDownProvider.addPhoto(it.getEditText(), InputHelper.toString(title), InputHelper.toString(link))
             }
         }

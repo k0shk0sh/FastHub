@@ -18,6 +18,7 @@ import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.data.service.OrganizationService;
+import com.fastaccess.data.service.ProjectsService;
 import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
@@ -190,6 +191,10 @@ public class RestProvider {
 
     @NonNull public static ContentService getContentService(boolean enterprise) {
         return provideRetrofit(enterprise).create(ContentService.class);
+    }
+
+    @NonNull public static ProjectsService getProjectsService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(ProjectsService.class);
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {

@@ -10,8 +10,8 @@ import com.fastaccess.helper.ParseDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import pr.PullRequestTimelineQuery;
-import pr.type.PullRequestReviewState;
+import github.PullRequestTimelineQuery;
+import github.type.PullRequestReviewState;
 
 /**
  * Created by kosh on 20/08/2017.

@@ -30,8 +30,8 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import java.util.List;
 
 import butterknife.BindView;
-import pr.PullRequestTimelineQuery;
-import pr.type.ReactionContent;
+import github.PullRequestTimelineQuery;
+import github.type.ReactionContent;
 
 /**
  * Created by Kosh on 11 Nov 2016, 2:08 PM

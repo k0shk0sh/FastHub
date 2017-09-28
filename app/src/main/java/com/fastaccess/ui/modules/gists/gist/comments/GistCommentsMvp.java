@@ -40,6 +40,10 @@ interface GistCommentsMvp {
         void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
 
         void onAddNewComment(@NonNull Comment comment);
+
+        @NonNull ArrayList<String> getNamesToTag();
+
+        void hideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

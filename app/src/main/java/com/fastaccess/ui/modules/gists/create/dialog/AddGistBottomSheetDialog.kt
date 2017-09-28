@@ -40,9 +40,9 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        when {
-            parentFragment is AddGistFileListener -> addFileListener = parentFragment as AddGistFileListener
-            context is AddGistFileListener -> addFileListener = context
+        addFileListener = when {
+            parentFragment is AddGistFileListener -> parentFragment as AddGistFileListener
+            context is AddGistFileListener -> context
             else -> throw NullPointerException("${context::class.java.simpleName} most implement AddGistFileListener")
         }
     }
@@ -53,7 +53,7 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

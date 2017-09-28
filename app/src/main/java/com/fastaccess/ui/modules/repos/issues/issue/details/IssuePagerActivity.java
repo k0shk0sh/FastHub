@@ -46,6 +46,7 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -256,7 +257,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         }
         updateViews(issueModel);
         if (isUpdate) {
-            IssueTimelineFragment issueDetailsView = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+            IssueTimelineFragment issueDetailsView = getIssueTimelineFragment();
             if (issueDetailsView != null && getPresenter().getIssue() != null) {
                 issueDetailsView.onUpdateHeader();
             }
@@ -301,8 +302,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     @Override public void onUpdateTimeline() {
-        if (pager == null || pager.getAdapter() == null) return;
-        IssueTimelineFragment issueDetailsView = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+        IssueTimelineFragment issueDetailsView = getIssueTimelineFragment();
         if (issueDetailsView != null && getPresenter().getIssue() != null) {
             issueDetailsView.onRefresh();
         }
@@ -362,12 +362,15 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     @Override public void onSendActionClicked(@NonNull String text, @Nullable Bundle bundle) {
-        if (pager != null && pager.getAdapter() != null) {
-            IssueTimelineFragment fragment = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-            if (fragment != null) {
-                fragment.onHandleComment(text, bundle);
-            }
+        IssueTimelineFragment fragment = getIssueTimelineFragment();
+        if (fragment != null) {
+            fragment.onHandleComment(text, bundle);
         }
+    }
+
+    private IssueTimelineFragment getIssueTimelineFragment() {
+        if (pager == null || pager.getAdapter() == null) return null;
+        return (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
     }
 
     @Override public void onTagUser(@NonNull String username) {
@@ -375,6 +378,18 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     @Override public void onCreateComment(String text, Bundle bundle) {}
+
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        IssueTimelineFragment fragment = getIssueTimelineFragment();
+        if (fragment != null) {
+            return fragment.getNamesToTag();
+        }
+        return new ArrayList<>();
+    }
 
     private void hideShowFab() {
         if (getPresenter().isLocked() && !getPresenter().isOwner()) {

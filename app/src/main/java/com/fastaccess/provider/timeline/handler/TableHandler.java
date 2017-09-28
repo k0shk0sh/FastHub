@@ -85,8 +85,7 @@ public class TableHandler extends TagNodeHandler {
         this.typeFace = typeFace;
     }
 
-    @Override
-    public boolean rendersContent() {
+    @Override public boolean rendersContent() {
         return true;
     }
 
@@ -144,12 +143,13 @@ public class TableHandler extends TagNodeHandler {
 
         int rowHeight = 0;
 
-        for (Spanned cell : row) {
-            StaticLayout layout = new StaticLayout(cell, textPaint, columnWidth
-                    - 2 * PADDING, Alignment.ALIGN_NORMAL, 1f, 0f, true);
-
-            if (layout.getHeight() > rowHeight) {
-                rowHeight = layout.getHeight();
+        if (columnWidth > 0) {
+            for (Spanned cell : row) {
+                StaticLayout layout = new StaticLayout(cell, textPaint, columnWidth
+                        - 2 * PADDING, Alignment.ALIGN_NORMAL, 1f, 0f, true);
+                if (layout.getHeight() > rowHeight) {
+                    rowHeight = layout.getHeight();
+                }
             }
         }
 
@@ -157,6 +157,7 @@ public class TableHandler extends TagNodeHandler {
     }
 
     @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
+        builder.append("\n");
         Table table = getTable(node);
         for (int i = 0; i < table.getRows().size(); i++) {
             List<Spanned> row = table.getRows().get(i);

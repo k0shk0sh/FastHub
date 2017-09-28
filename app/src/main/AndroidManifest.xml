@@ -249,6 +249,15 @@
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
+        <activity
+            android:name="com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity"
+            android:label="@string/project"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
@@ -288,6 +297,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.modules.main.playstore.PlayStoreWarningActivity"/>
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"

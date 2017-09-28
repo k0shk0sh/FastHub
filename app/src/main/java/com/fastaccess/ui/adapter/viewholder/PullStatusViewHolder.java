@@ -45,7 +45,7 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
     }
 
     @Override public void bind(@NonNull PullRequestStatusModel pullRequestStatusModel) {
-        Logger.e(pullRequestStatusModel.getState());
+        Logger.e(pullRequestStatusModel.getState(), pullRequestStatusModel.isMergable());
         if (pullRequestStatusModel.getState() != null) {
             StatusStateType stateType = pullRequestStatusModel.getState();
             stateImage.setImageResource(stateType.getDrawableRes());
