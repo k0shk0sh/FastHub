@@ -2,6 +2,7 @@ package com.fastaccess.data.dao;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.annimon.stream.Collectors;
@@ -239,7 +240,7 @@ import lombok.Setter;
                 .toList();
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForRepoProjects(@NonNull Context context, @NonNull String repoId,
+    @NonNull public static List<FragmentPagerAdapterModel> buildForRepoProjects(@NonNull Context context, @Nullable String repoId,
                                                                                 @NonNull String login) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open),
                         RepoProjectFragment.Companion.newInstance(login, repoId, IssueState.open)),

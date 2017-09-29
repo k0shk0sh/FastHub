@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.markdown.extension.emoji.EmojiExtension;
 import com.fastaccess.provider.markdown.extension.mention.MentionExtension;
 import com.fastaccess.provider.timeline.HtmlHelper;
@@ -256,17 +257,9 @@ public class MarkDownProvider {
 
     }
 
-    public static void addPhoto(@NonNull EditText editText) {
-        addLink(editText, "", "");
-    }
-
     public static void addPhoto(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
         String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")";
         insertAtCursor(editText, result);
-    }
-
-    public static void addLink(@NonNull EditText editText) {
-        addLink(editText, "", "");
     }
 
     public static void addLink(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
@@ -319,10 +312,17 @@ public class MarkDownProvider {
 
     public static void insertAtCursor(@NonNull EditText editText, @NonNull String text) {
         String oriContent = editText.getText().toString();
-        int index = editText.getSelectionStart() >= 0 ? editText.getSelectionStart() : 0;
-        StringBuilder builder = new StringBuilder(oriContent);
-        builder.insert(index, text);
-        editText.setText(builder.toString());
-        editText.setSelection(index + text.length());
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+        int index = start >= 0 ? start : 0;
+        Logger.e(start, end);
+        if (start >= 0 && end > 0) {
+            editText.setText(editText.getText().replace(start, end, text));
+        } else {
+            StringBuilder builder = new StringBuilder(oriContent);
+            builder.insert(index, text);
+            editText.setText(builder.toString());
+            editText.setSelection(index + text.length());
+        }
     }
 }

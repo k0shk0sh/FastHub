@@ -77,6 +77,7 @@
                     android:gravity="center|start"
                     android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:visibility="gone"
                     tools:text="Cum classis nocere"/>
 
 
@@ -92,6 +93,7 @@
                     android:gravity="center|start"
                     android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:visibility="gone"
                     tools:text="Cum classis nocere"/>
 
                 <com.fastaccess.ui.widgets.FontTextView
@@ -106,6 +108,7 @@
                     android:gravity="center|start"
                     android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:visibility="gone"
                     tools:text="Cum classis nocere"/>
 
 
@@ -120,7 +123,24 @@
                     android:gravity="center|start"
                     android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:visibility="gone"
                     tools:text="Cum classis nocere"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/projects"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/top_border"
+                    android:drawablePadding="@dimen/spacing_xs_large"
+                    android:drawableStart="@drawable/ic_project"
+                    android:gravity="center|start"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large"
+                    android:text="@string/projects"
+                    android:textColor="?colorAccent"
+                    android:visibility="gone"
+                    app:drawableColor="?colorAccent"/>
 
             </LinearLayout>
 

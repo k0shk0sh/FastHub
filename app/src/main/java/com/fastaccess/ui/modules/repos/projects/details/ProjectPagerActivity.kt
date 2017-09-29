@@ -18,6 +18,7 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.repos.RepoPagerActivity
+import com.fastaccess.ui.modules.user.UserPagerActivity
 import com.fastaccess.ui.widgets.CardsPagerTransformerBasic
 
 /**
@@ -76,12 +77,17 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
-                if (!presenter.login.isBlank() && !presenter.repoId.isBlank()) {
-                    val nameParse = NameParser("")
-                    nameParse.name = presenter.repoId
-                    nameParse.username = presenter.login
-                    nameParse.isEnterprise = isEnterprise
-                    RepoPagerActivity.startRepoPager(this, nameParse)
+                val repoId = presenter.repoId
+                if (repoId != null && !repoId.isNullOrBlank()) {
+                    if (!presenter.login.isBlank()) {
+                        val nameParse = NameParser("")
+                        nameParse.name = presenter.repoId
+                        nameParse.username = presenter.login
+                        nameParse.isEnterprise = isEnterprise
+                        RepoPagerActivity.startRepoPager(this, nameParse)
+                    }
+                } else if (!presenter.login.isBlank()) {
+                    UserPagerActivity.startActivity(this, presenter.login, true, isEnterprise, 0)
                 }
                 finish()
                 true
@@ -112,7 +118,11 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
         } else {
             onInitPager(presenter.getColumns())
         }
-        toolbar?.subtitle = "${presenter.login}/${presenter.repoId}"
+        if (presenter.repoId.isNullOrBlank()) {
+            toolbar?.subtitle = presenter.login
+        } else {
+            toolbar?.subtitle = "${presenter.login}/${presenter.repoId}"
+        }
     }
 
     override fun onDeletePage(model: ProjectColumnModel) {
@@ -121,11 +131,11 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
     }
 
     companion object {
-        fun startActivity(context: Context, login: String, repoId: String, projectId: Long, isEnterprise: Boolean = false) {
+        fun startActivity(context: Context, login: String, repoId: String? = null, projectId: Long, isEnterprise: Boolean = false) {
             context.startActivity(getIntent(context, login, repoId, projectId, isEnterprise))
         }
 
-        fun getIntent(context: Context, login: String, repoId: String, projectId: Long, isEnterprise: Boolean = false): Intent {
+        fun getIntent(context: Context, login: String, repoId: String? = null, projectId: Long, isEnterprise: Boolean = false): Intent {
             val intent = Intent(context, ProjectPagerActivity::class.java)
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.ID, projectId)

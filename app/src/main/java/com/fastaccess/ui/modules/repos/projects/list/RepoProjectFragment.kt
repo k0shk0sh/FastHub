@@ -134,7 +134,7 @@ class RepoProjectFragment : BaseFragment<RepoProjectMvp.View, RepoProjectPresent
     private fun getState(): IssueState = arguments.getSerializable(BundleConstant.EXTRA_TYPE) as IssueState
 
     companion object {
-        fun newInstance(login: String, repoId: String, state: IssueState): RepoProjectFragment {
+        fun newInstance(login: String, repoId: String? = null, state: IssueState): RepoProjectFragment {
             val fragment = RepoProjectFragment()
             fragment.arguments = Bundler.start()
                     .put(BundleConstant.ID, repoId)

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.View;
+import android.view.Window;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.Bundler;
@@ -54,7 +55,11 @@ public class ProgressDialogFragment extends BaseDialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.setCancelable(false);
         setCancelable(false);
-        if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setDimAmount(0);
+        }
         return dialog;
     }
 

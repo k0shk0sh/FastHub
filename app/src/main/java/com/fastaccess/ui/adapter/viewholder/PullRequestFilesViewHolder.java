@@ -108,8 +108,13 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
                     if (model.getLinesModel().size() <= 100) {
                         patch.setAdapter(new CommitLinesAdapter(model.getLinesModel(), this));
                         patch.setVisibility(View.VISIBLE);
+                    } else if (CommitFileChanges.canAttachToBundle(model)) {
+                        if (adapter.getListener() != null) {
+                            //noinspection unchecked
+                            adapter.getListener().onItemClick(position, patch, model);
+                        }
                     } else {
-                        Toasty.warning(itemView.getContext(),itemView.getResources().getString(R.string.too_large_changes)).show();
+                        Toasty.warning(itemView.getContext(), itemView.getResources().getString(R.string.too_large_changes)).show();
                         return;
                     }
                 } else {

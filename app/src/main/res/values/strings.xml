@@ -154,7 +154,7 @@
     <string name="user">User</string>
     <string name="details">Details</string>
     <string name="archive_file_detected_error">Archive file detected, please download the file to view its content.</string>
-    <string name="minimum_three_chars">Minimum characters (3)</string>
+    <string name="minimum_three_chars">Minimum characters (2)</string>
     <string name="no_file_found">No file found</string>
     <string name="no_readme_found">No readme found</string>
     <string name="downloading">Downloading…</string>
@@ -611,4 +611,5 @@
         </p>
     ]]></string>
     <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Comments added successfully</string>
 </resources>

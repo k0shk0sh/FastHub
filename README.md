@@ -31,9 +31,11 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
   - FastHub & GitHub Pinned Repos
   - Trending
   - Wiki
+  - Projects
 - **Repositories**
   - Browse & Read Wiki
   - Edit, Create & Delete files (commit)
+  - Edit, Create & Delete files (Project Columns Cards)
   - Search Repos
   - Browse and search Repos
   - See your public, private and forked Repos
