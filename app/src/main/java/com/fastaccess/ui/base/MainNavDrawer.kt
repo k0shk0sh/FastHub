@@ -39,13 +39,13 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
     : BaseViewHolder.OnItemClickListener<Login> {
 
     private var menusHolder: ViewGroup? = null
-    private val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
-    private val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+    private val togglePinned: View? = view.findViewById(R.id.togglePinned)
+    private val pinnedList: DynamicRecyclerView? = view.findViewById(R.id.pinnedList)
     private val pinnedListAdapter = PinnedReposAdapter(true)
     private val userModel: Login? = Login.getUser()
 
     init {
-        menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)
+        menusHolder = view.findViewById(R.id.menusHolder)
         pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
             override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
                 if (v != null && item != null) {
