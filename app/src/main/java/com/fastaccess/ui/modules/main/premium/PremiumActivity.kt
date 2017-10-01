@@ -16,7 +16,6 @@ import com.fastaccess.BuildConfig
 import com.fastaccess.R
 import com.fastaccess.helper.AppHelper
 import com.fastaccess.helper.InputHelper
-import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.fabric.FabricProvider
 import com.fastaccess.ui.base.BaseActivity
@@ -76,7 +75,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
         return true
     }
 
-    @OnClick(R.id.close) fun onClose(): Unit = finish()
+    @OnClick(R.id.close) fun onClose() = finish()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -97,8 +96,6 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
             override fun onAnimationRepeat(p0: Animator?) {}
             override fun onAnimationEnd(p0: Animator?) {
                 FabricProvider.logPurchase(InputHelper.toString(editText))
-                PrefGetter.setProItems()
-                PrefGetter.setEnterpriseItem()
                 showMessage(R.string.success, R.string.success)
                 successResult()
             }

@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.main.premium
 
-import com.fastaccess.helper.Logger
+import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.github.b3er.rxfirebase.database.data
@@ -26,13 +26,20 @@ class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter 
                         val map = it.getValue(gti)
                         exists = map?.contains(promo)
                     }
-                    Logger.e(it.children, it.childrenCount, exists)
                     return@flatMap Observable.just(exists)
                 }
                 .doOnComplete { sendToView { it.hideProgress() } }
                 .subscribe({
                     when (it) {
-                        true -> sendToView { it.onSuccessfullyActivated() }
+                        true -> sendToView {
+                            if (promo.contains("student")) {
+                                PrefGetter.setProItems()
+                            } else {
+                                PrefGetter.setProItems()
+                                PrefGetter.setEnterpriseItem()
+                            }
+                            it.onSuccessfullyActivated()
+                        }
                         else -> sendToView { it.onNoMatch() }
                     }
                 }, ::println))

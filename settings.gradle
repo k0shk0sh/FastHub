@@ -1,1 +1,1 @@
-include ':app', ':jobdispatcher'
+include ':app'
