@@ -217,10 +217,10 @@
     <string name="author">Autor</string>
     <string name="fork_github">Fork en GitHub</string>
     <string name="send_email">Enviar un email</string>
-    <string name="question_concerning_fasthub">¿Tenés preguntas sobre FastHub?</string>
+    <string name="question_concerning_fasthub">¿Tienes preguntas sobre FastHub?</string>
     <string name="feedback">Comentarios</string>
     <string name="report_issue">Reportar un error</string>
-    <string name="report_issue_here">¿Tenés un problema? Reportalo aquí</string>
+    <string name="report_issue_here">¿Tienes un problema? Repórtalo aquí</string>
     <string name="about">Acerca de</string>
     <string name="notification_settings">Notificación</string>
     <string name="turn_off">Apagar</string>
