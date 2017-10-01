@@ -433,6 +433,36 @@
     <string name="card_added_by">%s %s가 추가함</string>
     <string name="too_large_changes">변경사항이 너무 많습니다. 브라우저로 보세요</string>
     <string name="project">프로젝트</string>
-    <string name="please_read">읽어주세요</string>
+    <string name="please_read">꼭 읽어주세요</string>
     <string name="faq">자주하는 질문</string>
+    <string name="comments_added_successfully">댓글을 성공적으로 추가하였습니다.</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• 왜 <i>Private</i> 이나 <i>Public</i>으로 되어진 제 <b>Organizations</b> 을 볼 수 없나요?</h5>
+        <p>Open up https://github.com/settings/applications 를 열고 Fasthub라는 것을 찾아보세요. 그것을 열고, Organization access 부분에서 Grant를 눌러주세요. 또는 초기 로그인시 <b>엑세스 토큰</b> 으로 로그인하면 편리합니다.</p>
+        <h5>• Access Token &amp; OTP 으로 로그인을 시도했는데 로그인이 되질 않아요...</h5>
+        <p>OTP는 일회용 코드입니다. 따리서 유효기간에 인해 엑세스 토큰 + OTP로 로그인이 불가합니다. 이렇게 로그인을 하게 되면 몇 초에 한 번씩 앱이 로그인을 하라고 합니다. 다른 방법을 사용해 주세요.</p>
+        <h5>• 제 비공개 리포지토리와 엔터프라이즈 위키가 보이질 않아요!</h5>
+        <p>위 두 정보를 스크랩하려면 특별한 세션 토큰이 필요한데 본 앱을 이 토큰을 받을 수 없습니다. 깃허브 API의 한계이므로 API문의는 깃허브에게 해주세요. 본 앱의 개발자는 API문의를 받지 않습니다.</p>
+        <h5>• 제가 엔터프라이즈 계정으로 로그인했는데 Enterprise GitHub 외의 다른 것들은 볼 수 없나요?</h5>\n
+        <p>결론부터 말하자면 불가능합니다. 본 앱은 여러분이 다른 것들을 볼 수 있게 해 주고 있지만, 기술적 한계로 크게 도움을 드릴 수는 없습니다. 대부분의 경우에는 여러분의 로그인 계정이 깃허브 서버에 상주하고 있기 때문입니다. 그러나 <b>소수/b>의 경우에는 여러분의 OAuth 토큰이 다른 활동을 하게 해 줄 수 있습니다.</p>
+        <h5>• Why am I having problems editing Issues/PRs?</h5>
+        <p>If you are editing a public Org repo, then please contact your Org to grant access to FastHub or use Access Token to login!.</p>
+        <h5>• I\'m having this issue or I want this &amp; that!!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to
+        search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
+        <h5>• How do I get PROMO CODE?</h5>
+        <p>If you are a student, you\'ll have to provide me via Email that you are student, you will need below documents:</p>
+        <ul>
+        <li>Your university identity card & your identity card (that shows your name & your face to compare it!)</li>
+        <li>Your university start & end date</li>
+        <li>Rate FastHub in the Play Store</li>
+        </ul>
+        <p>If you aren\'t a student and you can\'t afford to pay for PRO, you\'ll need:</p>
+        <ul>
+        <li>Write an article about FastHub in social media such as (Medium)</li>
+        <li>Rate FastHub in the Play Store</li>
+        </ul>
+        <h5>본 한국어 번역자는 이 앱의 개발에 참여하지 않았습니다. 따라서 기술적 문의는 이 앱의 개발자인 Kosh Sergani에게 해주시기 바랍니다. 본 번역이 앱 사용에 도움이 되셨기를 바랍니다. 감사합니다.</h5>
+    
 </resources>
