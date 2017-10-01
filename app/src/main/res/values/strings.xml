@@ -589,26 +589,9 @@
         <h5>• Why am I having problems editing Issues/PRs?</h5>
         <p>If you are editing a public Org repo, then please contact your Org to grant access to FastHub or use Access Token to login!.</p>
 
-        <h5>• I\'m blocked from using FastHub, WHY?</h5>
-        <p>Simply, because you have rated FastHub low and requested things via the play store and after I responded you did not update your review. If the app is no good,
-         why would you want to keep using it anyway?</p>
-
         <h5>• I\'m having this issue or I want this &amp; that!!</h5>
         <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to
         search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
-
-        <i><font color="red">Message from the developer of FastHub,</font></i>\n
-
-        <h3>Hello Dear Developers,</h3>\n
-        <p style="text-align:justify;">
-            As you might know <b>FastHub</b> is an open source App &amp; has grow so fast and that\'s because of the help from the community and you
-            guys.\nReviewing <b>FastHub</b> low in the PlayStore because you want to report an issue or request any feature will result to it being
-            ignored.\nAs developers I think we understand how much effort does it take to make an App like <b>FastHub</b>.\nSome don\'t get that at all
-            and instead of reporting issues/features in <b>FastHub</b>\'s repo they rate FastHub low in the PlayStore thinking that this will force
-            the developer (ME) to implement and fix their stuff so they update their review, but this doesn\'t happen, instead they either never
-            update their review or they\'ll request something else <i>(so typical)</i>.\nPlease report Issues &amp; Feature requests in the FastHub repo, open
-            up the drawer menu &amp; click on the Report Issue &amp; it\'ll be posted directly to FastHub repo where I can help/assist you.
-        </p>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Comments added successfully</string>

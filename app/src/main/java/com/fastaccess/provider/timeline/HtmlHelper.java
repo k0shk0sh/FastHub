@@ -19,6 +19,7 @@ import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.handler.BetterLinkMovementExtended;
 import com.fastaccess.provider.timeline.handler.DrawableHandler;
 import com.fastaccess.provider.timeline.handler.EmojiHandler;
+import com.fastaccess.provider.timeline.handler.HeaderHandler;
 import com.fastaccess.provider.timeline.handler.HrHandler;
 import com.fastaccess.provider.timeline.handler.ItalicHandler;
 import com.fastaccess.provider.timeline.handler.LinkHandler;
@@ -106,6 +107,12 @@ public class HtmlHelper {
         mySpanner.registerHandler("hr", new HrHandler(windowBackground, width, false));
         mySpanner.registerHandler("emoji", new EmojiHandler());
         mySpanner.registerHandler("mention", new LinkHandler());
+        mySpanner.registerHandler("h1", new HeaderHandler(1.5F));
+        mySpanner.registerHandler("h2", new HeaderHandler(1.4F));
+        mySpanner.registerHandler("h3", new HeaderHandler(1.3F));
+        mySpanner.registerHandler("h4", new HeaderHandler(1.2F));
+        mySpanner.registerHandler("h5", new HeaderHandler(1.1F));
+        mySpanner.registerHandler("h6", new HeaderHandler(1.0F));
         if (width > 0) {
             TableHandler tableHandler = new TableHandler();
             tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));

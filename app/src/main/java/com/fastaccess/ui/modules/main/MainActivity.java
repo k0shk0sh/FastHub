@@ -34,7 +34,6 @@ import butterknife.OnClick;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
 
-@Shortcut(id = "feeds", icon = R.drawable.ic_app_shortcut_github, shortLabelRes = R.string.feeds, rank = 1)
 public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
     @State @MainMvp.NavigationType int navType = MainMvp.FEEDS;

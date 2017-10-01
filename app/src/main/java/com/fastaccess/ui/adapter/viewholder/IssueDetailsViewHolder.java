@@ -1,5 +1,6 @@
 package com.fastaccess.ui.adapter.viewholder;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.ChangeBounds;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Issue;
@@ -17,6 +19,7 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
@@ -25,11 +28,13 @@ import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -56,6 +61,8 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.emojiesList) View emojiesList;
     @BindView(R.id.reactionsText) TextView reactionsText;
     @BindView(R.id.owner) TextView owner;
+    @BindView(R.id.labels) TextView labels;
+    @BindView(R.id.labelsHolder) View labelsHolder;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
     private ViewGroup viewGroup;
@@ -172,11 +179,13 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     private void bind(@NonNull Issue issueModel) {
         setup(issueModel.getUser(), issueModel.getBodyHtml(), issueModel.getReactions());
         setupDate(issueModel.getCreatedAt(), issueModel.getUpdatedAt());
+        setupLabels(issueModel.getLabels());
     }
 
     private void bind(@NonNull PullRequest pullRequest) {
         setup(pullRequest.getUser(), pullRequest.getBodyHtml(), pullRequest.getReactions());
         setupDate(pullRequest.getCreatedAt(), pullRequest.getUpdatedAt());
+        setupLabels(pullRequest.getLabels());
     }
 
     private void setup(User user, String description, ReactionsModel reactionsModel) {
@@ -194,7 +203,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
             appendEmojies(reactionsModel);
         }
         if (!InputHelper.isEmpty(description)) {
-            HtmlHelper.htmlIntoTextView(comment, description, viewGroup.getWidth());
+            HtmlHelper.htmlIntoTextView(comment, description, viewGroup.getWidth() - ViewHelper.dpToPx(itemView.getContext(), 24));
         } else {
             comment.setText(R.string.no_description_provided);
         }
@@ -202,6 +211,21 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
 
     private void setupDate(@NonNull Date createdDate, @NonNull Date updated) {
         date.setText(ParseDateFormat.getTimeAgo(createdDate));
+    }
+
+    private void setupLabels(@Nullable List<LabelModel> labelList) {
+        if (labelList != null && !labelList.isEmpty()) {
+            SpannableBuilder builder = SpannableBuilder.builder();
+            for (LabelModel labelModel : labelList) {
+                int color = Color.parseColor("#" + labelModel.getColor());
+                builder.append(" ").append(" " + labelModel.getName() + " ", new LabelSpan(color));
+            }
+            labels.setText(builder);
+            labelsHolder.setVisibility(View.VISIBLE);
+        } else {
+            labels.setText("");
+            labelsHolder.setVisibility(View.GONE);
+        }
     }
 
     private void appendEmojies(@NonNull ReactionsModel reaction) {
