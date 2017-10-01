@@ -67,7 +67,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
   - Edit Gist & Gist Files
   - React to Commit comments with reactions
   - Comment on line number in Files/Code changes.
-- **Orgs**
+- **Organisations**
     - Overview
     - Feeds
     - Teams & Teams repos
