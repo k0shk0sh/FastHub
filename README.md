@@ -134,8 +134,8 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 <details>
   <summary>Why can't I see my <b>Organizations</b> either <i>Private</i> or <i>Public</i> ones?</summary>
-  <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button,
-  alternatively login via <b>Access Token</b> which will ease this setup.</p>
+  <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button.
+  aAlternatively you can login via <b>Access Token</b> which will ease this setup.</p>
 </details>
 
 <details>
@@ -144,14 +144,13 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 </details>
 
 <details>
-  <summary>Why my Private Repo Wiki does not show up?</summary>
-  <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
+  <summary>Why does my Private Repo Wiki not show up?</summary>
+  <p>This is due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
 </details>
 
 <details>
-  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
-  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it,
-  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b>
+  <summary>I login with an Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
+  <p>Well, logically, you can't access anything else other than your Enterprise Github. Unfortunately FastHub but can't do much about it because in most cases your login credentials don't exists on the GitHub server. But in <b>few</b>
   cases your GitHub account Oauth token will do the trick.</p>
 
 </details>
