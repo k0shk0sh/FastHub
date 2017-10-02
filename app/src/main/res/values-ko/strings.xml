@@ -439,9 +439,9 @@
     <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• 왜 <i>Private</i> 이나 <i>Public</i>으로 되어진 제 <b>Organizations</b> 을 볼 수 없나요?</h5>
-        <p>Open up https://github.com/settings/applications 를 열고 Fasthub라는 것을 찾아보세요. 그것을 열고, Organization access 부분에서 Grant를 눌러주세요. 또는 초기 로그인시 <b>엑세스 토큰</b> 으로 로그인하면 편리합니다.</p>\n
-        <h5>• Access Token &amp; OTP 으로 로그인을 시도했는데 로그인이 되질 않아요...</h5>
-        <p>OTP는 일회용 코드입니다. 따리서 유효기간에 인해 엑세스 토큰 + OTP로 로그인이 불가합니다. 이렇게 로그인을 하게 되면 몇 초에 한 번씩 앱이 로그인을 하라고 합니다. 다른 방법을 사용해 주세요.</p>
+        <p>Open up https://github.com/settings/applications 를 열고 Fasthub라는 것을 찾아보세요. 그것을 선택한 후, Organization Access 부분에서 Grant를 눌러주세요. 또는 초기 로그인시 <b>엑세스 토큰</b> 으로 로그인하면 편리합니다.</p>\n
+        <h5>• Access Token 과 OTP 으로 로그인을 시도했는데 로그인이 되질 않아요...</h5>
+        <p>OTP는 일회용 코드입니다. 따리서 유효기간에 인해 엑세스 토큰 + OTP로 로그인이 불가합니다. 이렇게 로그인을 하게 되면 몇 초에 한 번씩 앱이 로그인을 하라고 합니다. 다른 방법을 사용해 주세요.</p>\n
         <h5>• 제 비공개 리포지토리와 엔터프라이즈 위키가 보이질 않아요!</h5>
         <p>위 두 정보를 스크랩하려면 특별한 세션 토큰이 필요한데 본 앱을 이 토큰을 받을 수 없습니다. 깃허브 API의 한계이므로 API문의는 깃허브에게 해주세요. 본 앱의 개발자는 API문의를 받지 않습니다.</p>
         <h5>• 제가 엔터프라이즈 계정으로 로그인했는데 Enterprise GitHub 외의 다른 것들은 볼 수 없나요?</h5>\n
@@ -449,17 +449,14 @@
         <h5>• Issues/PR 를 수정 하는데 문제가 있습니다.</h5>
         <p>공개 Organization 리포지토리를 수정하면, 여러분의 Organization에게 문의하여 Fasthub 권환을 받거나 최초 로그인시 엑세스 토큰으로 로그인하세요.</p>\n
         <h5>• 앱을 사용하는데 문제를 발견했어요! / 혹시 이러한 기능을 추가해주실 수 있나요?</h5>
-        <p>그럼요! https://github.com/k0shk0sh/FastHub/issues/new 로 간 후 새로운 티켓을 만드세요. 티켓을 만들기 전 먼저 전에 있었던 티켓 중 중복되는 것이 없는지 검색해 주세요. 중복시 티켓은 바로 Close됩니다. </p>\n
+        <p>그럼요! https://github.com/k0shk0sh/FastHub/issues/new 로 간 후 새로운 티켓을 만드세요. 티켓을 만들기 전 먼저 전에 있었던 티켓 중 중복되는 것이 없는지 검색해 주세요. 중복시 티켓은 바로 닫힙니다.</p>\n
         <h5>• PROMO CODE는 어떻게 받나요?</h5>
-        <p>학생이신가요? 자신이 학생이라는 증명 서류가 필요합니다 : </p>
-        <ul>
-        <li>자신의 대학(학교) 학생증 & 신분증 복사본 (이름 및 얼굴 대조를 위한 것 입니다. 관련 서류는 인증 후 폐기됩니다.)</li>
+        <li>학생이시면 자신의 대학(학교) 학생증 & 신분증 복사본이 필요합니다. (이름 및 얼굴 대조를 위한 것 입니다. 관련 서류는 인증 후 폐기됩니다.)</li>
         <li>자신의 대학(학교)의 시작일 및 졸업일</li>
         <li>Rate FastHub in the Play Store</li>
         </ul>
-        <p>자신의 학생이 아니지만 PRO를 구매하실 수 없다구요?</p>
         <ul>
-        <li>SNS에 Fasthub에 대한해 추천 글 및 평가를 올려주세요.</li>
+        <li>학생이 아니지만 PRO버전을 구매하실 수 없다면 SNS에 Fasthub에 대한 추천 글 및 평가를 올려주세요.</li>
         <li>Rate FastHub in the Play Store</li>
         </ul>
         <h5>위 조건을 만족시킨 후 본 앱의 개발자인 Kosh Sergani에게 이메일을 보내면 검토후 PROMO CODE를 보내 드립니다.</h5>\n
