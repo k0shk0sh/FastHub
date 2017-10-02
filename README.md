@@ -128,6 +128,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
   <p>- Czech <a href="https://github.com/hejsekvojtech">@hejsekvojtech</a></p>
   <p>- Spanish <a href="https://github.com/alete89">@alete89</a></p>
   <p>- French <a href="https://github.com/ptt-homme">@ptt-homme</a></p>
+  <p>- Korean <a href="https://github.com/Astro36">@Astro36</a></p> <a href="https://github.com/cozyplanes">@cozyplanes</a></p> 
 </details>
 
 ## FAQ
@@ -144,7 +145,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 </details>
 
 <details>
-  <summary>Why my Private Repo Wiki does not show up?</summary>
+  <summary>Why are my Private Repo; Enterprise Wiki not showing up?</summary>
   <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
 </details>
 
@@ -153,7 +154,21 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
   <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it,
   in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b>
   cases your GitHub account Oauth token will do the trick.</p>
+</details>
 
+<details>
+  <summary>Why am I having problems editing Issues/PRs?</summary>
+  <p>If you are editing a public Org repo, then please contact your Org to grant access to FastHub or use Access Token to login!.</p>
+</details>
+
+<details>
+  <summary>I'm having this issue or I want this and that!!</summary>
+  <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
+</details>
+
+<details>
+  <summary>How do I get PROMO CODE?</summary>
+  <p>Please refer to the in-app FAQ for details.</p>
 </details>
 
 
