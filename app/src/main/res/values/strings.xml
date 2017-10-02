@@ -581,7 +581,7 @@
         <h5>• Why are my Private Repo &amp; Enterprise Wiki not showing up?</h5>
         <p>It\'s due to FastHub scraping GitHub Wiki page &amp; Private Repos require session token that FastHub is unable to obtain.</p>
 
-        <h5>• I login with Enterprise account but can\'t interact with anything other than my Enterprise GitHub?</h5>\n
+        <h5>• I login with Enterprise account but can\'t interact with anything other than my Enterprise GitHub?</h5>
         <p>Well, logically, you can\'t access anything else other than your Enterprise.  FastHub tries to allow as much possible, but can\'t do much about it
         in most cases, since your login credential doesn\'t exists in GitHub server. But in a <b>few</b>
         cases your GitHub account Oauth token will do the trick.</p>
