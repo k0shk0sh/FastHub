@@ -162,7 +162,7 @@ class MarkDownLayout : LinearLayout {
         }
     }
 
-    fun getSelectedText(): String? {
+    private fun getSelectedText(): String? {
         markdownListener?.getEditText()?.let {
             if (!it.text.toString().isBlank()) {
                 val selectionStart = it.selectionStart

@@ -314,11 +314,12 @@ public class MarkDownProvider {
         String oriContent = editText.getText().toString();
         int start = editText.getSelectionStart();
         int end = editText.getSelectionEnd();
-        int index = start >= 0 ? start : 0;
         Logger.e(start, end);
-        if (start >= 0 && end > 0) {
+        if (start >= 0 && end > 0 && start != end) {
             editText.setText(editText.getText().replace(start, end, text));
         } else {
+            int index = editText.getSelectionStart() >= 0 ? editText.getSelectionStart() : 0;
+            Logger.e(start, end, index);
             StringBuilder builder = new StringBuilder(oriContent);
             builder.insert(index, text);
             editText.setText(builder.toString());
