@@ -27,7 +27,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
   - Offline-mode
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
-  - Search users/orgs, repos, issues/prs & code.
+  - Search Users/Orgs, Repos, Issues/PRs & Code.
   - FastHub & GitHub Pinned Repos
   - Trending
   - Wiki
@@ -115,6 +115,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 <details>
   <summary>Thanks for those who contributed to FastHub by adding their language</summary>
+      
   <p>- Chinese (Simplified) <a href="https://github.com/devifish">@Devifish</a></p>
   <p>- Chinese (Traditional) <a href="https://github.com/maple3142">@maple3142</a></p>
   <p>- German <a href="https://github.com/failex234">@failex234</a></p>
@@ -140,20 +141,18 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 </details>
 
 <details>
-  <summary>I tried to login via Access Token & OTP but it does not work?</summary>
+  <summary>I tried to login via Access Token & OTP but why isn't it working?</summary>
   <p>You can't login via Access Token & OTP all together due to the lifetime of the OTP code, you'll be required to login in every few seconds.</p>
 </details>
 
 <details>
-  <summary>Why are my Private Repo; Enterprise Wiki not showing up?</summary>
+  <summary>Why are my Private Repo and Enterprise Wiki not showing up?</summary>
   <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
 </details>
 
 <details>
-  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
-  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it,
-  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b>
-  cases your GitHub account Oauth token will do the trick.</p>
+  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub.</summary>
+  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it, in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> cases your GitHub account Oauth token will do the trick.</p>
 </details>
 
 <details>
@@ -162,7 +161,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 </details>
 
 <details>
-  <summary>I'm having this issue or I want this and that!!</summary>
+  <summary>I'm having this issue! / I want this and that!</summary>
   <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
 </details>
 
