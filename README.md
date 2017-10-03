@@ -162,7 +162,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 <details>
   <summary>I'm having this issue! / I want this and that!</summary>
-  <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
+  <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests. I really encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
 </details>
 
 <details>
