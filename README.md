@@ -157,12 +157,12 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 <details>
   <summary>Why am I having problems editing Issues/PRs?</summary>
-  <p>If you are unable to edit an issue in a public, then please contact your Organization to grant access to FastHub or use Access Token to login!.</p>
+  <p>If you are unable to edit an issue in a public organization, please contact your Organization Admin to grant access to FastHub. Alternatively you login using an Access Token with the correct permissions granted.</p>
 </details>
 
 <details>
   <summary>I'm having this issue! / I want this and that!</summary>
-  <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests. I really encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
+  <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
 </details>
 
 <details>
