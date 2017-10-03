@@ -79,7 +79,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                         createIssue.setAssignees(Stream.of(users).map(User::getLogin).collect(Collectors.toCollection(ArrayList::new)));
                     }
                     if (milestoneModel != null) {
-                        createIssue.setMilestone(milestoneModel);
+                        createIssue.setMilestone(milestoneModel.getNumber());
                     }
                 }
                 makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssue(login, repo, createIssue),
