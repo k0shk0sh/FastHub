@@ -449,8 +449,8 @@ APP
     <string name="open_new_window">在新視窗中開啟</string>
     <string name="too_large_changes">差異太多無法顯示。請於瀏覽器檢視它們</string>
     <string name="project">專案</string>
-    <string name="fasthub_faq_description">FAQ</string>
-    <string name="faq">
+    <string name="faq">FAQ</string>
+    <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• 為何我無法看到我的 <b>組織</b> 的 <i>私人</i> / <i>公開</i> 的東西?</h5>
         <p>打開 https://github.com/settings/applications 並找到 FastHub， 點擊它並滑到 Organization access 並點擊 Grant 按鈕，
