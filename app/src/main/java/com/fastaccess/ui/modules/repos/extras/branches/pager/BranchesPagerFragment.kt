@@ -31,9 +31,9 @@ class BranchesPagerFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<B
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is BranchesMvp.BranchSelectionListener) {
-            branchCallback = parentFragment as BranchesMvp.BranchSelectionListener
-        } else branchCallback = context as BranchesMvp.BranchSelectionListener
+        branchCallback = if (parentFragment is BranchesMvp.BranchSelectionListener) {
+            parentFragment as BranchesMvp.BranchSelectionListener
+        } else context as BranchesMvp.BranchSelectionListener
     }
 
     override fun onDetach() {

@@ -56,7 +56,7 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
         model.tabIndex = tabIndex
         model.count = count
         counts.add(model)
-        tabs?.let { updateCount(model) }
+        tabs.let { updateCount(model) }
     }
 
     private fun updateCount(model: TabsCountStateModel) {
