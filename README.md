@@ -157,7 +157,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 <details>
   <summary>Why am I having problems editing Issues/PRs?</summary>
-  <p>If you are unable to edit an issue in a public organization, please contact your Organization Admin to grant access to FastHub. Alternatively you login using an Access Token with the correct permissions granted.</p>
+  <p>If you are unable to edit an issue in a public organization, please contact your Organization Admin to grant access to FastHub. Alternatively you can login using an Access Token with the correct permissions granted.</p>
 </details>
 
 <details>
