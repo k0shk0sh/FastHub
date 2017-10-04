@@ -129,7 +129,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
   <p>- Czech <a href="https://github.com/hejsekvojtech">@hejsekvojtech</a></p>
   <p>- Spanish <a href="https://github.com/alete89">@alete89</a></p>
   <p>- French <a href="https://github.com/ptt-homme">@ptt-homme</a></p>
-  <p>- Korean <a href="https://github.com/Astro36">@Astro36</a></p> <a href="https://github.com/cozyplanes">@cozyplanes</a></p> 
+  <p>- Korean <a href="https://github.com/Astro36">@Astro36</a> <a href="https://github.com/cozyplanes">@cozyplanes</a></p> 
 </details>
 
 ## FAQ
