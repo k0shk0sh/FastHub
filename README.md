@@ -18,7 +18,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
       alt="Direct apk download"
       height="80">](https://github.com/k0shk0sh/FastHub/releases/latest)
 
-# Features  
+## Features  
 - **App**
   - Three login types (Basic Auth), (Access Token) or via (OAuth)
   - Multiple Accounts
