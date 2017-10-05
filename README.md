@@ -87,7 +87,7 @@ _Ads currently not available._
 ## Specs / Open-source libraries:
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
-- **Kotlin** all new modules starting from 2.5.3 will be written in **#Kotlin**.
+- [**Kotlin**](https://github.com/JetBrains/kotlin) all new modules starting from 2.5.3 will be written in **#Kotlin**.
 - **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) because its ThirtyInch.
 - [**RxJava2**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
@@ -102,7 +102,7 @@ _Ads currently not available._
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
-- **Fabric** analytics & crash reporting.
+- [**Fabric**](https://fabric.io/kits/android/crashlytics) analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
 
 ## Contribution
