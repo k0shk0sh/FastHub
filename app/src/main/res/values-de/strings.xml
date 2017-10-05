@@ -399,6 +399,62 @@
     <string name="sound_chooser_title">Benachrichtigungs Ton auswählen</string>
     <string name="disable_auto_gif_summary">Deaktiviere automatische wiedergabe von GIFs</string>
     <string name="disable_auto_gif_title">Deaktiviere GIF wiedergabe</string>
+	<string name="request_changes">angeforderte Änderungen</string>
+	<string name="google_play_service_error">Google Play-Dienste sind nicht verfügbar</string>
+	<string name="edit_gist">GIST bearbeiten</string>
+	<string name="content">Inhalt</string>
+	<string name="expand">erweitern</string>
+	<string name="copy_sha">SHA-1 Kopieren</string>
+	<string name="view_as_code">Als Code anzeigen</string>
+	<string name="app_animation_title">In-App-Animationen deaktivieren</string>
+	<string name="app_animation_summary">Deaktiviere in-App-Animationen überall.</string>
+	<string name="can_not_merge_pr">Dieser PR kann jetzt\jetzt nicht zusammengeführt werden.</string>
+	<string name="projects">Projekte</string>
+    <string name="no_projects">Keine Projekte</string>
+	<string name="no_cards">Keine Karten</string>
+	<string name="card_added_by">Hinzugefügt von %s %s</string>
+	<string name="too_large_changes">Zu viele Unterschiede zur Anzeige. Bitte, sehe Sie Sie dir über den Browser an</string>
+	<string name="project">Projekt</string>
+	<string name="please_read">BITTE lESEN!</string>
+	<string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Warum kann ich meine <b> Organisationen </b> entweder <i> private </i> oder <i> öffentliche </i> sehen\nicht sehen?</h5>
+        <p>Öffne https://github.com/Settings/Applications und suche nach FastHub, öffne es dann Blätter zu Organisation Zugang und klicke auf den Grant Knopf,
+        Alternativ melde dich über  einen <b> Zugang Token </b> an welches das Setup vereinfacht.</p>
+
+        <h5>• Ich habe versuchtt mich mit einem Zugangs Token anzumelden amp; OTP aber es funtioniert nicht?</h5>
+        <p>Du kannst dich nicht mit einem zugangs token anmelden &amp; OTP alle Zusammen wegen der Lebenszeit des OTP codes, du musst dich alle paar sekunden anmelden</p>
+
+        <h5>• Warum werden mein privates Repo &amp; Enterprise Wiki nicht angezeigt?</h5>
+        <p>Es wie FastHub die GitHub Wiki page holt &amp; Private Repos benötigen einen Sitzungs token denn FastHub nicht bekommen kann.</p>
+
+        <h5>• Ich habe mich mit meinen Enterprise account angemeldet kann\kann nicht mit anderen sachen interagieren außer meinem Enterprise GitHub?</h5>
+        <p>Nun, logisch, kannst du nicht auf etwas anderes als Ihr Unternehmen zugreifen. FastHub versucht, so viel möglich zu erlauben, aber kann
+        in den meisten Fällen nicht viel dafür tun, da Ihre Anmeldedaten auf den GitHub Server nicht vorhanden sind. Aber in einem <b> paar </b>
+        fällen Ihr GitHub Konto OAuth Token wird den Trick tun.</p>
+
+        <h5>• Warum habe ich Probleme bei der Bearbeitung von Problemen/PRS?</h5>
+        <p>Wenn du ein öffentliches organisations-repo bearbeiten willst, wende dich bitte an deine organisation, um Zugang zu FastHub zu gewähren oder Zugangsdaten zu verwenden!.</p>
+
+        <h5>• Ich habe das problem oder  Ich möchte dies &amp; das!!</h5>
+        <p>Gehe zu https://github.com/k0shk0sh/FastHub/issues/new und erstelle ein neues issue  für bugs oder Feature Requests, Ich möchte dich ermutigen
+        das du vor dem erstellen eines Tickets suchst ob es das schon existiert.Jeder doppelter Request wird dazu führen dass du sofort ausgeschlossen wirst.</p>
+
+        <h5>• Wie bekomme ich einen PROMO CODE?</h5>
+        <p>Wenn du ein Student bist musst du  mir eine e-Mail schicken,in der du mir beweist das du ein Student bist, Du brauchst die unten stehen den dokumente:</p>
+        <ul>
+        <li>Deine Universitätenausweis & deinen Personalausweis (der deinen Namen zeigt & und dein Gesicht um es zu vergleichen!)</li>
+        <li>Dein Uni-Start & Enddatum</li>
+        <li>Bewerte FastHub im Play Store</li>
+        </ul>
+        <p>Wenn du kein Student bist und du kannst es dir nicht leisten für PRO zu bezahlen, musst du:</p>
+        <ul>
+        <li>Einen Arctikel über Fasthub schreiben in Social Media wie (Medium)</li>
+        <li>Bewerte FastHub im Play Store</li>
+        </ul>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Kommentare erfolgreich hinzugefügt</string>
 </resources>
 
 
