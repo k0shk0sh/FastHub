@@ -77,7 +77,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         select.setVisibility(isLink() ? View.GONE : View.VISIBLE);
         if (savedInstanceState == null) {
-            link.getEditText().setText(getArguments().getString(BundleConstant.ITEM));
+            title.getEditText().setText(getArguments().getString(BundleConstant.ITEM));
         }
     }
 

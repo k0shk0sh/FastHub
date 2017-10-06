@@ -92,10 +92,10 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     override fun onSuccessfullyActivated() {
         hideProgress()
         successActivationHolder.visibility = View.VISIBLE
+        FabricProvider.logPurchase(InputHelper.toString(editText))
         successActivationView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {}
             override fun onAnimationEnd(p0: Animator?) {
-                FabricProvider.logPurchase(InputHelper.toString(editText))
                 showMessage(R.string.success, R.string.success)
                 successResult()
             }

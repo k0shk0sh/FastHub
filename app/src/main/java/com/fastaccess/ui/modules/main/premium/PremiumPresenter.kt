@@ -1,7 +1,6 @@
 package com.fastaccess.ui.modules.main.premium
 
 import com.fastaccess.data.dao.ProUsersModel
-import com.fastaccess.helper.Logger
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -24,25 +23,23 @@ class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter 
                 .doOnSubscribe { sendToView { it.showProgress(0) } }
                 .flatMap {
                     var user = ProUsersModel()
-                    Logger.e(it.exists(), it.hasChildren(), it.value)
-                    if (it.exists()) {
+                    if (it.exists() && it.hasChildren()) {
                         val gti = object : GenericTypeIndicator<ProUsersModel>() {}
                         user = it.getValue(gti) ?: ProUsersModel()
-                        Logger.e(user)
                         if (user.isAllowed) {
                             if (user.type == 1) {
                                 PrefGetter.setProItems()
                                 user.isAllowed = false
                                 user.count = user.count + 1
-                                return@flatMap ref.child("fasthub_pro").rxUpdateChildren(hashMapOf(Pair(promo, user)))
-                                        .toObservable<ProUsersModel>()
+                                return@flatMap RxHelper.getObservable(ref.child("fasthub_pro").rxUpdateChildren(hashMapOf(Pair(promo, user)))
+                                        .toObservable<ProUsersModel>())
                                         .map { true }
                             } else {
                                 PrefGetter.setProItems()
                                 PrefGetter.setEnterpriseItem()
                                 user.count = user.count + 1
-                                return@flatMap ref.child("fasthub_pro").rxUpdateChildren(hashMapOf(Pair(promo, user)))
-                                        .toObservable<ProUsersModel>()
+                                return@flatMap RxHelper.getObservable(ref.child("fasthub_pro").rxUpdateChildren(hashMapOf(Pair(promo, user)))
+                                        .toObservable<ProUsersModel>())
                                         .map { true }
                             }
                         }

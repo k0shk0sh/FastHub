@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
@@ -17,6 +18,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
+import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -91,6 +93,15 @@ public class GistsListActivity extends BaseActivity {
                 ((Fragment) pager.getAdapter().instantiateItem(pager, 0)).onActivityResult(resultCode, resultCode, data);
             }
         }
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupTabs() {
