@@ -149,7 +149,7 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
 
     override fun onScrollTop(index: Int) {
         super.onScrollTop(index)
-        recycler?.scrollToPosition(0)
+        recycler.scrollToPosition(0)
     }
 
     override fun onDestroyView() {

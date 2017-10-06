@@ -35,10 +35,10 @@ class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<Notificati
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (parentFragment is NotificationSoundMvp.NotificationSoundListener) {
-            listener = parentFragment as NotificationSoundMvp.NotificationSoundListener
+        listener = if (parentFragment is NotificationSoundMvp.NotificationSoundListener) {
+            parentFragment as NotificationSoundMvp.NotificationSoundListener
         } else {
-            listener = context as NotificationSoundMvp.NotificationSoundListener
+            context as NotificationSoundMvp.NotificationSoundListener
         }
     }
 

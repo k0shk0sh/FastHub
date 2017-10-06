@@ -34,9 +34,8 @@ class DeleteFileBottomSheetFragment : BaseBottomSheetDialog() {
         }
     }
 
-    @OnClick(R.id.cancel) fun onCancel() {
-        dismiss()
-    }
+    @OnClick(R.id.cancel)
+    fun onCancel() = dismiss()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

@@ -17,9 +17,7 @@ class CachedComments private constructor() {
         return map["$repo/$login/$number"]
     }
 
-    fun clear() {
-        map.clear()
-    }
+    fun clear() = map.clear()
 
     private object Holder {
         val INSTANCE = CachedComments()

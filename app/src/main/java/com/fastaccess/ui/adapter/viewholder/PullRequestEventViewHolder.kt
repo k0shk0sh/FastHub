@@ -402,8 +402,8 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
         if (value == null) {
             return ""
         }
-        if (value.length <= 7) return value
-        else return value.substring(0, 7)
+        return if (value.length <= 7) value
+        else value.substring(0, 7)
     }
 
     companion object {

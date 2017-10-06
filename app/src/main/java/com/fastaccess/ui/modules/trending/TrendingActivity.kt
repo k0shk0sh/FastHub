@@ -130,17 +130,17 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+        return when (item?.itemId) {
             R.id.menu -> {
                 drawerLayout.openDrawer(Gravity.END)
-                return true
+                true
             }
             android.R.id.home -> {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -156,9 +156,9 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
-        when (item?.title.toString()) {
-            "All Language" -> selectedTitle = ""
-            else -> selectedTitle = item?.title.toString()
+        selectedTitle = when (item?.title.toString()) {
+            "All Language" -> ""
+            else -> item?.title.toString()
         }
         Logger.e(selectedTitle)
         setValues()
@@ -176,11 +176,11 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun getSince(): String {
-        when {
-            daily.isSelected -> return "daily"
-            weekly.isSelected -> return "weekly"
-            monthly.isSelected -> return "monthly"
-            else -> return "daily"
+        return when {
+            daily.isSelected -> "daily"
+            weekly.isSelected -> "weekly"
+            monthly.isSelected -> "monthly"
+            else -> "daily"
         }
     }
 

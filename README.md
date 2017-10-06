@@ -18,7 +18,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
       alt="Direct apk download"
       height="80">](https://github.com/k0shk0sh/FastHub/releases/latest)
 
-# Features  
+## Features  
 - **App**
   - Three login types (Basic Auth), (Access Token) or via (OAuth)
   - Multiple Accounts
@@ -27,7 +27,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
   - Offline-mode
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
-  - Search users/orgs, repos, issues/prs & code.
+  - Search Users/Orgs, Repos, Issues/PRs & Code.
   - FastHub & GitHub Pinned Repos
   - Trending
   - Wiki
@@ -87,7 +87,7 @@ _Ads currently not available._
 ## Specs / Open-source libraries:
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
-- **Kotlin** all new modules starting from 2.5.3 will be written in **#Kotlin**.
+- [**Kotlin**](https://github.com/JetBrains/kotlin) all new modules starting from 2.5.3 will be written in **#Kotlin**.
 - **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) because its ThirtyInch.
 - [**RxJava2**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
@@ -102,7 +102,7 @@ _Ads currently not available._
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
-- **Fabric** analytics & crash reporting.
+- [**Fabric**](https://fabric.io/kits/android/crashlytics) analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
 
 ## Contribution
@@ -115,6 +115,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 <details>
   <summary>Thanks for those who contributed to FastHub by adding their language</summary>
+      
   <p>- Chinese (Simplified) <a href="https://github.com/devifish">@Devifish</a></p>
   <p>- Chinese (Traditional) <a href="https://github.com/maple3142">@maple3142</a></p>
   <p>- German <a href="https://github.com/failex234">@failex234</a></p>
@@ -128,6 +129,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
   <p>- Czech <a href="https://github.com/hejsekvojtech">@hejsekvojtech</a></p>
   <p>- Spanish <a href="https://github.com/alete89">@alete89</a></p>
   <p>- French <a href="https://github.com/ptt-homme">@ptt-homme</a></p>
+  <p>- Korean <a href="https://github.com/Astro36">@Astro36</a> <a href="https://github.com/cozyplanes">@cozyplanes</a></p> 
 </details>
 
 ## FAQ
@@ -139,21 +141,33 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 </details>
 
 <details>
-  <summary>I tried to login via Access Token & OTP but it does not work?</summary>
+  <summary>I tried to login via Access Token & OTP but why isn't it working?</summary>
   <p>You can't login via Access Token & OTP all together due to the lifetime of the OTP code, you'll be required to login in every few seconds.</p>
 </details>
 
 <details>
-  <summary>Why my Private Repo Wiki does not show up?</summary>
+  <summary>Why are my Private Repo and Enterprise Wiki not showing up?</summary>
   <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
 </details>
 
 <details>
-  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
-  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it,
-  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b>
-  cases your GitHub account Oauth token will do the trick.</p>
+  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub.</summary>
+  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it, in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> cases your GitHub account Oauth token will do the trick.</p>
+</details>
 
+<details>
+  <summary>Why am I having problems editing Issues/PRs?</summary>
+  <p>If you are unable to edit an issue in a public organization, please contact your Organization Admin to grant access to FastHub. Alternatively you can login using an Access Token with the correct permissions granted.</p>
+</details>
+
+<details>
+  <summary>I'm having this issue! / I want this and that!</summary>
+  <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests. I really encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
+</details>
+
+<details>
+  <summary>How do I get PROMO CODE?</summary>
+  <p>Please refer to the in-app FAQ for details.</p>
 </details>
 
 
