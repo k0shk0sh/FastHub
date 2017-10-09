@@ -19,7 +19,7 @@ public class CreateIssueModel implements Parcelable {
     private String body;
     private ArrayList<String> labels;
     private ArrayList<String> assignees;
-    private long milestone;
+    private Long milestone;
 
     @Override public int describeContents() { return 0; }
 
