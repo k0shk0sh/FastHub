@@ -216,7 +216,7 @@
     <string name="no_issue">Kein Issue</string>
     <string name="copy">Kopieren</string>
     <string name="success_copied">kopiert</string>
-    <string name="commit_message">Commit Nachricht</string>
+    <string name="commit_message">Commitnachricht</string>
     <string name="network_error">Konnte nicht mit dem Server kommunizieren</string>
     <string name="unexpected_error">Konnte API nicht erreichen</string>
     <string name="request_error">Konnte Server nicht erreichen, versuche es später erneut</string>
@@ -310,7 +310,7 @@
     <string name="open_source_libs">Open Source Bibliotheken</string>
     <string name="enable_notification_sound_summary">Benachrichtungston bei Benachrichtigungen abspielen.</string>
     <string name="enable_notification_sound_title">Benachrichtigunston aktivieren</string>
-    <string name="login_with_personal_token">Mit persönlichen Token anmelden</string>
+    <string name="login_with_personal_token">Mit persönlichem Token anmelden</string>
     <string name="personal_token">Persönlicher Token</string>
     <string name="basic_login">Normal anmelden</string>
     <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link
@@ -415,7 +415,7 @@
 	<string name="card_added_by">Hinzugefügt von %s %s</string>
 	<string name="too_large_changes">Zu viele Unterschiede zur Anzeige. Bitte, sehe Sie Sie dir über den Browser an</string>
 	<string name="project">Projekt</string>
-	<string name="please_read">BITTE lESEN!</string>
+	<string name="please_read">BITTE LESEN!</string>
 	<string name="fasthub_faq_description">
         <![CDATA[
         <h5>• Warum kann ich meine <b> Organisationen </b> entweder <i> private </i> oder <i> öffentliche </i> sehen\nicht sehen?</h5>
@@ -455,6 +455,24 @@
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Kommentare erfolgreich hinzugefügt</string>
+    <string name="discard">Verwerfen</string>
+    <string name="english_please">Bitte schreibe auf Englisch.</string>
+    <string name="contributions">Beiträge</string>
+    <string name="open_new_window">In neuem Fenster öffnen</string>
+    <string name="dismiss_all">Alles Verwerfen</string>
+    <string name="edited">• bearbeitet</string>
+    <string name="customization">Personalisation</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="backup">Sichern</string>
+    <string name="backed_up">Erfolgreich gesichert!</string>
+    <string name="select_backup">Backup auswählen</string>
+    <string name="permission_failed">Rechte nicht gewährt.</string>
+    <string name="backup_summary">Letzes Update: %s</string>
+    <string name="now">Jetzt</string>
+    <string name="no_orgs_dialog_title">Organisation(en) nicht auffindbar?</string>
+    <string name="up_to_date">Du hast die aktuellste Version!</string>
+    <string name="new_version">Eine neue Version ist verfügbar.</string>
+    <string name="enable_notification_title">Benachrichtigungen aktivieren</string>
 </resources>
 
 
