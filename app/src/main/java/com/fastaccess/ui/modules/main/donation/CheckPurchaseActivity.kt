@@ -32,7 +32,7 @@ class CheckPurchaseActivity : Activity() {
                             .onEach { DonateActivity.enableProduct(it, App.getInstance()) }
                 }
                 return@fromCallable true
-            }).subscribe({ /*do nothing*/ }, ::println, { startMainActivity() })
+            }).subscribe({ startMainActivity() }, { startMainActivity() })
         } else {
             startMainActivity()
         }

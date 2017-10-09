@@ -8,6 +8,7 @@ import com.github.b3er.rxfirebase.database.data
 import com.github.b3er.rxfirebase.database.rxUpdateChildren
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
+import io.reactivex.Completable
 import io.reactivex.Observable
 
 
@@ -26,33 +27,42 @@ class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter 
                     if (it.exists() && it.hasChildren()) {
                         val gti = object : GenericTypeIndicator<ProUsersModel>() {}
                         user = it.getValue(gti) ?: ProUsersModel()
-                        if (user.isAllowed) {
-                            if (user.type == 1) {
-                                PrefGetter.setProItems()
-                                user.isAllowed = false
-                                user.count = user.count + 1
-                                return@flatMap RxHelper.getObservable(ref.child("fasthub_pro").rxUpdateChildren(hashMapOf(Pair(promo, user)))
-                                        .toObservable<ProUsersModel>())
-                                        .map { true }
-                            } else {
-                                PrefGetter.setProItems()
-                                PrefGetter.setEnterpriseItem()
-                                user.count = user.count + 1
-                                return@flatMap RxHelper.getObservable(ref.child("fasthub_pro").rxUpdateChildren(hashMapOf(Pair(promo, user)))
-                                        .toObservable<ProUsersModel>())
-                                        .map { true }
-                            }
+                    }
+                    return@flatMap Observable.just(user)
+                }
+                .subscribe({ user ->
+                    var completable: Completable? = null
+                    val isAllowed = user.isAllowed
+                    if (isAllowed) {
+                        if (user.type == 1) {
+                            PrefGetter.setProItems()
+                            user.isAllowed = false
+                            user.count = user.count + 1
+                            completable = ref.child("fasthub_pro")
+                                    .rxUpdateChildren(hashMapOf(Pair(promo, user)))
+                        } else {
+                            PrefGetter.setProItems()
+                            PrefGetter.setEnterpriseItem()
+                            user.count = user.count + 1
+                            completable = ref.child("fasthub_pro")
+                                    .rxUpdateChildren(hashMapOf(Pair(promo, user)))
                         }
                     }
-                    return@flatMap Observable.just(user.isAllowed)
-                }
-                .doOnComplete { sendToView { it.hideProgress() } }
-                .subscribe({
-                    if (it) {
-                        sendToView { it.onSuccessfullyActivated() }
+                    if (completable != null) {
+                        manageDisposable(completable.doOnComplete({
+                            if (isAllowed) {
+                                sendToView { it.onSuccessfullyActivated() }
+                            } else {
+                                sendToView { it.onNoMatch() }
+                            }
+                        }).subscribe({}, { it.printStackTrace() }))
                     } else {
-                        sendToView { it.onNoMatch() }
+                        if (isAllowed) {
+                            sendToView { it.onSuccessfullyActivated() }
+                        } else {
+                            sendToView { it.onNoMatch() }
+                        }
                     }
-                }, ::println))
+                }, { it.printStackTrace() }))
     }
 }

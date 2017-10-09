@@ -16,6 +16,7 @@ import com.fastaccess.BuildConfig
 import com.fastaccess.R
 import com.fastaccess.helper.AppHelper
 import com.fastaccess.helper.InputHelper
+import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.fabric.FabricProvider
 import com.fastaccess.ui.base.BaseActivity
@@ -60,6 +61,8 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     @OnClick(R.id.unlock) fun onUnlock() {
         if (!isGoogleSupported()) return
         if (BuildConfig.DEBUG) {
+            PrefGetter.setProItems()
+            PrefGetter.setEnterpriseItem()
             onSuccessfullyActivated()
             return
         }
@@ -85,6 +88,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     private fun successResult() {
+        hideProgress()
         setResult(Activity.RESULT_OK)
         finish()
     }
@@ -108,6 +112,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     override fun onNoMatch() {
+        hideProgress()
         showErrorMessage(getString(R.string.not_match))
     }
 

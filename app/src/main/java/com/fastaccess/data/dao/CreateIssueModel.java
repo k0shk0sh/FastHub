@@ -28,7 +28,7 @@ public class CreateIssueModel implements Parcelable {
         dest.writeString(this.body);
         dest.writeStringList(this.labels);
         dest.writeStringList(this.assignees);
-        dest.writeLong(this.milestone);
+        dest.writeValue(this.milestone);
     }
 
     protected CreateIssueModel(Parcel in) {
@@ -36,7 +36,7 @@ public class CreateIssueModel implements Parcelable {
         this.body = in.readString();
         this.labels = in.createStringArrayList();
         this.assignees = in.createStringArrayList();
-        this.milestone = in.readLong();
+        this.milestone = (Long) in.readValue(Long.class.getClassLoader());
     }
 
     public static final Creator<CreateIssueModel> CREATOR = new Creator<CreateIssueModel>() {
