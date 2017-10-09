@@ -39,10 +39,10 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (parentFragment is ReviewCommentListener) {
-            commentCallback = parentFragment as ReviewCommentListener
+        commentCallback = if (parentFragment is ReviewCommentListener) {
+            parentFragment as ReviewCommentListener
         } else {
-            commentCallback = context as ReviewCommentListener
+            context as ReviewCommentListener
         }
     }
 

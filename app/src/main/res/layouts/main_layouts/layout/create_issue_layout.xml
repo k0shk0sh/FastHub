@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
@@ -83,17 +85,153 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/submit"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/issueMiscLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_send"
-                android:tint="@color/white"/>
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/assigneeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/addAssignee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_add"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal"
+                        android:text="@string/assignee"/>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
+                        app:cardBackgroundColor="?card_background"
+                        app:contentPaddingBottom="@dimen/spacing_normal"
+                        app:contentPaddingLeft="@dimen/spacing_xs_large"
+                        app:contentPaddingRight="@dimen/spacing_xs_large"
+                        app:contentPaddingTop="@dimen/spacing_normal">
+
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/assignee"
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Username"/>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/labelsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/addLabels"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_add"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal"
+                        android:text="@string/labels"/>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
+                        app:cardBackgroundColor="?card_background"
+                        app:contentPaddingBottom="@dimen/spacing_normal"
+                        app:contentPaddingLeft="@dimen/spacing_xs_large"
+                        app:contentPaddingRight="@dimen/spacing_xs_large"
+                        app:contentPaddingTop="@dimen/spacing_normal">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/labels"
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Label 1"/>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/milestoneLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/addMilestone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_add"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal"
+                        android:text="@string/milestone"/>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
+                        app:cardBackgroundColor="?card_background"
+                        app:contentPaddingBottom="@dimen/spacing_normal"
+                        app:contentPaddingLeft="@dimen/spacing_xs_large"
+                        app:contentPaddingRight="@dimen/spacing_xs_large"
+                        app:contentPaddingTop="@dimen/spacing_normal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                android:id="@+id/milestoneTitle"
+                                style="@style/TextAppearance.AppCompat.Medium"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:text="Label 1"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                android:id="@+id/milestoneDescription"
+                                style="@style/TextAppearance.AppCompat.Subhead"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="@dimen/spacing_normal"
+                                android:paddingTop="@dimen/spacing_normal"
+                                android:visibility="gone"
+                                tools:text="Label 1"/>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_send"
+        android:tint="@color/white"/>
 
     <include layout="@layout/add_banner_layout"/>
 

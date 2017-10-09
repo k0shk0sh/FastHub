@@ -25,9 +25,9 @@ import lombok.Setter;
 
     private CommitFileChanges() {}
 
-    public static Observable<CommitFileChanges> constructToObservable(@Nullable List<CommitFileModel> files) {
+    public static Observable<CommitFileChanges> constructToObservable(@Nullable ArrayList<CommitFileModel> files) {
         if (files == null || files.isEmpty()) return Observable.empty();
-        return Observable.fromIterable(files).map(CommitFileChanges::getCommitFileChanges);
+        return Observable.fromIterable(construct(files));
     }
 
     @NonNull public static List<CommitFileChanges> construct(@Nullable List<CommitFileModel> files) {
@@ -66,4 +66,11 @@ import lombok.Setter;
 
         @Override public CommitFileChanges[] newArray(int size) {return new CommitFileChanges[size];}
     };
+
+    public static boolean canAttachToBundle(CommitFileChanges model) {
+        Parcel parcel = Parcel.obtain();
+        model.writeToParcel(parcel, 0);
+        int size = parcel.dataSize();
+        return size < 600000;
+    }
 }

@@ -3,6 +3,8 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,17 +17,26 @@ import lombok.Setter;
 public class CreateIssueModel implements Parcelable {
     private String title;
     private String body;
+    private ArrayList<String> labels;
+    private ArrayList<String> assignees;
+    private long milestone;
 
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
         dest.writeString(this.body);
+        dest.writeStringList(this.labels);
+        dest.writeStringList(this.assignees);
+        dest.writeLong(this.milestone);
     }
 
-    @SuppressWarnings("WeakerAccess") protected CreateIssueModel(Parcel in) {
+    protected CreateIssueModel(Parcel in) {
         this.title = in.readString();
         this.body = in.readString();
+        this.labels = in.createStringArrayList();
+        this.assignees = in.createStringArrayList();
+        this.milestone = in.readLong();
     }
 
     public static final Creator<CreateIssueModel> CREATOR = new Creator<CreateIssueModel>() {

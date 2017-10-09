@@ -5,6 +5,11 @@ repository(owner: $owner, name: $name) {
       edges {
         cursor
       }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
       nodes {
         name
         number
@@ -26,6 +31,66 @@ repository(owner: $owner, name: $name) {
       totalCount
       edges {
         cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      nodes {
+        name
+        number
+        body
+        createdAt
+        id
+        viewerCanUpdate
+        columns(first: 1) {
+          totalCount
+        }
+        databaseId
+      }
+    }
+  }
+}
+
+query orgProjectsOpen($owner: String!, $page: String) {
+organization(login: $owner) {
+    projects(first: 30, states: OPEN, after: $page, orderBy: {field: CREATED_AT, direction: DESC}) {
+      totalCount
+      edges {
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      nodes {
+        name
+        number
+        body
+        createdAt
+        id
+        viewerCanUpdate
+        columns(first: 1) {
+          totalCount
+        }
+        databaseId
+      }
+    }
+  }
+}
+query orgProjectsClosed($owner: String!, $page: String) {
+organization(login: $owner) {
+    projects(first: 30, states: CLOSED, after: $page, orderBy: {field: CREATED_AT, direction: DESC}) {
+      totalCount
+      edges {
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
       }
       nodes {
         name

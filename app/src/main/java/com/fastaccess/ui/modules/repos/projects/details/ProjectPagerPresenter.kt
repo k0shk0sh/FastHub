@@ -19,7 +19,7 @@ class ProjectPagerPresenter : BasePresenter<ProjectPagerMvp.View>(), ProjectPage
 
     private val columns = arrayListOf<ProjectColumnModel>()
     @com.evernote.android.state.State var projectId: Long = -1
-    @com.evernote.android.state.State var repoId: String = ""
+    @com.evernote.android.state.State var repoId: String? = null
     @com.evernote.android.state.State var login: String = ""
     @com.evernote.android.state.State var viewerCanUpdate: Boolean = false
 
@@ -27,23 +27,39 @@ class ProjectPagerPresenter : BasePresenter<ProjectPagerMvp.View>(), ProjectPage
 
 
     override fun onRetrieveColumns() {
-        makeRestCall(Observable.zip(RestProvider.getProjectsService(isEnterprise).getProjectColumns(projectId),
-                RestProvider.getRepoService(isEnterprise).isCollaborator(login, repoId, Login.getUser().login),
-                BiFunction { items: Pageable<ProjectColumnModel>, response: Response<Boolean> ->
-                    viewerCanUpdate = response.code() == 204
-                    return@BiFunction items
-                })
-                .flatMap {
-                    if (it.items != null) {
-                        return@flatMap Observable.just(it.items)
-                    }
-                    return@flatMap Observable.just(listOf<ProjectColumnModel>())
-                },
-                { t ->
-                    columns.clear()
-                    columns.addAll(t)
-                    sendToView { it.onInitPager(columns) }
-                })
+        val repoId = repoId
+        if (repoId != null && !repoId.isNullOrBlank()) {
+            makeRestCall(Observable.zip(RestProvider.getProjectsService(isEnterprise).getProjectColumns(projectId),
+                    RestProvider.getRepoService(isEnterprise).isCollaborator(login, repoId, Login.getUser().login),
+                    BiFunction { items: Pageable<ProjectColumnModel>, response: Response<Boolean> ->
+                        viewerCanUpdate = response.code() == 204
+                        return@BiFunction items
+                    })
+                    .flatMap {
+                        if (it.items != null) {
+                            return@flatMap Observable.just(it.items)
+                        }
+                        return@flatMap Observable.just(listOf<ProjectColumnModel>())
+                    },
+                    { t ->
+                        columns.clear()
+                        columns.addAll(t)
+                        sendToView { it.onInitPager(columns) }
+                    })
+        } else {
+            makeRestCall(RestProvider.getProjectsService(isEnterprise).getProjectColumns(projectId)
+                    .flatMap {
+                        if (it.items != null) {
+                            return@flatMap Observable.just(it.items)
+                        }
+                        return@flatMap Observable.just(listOf<ProjectColumnModel>())
+                    },
+                    { t ->
+                        columns.clear()
+                        columns.addAll(t)
+                        sendToView { it.onInitPager(columns) }
+                    })
+        }
     }
 
     override fun onActivityCreated(intent: Intent?) {

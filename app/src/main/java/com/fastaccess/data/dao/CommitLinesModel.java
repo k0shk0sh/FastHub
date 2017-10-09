@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
 
@@ -21,7 +19,7 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
  * Created by Kosh on 20 Jun 2017, 7:32 PM
  */
 
-@Getter @Setter @AllArgsConstructor public class CommitLinesModel implements Parcelable {
+@AllArgsConstructor public class CommitLinesModel implements Parcelable {
 
     public static final int TRANSPARENT = 0;
     public static final int ADDITION = 1;
@@ -115,4 +113,60 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
 
         @Override public CommitLinesModel[] newArray(int size) {return new CommitLinesModel[size];}
     };
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public int getLeftLineNo() {
+        return leftLineNo;
+    }
+
+    public void setLeftLineNo(int leftLineNo) {
+        this.leftLineNo = leftLineNo;
+    }
+
+    public int getRightLineNo() {
+        return rightLineNo;
+    }
+
+    public void setRightLineNo(int rightLineNo) {
+        this.rightLineNo = rightLineNo;
+    }
+
+    public boolean isNoNewLine() {
+        return noNewLine;
+    }
+
+    public void setNoNewLine(boolean noNewLine) {
+        this.noNewLine = noNewLine;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public boolean isHasCommentedOn() {
+        return hasCommentedOn;
+    }
+
+    public void setHasCommentedOn(boolean hasCommentedOn) {
+        this.hasCommentedOn = hasCommentedOn;
+    }
 }

@@ -38,11 +38,12 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
     @BindView(R.id.link) TextInputLayout link;
     @BindView(R.id.select) FontButton select;
 
-    public static EditorLinkImageDialogFragment newInstance(boolean isLink) {
+    public static EditorLinkImageDialogFragment newInstance(boolean isLink, @Nullable String link) {
         EditorLinkImageDialogFragment fragment = new EditorLinkImageDialogFragment();
         fragment.setArguments(Bundler
                 .start()
                 .put(BundleConstant.YES_NO_EXTRA, isLink)
+                .put(BundleConstant.ITEM, link)
                 .end());
         return fragment;
     }
@@ -75,6 +76,9 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         select.setVisibility(isLink() ? View.GONE : View.VISIBLE);
+        if (savedInstanceState == null) {
+            title.getEditText().setText(getArguments().getString(BundleConstant.ITEM));
+        }
     }
 
     @NonNull @Override public EditorLinkImagePresenter providePresenter() {

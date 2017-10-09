@@ -33,7 +33,7 @@ class MarkDownLayout : LinearLayout {
     }
 
     var markdownListener: MarkdownListener? = null
-
+    var selectionIndex = 0
     @BindView(R.id.editorIconsHolder) lateinit var editorIconsHolder: HorizontalScrollView
     @BindView(R.id.addEmoji) lateinit var addEmojiView: View
 
@@ -54,19 +54,20 @@ class MarkDownLayout : LinearLayout {
         super.onDetachedFromWindow()
     }
 
-    @OnClick(R.id.view) internal fun onViewMarkDown() {
+    @OnClick(R.id.view) fun onViewMarkDown() {
         markdownListener?.let {
             it.getEditText().let { editText ->
                 TransitionManager.beginDelayedTransition(this)
                 if (editText.isEnabled && !InputHelper.isEmpty(editText)) {
                     editText.isEnabled = false
+                    selectionIndex = editText.selectionEnd
                     MarkDownProvider.setMdText(editText, InputHelper.toString(editText))
                     editorIconsHolder.visibility = View.INVISIBLE
                     addEmojiView.visibility = View.INVISIBLE
                     ViewHelper.hideKeyboard(editText)
                 } else {
                     editText.setText(it.getSavedText())
-                    editText.setSelection(editText.text.length)
+                    editText.setSelection(selectionIndex)
                     editText.isEnabled = true
                     editorIconsHolder.visibility = View.VISIBLE
                     addEmojiView.visibility = View.VISIBLE
@@ -87,9 +88,9 @@ class MarkDownLayout : LinearLayout {
                     Snackbar.make(this, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show()
                 } else {
                     when {
-                        v.id == R.id.link -> EditorLinkImageDialogFragment.newInstance(true)
+                        v.id == R.id.link -> EditorLinkImageDialogFragment.newInstance(true, getSelectedText())
                                 .show(it.fragmentManager(), "EditorLinkImageDialogFragment")
-                        v.id == R.id.image -> EditorLinkImageDialogFragment.newInstance(false)
+                        v.id == R.id.image -> EditorLinkImageDialogFragment.newInstance(false, getSelectedText())
                                 .show(it.fragmentManager(), "EditorLinkImageDialogFragment")
                         v.id == R.id.addEmoji -> {
                             ViewHelper.hideKeyboard(it.getEditText())
@@ -119,8 +120,6 @@ class MarkDownLayout : LinearLayout {
             R.id.header -> MarkDownProvider.addDivider(editText)
             R.id.code -> MarkDownProvider.addCode(editText)
             R.id.quote -> MarkDownProvider.addQuote(editText)
-            R.id.link -> MarkDownProvider.addLink(editText)
-            R.id.image -> MarkDownProvider.addPhoto(editText)
             R.id.checkbox -> MarkDownProvider.addList(editText, "- [x]")
             R.id.unCheckbox -> MarkDownProvider.addList(editText, "- [ ]")
             R.id.inlineCode -> MarkDownProvider.addInlinleCode(editText)
@@ -161,5 +160,16 @@ class MarkDownLayout : LinearLayout {
                 MarkDownProvider.addPhoto(it.getEditText(), InputHelper.toString(title), InputHelper.toString(link))
             }
         }
+    }
+
+    private fun getSelectedText(): String? {
+        markdownListener?.getEditText()?.let {
+            if (!it.text.toString().isBlank()) {
+                val selectionStart = it.selectionStart
+                val selectionEnd = it.selectionEnd
+                return it.text.toString().substring(selectionStart, selectionEnd)
+            }
+        }
+        return null
     }
 }

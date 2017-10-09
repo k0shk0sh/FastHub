@@ -236,7 +236,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 break;
             case RepoPagerMvp.PROJECTS:
                 if (projectsFragmentPager == null) {
-                    onAddAndHide(fragmentManager, RepoProjectsFragmentPager.Companion.newInstance(repoId(), login()), currentVisible);
+                    onAddAndHide(fragmentManager, RepoProjectsFragmentPager.Companion.newInstance(login(), repoId()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, projectsFragmentPager, currentVisible);
                 }

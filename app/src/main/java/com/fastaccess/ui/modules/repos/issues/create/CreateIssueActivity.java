@@ -3,33 +3,48 @@ package com.fastaccess.ui.modules.repos.issues.create;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.danielstone.materialaboutlibrary.ConvenienceBuilder;
 import com.evernote.android.state.State;
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LabelListModel;
+import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.EditorActivity;
+import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.labels.LabelsDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFragment;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.LabelSpan;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,11 +60,20 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     @BindView(R.id.title) TextInputLayout title;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.submit) View submit;
+    @BindView(R.id.issueMiscLayout) LinearLayout issueMiscLayout;
+    @BindView(R.id.assignee) FontTextView assignee;
+    @BindView(R.id.labels) FontTextView labels;
+    @BindView(R.id.milestoneTitle) FontTextView milestoneTitle;
+    @BindView(R.id.milestoneDescription) FontTextView milestoneDescription;
+
     @State String repoId;
     @State String login;
     @State Issue issue;
     @State PullRequest pullRequest;
     @State boolean isFeedback;
+    @State ArrayList<LabelModel> labelModels = new ArrayList<>();
+    @State MilestoneModel milestoneModel;
+    @State ArrayList<User> users = new ArrayList<>();
 
     private AlertDialog alertDialog;
     private CharSequence savedText;
@@ -177,6 +201,12 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
         finish();
     }
 
+    @Override public void onShowIssueMisc() {
+        TransitionManager.beginDelayedTransition(findViewById(R.id.parent));
+        issueMiscLayout.setVisibility(getPresenter().isCollaborator() ? View.VISIBLE : View.GONE);
+        //TODO
+    }
+
     @NonNull @Override public CreateIssuePresenter providePresenter() {
         return new CreateIssuePresenter();
     }
@@ -214,6 +244,17 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                 }
             }
             if (issue != null) {
+                Logger.e(issue.getLabels(), issue.getMilestone(), issue.getAssignees());
+                if (issue.getLabels() != null) {
+                    onSelectedLabels(new ArrayList<>(issue.getLabels()));
+                }
+                if (issue.getAssignees() != null) {
+                    onSelectedAssignees(new ArrayList<>(issue.getAssignees()), false);
+                }
+                if (issue.getMilestone() != null) {
+                    milestoneModel = issue.getMilestone();
+                    onMilestoneSelected(milestoneModel);
+                }
                 if (!InputHelper.isEmpty(issue.getTitle())) {
                     if (title.getEditText() != null) title.getEditText().setText(issue.getTitle());
                 }
@@ -222,6 +263,17 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                 }
             }
             if (pullRequest != null) {
+                if (pullRequest.getLabels() != null) {
+                    onSelectedLabels(new ArrayList<>(pullRequest.getLabels()));
+                }
+                if (pullRequest.getAssignees() != null) {
+                    users.addAll(pullRequest.getAssignees());
+                    onSelectedAssignees(new ArrayList<>(pullRequest.getAssignees()), false);
+                }
+                if (pullRequest.getMilestone() != null) {
+                    milestoneModel = pullRequest.getMilestone();
+                    onMilestoneSelected(milestoneModel);
+                }
                 if (!InputHelper.isEmpty(pullRequest.getTitle())) {
                     if (title.getEditText() != null) title.getEditText().setText(pullRequest.getTitle());
                 }
@@ -230,6 +282,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                 }
             }
         }
+        getPresenter().checkAuthority(login, repoId);
         if (isFeedback || ("k0shk0sh".equalsIgnoreCase(login) && repoId.equalsIgnoreCase("FastHub"))) {
             setTitle(R.string.submit_feedback);
             getPresenter().onCheckAppVersion();
@@ -295,6 +348,68 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     }
 
     @OnClick(R.id.submit) public void onClick() {
-        getPresenter().onSubmit(InputHelper.toString(title), savedText, login, repoId, issue, pullRequest);
+        getPresenter().onSubmit(InputHelper.toString(title), savedText, login, repoId, issue, pullRequest, labelModels, milestoneModel, users);
+    }
+
+    @OnClick({R.id.addAssignee, R.id.addLabels, R.id.addMilestone}) public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.addAssignee:
+                AssigneesDialogFragment.newInstance(login, repoId, false)
+                        .show(getSupportFragmentManager(), "AssigneesDialogFragment");
+                break;
+            case R.id.addLabels:
+                LabelListModel labelModels = new LabelListModel();
+                labelModels.addAll(this.labelModels);
+                LabelsDialogFragment.newInstance(labelModels, repoId, login)
+                        .show(getSupportFragmentManager(), "LabelsDialogFragment");
+                break;
+            case R.id.addMilestone:
+                MilestoneDialogFragment.newInstance(login, repoId)
+                        .show(getSupportFragmentManager(), "MilestoneDialogFragment");
+                break;
+        }
+    }
+
+    @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labelModels) {
+        this.labelModels.clear();
+        this.labelModels.addAll(labelModels);
+        SpannableBuilder builder = SpannableBuilder.builder();
+        for (int i = 0; i < labelModels.size(); i++) {
+            LabelModel labelModel = labelModels.get(i);
+            int color = Color.parseColor("#" + labelModel.getColor());
+            if (i > 0) {
+                builder.append(" ").append(" " + labelModel.getName() + " ", new LabelSpan(color));
+            } else {
+                builder.append(labelModel.getName() + " ", new LabelSpan(color));
+            }
+        }
+        this.labels.setText(builder);
+    }
+
+    @Override public void onMilestoneSelected(@NonNull MilestoneModel milestoneModel) {
+        Logger.e(milestoneModel.getTitle(), milestoneModel.getDescription(), milestoneModel.getNumber());
+        this.milestoneModel = milestoneModel;
+        milestoneTitle.setText(milestoneModel.getTitle());
+        if (!InputHelper.isEmpty(milestoneModel.getDescription())) {
+            milestoneDescription.setText(milestoneModel.getDescription());
+            milestoneDescription.setVisibility(View.VISIBLE);
+        } else {
+            milestoneDescription.setText(null);
+            milestoneDescription.setVisibility(View.GONE);
+        }
+    }
+
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users, boolean isAssignees) {
+        this.users.clear();
+        this.users.addAll(users);
+        SpannableBuilder builder = SpannableBuilder.builder();
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            builder.append(user.getLogin());
+            if (i != users.size() - 1) {
+                builder.append(", ");
+            }
+        }
+        assignee.setText(builder);
     }
 }

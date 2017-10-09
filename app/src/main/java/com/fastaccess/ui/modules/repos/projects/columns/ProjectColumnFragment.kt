@@ -37,6 +37,9 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
     @BindView(R.id.fastScroller) lateinit var fastScroller: RecyclerViewFastScroller
     @BindView(R.id.columnName) lateinit var columnName: FontTextView
     @BindView(R.id.editColumnHolder) lateinit var editColumnHolder: View
+    @BindView(R.id.editColumn) lateinit var editColumn: View
+    @BindView(R.id.addCard) lateinit var addCard: View
+    @BindView(R.id.deleteColumn) lateinit var deleteColumn: View
 
     private var onLoadMore: OnLoadMore<Long>? = null
     private val adapter by lazy { ColumnCardAdapter(presenter.getCards(), isOwner()) }
@@ -119,6 +122,9 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
         if (presenter.getCards().isEmpty() && !presenter.isApiCalled) {
             presenter.onCallApi(1, column.id)
         }
+        addCard.visibility = if(isOwner()) View.VISIBLE else View.GONE
+        deleteColumn.visibility = if(isOwner()) View.VISIBLE else View.GONE
+        editColumn.visibility = if(isOwner()) View.VISIBLE else View.GONE
     }
 
     override fun showProgress(@StringRes resId: Int) {
@@ -143,7 +149,7 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
 
     override fun onScrollTop(index: Int) {
         super.onScrollTop(index)
-        recycler?.scrollToPosition(0)
+        recycler.scrollToPosition(0)
     }
 
     override fun onDestroyView() {

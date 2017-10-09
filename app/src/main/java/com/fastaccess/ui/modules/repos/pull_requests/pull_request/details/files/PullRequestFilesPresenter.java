@@ -104,7 +104,9 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
     }
 
     @Override public void onItemClick(int position, View v, CommitFileChanges model) {
-        if (v.getId() == R.id.open) {
+        if (v.getId() == R.id.patchList) {
+            sendToView(view -> view.onOpenForResult(position, model));
+        } else if (v.getId() == R.id.open) {
             CommitFileModel item = model.getCommitFileModel();
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             MenuInflater inflater = popup.getMenuInflater();

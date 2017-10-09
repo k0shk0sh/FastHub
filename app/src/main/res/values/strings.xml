@@ -92,14 +92,14 @@
         • All PRO Themes\n
         • PR Reviews & On-line code comments (PRs & Commits)\n
         • Commit from FastHub (Edit, Create & Delete files)\n
-        • Support to other Merge methods (Rebase & Squash)\n
+        • Supports 2 more Merging methods (Rebase & Squash)\n
         • Login to unlimited accounts\n
         • Edit & Add unlimited Gist Files\n
         • Project Columns & Cards (Edit, Create & Delete)
-        • New upcoming PRO features
+        • New upcoming PRO features (Coming soon...)
     ]]></string>
     <string name="enterprise_pro_description" translatable="false"><![CDATA[
-            • Login to unlimited number of Enterprise  & GitHub accounts\n
+            • Login to unlimited number of Enterprise & GitHub accounts\n
             • Access GitHub contents along side your Enterprise Account
     ]]></string>
     <string name="purchase" translatable="false">Purchase</string>
@@ -124,7 +124,7 @@
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <string name="feeds" translatable="false">Feeds</string>
-    <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
+    <!-- END OF DO NOT COPY, START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
@@ -134,9 +134,9 @@
     <string name="ok">OK</string>
     <string name="no_data">No data available</string>
     <string name="search">Search</string>
-    <string name="please_login">Please sign in to continue using FastHub</string>
+    <string name="please_login">Please sign in to begin using FastHub</string>
     <string name="sign_in_to_github">Sign in using your GitHub account to use FastHub</string>
-    <string name="failed_login">Failed to sign in</string>
+    <string name="failed_login"> Sign in failed</string>
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
     <string name="reload">Reload</string>
@@ -154,7 +154,7 @@
     <string name="user">User</string>
     <string name="details">Details</string>
     <string name="archive_file_detected_error">Archive file detected, please download the file to view its content.</string>
-    <string name="minimum_three_chars">Minimum characters (3)</string>
+    <string name="minimum_three_chars">Minimum characters (2)</string>
     <string name="no_file_found">No file found</string>
     <string name="no_readme_found">No readme found</string>
     <string name="downloading">Downloading…</string>
@@ -230,7 +230,7 @@
     <string name="no_files">No files</string>
     <string name="required_field">Required field</string>
     <string name="successfully_submitted">Successfully submitted</string>
-    <string name="create_gist">Create Gist</string>
+    <string name="create_gist">Create a Gist</string>
     <string name="clear">Clear</string>
     <string name="users">Users</string>
     <string name="title">Title</string>
@@ -553,7 +553,7 @@
     <string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
     <string name="disable_auto_gif_title">Disable Playing GIF</string>
     <string name="request_changes">requested changes</string>
-    <string name="google_play_service_error">Google Play Service unavailable</string>
+    <string name="google_play_service_error">Google Play Services are unavailable</string>
     <string name="edit_gist">Edit Gist</string>
     <string name="content">Content</string>
     <string name="expand">expand</string>
@@ -566,6 +566,46 @@
     <string name="no_projects">No Projects</string>
     <string name="no_cards">No Cards</string>
     <string name="card_added_by">Added by %s %s</string>
-    <string name="too_large_changes">Changes are large, please open in browser</string>
+    <string name="too_large_changes">Too many differences to display. Please, view them via browser</string>
     <string name="project">Project</string>
+    <string name="please_read">PLEASE READ!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Why can\'t I see my <b>Organizations</b> either <i>Private</i> or <i>Public</i> ones?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button,
+        alternatively login via <b>Access Token</b> which will ease this setup.</p>
+
+        <h5>• I tried to login via Access Token &amp; OTP but it does not work?</h5>
+        <p>You can\'t login via Access Token &amp; OTP all together due to the lifetime of the OTP code, you\'ll be required to login in every few seconds.</p>
+
+        <h5>• Why are my Private Repo &amp; Enterprise Wiki not showing up?</h5>
+        <p>It\'s due to FastHub scraping GitHub Wiki page &amp; Private Repos require session token that FastHub is unable to obtain.</p>
+
+        <h5>• I login with Enterprise account but can\'t interact with anything other than my Enterprise GitHub?</h5>
+        <p>Well, logically, you can\'t access anything else other than your Enterprise.  FastHub tries to allow as much possible, but can\'t do much about it
+        in most cases, since your login credential doesn\'t exists in GitHub server. But in a <b>few</b>
+        cases your GitHub account Oauth token will do the trick.</p>
+
+        <h5>• Why am I having problems editing Issues/PRs?</h5>
+        <p>If you are editing a public Org repo, then please contact your Org to grant access to FastHub or use Access Token to login!.</p>
+
+        <h5>• I\'m having this issue or I want this &amp; that!!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to
+        search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
+
+        <h5>• How do I get PROMO CODE?</h5>
+        <p>If you are a student, you\'ll have to provide me via Email that you are student, you will need below documents:</p>
+        <ul>
+        <li>Your university identity card & your identity card (that shows your name & your face to compare it!)</li>
+        <li>Your university start & end date</li>
+        <li>Rate FastHub in the Play Store</li>
+        </ul>
+        <p>If you aren\'t a student and you can\'t afford to pay for PRO, you\'ll need:</p>
+        <ul>
+        <li>Write an article about FastHub in social media such as (Medium)</li>
+        <li>Rate FastHub in the Play Store</li>
+        </ul>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Comments added successfully</string>
 </resources>

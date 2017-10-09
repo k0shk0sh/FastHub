@@ -21,6 +21,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.profile.org.project.OrgProjectActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 
@@ -44,6 +45,7 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
     @BindView(R.id.link) FontTextView link;
     @BindView(R.id.joined) FontTextView joined;
     @BindView(R.id.progress) LinearLayout progress;
+    @BindView(R.id.projects) View projects;
 
     @State User userModel;
 
@@ -57,7 +59,15 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
     }
 
+    @OnClick(R.id.projects) void onOpenProjects() {
+        OrgProjectActivity.Companion.startActivity(getContext(), getPresenter().getLogin(), isEnterprise());
+    }
+
     @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
+        if (getView() != null) {
+            TransitionManager.beginDelayedTransition((ViewGroup) getView());
+        }
+        if (this.userModel != null) return;
         progress.setVisibility(View.GONE);
         if (userModel == null) return;
         this.userModel = userModel;
@@ -80,21 +90,23 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         email.setText(userModel.getEmail());
         link.setText(userModel.getBlog());
         joined.setText(ParseDateFormat.getTimeAgo(userModel.getCreatedAt()));
-        if (InputHelper.isEmpty(userModel.getLocation())) {
-            location.setVisibility(GONE);
+
+        if (!InputHelper.isEmpty(userModel.getLocation())) {
+            location.setVisibility(View.VISIBLE);
         }
-        if (InputHelper.isEmpty(userModel.getEmail())) {
-            email.setVisibility(GONE);
+        if (!InputHelper.isEmpty(userModel.getEmail())) {
+            email.setVisibility(View.VISIBLE);
         }
-        if (InputHelper.isEmpty(userModel.getBlog())) {
-            link.setVisibility(GONE);
+        if (!InputHelper.isEmpty(userModel.getBlog())) {
+            link.setVisibility(View.VISIBLE);
         }
-        if (InputHelper.isEmpty(userModel.getCreatedAt())) {
-            joined.setVisibility(GONE);
+        if (!InputHelper.isEmpty(userModel.getCreatedAt())) {
+            joined.setVisibility(View.VISIBLE);
         }
-        if (getView() != null) {
-            TransitionManager.beginDelayedTransition((ViewGroup) getView());
+        if (!InputHelper.isEmpty(userModel.getEmail())) {
+            email.setVisibility(View.VISIBLE);
         }
+        projects.setVisibility(userModel.isHasOrganizationProjects() ? View.VISIBLE : View.GONE);
     }
 
     @Override protected int fragmentLayout() {

@@ -22,6 +22,7 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 
 import net.grandcentrix.thirtyinch.TiDialogFragment;
 
@@ -37,6 +38,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     protected BaseMvp.FAView callback;
 
     @Nullable private Unbinder unbinder;
+    protected boolean suppressAnimation = false;
 
     @LayoutRes protected abstract int fragmentLayout();
 
@@ -71,6 +73,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void dismiss() {
+        if(suppressAnimation){
+            super.dismiss();
+            return;
+        }
         if (PrefGetter.isAppAnimationDisabled()) {
             super.dismiss();
         } else {
@@ -98,7 +104,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        if (!PrefGetter.isAppAnimationDisabled()) {
+        if (!PrefGetter.isAppAnimationDisabled() && !(this instanceof ProgressDialogFragment)) {
             dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
                     getResources().getInteger(android.R.integer.config_longAnimTime)));
         }

@@ -19,6 +19,7 @@ import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.handler.BetterLinkMovementExtended;
 import com.fastaccess.provider.timeline.handler.DrawableHandler;
 import com.fastaccess.provider.timeline.handler.EmojiHandler;
+import com.fastaccess.provider.timeline.handler.HeaderHandler;
 import com.fastaccess.provider.timeline.handler.HrHandler;
 import com.fastaccess.provider.timeline.handler.ItalicHandler;
 import com.fastaccess.provider.timeline.handler.LinkHandler;
@@ -86,7 +87,7 @@ public class HtmlHelper {
         mySpanner.setStripExtraWhiteSpace(true);
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, theme));
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, theme));
-        mySpanner.registerHandler("img", new DrawableHandler(textView));
+        mySpanner.registerHandler("img", new DrawableHandler(textView, width));
         mySpanner.registerHandler("g-emoji", new EmojiHandler());
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
@@ -106,6 +107,12 @@ public class HtmlHelper {
         mySpanner.registerHandler("hr", new HrHandler(windowBackground, width, false));
         mySpanner.registerHandler("emoji", new EmojiHandler());
         mySpanner.registerHandler("mention", new LinkHandler());
+        mySpanner.registerHandler("h1", new HeaderHandler(1.5F));
+        mySpanner.registerHandler("h2", new HeaderHandler(1.4F));
+        mySpanner.registerHandler("h3", new HeaderHandler(1.3F));
+        mySpanner.registerHandler("h4", new HeaderHandler(1.2F));
+        mySpanner.registerHandler("h5", new HeaderHandler(1.1F));
+        mySpanner.registerHandler("h6", new HeaderHandler(1.0F));
         if (width > 0) {
             TableHandler tableHandler = new TableHandler();
             tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
@@ -116,15 +123,14 @@ public class HtmlHelper {
     }
 
     @ColorInt public static int getWindowBackground(@PrefGetter.ThemeType int theme) {
-        switch (theme) {
-            case PrefGetter.AMLOD:
-                return Color.parseColor("#0B162A");
-            case PrefGetter.BLUISH:
-                return Color.parseColor("#111C2C");
-            case PrefGetter.DARK:
-                return Color.parseColor("#22252A");
-            default:
-                return Color.parseColor("#EEEEEE");
+        if (theme == PrefGetter.AMLOD) {
+            return Color.parseColor("#0B162A");
+        } else if (theme == PrefGetter.BLUISH) {
+            return Color.parseColor("#111C2C");
+        } else if (theme == PrefGetter.DARK) {
+            return Color.parseColor("#22252A");
+        } else {
+            return Color.parseColor("#EEEEEE");
         }
     }
 

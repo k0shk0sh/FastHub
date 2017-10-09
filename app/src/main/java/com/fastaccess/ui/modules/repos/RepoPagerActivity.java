@@ -341,7 +341,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
         this.navType = navType;
         //noinspection WrongConstant
-        if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
+        try {
+            if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
+        } catch (Exception ignored) {}
         showHideFab();
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }

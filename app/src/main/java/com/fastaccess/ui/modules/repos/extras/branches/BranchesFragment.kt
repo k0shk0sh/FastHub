@@ -34,9 +34,9 @@ class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), Br
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is BranchesPagerListener) {
-            branchCallback = parentFragment as BranchesPagerListener
-        } else branchCallback = context as BranchesPagerListener
+        branchCallback = if (parentFragment is BranchesPagerListener) {
+            parentFragment as BranchesPagerListener
+        } else context as BranchesPagerListener
     }
 
     override fun onDetach() {

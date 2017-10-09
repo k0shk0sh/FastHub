@@ -19,7 +19,6 @@ import android.text.style.AlignmentSpan;
 import android.text.style.ImageSpan;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
-import net.nightwhistler.htmlspanner.spans.CenterSpan;
 
 import org.htmlcleaner.TagNode;
 
@@ -38,56 +37,40 @@ public class TableHandler extends TagNodeHandler {
 
     private int tableWidth = 500;
     private Typeface typeFace = Typeface.DEFAULT;
-    private float textSize = 30f;
+    private float textSize = 28f;
     private int textColor = Color.BLACK;
-
     private static final int PADDING = 20;
 
-    /**
-     * Sets how wide the table should be.
-     *
-     * @param tableWidth
-     */
+    @Override public boolean rendersContent() {
+        return true;
+    }
+
+    @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
+        Table table = getTable(node);
+        for (int i = 0; i < table.getRows().size(); i++) {
+            List<Spanned> row = table.getRows().get(i);
+            builder.append("\uFFFC");
+            TableRowDrawable drawable = new TableRowDrawable(row, table.isDrawBorder());
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight());
+            builder.setSpan(new ImageSpan(drawable), start + i, builder.length(), 33);
+
+        }
+        builder.append("\uFFFC");
+        Drawable drawable = new TableRowDrawable(new ArrayList<Spanned>(), table.isDrawBorder());
+        drawable.setBounds(0, 0, tableWidth, 1);
+        builder.setSpan(new ImageSpan(drawable), builder.length() - 1, builder.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan((AlignmentSpan) () -> Alignment.ALIGN_CENTER, start, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append("\n");
+    }
+
     public void setTableWidth(int tableWidth) {
         this.tableWidth = tableWidth;
     }
 
-    /**
-     * Sets the text colour to use.
-     * <p>
-     * Default is black.
-     *
-     * @param textColor
-     */
     public void setTextColor(int textColor) {
         this.textColor = textColor;
-    }
-
-    /**
-     * Sets the font size to use.
-     * <p>
-     * Default is 16f.
-     *
-     * @param textSize
-     */
-    public void setTextSize(float textSize) {
-        this.textSize = textSize;
-    }
-
-    /**
-     * Sets the TypeFace to use.
-     * <p>
-     * Default is Typeface.DEFAULT
-     *
-     * @param typeFace
-     */
-    public void setTypeFace(Typeface typeFace) {
-        this.typeFace = typeFace;
-    }
-
-    @Override
-    public boolean rendersContent() {
-        return true;
     }
 
     private void readNode(Object node, Table table) {
@@ -144,44 +127,19 @@ public class TableHandler extends TagNodeHandler {
 
         int rowHeight = 0;
 
-        if (columnWidth > 0) {
-            for (Spanned cell : row) {
-                StaticLayout layout = new StaticLayout(cell, textPaint, columnWidth
-                        - 2 * PADDING, Alignment.ALIGN_NORMAL, 1f, 0f, true);
-                if (layout.getHeight() > rowHeight) {
-                    rowHeight = layout.getHeight();
-                }
+        for (Spanned cell : row) {
+
+            StaticLayout layout = new StaticLayout(cell, textPaint, columnWidth
+                    - 2 * PADDING, Alignment.ALIGN_NORMAL, 1.5f, 0.5f, true);
+
+            if (layout.getHeight() > rowHeight) {
+                rowHeight = layout.getHeight();
             }
         }
 
         return rowHeight;
     }
 
-    @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
-        Table table = getTable(node);
-        for (int i = 0; i < table.getRows().size(); i++) {
-            List<Spanned> row = table.getRows().get(i);
-            builder.append("\uFFFC");
-            TableRowDrawable drawable = new TableRowDrawable(row, table.isDrawBorder());
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight());
-            builder.setSpan(new ImageSpan(drawable), start + i, builder.length(), 33);
-        }
-        builder.append("\uFFFC");
-        Drawable drawable = new TableRowDrawable(new ArrayList<>(), table.isDrawBorder());
-        drawable.setBounds(0, 0, tableWidth, 1);
-        builder.setSpan(new ImageSpan(drawable), builder.length() - 1, builder.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan((AlignmentSpan) () -> Alignment.ALIGN_CENTER, start, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan(new CenterSpan(), start, builder.length(), 33);
-        builder.append("\n");
-    }
-
-    /**
-     * Drawable of the table, which does the actual rendering.
-     *
-     * @author Alex Kuiper.
-     */
     private class TableRowDrawable extends Drawable {
 
         private List<Spanned> tableRow;
@@ -222,7 +180,7 @@ public class TableHandler extends TagNodeHandler {
 
                 StaticLayout layout = new StaticLayout(tableRow.get(i),
                         getTextPaint(), (columnWidth - 2 * PADDING),
-                        Alignment.ALIGN_NORMAL, 1f, 0f, true);
+                        Alignment.ALIGN_NORMAL, 1.5f, 0.5f, true);
 
                 canvas.translate(offset + PADDING, 0);
                 layout.draw(canvas);

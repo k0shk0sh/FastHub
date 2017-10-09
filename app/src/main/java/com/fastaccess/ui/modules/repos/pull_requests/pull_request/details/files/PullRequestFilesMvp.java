@@ -29,6 +29,8 @@ public interface PullRequestFilesMvp {
         void onNotifyAdapter(@Nullable List<CommitFileChanges> items, int page);
 
         @NonNull OnLoadMore getLoadMore();
+
+        void onOpenForResult(int position, @NonNull CommitFileChanges linesModel);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

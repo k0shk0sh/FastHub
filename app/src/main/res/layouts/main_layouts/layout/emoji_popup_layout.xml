@@ -51,7 +51,8 @@
                 android:background="@color/transparent"
                 android:hint="@string/search"
                 android:paddingEnd="@dimen/spacing_xs_large"
-                android:paddingStart="@dimen/spacing_xs_large"/>
+                android:paddingStart="@dimen/spacing_xs_large"
+                android:singleLine="true"/>
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

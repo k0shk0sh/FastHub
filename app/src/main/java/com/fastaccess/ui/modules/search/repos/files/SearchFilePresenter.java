@@ -19,7 +19,7 @@ public class SearchFilePresenter extends BasePresenter<SearchFileMvp.View> imple
     }
 
     @Override public void onSearchClicked(@NonNull FontEditText editText, boolean inPath) {
-        boolean isEmpty = InputHelper.isEmpty(editText) || InputHelper.toString(editText).length() < 3;
+        boolean isEmpty = InputHelper.isEmpty(editText) || InputHelper.toString(editText).length() < 2;
         editText.setError(isEmpty ? editText.getResources().getString(R.string.minimum_three_chars) : null);
         if (!isEmpty) {
             AppHelper.hideKeyboard(editText);
