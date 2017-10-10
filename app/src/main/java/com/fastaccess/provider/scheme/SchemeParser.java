@@ -29,6 +29,7 @@ import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
+import com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
@@ -132,6 +133,7 @@ public class SchemeParser {
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY) || isEnterprise) {
                 Intent trending = getTrending(context, data);
+                Intent projects = getRepoProject(context, data);
                 Intent userIntent = getUser(context, data);
                 Intent repoIssues = getRepoIssueIntent(context, data);
                 Intent repoPulls = getRepoPullRequestIntent(context, data);
@@ -144,8 +146,9 @@ public class SchemeParser {
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
-                Optional<Intent> intentOptional = returnNonNull(trending, userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
-                        createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
+                Optional<Intent> intentOptional = returnNonNull(trending, projects, userIntent, repoIssues, repoPulls,
+                        pullRequestIntent, commit, commits, createIssueIntent, issueIntent, releasesIntent, repoIntent,
+                        repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     Intent intent = intentOptional.get();
@@ -262,6 +265,25 @@ public class SchemeParser {
         } else {
             return RepoPagerActivity.createIntent(context, repoName, owner);
         }
+    }
+
+    @Nullable private static Intent getRepoProject(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.size() < 3) return null;
+        String owner = segments.get(0);
+        String repoName = segments.get(1);
+        if (segments.size() == 3 && "projects".equalsIgnoreCase(segments.get(2))) {
+            return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.PROJECTS);
+        } else if (segments.size() == 4 && "projects".equalsIgnoreCase(segments.get(2))) {
+            try {
+                int projectId = Integer.parseInt(segments.get(segments.size() - 1));
+                if (projectId > 0) {
+                    return ProjectPagerActivity.Companion.getIntent(context, owner, repoName, projectId,
+                            LinkParserHelper.isEnterprise(uri.toString()));
+                }
+            } catch (Exception ignored) {}
+        }
+        return null;
     }
 
     @Nullable private static Intent getWiki(@NonNull Context context, @NonNull Uri uri) {

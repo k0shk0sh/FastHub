@@ -193,8 +193,6 @@
                             style="@style/TextAppearance.AppCompat.Medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/spacing_normal"
-                            android:paddingTop="@dimen/spacing_normal"
                             tools:text="Label 1"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
@@ -214,9 +212,9 @@
     <LinearLayout
         android:id="@+id/commentSection"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/spacing_normal"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:baselineAligned="false"
         android:orientation="horizontal">
 

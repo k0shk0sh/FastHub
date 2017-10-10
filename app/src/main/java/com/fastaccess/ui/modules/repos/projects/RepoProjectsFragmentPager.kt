@@ -39,7 +39,7 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         pager.adapter = FragmentsPagerAdapter(childFragmentManager, FragmentPagerAdapterModel.buildForRepoProjects(context,
-                arguments.getString(BundleConstant.EXTRA), arguments.getString(BundleConstant.ID)))
+                arguments.getString(BundleConstant.ID), arguments.getString(BundleConstant.EXTRA)))
         tabs.setupWithViewPager(pager)
         if (savedInstanceState != null) {
             @Suppress("UNCHECKED_CAST")
@@ -56,7 +56,7 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
         model.tabIndex = tabIndex
         model.count = count
         counts.add(model)
-        tabs?.let { updateCount(model) }
+        tabs.let { updateCount(model) }
     }
 
     private fun updateCount(model: TabsCountStateModel) {
@@ -71,7 +71,7 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
 
     companion object {
         val TAG = RepoProjectsFragmentPager::class.java.simpleName
-        fun newInstance(login: String, repoId: String): RepoProjectsFragmentPager {
+        fun newInstance(login: String, repoId: String? = null): RepoProjectsFragmentPager {
             val fragment = RepoProjectsFragmentPager()
             fragment.arguments = Bundler.start()
                     .put(BundleConstant.ID, repoId)

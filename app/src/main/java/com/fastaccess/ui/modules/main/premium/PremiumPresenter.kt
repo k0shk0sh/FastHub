@@ -1,11 +1,14 @@
 package com.fastaccess.ui.modules.main.premium
 
-import com.fastaccess.helper.Logger
+import com.fastaccess.data.dao.ProUsersModel
+import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.github.b3er.rxfirebase.database.data
+import com.github.b3er.rxfirebase.database.rxUpdateChildren
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
+import io.reactivex.Completable
 import io.reactivex.Observable
 
 
@@ -15,26 +18,51 @@ import io.reactivex.Observable
 class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter {
     override fun onCheckPromoCode(promo: String) {
         val ref = FirebaseDatabase.getInstance().reference
-        manageDisposable(RxHelper.getObservable(ref.child("promoCodes")
+        manageDisposable(RxHelper.getObservable(ref.child("fasthub_pro").child(promo)
                 .data()
                 .toObservable())
                 .doOnSubscribe { sendToView { it.showProgress(0) } }
                 .flatMap {
-                    var exists: Boolean? = false
-                    if (it.exists()) {
-                        val gti = object : GenericTypeIndicator<ArrayList<String>>() {}
-                        val map = it.getValue(gti)
-                        exists = map?.contains(promo)
+                    var user = ProUsersModel()
+                    if (it.exists() && it.hasChildren()) {
+                        val gti = object : GenericTypeIndicator<ProUsersModel>() {}
+                        user = it.getValue(gti) ?: ProUsersModel()
                     }
-                    Logger.e(it.children, it.childrenCount, exists)
-                    return@flatMap Observable.just(exists)
+                    return@flatMap Observable.just(user)
                 }
-                .doOnComplete { sendToView { it.hideProgress() } }
-                .subscribe({
-                    when (it) {
-                        true -> sendToView { it.onSuccessfullyActivated() }
-                        else -> sendToView { it.onNoMatch() }
+                .subscribe({ user ->
+                    var completable: Completable? = null
+                    val isAllowed = user.isAllowed
+                    if (isAllowed) {
+                        if (user.type == 1) {
+                            PrefGetter.setProItems()
+                            user.isAllowed = false
+                            user.count = user.count + 1
+                            completable = ref.child("fasthub_pro")
+                                    .rxUpdateChildren(hashMapOf(Pair(promo, user)))
+                        } else {
+                            PrefGetter.setProItems()
+                            PrefGetter.setEnterpriseItem()
+                            user.count = user.count + 1
+                            completable = ref.child("fasthub_pro")
+                                    .rxUpdateChildren(hashMapOf(Pair(promo, user)))
+                        }
                     }
-                }, ::println))
+                    if (completable != null) {
+                        manageDisposable(completable.doOnComplete({
+                            if (isAllowed) {
+                                sendToView { it.onSuccessfullyActivated() }
+                            } else {
+                                sendToView { it.onNoMatch() }
+                            }
+                        }).subscribe({}, { it.printStackTrace() }))
+                    } else {
+                        if (isAllowed) {
+                            sendToView { it.onSuccessfullyActivated() }
+                        } else {
+                            sendToView { it.onNoMatch() }
+                        }
+                    }
+                }, { it.printStackTrace() }))
     }
 }

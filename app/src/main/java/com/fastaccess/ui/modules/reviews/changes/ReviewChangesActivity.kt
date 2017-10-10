@@ -123,7 +123,7 @@ class ReviewChangesActivity : BaseDialogFragment<ReviewChangesMvp.View, ReviewCh
 
     override fun onClearEditText() {
         commentEditorFragment?.let {
-            it.commentText?.let {
+            it.commentText.let {
                 it.text = null
             }
         }

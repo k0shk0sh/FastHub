@@ -8,6 +8,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
+import net.nightwhistler.htmlspanner.spans.CenterSpan;
 
 import org.htmlcleaner.TagNode;
 
@@ -22,6 +23,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 @AllArgsConstructor public class DrawableHandler extends TagNodeHandler {
 
     private TextView textView;
+    private int width;
 
     @SuppressWarnings("ConstantConditions") private boolean isNull() {
         return textView == null;
@@ -32,8 +34,9 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
         if (!InputHelper.isEmpty(src)) {
             builder.append("￼");
             if (isNull()) return;
-            DrawableGetter imageGetter = new DrawableGetter(textView);
+            DrawableGetter imageGetter = new DrawableGetter(textView, width);
             builder.setSpan(new ImageSpan(imageGetter.getDrawable(src)), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new CenterSpan(), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
             appendNewLine(builder);
         }
     }

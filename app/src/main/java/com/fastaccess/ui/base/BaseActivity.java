@@ -44,6 +44,7 @@ import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
+import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
@@ -107,29 +108,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             setContentView(layout());
             ButterKnife.bind(this);
         }
-        if (!isSecured()) {
-            if (!isLoggedIn()) {
-                onRequireLogin();
-                return;
-            }
-        }
-        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            StateSaver.restoreInstanceState(this, savedInstanceState);
-            getPresenter().onRestoreInstanceState(presenterStateBundle);
-        }
+        if (!validateAuth()) return;
+        launchPlayStoreReviewActivity();
+        initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
-        if (savedInstanceState == null) {
-            if (getIntent() != null) {
-                if (getIntent().getExtras() != null) {
-                    getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
-                } else if (getIntent().hasExtra(BundleConstant.IS_ENTERPRISE)) {
-                    getPresenter().setEnterprise(getIntent().getBooleanExtra(BundleConstant.IS_ENTERPRISE, false));
-                }
-            }
-            if (PrefGetter.showWhatsNew()) {
-                new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
-            }
-        }
+        initEnterpriseExtra(savedInstanceState);
         mainNavDrawer = new MainNavDrawer(this, extraNav, accountsNav);
         setupNavigationView();
         setupDrawer();
@@ -490,6 +473,45 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (this instanceof IssuePagerActivity || this instanceof CommitPagerActivity ||
                 this instanceof PullRequestPagerActivity || this instanceof GistActivity) {
             CachedComments.Companion.getInstance().clear();
+        }
+    }
+
+    private boolean validateAuth() {
+        if (!isSecured()) {
+            if (!isLoggedIn()) {
+                onRequireLogin();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void initEnterpriseExtra(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            if (getIntent() != null) {
+                if (getIntent().getExtras() != null) {
+                    getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
+                } else if (getIntent().hasExtra(BundleConstant.IS_ENTERPRISE)) {
+                    getPresenter().setEnterprise(getIntent().getBooleanExtra(BundleConstant.IS_ENTERPRISE, false));
+                }
+            }
+        }
+    }
+
+    private void initPresenterBundle(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            StateSaver.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(presenterStateBundle);
+        }
+    }
+
+    private void launchPlayStoreReviewActivity() {
+        if (!PrefGetter.isPlayStoreWarningShowed() && !(this instanceof PlayStoreWarningActivity)) {
+            startActivity(new Intent(this, PlayStoreWarningActivity.class));
+        } else {
+            if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
+                new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
+            }
         }
     }
 }

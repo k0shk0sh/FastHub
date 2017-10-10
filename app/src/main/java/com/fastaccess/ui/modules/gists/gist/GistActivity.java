@@ -31,6 +31,7 @@ import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
+import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
@@ -163,6 +164,10 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                             .put(BundleConstant.YES_NO_EXTRA, true)
                             .put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            GistsListActivity.startActivity(this);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

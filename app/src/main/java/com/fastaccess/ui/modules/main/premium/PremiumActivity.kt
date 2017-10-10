@@ -61,6 +61,8 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     @OnClick(R.id.unlock) fun onUnlock() {
         if (!isGoogleSupported()) return
         if (BuildConfig.DEBUG) {
+            PrefGetter.setProItems()
+            PrefGetter.setEnterpriseItem()
             onSuccessfullyActivated()
             return
         }
@@ -76,7 +78,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
         return true
     }
 
-    @OnClick(R.id.close) fun onClose(): Unit = finish()
+    @OnClick(R.id.close) fun onClose() = finish()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -86,6 +88,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     private fun successResult() {
+        hideProgress()
         setResult(Activity.RESULT_OK)
         finish()
     }
@@ -93,12 +96,10 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     override fun onSuccessfullyActivated() {
         hideProgress()
         successActivationHolder.visibility = View.VISIBLE
+        FabricProvider.logPurchase(InputHelper.toString(editText))
         successActivationView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {}
             override fun onAnimationEnd(p0: Animator?) {
-                FabricProvider.logPurchase(InputHelper.toString(editText))
-                PrefGetter.setProItems()
-                PrefGetter.setEnterpriseItem()
                 showMessage(R.string.success, R.string.success)
                 successResult()
             }
@@ -111,6 +112,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     override fun onNoMatch() {
+        hideProgress()
         showErrorMessage(getString(R.string.not_match))
     }
 

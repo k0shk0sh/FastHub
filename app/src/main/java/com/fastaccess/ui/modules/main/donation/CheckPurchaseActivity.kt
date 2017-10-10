@@ -32,13 +32,13 @@ class CheckPurchaseActivity : Activity() {
                             .onEach { DonateActivity.enableProduct(it, App.getInstance()) }
                 }
                 return@fromCallable true
-            }).subscribe({ /*do nothing*/ }, ::println, { startMainActivity() })
+            }).subscribe({ startMainActivity() }, { startMainActivity() })
         } else {
             startMainActivity()
         }
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() = Unit
 
     private fun startMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))

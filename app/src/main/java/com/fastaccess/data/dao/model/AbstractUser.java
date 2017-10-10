@@ -19,6 +19,7 @@ import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.Table;
+import io.requery.Transient;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.User.FOLLOWER_NAME;
@@ -68,6 +69,7 @@ public abstract class AbstractUser implements Parcelable {
     @Column(name = "date_column") Date date;
     String repoId;
     String description;
+    @Transient boolean hasOrganizationProjects;
 
     public void save(User entity) {
         if (getUser(entity.getId()) != null) {
