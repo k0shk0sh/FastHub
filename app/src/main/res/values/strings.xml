@@ -578,20 +578,19 @@
         <h5>• I have tried to sign in using Access Token and OTP without any luck. What's wrong?</h5>
         <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of the OTP code you\'ll have to repeat sign in procedure every few seconds.</p>
 
-        <h5>• Why does my Private/Enterprise Repository\'s Wiki not showing up?</h5>
+        <h5>• Why isn't my Private/Enterprise Repository\'s Wiki showing up?</h5>
         <p>As FastHub scraps GitHub's Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
 
         <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
         <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as much permissions as possible, but can\'t do anything much about it
-        in most cases, since your credentials are not on GitHub server. But in <b>some</b>
-        cases your GitHub account OAuth token will do the trick.</p>
+        in most cases, since your credentials are not on GitHub server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
 
         <h5>• Why am I having problems editing Issues/PRs?</h5>
         <p>If you are editing a Public Organization's repo, then please contact your Organization to grant access for FastHub. Alternatively you can sign in with Access Token.</p>
 
         <h5>• I\'m having problems! I want to suggest you some things!</h5>
-        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs or feature requests, I really do encourage you to
-        search before opening a ticket. Any duplicated issue will be labeled as invalid and closed immediately.</p>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+        search for similar issues before opening a new one. Any duplicated ticket will be labeled as invalid and closed immediately.</p>
 
         <h5>• How can I get a PROMO CODE?</h5>
         <p>If you are a student, you\'ll have to prove me that you are student. You will need to send me via Email some proofs listed below:</p>
