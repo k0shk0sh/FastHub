@@ -571,12 +571,12 @@
     <string name="please_read">PLEASE READ!</string>
     <string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Why can\'t I see my <b>Organizations</b> neither <i>Private</i> nor <i>Public</i>?</h5>
-        <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on "Grant" button.
+        <h5>• Why can I see neither my <i>Private</i> nor my <i>Public</i> <b>Organizations</b>?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
         Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
 
-        <h5>• I have tried to sign in using Access Token and OTP without any luck. What's wrong?</h5>
-        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of the OTP code you\'ll have to repeat sign in procedure every few seconds.</p>
+        <h5>• I have tried to sign in using Access Token and One-Time Password (OTP) without any luck. What's wrong?</h5>
+        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
 
         <h5>• Why isn't my Private/Enterprise Repository\'s Wiki showing up?</h5>
         <p>As FastHub scraps GitHub's Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
@@ -588,7 +588,7 @@
         <h5>• Why am I having problems editing Issues/PRs?</h5>
         <p>If you are editing a Public Organization's repo, then please contact your Organization to grant access for FastHub. Alternatively you can sign in with Access Token.</p>
 
-        <h5>• I\'m having problems! I want to suggest you some things!</h5>
+        <h5>• I\'m having problems! / I want to suggest you some things!</h5>
         <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
         search for similar issues before opening a new one. Any duplicated ticket will be labeled as invalid and closed immediately.</p>
 
