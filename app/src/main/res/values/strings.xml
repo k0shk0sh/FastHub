@@ -575,7 +575,7 @@
         <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
         Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
 
-        <h5>• I have tried to sign in using Access Token and One-Time Password (OTP) without any luck. What's wrong?</h5>
+        <h5>• I have tried signing in with Access Token and One-Time Password (OTP) without any luck. What's wrong?</h5>
         <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
 
         <h5>• Why isn't my Private/Enterprise Repository\'s Wiki showing up?</h5>
