@@ -578,7 +578,7 @@
         <h5>• I have tried signing in with Access Token and One-Time Password (OTP) without any luck. What's wrong?</h5>
         <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
 
-        <h5>• Why isn't my Private/Enterprise Repository\'s Wiki showing up?</h5>
+        <h5>• Why isn\'t my Private/Enterprise Repository\'s Wiki showing up?</h5>
         <p>As FastHub scraps GitHub's Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
 
         <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
