@@ -14,20 +14,18 @@ import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.NotificationSubscriptionBodyModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UsersListModel;
-import com.fastaccess.data.dao.model.AbstractRepo;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PinnedIssues;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
-import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -236,14 +234,10 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onSubscribeOrMute(boolean mute) {
         if (getIssue() == null) return;
-        String url = NotificationService.SUBSCRIPTION_URL;
-        String utf = NotificationService.UTF8;
-        String issue = NotificationService.ISSUE_THREAD_CLASS;
-        String token = PrefGetter.getToken();
-        String id = mute ? NotificationService.MUTE : NotificationService.SUBSCRIBE;
-        makeRestCall(AbstractRepo.getRepo(repoId, login)
-                        .flatMapObservable(repo -> RestProvider.getNotificationService(isEnterprise())
-                                .subscribe(url, repo.getId(), getIssue().getId(), issue, id, token, utf)),
+        makeRestCall(mute ? RestProvider.getNotificationService(isEnterprise()).subscribe(getIssue().getId(),
+                new NotificationSubscriptionBodyModel(false, true))
+                          : RestProvider.getNotificationService(isEnterprise()).subscribe(getIssue().getId(),
+                new NotificationSubscriptionBodyModel(true, false)),
                 booleanResponse -> {
                     if (booleanResponse.code() == 204 || booleanResponse.code() == 200) {
                         sendToView(view -> view.showMessage(R.string.success, R.string.successfully_submitted));
