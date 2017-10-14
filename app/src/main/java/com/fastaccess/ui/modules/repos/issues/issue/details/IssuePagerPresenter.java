@@ -19,6 +19,7 @@ import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.model.AbstractRepo;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedIssues;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
@@ -252,6 +253,12 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                 });
     }
 
+    @Override public void onPinUnpinIssue() {
+        if (getIssue() == null) return;
+        PinnedIssues.pinUpin(getIssue());
+        sendToView(IssuePagerMvp.View::onUpdateMenu);
+    }
+
     private void getIssueFromApi() {
         makeRestCall(RxHelper.getObservable(Observable.zip(RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
                 RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
@@ -266,6 +273,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         issueModel.setRepoId(repoId);
         issueModel.setLogin(login);
         sendToView(view -> view.onSetupIssue(false));
+        manageDisposable(PinnedIssues.updateEntry(issue.getId()));
     }
 
     private void updateTimeline(IssuePagerMvp.View view, int assignee_added) {
