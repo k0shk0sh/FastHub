@@ -44,6 +44,8 @@ public interface PullRequestPagerMvp {
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
 
         void onFinishActivity();
+
+        void onUpdateMenu();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, PullRequestFilesMvp.CommitCommentCallback {
@@ -89,6 +91,8 @@ public interface PullRequestPagerMvp {
         void onUpdatePullRequest(@NonNull PullRequest pullRequestModel);
 
         void onRefresh();
+
+        void onPinUnpinPullRequest();
     }
 
 }

@@ -20,6 +20,7 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedPullRequests;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
@@ -265,6 +266,12 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         callApi();
     }
 
+    @Override public void onPinUnpinPullRequest() {
+        if (getPullRequest() == null) return;
+        PinnedPullRequests.pinUpin(getPullRequest());
+        sendToView(PullRequestPagerMvp.View::onUpdateMenu);
+    }
+
     @NonNull @Override public ArrayList<CommentRequestModel> getCommitComment() {
         return reviewComments;
     }
@@ -301,6 +308,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                     return pullRequest;
                 })), pullRequest -> {
             sendToView(view -> view.onSetupIssue(false));
+            manageDisposable(PinnedPullRequests.updateEntry(pullRequest.getId()));
             manageObservable(pullRequest.save(pullRequest).toObservable());
         });
     }

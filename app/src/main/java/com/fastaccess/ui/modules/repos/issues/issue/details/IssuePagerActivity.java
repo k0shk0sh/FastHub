@@ -19,6 +19,7 @@ import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PinnedIssues;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
@@ -46,7 +47,6 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -144,9 +144,11 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
-                Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
-                if (issueModel != null) {
-                    getPresenter().onUpdateIssue(issueModel);
+                if (bundle != null) {
+                    Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
+                    if (issueModel != null) {
+                        getPresenter().onUpdateIssue(issueModel);
+                    }
                 }
             }
         }
@@ -212,6 +214,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         } else if (item.getItemId() == R.id.browser) {
             ActivityHelper.startCustomTab(this, issueModel.getHtmlUrl());
             return true;
+        } else if (item.getItemId() == R.id.pinUnpin) {
+            getPresenter().onPinUnpinIssue();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -224,6 +229,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         MenuItem assignees = menu.findItem(R.id.assignees);
         MenuItem edit = menu.findItem(R.id.edit);
         MenuItem editMenu = menu.findItem(R.id.editMenu);
+        MenuItem pinUnpin = menu.findItem(R.id.pinUnpin);
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
@@ -237,6 +243,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         labels.setVisible(getPresenter().isRepoOwner() || isCollaborator);
         closeIssue.setVisible(isOwner || isCollaborator);
         if (getPresenter().getIssue() != null) {
+            boolean isPinned = PinnedIssues.isPinned(getPresenter().getIssue().getId());
+            pinUnpin.setIcon(isPinned ? ContextCompat.getDrawable(this, R.drawable.ic_pin_filled)
+                                      : ContextCompat.getDrawable(this, R.drawable.ic_pin));
             closeIssue.setTitle(getPresenter().getIssue().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string.close));
             lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
         }
