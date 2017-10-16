@@ -19,9 +19,9 @@ before_install:
        && exit 0 || true
 
 before_script:
-  - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;26.0.2" "platforms;android-26"
   - mkdir -p $ANDROID_HOME/licenses
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > $ANDROID_HOME/licenses/android-sdk-license
+  - echo -e "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_HOME/licenses/android-sdk-license
   - echo -e "\n504667f4c0de7af1a06de9f4b1727b84351f2910" > $ANDROID_HOME/licenses/android-sdk-preview-license
 
 script:
