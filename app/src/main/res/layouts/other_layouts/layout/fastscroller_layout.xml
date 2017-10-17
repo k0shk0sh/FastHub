@@ -11,6 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"/>
 
+    <ImageButton
+        android:id="@+id/scrollUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:background="?selectableItemBackground"
+        android:src="@drawable/ic_arrow_drop_up"
+        android:tint="?colorAccent"
+        android:visibility="gone"/>
+
     <ImageView
         android:id="@+id/fast_scroller_handle"
         android:layout_width="wrap_content"

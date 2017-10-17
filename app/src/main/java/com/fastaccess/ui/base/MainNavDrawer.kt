@@ -20,6 +20,7 @@ import com.fastaccess.ui.modules.about.FastHubAboutActivity
 import com.fastaccess.ui.modules.gists.GistsListActivity
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
 import com.fastaccess.ui.modules.main.MainActivity
+import com.fastaccess.ui.modules.main.donation.CheckPurchaseActivity
 import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity
 import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
@@ -183,6 +184,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                     item.itemId == R.id.trending -> view.startActivity(Intent(view, TrendingActivity::class.java))
                     item.itemId == R.id.reportBug -> view.startActivity(CreateIssueActivity.startForResult(view))
                     item.itemId == R.id.faq -> view.startActivity(Intent(view, PlayStoreWarningActivity::class.java))
+                    item.itemId == R.id.restorePurchase -> view.startActivity(Intent(view, CheckPurchaseActivity::class.java))
                 }
             }
         }, 250)

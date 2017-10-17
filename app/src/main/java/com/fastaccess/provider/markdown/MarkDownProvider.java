@@ -102,6 +102,15 @@ public class MarkDownProvider {
         }
     }
 
+    @NonNull public static String stripMdText(String markdown) {
+        if (!InputHelper.isEmpty(markdown)) {
+            Parser parser = Parser.builder().build();
+            Node node = parser.parse(markdown);
+            return stripHtml(HtmlRenderer.builder().build().render(node));
+        }
+        return "";
+    }
+
     public static String stripHtml(String html) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString();

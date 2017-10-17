@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    
+
     <SwitchPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_edit"
@@ -28,5 +28,11 @@
         android:key="back_button"
         android:summary="@string/back_button_summary"
         android:title="@string/back_button_title"/>
+
+    <Preference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_clear"
+        android:key="clear_search"
+        android:title="@string/clear_search_keywords"/>
 
 </PreferenceScreen>

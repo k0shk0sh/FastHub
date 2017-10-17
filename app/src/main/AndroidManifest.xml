@@ -27,9 +27,15 @@
         android:theme="@style/SplashTheme"
         tools:replace="android:allowBackup"
         tools:targetApi="n">
+
         <activity
             android:name=".ui.modules.main.donation.CheckPurchaseActivity"
             android:configChanges="keyboard|orientation|screenSize"
+            android:theme="@style/ThemeTranslucent"/>
+
+        <activity
+            android:name=".ui.modules.main.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -37,9 +43,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.modules.main.MainActivity"
-            android:launchMode="singleTask"/>
         <activity
             android:name=".ui.modules.login.LoginActivity"
             android:configChanges="keyboard|orientation|screenSize"

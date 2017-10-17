@@ -120,7 +120,9 @@ public class RestProvider {
         request.setDescription(context.getString(R.string.downloading_file));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        downloadManager.enqueue(request);
+        if (downloadManager != null) {
+            downloadManager.enqueue(request);
+        }
     }
 
     public static int getErrorCode(Throwable throwable) {

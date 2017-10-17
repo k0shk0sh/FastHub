@@ -70,6 +70,7 @@ public class SchemeParser {
         Logger.e(data);
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
+            intent.putExtra(BundleConstant.SCHEME_URL, data.toString());
             if (newDocument) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             }
@@ -251,6 +252,9 @@ public class SchemeParser {
         if (segments == null || segments.size() < 2 || segments.size() > 3) return null;
         String owner = segments.get(0);
         String repoName = segments.get(1);
+        if (!InputHelper.isEmpty(repoName)) {
+            repoName = repoName.replace(".git", "");
+        }
         if (segments.size() == 3) {
             String lastPath = uri.getLastPathSegment();
             if ("network".equalsIgnoreCase(lastPath)) {

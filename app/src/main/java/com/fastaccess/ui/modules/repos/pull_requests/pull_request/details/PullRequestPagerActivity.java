@@ -243,7 +243,13 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 PremiumActivity.Companion.startActivity(this);
             }
             return true;
-        }else if(item.getItemId() == R.id.pinUnpin){
+        } else if (item.getItemId() == R.id.subscribe) {
+            getPresenter().onSubscribeOrMute(false);
+            return true;
+        } else if (item.getItemId() == R.id.mute) {
+            getPresenter().onSubscribeOrMute(true);
+            return true;
+        } else if (item.getItemId() == R.id.pinUnpin) {
             getPresenter().onPinUnpinPullRequest();
             return true;
         }

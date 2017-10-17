@@ -169,14 +169,15 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                                 .toList();
                         if (filtered != null) {
                             issues.addAll(filtered);
-                            if (issues.size() < 10 && issuePageable.getNext() > 1) {
+                            if (issues.size() < 10 && issuePageable.getNext() > 1 && this.issues.size() < 10) {
                                 setCurrentPage(getCurrentPage() + 1);
                                 return grabMoreIssues(issues, state, sortBy, getCurrentPage());
                             }
-                            return Observable.just(filtered);
+                            issues.addAll(filtered);
+                            return Observable.just(issues);
                         }
                     }
-                    return Observable.just(new ArrayList<Issue>());
+                    return Observable.just(issues);
                 });
     }
 

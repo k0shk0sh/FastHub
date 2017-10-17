@@ -14,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.Logger;
 
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -25,6 +27,7 @@ public class RecyclerViewFastScroller extends FrameLayout {
 
     private static final int TRACK_SNAP_RANGE = 5;
     private ImageView scrollerView;
+    private ImageButton scrollTop;
     private int height;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -168,6 +171,7 @@ public class RecyclerViewFastScroller extends FrameLayout {
     }
 
     private void setRecyclerViewPosition(float y) {
+        Logger.e(y);
         if (recyclerView != null) {
             int itemCount = recyclerView.getAdapter().getItemCount();
             float proportion;

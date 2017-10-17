@@ -159,4 +159,8 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
         return callback != null && callback.isEnterprise();
     }
 
+    @Override public void onOpenUrlInBrowser() {
+        callback.onOpenUrlInBrowser();
+    }
+
 }

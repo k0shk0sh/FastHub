@@ -46,6 +46,7 @@
     <item
         android:icon="@drawable/ic_subscribe"
         android:title="@string/subscribe"
+        android:visible="false"
         app:showAsAction="ifRoom">
         <menu>
             <item

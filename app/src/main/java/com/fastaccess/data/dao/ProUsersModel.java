@@ -11,6 +11,7 @@ public class ProUsersModel implements Parcelable {
     private int count;
     private boolean allowed;
     private int type;
+    private boolean isBlocked;
 
     public int getCount() { return count;}
 
@@ -23,6 +24,14 @@ public class ProUsersModel implements Parcelable {
     public int getType() { return type;}
 
     public void setType(int type) { this.type = type;}
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
 
     @Override public String toString() {
         return "ProUsersModel{" +
@@ -40,12 +49,14 @@ public class ProUsersModel implements Parcelable {
         dest.writeInt(this.count);
         dest.writeByte(this.allowed ? (byte) 1 : (byte) 0);
         dest.writeInt(this.type);
+        dest.writeByte(this.isBlocked ? (byte) 1 : (byte) 0);
     }
 
     protected ProUsersModel(Parcel in) {
         this.count = in.readInt();
         this.allowed = in.readByte() != 0;
         this.type = in.readInt();
+        this.isBlocked = in.readByte() != 0;
     }
 
     public static final Creator<ProUsersModel> CREATOR = new Creator<ProUsersModel>() {

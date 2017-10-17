@@ -45,6 +45,8 @@ public interface BaseMvp {
         void onOpenSettings();
 
         boolean isEnterprise();
+
+        void onOpenUrlInBrowser();
     }
 
     interface FAPresenter {

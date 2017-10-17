@@ -93,6 +93,8 @@ public interface PullRequestPagerMvp {
         void onRefresh();
 
         void onPinUnpinPullRequest();
+
+        void onSubscribeOrMute(boolean mute);
     }
 
 }

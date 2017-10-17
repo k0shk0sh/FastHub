@@ -477,4 +477,11 @@ public class PrefGetter {
     public static void setPlayStoreWarningShowed() {
         PrefHelper.set(PLAY_STORE_REVIEW_ACTIVITY, true);
     }
+
+    public static void clearPurchases() {
+        PrefHelper.set(PRO_ITEMS, false);
+        PrefHelper.set(BLUISH_THEME_ENABLED, false);
+        PrefHelper.set(AMLOD_THEME_ENABLED, false);
+        setEnterpriseUrl(null);
+    }
 }

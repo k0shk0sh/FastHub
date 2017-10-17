@@ -28,9 +28,11 @@ import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
@@ -77,6 +79,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
     @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
+    @State String schemeUrl;
 
     @State Bundle presenterStateBundle = new Bundle();
 
@@ -107,6 +110,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);
+        }
+        if (savedInstanceState == null) {
+            if (getIntent() != null) {
+                schemeUrl = getIntent().getStringExtra(BundleConstant.SCHEME_URL);
+            }
         }
         if (!validateAuth()) return;
         launchPlayStoreReviewActivity();
@@ -257,6 +265,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public boolean isEnterprise() {
         return getPresenter() != null && getPresenter().isEnterprise();
+    }
+
+    @Override public void onOpenUrlInBrowser() {
+        if (!InputHelper.isEmpty(schemeUrl)) {
+            ActivityHelper.startCustomTab(this, schemeUrl);
+        }
     }
 
     @Optional @OnClick(R.id.logout) void onLogoutClicked() {

@@ -608,4 +608,6 @@
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Comments added successfully</string>
+    <string name="clear_search_keywords">Clear Search History</string>
+    <string name="restore_purchases">Restore Purchases</string>
 </resources>
