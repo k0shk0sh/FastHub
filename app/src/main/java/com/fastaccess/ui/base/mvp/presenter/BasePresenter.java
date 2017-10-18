@@ -121,6 +121,15 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         return resId;
     }
 
+    public void onCheckGitHubStatus() {
+        manageObservable(RestProvider.gitHubStatus()
+                .doOnNext(gitHubStatusModel -> {
+                    if (!"good".equalsIgnoreCase(gitHubStatusModel.getStatus())) {
+                        sendToView(v -> v.showErrorMessage("Github Status:\n" + gitHubStatusModel.getBody()));
+                    }
+                }));
+    }
+
     public boolean isEnterprise() {
         return enterprise;
     }

@@ -112,6 +112,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             ButterKnife.bind(this);
         }
         if (savedInstanceState == null) {
+            getPresenter().onCheckGitHubStatus();
             if (getIntent() != null) {
                 schemeUrl = getIntent().getStringExtra(BundleConstant.SCHEME_URL);
             }
