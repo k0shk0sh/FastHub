@@ -571,15 +571,15 @@
     <string name="please_read">PLEASE READ!</string>
     <string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Why can't I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+        <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
         <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
         Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
 
-        <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What's wrong?</h5>
+        <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
         <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
 
         <h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
-        <p>As FastHub scraps GitHub's Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
+        <p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
 
         <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
         <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
