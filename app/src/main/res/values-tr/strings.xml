@@ -318,7 +318,6 @@
     <string name="language">Uygulama Dili</string>
     <string name="choose_language_title">Dil seçiniz</string>
     <string name="choose_language_summary">Tercih ettiğiniz dili seçin</string>
-    <string name="choose_language_summary">Choose your preferred language</string>
     <string name="un_subscribe">Abonelikten ayrıl</string>
     <!-- next one is not a word in Turkish, but an extension to a word before it -->
     <!-- and it changes depending the letters of the word before it -->
