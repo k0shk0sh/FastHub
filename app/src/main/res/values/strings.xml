@@ -586,7 +586,7 @@
         in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
 
         <h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
-        <p>If you are unable to edit Issues/PRs in a Public Organization's repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
 
         <h5>• I\'m having problems! / I want to suggest you some things!</h5>
         <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
