@@ -18,7 +18,7 @@
             android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_micro"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:orientation="horizontal">
 
             <com.fastaccess.ui.widgets.AvatarLayout
