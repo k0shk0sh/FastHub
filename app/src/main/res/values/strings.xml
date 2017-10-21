@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- DO NOT COPY!  -->
 
     <string name="app_name" translatable="false">FastHub</string>
@@ -608,4 +607,5 @@
     <string name="comments_added_successfully">Comments added successfully</string>
     <string name="clear_search_keywords">Clear Search History</string>
     <string name="restore_purchases">Restore Purchases</string>
+    <string name="include_forks">Include Forks</string>
 </resources>

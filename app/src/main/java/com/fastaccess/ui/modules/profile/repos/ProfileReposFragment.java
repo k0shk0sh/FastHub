@@ -154,4 +154,9 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
     public void onSortDirectionSelected(String selectedSortDirection) {
         getPresenter().onSortDirectionSelected(selectedSortDirection);
     }
+
+    @Override
+    public String getLogin() {
+        return getArguments().getString(BundleConstant.EXTRA);
+    }
 }
