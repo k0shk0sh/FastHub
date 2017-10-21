@@ -35,7 +35,6 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
-    private String username;
 
     public static ProfileReposFragment newInstance(@NonNull String username) {
         ProfileReposFragment view = new ProfileReposFragment();
@@ -64,7 +63,6 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, username is required");
         }
-        this.username = getArguments().getString(BundleConstant.EXTRA);
         stateLayout.setEmptyText(R.string.no_repos);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
@@ -159,6 +157,6 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
 
     @Override
     public String getLogin() {
-        return username;
+        return getArguments().getString(BundleConstant.EXTRA);
     }
 }
