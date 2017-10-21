@@ -248,10 +248,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.user.UserPagerActivity"/>
         </activity>
+
         <activity android:name=".ui.modules.main.playstore.PlayStoreWarningActivity"/>
+
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.files.fullscreen.FullScreenFileChangeActivity"
             android:configChanges="keyboard|orientation|screenSize"/>
+
+        <activity android:name=".ui.modules.search.SearchUserActivity"/>
+
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -315,8 +320,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e"/>
-
-        <activity android:name=".ui.modules.search.SearchUserActivity"/>
     </application>
 
 </manifest>
