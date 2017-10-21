@@ -29,7 +29,6 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
 
     @State var username = ""
     @State var searchTerm = ""
-    private var isFork = true
 
     @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     fun onTextChange(str: Editable) {
@@ -47,7 +46,6 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
     }
 
     @OnClick(R.id.forkCheckBox) fun checkBoxClicked() {
-        isFork = forkCheckBox.isChecked
         onSearchClicked()
     }
 
@@ -91,7 +89,7 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
     }
 
     private fun makeSearch() {
-        val query = "user:$username $searchTerm fork:$isFork"
+        val query = "user:$username $searchTerm fork:${forkCheckBox.isChecked}"
         getFragment()?.onQueueSearch(query)
     }
 
