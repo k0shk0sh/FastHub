@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import butterknife.*
+import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.AnimHelper
 import com.fastaccess.helper.InputHelper
@@ -19,6 +19,16 @@ import com.fastaccess.ui.modules.search.repos.SearchReposFragment
 import com.fastaccess.ui.widgets.FontAutoCompleteEditText
 
 class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
+
+    override fun layout(): Int = R.layout.activity_search_user
+
+    override fun isTransparent(): Boolean = false
+
+    override fun canBack(): Boolean = true
+
+    override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
+
+    override fun isSecured(): Boolean = false
 
     companion object {
 
@@ -40,40 +50,30 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
     @BindView(R.id.clear) lateinit var clear: View
     @BindView(R.id.searchEditText) lateinit var searchEditText: FontAutoCompleteEditText
 
-    private var username = ""
-    private var searchTerm = ""
+    @State var username = ""
+    @State var searchTerm = ""
     private var isFork = true
-    private lateinit var searchReposFragment: SearchReposFragment
+    lateinit var searchReposFragment: SearchReposFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ButterKnife.bind(this)
 
         searchReposFragment = SearchReposFragment.newInstance()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.containerFragment, searchReposFragment, "SearchReposFragment")
                 .commit()
 
-        val args = intent.extras
-        Logger.d("savedS $args")
-        if (args != null) {
+        if (savedInstanceState == null) {
+            val args = intent.extras
+
             username = args.getString(USERNAME)
             if (InputHelper.isEmpty(username))
                 throw UninitializedPropertyAccessException("Username cannot be empty")
             searchTerm = args.getString(SEARCH_TERM)
-            searchEditText.setText(searchTerm)
-            onSearchClicked()
         }
-
-        forkCheckBox.setOnClickListener {
-            isFork = forkCheckBox.isChecked
-            onSearchClicked()
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        intent.putExtra(SEARCH_TERM, searchTerm)
+        searchEditText.setText(searchTerm)
+        Logger.d("savedS $username $searchTerm")
+        onSearchClicked()
     }
 
     @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -89,8 +89,12 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
     @OnClick(R.id.search)
     fun onSearchClicked() {
         searchTerm = searchEditText.text.toString()
-        Logger.d("savedS $searchTerm")
         makeSearch()
+    }
+
+    @OnClick(R.id.forkCheckBox) fun checkBoxClicked() {
+        isFork = forkCheckBox.isChecked
+        onSearchClicked()
     }
 
     @OnEditorAction(R.id.searchEditText)
@@ -101,18 +105,7 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
 
     private fun makeSearch() {
         val query = "user:$username $searchTerm fork:$isFork"
-        Logger.d(query)
         searchReposFragment.onQueueSearch(query)
     }
-
-    override fun layout(): Int = R.layout.activity_search_user
-
-    override fun isTransparent(): Boolean = false
-
-    override fun canBack(): Boolean = true
-
-    override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
-
-    override fun isSecured(): Boolean = false
 
 }
