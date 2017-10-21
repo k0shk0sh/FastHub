@@ -118,7 +118,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             }
         }
         if (!validateAuth()) return;
-        launchPlayStoreReviewActivity();
+        showChangelog();
         initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
         initEnterpriseExtra(savedInstanceState);
@@ -520,13 +520,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
     }
 
-    private void launchPlayStoreReviewActivity() {
-        if (!PrefGetter.isPlayStoreWarningShowed() && !(this instanceof PlayStoreWarningActivity)) {
-            startActivity(new Intent(this, PlayStoreWarningActivity.class));
-        } else {
-            if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
-                new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
-            }
+    private void showChangelog() {
+        if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
+            new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
     }
 }

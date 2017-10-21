@@ -41,7 +41,7 @@ public class TimelineProvider {
             String thisString = context.getString(R.string.this_value);
             String in = context.getString(R.string.in_value);
             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
-                spannableBuilder.bold(issueEventModel.getActor().getLogin());
+                spannableBuilder.bold(issueEventModel.getActor() != null ? issueEventModel.getActor().getLogin() : "anonymous");
                 spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
                 LabelModel labelModel = issueEventModel.getLabel();
                 int color = Color.parseColor("#" + labelModel.getColor());

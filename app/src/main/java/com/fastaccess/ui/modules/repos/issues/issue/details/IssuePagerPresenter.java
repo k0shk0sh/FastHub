@@ -202,8 +202,10 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         AssigneesRequestModel assigneesRequestModel = new AssigneesRequestModel();
         ArrayList<String> assignees = new ArrayList<>();
         Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
-        assigneesRequestModel.setAssignees(assignees);
-        makeRestCall(RestProvider.getIssueService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+        assigneesRequestModel.setAssignees(assignees.isEmpty() ? Stream.of(issueModel.getAssignees()).map(User::getLogin).toList() : assignees);
+        makeRestCall(!assignees.isEmpty() ?
+                     RestProvider.getIssueService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel) :
+                     RestProvider.getIssueService(isEnterprise()).deleteAssignees(login, repoId, issueNumber, assigneesRequestModel),
                 issue -> {
                     UsersListModel assignee = new UsersListModel();
                     assignee.addAll(users);
