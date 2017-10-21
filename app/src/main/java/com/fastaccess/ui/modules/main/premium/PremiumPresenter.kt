@@ -60,7 +60,9 @@ class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter 
                         if (isAllowed) {
                             sendToView { it.onSuccessfullyActivated() }
                         } else {
-                            PrefGetter.clearPurchases()
+                            if (user.isBlocked) {
+                                PrefGetter.clearPurchases()
+                            }
                             sendToView { it.onNoMatch() }
                         }
                     }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?colorPrimary"
-    android:orientation="vertical"
-    tools:context="com.fastaccess.ui.modules.search.SearchUserActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?colorPrimary"
+              android:orientation="vertical"
+              tools:context="com.fastaccess.ui.modules.search.SearchUserActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -41,7 +41,7 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColorHint="?android:textColorSecondary" />
+                    android:textColorHint="?android:textColorSecondary"/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/clear"
@@ -52,7 +52,7 @@
                     android:contentDescription="@string/clear"
                     android:padding="@dimen/spacing_micro"
                     android:src="@drawable/ic_clear"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/search"
@@ -62,7 +62,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/search"
                     android:padding="@dimen/spacing_micro"
-                    android:src="@drawable/ic_search" />
+                    android:src="@drawable/ic_search"/>
 
             </LinearLayout>
 
@@ -70,28 +70,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <com.fastaccess.ui.widgets.FontCheckbox
+        android:id="@+id/forkCheckBox"
+        style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/include_forks" />
-
-        <CheckBox
-            android:id="@+id/forkCheckBox"
-            android:checked="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+        android:background="?selectableItemBackground"
+        android:button="@color/transparent"
+        android:checked="true"
+        android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+        android:drawablePadding="@dimen/spacing_xs_large"
+        android:padding="@dimen/spacing_xs_large"
+        android:text="@string/include_forks"/>
 
     <FrameLayout
         android:id="@+id/containerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </LinearLayout>
