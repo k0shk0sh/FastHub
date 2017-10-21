@@ -51,6 +51,8 @@ import static android.app.Activity.RESULT_OK;
 public class SettingsCategoryFragment extends PreferenceFragmentCompat implements
         Preference.OnPreferenceChangeListener, NotificationSoundMvp.NotificationSoundListener {
 
+    public static final String TAG = SettingsCategoryFragment.class.getSimpleName();
+
     public interface SettingsCallback {
         @SettingsModel.SettingsType int getSettingsType();
     }

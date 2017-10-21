@@ -201,8 +201,10 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 .map(User::getLogin)
                 .collect(Collectors.toCollection(ArrayList::new));
         if (isAssignees) {
-            assigneesRequestModel.setAssignees(assignees);
-            makeRestCall(RestProvider.getPullRequestService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+            assigneesRequestModel.setAssignees(assignees.isEmpty() ? Stream.of(pullRequest.getAssignees()).map(User::getLogin).toList() : assignees);
+            makeRestCall(!assignees.isEmpty() ?
+                         RestProvider.getIssueService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel) :
+                         RestProvider.getIssueService(isEnterprise()).deleteAssignees(login, repoId, issueNumber, assigneesRequestModel),
                     pullRequestResponse -> {
                         UsersListModel usersListModel = new UsersListModel();
                         usersListModel.addAll(users);
