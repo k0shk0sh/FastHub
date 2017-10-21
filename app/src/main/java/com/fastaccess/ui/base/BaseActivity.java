@@ -187,7 +187,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void hideProgress() {
         ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
                 ProgressDialogFragment.TAG);
-        Logger.e(fragment);
         if (fragment != null) {
             isProgressShowing = false;
             fragment.dismiss();

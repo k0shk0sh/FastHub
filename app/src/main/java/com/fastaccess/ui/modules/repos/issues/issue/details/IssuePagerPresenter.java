@@ -47,6 +47,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State boolean isCollaborator;
     @com.evernote.android.state.State boolean showToRepoBtn;
+    @com.evernote.android.state.State long commentId;
 
     @Nullable @Override public Issue getIssue() {
         return issueModel;
@@ -69,6 +70,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             login = intent.getExtras().getString(BundleConstant.EXTRA);
             repoId = intent.getExtras().getString(BundleConstant.EXTRA_TWO);
             showToRepoBtn = intent.getExtras().getBoolean(BundleConstant.EXTRA_THREE);
+            commentId = intent.getExtras().getLong(BundleConstant.EXTRA_SIX);
             if (issueModel != null) {
                 issueNumber = issueModel.getNumber();
                 sendToView(view -> view.onSetupIssue(false));

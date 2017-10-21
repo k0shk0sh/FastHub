@@ -192,6 +192,16 @@ public class SchemeParser {
         String owner = null;
         String repo = null;
         String number = null;
+        String fragment = uri.getEncodedFragment();//#issuecomment-332236665
+        Long commentId = null;
+        if (!InputHelper.isEmpty(fragment) && fragment.split("-").length > 1) {
+            fragment = fragment.split("-")[1];
+            if (!InputHelper.isEmpty(fragment)) {
+                try {
+                    commentId = Long.parseLong(fragment);
+                } catch (Exception ignored) {}
+            }
+        }
         if (segments.size() > 3) {
             if (("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
                 owner = segments.get(0);
@@ -213,7 +223,8 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return PullRequestPagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn);
+        return PullRequestPagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn,
+                LinkParserHelper.isEnterprise(uri.toString()), commentId == null ? 0 : commentId);
     }
 
     @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
@@ -222,6 +233,16 @@ public class SchemeParser {
         String owner = null;
         String repo = null;
         String number = null;
+        String fragment = uri.getEncodedFragment();//#issuecomment-332236665
+        Long commentId = null;
+        if (!InputHelper.isEmpty(fragment) && fragment.split("-").length > 1) {
+            fragment = fragment.split("-")[1];
+            if (!InputHelper.isEmpty(fragment)) {
+                try {
+                    commentId = Long.parseLong(fragment);
+                } catch (Exception ignored) {}
+            }
+        }
         if (segments.size() > 3) {
             if (segments.get(2).equalsIgnoreCase("issues")) {
                 owner = segments.get(0);
@@ -244,7 +265,9 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn);
+        Logger.e(commentId);
+        return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn,
+                LinkParserHelper.isEnterprise(uri.toString()), commentId == null ? 0 : commentId);
     }
 
     @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {

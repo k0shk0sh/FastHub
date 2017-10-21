@@ -117,4 +117,9 @@ public interface IssueService {
     Observable<Issue> deleteAssignees(@Path("owner") String owner, @Path("repo") String repo,
                                       @Path("number") int number, @Body AssigneesRequestModel body);
 
+    @GET("/repos/{owner}/{repo}/issues/comments/{id}")
+    @Headers("Accept: application/vnd.github.mockingbird-preview,application/vnd.github.VERSION.full+json," +
+            " application/vnd.github.squirrel-girl-preview")
+    Observable<Comment> getComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);
+
 }

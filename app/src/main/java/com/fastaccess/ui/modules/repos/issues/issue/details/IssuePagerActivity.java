@@ -26,6 +26,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
@@ -85,6 +86,13 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId,
                                       @NonNull String login, int number, boolean showToRepoBtn,
                                       boolean isEnterprise) {
+        return createIntent(context, repoId, login, number, showToRepoBtn, isEnterprise, 0);
+
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId,
+                                      @NonNull String login, int number, boolean showToRepoBtn,
+                                      boolean isEnterprise, long commentId) {
         Intent intent = new Intent(context, IssuePagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
@@ -92,6 +100,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showToRepoBtn)
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .put(BundleConstant.EXTRA_SIX, commentId)
                 .end());
         return intent;
 
@@ -272,7 +281,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             }
         } else {
             if (pager.getAdapter() == null) {
-                pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this)));
+                Logger.e(getPresenter().commentId);
+                pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel
+                        .buildForIssues(this, getPresenter().commentId)));
             } else {
                 onUpdateTimeline();
             }

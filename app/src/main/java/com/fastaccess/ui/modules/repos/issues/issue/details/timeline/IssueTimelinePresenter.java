@@ -48,6 +48,7 @@ import lombok.Getter;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State boolean isCollaborator;
+    private long commentId;
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
@@ -229,6 +230,10 @@ import lombok.Getter;
         }
     }
 
+    @Override public void setCommentId(long commentId) {
+        this.commentId = commentId;
+    }
+
     @NonNull private ReactionsProvider getReactionsProvider() {
         if (reactionsProvider == null) {
             reactionsProvider = new ReactionsProvider();
@@ -284,7 +289,49 @@ import lombok.Getter;
                 })
                 .toList()
                 .toObservable();
-        makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));
+        makeRestCall(observable, timeline -> {
+            sendToView(view -> view.onNotifyAdapter(timeline, page));
+            loadComment(page, commentId, login, repoId, timeline);
+        });
         return true;
+    }
+
+    private void loadComment(int page, long commentId, String login, String repoId, List<TimelineModel> timeline) {
+        if (page == 1 && commentId > 0) {
+            Observable<TimelineModel> observable = Observable.create(source -> {
+                int index = -1;
+                if (timeline != null) {
+                    for (int i = 0; i < timeline.size(); i++) {
+                        TimelineModel timelineModel = timeline.get(i);
+                        if (timelineModel.getComment() != null) {
+                            if (timelineModel.getComment().getId() == commentId) {
+                                index = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (index != -1) {
+                    TimelineModel timelineModel = new TimelineModel();
+                    timelineModel.setPosition(index);
+                    source.onNext(timelineModel);
+                } else {
+                    Comment comment = RestProvider.getIssueService(isEnterprise()).getComment(login, repoId, commentId)
+                            .blockingFirst(null);
+                    if (comment != null) {
+                        source.onNext(TimelineModel.constructComment(comment));
+                    }
+                }
+                source.onComplete();
+            });
+            manageObservable(observable
+                    .doOnNext(timelineModel -> sendToView(view -> {
+                        if (timelineModel.getComment() != null) {
+                            view.addComment(timelineModel, -1);
+                        } else {
+                            view.addComment(null, timelineModel.getPosition());
+                        }
+                    })));
+        }
     }
 }

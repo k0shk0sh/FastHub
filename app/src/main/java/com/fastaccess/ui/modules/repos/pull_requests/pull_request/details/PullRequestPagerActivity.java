@@ -96,6 +96,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
                                       int number, boolean showRepoBtn, boolean isEnterprise) {
+        return createIntent(context, repoId, login, number, showRepoBtn, isEnterprise, 0);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      int number, boolean showRepoBtn, boolean isEnterprise, long commentId) {
         Intent intent = new Intent(context, PullRequestPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
@@ -103,6 +108,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showRepoBtn)
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .put(BundleConstant.EXTRA_SIX, commentId)
                 .end());
         return intent;
     }
