@@ -36,6 +36,7 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
+    private String username;
 
     public static OrgReposFragment newInstance(@NonNull String username) {
         OrgReposFragment view = new OrgReposFragment();
@@ -64,6 +65,7 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, username is required");
         }
+        username = getArguments().getString(BundleConstant.EXTRA);
         stateLayout.setEmptyText(R.string.no_repos);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
@@ -146,6 +148,11 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
 
     @Override public void onSortDirectionSelected(String selectedSortDirection) {
         //Not supported for org profile
+    }
+
+    @Override
+    public String getLogin() {
+        return username;
     }
 
     private void showReload() {

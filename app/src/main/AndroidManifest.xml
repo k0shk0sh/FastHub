@@ -316,7 +316,7 @@
             android:name="io.fabric.ApiKey"
             android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e" />
 
-        <activity android:name=".ui.modules.search.SearchUserActivity"></activity>
+        <activity android:name=".ui.modules.search.SearchUserActivity" />
     </application>
 
 </manifest>

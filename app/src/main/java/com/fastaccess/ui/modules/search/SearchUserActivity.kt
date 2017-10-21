@@ -3,20 +3,22 @@ package com.fastaccess.ui.modules.search
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.Editable
-import butterknife.ButterKnife
-import butterknife.OnClick
-import butterknife.OnEditorAction
-import butterknife.OnTextChanged
+import android.util.Log
+import android.view.View
+import android.widget.CheckBox
+import butterknife.*
 import com.fastaccess.R
 import com.fastaccess.helper.AnimHelper
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.Logger
+import com.fastaccess.ui.base.BaseActivity
+import com.fastaccess.ui.base.mvp.BaseMvp
+import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.search.repos.SearchReposFragment
-import kotlinx.android.synthetic.main.activity_search_user.*
+import com.fastaccess.ui.widgets.FontAutoCompleteEditText
 
-class SearchUserActivity : AppCompatActivity() {
+class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
 
     companion object {
 
@@ -34,6 +36,10 @@ class SearchUserActivity : AppCompatActivity() {
         }
     }
 
+    @BindView(R.id.forkCheckBox) lateinit var forkCheckBox: CheckBox
+    @BindView(R.id.clear) lateinit var clear: View
+    @BindView(R.id.searchEditText) lateinit var searchEditText: FontAutoCompleteEditText
+
     private var username = ""
     private var searchTerm = ""
     private var isFork = true
@@ -41,7 +47,6 @@ class SearchUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_user)
         ButterKnife.bind(this)
 
         searchReposFragment = SearchReposFragment.newInstance()
@@ -50,19 +55,25 @@ class SearchUserActivity : AppCompatActivity() {
                 .commit()
 
         val args = intent.extras
-        username = args.getString(USERNAME)
-        if (InputHelper.isEmpty(username))
-            throw UninitializedPropertyAccessException("Username cannot be empty")
-        searchTerm = args.getString(SEARCH_TERM)
-        if (InputHelper.isEmpty(searchTerm))
-            searchTerm = ""
-        Logger.d(username + " " + searchTerm)
-        makeSearch()
+        Logger.d("savedS $args")
+        if (args != null) {
+            username = args.getString(USERNAME)
+            if (InputHelper.isEmpty(username))
+                throw UninitializedPropertyAccessException("Username cannot be empty")
+            searchTerm = args.getString(SEARCH_TERM)
+            searchEditText.setText(searchTerm)
+            onSearchClicked()
+        }
 
         forkCheckBox.setOnClickListener {
             isFork = forkCheckBox.isChecked
             onSearchClicked()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        intent.putExtra(SEARCH_TERM, searchTerm)
     }
 
     @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -78,6 +89,7 @@ class SearchUserActivity : AppCompatActivity() {
     @OnClick(R.id.search)
     fun onSearchClicked() {
         searchTerm = searchEditText.text.toString()
+        Logger.d("savedS $searchTerm")
         makeSearch()
     }
 
@@ -92,4 +104,15 @@ class SearchUserActivity : AppCompatActivity() {
         Logger.d(query)
         searchReposFragment.onQueueSearch(query)
     }
+
+    override fun layout(): Int = R.layout.activity_search_user
+
+    override fun isTransparent(): Boolean = false
+
+    override fun canBack(): Boolean = true
+
+    override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
+
+    override fun isSecured(): Boolean = false
+
 }

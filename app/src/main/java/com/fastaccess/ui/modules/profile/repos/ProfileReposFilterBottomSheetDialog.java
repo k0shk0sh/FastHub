@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.profile.repos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
 import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment;
 import com.fastaccess.ui.modules.profile.org.repos.OrgReposMvp;
+import com.fastaccess.ui.modules.search.SearchUserActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -94,6 +96,13 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
         sortSelectionSpinner.setSelection(0);
     }
 
+    @OnClick(R.id.filter_sheet_search_btn) public void startSearch() {
+        if (listener != null) {
+            Intent intent = SearchUserActivity.getIntent(getContext(), listener.getLogin(), "");
+            startActivity(intent);
+        }
+    }
+
     public interface ProfileReposFilterChangeListener {
         void onFilterApply();
 
@@ -102,5 +111,7 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
         void onSortOptionSelected(String selectedSortOption);
 
         void onSortDirectionSelected(String selectedSortDirection);
+
+        String getLogin();
     }
 }

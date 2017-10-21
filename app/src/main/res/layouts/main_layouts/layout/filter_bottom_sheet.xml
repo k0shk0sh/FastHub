@@ -42,6 +42,14 @@
                 android:text="@string/reset"
                 android:textColor="?android:textColorPrimary"/>
 
+            <com.fastaccess.ui.widgets.FontButton
+                android:id="@+id/filter_sheet_search_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end|center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:background="@drawable/ic_search" />
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

@@ -244,7 +244,6 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
-        getMenuInflater().inflate(R.menu.search_menu_solo, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -255,10 +254,6 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                     .appendPath(login)
                     .toString());
             return true;
-        }
-        if (item.getItemId() == R.id.search && !InputHelper.isEmpty(login)) {
-            Intent intent = SearchUserActivity.getIntent(this, login, "");
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
