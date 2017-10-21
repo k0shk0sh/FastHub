@@ -19,6 +19,17 @@
             android:theme="?android:toolbarStyle"
             app:title="@string/filter">
 
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/filter_sheet_search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_search"/>
+
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/filter_sheet_apply_btn"
@@ -41,7 +52,6 @@
                 android:padding="@dimen/spacing_normal"
                 android:text="@string/reset"
                 android:textColor="?android:textColorPrimary"/>
-
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
