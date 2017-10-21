@@ -168,6 +168,7 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation 'com.airbnb.android:lottie:2.2.5'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
     kapt "com.evernote:android-state-processor:${state_version}"
@@ -189,3 +190,4 @@ dependencies {
 
 apply plugin: 'ManifestClasspath'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android-extensions'
