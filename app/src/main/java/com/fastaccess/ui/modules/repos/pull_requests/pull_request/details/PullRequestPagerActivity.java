@@ -256,7 +256,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             getPresenter().onSubscribeOrMute(true);
             return true;
         } else if (item.getItemId() == R.id.pinUnpin) {
-            getPresenter().onPinUnpinPullRequest();
+            if (PrefGetter.isProEnabled()) {
+                getPresenter().onPinUnpinPullRequest();
+            } else {
+                PremiumActivity.Companion.startActivity(this);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);

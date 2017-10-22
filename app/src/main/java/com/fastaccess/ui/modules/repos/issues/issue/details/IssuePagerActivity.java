@@ -28,11 +28,13 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
@@ -224,7 +226,11 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             ActivityHelper.startCustomTab(this, issueModel.getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.pinUnpin) {
-            getPresenter().onPinUnpinIssue();
+            if (PrefGetter.isProEnabled()) {
+                getPresenter().onPinUnpinIssue();
+            } else {
+                PremiumActivity.Companion.startActivity(this);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
