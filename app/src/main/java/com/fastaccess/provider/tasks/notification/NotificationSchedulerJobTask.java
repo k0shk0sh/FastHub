@@ -216,7 +216,8 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void withComments(Comment comment, Context context, Notification thread, int accentColor) {
-        android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody(),
+        android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "",
+                MarkDownProvider.stripMdText(comment.getBody()),
                 thread.getRepository() != null ? thread.getRepository().getFullName() : "general")
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_notification)
