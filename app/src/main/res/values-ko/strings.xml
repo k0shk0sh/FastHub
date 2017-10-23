@@ -464,4 +464,9 @@
         <h5>위 조건을 만족시킨 후 본 앱의 개발자인 Kosh Sergani에게 이메일을 보내면 검토후 PROMO CODE를 보내 드립니다.</h5>\n
         <h5>본 한국어 번역자는 이 앱의 개발에 참여하지 않았습니다. 따라서 기술적 문의는 이 앱의 개발자인 Kosh Sergani에게 해주시기 바랍니다. 본 번역이 앱 사용에 도움이 되셨기를 바랍니다. 감사합니다.</h5>
 	]]></string>
+    <string name="faq">자주 하는 질문 (FAQ)</string>
+    <string name="comments_added_successfully">댓글을 성공적으로 추가하였습니다</string>
+    <string name="clear_search_keywords">검색 기록 삭제</string>
+    <string name="restore_purchases">이전 구매 여부 복구</string>
+    <string name="include_forks">Fork한 Repo 포함하기</string>
 </resources>
