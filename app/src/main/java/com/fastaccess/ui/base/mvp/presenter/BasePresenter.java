@@ -81,9 +81,13 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     @Override public void onError(@NonNull Throwable throwable) {
         apiCalled = true;
         throwable.printStackTrace();
-        if (RestProvider.getErrorCode(throwable) == 401) {
+        int code = RestProvider.getErrorCode(throwable);
+        if (code == 401) {
             sendToView(BaseMvp.FAView::onRequireLogin);
             return;
+        }
+        if (code == 404) {
+            sendToView(BaseMvp.FAView::onOpenUrlInBrowser);
         }
         GitHubErrorResponse errorResponse = RestProvider.getErrorResponse(throwable);
         if (errorResponse != null && errorResponse.getMessage() != null) {
@@ -115,6 +119,15 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
             resId = R.string.unexpected_error;
         }
         return resId;
+    }
+
+    public void onCheckGitHubStatus() {
+        manageObservable(RestProvider.gitHubStatus()
+                .doOnNext(gitHubStatusModel -> {
+                    if (!"good".equalsIgnoreCase(gitHubStatusModel.getStatus())) {
+                        sendToView(v -> v.showErrorMessage("Github Status:\n" + gitHubStatusModel.getBody()));
+                    }
+                }));
     }
 
     public boolean isEnterprise() {

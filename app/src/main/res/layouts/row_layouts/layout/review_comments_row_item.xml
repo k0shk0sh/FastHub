@@ -18,7 +18,7 @@
             android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_micro"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:orientation="horizontal">
 
             <com.fastaccess.ui.widgets.AvatarLayout
@@ -113,20 +113,90 @@
             android:textIsSelectable="true"
             tools:text="Hello World"/>
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/reactionsText"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:id="@+id/reactionsList"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginEnd="@dimen/spacing_xs_large"
             android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_micro"
-            android:gravity="start"
-            android:paddingEnd="@dimen/spacing_xs_large"
-            android:visibility="gone"
-            tools:ignore="RtlSymmetry"
-            tools:text="U+1F602"
-            tools:visibility="visible"/>
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:scrollbarStyle="insideOverlay"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/thumbsUpReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/thumbsDownReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/laughReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/hurrayReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/sadReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/heartReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
     </LinearLayout>
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

@@ -41,7 +41,7 @@ public class MarkDownProvider {
     };
 
     private static final String[] ARCHIVE_EXTENSIONS = {
-            ".zip", ".7z", ".rar", ".tar.gz", ".tgz", ".tar.Z", ".tar.bz2", ".tbz2", ".tar.lzma", ".tlz", ".apk", ".jar", ".dmg", ".pdf"
+            ".zip", ".7z", ".rar", ".tar.gz", ".tgz", ".tar.Z", ".tar.bz2", ".tbz2", ".tar.lzma", ".tlz", ".apk", ".jar", ".dmg", ".pdf", ".ico"
     };
 
     private MarkDownProvider() {}
@@ -100,6 +100,15 @@ public class MarkDownProvider {
             Node node = parser.parse(markdown);
             textView.setText(stripHtml(HtmlRenderer.builder().build().render(node)));
         }
+    }
+
+    @NonNull public static String stripMdText(String markdown) {
+        if (!InputHelper.isEmpty(markdown)) {
+            Parser parser = Parser.builder().build();
+            Node node = parser.parse(markdown);
+            return stripHtml(HtmlRenderer.builder().build().render(node));
+        }
+        return "";
     }
 
     public static String stripHtml(String html) {

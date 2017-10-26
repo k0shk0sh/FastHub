@@ -22,6 +22,7 @@ import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -112,5 +113,13 @@ public interface IssueService {
     Observable<Issue> putAssignees(@Path("owner") String owner, @Path("repo") String repo,
                                    @Path("number") int number, @Body AssigneesRequestModel body);
 
+    @HTTP(method = "DELETE", path = "repos/{owner}/{repo}/issues/{number}/assignees", hasBody = true)
+    Observable<Issue> deleteAssignees(@Path("owner") String owner, @Path("repo") String repo,
+                                      @Path("number") int number, @Body AssigneesRequestModel body);
+
+    @GET("/repos/{owner}/{repo}/issues/comments/{id}")
+    @Headers("Accept: application/vnd.github.mockingbird-preview,application/vnd.github.VERSION.full+json," +
+            " application/vnd.github.squirrel-girl-preview")
+    Observable<Comment> getComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);
 
 }

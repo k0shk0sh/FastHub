@@ -45,6 +45,8 @@ public interface BaseMvp {
         void onOpenSettings();
 
         boolean isEnterprise();
+
+        void onOpenUrlInBrowser();
     }
 
     interface FAPresenter {
@@ -68,6 +70,8 @@ public interface BaseMvp {
         <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext);
 
         <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext, boolean cancelable);
+
+        void onCheckGitHubStatus();
     }
 
     interface PaginationListener<P> {

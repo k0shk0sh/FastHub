@@ -9,7 +9,6 @@ import com.fastaccess.data.dao.FragmentPagerAdapterModel
 import com.fastaccess.data.dao.TabsCountStateModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
-import com.fastaccess.helper.Logger
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter
 import com.fastaccess.ui.base.BaseFragment
@@ -26,13 +25,13 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
 
     @BindView(R.id.tabs) lateinit var tabs: TabLayout
     @BindView(R.id.pager) lateinit var pager: ViewPagerView
-    private var counts = hashSetOf<TabsCountStateModel>()
+    private var counts: HashSet<TabsCountStateModel>? = null
 
     override fun fragmentLayout(): Int = R.layout.centered_tabbed_viewpager
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        if (counts.isNotEmpty()) {
+        if (counts?.isNotEmpty() == true) {
             outState?.putSerializable("counts", counts)
         }
     }
@@ -43,9 +42,12 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
         tabs.setupWithViewPager(pager)
         if (savedInstanceState != null) {
             @Suppress("UNCHECKED_CAST")
-            counts = savedInstanceState.getSerializable("counts") as HashSet<TabsCountStateModel>
-            Logger.e(counts)
-            if (!counts.isEmpty()) counts.onEach { updateCount(it) }
+            counts = savedInstanceState.getSerializable("counts") as? HashSet<TabsCountStateModel>?
+            counts?.let {
+                if (!it.isEmpty()) it.onEach { updateCount(it) }
+            }
+        } else {
+            counts = hashSetOf()
         }
     }
 
@@ -55,7 +57,7 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
         val model = TabsCountStateModel()
         model.tabIndex = tabIndex
         model.count = count
-        counts.add(model)
+        counts?.add(model)
         tabs.let { updateCount(model) }
     }
 

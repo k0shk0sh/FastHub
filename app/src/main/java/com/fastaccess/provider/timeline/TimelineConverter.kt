@@ -6,7 +6,6 @@ import com.fastaccess.data.dao.timeline.GenericEvent
 import com.fastaccess.data.dao.timeline.PullRequestCommitModel
 import com.fastaccess.data.dao.types.IssueEventType
 import com.fastaccess.helper.InputHelper
-import com.fastaccess.helper.Logger
 import com.fastaccess.provider.rest.RestProvider
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -47,7 +46,6 @@ object TimelineConverter {
         val list = arrayListOf<TimelineModel>()
         if (jsonObjects == null) return list
         val gson = RestProvider.gson
-        Logger.e(comments?.items?.size)
         jsonObjects.onEach { jsonObject ->
             val event = jsonObject.get("event").asString
             val timeline = TimelineModel()

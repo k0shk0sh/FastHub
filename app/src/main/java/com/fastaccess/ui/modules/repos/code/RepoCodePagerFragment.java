@@ -64,7 +64,7 @@ public class RepoCodePagerFragment extends BaseFragment<RepoCodePagerMvp.View, R
             String htmlUrl = getArguments().getString(BundleConstant.EXTRA_FOUR);
             String defaultBranch = getArguments().getString(BundleConstant.EXTRA_THREE);
             if (InputHelper.isEmpty(repoId) || InputHelper.isEmpty(login) || InputHelper.isEmpty(url) || InputHelper.isEmpty(htmlUrl)) {
-                throw new NullPointerException();
+                return;
             }
             pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(),
                     FragmentPagerAdapterModel.buildForRepoCode(getContext(), repoId, login, url,

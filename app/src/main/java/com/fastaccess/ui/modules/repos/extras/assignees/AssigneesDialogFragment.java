@@ -120,9 +120,7 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
                         .filter(value -> value.getValue() != null)
                         .map(Map.Entry::getValue)
                         .collect(Collectors.toCollection(ArrayList::new));
-                if (labels != null && !labels.isEmpty()) {
-                    callback.onSelectedAssignees(labels, getArguments().getBoolean(BundleConstant.EXTRA_TWO));
-                }
+                callback.onSelectedAssignees(labels != null ? labels : new ArrayList<>(), getArguments().getBoolean(BundleConstant.EXTRA_TWO));
                 dismiss();
                 break;
         }

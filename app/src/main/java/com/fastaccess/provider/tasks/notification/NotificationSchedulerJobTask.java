@@ -23,6 +23,7 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.firebase.jobdispatcher.Constraint;
@@ -215,13 +216,14 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void withComments(Comment comment, Context context, Notification thread, int accentColor) {
-        android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody(),
+        android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "",
+                MarkDownProvider.stripMdText(comment.getBody()),
                 thread.getRepository() != null ? thread.getRepository().getFullName() : "general")
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .setBigContentTitle(comment.getUser() != null ? comment.getUser().getLogin() : "")
-                        .bigText(comment.getBody()))
+                        .bigText(MarkDownProvider.stripMdText(comment.getBody())))
                 .setWhen(comment.getCreatedAt().getTime())
                 .setShowWhen(true)
                 .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(),

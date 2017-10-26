@@ -17,9 +17,11 @@ import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.NotificationSubscriptionBodyModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedPullRequests;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
@@ -199,8 +201,10 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 .map(User::getLogin)
                 .collect(Collectors.toCollection(ArrayList::new));
         if (isAssignees) {
-            assigneesRequestModel.setAssignees(assignees);
-            makeRestCall(RestProvider.getPullRequestService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+            assigneesRequestModel.setAssignees(assignees.isEmpty() ? Stream.of(pullRequest.getAssignees()).map(User::getLogin).toList() : assignees);
+            makeRestCall(!assignees.isEmpty() ?
+                         RestProvider.getIssueService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel) :
+                         RestProvider.getIssueService(isEnterprise()).deleteAssignees(login, repoId, issueNumber, assigneesRequestModel),
                     pullRequestResponse -> {
                         UsersListModel usersListModel = new UsersListModel();
                         usersListModel.addAll(users);
@@ -265,6 +269,12 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         callApi();
     }
 
+    @Override public void onPinUnpinPullRequest() {
+        if (getPullRequest() == null) return;
+        PinnedPullRequests.pinUpin(getPullRequest());
+        sendToView(PullRequestPagerMvp.View::onUpdateMenu);
+    }
+
     @NonNull @Override public ArrayList<CommentRequestModel> getCommitComment() {
         return reviewComments;
     }
@@ -280,6 +290,21 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public boolean hasReviewComments() {
         return reviewComments.size() > 0;
+    }
+
+    @Override public void onSubscribeOrMute(boolean mute) {
+        if (getPullRequest() == null) return;
+        makeRestCall(mute ? RestProvider.getNotificationService(isEnterprise()).subscribe(getPullRequest().getId(),
+                new NotificationSubscriptionBodyModel(false, true))
+                          : RestProvider.getNotificationService(isEnterprise()).subscribe(getPullRequest().getId(),
+                new NotificationSubscriptionBodyModel(true, false)),
+                booleanResponse -> {
+                    if (booleanResponse.code() == 204 || booleanResponse.code() == 200) {
+                        sendToView(view -> view.showMessage(R.string.success, R.string.successfully_submitted));
+                    } else {
+                        sendToView(view -> view.showMessage(R.string.error, R.string.network_error));
+                    }
+                });
     }
 
     private void callApi() {
@@ -301,6 +326,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                     return pullRequest;
                 })), pullRequest -> {
             sendToView(view -> view.onSetupIssue(false));
+            manageDisposable(PinnedPullRequests.updateEntry(pullRequest.getId()));
             manageObservable(pullRequest.save(pullRequest).toObservable());
         });
     }

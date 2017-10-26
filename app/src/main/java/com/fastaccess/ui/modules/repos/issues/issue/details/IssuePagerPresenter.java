@@ -14,19 +14,18 @@ import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.NotificationSubscriptionBodyModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UsersListModel;
-import com.fastaccess.data.dao.model.AbstractRepo;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedIssues;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
-import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -48,6 +47,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State boolean isCollaborator;
     @com.evernote.android.state.State boolean showToRepoBtn;
+    @com.evernote.android.state.State long commentId;
 
     @Nullable @Override public Issue getIssue() {
         return issueModel;
@@ -70,6 +70,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             login = intent.getExtras().getString(BundleConstant.EXTRA);
             repoId = intent.getExtras().getString(BundleConstant.EXTRA_TWO);
             showToRepoBtn = intent.getExtras().getBoolean(BundleConstant.EXTRA_THREE);
+            commentId = intent.getExtras().getLong(BundleConstant.EXTRA_SIX);
             if (issueModel != null) {
                 issueNumber = issueModel.getNumber();
                 sendToView(view -> view.onSetupIssue(false));
@@ -203,8 +204,10 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         AssigneesRequestModel assigneesRequestModel = new AssigneesRequestModel();
         ArrayList<String> assignees = new ArrayList<>();
         Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
-        assigneesRequestModel.setAssignees(assignees);
-        makeRestCall(RestProvider.getIssueService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+        assigneesRequestModel.setAssignees(assignees.isEmpty() ? Stream.of(issueModel.getAssignees()).map(User::getLogin).toList() : assignees);
+        makeRestCall(!assignees.isEmpty() ?
+                     RestProvider.getIssueService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel) :
+                     RestProvider.getIssueService(isEnterprise()).deleteAssignees(login, repoId, issueNumber, assigneesRequestModel),
                 issue -> {
                     UsersListModel assignee = new UsersListModel();
                     assignee.addAll(users);
@@ -235,14 +238,10 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onSubscribeOrMute(boolean mute) {
         if (getIssue() == null) return;
-        String url = NotificationService.SUBSCRIPTION_URL;
-        String utf = NotificationService.UTF8;
-        String issue = NotificationService.ISSUE_THREAD_CLASS;
-        String token = PrefGetter.getToken();
-        String id = mute ? NotificationService.MUTE : NotificationService.SUBSCRIBE;
-        makeRestCall(AbstractRepo.getRepo(repoId, login)
-                        .flatMapObservable(repo -> RestProvider.getNotificationService(isEnterprise())
-                                .subscribe(url, repo.getId(), getIssue().getId(), issue, id, token, utf)),
+        makeRestCall(mute ? RestProvider.getNotificationService(isEnterprise()).subscribe(getIssue().getId(),
+                new NotificationSubscriptionBodyModel(false, true))
+                          : RestProvider.getNotificationService(isEnterprise()).subscribe(getIssue().getId(),
+                new NotificationSubscriptionBodyModel(true, false)),
                 booleanResponse -> {
                     if (booleanResponse.code() == 204 || booleanResponse.code() == 200) {
                         sendToView(view -> view.showMessage(R.string.success, R.string.successfully_submitted));
@@ -250,6 +249,12 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                         sendToView(view -> view.showMessage(R.string.error, R.string.network_error));
                     }
                 });
+    }
+
+    @Override public void onPinUnpinIssue() {
+        if (getIssue() == null) return;
+        PinnedIssues.pinUpin(getIssue());
+        sendToView(IssuePagerMvp.View::onUpdateMenu);
     }
 
     private void getIssueFromApi() {
@@ -266,6 +271,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         issueModel.setRepoId(repoId);
         issueModel.setLogin(login);
         sendToView(view -> view.onSetupIssue(false));
+        manageDisposable(PinnedIssues.updateEntry(issue.getId()));
     }
 
     private void updateTimeline(IssuePagerMvp.View view, int assignee_added) {

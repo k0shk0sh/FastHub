@@ -49,8 +49,14 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     @BindView(R.id.heart) FontTextView heart;
     @BindView(R.id.commentMenu) ImageView commentMenu;
     @BindView(R.id.commentOptions) RelativeLayout commentOptions;
-    @BindView(R.id.reactionsText) FontTextView reactionsText;
     @BindView(R.id.owner) FontTextView owner;
+    @BindView(R.id.reactionsList) View reactionsList;
+    @BindView(R.id.thumbsUpReaction) FontTextView thumbsUpReaction;
+    @BindView(R.id.thumbsDownReaction) FontTextView thumbsDownReaction;
+    @BindView(R.id.laughReaction) FontTextView laughReaction;
+    @BindView(R.id.hurrayReaction) FontTextView hurrayReaction;
+    @BindView(R.id.sadReaction) FontTextView sadReaction;
+    @BindView(R.id.heartReaction) FontTextView heartReaction;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
     private ViewGroup viewGroup;
@@ -105,6 +111,18 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         hurray.setOnLongClickListener(this);
         heart.setOnLongClickListener(this);
         heart.setOnClickListener(this);
+        laughReaction.setOnClickListener(this);
+        sadReaction.setOnClickListener(this);
+        thumbsDownReaction.setOnClickListener(this);
+        thumbsUpReaction.setOnClickListener(this);
+        hurrayReaction.setOnClickListener(this);
+        heartReaction.setOnClickListener(this);
+        laughReaction.setOnLongClickListener(this);
+        sadReaction.setOnLongClickListener(this);
+        thumbsDownReaction.setOnLongClickListener(this);
+        thumbsUpReaction.setOnLongClickListener(this);
+        hurrayReaction.setOnLongClickListener(this);
+        heartReaction.setOnLongClickListener(this);
     }
 
     public static ReviewCommentsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,
@@ -142,7 +160,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {
             int width = adapter != null ? adapter.getRowWidth() : 0;
-            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(),  width > 0 ? width : viewGroup.getWidth());
+            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(), width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }
@@ -161,21 +179,27 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
                     case R.id.heart:
+                    case R.id.heartReaction:
                         reactionsModel.setHeart(!isReacted ? reactionsModel.getHeart() + 1 : reactionsModel.getHeart() - 1);
                         break;
                     case R.id.sad:
+                    case R.id.sadReaction:
                         reactionsModel.setConfused(!isReacted ? reactionsModel.getConfused() + 1 : reactionsModel.getConfused() - 1);
                         break;
                     case R.id.thumbsDown:
+                    case R.id.thumbsDownReaction:
                         reactionsModel.setMinusOne(!isReacted ? reactionsModel.getMinusOne() + 1 : reactionsModel.getMinusOne() - 1);
                         break;
                     case R.id.thumbsUp:
+                    case R.id.thumbsUpReaction:
                         reactionsModel.setPlusOne(!isReacted ? reactionsModel.getPlusOne() + 1 : reactionsModel.getPlusOne() - 1);
                         break;
                     case R.id.laugh:
+                    case R.id.laughReaction:
                         reactionsModel.setLaugh(!isReacted ? reactionsModel.getLaugh() + 1 : reactionsModel.getLaugh() - 1);
                         break;
                     case R.id.hurray:
+                    case R.id.hurrayReaction:
                         reactionsModel.setHooray(!isReacted ? reactionsModel.getHooray() + 1 : reactionsModel.getHooray() - 1);
                         break;
                 }
@@ -186,73 +210,49 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     private void appendEmojies(ReactionsModel reaction) {
-        SpannableBuilder spannableBuilder = SpannableBuilder.builder();
-        reactionsText.setText("");
-        thumbsUp.setText(SpannableBuilder.builder()
+        SpannableBuilder spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getThumbsUp()).append(" ")
                 .append(String.valueOf(reaction.getPlusOne()))
-                .append("   "));
-        thumbsDown.setText(SpannableBuilder.builder()
+                .append("   ");
+        thumbsUp.setText(spannableBuilder);
+        thumbsUpReaction.setText(spannableBuilder);
+        spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getThumbsDown()).append(" ")
                 .append(String.valueOf(reaction.getMinusOne()))
-                .append("   "));
-        hurray.setText(SpannableBuilder.builder()
+                .append("   ");
+        thumbsDown.setText(spannableBuilder);
+        thumbsDownReaction.setText(spannableBuilder);
+        spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getHooray()).append(" ")
                 .append(String.valueOf(reaction.getHooray()))
-                .append("   "));
-        sad.setText(SpannableBuilder.builder()
+                .append("   ");
+        hurray.setText(spannableBuilder);
+        hurrayReaction.setText(spannableBuilder);
+        spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getSad()).append(" ")
                 .append(String.valueOf(reaction.getConfused()))
-                .append("   "));
-        laugh.setText(SpannableBuilder.builder()
+                .append("   ");
+        sad.setText(spannableBuilder);
+        sadReaction.setText(spannableBuilder);
+        spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getLaugh()).append(" ")
                 .append(String.valueOf(reaction.getLaugh()))
-                .append("   "));
-        heart.setText(SpannableBuilder.builder()
+                .append("   ");
+        laugh.setText(spannableBuilder);
+        laughReaction.setText(spannableBuilder);
+        spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getHeart()).append(" ")
-                .append(String.valueOf(reaction.getHeart())));
-        if (reaction.getPlusOne() > 0) {
-            spannableBuilder.append(CommentsHelper.getThumbsUp())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getPlusOne()))
-                    .append("   ");
-        }
-        if (reaction.getMinusOne() > 0) {
-            spannableBuilder.append(CommentsHelper.getThumbsDown())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getMinusOne()))
-                    .append("   ");
-        }
-        if (reaction.getLaugh() > 0) {
-            spannableBuilder.append(CommentsHelper.getLaugh())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getLaugh()))
-                    .append("   ");
-        }
-        if (reaction.getHooray() > 0) {
-            spannableBuilder.append(CommentsHelper.getHooray())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getHooray()))
-                    .append("   ");
-        }
-        if (reaction.getConfused() > 0) {
-            spannableBuilder.append(CommentsHelper.getSad())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getConfused()))
-                    .append("   ");
-        }
-        if (reaction.getHeart() > 0) {
-            spannableBuilder.append(CommentsHelper.getHeart())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getHeart()));
-        }
-        if (spannableBuilder.length() > 0) {
-            reactionsText.setText(spannableBuilder);
-            if (!onToggleView.isCollapsed(getId())) {
-                reactionsText.setVisibility(View.VISIBLE);
-            }
+                .append(String.valueOf(reaction.getHeart()));
+        heart.setText(spannableBuilder);
+        heartReaction.setText(spannableBuilder);
+        if (reaction.getPlusOne() > 0 || reaction.getMinusOne() > 0
+                || reaction.getLaugh() > 0 || reaction.getHooray() > 0
+                || reaction.getConfused() > 0 || reaction.getHeart() > 0) {
+            reactionsList.setVisibility(View.VISIBLE);
+            reactionsList.setTag(true);
         } else {
-            reactionsText.setVisibility(View.GONE);
+            reactionsList.setVisibility(View.GONE);
+            reactionsList.setTag(false);
         }
     }
 
@@ -270,9 +270,9 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         }
         toggle.setRotation(!expanded ? 0.0F : 180F);
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
-        if (!InputHelper.isEmpty(reactionsText)) {
-            reactionsText.setVisibility(!expanded ? View.VISIBLE : View.GONE);
-        }
+        reactionsList.setVisibility(expanded ? View.GONE : View.VISIBLE);
+        reactionsList.setVisibility(expanded ? View.GONE : reactionsList.getTag() == null || (!((Boolean) reactionsList.getTag()))
+                                                           ? View.GONE : View.VISIBLE);
     }
 
     @Override protected void onViewIsDetaching() {

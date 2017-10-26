@@ -141,6 +141,10 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
         return callback != null && callback.isEnterprise();
     }
 
+    @Override public void onOpenUrlInBrowser() {
+        callback.onOpenUrlInBrowser();
+    }
+
     protected boolean isSafe() {
         return getView() != null && getActivity() != null && !getActivity().isFinishing();
     }

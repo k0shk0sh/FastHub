@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.fastaccess"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="auto">
+<manifest package="com.fastaccess"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -30,6 +29,10 @@
         <activity
             android:name=".ui.modules.main.donation.CheckPurchaseActivity"
             android:configChanges="keyboard|orientation|screenSize"
+            android:theme="@style/ThemeTranslucent"/>
+        <activity
+            android:name=".ui.modules.main.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -37,9 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.modules.main.MainActivity"
-            android:launchMode="singleTask"/>
         <activity
             android:name=".ui.modules.login.LoginActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -178,11 +178,9 @@
         <activity
             android:name=".ui.modules.settings.SettingsActivity"
             android:configChanges="keyboard|orientation|screenSize"/>
-
         <activity
             android:name=".ui.modules.settings.category.SettingsCategoryActivity"
             android:configChanges="keyboard|orientation|screenSize"/>
-
         <activity
             android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
             android:label="@string/releases"
@@ -191,7 +189,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.trending.TrendingActivity"
             android:label="@string/trending"
@@ -201,18 +198,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
         </activity>
-
         <activity android:name=".ui.modules.theme.ThemeActivity"/>
-
         <activity
             android:name=".ui.modules.theme.code.ThemeCodeActivity"
             android:label="@string/theme_title"/>
-
         <activity
             android:name=".ui.modules.main.donation.DonateActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:theme="@style/ThemeTranslucent"/>
-
         <activity
             android:name=".ui.modules.repos.wiki.WikiActivity"
             android:label="@string/gollum"
@@ -221,19 +214,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.main.premium.PremiumActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"/>
-
         <activity
             android:name=".ui.modules.repos.git.EditRepoFileActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/markdown"
             android:windowSoftInputMode="adjustResize"/>
-
         <activity
             android:name=".ui.modules.repos.code.commit.history.FileCommitHistoryActivity"
             android:label="@string/commits"
@@ -242,16 +232,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
-            android:name="com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity"
+            android:name=".ui.modules.repos.projects.details.ProjectPagerActivity"
             android:label="@string/project"
             android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.profile.org.project.OrgProjectActivity"
             android:label="@string/projects"
@@ -267,6 +255,7 @@
             android:name=".ui.modules.repos.pull_requests.pull_request.details.files.fullscreen.FullScreenFileChangeActivity"
             android:configChanges="keyboard|orientation|screenSize"/>
 
+        <activity android:name=".ui.modules.search.SearchUserActivity"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
@@ -294,7 +283,6 @@
                 <data
                     android:host="gist.githubusercontent.com"
                     android:scheme="https"/>
-
                 <data android:pathPattern=".*"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -302,7 +290,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
+
                 <data android:mimeType="text/plain"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -314,7 +304,6 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
-
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
@@ -331,7 +320,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e"/>
-
     </application>
 
 </manifest>

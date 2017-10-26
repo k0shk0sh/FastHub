@@ -38,7 +38,6 @@ public interface IssuePagerMvp {
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
 
         void onFinishActivity();
-
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -78,6 +77,8 @@ public interface IssuePagerMvp {
         void onUpdateIssue(@NonNull Issue issueModel);
 
         void onSubscribeOrMute(boolean mute);
+
+        void onPinUnpinIssue();
     }
 
     interface IssuePrCallback<T> {

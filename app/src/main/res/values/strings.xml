@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- DO NOT COPY!  -->
 
     <string name="app_name" translatable="false">FastHub</string>
@@ -96,6 +95,7 @@
         • Login to unlimited accounts\n
         • Edit & Add unlimited Gist Files\n
         • Project Columns & Cards (Edit, Create & Delete)
+        • Pin Issues & PRs
         • New upcoming PRO features (Coming soon...)
     ]]></string>
     <string name="enterprise_pro_description" translatable="false"><![CDATA[
@@ -136,7 +136,7 @@
     <string name="search">Search</string>
     <string name="please_login">Please sign in to begin using FastHub</string>
     <string name="sign_in_to_github">Sign in using your GitHub account to use FastHub</string>
-    <string name="failed_login"> Sign in failed</string>
+    <string name="failed_login">Sign in failed</string>
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
     <string name="reload">Reload</string>
@@ -571,41 +571,44 @@
     <string name="please_read">PLEASE READ!</string>
     <string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Why can\'t I see my <b>Organizations</b> either <i>Private</i> or <i>Public</i> ones?</h5>
-        <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button,
-        alternatively login via <b>Access Token</b> which will ease this setup.</p>
+        <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
+        Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
 
-        <h5>• I tried to login via Access Token &amp; OTP but it does not work?</h5>
-        <p>You can\'t login via Access Token &amp; OTP all together due to the lifetime of the OTP code, you\'ll be required to login in every few seconds.</p>
+        <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
+        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
 
-        <h5>• Why are my Private Repo &amp; Enterprise Wiki not showing up?</h5>
-        <p>It\'s due to FastHub scraping GitHub Wiki page &amp; Private Repos require session token that FastHub is unable to obtain.</p>
+        <h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
+        <p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
 
-        <h5>• I login with Enterprise account but can\'t interact with anything other than my Enterprise GitHub?</h5>
-        <p>Well, logically, you can\'t access anything else other than your Enterprise.  FastHub tries to allow as much possible, but can\'t do much about it
-        in most cases, since your login credential doesn\'t exists in GitHub server. But in a <b>few</b>
-        cases your GitHub account Oauth token will do the trick.</p>
+        <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
+        <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
+        in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
 
-        <h5>• Why am I having problems editing Issues/PRs?</h5>
-        <p>If you are editing a public Org repo, then please contact your Org to grant access to FastHub or use Access Token to login!.</p>
+        <h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
+        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
 
-        <h5>• I\'m having this issue or I want this &amp; that!!</h5>
-        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests, I really do encourage you to
-        search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
+        <h5>• I\'m having problems! / I want to suggest you some things!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+        search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
 
-        <h5>• How do I get PROMO CODE?</h5>
-        <p>If you are a student, you\'ll have to provide me via Email that you are student, you will need below documents:</p>
+        <h5>• How can I get a PROMO CODE?</h5>
+        <p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
         <ul>
-        <li>Your university identity card & your identity card (that shows your name & your face to compare it!)</li>
-        <li>Your university start & end date</li>
-        <li>Rate FastHub in the Play Store</li>
+        <li>Your GitHub username.</li>
+        <li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
+        <li>Your education start and graduation dates.</li>
         </ul>
-        <p>If you aren\'t a student and you can\'t afford to pay for PRO, you\'ll need:</p>
+        <p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
         <ul>
-        <li>Write an article about FastHub in social media such as (Medium)</li>
-        <li>Rate FastHub in the Play Store</li>
+        <li>Your GitHub username.</li>
+        <li>Write an article about FastHub in any social media, such as Medium;</li>
+        <li>Prove your authorship.</li>
         </ul>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Comments added successfully</string>
+    <string name="clear_search_keywords">Clear Search History</string>
+    <string name="restore_purchases">Restore Purchases</string>
+    <string name="include_forks">Include Forks</string>
 </resources>

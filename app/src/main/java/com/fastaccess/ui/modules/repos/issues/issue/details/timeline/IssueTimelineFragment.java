@@ -59,8 +59,10 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     private IssuePagerMvp.IssuePrCallback<Issue> issueCallback;
     private CommentEditorFragment.CommentListener commentsCallback;
 
-    @NonNull public static IssueTimelineFragment newInstance() {
-        return new IssueTimelineFragment();
+    @NonNull public static IssueTimelineFragment newInstance(long commentId) {
+        IssueTimelineFragment fragment = new IssueTimelineFragment();
+        fragment.setArguments(Bundler.start().put(BundleConstant.ID, commentId).end());
+        return fragment;
     }
 
     @SuppressWarnings("unchecked") @Override public void onAttach(Context context) {
@@ -122,6 +124,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         if (getIssue() == null) {
             throw new NullPointerException("Issue went missing!!!");
         }
+
+        getPresenter().setCommentId(getCommentId());
         if (issueCallback != null && issueCallback.getData() != null) {
             adapter = new IssuesTimelineAdapter(getPresenter().getEvents(), this, true,
                     this, issueCallback.getData().getLogin(), issueCallback.getData().getUser().getLogin());
@@ -278,6 +282,21 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @Override public void onHideBlockingProgress() {
         hideProgress();
         super.hideProgress();
+    }
+
+    @Override public long getCommentId() {
+        return getArguments() != null ? getArguments().getLong(BundleConstant.ID) : 0;
+    }
+
+    @Override public void addComment(@Nullable TimelineModel timelineModel, int index) {
+        Logger.e(index);
+        Logger.e();
+        if (timelineModel != null) {
+            adapter.addItem(timelineModel, 1);
+            recycler.smoothScrollToPosition(1);
+        } else if (index != -1) {
+            recycler.smoothScrollToPosition(index + 1);
+        }
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

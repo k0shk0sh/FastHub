@@ -53,7 +53,8 @@ public class PrefHelper {
     }
 
     public static boolean getBoolean(@NonNull String key) {
-        return PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean(key, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        return preferences.getAll().get(key) instanceof Boolean && preferences.getBoolean(key, false);
     }
 
     public static int getInt(@NonNull String key) {
