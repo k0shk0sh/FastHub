@@ -148,7 +148,7 @@
     <string name="twoFactor">Код двухфакторной аутентификации</string>
     <string name="login">Логин</string>
     <string name="gist_description">Описание Gist\'а</string>
-    <string name="avatar_click_hint">Нажмите на аватар пользователя на любом экране, чтобы открыть его профиль</string>
+    <string name="avatar_click_hint">Нажатие с любого экрана на аватар пользователя откроет его профиль</string>
     <string name="feeds_fork_hint">Долгое нажатие на событие клонирования позволяет открыть орининальный или клонированный репозиторий.</string>
     <string name="click_here_to_download_release_hint">Скачать сборки</string>
     <string name="options">Опции</string>
