@@ -434,7 +434,6 @@
     <string name="too_large_changes">변경사항이 너무 많습니다. 브라우저로 보세요</string>
     <string name="project">프로젝트</string>
     <string name="please_read">꼭 읽어주세요</string>
-    <string name="comments_added_successfully">댓글을 성공적으로 추가하였습니다.</string>
     <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• 왜 <i>Private</i> 이나 <i>Public</i>으로 되어진 제 <b>Organizations</b> 을 볼 수 없나요?</h5>
