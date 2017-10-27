@@ -131,7 +131,7 @@
             android:id="@+id/reactionsList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:scrollbarStyle="insideOverlay"

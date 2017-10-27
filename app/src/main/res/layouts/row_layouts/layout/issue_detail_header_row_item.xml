@@ -125,12 +125,13 @@
                 android:id="@+id/reactionsList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="start"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/avatar_margin"
                 android:paddingBottom="@dimen/spacing_normal"
                 android:paddingTop="@dimen/spacing_normal"
                 android:scrollbarStyle="insideOverlay"
+                tools:visibility="visible"
                 android:visibility="gone">
 
                 <LinearLayout
