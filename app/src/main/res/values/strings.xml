@@ -612,4 +612,5 @@
     <string name="restore_purchases">Restore Purchases</string>
     <string name="include_forks">Include Forks</string>
     <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+    <string name="search_results_warning">Please be more specific with your search</string>
 </resources>
