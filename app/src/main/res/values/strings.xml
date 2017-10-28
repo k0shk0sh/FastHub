@@ -611,4 +611,5 @@
     <string name="clear_search_keywords">Clear Search History</string>
     <string name="restore_purchases">Restore Purchases</string>
     <string name="include_forks">Include Forks</string>
+    <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
 </resources>
