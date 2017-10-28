@@ -33,7 +33,6 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -270,6 +269,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onOpenUrlInBrowser() {
         if (!InputHelper.isEmpty(schemeUrl)) {
             ActivityHelper.startCustomTab(this, schemeUrl);
+            try {
+                finish();
+            } catch (Exception ignored) {}// fragment might be committed and calling finish will crash the app.
         }
     }
 
