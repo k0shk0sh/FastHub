@@ -311,27 +311,18 @@ import lombok.Getter;
                         }
                     }
                 }
-                if (index != -1) {
-                    TimelineModel timelineModel = new TimelineModel();
-                    timelineModel.setPosition(index);
-                    source.onNext(timelineModel);
-                } else {
-                    Comment comment = RestProvider.getIssueService(isEnterprise()).getComment(login, repoId, commentId)
-                            .blockingFirst(null);
-                    if (comment != null) {
-                        source.onNext(TimelineModel.constructComment(comment));
-                    }
-                }
+                TimelineModel timelineModel = new TimelineModel();
+                timelineModel.setPosition(index);
+                source.onNext(timelineModel);
                 source.onComplete();
             });
-            manageObservable(observable
-                    .doOnNext(timelineModel -> sendToView(view -> {
-                        if (timelineModel.getComment() != null) {
-                            view.addComment(timelineModel, -1);
-                        } else {
-                            view.addComment(null, timelineModel.getPosition());
-                        }
-                    })));
+            manageObservable(observable.doOnNext(timelineModel -> sendToView(view -> {
+                if (timelineModel.getComment() != null) {
+                    view.addComment(timelineModel, -1);
+                } else {
+                    view.addComment(null, timelineModel.getPosition());
+                }
+            })));
         }
     }
 }

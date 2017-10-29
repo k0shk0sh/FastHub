@@ -61,8 +61,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     public M getItem(int position) {
-        if (position < data.size()) return data.get(position);
-        return null;
+        return data.get(position);
     }
 
     public int getItem(M t) {

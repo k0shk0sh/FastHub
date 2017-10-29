@@ -13,7 +13,6 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.data.dao.GitHubStatusModel;
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.service.ContentService;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
@@ -108,15 +107,7 @@ public class RestProvider {
                 return;
             }
         }
-        String fileName = "";
-        NameParser nameParser = new NameParser(url);
-        if (nameParser.getUsername() != null) {
-            fileName += nameParser.getUsername() + "_";
-        }
-        if (nameParser.getName() != null) {
-            fileName += nameParser.getName() + "_";
-        }
-        fileName += new File(url).getName();
+        String fileName = new File(url).getName();
         request.setDestinationInExternalPublicDir(context.getString(R.string.app_name), fileName);
         request.setTitle(fileName);
         request.setDescription(context.getString(R.string.downloading_file));
