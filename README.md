@@ -195,5 +195,5 @@ Designer website [Cookicons](https://cookicons.co/).
 
 **OLD FastHub** logo was designed by **Kevin Aguilar**.  
 [Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
-Designer at [221 Pixels](https://www.221pixels.com/).  
+Designer at [Kevin Aguilar](http://kevaguilar.com/).  
 Laus Deo Semper
