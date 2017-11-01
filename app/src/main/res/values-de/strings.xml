@@ -473,6 +473,11 @@
     <string name="up_to_date">Du hast die aktuellste Version!</string>
     <string name="new_version">Eine neue Version ist verfügbar.</string>
     <string name="enable_notification_title">Benachrichtigungen aktivieren</string>
+    <string name="clear_search_keywords">Suchverlauf löschen</string>
+    <string name="restore_purchases">Einkäufe wiederherstellen</string>
+    <string name="include_forks">Forks einschließen</string>
+    <string name="search_results_warning">Bitte sei bei deiner Suche etwas genauer</string>
+    <string name="comment_is_too_far_to_paginate">Dieser Kommentar liegt zu weit zurück, um ihn anzuzeigen</string>
 </resources>
 
 
