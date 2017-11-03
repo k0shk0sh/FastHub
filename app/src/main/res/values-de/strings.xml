@@ -149,7 +149,7 @@
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
     <string name="all_notifications">Alle Benachrichtigungen</string>
     <string name="unread">Ungelesen</string>
-    <string name="all">Alle / Jede</string>
+    <string name="all">Alle</string>
     <string name="delete_repo">Repo löschen</string>
     <string name="delete_repo_warning">Wenn du das Repo löschst, kannst du es nicht mehr wiederherstellen</string>
     <string name="thirty_minutes">30 Minuten</string>
@@ -157,7 +157,7 @@
     <string name="ten_minutes">10 Minuten</string>
     <string name="five_minutes">5 Minuten</string>
     <string name="one_minute">Minute</string>
-	<string name="one_hour">Stunde</string>
+    <string name="one_hour">Stunde</string>
     <string name="two_hour">2 Stunden</string>
     <string name="three_hour">3 Stunden</string>
     <string name="created_repo">Erstellt</string>
