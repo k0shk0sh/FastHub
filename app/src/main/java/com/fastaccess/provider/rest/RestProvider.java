@@ -12,7 +12,7 @@ import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
-import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.GitHubStatusModel;
 import com.fastaccess.data.service.ContentService;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
@@ -40,6 +40,7 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.lang.reflect.Modifier;
 
+import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -106,21 +107,15 @@ public class RestProvider {
                 return;
             }
         }
-        String fileName = "";
-        NameParser nameParser = new NameParser(url);
-        if (nameParser.getUsername() != null) {
-            fileName += nameParser.getUsername() + "_";
-        }
-        if (nameParser.getName() != null) {
-            fileName += nameParser.getName() + "_";
-        }
-        fileName += new File(url).getName();
+        String fileName = new File(url).getName();
         request.setDestinationInExternalPublicDir(context.getString(R.string.app_name), fileName);
         request.setTitle(fileName);
         request.setDescription(context.getString(R.string.downloading_file));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        downloadManager.enqueue(request);
+        if (downloadManager != null) {
+            downloadManager.enqueue(request);
+        }
     }
 
     public static int getErrorCode(Throwable throwable) {
@@ -208,6 +203,17 @@ public class RestProvider {
             } catch (Exception ignored) {}
         }
         return null;
+    }
+
+    @NonNull public static Observable<GitHubStatusModel> gitHubStatus() {
+        return new Retrofit.Builder()
+                .baseUrl("https://status.github.com/")
+                .client(provideOkHttpClient())
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(ContentService.class)
+                .checkStatus();
     }
 
     public static void clearHttpClient() {

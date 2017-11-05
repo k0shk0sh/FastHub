@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by Kosh on 08 Dec 2016, 8:20 PM
  */
-class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp.Presenter {
+public class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp.Presenter {
     private ArrayList<SearchHistory> hints = new ArrayList<>();
 
     @Override protected void onAttachView(@NonNull SearchMvp.View view) {

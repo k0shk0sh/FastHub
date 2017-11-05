@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.pinned;
+package com.fastaccess.ui.modules.pinned.repo;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

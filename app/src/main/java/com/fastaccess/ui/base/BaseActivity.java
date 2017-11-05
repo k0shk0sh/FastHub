@@ -28,10 +28,11 @@ import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -77,6 +78,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
     @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
+    @State String schemeUrl;
 
     @State Bundle presenterStateBundle = new Bundle();
 
@@ -108,8 +110,14 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             setContentView(layout());
             ButterKnife.bind(this);
         }
+        if (savedInstanceState == null) {
+            getPresenter().onCheckGitHubStatus();
+            if (getIntent() != null) {
+                schemeUrl = getIntent().getStringExtra(BundleConstant.SCHEME_URL);
+            }
+        }
         if (!validateAuth()) return;
-        launchPlayStoreReviewActivity();
+        showChangelog();
         initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
         initEnterpriseExtra(savedInstanceState);
@@ -178,7 +186,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void hideProgress() {
         ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
                 ProgressDialogFragment.TAG);
-        Logger.e(fragment);
         if (fragment != null) {
             isProgressShowing = false;
             fragment.dismiss();
@@ -257,6 +264,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public boolean isEnterprise() {
         return getPresenter() != null && getPresenter().isEnterprise();
+    }
+
+    @Override public void onOpenUrlInBrowser() {
+        if (!InputHelper.isEmpty(schemeUrl)) {
+            ActivityHelper.startCustomTab(this, schemeUrl);
+            try {
+                finish();
+            } catch (Exception ignored) {}// fragment might be committed and calling finish will crash the app.
+        }
     }
 
     @Optional @OnClick(R.id.logout) void onLogoutClicked() {
@@ -505,13 +521,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
     }
 
-    private void launchPlayStoreReviewActivity() {
-        if (!PrefGetter.isPlayStoreWarningShowed() && !(this instanceof PlayStoreWarningActivity)) {
-            startActivity(new Intent(this, PlayStoreWarningActivity.class));
-        } else {
-            if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
-                new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
-            }
+    private void showChangelog() {
+        if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
+            new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
     }
 }

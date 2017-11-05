@@ -75,4 +75,11 @@ public abstract class AbstractSearchHistory implements Parcelable {
 
         @Override public SearchHistory[] newArray(int size) {return new SearchHistory[size];}
     };
+
+    public static void deleteAll() {
+        App.getInstance().getDataStore()
+                .delete(SearchHistory.class)
+                .get()
+                .value();
+    }
 }

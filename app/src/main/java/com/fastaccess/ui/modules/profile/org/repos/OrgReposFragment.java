@@ -148,6 +148,11 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
         //Not supported for org profile
     }
 
+    @Override
+    public String getLogin() {
+        return getArguments().getString(BundleConstant.EXTRA);
+    }
+
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());

@@ -22,6 +22,9 @@ import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
 import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
 import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
+import com.fastaccess.ui.modules.pinned.issue.PinnedIssueFragment;
+import com.fastaccess.ui.modules.pinned.pullrequest.PinnedPullRequestFragment;
+import com.fastaccess.ui.modules.pinned.repo.PinnedReposFragment;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersFragment;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingFragment;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
@@ -45,8 +48,8 @@ import com.fastaccess.ui.modules.repos.extras.branches.BranchesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineFragment;
-import com.fastaccess.ui.modules.repos.projects.list.RepoProjectFragment;
 import com.fastaccess.ui.modules.repos.projects.columns.ProjectColumnFragment;
+import com.fastaccess.ui.modules.repos.projects.list.RepoProjectFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.RepoPullRequestFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.commits.PullRequestCommitsFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesFragment;
@@ -114,8 +117,8 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance()))
+    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context, long commentId) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance(commentId)))
                 .collect(Collectors.toList());
     }
 
@@ -254,6 +257,14 @@ import lombok.Setter;
                 .map(projectColumnModel -> new FragmentPagerAdapterModel("", ProjectColumnFragment.Companion
                         .newInstance(projectColumnModel, isCollaborator), String.valueOf(projectColumnModel.getId())))
                 .toList();
+    }
+
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForPinned(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.repos), PinnedReposFragment.newInstance()),
+                new FragmentPagerAdapterModel(context.getString(R.string.issues), PinnedIssueFragment.newInstance()),
+                new FragmentPagerAdapterModel(context.getString(R.string.pull_requests), PinnedPullRequestFragment.newInstance()))
+                .collect(Collectors.toList());
     }
 
     @Override public boolean equals(Object o) {

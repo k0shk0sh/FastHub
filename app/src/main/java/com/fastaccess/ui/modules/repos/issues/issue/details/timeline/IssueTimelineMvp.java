@@ -61,6 +61,10 @@ public interface IssueTimelineMvp {
         @NonNull ArrayList<String> getNamesToTag();
 
         void onHideBlockingProgress();
+
+        long getCommentId();
+
+        void addComment(@Nullable TimelineModel timelineModel, int index);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
@@ -79,5 +83,7 @@ public interface IssueTimelineMvp {
         boolean isCallingApi(long id, int vId);
 
         void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
+
+        void setCommentId(long commentId);
     }
 }

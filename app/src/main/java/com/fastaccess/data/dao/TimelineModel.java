@@ -40,6 +40,7 @@ import lombok.Setter;
     private ReviewModel review;
     private GroupedReviewModel groupedReviewModel;
     private PullRequestCommitModel commit;
+    private int position;
 
     public TimelineModel(Issue issue) {
         this.issue = issue;
@@ -112,7 +113,6 @@ import lombok.Setter;
     @Override public int hashCode() {
         return comment != null ? (int) comment.getId() : 0;
     }
-
 
     public IssueEventType getEvent() {
         return event;
@@ -198,6 +198,7 @@ import lombok.Setter;
         dest.writeParcelable(this.review, flags);
         dest.writeParcelable(this.groupedReviewModel, flags);
         dest.writeParcelable(this.commit, flags);
+        dest.writeInt(this.position);
     }
 
     protected TimelineModel(Parcel in) {
@@ -211,6 +212,7 @@ import lombok.Setter;
         this.review = in.readParcelable(ReviewModel.class.getClassLoader());
         this.groupedReviewModel = in.readParcelable(GroupedReviewModel.class.getClassLoader());
         this.commit = in.readParcelable(PullRequestCommitModel.class.getClassLoader());
+        this.position = in.readInt();
     }
 
     public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {

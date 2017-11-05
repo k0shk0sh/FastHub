@@ -27,8 +27,7 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
     @BindView(R.id.readmeLoader) lateinit var loader: ProgressBar
     @BindView(R.id.webView) lateinit var webView: PrettifyWebView
     @BindView(R.id.licenseName) lateinit var licenseName: TextView
-
-
+    
     override fun providePresenter(): RepoLicensePresenter = RepoLicensePresenter()
 
     override fun onLicenseLoaded(license: String) {
@@ -60,7 +59,7 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
     }
 
     override fun onContentChanged(progress: Int) {
-        loader.let {
+        loader?.let {
             it.progress = progress
             if (progress == 100) {
                 it.visibility = View.GONE

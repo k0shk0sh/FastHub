@@ -45,7 +45,6 @@ import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
 import com.fastaccess.ui.modules.repos.extras.license.RepoLicenseBottomSheet;
 import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscMVp;
@@ -569,22 +568,21 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void onBackPressed() {
-        if (navType == RepoPagerMvp.CODE) {
-            RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
-                    RepoCodePagerFragment.TAG);
-            if (codePagerView != null) {
-                if (codePagerView.canPressBack()) {
-                    super.onBackPressed();
-                } else {
-                    codePagerView.onBackPressed();
-                    return;
-                }
-            }
-        } else if (navType == RepoPagerMvp.ISSUES) {
-            if (filterLayout.isShown()) {
-                hideFilterLayout();
-                return;
-            }
+//        if (navType == RepoPagerMvp.CODE) {
+//            RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+//                    RepoCodePagerFragment.TAG);
+//            if (codePagerView != null) {
+//                if (codePagerView.canPressBack()) {
+//                    super.onBackPressed();
+//                } else {
+//                    codePagerView.onBackPressed();
+//                    return;
+//                }
+//            }
+//        } else
+        if (navType == RepoPagerMvp.ISSUES && filterLayout.isShown()) {
+            hideFilterLayout();
+            return;
         }
         super.onBackPressed();
     }

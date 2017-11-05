@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.ReviewRequestModel;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedPullRequests;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
@@ -32,7 +34,6 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -94,6 +95,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
                                       int number, boolean showRepoBtn, boolean isEnterprise) {
+        return createIntent(context, repoId, login, number, showRepoBtn, isEnterprise, 0);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      int number, boolean showRepoBtn, boolean isEnterprise, long commentId) {
         Intent intent = new Intent(context, PullRequestPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
@@ -101,6 +107,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showRepoBtn)
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .put(BundleConstant.EXTRA_SIX, commentId)
                 .end());
         return intent;
     }
@@ -241,6 +248,19 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 PremiumActivity.Companion.startActivity(this);
             }
             return true;
+        } else if (item.getItemId() == R.id.subscribe) {
+            getPresenter().onSubscribeOrMute(false);
+            return true;
+        } else if (item.getItemId() == R.id.mute) {
+            getPresenter().onSubscribeOrMute(true);
+            return true;
+        } else if (item.getItemId() == R.id.pinUnpin) {
+            if (PrefGetter.isProEnabled()) {
+                getPresenter().onPinUnpinPullRequest();
+            } else {
+                PremiumActivity.Companion.startActivity(this);
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -255,6 +275,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         MenuItem editMenu = menu.findItem(R.id.editMenu);
         MenuItem merge = menu.findItem(R.id.merge);
         MenuItem reviewers = menu.findItem(R.id.reviewers);
+        MenuItem pinUnpin = menu.findItem(R.id.pinUnpin);
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
@@ -268,8 +289,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         assignees.setVisible(isCollaborator || isRepoOwner);
         edit.setVisible(isCollaborator || isRepoOwner || isOwner);
         if (getPresenter().getPullRequest() != null) {
+            boolean isPinned = PinnedPullRequests.isPinned(getPresenter().getPullRequest().getId());
+            pinUnpin.setIcon(isPinned ? ContextCompat.getDrawable(this, R.drawable.ic_pin_filled)
+                                      : ContextCompat.getDrawable(this, R.drawable.ic_pin));
             closeIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
-            lockIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
+            lockIssue.setVisible(isRepoOwner || isCollaborator && getPresenter().getPullRequest().getState() == IssueState.open);
             closeIssue.setTitle(getPresenter().getPullRequest().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string
                     .close));
             lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
@@ -384,6 +408,10 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public void onFinishActivity() {
         hideProgress();
         finish();
+    }
+
+    @Override public void onUpdateMenu() {
+        invalidateOptionsMenu();
     }
 
     @Override public void onAddComment(CommentRequestModel comment) {
@@ -532,7 +560,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         } else {
             title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
         }
-        detailsIcon.setVisibility(InputHelper.isEmpty(pullRequest.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
+        detailsIcon.setVisibility( View.VISIBLE);
     }
 
     private void hideShowFab() {

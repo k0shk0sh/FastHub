@@ -33,7 +33,7 @@ class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter 
                 .subscribe({ user ->
                     var completable: Completable? = null
                     val isAllowed = user.isAllowed
-                    if (isAllowed) {
+                    if (isAllowed && !user.isBlocked) {
                         if (user.type == 1) {
                             PrefGetter.setProItems()
                             user.isAllowed = false
@@ -60,6 +60,9 @@ class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter 
                         if (isAllowed) {
                             sendToView { it.onSuccessfullyActivated() }
                         } else {
+                            if (user.isBlocked) {
+                                PrefGetter.clearPurchases()
+                            }
                             sendToView { it.onNoMatch() }
                         }
                     }

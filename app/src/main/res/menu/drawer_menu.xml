@@ -63,6 +63,12 @@
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings"/>
+
+        <item
+            android:id="@+id/restorePurchase"
+            android:icon="@drawable/ic_money"
+            android:title="@string/restore_purchases"/>
+
         <item
             android:id="@+id/about"
             android:icon="@drawable/ic_info"

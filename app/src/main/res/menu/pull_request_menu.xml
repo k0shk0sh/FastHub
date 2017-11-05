@@ -74,11 +74,16 @@
         </menu>
     </item>
 
-
     <item
         android:id="@+id/reviewChanges"
         android:icon="@drawable/ic_lightblub"
         android:title="@string/review_changes"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/pinUnpin"
+        android:icon="@drawable/ic_pin"
+        android:title="@string/pin"
         app:showAsAction="always"/>
 
     <item

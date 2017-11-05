@@ -15,6 +15,7 @@ public class SettingsCategoryActivity extends BaseActivity implements SettingsCa
 
     @State String title;
     @SettingsModel.SettingsType @State int settingsType;
+    @State boolean needRecreation;
 
     @Override protected int layout() {
         return R.layout.activity_settings_category;
@@ -41,7 +42,7 @@ public class SettingsCategoryActivity extends BaseActivity implements SettingsCa
             settingsType = bundle.getInt(BundleConstant.ITEM);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.settingsContainer, new SettingsCategoryFragment(), "SettingsCategoryFragment")
+                    .replace(R.id.settingsContainer, new SettingsCategoryFragment(), SettingsCategoryFragment.TAG)
                     .commit();
         }
         setTitle(title);
@@ -53,5 +54,17 @@ public class SettingsCategoryActivity extends BaseActivity implements SettingsCa
 
     @SettingsModel.SettingsType @Override public int getSettingsType() {
         return settingsType;
+    }
+
+    @Override public void onThemeChanged() {
+        needRecreation = true;
+    }
+
+    @Override public void onBackPressed() {
+        if (needRecreation) {
+            super.onThemeChanged();
+            return;
+        }
+        super.onBackPressed();
     }
 }

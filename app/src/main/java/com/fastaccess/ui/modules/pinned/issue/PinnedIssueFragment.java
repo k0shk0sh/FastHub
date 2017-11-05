@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.pinned;
+package com.fastaccess.ui.modules.pinned.issue;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,11 +6,11 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.AbstractPinnedRepos;
-import com.fastaccess.data.dao.model.PinnedRepos;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PinnedIssues;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.ui.adapter.PinnedReposAdapter;
+import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -26,28 +26,28 @@ import butterknife.BindView;
  * Created by Kosh on 25 Mar 2017, 8:04 PM
  */
 
-public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, PinnedReposPresenter> implements PinnedReposMvp.View {
+public class PinnedIssueFragment extends BaseFragment<PinnedIssueMvp.View, PinnedIssuePresenter> implements PinnedIssueMvp.View {
 
-    public static final String TAG = PinnedReposFragment.class.getSimpleName();
+    public static final String TAG = PinnedIssueFragment.class.getSimpleName();
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
-    private PinnedReposAdapter adapter;
+    private IssuesAdapter adapter;
 
-    public static PinnedReposFragment newInstance() {
-        return new PinnedReposFragment();
+    public static PinnedIssueFragment newInstance() {
+        return new PinnedIssueFragment();
     }
 
-    @Override public void onNotifyAdapter(@Nullable List<PinnedRepos> items) {
+    @Override public void onNotifyAdapter(@Nullable List<Issue> items) {
         refresh.setRefreshing(false);
         stateLayout.hideProgress();
         if (items != null) adapter.insertItems(items);
         else adapter.clear();
     }
 
-    @Override public void onDeletePinnedRepo(long id, int position) {
+    @Override public void onDeletePinnedIssue(long id, int position) {
         MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
                 Bundler.start().put(BundleConstant.YES_NO_EXTRA, true)
                         .put(BundleConstant.EXTRA, position)
@@ -61,8 +61,9 @@ public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, Pinne
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        adapter = new PinnedReposAdapter(getPresenter().getPinnedRepos(), getPresenter());
-        stateLayout.setEmptyText(R.string.empty_pinned_repos);
+        adapter = new IssuesAdapter(getPresenter().getPinnedIssue(), true, true, true);
+        adapter.setListener(getPresenter());
+        stateLayout.setEmptyText(R.string.no_issues);
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
@@ -74,8 +75,8 @@ public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, Pinne
         fastScroller.attachRecyclerView(recycler);
     }
 
-    @NonNull @Override public PinnedReposPresenter providePresenter() {
-        return new PinnedReposPresenter();
+    @NonNull @Override public PinnedIssuePresenter providePresenter() {
+        return new PinnedIssuePresenter();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
@@ -83,7 +84,7 @@ public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, Pinne
         if (bundle != null && isOk) {
             long id = bundle.getLong(BundleConstant.ID);
             int position = bundle.getInt(BundleConstant.EXTRA);
-            AbstractPinnedRepos.delete(id);
+            PinnedIssues.delete(id);
             adapter.removeItem(position);
         }
     }

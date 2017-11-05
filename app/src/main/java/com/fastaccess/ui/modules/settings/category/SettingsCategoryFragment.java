@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SettingsModel;
+import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -49,6 +50,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class SettingsCategoryFragment extends PreferenceFragmentCompat implements
         Preference.OnPreferenceChangeListener, NotificationSoundMvp.NotificationSoundListener {
+
+    public static final String TAG = SettingsCategoryFragment.class.getSimpleName();
 
     public interface SettingsCallback {
         @SettingsModel.SettingsType int getSettingsType();
@@ -269,6 +272,11 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     private void addBehaviour() {
         addPreferencesFromResource(R.xml.behaviour_settings);
+        findPreference("clear_search").setOnPreferenceClickListener(preference -> {
+            callback.showMessage(R.string.success, R.string.deleted);
+            SearchHistory.deleteAll();
+            return true;
+        });
     }
 
     private void addNotifications() {

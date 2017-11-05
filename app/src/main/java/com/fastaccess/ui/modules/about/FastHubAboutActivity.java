@@ -110,7 +110,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.website)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_brower))
-                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "https://www.221pixels.com/"))
+                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "http://kevaguilar.com/"))
                         .build());
     }
 

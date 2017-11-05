@@ -178,5 +178,9 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     @Override public boolean isEnterprise() {
         return callback != null && callback.isEnterprise();
     }
+
+    @Override public void onOpenUrlInBrowser() {
+        callback.onOpenUrlInBrowser();
+    }
 }
 

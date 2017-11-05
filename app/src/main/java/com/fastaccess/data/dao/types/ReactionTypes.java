@@ -12,19 +12,21 @@ import com.fastaccess.R;
 
 public enum ReactionTypes {
 
-    HEART("heart", R.id.heart),
-    HOORAY("hooray", R.id.hurray),
-    PLUS_ONE("+1", R.id.thumbsUp),
-    MINUS_ONE("-1", R.id.thumbsDown),
-    CONFUSED("confused", R.id.sad),
-    LAUGH("laugh", R.id.laugh);
+    HEART("heart", R.id.heart, R.id.heartReaction),
+    HOORAY("hooray", R.id.hurray, R.id.hurrayReaction),
+    PLUS_ONE("+1", R.id.thumbsUp, R.id.thumbsUpReaction),
+    MINUS_ONE("-1", R.id.thumbsDown, R.id.thumbsDownReaction),
+    CONFUSED("confused", R.id.sad, R.id.sadReaction),
+    LAUGH("laugh", R.id.laugh, R.id.laughReaction);
 
     private String content;
     private int vId;
+    private int secondaryViewId;
 
-    ReactionTypes(String content, int vId) {
+    ReactionTypes(String content, int vId, int secondaryViewId) {
         this.content = content;
         this.vId = vId;
+        this.secondaryViewId = secondaryViewId;
     }
 
     public String getContent() {
@@ -37,7 +39,7 @@ public enum ReactionTypes {
 
     @Nullable public static ReactionTypes get(@IdRes int vId) {
         return Stream.of(values())
-                .filter(value -> value.getvId() == vId)
+                .filter(value -> value.getvId() == vId || value.secondaryViewId == vId)
                 .findFirst()
                 .orElse(null);
     }

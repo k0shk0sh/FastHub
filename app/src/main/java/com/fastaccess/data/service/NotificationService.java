@@ -4,6 +4,7 @@ package com.fastaccess.data.service;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 
+import com.fastaccess.data.dao.NotificationSubscriptionBodyModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.RepoSubscriptionModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -12,18 +13,16 @@ import com.fastaccess.data.dao.model.Notification;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import io.reactivex.Observable;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
-import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 19 Feb 2017, 6:34 PM
@@ -62,12 +61,6 @@ public interface NotificationService {
 
     @DELETE("notifications/threads/{id}/subscription") Observable<Response<Boolean>> unSubscribe(@Path("id") long id);
 
-    @POST @FormUrlEncoded
-    @Headers("Accept-Charset: UTF-8")
-    Observable<Response<Boolean>> subscribe(@NonNull @Url String url, @Field("repository_id") long repoId,
-                                            @Field("thread_id") long issueId,
-                                            @NonNull @Field("thread_class") @ThreadClass String threadClass,
-                                            @NonNull @Field("id") @ThreadId String id,
-                                            @NonNull @Field("authenticity_token") String token,
-                                            @NonNull @Field("utf8") String utf8);
+    @PUT("notifications/threads/{id}/subscription")
+    Observable<Response<Boolean>> subscribe(@Path("id") long id, @Body NotificationSubscriptionBodyModel body);
 }
