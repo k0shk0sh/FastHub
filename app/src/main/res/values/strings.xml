@@ -615,4 +615,5 @@
     <string name="search_results_warning">Please be more specific with your search</string>
     <string name="disable_loading_image_title">Disable Loading Image</string>
     <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+    <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
 </resources>
