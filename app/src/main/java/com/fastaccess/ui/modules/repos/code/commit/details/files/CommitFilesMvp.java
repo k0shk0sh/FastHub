@@ -28,6 +28,8 @@ interface CommitFilesMvp {
         void onCommentAdded(@NonNull Comment newComment);
 
         void clearAdapter();
+
+        void onOpenForResult(int position, CommitFileChanges model);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommitFileChanges> {

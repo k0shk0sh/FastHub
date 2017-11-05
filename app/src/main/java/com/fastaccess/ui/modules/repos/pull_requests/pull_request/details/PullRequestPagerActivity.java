@@ -34,7 +34,6 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -294,7 +293,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             pinUnpin.setIcon(isPinned ? ContextCompat.getDrawable(this, R.drawable.ic_pin_filled)
                                       : ContextCompat.getDrawable(this, R.drawable.ic_pin));
             closeIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
-            lockIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
+            lockIssue.setVisible(isRepoOwner || isCollaborator && getPresenter().getPullRequest().getState() == IssueState.open);
             closeIssue.setTitle(getPresenter().getPullRequest().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string
                     .close));
             lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
@@ -561,7 +560,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         } else {
             title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
         }
-        detailsIcon.setVisibility(InputHelper.isEmpty(pullRequest.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
+        detailsIcon.setVisibility( View.VISIBLE);
     }
 
     private void hideShowFab() {

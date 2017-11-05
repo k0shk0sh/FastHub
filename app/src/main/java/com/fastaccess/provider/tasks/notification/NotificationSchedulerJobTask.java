@@ -19,6 +19,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.data.dao.model.NotificationQueue;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
@@ -148,7 +149,8 @@ public class NotificationSchedulerJobTask extends JobService {
         Notification first = notificationThreadModels.get(0);
         Observable.fromIterable(notificationThreadModels)
                 .subscribeOn(Schedulers.io())
-                .filter(notification -> notification.isUnread() && first.getId() != notification.getId())
+                .filter(notification -> notification.isUnread() && first.getId() != notification.getId()
+                        && !NotificationQueue.exists(notification.getId()))
                 .take(10)
                 .flatMap(notification -> {
                     if (notification.getSubject() != null && notification.getSubject().getLatestCommentUrl() != null) {
@@ -180,9 +182,12 @@ public class NotificationSchedulerJobTask extends JobService {
                     }
 
                 }, throwable -> finishJob(job), () -> {
-                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor, notificationThreadModels.size() > 1);
-                    showNotification(first.getId(), grouped);
-                    finishJob(job);
+                    if (!NotificationQueue.exists(first.getId())) {
+                        android.app.Notification grouped = getSummaryGroupNotification(first, accentColor, notificationThreadModels.size() > 1);
+                        showNotification(first.getId(), grouped);
+                    }
+                    NotificationQueue.put(notificationThreadModels)
+                            .subscribe(aBoolean -> {/*do nothing*/}, Throwable::printStackTrace, () -> finishJob(job));
                 });
     }
 

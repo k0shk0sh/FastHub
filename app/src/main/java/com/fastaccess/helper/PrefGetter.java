@@ -102,7 +102,7 @@ public class PrefGetter {
     private static final String CODE_THEME = "code_theme";
     private static final String ENTERPRISE_URL = "enterprise_url";
     private static final String NOTIFICATION_SOUND_PATH = "notification_sound_path";
-    private static final String DISABLE_AUTO_PLAY_GIF = "disable_auto_play_gif";
+    private static final String DISABLE_AUTO_LOAD_IMAGE = "disable_auto_loading_image";
     private static final String PLAY_STORE_REVIEW_ACTIVITY = "play_store_review_activity";
 
     public static void setToken(@Nullable String token) {
@@ -462,8 +462,8 @@ public class PrefGetter {
         PrefHelper.set(NOTIFICATION_SOUND_PATH, uri.toString());
     }
 
-    public static boolean isGistDisabled() {
-        return PrefHelper.getBoolean(DISABLE_AUTO_PLAY_GIF);
+    public static boolean isAutoImageDisabled() {
+        return PrefHelper.getBoolean(DISABLE_AUTO_LOAD_IMAGE) && AppHelper.isDataPlan();
     }
 
     public static boolean isAppAnimationDisabled() {

@@ -23,8 +23,15 @@ class ProjectPagerPresenter : BasePresenter<ProjectPagerMvp.View>(), ProjectPage
     @com.evernote.android.state.State var login: String = ""
     @com.evernote.android.state.State var viewerCanUpdate: Boolean = false
 
-    override fun getColumns(): ArrayList<ProjectColumnModel> = columns
+    override fun onError(throwable: Throwable) {
+        val code = RestProvider.getErrorCode(throwable)
+        if (code == 404) {
+            sendToView { it.onOpenUrlInBrowser() }
+        }
+        super.onError(throwable)
+    }
 
+    override fun getColumns(): ArrayList<ProjectColumnModel> = columns
 
     override fun onRetrieveColumns() {
         val repoId = repoId
