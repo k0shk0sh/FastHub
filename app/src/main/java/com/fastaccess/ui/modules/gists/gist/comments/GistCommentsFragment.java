@@ -265,7 +265,6 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

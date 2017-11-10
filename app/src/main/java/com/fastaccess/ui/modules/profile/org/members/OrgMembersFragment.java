@@ -124,7 +124,6 @@ public class OrgMembersFragment extends BaseFragment<OrgMembersMvp.View, OrgMemb
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

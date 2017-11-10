@@ -182,7 +182,6 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

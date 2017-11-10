@@ -87,7 +87,6 @@ class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), Br
 
     override fun hideProgress() {
         refresh.isRefreshing = false
-        stateLayout.hideProgress()
         stateLayout.showReload(adapter.itemCount)
     }
 

@@ -131,7 +131,6 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

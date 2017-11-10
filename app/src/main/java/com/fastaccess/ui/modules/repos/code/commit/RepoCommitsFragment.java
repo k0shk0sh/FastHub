@@ -183,7 +183,6 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

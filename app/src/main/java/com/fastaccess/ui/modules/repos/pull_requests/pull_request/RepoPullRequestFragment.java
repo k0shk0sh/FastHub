@@ -196,7 +196,6 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

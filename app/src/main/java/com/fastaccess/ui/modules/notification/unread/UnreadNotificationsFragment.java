@@ -191,7 +191,6 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

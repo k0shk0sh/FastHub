@@ -367,7 +367,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

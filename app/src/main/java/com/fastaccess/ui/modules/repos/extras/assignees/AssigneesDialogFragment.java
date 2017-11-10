@@ -156,7 +156,6 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

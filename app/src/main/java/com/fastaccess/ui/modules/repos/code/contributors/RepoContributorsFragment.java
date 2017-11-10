@@ -130,7 +130,6 @@ public class RepoContributorsFragment extends BaseFragment<RepoContributorsMvp.V
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

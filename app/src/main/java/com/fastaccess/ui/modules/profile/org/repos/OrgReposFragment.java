@@ -154,7 +154,6 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

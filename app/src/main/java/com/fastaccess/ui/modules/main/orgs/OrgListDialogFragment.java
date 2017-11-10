@@ -102,7 +102,6 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

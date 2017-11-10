@@ -125,7 +125,6 @@ public class TeamReposFragment extends BaseFragment<TeamReposMvp.View, TeamRepos
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

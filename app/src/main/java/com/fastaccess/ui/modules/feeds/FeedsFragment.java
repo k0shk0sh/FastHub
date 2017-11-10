@@ -176,7 +176,6 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

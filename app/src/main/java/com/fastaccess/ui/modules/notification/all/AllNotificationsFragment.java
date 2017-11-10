@@ -139,7 +139,6 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
 
     @Override public void hideProgress() {
         refresh.setRefreshing(false);
-        stateLayout.hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 
@@ -195,7 +194,6 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

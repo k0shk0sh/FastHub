@@ -297,7 +297,6 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     }
 
     @Override public void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

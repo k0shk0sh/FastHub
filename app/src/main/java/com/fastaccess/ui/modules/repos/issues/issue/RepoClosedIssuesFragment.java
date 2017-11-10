@@ -203,7 +203,6 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

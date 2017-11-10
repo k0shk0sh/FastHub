@@ -163,7 +163,6 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

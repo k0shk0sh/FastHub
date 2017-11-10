@@ -424,7 +424,6 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

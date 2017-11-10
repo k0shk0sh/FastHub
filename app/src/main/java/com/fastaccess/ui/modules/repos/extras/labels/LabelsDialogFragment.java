@@ -184,7 +184,6 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

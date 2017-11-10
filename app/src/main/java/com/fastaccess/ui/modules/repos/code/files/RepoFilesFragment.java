@@ -235,7 +235,6 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

@@ -169,7 +169,6 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

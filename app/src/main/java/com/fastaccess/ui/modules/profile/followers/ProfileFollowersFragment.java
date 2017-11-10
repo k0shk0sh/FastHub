@@ -125,7 +125,6 @@ public class ProfileFollowersFragment extends BaseFragment<ProfileFollowersMvp.V
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }
