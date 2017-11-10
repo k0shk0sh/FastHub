@@ -184,7 +184,6 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

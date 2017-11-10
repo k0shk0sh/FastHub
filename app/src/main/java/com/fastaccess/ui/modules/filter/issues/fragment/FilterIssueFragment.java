@@ -165,7 +165,6 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

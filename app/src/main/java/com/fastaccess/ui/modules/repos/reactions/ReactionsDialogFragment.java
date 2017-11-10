@@ -128,7 +128,6 @@ public class ReactionsDialogFragment extends BaseDialogFragment<ReactionsDialogM
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

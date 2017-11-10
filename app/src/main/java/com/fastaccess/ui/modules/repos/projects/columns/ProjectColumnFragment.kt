@@ -234,7 +234,6 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
     }
 
     private fun showReload() {
-        hideProgress()
         stateLayout.showReload(adapter.itemCount)
     }
 

@@ -125,7 +125,6 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

@@ -147,7 +147,6 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 

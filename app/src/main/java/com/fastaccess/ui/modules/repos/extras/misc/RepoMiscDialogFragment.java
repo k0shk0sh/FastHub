@@ -139,7 +139,6 @@ public class RepoMiscDialogFragment extends BaseDialogFragment<RepoMiscMVp.View,
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

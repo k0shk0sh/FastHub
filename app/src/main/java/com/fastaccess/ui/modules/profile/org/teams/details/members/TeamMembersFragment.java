@@ -124,7 +124,6 @@ public class TeamMembersFragment extends BaseFragment<TeamMembersMvp.View, TeamM
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

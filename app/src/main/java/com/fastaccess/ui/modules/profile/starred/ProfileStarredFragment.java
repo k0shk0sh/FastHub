@@ -147,7 +147,6 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

@@ -165,7 +165,6 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }

@@ -127,7 +127,6 @@ class RepoProjectFragment : BaseFragment<RepoProjectMvp.View, RepoProjectPresent
     }
 
     private fun showReload() {
-        hideProgress()
         stateLayout.showReload(adapter.itemCount)
     }
 

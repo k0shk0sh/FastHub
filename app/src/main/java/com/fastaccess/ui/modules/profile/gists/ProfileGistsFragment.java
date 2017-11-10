@@ -149,7 +149,6 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
     }
 
     private void showReload() {
-        hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
 }
