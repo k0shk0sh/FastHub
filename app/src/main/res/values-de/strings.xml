@@ -467,7 +467,7 @@
     <string name="backed_up">Erfolgreich gesichert!</string>
     <string name="select_backup">Backup auswählen</string>
     <string name="permission_failed">Rechte nicht gewährt.</string>
-    <string name="backup_summary">Letzes Update: %s</string>
+    <string name="backup_summary">Letztes Update: %s</string>
     <string name="now">Jetzt</string>
     <string name="no_orgs_dialog_title">Organisation(en) nicht auffindbar?</string>
     <string name="up_to_date">Du hast die aktuellste Version!</string>
@@ -478,6 +478,9 @@
     <string name="include_forks">Forks einschließen</string>
     <string name="search_results_warning">Bitte sei bei deiner Suche etwas genauer</string>
     <string name="comment_is_too_far_to_paginate">Dieser Kommentar liegt zu weit zurück, um ihn anzuzeigen</string>
+    <string name="disable_loading_image_title">Ladebild deaktivieren</string>
+    <string name="report_issue_warning">Dieses Problem wird zum FastHub Repo in GitHub übermittelt</string>
+    <string name="disable_loading_image_summary">Bei Nutzung des mobilen Internets Ladebild deaktivieren</string>
 </resources>
 
 
