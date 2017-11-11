@@ -29,8 +29,8 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 453
-        versionName "4.5.3"
+        versionCode 455
+        versionName "4.5.5"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
         buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
@@ -129,7 +129,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
-    implementation "com.github.bumptech.glide:glide:3.7.0"
+    implementation "com.github.bumptech.glide:glide:${glideVersion}"
     implementation 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
     implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.2'
@@ -152,6 +152,7 @@ dependencies {
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
+    implementation "com.google.firebase:firebase-core:${gms}"
     implementation "com.google.firebase:firebase-messaging:${gms}"
     implementation "com.google.firebase:firebase-database:${gms}"
     implementation "com.google.android.gms:play-services-base:${gms}"
@@ -182,8 +183,8 @@ dependencies {
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
     androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
     androidTestImplementation "org.mockito:mockito-core:${mockitoVersion}"
-    androidTestImplementation 'com.android.support.test:runner:0.5'
-    androidTestImplementation 'com.android.support.test:rules:0.5'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:${espresseVersion}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
 }

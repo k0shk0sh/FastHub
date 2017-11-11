@@ -40,12 +40,14 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val bundle: Bundle = intent.extras
-        val productKey: String = bundle.getString(BundleConstant.EXTRA)
+        val productKey = bundle.getString(BundleConstant.EXTRA)
+        val price = bundle.getLong(BundleConstant.EXTRA_FOUR, 0)
+        val priceText = bundle.getString(BundleConstant.EXTRA_FIVE)
         subscription = RxHelper.getSingle<Purchase>(RxBillingService.getInstance(this, BuildConfig.DEBUG)
                 .purchase(ProductType.IN_APP, productKey, "inapp:com.fastaccess.github:" + productKey))
                 .subscribe({ p: Purchase?, throwable: Throwable? ->
                     if (throwable == null) {
-                        FabricProvider.logPurchase(productKey)
+                        FabricProvider.logPurchase(productKey, price, priceText)
                         showMessage(R.string.success, R.string.success_purchase_message)
                         enableProduct(productKey, applicationContext)
                         val intent = Intent()
@@ -77,18 +79,22 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
     }
 
     companion object {
-        fun start(context: Activity, product: String?) {
+        fun start(context: Activity, product: String?, price: Long? = 0, priceText: String? = null) {
             val intent = Intent(context, DonateActivity::class.java)
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, product)
+                    .put(BundleConstant.EXTRA_FOUR, price)
+                    .put(BundleConstant.EXTRA_FIVE, priceText)
                     .end())
             context.startActivityForResult(intent, BundleConstant.REQUEST_CODE)
         }
 
-        fun start(context: Fragment, product: String?) {
+        fun start(context: Fragment, product: String?, price: Long? = 0, priceText: String? = null) {
             val intent = Intent(context.context, DonateActivity::class.java)
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, product)
+                    .put(BundleConstant.EXTRA_FOUR, price)
+                    .put(BundleConstant.EXTRA_FIVE, priceText)
                     .end())
             context.startActivityForResult(intent, BundleConstant.REQUEST_CODE)
         }

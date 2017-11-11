@@ -120,7 +120,7 @@
                 </blockquote>
         ]]>
     </string>
-    <string name="purchase_all" translatable="false">Purchase All for ($ 7.99)</string>
+    <string name="purchase_all" translatable="false" formatted="false">Purchase All for %price%</string>
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <string name="feeds" translatable="false">Feeds</string>
@@ -616,4 +616,5 @@
     <string name="disable_loading_image_title">Disable Loading Image</string>
     <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
     <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
+    <string name="block">Block</string>
 </resources>

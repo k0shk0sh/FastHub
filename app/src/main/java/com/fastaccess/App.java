@@ -43,7 +43,7 @@ public class App extends Application {
     }
 
     private void init() {
-        FabricProvider.initFabric(this);
+        FabricProvider.INSTANCE.initFabric(this);
         RxBillingService.register(this);
         deleteDatabase("database.db");
         getDataStore();
