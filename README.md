@@ -1,7 +1,9 @@
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
 [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 
-![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
+<p align="center">
+  <img src="/.github/assets/logo.png?raw=true" title="Logo">
+</p>
 
 # FastHub  
 
