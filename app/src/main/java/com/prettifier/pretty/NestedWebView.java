@@ -42,7 +42,6 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
 
     @SuppressLint("ClickableViewAccessibility") @Override public boolean onTouchEvent(MotionEvent ev) {
         boolean returnValue;
-
         MotionEvent event = MotionEvent.obtain(ev);
         final int action = MotionEventCompat.getActionMasked(event);
         if (action == MotionEvent.ACTION_DOWN) {
@@ -124,6 +123,8 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
     @Override public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
         return mChildHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
+
+
 
 }
 

@@ -14,11 +14,11 @@ import lombok.Setter;
 
 @Getter @Setter public class EditReviewCommentModel implements Parcelable {
 
-    private int groupPosition;
-    private int commentPosition;
-    private String comment;
-    private ReviewCommentModel commentModel;
-    @SerializedName("in_reply_to") private long inReplyTo;
+    public int groupPosition;
+    public int commentPosition;
+    public String comment;
+    public ReviewCommentModel commentModel;
+    @SerializedName("in_reply_to") public long inReplyTo;
 
 
     public EditReviewCommentModel() {}
@@ -33,7 +33,7 @@ import lombok.Setter;
         dest.writeLong(this.inReplyTo);
     }
 
-    protected EditReviewCommentModel(Parcel in) {
+    private EditReviewCommentModel(Parcel in) {
         this.groupPosition = in.readInt();
         this.commentPosition = in.readInt();
         this.comment = in.readString();

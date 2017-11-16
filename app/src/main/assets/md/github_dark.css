@@ -82,7 +82,7 @@ body kbd {
     padding: 3px 5px;
     font-size: 11px;
     line-height: 10px;
-    color: #656d78;
+    color: #fff;
     vertical-align: middle;
     border: solid 1px #656d78;
     border-bottom-color: #bbb;
@@ -123,6 +123,12 @@ body h1 tt, body h1 code, body h2 tt, body h2 code, body h3 tt, body h3 code, bo
 body h1 {
     padding-bottom: .3em;
     font-size: 2em;
+    border-bottom: 1px solid #656d78
+}
+
+.gh-header-meta {
+    padding-bottom: .3em;
+    margin-bottom: 6px;
     border-bottom: 1px solid #656d78
 }
 
@@ -204,7 +210,7 @@ body table th, body table td {
 }
 
 body table tr {
-    background-color: #22252A;
+    background-color: transparent;
     border-top: 1px solid #656d78
 }
 
@@ -371,7 +377,6 @@ body .highlight pre, body pre {
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: #2D3035;
     border-radius: 3px
 }
 

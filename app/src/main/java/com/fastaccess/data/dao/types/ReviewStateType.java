@@ -1,8 +1,11 @@
 package com.fastaccess.data.dao.types;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 
 /**
@@ -11,7 +14,7 @@ import com.fastaccess.R;
 
 public enum ReviewStateType {
     COMMENTED(R.string.reviewed, R.drawable.ic_eye),
-    CHANGES_REQUESTED(R.string.reviewed, R.drawable.ic_eye),
+    CHANGES_REQUESTED(R.string.request_changes, R.drawable.ic_clear),
     REQUEST_CHANGES(R.string.reviewed, R.drawable.ic_eye),
     DISMISSED(R.string.dismissed_review, R.drawable.ic_clear),
     APPROVED(R.string.approved_these_changes, R.drawable.ic_done),
@@ -31,5 +34,12 @@ public enum ReviewStateType {
 
     @DrawableRes public int getDrawableRes() {
         return drawableRes > 0 ? drawableRes : R.drawable.ic_eye;
+    }
+
+    @Nullable public static ReviewStateType getType(@NonNull String state) {
+        return Stream.of(values())
+                .filter(value -> value.name().toLowerCase().equalsIgnoreCase(state.toLowerCase()))
+                .findFirst()
+                .orElse(null);
     }
 }

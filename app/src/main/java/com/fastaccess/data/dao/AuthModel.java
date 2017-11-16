@@ -24,7 +24,7 @@ public class AuthModel implements Parcelable {
     private List<String> scopes;
     private String state;
     private String note;
-    private String noteUr;
+    private String noteUrl;
     @SerializedName("X-GitHub-OTP") private String otpCode;
 
     @Override public int describeContents() { return 0; }
@@ -36,18 +36,18 @@ public class AuthModel implements Parcelable {
         dest.writeStringList(this.scopes);
         dest.writeString(this.state);
         dest.writeString(this.note);
-        dest.writeString(this.noteUr);
+        dest.writeString(this.noteUrl);
         dest.writeString(this.otpCode);
     }
 
-    protected AuthModel(Parcel in) {
+    private AuthModel(Parcel in) {
         this.clientId = in.readString();
         this.clientSecret = in.readString();
         this.redirectUri = in.readString();
         this.scopes = in.createStringArrayList();
         this.state = in.readString();
         this.note = in.readString();
-        this.noteUr = in.readString();
+        this.noteUrl = in.readString();
         this.otpCode = in.readString();
     }
 

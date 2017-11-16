@@ -12,7 +12,6 @@
     <string name="sign_in">Giriş yap</string>
     <string name="share">Paylaş</string>
     <string name="reload">Yenile</string>
-    <string name="feeds">Akış</string>
     <string name="profile">Profil</string>
     <string name="error">Hata</string>
     <string name="press_again_to_exit">Çıkmak için bir kez daha basınız</string>
@@ -319,4 +318,136 @@
     <string name="language">Uygulama Dili</string>
     <string name="choose_language_title">Dil seçiniz</string>
     <string name="choose_language_summary">Tercih ettiğiniz dili seçin</string>
+    <string name="un_subscribe">Abonelikten ayrıl</string>
+    <!-- next one is not a word in Turkish, but an extension to a word before it -->
+    <!-- and it changes depending the letters of the word before it -->
+    <!-- little trivia: languages like this are called agglutinative languaes, look it up -->
+    <string name="from">from</string>
+    <string name="in_value">içinde</string>
+    <string name="subscribe">Abone ol</string>
+    <string name="repo_issues_is_disabled">Bu repo için sorunlar devre dışı bırakılmış</string>
+    <string name="access_token">Erişim Kodu</string>
+    <string name="basic_authentication">Temel Kimlik Doğrulama</string>
+    <string name="choose_your_login_type">Giriş yönteminizi seçin</string>
+    <string name="files_only">Dosyalar arasında</string>
+    <string name="paths_only">Yollar arasında</string>
+    <string name="review_requests">İstekleri Gözden Geçir</string>
+    <string name="join_slack">Slack\'e Katıl</string>
+    <string name="join_slack_message">FastHub Slack grubuna katılmak ister misiniz?</string>
+    <string name="successfully_invited">Davet başarılı</string>
+    <string name="reply">Cevapla</string>
+    <string name="failed_selecting_image">Resim yüklenemedi.</string>
+    <string name="want_to_merge">merge etmek istiyor</string>
+    <string name="watchers">İzleyenler</string>
+    <string name="reviewers">İnceleyenler</string>
+    <string name="no_reviewers">İnceleyen yok</string>
+    <string name="sent_from_fasthub">%1$s cihazımdan %2$s%3$s kullanılarak iletildi.</string>
+    <string name="enable_signature">İmzayı Etkinleştir</string>
+    <string name="enable_signature_summary">İmza ile gönderimi etkinleştir</string>
+    <string name="enable_signature_box">İmza Kutusunu Etkinleştir</string>
+    <string name="enable_signature_box_summary">Metin editöründe imzayı açıp kapamayı etkinleştirmek için onay kutusunu seç</string>
+    <string name="tags">Etiketler</string>
+    <string name="add_comment">Yorum ekle</string>
+    <string name="banners">Afişlerin Tanıtımı</string>
+    <string name="banners_info">FastHub 2.5.0 ile beraber artık kendinizi profil sayfanızda yer alan bannerlar 
+        ile daha iyi ifade edebilirsiniz.\n\nFastHub uygulamasını kullanan herkes sizin bannerinizi görebilecek,
+        siz de aynı şekilde başkalarınınkini göreceksiniz! Eğer kendiniz için bir banner yapmak isterseniz onu
+        1280x384 ya da katları ebatlarında yapan, olmazsa ona göre kırpılabililir.\n\nİstediğiniz zaman banner
+        ekleyebilir ya da değiştirebilirsiniz, tek yapmanız gereken "header.fst" isminde bir gist oluşturmak ve
+        buna resmin adresini yazmak.\n\nYa da daha basiti uygulamanın içindeki reim seçiciyi kullanabilirsiniz.
+    </string>
+    <string name="edit_banner">BANNER SEÇ</string>
+    <string name="image_error">Resim yüklenirken hata oluştu, lütfen tekrar deneyin.</string>
+    <string name="trending">Trendler</string>
+    <string name="not_really_working">Emojilere göre sıralamak Github limitasyonlarından ötürü çalışmıyor.</string>
+    <string name="scroll_up">Yukarı kaydır</string>
+    <string name="scroll_down">Aşağı kaydır</string>
+    <string name="participated">Katıldı</string>
+    <string name="todo_checked">Todo seçili</string>
+    <string name="todo_unchecked">Todo seçili değil</string>
+    <string name="divider">Bölen</string>
+    <string name="no_user_found">Kullanıcı bulunamadı</string>
+    <string name="no_trending">Trend yok</string>
+    <string name="reset">Sıfırlar</string>
+    <string name="apply">Başvur</string>
+    <string name="filter">Filtre</string>
+    <string name="type">Tip</string>
+    <string name="sort_direction">Sıralama yönü</string>
+    <string name="assignee_added">Devralan başarıyla eklendi</string>
+    <string name="reviewer_added">İnceleyici başarıyla eklendi</string>
+    <string name="milestone_added">Dönüm noktası başarıyla eklendi</string>
+    <string name="feed">Olay akışı</string>
+    <string name="premium_theme">Premium Tema</string>
+    <string name="choose_code_theme">Kod renk paleti</string>
+    <string name="enterprise_login_warning">GitHub API\'ının bütün özelliklerine erişmek için Enterprise 
+        GitHub hesabından ziyade kendi GitHub hesabınızla giriş yapın çünkü diğer türlü GitHub API\'ye giden 
+        kod Enterprise hesabından gönderildiği için ne yapmaya çalışırsanız çalışın siztem sizi atacak.
+    </string>
+    <string name="add_account">Hesap Ekle</string>
+    <string name="choose_account">Hesap Seç</string>
+    <string name="not_match">Birbirini tutmuyor</string>
+    <string name="warning">Uyarı</string>
+    <string name="owner">Sahip</string>
+    <string name="original_poster">Asıl Gönderici</string>
+    <string name="cancel_reviews">İncelemeleri İptal Et</string>
+    <string name="colored_navbar_summary">Temalardaki renkli navigasyonu devre dışı bırak</string>
+    <string name="colored_navbar_title">Renksiz Navigasyon Çubuğu</string>
+    <string name="sound_chooser_summary">Özel bir bildirim sesi seç</string>
+    <string name="sound_chooser_title">Bildirim Sesi Seç</string>
+    <string name="disable_auto_gif_summary">GIF\'leri otomatik olarak oynatma</string>
+    <string name="disable_auto_gif_title">GIF'leri oynatmayı devre dışı bırak</string>
+    <string name="request_changes">istenilen değişiklikler</string>
+    <string name="google_play_service_error">Google Play Servisleri müsait değil</string>
+    <string name="edit_gist">Gist\'i Düzenle</string>
+    <string name="content">İçerik</string>
+    <string name="expand">devamını göster</string>
+    <string name="copy_sha">SHA-1 kopyala</string>
+    <string name="view_as_code">Kod olarak gör</string>
+    <string name="app_animation_title">Uygulama İçi Animasyonları Devre Dışı Bırak</string>
+    <string name="app_animation_summary">Uygulamanın içindeki bütün animasyonları devre dışı bırak</string>
+    <string name="can_not_merge_pr">Bu PR şu an merge olamaz.</string>
+    <string name="projects">Projeler</string>
+    <string name="no_projects">Proje Yok</string>
+    <string name="no_cards">Kart Yok</string>
+    <string name="card_added_by">%s %s tarafından eklendi.</string>
+    <string name="too_large_changes">Gösterim için çok fazla değişiklik var. Lütfen tarayıcıdan bakın.</string>
+    <string name="project">Proje</string>
+    <string name="please_read">LÜTFEN OKUYUN!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Neden <i>Gizli</i> ya da <i>Açık</i> <b>Organizasyonlarımı</b> göremiyorum?</h5>
+        <p>https://github.com/settings/applications adresini açın ve FastHub\'ı arayın ve açın, ardından "Organization Access"i bulun ve "Grant" butonuna basın
+        Alternatif olarak <b>Erişim Kodu</b> yoluyla da giriş yapabilirsiniz.</p>
+
+        <h5>• Erişim Kodunu ve de Tek-Seferlik Şifre yöntemini ullanarak giriş yapmayı denedim ama başaramadım. Sorun ne?</h5>
+        <p>Erişim Kodu ve Tek Seferlik Şifre yöntemleriyle aynı anda giriş yapamazınız. bu giriş yöntemlerinin kısa ömründen dolayı birkaç saniyede bir girişi yenilemeniz gerekir.</p>
+
+        <h5>• Neden Özel ya da Enterprise Repolarımın Wikileri görünmüyor?</h5>
+        <p>FastHub GitHub\'ın wikilerini çektiği için uygulama Gizli repolar için gereken erişim kodlarını alamıyor.</p>
+
+        <h5>• Enterprise hesabıma giriş yaptım. Neden Enterprise GitHub dışında herhangi bir şeye erişemiyorum?</h5>
+        <p>Yani, mantıksal olarak da Enterprise dışında bir şeye erişemiyor olmanız lazım. FastHub bir çok izni almaya çalışıyor fakat ama çoğu zaman fazla da bir şey yapamaz çünkü zaten giriş bilgileriniz GitHub\'ın sunucularında saklanmıyor. Ama <b>bazı</b> durumlarda GitHub OAuth kodu işe yarayabilir.</p>
+
+        <h5>• Neden Issue\'leri ya da Pull Requestleri (PR) düzenlerken sorun yaşıyorum?</h5>
+        <p>Eğer bir organizasyonun açık bir reposundaki issue/PR\'ları düzenlerken sorun yaşıyorsanız organizasyonuzla FastHub\'a erişim sağlamaları yönünde görüşün. Alternatif olarak Erişim Kodu ile giriş yapabilirsiniz.</p>
+
+        <h5>• Sorunlarım var! / Bir şeyler önermek istiyorum!</h5>
+        <p>https://github.com/k0shk0sh/FastHub/issues/new adresine gidin ve herhangi bir hata ya da öneri için bir issue açın. Bundan önce de daha önce açılmış benzer bir issue var mı diye aramanızı da şiddetle tavsiye ederim. Kopya olarak işaretlenmiş issueler anında kapatılacaktır.</p>
+
+        <h5>• PROMO KODU nasıl elde ederim?</h5>
+        <p>Eüer öğrenci iseniz bunu bana kanıtlamanız lazım. Aşağıdaki listedeki dökümanlar bana E-mail yolu ile yollayın. :</p>
+        <ul>
+        <li>Öğrenci kartınız ve kimlik kartınız/pasaportunuz (sonuncusu ile isminizi ve fotoğranızı doğrulamamı sağlıyor);</li>
+        <li>Eğitim başlangıç ve bitiş tarihleri.</li>
+        </ul>
+        <p>Eğer öğrenci değilseniz ve PRO\'yu alacak gücünüz yoksa şunları yapmanız gerekiyor:</p>
+        <ul>
+        <li>FastHub ile ilgili sosyal medyada (örn: Medium) bir makale yazın;</li>
+        <li>Yazanın siz olduğunu kanıtlayın.</li>
+        </ul>
+    ]]></string>
+    <string name="faq">SSS</string>
+    <string name="comments_added_successfully">Yorumlar başarıyla eklendi</string>
+    <string name="clear_search_keywords">Arama Geçmişini Temizle</string>
+    <string name="restore_purchases">Satın Alımları Eski Haline Getir</string>
 </resources>

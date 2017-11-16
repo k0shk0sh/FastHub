@@ -7,14 +7,11 @@ import com.fastaccess.data.dao.model.User;
 
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Created by Kosh on 04 May 2017, 7:10 PM
  */
 
-@Getter @Setter public class ReviewCommentModel implements Parcelable {
+ public class ReviewCommentModel implements Parcelable {
 
     private long id;
     private String url;
@@ -33,8 +30,166 @@ import lombok.Setter;
     private String htmlUrl;
     private String pullRequestUrl;
     private ReactionsModel reactions;
+    private String authorAssociation;
 
     public ReviewCommentModel() {}
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public long getPullRequestReviewId() {
+        return pullRequestReviewId;
+    }
+
+    public void setPullRequestReviewId(long pullRequestReviewId) {
+        this.pullRequestReviewId = pullRequestReviewId;
+    }
+
+    public String getDiffHunk() {
+        return diffHunk;
+    }
+
+    public void setDiffHunk(String diffHunk) {
+        this.diffHunk = diffHunk;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getOriginalPosition() {
+        return originalPosition;
+    }
+
+    public void setOriginalPosition(int originalPosition) {
+        this.originalPosition = originalPosition;
+    }
+
+    public String getCommitId() {
+        return commitId;
+    }
+
+    public void setCommitId(String commitId) {
+        this.commitId = commitId;
+    }
+
+    public String getOriginalCommitId() {
+        return originalCommitId;
+    }
+
+    public void setOriginalCommitId(String originalCommitId) {
+        this.originalCommitId = originalCommitId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getBodyHtml() {
+        return bodyHtml;
+    }
+
+    public void setBodyHtml(String bodyHtml) {
+        this.bodyHtml = bodyHtml;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getHtmlUrl() {
+        return htmlUrl;
+    }
+
+    public void setHtmlUrl(String htmlUrl) {
+        this.htmlUrl = htmlUrl;
+    }
+
+    public String getPullRequestUrl() {
+        return pullRequestUrl;
+    }
+
+    public void setPullRequestUrl(String pullRequestUrl) {
+        this.pullRequestUrl = pullRequestUrl;
+    }
+
+    public ReactionsModel getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(ReactionsModel reactions) {
+        this.reactions = reactions;
+    }
+
+    public String getAuthorAssociation() {
+        return authorAssociation;
+    }
+
+    public void setAuthorAssociation(String authorAssociation) {
+        this.authorAssociation = authorAssociation;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReviewCommentModel that = (ReviewCommentModel) o;
+
+        return id == that.id;
+    }
+
+    @Override public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @Override public int describeContents() { return 0; }
 
@@ -56,6 +211,7 @@ import lombok.Setter;
         dest.writeString(this.htmlUrl);
         dest.writeString(this.pullRequestUrl);
         dest.writeParcelable(this.reactions, flags);
+        dest.writeString(this.authorAssociation);
     }
 
     protected ReviewCommentModel(Parcel in) {
@@ -78,6 +234,7 @@ import lombok.Setter;
         this.htmlUrl = in.readString();
         this.pullRequestUrl = in.readString();
         this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
+        this.authorAssociation = in.readString();
     }
 
     public static final Creator<ReviewCommentModel> CREATOR = new Creator<ReviewCommentModel>() {

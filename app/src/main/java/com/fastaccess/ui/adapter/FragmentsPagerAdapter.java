@@ -32,4 +32,22 @@ public class FragmentsPagerAdapter extends FragmentStatePagerAdapter {
     @Override public CharSequence getPageTitle(int position) {
         return fragments.get(position).getTitle();
     }
+
+    @Override public float getPageWidth(int position) {
+        return super.getPageWidth(position);
+    }
+
+    public void remove(FragmentPagerAdapterModel model) {
+        if (fragments != null) {
+            fragments.remove(model);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void remove(int position) {
+        if (fragments != null) {
+            fragments.remove(position);
+            notifyDataSetChanged();
+        }
+    }
 }

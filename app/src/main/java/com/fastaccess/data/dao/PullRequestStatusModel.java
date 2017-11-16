@@ -41,7 +41,7 @@ import lombok.Setter;
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
     }
 
-    protected PullRequestStatusModel(Parcel in) {
+    private PullRequestStatusModel(Parcel in) {
         int tmpState = in.readInt();
         this.state = tmpState == -1 ? null : StatusStateType.values()[tmpState];
         this.sha = in.readString();

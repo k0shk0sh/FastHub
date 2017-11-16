@@ -4,11 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -42,7 +41,7 @@ class TeamReposPresenter extends BasePresenter<TeamReposMvp.View> implements Tea
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Long parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Long parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -53,13 +52,14 @@ class TeamReposPresenter extends BasePresenter<TeamReposMvp.View> implements Tea
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(TeamReposMvp.View::hideProgress);
-            return;
+            return false;
         }
-        makeRestCall(RestProvider.getOrgService().getTeamRepos(parameter, page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getTeamRepos(parameter, page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Repo> getRepos() {
@@ -71,7 +71,7 @@ class TeamReposPresenter extends BasePresenter<TeamReposMvp.View> implements Tea
     }
 
     @Override public void onItemClick(int position, View v, Repo item) {
-        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+        SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
     @Override public void onItemLongClick(int position, View v, Repo item) {}

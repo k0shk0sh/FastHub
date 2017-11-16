@@ -16,12 +16,13 @@ import java.util.List;
  * Created by Kosh on 03 Dec 2016, 3:45 PM
  */
 
-interface OrgReposMvp {
+public interface OrgReposMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
         void onNotifyAdapter(@Nullable List<Repo> items, int page);
 
         @NonNull OnLoadMore<String> getLoadMore();
+        void onRepoFilterClicked();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -31,5 +32,7 @@ interface OrgReposMvp {
         @NonNull ArrayList<Repo> getRepos();
 
         void onWorkOffline(@NonNull String login);
+        void onFilterApply(String org);
+        void onTypeSelected(String selectedType);
     }
 }

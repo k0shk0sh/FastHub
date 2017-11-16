@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -57,16 +59,15 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(ProfileGistsMvp.View::hideProgress);
-            return;
+            return false;
         }
-        makeRestCall(RestProvider.getGistService().getUserGists(parameter, RestProvider.PAGE_SIZE, page),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).getUserGists(parameter, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
-                    if (getCurrentPage() == 1) {
-                        manageObservable(Gist.save(listResponse.getItems(), parameter));
-                    }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
+                    manageDisposable(Gist.save(Stream.of(listResponse.getItems()).toList(), parameter));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Gist> getGists() {
@@ -75,7 +76,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (gistsModels.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Gist.getMyGists(login).toObservable()).subscribe(gistsModels1 ->
+            manageDisposable(RxHelper.getObservable(Gist.getMyGists(login).toObservable()).subscribe(gistsModels1 ->
                     sendToView(view -> view.onNotifyAdapter(gistsModels1, 1))));
         } else {
             sendToView(ProfileGistsMvp.View::hideProgress);
@@ -83,7 +84,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
     }
 
     @Override public void onItemClick(int position, View v, Gist item) {
-        if (getView() != null) getView().onStartGistView(item.getGistId());
+        SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
     @Override public void onItemLongClick(int position, View v, Gist item) {}

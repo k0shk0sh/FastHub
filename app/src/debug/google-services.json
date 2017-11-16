@@ -11,7 +11,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:999999999999:android:0000000000000000",
         "android_client_info": {
-          "package_name": "com.fastaccess.github"
+          "package_name": "com.fastaccess.github.debug"
         }
       },
       "oauth_client": [
@@ -19,7 +19,7 @@
           "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fastaccess.github",
+            "package_name": "com.fastaccess.github.debug",
             "certificate_hash": "0000000000000000000000000000000000000000"
           }
         },
@@ -27,7 +27,7 @@
           "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fastaccess.github",
+            "package_name": "com.fastaccess.github.debug",
             "certificate_hash": "0000000000000000000000000000000000000000"
           }
         },

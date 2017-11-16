@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -16,8 +17,6 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseDialogFragment;
-import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
-import com.fastaccess.ui.modules.profile.banner.BannerInfoMvp;
 import com.fastaccess.ui.widgets.FontButton;
 
 import java.io.File;
@@ -39,18 +38,21 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
     @BindView(R.id.link) TextInputLayout link;
     @BindView(R.id.select) FontButton select;
 
-    public static EditorLinkImageDialogFragment newInstance(boolean isLink) {
+    public static EditorLinkImageDialogFragment newInstance(boolean isLink, @Nullable String link) {
         EditorLinkImageDialogFragment fragment = new EditorLinkImageDialogFragment();
         fragment.setArguments(Bundler
                 .start()
                 .put(BundleConstant.YES_NO_EXTRA, isLink)
+                .put(BundleConstant.ITEM, link)
                 .end());
         return fragment;
     }
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof EditorLinkImageMvp.EditorLinkCallback) {
+        if (getParentFragment() instanceof EditorLinkImageMvp.EditorLinkCallback) {
+            callback = (EditorLinkImageMvp.EditorLinkCallback) getParentFragment();
+        } else if (context instanceof EditorLinkImageMvp.EditorLinkCallback) {
             callback = (EditorLinkImageMvp.EditorLinkCallback) context;
         }
     }
@@ -63,7 +65,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
     @Override public void onUploaded(@Nullable String title, @Nullable String link) {
         hideProgress();
         if (callback != null) {
-            callback.onAppendLink(title, link, isLink());
+            callback.onAppendLink(title, link != null ? link.replace("http:", "https:") : null, isLink());
         }
         dismiss();
     }
@@ -74,6 +76,9 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         select.setVisibility(isLink() ? View.GONE : View.VISIBLE);
+        if (savedInstanceState == null) {
+            title.getEditText().setText(getArguments().getString(BundleConstant.ITEM));
+        }
     }
 
     @NonNull @Override public EditorLinkImagePresenter providePresenter() {
@@ -88,7 +93,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
                 if (!InputHelper.isEmpty(path)) {
                     getPresenter().onSubmit(InputHelper.toString(title), new File(path));
                 } else {
-                    Toasty.error(getContext(), getString(R.string.failed_selecting_image)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.failed_selecting_image)).show();
                 }
             }
         }

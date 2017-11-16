@@ -18,11 +18,24 @@
         android:textStyle="bold"
         tools:text="How jolly. You loot like a mast."/>
 
-    <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-        android:id="@+id/recycler"
-        android:scrollbars="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="@string/linear_layout_manager"
-        tools:listitem="@layout/simple_row_item"/>
+        android:layout_height="match_parent">
+
+
+        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="@string/linear_layout_manager"/>
+
+        <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+            android:id="@+id/fastScroller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/recycler"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/recycler"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
 </LinearLayout>

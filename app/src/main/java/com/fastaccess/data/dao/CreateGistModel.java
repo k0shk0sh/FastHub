@@ -19,23 +19,23 @@ import lombok.Setter;
 public class CreateGistModel implements Parcelable {
     private HashMap<String, FilesListModel> files;
     private String description;
-    @SerializedName("public") private boolean publicGist;
+    @SerializedName("public") private Boolean publicGist;
 
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(this.files);
         dest.writeString(this.description);
-        dest.writeByte(this.publicGist ? (byte) 1 : (byte) 0);
+        dest.writeValue(this.publicGist);
     }
 
-    @SuppressWarnings({"WeakerAccess", "unchecked"}) protected CreateGistModel(Parcel in) {
+    @SuppressWarnings("unchecked") private CreateGistModel(Parcel in) {
         this.files = (HashMap<String, FilesListModel>) in.readSerializable();
         this.description = in.readString();
-        this.publicGist = in.readByte() != 0;
+        this.publicGist = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<CreateGistModel> CREATOR = new Parcelable.Creator<CreateGistModel>() {
+    public static final Creator<CreateGistModel> CREATOR = new Creator<CreateGistModel>() {
         @Override public CreateGistModel createFromParcel(Parcel source) {return new CreateGistModel(source);}
 
         @Override public CreateGistModel[] newArray(int size) {return new CreateGistModel[size];}

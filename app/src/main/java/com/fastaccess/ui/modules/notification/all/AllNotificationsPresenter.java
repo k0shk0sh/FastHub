@@ -8,7 +8,6 @@ import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.data.dao.model.Repo;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -27,7 +26,7 @@ import io.reactivex.Observable;
  */
 
 public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp.View> implements AllNotificationsMvp.Presenter {
-    private ArrayList<GroupedNotificationModel> notifications = new ArrayList<>();
+    private final ArrayList<GroupedNotificationModel> notifications = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, GroupedNotificationModel model) {
         if (getView() == null) return;
@@ -39,7 +38,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 }
             } else if (v.getId() == R.id.unsubsribe) {
                 item.setUnread(false);
-                manageObservable(item.save(item).toObservable());
+                manageDisposable(item.save(item));
                 sendToView(view -> view.onUpdateReadState(new GroupedNotificationModel(item), position));
                 ReadNotificationService.unSubscribe(v.getContext(), item.getId());
             } else {
@@ -63,7 +62,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 
     private void markAsRead(int position, View v, Notification item) {
         item.setUnread(false);
-        manageObservable(item.save(item).toObservable());
+        manageDisposable(item.save(item));
         sendToView(view -> view.onUpdateReadState(new GroupedNotificationModel(item), position));
         ReadNotificationService.start(v.getContext(), item.getId());
     }
@@ -77,7 +76,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Notification.getAlltNotifications().toObservable())
+            manageDisposable(RxHelper.getObservable(Notification.getAllNotifications().toObservable())
                     .flatMap(notifications -> Observable.just(GroupedNotificationModel.construct(notifications)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models))));
         } else {
@@ -104,41 +103,39 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 //                            return notification;
 //                        })
 //                .toList();
-        Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService().getAllNotifications()
-                .flatMap(response -> {
-                    if (response.getItems() != null) {
-                        return Observable.zip(Notification.save(response.getItems()), Observable.just(GroupedNotificationModel.construct
-                                (response.getItems())), (notification, groupedNotificationModels) -> groupedNotificationModels);
-                    } else {
+        Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService(PrefGetter.isEnterprise())
+                .getAllNotifications().flatMap(response -> {
+                    manageDisposable(Notification.save(response.getItems()));
+                    if (response.getItems() != null && !response.getItems().isEmpty()) {
                         return Observable.just(GroupedNotificationModel.construct(response.getItems()));
                     }
+                    return Observable.empty();
                 });
-        makeRestCall(observable, response -> sendToView(view -> view.onNotifyAdapter(response)));
+        makeRestCall(observable.doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)), response -> sendToView(view -> view.onNotifyAdapter
+                (response)));
     }
 
     @Override public void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data) {
-        manageDisposable(RxHelper.getObserver(Observable.fromIterable(data))
+        manageDisposable(RxHelper.getObservable(Observable.fromIterable(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .map(GroupedNotificationModel::getNotification)
                 .subscribe(notification -> {
-                    Logger.e(notification.getUrl());
                     notification.setUnread(false);
-                    manageObservable(notification.save(notification).toObservable());
+                    manageDisposable(notification.save(notification));
                     sendToView(view -> view.onReadNotification(notification));
                 }, this::onError));
     }
 
     @Override public void onMarkReadByRepo(@NonNull List<GroupedNotificationModel> data, @NonNull Repo repo) {
-        manageDisposable(RxHelper.getObserver(Observable.fromIterable(data))
+        manageDisposable(RxHelper.getObservable(Observable.fromIterable(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .filter(group -> group.getNotification().getRepository().getFullName().equalsIgnoreCase(repo.getFullName()))
                 .map(GroupedNotificationModel::getNotification)
                 .subscribe(notification -> {
-                    Logger.e(notification.getUrl());
                     notification.setUnread(false);
-                    manageObservable(notification.save(notification).toObservable());
+                    manageDisposable(notification.save(notification));
                     sendToView(view -> view.onReadNotification(notification));
                 }, this::onError));
     }

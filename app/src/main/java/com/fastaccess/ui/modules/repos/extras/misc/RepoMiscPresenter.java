@@ -28,9 +28,9 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State String owner;
-    @icepick.State String repo;
-    @icepick.State @RepoMiscMVp.MiscType int type;
+    @com.evernote.android.state.State String owner;
+    @com.evernote.android.state.State String repo;
+    @com.evernote.android.state.State @RepoMiscMVp.MiscType int type;
 
     RepoMiscPresenter(@Nullable Bundle arguments) {
         if (arguments == null) return;
@@ -66,7 +66,7 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @RepoMiscMVp.MiscType @Nullable Integer parameter) {
+    @Override public boolean onCallApi(int page, @RepoMiscMVp.MiscType @Nullable Integer parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -74,17 +74,17 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoMiscMVp.View::hideProgress);
-            return;
+            return false;
         }
         switch (type) {
             case RepoMiscMVp.WATCHERS:
-                makeRestCall(RestProvider.getRepoService().getWatchers(owner, repo, page), response -> onResponse(page, response));
-                break;
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).getWatchers(owner, repo, page), response -> onResponse(page, response));
+                return true;
             case RepoMiscMVp.STARS:
-                makeRestCall(RestProvider.getRepoService().getStargazers(owner, repo, page), response -> onResponse(page, response));
-                break;
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).getStargazers(owner, repo, page), response -> onResponse(page, response));
+                return true;
             case RepoMiscMVp.FORKS:
-                makeRestCall(RestProvider.getRepoService().getForks(owner, repo, page)
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).getForks(owner, repo, page)
                         .flatMap(repoPageable -> {
                             lastPage = repoPageable.getLast();
                             return Observable.fromIterable(repoPageable.getItems())
@@ -92,8 +92,9 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
                                     .toList()
                                     .toObservable();
                         }), owners -> sendToView(view -> view.onNotifyAdapter(owners, page)));
-                break;
+                return true;
         }
+        return false;
     }
 
     private void onResponse(int page, @Nullable Pageable<User> response) {

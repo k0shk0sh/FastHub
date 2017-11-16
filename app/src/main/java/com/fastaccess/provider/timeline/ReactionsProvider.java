@@ -41,7 +41,7 @@ public class ReactionsProvider {
     private Map<Long, ReactionsModel> reactionsMap = new LinkedHashMap<>();
 
     @Nullable public Observable onHandleReaction(@IdRes int viewId, long idOrNumber, @Nullable String login,
-                                                 @Nullable String repoId, @ReactionType int reactionType) {
+                                                 @Nullable String repoId, @ReactionType int reactionType, boolean isEnterprise) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             if (!isPreviouslyReacted(idOrNumber, viewId)) {
                 ReactionTypes reactionTypes = ReactionTypes.get(viewId);
@@ -49,19 +49,19 @@ public class ReactionsProvider {
                     Observable<ReactionsModel> observable = null;
                     switch (reactionType) {
                         case COMMENT:
-                            observable = RestProvider.getReactionsService()
+                            observable = RestProvider.getReactionsService(isEnterprise)
                                     .postIssueCommentReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
                             break;
                         case HEADER:
-                            observable = RestProvider.getReactionsService()
+                            observable = RestProvider.getReactionsService(isEnterprise)
                                     .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
                             break;
                         case REVIEW_COMMENT:
-                            observable = RestProvider.getReactionsService()
+                            observable = RestProvider.getReactionsService(isEnterprise)
                                     .postCommentReviewReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
                             break;
                         case COMMIT:
-                            observable = RestProvider.getReactionsService()
+                            observable = RestProvider.getReactionsService(isEnterprise)
                                     .postCommitReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
                             break;
                     }
@@ -72,7 +72,7 @@ public class ReactionsProvider {
             } else {
                 ReactionsModel reactionsModel = getReactionsMap().get(idOrNumber);
                 if (reactionsModel != null) {
-                    return RxHelper.safeObservable(RestProvider.getReactionsService().delete(reactionsModel.getId()))
+                    return RxHelper.safeObservable(RestProvider.getReactionsService(isEnterprise).delete(reactionsModel.getId()))
                             .doOnNext(booleanResponse -> {
                                 if (booleanResponse.code() == 204) {
                                     getReactionsMap().remove(idOrNumber);

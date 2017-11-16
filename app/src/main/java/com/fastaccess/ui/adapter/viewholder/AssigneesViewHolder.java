@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.AssigneesAdapter;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -50,12 +51,12 @@ public class AssigneesViewHolder extends BaseViewHolder<User> {
     }
 
     @Override public void bind(@NonNull User user) {
-        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType());
+        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType(), LinkParserHelper.isEnterprise(user.getHtmlUrl()));
         title.setText(user.getLogin());
         date.setVisibility(View.GONE);
         if (onSelectAssignee != null) {
             itemView.setBackgroundColor(onSelectAssignee.isAssigneeSelected(getAdapterPosition())
-                                        ? lightGray : ViewHelper.getWindowBackground(itemView.getContext()));
+                    ? lightGray : ViewHelper.getWindowBackground(itemView.getContext()));
         }
     }
 }

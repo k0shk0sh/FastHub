@@ -7,12 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.fastaccess.R;
 import com.fastaccess.ui.widgets.contributions.utils.ColorsUtils;
@@ -26,16 +26,6 @@ import java.util.List;
  */
 
 public class GitHubContributionsView extends View {
-
-    private static final String INSTANCE_STATE = "saved_instance";
-    private static final String INSTANCE_BASE_COLOR = "saved_base_color";
-    private static final String INSTANCE_BASE_EMPTY_COLOR = "saved_base_empty_color";
-    private static final String INSTANCE_BACKGROUND_BASE_COLOR = "saved_bg_base_color";
-    private static final String INSTANCE_TEXT_COLOR = "saved_text_color";
-    private static final String INSTANCE_DISPLAY_MONTH = "saved_display_month";
-    private static final String INSTANCE_LAST_WEEKS = "saved_last_weeks";
-    private static final String INSTANCE_USERNAME = "saved_username";
-
     private static final String BASE_COLOR = "#D6E685"; // default of Github
 
     private int baseColor = Color.parseColor(BASE_COLOR);
@@ -45,14 +35,14 @@ public class GitHubContributionsView extends View {
     private boolean displayMonth = false;
     private int lastWeeks = 53;
     private String username;
-
-    private List<ContributionsDay> contributions;
-    private List<ContributionsDay> contributionsFilter;
     private Rect rect;
     private Paint monthTextPaint;
     private Matrix matrix = new Matrix();
     private Paint paint = new Paint();
     private Paint blockPaint;
+    private Bitmap bitmap = null;
+    private int height;
+    private Point point = new Point();
 
     public GitHubContributionsView(Context context) {
         super(context);
@@ -75,7 +65,7 @@ public class GitHubContributionsView extends View {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-
+        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(point);
         final TypedArray attributes = context.getTheme().obtainStyledAttributes(
                 attrs, R.styleable.GitHubContributionsView, defStyleAttr, defStyleRes);
         initAttributes(attributes);
@@ -86,7 +76,7 @@ public class GitHubContributionsView extends View {
         blockPaint.setStyle(Paint.Style.FILL);
     }
 
-    protected void initAttributes(TypedArray attributes) {
+    private void initAttributes(TypedArray attributes) {
         baseColor = attributes.getColor(R.styleable.GitHubContributionsView_baseColor, baseColor);
         baseEmptyColor = attributes.getColor(R.styleable.GitHubContributionsView_baseEmptyColor, baseEmptyColor);
         backgroundBaseColor = attributes.getColor(R.styleable.GitHubContributionsView_backgroundBaseColor, backgroundBaseColor);
@@ -246,7 +236,7 @@ public class GitHubContributionsView extends View {
      * @param username
      *         also, can be an organization
      */
-    public void loadUserName(String username) {
+    private void loadUserName(String username) {
         this.username = username;
         clearContribution();
     }
@@ -254,100 +244,72 @@ public class GitHubContributionsView extends View {
     /**
      * Clean de component.
      */
-    public void clearContribution() {
-        this.contributions = null;
+    private void clearContribution() {
+        bitmap = null;
         invalidate();
     }
 
-    public void onResponse(List<ContributionsDay> contributionsDay) {
-        this.contributions = contributionsDay;
-        contributionsFilter = getLastContributions(contributions, lastWeeks);
+    public void onResponse() {
+        adjustHeight(height);
         invalidate();
-    }
-
-    @Override protected Parcelable onSaveInstanceState() {
-        final Bundle bundle = new Bundle();
-        bundle.putParcelable(INSTANCE_STATE, super.onSaveInstanceState());
-        bundle.putInt(INSTANCE_BASE_COLOR, baseColor);
-        bundle.putInt(INSTANCE_BASE_EMPTY_COLOR, baseEmptyColor);
-        bundle.putInt(INSTANCE_BACKGROUND_BASE_COLOR, backgroundBaseColor);
-        bundle.putInt(INSTANCE_TEXT_COLOR, textColor);
-        bundle.putBoolean(INSTANCE_DISPLAY_MONTH, displayMonth);
-        bundle.putInt(INSTANCE_LAST_WEEKS, lastWeeks);
-        bundle.putString(INSTANCE_USERNAME, username);
-        return bundle;
-    }
-
-    @Override protected void onRestoreInstanceState(Parcelable state) {
-        if (state instanceof Bundle) {
-            final Bundle bundle = (Bundle) state;
-            baseColor = bundle.getInt(INSTANCE_BASE_COLOR);
-            backgroundBaseColor = bundle.getInt(INSTANCE_BACKGROUND_BASE_COLOR);
-            textColor = bundle.getInt(INSTANCE_TEXT_COLOR);
-            displayMonth = bundle.getBoolean(INSTANCE_DISPLAY_MONTH);
-            lastWeeks = bundle.getInt(INSTANCE_LAST_WEEKS);
-            username = bundle.getString(INSTANCE_USERNAME);
-            super.onRestoreInstanceState(bundle.getParcelable(INSTANCE_STATE));
-            return;
-        }
-        super.onRestoreInstanceState(state);
     }
 
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (contributions != null) {
-            canvas.drawBitmap(drawOnCanvas(canvas), matrix, paint);
+        if (bitmap != null) {
+            canvas.drawBitmap(bitmap, matrix, paint);
         } else {
             drawPlaceholder(canvas);
         }
     }
 
-    private Bitmap drawOnCanvas(Canvas canvas) {
-        canvas.getClipBounds(rect);
-        int width = rect.width();
-        int verticalBlockNumber = 7;
-        int horizontalBlockNumber = getHorizontalBlockNumber(contributionsFilter.size(), verticalBlockNumber);
-        float marginBlock = (1.0F - 0.1F);
-        float blockWidth = width / (float) horizontalBlockNumber * marginBlock;
-        float spaceWidth = width / (float) horizontalBlockNumber - blockWidth;
-        float topMargin = (displayMonth) ? 7f : 0;
-        float monthTextHeight = (displayMonth) ? blockWidth * 1.5F : 0;
-        int height = (int) ((blockWidth + spaceWidth) * 7 + topMargin + monthTextHeight);
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas1 = new Canvas(bitmap);
-        // Background
-        blockPaint.setColor(backgroundBaseColor);
-        canvas1.drawRect(0, (topMargin + monthTextHeight), width, height + monthTextHeight, blockPaint);
-        monthTextPaint.setColor(textColor);
-        monthTextPaint.setTextSize(monthTextHeight);
-        // draw the blocks
-        int currentWeekDay = DatesUtils.getWeekDayFromDate(
-                contributions.get(0).year,
-                contributions.get(0).month,
-                contributions.get(0).day);
-        float x = 0;
-        float y = (currentWeekDay - 7) % 7 * (blockWidth + spaceWidth) + (topMargin + monthTextHeight);
-        for (ContributionsDay day : contributionsFilter) {
-            blockPaint.setColor(ColorsUtils.calculateLevelColor(baseColor, baseEmptyColor, day.level));
-            canvas1.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
-
-            if (DatesUtils.isFirstDayOfWeek(day.year, day.month, day.day + 1)) {
-                // another column
-                x += blockWidth + spaceWidth;
-                y = topMargin + monthTextHeight;
-
-                if (DatesUtils.isFirstWeekOfMount(day.year, day.month, day.day + 1)) {
-                    canvas1.drawText(
-                            DatesUtils.getShortMonthName(day.year, day.month, day.day + 1),
-                            x, monthTextHeight, monthTextPaint);
-                }
-
-            } else {
-                y += blockWidth + spaceWidth;
-            }
+    public Bitmap drawOnCanvas(List<ContributionsDay> contributionsFilter, List<ContributionsDay> contributions) {
+        if ((contributionsFilter == null || contributions == null) || (contributionsFilter.isEmpty() || contributions.isEmpty())) {
+            return null;
         }
+        if (bitmap == null) {
+            int padding = getResources().getDimensionPixelSize(R.dimen.spacing_large);
+            int width = point.x - padding;
+            int verticalBlockNumber = 7;
+            int horizontalBlockNumber = getHorizontalBlockNumber(contributionsFilter.size(), verticalBlockNumber);
+            float marginBlock = (1.0F - 0.1F);
+            float blockWidth = width / (float) horizontalBlockNumber * marginBlock;
+            float spaceWidth = width / (float) horizontalBlockNumber - blockWidth;
+            float topMargin = (displayMonth) ? 7f : 0;
+            float monthTextHeight = (displayMonth) ? blockWidth * 1.5F : 0;
+            int height = (int) ((blockWidth + spaceWidth) * 7 + topMargin + monthTextHeight);
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas1 = new Canvas(bitmap);
+            // Background
+            blockPaint.setColor(backgroundBaseColor);
+            canvas1.drawRect(0, (topMargin + monthTextHeight), width, height + monthTextHeight, blockPaint);
+            monthTextPaint.setColor(textColor);
+            monthTextPaint.setTextSize(monthTextHeight);
+            // draw the blocks
+            int currentWeekDay = DatesUtils.getWeekDayFromDate(
+                    contributions.get(0).year,
+                    contributions.get(0).month,
+                    contributions.get(0).day);
+            float x = 0;
+            float y = (currentWeekDay - 7) % 7 * (blockWidth + spaceWidth) + (topMargin + monthTextHeight);
+            for (ContributionsDay day : contributionsFilter) {
+                blockPaint.setColor(ColorsUtils.calculateLevelColor(baseColor, baseEmptyColor, day.level));
+                canvas1.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
+                if (DatesUtils.isFirstDayOfWeek(day.year, day.month, day.day + 1)) {
+                    // another column
+                    x += blockWidth + spaceWidth;
+                    y = topMargin + monthTextHeight;
+                    if (DatesUtils.isFirstWeekOfMount(day.year, day.month, day.day + 1)) {
+                        canvas1.drawText(DatesUtils.getShortMonthName(day.year, day.month, day.day + 1), x, monthTextHeight,
+                                monthTextPaint);
+                    }
 
-        adjustHeight(height);
+                } else {
+                    y += blockWidth + spaceWidth;
+                }
+            }
+            this.height = height;
+        }
         return bitmap;
     }
 
@@ -360,6 +322,7 @@ public class GitHubContributionsView extends View {
     }
 
     private void drawPlaceholder(Canvas canvas) {
+        if (!isInEditMode()) return;
         canvas.getClipBounds(rect);
         int width = rect.width();
 
@@ -408,15 +371,13 @@ public class GitHubContributionsView extends View {
         setLayoutParams(ll);
     }
 
-    // Static helpers
-    private static int getHorizontalBlockNumber(int total, int divider) {
+    private int getHorizontalBlockNumber(int total, int divider) {
         boolean isInteger = total % divider == 0;
         int result = total / divider;
         return (isInteger) ? result : result + 1;
     }
 
-    private static List<ContributionsDay> getLastContributions(List<ContributionsDay> contributions,
-                                                               int lastWeeks) {
+    public List<ContributionsDay> getLastContributions(List<ContributionsDay> contributions) {
         int lastWeekDays = contributions.size() % 7;
         int lastDays = (lastWeekDays > 0) ? lastWeekDays + (lastWeeks - 1) * 7 : lastWeeks * 7;
         return contributions.subList(contributions.size() - lastDays, contributions.size());

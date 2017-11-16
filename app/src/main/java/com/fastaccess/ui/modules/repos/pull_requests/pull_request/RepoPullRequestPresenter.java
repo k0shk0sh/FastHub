@@ -24,9 +24,9 @@ import java.util.ArrayList;
 
 class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> implements RepoPullRequestMvp.Presenter {
 
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State IssueState issueState;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State IssueState issueState;
     private ArrayList<PullRequest> pullRequests = new ArrayList<>();
     private int page;
     private int previousTotal;
@@ -53,10 +53,10 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable IssueState parameter) {
+    @Override public boolean onCallApi(int page, @Nullable IssueState parameter) {
         if (parameter == null) {
             sendToView(RepoPullRequestMvp.View::hideProgress);
-            return;
+            return false;
         }
         this.issueState = parameter;
         if (page == 1) {
@@ -67,16 +67,17 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoPullRequestMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequests(login, repoId, parameter.name(), page), response -> {
+        if (repoId == null || login == null) return false;
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequests(login, repoId, parameter.name(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageObservable(PullRequest.save(response.getItems(), login, repoId));
+                manageDisposable(PullRequest.save(response.getItems(), login, repoId));
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
@@ -89,7 +90,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService()
+        manageDisposable(RxHelper.getObservable(RestProvider.getPullRequestService(isEnterprise())
                 .getPullsWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, true), 0))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));
@@ -123,6 +124,6 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     }
 
     @Override public void onItemLongClick(int position, View v, PullRequest item) {
-        if(getView()!=null)getView().onShowPullRequestPopup(item);
+        if (getView() != null) getView().onShowPullRequestPopup(item);
     }
 }

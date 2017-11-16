@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.RepoFile;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -30,7 +29,6 @@ public class RepoFilePathsViewHolder extends BaseViewHolder<RepoFile> {
     }
 
     @Override public void bind(@NonNull RepoFile filesModel) {
-        Logger.e(filesModel.getPath());
         pathName.setText(filesModel.getName());
     }
 }

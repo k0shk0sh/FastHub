@@ -37,20 +37,17 @@ class SearchCodePresenter extends BasePresenter<SearchCodeMvp.View> implements S
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         setCurrentPage(page);
-        if (page > lastPage || lastPage == 0) {
+        if (page > lastPage || lastPage == 0 || parameter == null) {
             sendToView(SearchCodeMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (parameter == null) {
-            return;
-        }
-        makeRestCall(RestProvider.getSearchService().searchCode(parameter, page),
+        makeRestCall(RestProvider.getSearchService(isEnterprise()).searchCode(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> {
@@ -58,6 +55,7 @@ class SearchCodePresenter extends BasePresenter<SearchCodeMvp.View> implements S
                         view.onSetTabCount(response.getTotalCount());
                     });
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<SearchCodeModel> getCodes() {

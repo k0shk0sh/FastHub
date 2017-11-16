@@ -71,7 +71,7 @@ public class IssueRequestModel implements Parcelable {
         dest.writeStringList(this.labels);
     }
 
-    protected IssueRequestModel(Parcel in) {
+    private IssueRequestModel(Parcel in) {
         int tmpState = in.readInt();
         this.state = tmpState == -1 ? null : IssueState.values()[tmpState];
         this.title = in.readString();

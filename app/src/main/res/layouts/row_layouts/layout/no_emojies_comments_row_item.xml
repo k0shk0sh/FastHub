@@ -46,7 +46,7 @@
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Small"
+                style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -61,6 +61,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/spacing_micro"
                 android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/options"
                 android:padding="@dimen/spacing_normal"
                 android:src="@drawable/ic_overflow"/>
         </LinearLayout>
@@ -69,10 +70,10 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_micro"
             android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:textIsSelectable="true"/>
 
     </LinearLayout>

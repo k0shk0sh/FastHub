@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:background="?android:windowBackground"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?android:windowBackground">
+
+        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:layoutManager="@string/grid_layout_manager"
+            app:spanCount="5"/>
+
+        <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+            android:id="@+id/fastScroller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/recycler"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/recycler"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="?android:toolbarStyle">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:theme="?android:toolbarStyle"
+            app:contentInsetStart="0dp">
+
+            <com.fastaccess.ui.widgets.FontEditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:hint="@string/search"
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:paddingStart="@dimen/spacing_xs_large"
+                android:singleLine="true"/>
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+</LinearLayout>

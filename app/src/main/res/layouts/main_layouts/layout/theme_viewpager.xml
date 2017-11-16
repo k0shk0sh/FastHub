@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/parentLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.fastaccess.ui.widgets.ViewPagerView
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/transparent"/>
+
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/premium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:gravity="center"
+        android:padding="@dimen/spacing_xs_large"
+        android:text="@string/fasthub_premium_features"
+        android:textColor="?colorAccent"
+        app:drawableColor="?colorAccent"/>
+</LinearLayout>

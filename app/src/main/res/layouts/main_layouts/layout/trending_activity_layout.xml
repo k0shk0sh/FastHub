@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <include layout="@layout/appbar_elevation_dark"/>
+
+            <fragment
+                android:id="@+id/trendingFragment"
+                android:name="com.fastaccess.ui.modules.trending.fragment.TrendingFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/scroll_behavior"
+                tools:layout="@layout/micro_grid_refresh_list"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <include layout="@layout/add_banner_layout"/>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="true"
+        app:itemIconTint="?android:textColorSecondary"
+        app:itemTextColor="?android:textColorPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_large">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/daily"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/daily"
+                    android:textColor="@color/search_tab_highlighter"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/weekly"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/weekly"
+                    android:textColor="@color/search_tab_highlighter"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/monthly"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/monthly"
+                    android:textColor="@color/search_tab_highlighter"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="?dividerColor"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.FontEditText
+                    android:id="@+id/searchEditText"
+                    style="@style/Base.TextAppearance.AppCompat.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:completionThreshold="1"
+                    android:dropDownAnchor="@id/tabs"
+                    android:hint="@string/search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_normal"
+                    android:textColorHint="?android:textColorSecondary"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_xs_large"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/clear"
+                    android:padding="@dimen/spacing_micro"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_clear"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="?dividerColor"/>
+
+            <android.support.design.widget.NavigationView
+                android:id="@+id/navMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:fitsSystemWindows="true"
+                app:itemBackground="@color/transparent"
+                app:itemIconTint="@color/search_tab_highlighter"
+                app:itemTextColor="@color/search_tab_highlighter"
+                app:menu="@menu/dynamic_trending_menu"/>
+        </LinearLayout>
+
+    </android.support.design.widget.NavigationView>
+
+    <include layout="@layout/nav_menu_layout"/>
+
+</android.support.v4.widget.DrawerLayout>

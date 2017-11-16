@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:showIn="@layout/trending_activity_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?actionBarSize"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/spacing_large">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/daily"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/daily"
+            android:textColor="@color/search_tab_highlighter"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/weekly"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/weekly"
+            android:textColor="@color/search_tab_highlighter"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/monthly"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/monthly"
+            android:textColor="@color/search_tab_highlighter"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="?dividerColor"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/languageList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="@string/linear_layout_manager"/>
+
+        <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+            android:id="@+id/fastScroller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/recycler"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/recycler"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+</LinearLayout>

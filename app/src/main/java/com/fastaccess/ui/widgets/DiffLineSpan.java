@@ -20,11 +20,13 @@ import android.text.style.TypefaceSpan;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
+
+import java.util.regex.Pattern;
 
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
     private final int color;
+    public static Pattern HUNK_TITLE = Pattern.compile("^.*-([0-9]+)(?:,([0-9]+))? \\+([0-9]+)(?:,([0-9]+))?.*$");
 
     private DiffLineSpan(int color) {
         this.color = color;
@@ -62,30 +64,30 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
     @NonNull public static SpannableStringBuilder getSpannable(@Nullable String text, @ColorInt int patchAdditionColor,
                                                                @ColorInt int patchDeletionColor, @ColorInt int patchRefColor,
                                                                boolean truncate) {
-        boolean noNewlineRemoved = false;
         SpannableStringBuilder builder = new SpannableStringBuilder();
         if (!InputHelper.isEmpty(text)) {
             String[] split = text.split("\\r?\\n|\\r");
             if (split.length > 0) {
                 int lines = split.length;
+                int index = -1;
                 for (int i = 0; i < lines; i++) {
-                    Logger.e(lines, i, lines + i, lines - i);
-                    if (truncate && (lines - i) > 3) continue;
+                    if (truncate && (lines - i) > 2) continue;
                     String token = split[i];
                     if (i < (lines - 1)) {
                         token = token.concat("\n");
                     }
                     char firstChar = token.charAt(0);
                     int color = Color.TRANSPARENT;
-                    if (firstChar == '+') {
+                    if (token.startsWith("@@")) {
+                        color = patchRefColor;
+                    } else if (firstChar == '+') {
                         color = patchAdditionColor;
                     } else if (firstChar == '-') {
                         color = patchDeletionColor;
-                    } else if (token.startsWith("@@")) {
-                        color = patchRefColor;
-                    } else if (firstChar == '\\') {
+                    }
+                    index = token.indexOf("\\ No newline at end of file");
+                    if (index != -1) {
                         token = token.replace("\\ No newline at end of file", "");
-                        noNewlineRemoved = true;
                     }
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
@@ -94,11 +96,11 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     }
                     builder.append(spannableDiff);
                 }
+                if (index != -1) {
+                    builder.insert(builder.length() - 1,
+                            SpannableBuilder.builder().append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
+                }
             }
-        }
-        if (noNewlineRemoved) {
-            builder.insert(builder.length() - 1, SpannableBuilder.builder()
-                    .append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
         }
         builder.setSpan(new TypefaceSpan("monospace"), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;

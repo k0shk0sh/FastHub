@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.fastaccess.ui.widgets.AppbarRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/fab_spacing"
+                app:layoutManager="@string/staggered_layout_manager"
+                app:spanCount="@integer/micro_spans"/>
+
+        </com.fastaccess.ui.widgets.AppbarRefreshLayout>
+
+        <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+            android:id="@+id/fastScroller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/refresh"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/refresh"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+    </RelativeLayout>
+
+
+    <include layout="@layout/state_layout"/>
+</FrameLayout>

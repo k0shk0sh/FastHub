@@ -1,134 +1,98 @@
-.prettyprint {
-  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
-  border: 0 !important;
-}
+/*
 
-.pln {
-  color: #333;
-}
+Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 
-ol.linenums {
-  margin-top: 0;
-  margin-bottom: 0;
-  color: #727272;
-}
+*/
 
-ol {
-    margin-left: 0;
-    padding-left: 0.2em;
-    counter-reset: ol-item
-}
-
-ol li:nth-child(-n+9) {
-	padding-left: 8px;
-}
-
-ol li {
-    margin-left: 0;
-    padding-left: 0;
-    list-style-type: none;
-    counter-increment: ol-item
-}
-
-ol li:before {
-    content: counter(ol-item) " "
-}
-
-
-li.L0,
-li.L1,
-li.L2,
-li.L3,
-li.L4,
-li.L5,
-li.L6,
-li.L7,
-li.L8,
-li.L9 {}
-
-@media screen {
-
-  /* string content */
-
-  .str {
-    color: #183691;
-  }
-
-  /* keyword */
-
-  .kwd {
-    color: #a71d5d;
-  }
-
-  /* comment */
-
-  .com {
-    color: #969896;
-  }
-
-  /* type name */
-
-  .typ {
-    color: #0086b3;
-  }
-
-  /* literal value */
-
-  .lit {
-    color: #0086b3;
-  }
-
-  /* punctuation */
-
-  .pun {
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0px;
     color: #333;
-  }
+}
 
-  /* lisp open bracket */
+.hljs-comment,
+.hljs-quote {
+    color: #998;
+    font-style: italic;
+}
 
-  .opn {
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
     color: #333;
-  }
+    font-weight: bold;
+}
 
-  /* lisp close bracket */
-
-  .clo {
-    color: #333;
-  }
-
-  /* markup tag name */
-
-  .tag {
-    color: #000080;
-  }
-
-  /* markup attribute name */
-
-  .atn {
-    color: #795da3;
-  }
-
-  /* markup attribute value */
-
-  .atv {
-    color: #183691;
-  }
-
-  /* declaration */
-
-  .dec {
-    color: #333;
-  }
-
-  /* variable name */
-
-  .var {
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
     color: #008080;
-  }
+}
 
-  /* function name */
+.hljs-string,
+.hljs-doctag {
+    color: #d14;
+}
 
-  .fun {
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
     color: #900;
-  }
+    font-weight: bold;
+}
+
+.hljs-subst {
+    font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+    color: #458;
+    font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+    color: #000080;
+    font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+    color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+    color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+    color: #0086b3;
+}
+
+.hljs-meta {
+    color: #999;
+    font-weight: bold;
+}
+
+.hljs-deletion {
+    background: #fdd;
+}
+
+.hljs-addition {
+    background: #dfd;
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
 }

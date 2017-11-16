@@ -43,24 +43,22 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(GistsMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getGistService().getPublicGists(RestProvider.PAGE_SIZE, page),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).getPublicGists(RestProvider.PAGE_SIZE, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
-                    if (getCurrentPage() == 1) {
-                        manageObservable(Gist.save(listResponse.getItems()));
-                    }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Gist> getGists() {
@@ -69,7 +67,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
 
     @Override public void onWorkOffline() {
         if (gistsModels.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Gist.getGists().toObservable())
+            manageDisposable(RxHelper.getObservable(Gist.getGists().toObservable())
                     .subscribe(gists -> sendToView(view -> view.onNotifyAdapter(gists, 1))));
         } else {
             sendToView(GistsMvp.View::hideProgress);
@@ -77,7 +75,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
     }
 
     @Override public void onItemClick(int position, View v, Gist item) {
-        v.getContext().startActivity(GistActivity.createIntent(v.getContext(), item.getGistId()));
+        v.getContext().startActivity(GistActivity.createIntent(v.getContext(), item.getGistId(), isEnterprise()));
     }
 
     @Override public void onItemLongClick(int position, View v, Gist item) {}

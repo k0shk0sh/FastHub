@@ -1,21 +1,25 @@
+# How to submit Issue/Feature Request to *FastHub*
+
+- Make sure the included template is filled ( using FastHub will fill them up automatically ). 
+- If you planning to report multiple FRs/Issues that falls under the same feature __PLEASE REPORT THEM IN ONE TICKET__.
+- Make sure you are always on latest (FastHub/About & Click on version name).
+- Make sure the issue doesn't exists, lets keep things clean & tidy here :).  
+
+
 # How to contribute & build *FastHub*
 
-If you have a question in mind, feel free to come our public [Slack](https://rebrand.ly/fasthub) channel.
+If you have a question in mind, feel free to come our public [Slack](http://rebrand.ly/fasthub) channel.
 
-### Registering GitHub Account
+### Optional
 
-Before you clone the project, Please read the guide below to be able to login from FastHub.
-
-[GitHub Guide](https://auth0.com/docs/connections/social/github)
-
-- Please update debug_gradle.properties file and change below:
+- Please update debug_gradle.properties file and change below if you like to use your own keys otherwise keep them as they're debug keys:
     - github_client_id= your  github clientId
     - github_secret= your github secret
     - redirect_url= (redirect_url must match the url defined in `AndroidManifest` under `LoginView`)
 
 ### Before you import the project to Android Studio:
 
-- Make sure you have Android Studio 2.3 & above.
+- Make sure you have Android Studio 3.0 C4 & above.
 - Import Android Studio Settings (to ensure same code formatting) from this link [Click here](https://raw.githubusercontent.com/k0shk0sh/FastHub/master/fasthub_as_settings.jar)
 - Install Lombok Plugin from Android Studio Plugins & enable Annotations Processors from (Android Studio Preference).
 

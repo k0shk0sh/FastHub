@@ -20,21 +20,22 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.Repo.FULL_NAME;
 import static com.fastaccess.data.dao.model.Repo.ID;
 import static com.fastaccess.data.dao.model.Repo.REPOS_OWNER;
 import static com.fastaccess.data.dao.model.Repo.STARRED_USER;
+import static com.fastaccess.data.dao.model.Repo.STATUSES_URL;
 import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
 
 /**
@@ -119,9 +120,14 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     int networkCount;
     String starredUser;
     String reposOwner;
+    @Nullable boolean hasProjects;
 
-    public Single<Repo> save(@NonNull Repo entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
+    public Disposable save(Repo entity) {
+        return Single.create(e -> {
+            BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+            dataSource.delete(Repo.class).where(Repo.ID.eq(entity.getId())).get().value();
+            dataSource.insert(entity);
+        }).subscribe(o -> {/**/}, Throwable::printStackTrace);
     }
 
     public static Maybe<Repo> getRepo(@NonNull String name, @NonNull String login) {
@@ -140,32 +146,70 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
                 .firstOrNull();
     }
 
-    public static Observable<Repo> saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
-                .where(STARRED_USER.eq(starredUser))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(repo -> {
-                    repo.setStarredUser(starredUser);
-                    return repo.save(repo).toObservable();
-                }));
+    public static Disposable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                Login login = Login.getUser();
+                if (login != null) {
+                    BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                    if (login.getLogin().equalsIgnoreCase(starredUser)) {
+                        dataSource.delete(Repo.class)
+                                .where(STARRED_USER.eq(starredUser))
+                                .get()
+                                .value();
+                        if (!models.isEmpty()) {
+                            for (Repo repo : models) {
+                                dataSource.delete(Repo.class).where(Repo.ID.eq(repo.getId())).get().value();
+                                repo.setStarredUser(starredUser);
+                                dataSource.insert(repo);
+                            }
+                        }
+                    } else {
+                        dataSource.delete(Repo.class)
+                                .where(STARRED_USER.notEqual(login.getLogin())
+                                        .or(STATUSES_URL.isNull()))
+                                .get()
+                                .value();
+                    }
+                }
+                s.onNext("");
+            } catch (Exception ignored) {}
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
-    public static Observable<Repo> saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
-                .where(REPOS_OWNER.eq(reposOwner))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(repo -> {
-                    repo.setReposOwner(reposOwner);
-                    return repo.save(repo).toObservable();
-                }));
+    public static Disposable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                Login login = Login.getUser();
+                if (login != null) {
+                    BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                    if (login.getLogin().equalsIgnoreCase(reposOwner)) {
+                        dataSource.delete(Repo.class)
+                                .where(REPOS_OWNER.eq(reposOwner))
+                                .get()
+                                .value();
+                        if (!models.isEmpty()) {
+                            for (Repo repo : models) {
+                                dataSource.delete(Repo.class).where(Repo.ID.eq(repo.getId())).get().value();
+                                repo.setReposOwner(reposOwner);
+                                dataSource.insert(repo);
+                            }
+                        }
+                    } else {
+                        dataSource.delete(Repo.class)
+                                .where(REPOS_OWNER.notEqual(login.getLogin())
+                                        .or(REPOS_OWNER.isNull()))
+                                .get()
+                                .value();
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     public static Single<List<Repo>> getStarred(@NonNull String starredUser) {
@@ -279,6 +323,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         dest.writeInt(this.networkCount);
         dest.writeString(this.starredUser);
         dest.writeString(this.reposOwner);
+        dest.writeByte(this.hasProjects ? (byte) 1 : (byte) 0);
     }
 
     protected AbstractRepo(Parcel in) {
@@ -363,6 +408,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         this.networkCount = in.readInt();
         this.starredUser = in.readString();
         this.reposOwner = in.readString();
+        this.hasProjects = in.readByte() != 0;
     }
 
     public static final Creator<Repo> CREATOR = new Creator<Repo>() {

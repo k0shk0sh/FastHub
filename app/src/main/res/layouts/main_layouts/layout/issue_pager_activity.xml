@@ -2,22 +2,23 @@
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/commentFragment">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
@@ -42,7 +43,7 @@
                         android:layout_gravity="center|end"
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/star"
-                        android:padding="@dimen/spacing_normal"
+                        android:padding="@dimen/spacing_micro"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_star"/>
 
@@ -51,9 +52,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
+                        android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/fork"
-                        android:padding="@dimen/spacing_normal"
+                        android:padding="@dimen/spacing_micro"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_fork"/>
                 </android.support.v7.widget.Toolbar>
@@ -74,6 +76,9 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/scroll_behavior"/>
 
+
+            <include layout="@layout/review_changes_bottom_layout"/>
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
@@ -86,8 +91,15 @@
 
         </android.support.design.widget.CoordinatorLayout>
 
-        <include layout="@layout/add_banner_layout"/>
-    </LinearLayout>
+        <fragment
+            android:id="@+id/commentFragment"
+            android:name="com.fastaccess.ui.modules.editor.comment.CommentEditorFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            tools:layout="@layout/comment_box_layout"/>
+    </RelativeLayout>
 
     <include layout="@layout/nav_menu_layout"/>
+
 </android.support.v4.widget.DrawerLayout>

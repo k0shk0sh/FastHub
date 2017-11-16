@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -53,7 +54,8 @@ public class PullRequestViewHolder extends BaseViewHolder<PullRequest> {
             commentsNo.setVisibility(View.GONE);
         }
         if (withAvatar && avatarLayout != null) {
-            avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
+            avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin(),
+                    false, LinkParserHelper.isEnterprise(pullRequest.getHtmlUrl()));
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }

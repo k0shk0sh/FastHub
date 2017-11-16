@@ -7,10 +7,11 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
-import com.fastaccess.data.dao.model.IssueEvent;
+import com.fastaccess.data.dao.timeline.GenericEvent;
 import com.fastaccess.data.dao.types.IssueEventType;
-import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.TimelineProvider;
+import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -40,35 +41,42 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {
-        IssueEvent issueEventModel = timelineModel.getEvent();
+        GenericEvent issueEventModel = timelineModel.getGenericEvent();
         IssueEventType event = issueEventModel.getEvent();
         if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
-            avatarLayout.setUrl(issueEventModel.getAssigner().getAvatarUrl(), issueEventModel.getAssigner().getLogin());
+            avatarLayout.setUrl(issueEventModel.getAssigner().getAvatarUrl(), issueEventModel.getAssigner().getLogin(),
+                    false, LinkParserHelper.isEnterprise(issueEventModel.getUrl()));
         } else {
-            if (issueEventModel.getActor() != null) {
-                avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
+            if (event != IssueEventType.committed) {
+                avatarLayout.setVisibility(View.VISIBLE);
+                if (issueEventModel.getActor() != null) {
+                    avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin(),
+                            false, LinkParserHelper.isEnterprise(issueEventModel.getUrl()));
+                } else if (issueEventModel.getAuthor() != null) {
+                    avatarLayout.setUrl(issueEventModel.getAuthor().getAvatarUrl(), issueEventModel.getAuthor().getLogin(),
+                            false, LinkParserHelper.isEnterprise(issueEventModel.getUrl()));
+                }
+            } else {
+                avatarLayout.setVisibility(View.GONE);
             }
         }
         if (event != null) {
-            if (isMerged && event == IssueEventType.closed) {
-                stateImage.setContentDescription(IssueEventType.merged.name());
-                stateImage.setImageResource(IssueEventType.merged.getIconResId());
-            } else {
-                stateImage.setContentDescription(event.name());
-                stateImage.setImageResource(event.getIconResId());
-            }
+            stateImage.setContentDescription(event.name());
+            stateImage.setImageResource(event.getIconResId());
         }
-        if (issueEventModel.getLabels() == null) {
-            if (event != null) {
-                stateText.setText(TimelineProvider.getStyledEvents(issueEventModel, itemView.getContext(), isMerged));
-            } else {
-                stateText.setText("");
-                stateImage.setImageResource(R.drawable.ic_label);
-            }
+        if (event != null) {
+            stateText.setText(TimelineProvider.getStyledEvents(issueEventModel, itemView.getContext(), isMerged));
         } else {
-            stateText.setText(issueEventModel.getLabels());
+            stateText.setText("");
+            stateImage.setImageResource(R.drawable.ic_label);
         }
-        itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()));
+    }
+
+    @Override protected void onViewIsDetaching() {
+        DrawableGetter drawableGetter = (DrawableGetter) stateText.getTag(R.id.drawable_callback);
+        if (drawableGetter != null) {
+            drawableGetter.clear(drawableGetter);
+        }
     }
 
 }

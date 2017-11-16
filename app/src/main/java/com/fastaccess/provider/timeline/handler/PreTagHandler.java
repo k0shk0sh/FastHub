@@ -7,6 +7,8 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TypefaceSpan;
 
+import com.fastaccess.helper.PrefGetter;
+
 import net.nightwhistler.htmlspanner.handlers.PreHandler;
 
 import org.htmlcleaner.ContentNode;
@@ -24,7 +26,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
     @ColorInt private final int color;
     private final boolean isPre;
-    private boolean isDark;
+    @PrefGetter.ThemeType private int theme;
 
     private void getPlainText(StringBuffer buffer, Object node) {
         if (node instanceof ContentNode) {
@@ -76,7 +78,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             final int stringStart = start + 1;
             final int stringEnd = builder.length() - 1;
             builder.setSpan(new BackgroundColorSpan(color), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
-            if (!isDark) {
+            if (theme == PrefGetter.LIGHT) {
                 builder.setSpan(new ForegroundColorSpan(Color.RED), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             builder.setSpan(new TypefaceSpan("monospace"), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);

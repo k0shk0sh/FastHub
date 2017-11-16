@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
-import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -35,8 +35,7 @@ public class ProfileOrgsViewHolder extends BaseViewHolder<User> {
     }
 
     @Override public void bind(@NonNull User user) {
-        Logger.e(user.getLogin());
         name.setText(user.getLogin());
-        avatarLayout.setUrl(user.getAvatarUrl(), user.getLogin(), true);
+        avatarLayout.setUrl(user.getAvatarUrl(), user.getLogin(), true, LinkParserHelper.isEnterprise(user.getUrl()));
     }
 }

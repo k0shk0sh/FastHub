@@ -1,0 +1,157 @@
+query repoProjectsOpen($owner: String!, $name: String!, $page: String) {
+repository(owner: $owner, name: $name) {
+    projects(first: 30, states: OPEN, after: $page, orderBy: {field: CREATED_AT, direction: DESC}) {
+      totalCount
+      edges {
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      nodes {
+        name
+        number
+        body
+        createdAt
+        id
+        viewerCanUpdate
+        columns(first: 1) {
+          totalCount
+        }
+        databaseId
+      }
+    }
+  }
+}
+query repoProjectsClosed($owner: String!, $name: String!, $page: String) {
+repository(owner: $owner, name: $name) {
+    projects(first: 30, states: CLOSED, after: $page, orderBy: {field: CREATED_AT, direction: DESC}) {
+      totalCount
+      edges {
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      nodes {
+        name
+        number
+        body
+        createdAt
+        id
+        viewerCanUpdate
+        columns(first: 1) {
+          totalCount
+        }
+        databaseId
+      }
+    }
+  }
+}
+
+query orgProjectsOpen($owner: String!, $page: String) {
+organization(login: $owner) {
+    projects(first: 30, states: OPEN, after: $page, orderBy: {field: CREATED_AT, direction: DESC}) {
+      totalCount
+      edges {
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      nodes {
+        name
+        number
+        body
+        createdAt
+        id
+        viewerCanUpdate
+        columns(first: 1) {
+          totalCount
+        }
+        databaseId
+      }
+    }
+  }
+}
+query orgProjectsClosed($owner: String!, $page: String) {
+organization(login: $owner) {
+    projects(first: 30, states: CLOSED, after: $page, orderBy: {field: CREATED_AT, direction: DESC}) {
+      totalCount
+      edges {
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      nodes {
+        name
+        number
+        body
+        createdAt
+        id
+        viewerCanUpdate
+        columns(first: 1) {
+          totalCount
+        }
+        databaseId
+      }
+    }
+  }
+}
+
+query getColumns($owner: String!, $name:String!,$number:Int!) {
+repository(owner: $owner, name: $name) {
+    project(number: $number) {
+      name
+      viewerCanUpdate
+        columns(first: 100) {
+          nodes {
+            name
+            createdAt
+            id
+            cards(first: 100) {
+              nodes {
+                note
+                createdAt
+                url
+                content {
+                  ... on Node {
+                    __typename
+                  }
+                  ... on Issue {
+                    title
+                    url
+                    number
+                    issueState: state
+                  }
+                  ... on PullRequest {
+                    title
+                    url
+                    number
+                    PrState: state
+                  }
+                  ... on Comment {
+                    body
+                    author {
+                      login
+                      avatarUrl
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    }
+  }
+}
