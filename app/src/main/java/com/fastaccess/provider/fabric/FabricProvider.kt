@@ -8,6 +8,7 @@ import com.crashlytics.android.core.CrashlyticsCore
 import com.fastaccess.BuildConfig
 import io.fabric.sdk.android.Fabric
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * Created by kosh on 14/08/2017.
@@ -34,7 +35,7 @@ object FabricProvider {
             purchaseEvent.putItemType(priceText)
         }
         price?.let {
-            purchaseEvent.putItemPrice(BigDecimal(price))
+            purchaseEvent.putItemPrice(BigDecimal(price).setScale(2, RoundingMode.CEILING))
         }
         Answers.getInstance().logPurchase(purchaseEvent)
     }

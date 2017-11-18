@@ -44,18 +44,20 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
 
     override fun fragmentLayout(): Int = R.layout.license_viewer_layout
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val login = arguments.getString(BundleConstant.EXTRA)
-        val repo = arguments.getString(BundleConstant.ID)
-        val licenseTitle = arguments.getString(BundleConstant.EXTRA_TWO)
-        licenseName.text = licenseTitle
-        if (content.isNullOrBlank() && !presenter.isApiCalled) {
-            presenter.onLoadLicense(login, repo)
-        } else {
-            content?.let { onLicenseLoaded(it) }
+        arguments?.let {
+            val login = it.getString(BundleConstant.EXTRA)
+            val repo = it.getString(BundleConstant.ID)
+            val licenseTitle = arguments?.getString(BundleConstant.EXTRA_TWO)
+            licenseName.text = licenseTitle
+            if (content.isNullOrBlank() && !presenter.isApiCalled) {
+                presenter.onLoadLicense(login, repo)
+            } else {
+                content?.let { onLicenseLoaded(it) }
+            }
+            webView.setOnContentChangedListener(this)
         }
-        webView.setOnContentChangedListener(this)
     }
 
     override fun onContentChanged(progress: Int) {

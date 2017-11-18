@@ -27,12 +27,14 @@ import com.evernote.android.state.State;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.FastHubNotification;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -44,6 +46,7 @@ import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.main.notifications.FastHubNotificationDialog;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
@@ -52,6 +55,7 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRe
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -106,6 +110,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
+        Logger.e(FirebaseInstanceId.getInstance().getToken());
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);
@@ -114,6 +119,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             getPresenter().onCheckGitHubStatus();
             if (getIntent() != null) {
                 schemeUrl = getIntent().getStringExtra(BundleConstant.SCHEME_URL);
+            }
+            if (showInAppNotifications()) {
+                FastHubNotificationDialog.Companion.show(getSupportFragmentManager());
             }
         }
         if (!validateAuth()) return;
@@ -525,5 +533,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
+    }
+
+    private boolean showInAppNotifications() {
+        return FastHubNotification.hasNotifications();
     }
 }

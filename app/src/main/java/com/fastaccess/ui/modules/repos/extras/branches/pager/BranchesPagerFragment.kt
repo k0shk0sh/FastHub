@@ -49,16 +49,19 @@ class BranchesPagerFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<B
     override fun fragmentLayout(): Int = R.layout.branches_tabbed_viewpager
 
     override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
+
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         toolbar.setNavigationIcon(R.drawable.ic_clear)
         toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setTitle(R.string.switch_branch)
         tabs.setPadding(0, 0, 0, 0)
         tabs.tabMode = TabLayout.MODE_FIXED
-        val login = arguments.getString(BundleConstant.EXTRA)
-        val repoId = arguments.getString(BundleConstant.ID)
-        pager.adapter = FragmentsPagerAdapter(childFragmentManager, FragmentPagerAdapterModel.buildForBranches(context, repoId, login))
-        tabs.setupWithViewPager(pager)
+        arguments?.let {
+            val login = it.getString(BundleConstant.EXTRA)
+            val repoId = it.getString(BundleConstant.ID)
+            pager.adapter = FragmentsPagerAdapter(childFragmentManager, FragmentPagerAdapterModel.buildForBranches(context!!, repoId, login))
+            tabs.setupWithViewPager(pager)
+        }
     }
 
     companion object {

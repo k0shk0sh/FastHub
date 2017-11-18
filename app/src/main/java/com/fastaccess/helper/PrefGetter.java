@@ -484,4 +484,29 @@ public class PrefGetter {
         PrefHelper.set(AMLOD_THEME_ENABLED, false);
         setEnterpriseUrl(null);
     }
+
+    public static boolean isFeedsHintShowed() {
+        boolean isFeedsHitShowed = PrefHelper.getBoolean("feeds_hint");
+        if (!isFeedsHitShowed) {
+            PrefHelper.set("feeds_hint", true);
+        }
+        return isFeedsHitShowed;
+    }
+
+    public static boolean isIssuesLongPressHintShowed() {
+        boolean isIssuesLongPressHintShowed = PrefHelper.getBoolean("issues_long_press_hint");
+        if (!isIssuesLongPressHintShowed) {
+            PrefHelper.set("issues_long_press_hint", true);
+        }
+        return isIssuesLongPressHintShowed;
+    }
+
+    public static boolean isPRLongPressHintShowed() {
+        boolean isPRLongPressHintShowed = PrefHelper.getBoolean("pr_long_press_hint");
+        if (!isPRLongPressHintShowed) {
+            PrefHelper.set("pr_long_press_hint", true);
+        }
+        return isPRLongPressHintShowed;
+    }
+
 }

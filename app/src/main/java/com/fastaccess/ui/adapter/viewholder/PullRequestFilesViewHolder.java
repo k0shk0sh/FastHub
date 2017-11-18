@@ -74,6 +74,7 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
 
     @Override public void bind(@NonNull CommitFileChanges commitFileChanges) {
         CommitFileModel commit = commitFileChanges.getCommitFileModel();
+        toggle.setVisibility(commit.getPatch() == null ? View.GONE : View.VISIBLE);
         name.setText(commit.getFilename());
         changes.setText(SpannableBuilder.builder()
                 .append(changesText)

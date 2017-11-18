@@ -23,12 +23,12 @@ android {
             storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 455
         versionName "4.5.5"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
@@ -169,7 +169,6 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation 'com.airbnb.android:lottie:2.2.5'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
-    implementation 'org.apache.commons:commons-lang3:3.6'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
     kapt "com.evernote:android-state-processor:${state_version}"
