@@ -59,9 +59,10 @@ class FastHubNotificationDialog : BaseDialogFragment<BaseMvp.FAView, BasePresent
             return fragment
         }
 
-        fun show(fragmentManager: FragmentManager) {
-            FastHubNotification.getLatest()?.let {
-                if (it.type == NotificationType.PROMOTION || it.type == NotificationType.PURCHASE) {
+        fun show(fragmentManager: FragmentManager, model: FastHubNotification? = null) {
+            val notification = model ?: FastHubNotification.getLatest()
+            notification?.let {
+                if (it.type == NotificationType.PROMOTION || it.type == NotificationType.PURCHASE && model == null) {
                     if (PrefGetter.isProEnabled()) {
                         it.isRead = true
                         FastHubNotification.update(it)
@@ -70,6 +71,10 @@ class FastHubNotificationDialog : BaseDialogFragment<BaseMvp.FAView, BasePresent
                 }
                 newInstance(it).show(fragmentManager, TAG)
             }
+        }
+
+        fun show(fragmentManager: FragmentManager) {
+            show(fragmentManager, null)
         }
     }
 }

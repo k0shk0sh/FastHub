@@ -120,11 +120,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             if (getIntent() != null) {
                 schemeUrl = getIntent().getStringExtra(BundleConstant.SCHEME_URL);
             }
+        }
+        if (!validateAuth()) return;
+        if (savedInstanceState == null) {
             if (showInAppNotifications()) {
                 FastHubNotificationDialog.Companion.show(getSupportFragmentManager());
             }
         }
-        if (!validateAuth()) return;
         showChangelog();
         initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
