@@ -220,13 +220,19 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                         .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
                                                            ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
             } else {
+                builder.append(status.toLowerCase())
+                        .append(" ");
+
+                Commit head = pullRequest.getHead();
+                if (head != null)
+                {
+                    builder.bold( head.getRef() )
+                            .append(" ");
+                }
+                
                 return builder
-                        .bold(status.toLowerCase())
-                        .append(" ")
-                        .bold(pullRequest.getHead() != null ? pullRequest.getHead().getRef() : "")
-                        .append(" ")
                         .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
-                                                           ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+                                ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
             }
         }
     }
