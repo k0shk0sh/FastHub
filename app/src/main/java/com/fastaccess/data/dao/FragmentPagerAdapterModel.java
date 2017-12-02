@@ -23,6 +23,7 @@ import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
 import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
 import com.fastaccess.ui.modules.notification.fasthub.FastHubNotificationsFragment;
 import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
+import com.fastaccess.ui.modules.pinned.gist.PinnedGistFragment;
 import com.fastaccess.ui.modules.pinned.issue.PinnedIssueFragment;
 import com.fastaccess.ui.modules.pinned.pullrequest.PinnedPullRequestFragment;
 import com.fastaccess.ui.modules.pinned.repo.PinnedReposFragment;
@@ -265,7 +266,8 @@ import lombok.Setter;
     @NonNull public static List<FragmentPagerAdapterModel> buildForPinned(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.repos), PinnedReposFragment.newInstance()),
                 new FragmentPagerAdapterModel(context.getString(R.string.issues), PinnedIssueFragment.newInstance()),
-                new FragmentPagerAdapterModel(context.getString(R.string.pull_requests), PinnedPullRequestFragment.newInstance()))
+                new FragmentPagerAdapterModel(context.getString(R.string.pull_requests), PinnedPullRequestFragment.newInstance()),
+                new FragmentPagerAdapterModel(context.getString(R.string.gists), PinnedGistFragment.newInstance()))
                 .collect(Collectors.toList());
     }
 

@@ -2,7 +2,6 @@ package com.fastaccess.ui.modules.trending
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -217,7 +216,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         val drawable = GradientDrawable()
         drawable.shape = GradientDrawable.OVAL
         drawable.setSize(24, 24)
-        drawable.setColor(if (color == 0) Color.LTGRAY else color)
+        drawable.setColor(color)
         return drawable
     }
 

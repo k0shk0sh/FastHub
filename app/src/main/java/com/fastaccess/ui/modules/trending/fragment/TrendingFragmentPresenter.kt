@@ -3,7 +3,6 @@ package com.fastaccess.ui.modules.trending.fragment
 import android.view.View
 import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.helper.InputHelper
-import com.fastaccess.helper.Logger
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.rest.jsoup.JsoupProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -68,7 +67,6 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
                             if (language.isNullOrBlank()) {
                                 language = it.select(".f6 span[itemprop=programmingLanguage]").text()
                             }
-                            Logger.e(title, description, stars, forks, todayStars, language)
                             s.onNext(TrendingModel(title, description, language, stars, forks, todayStars))
                         }
                     }

@@ -60,6 +60,6 @@ public class PinnedReposActivity extends BaseActivity {
         tabbedPager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForPinned(this)));
         tabs.setupWithViewPager(tabbedPager);
         tabs.setPadding(0, 0, 0, 0);
-        tabs.setTabMode(TabLayout.GRAVITY_CENTER);
+        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 }
