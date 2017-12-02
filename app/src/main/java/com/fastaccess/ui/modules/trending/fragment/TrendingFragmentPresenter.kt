@@ -39,7 +39,12 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
         disposel = RxHelper.getObservable(JsoupProvider.getTrendingService().getTrending(
                 (if (!InputHelper.isEmpty(lang)) lang.replace(" ".toRegex(), "-") else "").toLowerCase(), since))
                 .flatMap { s -> RxHelper.getObservable(getTrendingObservable(s)) }
-                .doOnSubscribe { sendToView { it.showProgress(0) } }
+                .doOnSubscribe {
+                    sendToView {
+                        it.showProgress(0)
+                        it.clearAdapter()
+                    }
+                }
                 .subscribe({ response -> sendToView { view -> view.onNotifyAdapter(response) } },
                         { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) })
         manageDisposable(disposel)

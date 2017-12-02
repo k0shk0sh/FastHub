@@ -13,6 +13,7 @@ interface TrendingFragmentMvp {
     interface View : BaseMvp.FAView {
         fun onNotifyAdapter(items: TrendingModel)
         fun onSetQuery(lang: String, since: String)
+        fun clearAdapter()
     }
 
     interface Presenter : BaseViewHolder.OnItemClickListener<TrendingModel> {
