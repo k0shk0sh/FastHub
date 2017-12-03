@@ -11,18 +11,21 @@
         android:id="@+id/feeds"
         android:color="?colorPrimary"
         android:icon="@drawable/ic_github"
+        android:contentDescription="@string/feeds"
         android:title="@string/feeds"/>
 
     <item
         android:id="@+id/pinned"
         android:color="?colorPrimary"
         android:icon="@drawable/ic_issues"
-        android:title="@string/issues"/>
+        android:title="@string/issues"
+        android:contentDescription="@string/issues"/>
 
     <item
         android:id="@+id/pullRequests"
         android:color="?colorPrimary"
         android:icon="@drawable/ic_pull_requests"
+        android:contentDescription="@string/pull_requests"
         android:title="@string/pull_requests"/>
 
 </menu>

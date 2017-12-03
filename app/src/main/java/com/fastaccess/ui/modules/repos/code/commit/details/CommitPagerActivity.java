@@ -231,6 +231,14 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         }
     }
 
+    @Override public String getLogin() {
+        return getPresenter().getLogin();
+    }
+
+    @Override public String getRepoId() {
+        return getPresenter().getRepoId();
+    }
+
     @Override public void onBackPressed() {
         super.onBackPressed();
     }

@@ -174,7 +174,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onOpenForResult(int position, @NonNull CommitFileChanges model) {
-        FullScreenFileChangeActivity.Companion.startActivityForResult(this, model, position);
+        FullScreenFileChangeActivity.Companion.startActivityForResult(this, model, position, false);
     }
 
     @Override public void onRefresh() {

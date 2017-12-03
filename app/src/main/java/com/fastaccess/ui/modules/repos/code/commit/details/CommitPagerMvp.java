@@ -22,6 +22,10 @@ public interface CommitPagerMvp {
         void onFinishActivity();
 
         void onAddComment(@NonNull Comment newComment);
+
+        String getLogin();
+
+        String getRepoId();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

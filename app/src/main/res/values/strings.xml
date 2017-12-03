@@ -95,7 +95,7 @@
         • Login to unlimited accounts\n
         • Edit & Add unlimited Gist Files\n
         • Project Columns & Cards (Edit, Create & Delete)\n
-        • Pin Issues & PRs\n
+        • Pin Issues, PRs & Gists\n
         • New upcoming PRO features (Coming soon...)
     ]]></string>
     <string name="enterprise_pro_description" translatable="false"><![CDATA[
@@ -120,7 +120,7 @@
                 </blockquote>
         ]]>
     </string>
-    <string name="purchase_all" translatable="false" formatted="false">Purchase All for %price%</string>
+    <string name="purchase_all" formatted="false" translatable="false">Purchase All for %price%</string>
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <string name="feeds" translatable="false">Feeds</string>

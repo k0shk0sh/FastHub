@@ -19,6 +19,7 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
@@ -97,7 +98,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override public void onOpenForResult(int position, CommitFileChanges model) {
-//TODO
+        FullScreenFileChangeActivity.Companion.startActivityForResult(this, model, position, true);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,7 +106,9 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
             if (requestCode == FullScreenFileChangeActivity.Companion.getFOR_RESULT_CODE() && data != null) {
                 List<CommentRequestModel> comments = data.getParcelableArrayListExtra(BundleConstant.ITEM);
                 if (comments != null && !comments.isEmpty()) {
-                    //TODO
+                    if (viewCallback != null && !InputHelper.isEmpty(viewCallback.getLogin())) {
+                        getPresenter().onSubmit(viewCallback.getLogin(), viewCallback.getRepoId(), comments.get(0));
+                    }
                 }
             }
         }
