@@ -104,9 +104,13 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
             commentRequestModel.setPosition(item.getPosition());
             commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
             NameParser nameParser = new NameParser(blob);
-            makeRestCall(RestProvider.getRepoService(isEnterprise()).postCommitComment(nameParser.getUsername(),
-                    nameParser.getName(), sha, commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
+            onSubmit(nameParser.getUsername(), nameParser.getName(), commentRequestModel);
         }
+    }
+
+    @Override public void onSubmit(String username, String name, CommentRequestModel commentRequestModel) {
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).postCommitComment(username, name, sha,
+                commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
     }
 
     @Override protected void onDestroy() {

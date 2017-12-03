@@ -46,6 +46,16 @@ import lombok.Setter;
         dest.writeValue(this.line);
     }
 
+    @Override public String toString() {
+        return "CommentRequestModel{" +
+                "body='" + body + '\'' +
+                ", inReplyTo=" + inReplyTo +
+                ", path='" + path + '\'' +
+                ", position=" + position +
+                ", line=" + line +
+                '}';
+    }
+
     private CommentRequestModel(Parcel in) {
         this.body = in.readString();
         this.inReplyTo = (Long) in.readValue(Long.class.getClassLoader());
