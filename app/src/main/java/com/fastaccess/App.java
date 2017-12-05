@@ -11,6 +11,7 @@ import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.fabric.FabricProvider;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
 import io.requery.Persistable;
@@ -43,7 +44,7 @@ public class App extends Application {
     }
 
     private void init() {
-        FabricProvider.initFabric(this);
+        FabricProvider.INSTANCE.initFabric(this);
         RxBillingService.register(this);
         deleteDatabase("database.db");
         getDataStore();
@@ -54,6 +55,9 @@ public class App extends Application {
         EmojiManager.load();
         ColorsProvider.load();
         DeviceNameGetter.getInstance().loadDevice();
+        try {
+            FirebaseMessaging.getInstance().subscribeToTopic("FastHub");
+        } catch (Exception ignored) {}
     }
 
     private void setupPreference() {
@@ -68,7 +72,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 14);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 17);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

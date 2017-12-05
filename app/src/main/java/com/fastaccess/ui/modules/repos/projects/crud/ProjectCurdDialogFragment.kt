@@ -55,7 +55,7 @@ class ProjectCurdDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresent
 
     override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -66,10 +66,10 @@ class ProjectCurdDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresent
         toolbar.menu.findItem(R.id.submit)?.setIcon(R.drawable.ic_done)
         toolbar.setNavigationIcon(R.drawable.ic_clear)
         toolbar.setNavigationOnClickListener { dismiss() }
-        val position: Int = arguments.getInt(BundleConstant.ID, -1)
-        val isCard: Boolean = arguments.getBoolean(BundleConstant.EXTRA)
+        val position: Int = arguments!!.getInt(BundleConstant.ID, -1)
+        val isCard: Boolean = arguments!!.getBoolean(BundleConstant.EXTRA)
         if (savedInstanceState == null) {
-            editText.setText(arguments.getString(BundleConstant.ITEM))
+            editText.setText(arguments!!.getString(BundleConstant.ITEM))
         }
         toolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.submit) {

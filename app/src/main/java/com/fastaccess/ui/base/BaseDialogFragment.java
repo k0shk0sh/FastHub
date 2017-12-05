@@ -73,7 +73,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void dismiss() {
-        if(suppressAnimation){
+        if (suppressAnimation) {
             super.dismiss();
             return;
         }
@@ -104,7 +104,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        if (!PrefGetter.isAppAnimationDisabled() && !(this instanceof ProgressDialogFragment)) {
+        if (!PrefGetter.isAppAnimationDisabled() && !(this instanceof ProgressDialogFragment) && !suppressAnimation) {
             dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
                     getResources().getInteger(android.R.integer.config_longAnimTime)));
         }

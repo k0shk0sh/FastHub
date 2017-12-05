@@ -22,6 +22,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
@@ -173,7 +174,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onOpenForResult(int position, @NonNull CommitFileChanges model) {
-        FullScreenFileChangeActivity.Companion.startActivityForResult(this, model, position);
+        FullScreenFileChangeActivity.Companion.startActivityForResult(this, model, position, false);
     }
 
     @Override public void onRefresh() {
@@ -185,7 +186,13 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onToggle(long position, boolean isCollapsed) {
-        if (adapter.getItem((int) position).getCommitFileModel().getPatch() == null) {
+        CommitFileChanges model = adapter.getItem((int) position);
+        if (model == null) return;
+        if (model.getCommitFileModel().getPatch() == null) {
+            if ("renamed".equalsIgnoreCase(model.getCommitFileModel().getStatus())) {
+                SchemeParser.launchUri(getContext(), model.getCommitFileModel().getBlobUrl());
+                return;
+            }
             ActivityHelper.startCustomTab(getActivity(), adapter.getItem((int) position).getCommitFileModel().getBlobUrl());
         }
         toggleMap.put(position, isCollapsed);

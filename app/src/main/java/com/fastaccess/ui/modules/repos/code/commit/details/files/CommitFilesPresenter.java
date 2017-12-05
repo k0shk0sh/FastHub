@@ -24,6 +24,8 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 
+import java.util.ArrayList;
+
 import io.reactivex.Observable;
 
 /**
@@ -32,9 +34,12 @@ import io.reactivex.Observable;
 
 class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements CommitFilesMvp.Presenter {
     @com.evernote.android.state.State String sha;
+    ArrayList<CommitFileChanges> changes = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, CommitFileChanges model) {
-        if (v.getId() == R.id.open) {
+        if (v.getId() == R.id.patchList) {
+            sendToView(view -> view.onOpenForResult(position, model));
+        } else if (v.getId() == R.id.open) {
             CommitFileModel item = model.getCommitFileModel();
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             MenuInflater inflater = popup.getMenuInflater();
@@ -67,18 +72,21 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
     @Override public void onItemLongClick(int position, View v, CommitFileChanges item) {}
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
-        if (bundle != null) {
-            sha = bundle.getString(BundleConstant.ID);
-            if (!InputHelper.isEmpty(sha)) {
-                CommitFileListModel commitFiles = CommitFilesSingleton.getInstance().getByCommitId(sha);
-                if (commitFiles != null) {
-                    manageObservable(Observable.just(commitFiles)
-                            .map(CommitFileChanges::construct)
-                            .doOnSubscribe(disposable -> sendToView(CommitFilesMvp.View::clearAdapter))
-                            .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges)))
-                            .doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)));
-                }
-
+        if (sha == null) {
+            if (bundle != null) {
+                sha = bundle.getString(BundleConstant.ID);
+            }
+        }
+        if (!InputHelper.isEmpty(sha)) {
+            CommitFileListModel commitFiles = CommitFilesSingleton.getInstance().getByCommitId(sha);
+            if (commitFiles != null) {
+                manageObservable(Observable.just(commitFiles)
+                        .map(CommitFileChanges::construct)
+                        .doOnSubscribe(disposable -> sendToView(CommitFilesMvp.View::clearAdapter))
+                        .doOnNext(commitFileChanges -> {
+                            sendToView(view -> view.onNotifyAdapter(commitFileChanges));
+                        })
+                        .doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)));
             }
         } else {
             throw new NullPointerException("Bundle is null");
@@ -96,9 +104,13 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
             commentRequestModel.setPosition(item.getPosition());
             commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
             NameParser nameParser = new NameParser(blob);
-            makeRestCall(RestProvider.getRepoService(isEnterprise()).postCommitComment(nameParser.getUsername(),
-                    nameParser.getName(), sha, commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
+            onSubmit(nameParser.getUsername(), nameParser.getName(), commentRequestModel);
         }
+    }
+
+    @Override public void onSubmit(String username, String name, CommentRequestModel commentRequestModel) {
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).postCommitComment(username, name, sha,
+                commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
     }
 
     @Override protected void onDestroy() {

@@ -29,6 +29,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
+import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
 
 import java.util.ArrayList;
 
@@ -168,6 +169,10 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
                     NameParser nameParser = new NameParser(repoModel.getUrl());
                     v.getContext().startActivity(ReleasesListActivity.getIntent(v.getContext(), nameParser.getUsername(), nameParser.getName(),
                             payloadModel.getRef(), LinkParserHelper.isEnterprise(repoModel.getUrl())));
+                } else if (item.getType() == EventsType.GollumEvent) {
+                    Repo repoModel = item.getRepo();
+                    NameParser parser = new NameParser(repoModel.getUrl());
+                    v.getContext().startActivity(WikiActivity.Companion.getWiki(v.getContext(), parser.getName(), parser.getUsername()));
                 } else {
                     Repo repoModel = item.getRepo();
                     NameParser parser = new NameParser(repoModel.getUrl());

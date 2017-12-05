@@ -70,7 +70,7 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
     @OnClick(R.id.deleteColumn) fun onDeleteColumn() {
         if (canEdit()) {
             MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
-                    false, MessageDialogView.getYesNoBundle(context))
+                    false, MessageDialogView.getYesNoBundle(context!!))
                     .show(childFragmentManager, MessageDialogView.TAG)
         }
     }
@@ -200,11 +200,11 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
         super.hideProgress()
     }
 
-    override fun isOwner(): Boolean = arguments.getBoolean(BundleConstant.EXTRA)
+    override fun isOwner(): Boolean = arguments!!.getBoolean(BundleConstant.EXTRA)
 
     override fun onDeleteCard(position: Int) {
         if (canEdit()) {
-            val yesNoBundle = MessageDialogView.getYesNoBundle(context)
+            val yesNoBundle = MessageDialogView.getYesNoBundle(context!!)
             yesNoBundle.putInt(BundleConstant.ID, position)
             MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
                     false, yesNoBundle).show(childFragmentManager, MessageDialogView.TAG)
@@ -238,12 +238,12 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
         stateLayout.showReload(adapter.itemCount)
     }
 
-    private fun getColumn(): ProjectColumnModel = arguments.getParcelable(BundleConstant.ITEM)
+    private fun getColumn(): ProjectColumnModel = arguments!!.getParcelable(BundleConstant.ITEM)
 
     private fun canEdit(): Boolean = if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
         true
     } else {
-        PremiumActivity.startActivity(context)
+        PremiumActivity.startActivity(context!!)
         false
     }
 

@@ -149,6 +149,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                 }
             }
             view.findViewById<View>(R.id.donatedIcon).visibility = if (PrefGetter.hasSupported()) View.VISIBLE else View.GONE
+            view.findViewById<View>(R.id.proTextView).visibility = if (PrefGetter.isProEnabled()) View.VISIBLE else View.GONE
             view.findViewById<View>(R.id.navAccHolder).setOnClickListener {
                 if (extraNav != null && accountsNav != null) {
                     TransitionManager.beginDelayedTransition(menusHolder ?: extraNav)

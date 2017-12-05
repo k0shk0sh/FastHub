@@ -29,16 +29,16 @@ class RepoProjectsFragmentPager : BaseFragment<BaseMvp.FAView, BasePresenter<Bas
 
     override fun fragmentLayout(): Int = R.layout.centered_tabbed_viewpager
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (counts?.isNotEmpty() == true) {
-            outState?.putSerializable("counts", counts)
+            outState.putSerializable("counts", counts)
         }
     }
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
-        pager.adapter = FragmentsPagerAdapter(childFragmentManager, FragmentPagerAdapterModel.buildForRepoProjects(context,
-                arguments.getString(BundleConstant.ID), arguments.getString(BundleConstant.EXTRA)))
+        pager.adapter = FragmentsPagerAdapter(childFragmentManager, FragmentPagerAdapterModel.buildForRepoProjects(context!!,
+                arguments!!.getString(BundleConstant.ID), arguments!!.getString(BundleConstant.EXTRA)))
         tabs.setupWithViewPager(pager)
         if (savedInstanceState != null) {
             @Suppress("UNCHECKED_CAST")

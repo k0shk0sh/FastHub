@@ -15,6 +15,7 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
@@ -63,7 +64,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     @Override public void onError(@NonNull Throwable throwable) {
         int code = RestProvider.getErrorCode(throwable);
         if (code == 404) {
-            sendToView(RepoPagerMvp.View::onFinishActivity);
+            sendToView(BaseMvp.FAView::onOpenUrlInBrowser);
         } else {
             onWorkOffline();
         }

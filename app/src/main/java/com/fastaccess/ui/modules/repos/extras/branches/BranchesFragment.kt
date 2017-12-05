@@ -75,7 +75,7 @@ class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), Br
         recycler.addOnScrollListener(getLoadMore())
         recycler.addDivider()
         if (savedInstanceState == null) {
-            presenter.onFragmentCreated(arguments)
+            arguments?.let { presenter.onFragmentCreated(it) }
         }
         fastScroller.attachRecyclerView(recycler)
     }

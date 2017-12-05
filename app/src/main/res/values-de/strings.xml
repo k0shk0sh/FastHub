@@ -149,7 +149,7 @@
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
     <string name="all_notifications">Alle Benachrichtigungen</string>
     <string name="unread">Ungelesen</string>
-    <string name="all">Alle / Jede</string>
+    <string name="all">Alle</string>
     <string name="delete_repo">Repo löschen</string>
     <string name="delete_repo_warning">Wenn du das Repo löschst, kannst du es nicht mehr wiederherstellen</string>
     <string name="thirty_minutes">30 Minuten</string>
@@ -157,7 +157,7 @@
     <string name="ten_minutes">10 Minuten</string>
     <string name="five_minutes">5 Minuten</string>
     <string name="one_minute">Minute</string>
-	<string name="one_hour">Stunde</string>
+    <string name="one_hour">Stunde</string>
     <string name="two_hour">2 Stunden</string>
     <string name="three_hour">3 Stunden</string>
     <string name="created_repo">Erstellt</string>
@@ -467,12 +467,20 @@
     <string name="backed_up">Erfolgreich gesichert!</string>
     <string name="select_backup">Backup auswählen</string>
     <string name="permission_failed">Rechte nicht gewährt.</string>
-    <string name="backup_summary">Letzes Update: %s</string>
+    <string name="backup_summary">Letztes Update: %s</string>
     <string name="now">Jetzt</string>
     <string name="no_orgs_dialog_title">Organisation(en) nicht auffindbar?</string>
     <string name="up_to_date">Du hast die aktuellste Version!</string>
     <string name="new_version">Eine neue Version ist verfügbar.</string>
     <string name="enable_notification_title">Benachrichtigungen aktivieren</string>
+    <string name="clear_search_keywords">Suchverlauf löschen</string>
+    <string name="restore_purchases">Einkäufe wiederherstellen</string>
+    <string name="include_forks">Forks einschließen</string>
+    <string name="search_results_warning">Bitte sei bei deiner Suche etwas genauer</string>
+    <string name="comment_is_too_far_to_paginate">Dieser Kommentar liegt zu weit zurück, um ihn anzuzeigen</string>
+    <string name="disable_loading_image_title">Ladebild deaktivieren</string>
+    <string name="report_issue_warning">Dieses Problem wird zum FastHub Repo in GitHub übermittelt</string>
+    <string name="disable_loading_image_summary">Bei Nutzung des mobilen Internets Ladebild deaktivieren</string>
 </resources>
 
 

@@ -38,8 +38,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
-public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> implements
-        FeedsMvp.View {
+public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> implements FeedsMvp.View {
 
     public static final String TAG = FeedsFragment.class.getSimpleName();
 

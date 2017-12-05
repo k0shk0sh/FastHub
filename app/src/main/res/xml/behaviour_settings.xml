@@ -11,9 +11,9 @@
     <SwitchPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_image"
-        android:key="disable_auto_play_gif"
-        android:summary="@string/disable_auto_gif_summary"
-        android:title="@string/disable_auto_gif_title"/>
+        android:key="disable_auto_loading_image"
+        android:summary="@string/disable_loading_image_summary"
+        android:title="@string/disable_loading_image_title"/>
 
     <SwitchPreference
         android:defaultValue="false"

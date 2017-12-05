@@ -276,16 +276,20 @@ public class SchemeParser {
         String owner = segments.get(0);
         String repoName = segments.get(1);
         if (!InputHelper.isEmpty(repoName)) {
-            repoName = repoName.replace(".git", "");
+            if (repoName.endsWith(".git")) repoName = repoName.replace(".git", "");
         }
         if (segments.size() == 3) {
             String lastPath = uri.getLastPathSegment();
-            if ("network".equalsIgnoreCase(lastPath)) {
+            if ("milestones".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 4);
+            } else if ("network".equalsIgnoreCase(lastPath)) {
                 return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 3);
             } else if ("stargazers".equalsIgnoreCase(lastPath)) {
                 return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 2);
             } else if ("watchers".equalsIgnoreCase(lastPath)) {
                 return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 1);
+            } else if ("labels".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 5);
             } else {
                 return null;
             }

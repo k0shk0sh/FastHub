@@ -56,7 +56,7 @@ class DeleteFileBottomSheetFragment : BaseBottomSheetDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fileName.isEnabled = false
-        fileName.editText?.setText(arguments.getString(BundleConstant.ITEM))
+        fileName.editText?.setText(arguments?.getString(BundleConstant.ITEM))
     }
 
     companion object {

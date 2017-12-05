@@ -296,6 +296,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             recycler.smoothScrollToPosition(1);
         } else if (index != -1) {
             recycler.smoothScrollToPosition(index + 1);
+        } else {
+            showMessage(R.string.error, R.string.comment_is_too_far_to_paginate);
         }
     }
 
