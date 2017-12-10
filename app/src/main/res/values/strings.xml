@@ -8,26 +8,17 @@
     <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
     <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
     <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
-    <string name="gists" translatable="false">Gists</string>
     <string name="readme" translatable="false">Readme</string>
-    <string name="commits" translatable="false">Commits</string>
-    <string name="repos" translatable="false">Repositories</string>
     <string name="forked" translatable="false">Forked</string>
-    <string name="starred" translatable="false">Starred</string>
     <string name="icon_transition" translatable="false">profile_image_transition</string>
     <string name="title_transition" translatable="false">profile_title_transition</string>
-    <string name="code" translatable="false">Code</string>
-    <string name="issues" translatable="false">Issues</string>
-    <string name="pull_requests" translatable="false">Pull Requests</string>
     <string name="repo" translatable="false">Repository</string>
     <string name="download_as_zip" translatable="false">Source code (zip)</string>
     <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="merged" translatable="false">Merged</string>
-    <string name="star" translatable="false">Star</string>
     <string name="stars" translatable="false">Stars</string>
     <string name="fork" translatable="false">Fork</string>
     <string name="forks" translatable="false">Forks</string>
-    <string name="issue" translatable="false">Issue</string>
     <string name="merge" translatable="false">Merge</string>
     <string name="pull_request" translatable="false">Pull Request</string>
     <string name="commit" translatable="false">Commit</string>
@@ -106,7 +97,6 @@
     <string name="get_all" translatable="false">Purchase All (7.00USD)</string>
     <string name="fasthub_premium_features" translatable="false">FastHub Premium Features</string>
     <string name="secret_code" translatable="false">Promo Code</string>
-    <string name="branches" translatable="false">Branches</string>
     <string name="github_enterprise_reply" translatable="false">
         <![CDATA[ <small><i>Reply from GitHub support regards OAuth login for Enterprise:</i></small>
                 <p></p>
@@ -123,8 +113,21 @@
     <string name="purchase_all" formatted="false" translatable="false">Purchase All for %price%</string>
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
-    <string name="feeds" translatable="false">Feeds</string>
     <!-- END OF DO NOT COPY, START COPYING FROM LINE BELOW -->
+
+    <!-- SUGGESTED TO BECOME TRANSLATEABLE -->
+    <string name="gists">Gists</string>
+    <string name="commits">Commits</string>
+    <string name="repos">Repositories</string>
+    <string name="starred">Starred</string>
+    <string name="code">Code</string>
+    <string name="issues">Issues</string>
+    <string name="pull_requests">Pull Requests</string>
+    <string name="star">Star</string>
+    <string name="issue">Issue</string>
+    <string name="branches">Branches</string>
+    <string name="feeds">Feeds</string>
+    <!-- END OF SUGGESTED TO BECOME TRANSLATEABLE -->
 
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
@@ -399,6 +402,7 @@
     <string name="no_closed_issues">No closed issues</string>
     <string name="no_opened_issues">No open issues</string>
     <string name="no_events">No events</string>
+    <string name="no_pull_requests">No pull requests</string>
     <string name="no_open_pull_requests">No open pull requests</string>
     <string name="no_closed_pull_request">No closed pull requests</string>
     <string name="no_search_results">No search results</string>

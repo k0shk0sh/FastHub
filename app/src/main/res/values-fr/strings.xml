@@ -268,6 +268,7 @@
     <string name="no_closed_issues">Aucun ticket fermé</string>
     <string name="no_opened_issues">Aucun ticket ouvert</string>
     <string name="no_events">Aucun évènement</string>
+    <string name="no_pull_requests">Aucune Pull Requests</string>
     <string name="no_open_pull_requests">Aucune Pull Request ouverte</string>
     <string name="no_closed_pull_request">Aucune Pull Request fermée</string>
     <string name="no_search_results">Aucun résultat de recherche</string>

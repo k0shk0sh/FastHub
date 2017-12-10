@@ -256,6 +256,7 @@
     <string name="no_opened_issues">Nessun problema irrisolto</string>
     <string name="no_events">Nessun evento</string>
     <string name="no_open_pull_requests">Nessuna pull request aperta</string>
+    <string name="no_pull_requests">No Pull Requests</string>
     <string name="no_closed_pull_request">No pull request chiusa</string>
     <string name="no_search_results">Nessun risultato</string>
     <string name="read_write_permission_explanation">Per favore accetta i permessi per permettere a FastHub di

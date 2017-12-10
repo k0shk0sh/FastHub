@@ -267,6 +267,7 @@
     <string name="no_closed_issues">No hay issues cerrados</string>
     <string name="no_opened_issues">No hay issues abiertos</string>
     <string name="no_events">No hay eventos</string>
+    <string name="no_pull_requests">No hay pull requests</string>
     <string name="no_open_pull_requests">No hay pull requests abiertos</string>
     <string name="no_closed_pull_request">No hay pull requests cerrados</string>
     <string name="no_search_results">Búsqueda sin resultados</string>

@@ -267,6 +267,7 @@
     <string name="no_closed_issues">Žádné uzavřené problémy</string>
     <string name="no_opened_issues">Žádné otevřené problémy</string>
     <string name="no_events">Žádné události</string>
+    <string name="no_pull_requests">Žádné požadavky</string>
     <string name="no_open_pull_requests">Žádné otevřené požadavky</string>
     <string name="no_closed_pull_request">Žádné uzavřené požadavky</string>
     <string name="no_search_results">Žádné výsledky vyhledávání</string>

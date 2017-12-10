@@ -287,6 +287,7 @@
     <string name="no_closed_issues">Закрытые Тикеты отсутствуют</string>
     <string name="no_opened_issues">Открытые Тикеты отсутствуют</string>
     <string name="no_events">События отсутствуют</string>
+    <string name="no_pull_requests">Нет Pull Requests</string>
     <string name="no_open_pull_requests">Запросы на слияние отсутствуют</string>
     <string name="no_closed_pull_request">Закрытые Запросы на слияние отсутствуют</string>
     <string name="no_search_results">Нет результатов</string>

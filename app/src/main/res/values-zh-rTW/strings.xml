@@ -288,6 +288,7 @@ APP
     <string name="no_closed_issues">沒有關閉的 Issue</string>
     <string name="no_opened_issues">沒有開啟的 Issue</string>
     <string name="no_events">沒有事件</string>
+    <string name="no_pull_requests">否 Pull Requests</string>
     <string name="no_open_pull_requests">沒有開啟的 Pull Request</string>
     <string name="no_closed_pull_request">沒有關閉的 Pull Request</string>
     <string name="no_search_results">沒有搜尋結果</string>

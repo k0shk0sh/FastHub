@@ -262,6 +262,7 @@
     <string name="no_closed_issues">クローズのIssueがありません</string>
     <string name="no_opened_issues">オープンのIssueがありません</string>
     <string name="no_events">イベントがありません</string>
+    <string name="no_pull_requests">いいえPull Requests</string>
     <string name="no_open_pull_requests">オープンのPull Requestがありません</string>
     <string name="no_closed_pull_request">クローズのPull Requestがありません</string>
     <string name="no_search_results">検索結果がありません</string>

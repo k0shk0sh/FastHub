@@ -19,7 +19,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
 
 <!-- 原文版本 (Original strings): 2017/09/24 -->
 <resources>
-    <string name="in_progress">加载中, 请稍候...</string>
+    <string name="in_progress">加载中, 请稍候…</string>
     <string name="action">动作</string>
     <string name="settings">设置</string>
     <string name="discard">丢弃</string>
@@ -50,8 +50,8 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="minimum_three_chars">最少字数 (3)</string>
     <string name="no_file_found">未找到文件</string>
     <string name="no_readme_found">没有 Readme</string>
-    <string name="downloading">下载中...</string>
-    <string name="downloading_file">下载文件中...</string>
+    <string name="downloading">下载中…</string>
+    <string name="downloading_file">下载文件中…</string>
     <string name="released">发布于</string>
     <string name="drafted">草稿</string>
     <string name="releases">发布</string>
@@ -293,6 +293,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="no_closed_issues">没有关闭的 Issue</string>
     <string name="no_opened_issues">没有打开的 Issue</string>
     <string name="no_events">没有事件</string>
+    <string name="no_pull_requests">否 Pull Requests</string>
     <string name="no_open_pull_requests">没有打开的 Pull Request</string>
     <string name="no_closed_pull_request">没有关闭的 Pull Request</string>
     <string name="no_search_results">没有搜索结果</string>

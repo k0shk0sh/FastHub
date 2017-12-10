@@ -270,6 +270,7 @@
     <string name="no_closed_issues">Няма затворени issues</string>
     <string name="no_opened_issues">Няма отворени issues</string>
     <string name="no_events">Няма събития</string>
+    <string name="no_pull_requests">Няма Pull Requests</string>
     <string name="no_open_pull_requests">Няма отворени pull requests</string>
     <string name="no_closed_pull_request">Няма затворени pull requests</string>
     <string name="no_search_results">Няма резултати от търсене</string>

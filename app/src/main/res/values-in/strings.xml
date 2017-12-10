@@ -269,6 +269,7 @@
     <string name="no_closed_issues">Tidak ada isu tertutup</string>
     <string name="no_opened_issues">Tidak ada isu terbuka</string>
     <string name="no_events">Tidak ada peristiwa</string>
+    <string name="no_pull_requests">Tidak Pull Requests</string>
     <string name="no_open_pull_requests">Tidak ada pull request terbuka</string>
     <string name="no_closed_pull_request">Tidak ada pull request tertutup</string>
     <string name="no_search_results">Tidak ada hasil pencarian</string>

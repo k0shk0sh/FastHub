@@ -254,6 +254,7 @@
     <string name="no_closed_issues">Keine geschlossenen Issues</string>
     <string name="no_opened_issues">Keine geöffneten Issues</string>
     <string name="no_events">Keine Ereignisse</string>
+    <string name="no_pull_requests">Keine Pull Requests</string>
     <string name="no_open_pull_requests">Keine offenen Pull Requests</string>
     <string name="no_closed_pull_request">Keine geschlossenen Pull Requests</string>
     <string name="no_search_results">Keine Suchergebnisse</string>
@@ -348,7 +349,7 @@
     <string name="no_reviewers">Keine Reviewer</string>
     <string name="sent_from_fasthub">Gesendet von meinem %1$s mit %2$s%3$s</string>
     <string name="enable_signature">Signatur aktivieren</string>
-    <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
+    <string name="enable_signature_summary">"Gesendet von meinem…"-Signatur aktivieren</string>
     <string name="enable_signature_box">Signaturbox aktivieren</string>
     <string name="enable_signature_box_summary">Aktivieren, damit Signatur im Editor angezeigt wird</string>
     <string name="tags">Tags</string>

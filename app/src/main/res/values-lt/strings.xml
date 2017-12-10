@@ -267,6 +267,7 @@
     <string name="no_closed_issues">Nėra užvertų talonų</string>
     <string name="no_opened_issues">Nėra atvertų talonų</string>
     <string name="no_events">Nėra įvykių</string>
+    <string name="no_pull_requests">Nėra Pull Requests</string>
     <string name="no_open_pull_requests">Nėra atvirų PR</string>
     <string name="no_closed_pull_request">Nėra užvertų PR</string>
     <string name="no_search_results">Paieška nieko nerado</string>
