@@ -23,7 +23,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha04'
+        classpath 'com.android.tools.build:gradle:3.1.0-alpha05'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
