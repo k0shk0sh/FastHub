@@ -284,7 +284,7 @@
     <string name="no_contributors">Вкладчики отсутствуют</string>
     <string name="no_releases">Сборки отсутствуют</string>
     <string name="no_events">События отсутствуют</string>
-    <string name="no_pull_requests">Запросы на слияние отсутствуют</string>
+    <string name="no_pull_requests">Нет pull requests</string>
     <string name="no_search_results">Нет результатов</string>
     <string name="read_write_permission_explanation">Пожалуйста, предоставьте FastHub доступ к следующим разрешениям, чтобы появилась возможность
         хранить файлы на вашей SD карте, а также просматривать их</string>
