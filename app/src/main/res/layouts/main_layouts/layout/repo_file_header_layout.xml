@@ -59,6 +59,12 @@
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_home"/>
 
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_arrow_right"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="0dp"

@@ -18,6 +18,7 @@ import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.gists.GistsFragment;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
+import com.fastaccess.ui.modules.gists.starred.StarredGistsFragment;
 import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
 import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
@@ -180,9 +181,9 @@ import lombok.Setter;
     }
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForGists(@NonNull Context context) {
-
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.my_gists), ProfileGistsFragment.newInstance(Login.getUser()
-                        .getLogin())),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.my_gists), ProfileGistsFragment
+                        .newInstance(Login.getUser().getLogin())),
+                new FragmentPagerAdapterModel(context.getString(R.string.starred), StarredGistsFragment.newInstance()),
                 new FragmentPagerAdapterModel(context.getString(R.string.public_gists), GistsFragment.newInstance()))
                 .collect(Collectors.toList());
     }
