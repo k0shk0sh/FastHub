@@ -230,7 +230,6 @@
     <string name="turn_off">Wyłącz</string>
     <string name="unauthorized_user">Nieautoryzowany użytkownik</string>
     <string name="two_factors_otp_error">Wymagane jednorazowe hasło (OTP)</string>
-    <string name="no_issue">Brak problemów</string>
     <string name="copy">Skopiuj URL</string>
     <string name="success_copied">Skopiowano</string>
     <string name="commit_message">Wiadomość commita</string>
@@ -268,12 +267,8 @@
     <string name="no_commits">Brak commitów</string>
     <string name="no_contributors">Brak współtwórców</string>
     <string name="no_releases">Brak wydań</string>
-    <string name="no_closed_issues">Brak zamkniętych problemów</string>
-    <string name="no_opened_issues">Brak otwartych problemów</string>
     <string name="no_events">Brak zdarzeń</string>
     <string name="no_pull_requests">Brak pull requestów</string>
-    <string name="no_open_pull_requests">Brak otwartych pull requestów</string>
-    <string name="no_closed_pull_request">Brak zamkniętych pull requestów</string>
     <string name="no_search_results">Brak wyników wyszukiwania</string>
     <string name="read_write_permission_explanation">Pozwól FastHub przechowywać pliki na twoim urządzeniu, żeby móc je wyświetlić</string>
     <string name="public_gists">Publiczne Gisty</string>
@@ -491,15 +486,4 @@
     <string name="disable_loading_image_summary">Nie wczytuj obrazków przy włączonej transmisji danych</string>
     <string name="report_issue_warning">Problem zostnie zgłoszony do repozytorium FastHub w serwisie GitHub</string>
     <string name="block">Zablokuj</string>
-    <string name="gists">Gisty</string>
-    <string name="commits" translatable="false">Commity</string>
-    <string name="repos">Repozytoria</string>
-    <string name="feeds" translatable="false">Aktualności</string>
-    <string name="issue">Problem</string>
-    <string name="issues">Problemy</string>
-    <string name="pull_requests">Pull requesty</string>
-    <string name="starred">Oznaczone gwiazdką</string>
-    <string name="star">Gwiazdka</string>
-    <string name="code">Kod</string>
-    <string name="branches">Branche</string>
 </resources>

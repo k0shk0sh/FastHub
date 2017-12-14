@@ -226,7 +226,6 @@
     <string name="turn_off">끄기</string>
     <string name="unauthorized_user">인증되지 않은 사용자</string>
     <string name="two_factors_otp_error">이중 인증이 필요합니다</string>
-    <string name="no_issue">이슈 없음</string>
     <string name="copy">URL 복사</string>
     <string name="success_copied">복사됨</string>
     <string name="commit_message">커밋 메시지</string>
@@ -264,12 +263,8 @@
     <string name="no_commits">커밋 없음</string>
     <string name="no_contributors">기여자 없음</string>
     <string name="no_releases">릴리즈 없음</string>
-    <string name="no_closed_issues">닫힌 이슈 없음</string>
-    <string name="no_opened_issues">열린 이슈 없음</string>
     <string name="no_events">이벤트 없음</string>
     <string name="no_pull_requests">아니요 Pull Requests</string>
-    <string name="no_open_pull_requests">열린 풀 리퀘스트 없음</string>
-    <string name="no_closed_pull_request">닫힌 풀 리퀘스트 없음</string>
     <string name="no_search_results">검색 결과 없음</string>
     <string name="read_write_permission_explanation">파일을 보기 위해 FastHub에서 파일을 저장하려면 권한을 허용하세요</string>
     <string name="public_gists">공개 Gist</string>
