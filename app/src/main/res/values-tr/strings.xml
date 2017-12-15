@@ -208,7 +208,6 @@
     <string name="turn_off">Devre dışı bırak</string>
     <string name="unauthorized_user">Yetkilendirilmemiş Kullanıcı</string>
     <string name="two_factors_otp_error">2 adımlı doğrulama OTP kodu gerekli</string>
-    <string name="no_issue">Issue bulunamadı</string>
     <string name="copy">Kopyala</string>
     <string name="success_copied">Kopyalandı</string>
     <string name="commit_message">Commit mesajı</string>
@@ -244,11 +243,8 @@
     <string name="no_commits">Hiç commit yok</string>
     <string name="no_contributors">Katkıda bulunan kimse yok</string>
     <string name="no_releases">Yayınlama yok</string>
-    <string name="no_closed_issues">Kapanmış issue bulunmuyor</string>
-    <string name="no_opened_issues">Açık issue bulunmuyor</string>
     <string name="no_events">Hiç event yok</string>
-    <string name="no_open_pull_requests">Hiç pull request yok</string>
-    <string name="no_closed_pull_request">Kapalı pull request yok</string>
+    <string name="no_pull_requests">Pull request bulunamadı</string>
     <string name="no_search_results">Eşleşen sonuç bulunamadı</string>
     <string name="read_write_permission_explanation">FastHub\'un depolama alanınıza erişmesi için lütfen ilgili izinleri veriniz</string>
     <string name="public_gists">Herkese Açık Gist\'ler</string>
@@ -395,7 +391,7 @@
     <string name="sound_chooser_summary">Özel bir bildirim sesi seç</string>
     <string name="sound_chooser_title">Bildirim Sesi Seç</string>
     <string name="disable_auto_gif_summary">GIF\'leri otomatik olarak oynatma</string>
-    <string name="disable_auto_gif_title">GIF'leri oynatmayı devre dışı bırak</string>
+    <string name="disable_auto_gif_title">GIF\'leri oynatmayı devre dışı bırak</string>
     <string name="request_changes">istenilen değişiklikler</string>
     <string name="google_play_service_error">Google Play Servisleri müsait değil</string>
     <string name="edit_gist">Gist\'i Düzenle</string>

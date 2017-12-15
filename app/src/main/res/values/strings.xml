@@ -357,7 +357,6 @@
     <string name="turn_off">Turn off</string>
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
-    <string name="no_issue">No issue</string>
     <string name="copy">Copy URL</string>
     <string name="success_copied">Copied</string>
     <string name="commit_message">Commit message</string>
@@ -396,11 +395,8 @@
     <string name="no_commits">No commits</string>
     <string name="no_contributors">No contributors</string>
     <string name="no_releases">No releases</string>
-    <string name="no_closed_issues">No closed issues</string>
-    <string name="no_opened_issues">No open issues</string>
     <string name="no_events">No events</string>
-    <string name="no_open_pull_requests">No open pull requests</string>
-    <string name="no_closed_pull_request">No closed pull requests</string>
+    <string name="no_pull_requests">No pull requests</string>
     <string name="no_search_results">No search results</string>
     <string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
         store the files on your device to be able to view them</string>

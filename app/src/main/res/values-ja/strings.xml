@@ -221,7 +221,6 @@
     <string name="turn_off">無効にする</string>
     <string name="unauthorized_user">認証されていないユーザー</string>
     <string name="two_factors_otp_error">二段階認証が必須です</string>
-    <string name="no_issue">Issueはありません</string>
     <string name="copy">コピー</string>
     <string name="success_copied">コピーしました</string>
     <string name="commit_message">Commitメッセージ</string>
@@ -259,11 +258,8 @@
     <string name="no_commits">Commitがありません</string>
     <string name="no_contributors">貢献者がいません</string>
     <string name="no_releases">リリースがありません</string>
-    <string name="no_closed_issues">クローズのIssueがありません</string>
-    <string name="no_opened_issues">オープンのIssueがありません</string>
     <string name="no_events">イベントがありません</string>
-    <string name="no_open_pull_requests">オープンのPull Requestがありません</string>
-    <string name="no_closed_pull_request">クローズのPull Requestがありません</string>
+    <string name="no_pull_requests">Pull Requestがありません</string>
     <string name="no_search_results">検索結果がありません</string>
     <string name="read_write_permission_explanation">FastHubでこれらを表示するためにはストレージ権限を承認して下さい</string>
     <string name="public_gists">公開Gist</string>

@@ -1,0 +1,489 @@
+<resources>
+    <string name="in_progress">Wczytywanie, proszę czekać…</string>
+    <string name="action">Akcja</string>
+    <string name="settings">Ustawienia</string>
+    <string name="discard">Odrzuć</string>
+    <string name="cancel">Anuluj</string>
+    <string name="ok">OK</string>
+    <string name="no_data">Brak danych</string>
+    <string name="search">Szukaj</string>
+    <string name="please_login">Zaloguj się, żeby zacząć korzystać z FastHub</string>
+    <string name="sign_in_to_github">Zaloguj się na twoje konto GitHub, żeby zacząć używać FastHub</string>
+    <string name="failed_login">Błąd logowania</string>
+    <string name="sign_in">Zaloguj</string>
+    <string name="share">Udostępnij</string>
+    <string name="reload">Wczytaj ponownie</string>
+    <string name="profile">Profil</string>
+    <string name="error">Błąd</string>
+    <string name="press_again_to_exit">Wciśnij ponownie, aby zakończyć</string>
+    <string name="opened">Otwarte</string>
+    <string name="closed">Zamknięte</string>
+    <string name="repo_chooser">Wybierz Repo</string>
+    <string name="followers">Obserwują cię</string>
+    <string name="following">Obserwowani</string>
+    <string name="overview">Przegląd</string>
+    <string name="follow">Obserwuj</string>
+    <string name="unfollow">Przestań obserwować</string>
+    <string name="user">Użytkownik</string>
+    <string name="details">Szczegóły</string>
+    <string name="archive_file_detected_error">Plik jest skompresowany, pobierz go żeby podejrzeć jego zawartość.</string>
+    <string name="minimum_three_chars">Minimalna liczba znaków (2)</string>
+    <string name="no_file_found">Nie znaleziono plików</string>
+    <string name="no_readme_found">Nie znaleziono pliku readme</string>
+    <string name="downloading">Pobieranie…</string>
+    <string name="downloading_file">Pobieranie pliku…</string>
+    <string name="released">Wydane</string>
+    <string name="drafted">Zapisano wersję roboczą</string>
+    <string name="releases">Wydania</string>
+    <string name="no_body">Pusto</string>
+    <string name="contributors">Współtwórcy</string>
+    <string name="contributions">Zaangażowanie</string>
+    <string name="by">przez</string>
+    <string name="english_please">Proszę pisać w języku angielskim.</string>
+    <string name="close_issue">Zamknij problem</string>
+    <string name="re_open_issue">Otwórz problem ponownie</string>
+    <string name="re_open">Otwórz ponownie</string>
+    <string name="close">Zamknij</string>
+    <string name="success_re_opened">Otwarto ponownie</string>
+    <string name="lock_issue_details">Blokada rozmowy oznacza, że:\n&#183;Inni użytkownicy nie będą mogli komentować tego problemu.\n&#183;Ty i inni
+        współtwórcy mający dostęp do tego repozytorium nadal będziecie mogli dodawać komentarze, które inni zobaczą.\n&#183;Zawsze możesz później
+        odblokować rozmowy dla tego problemu.\n</string>
+    <string name="unlock_issue_details">Odblokowanie rozmowy oznacza, że:\n&#183;Każdy ponownie będzie mógł komentować ten problem.\n&#183;
+        Zawsze możesz później zablokować rozmowy dla tego problemu.\n</string>
+    <string name="lock_issue">Zablokuj rozmowę</string>
+    <string name="unlock_issue">Odblokuj rozmowę</string>
+    <string name="error_closing_issue">Bład podczas zamykania problemu, spróbuj ponownie.</string>
+    <string name="error_re_opening_issue">Błąd podczas ponownego otwierania problemu, spróbuj ponownie.</string>
+    <string name="success_closed">Zamknięto problem</string>
+    <string name="no_description_provided"><p>Brak opisu</p></string>
+    <string name="header_one">Pierwszy nagłówek</string>
+    <string name="header_two">Drugi nagłówek</string>
+    <string name="header_three">Trzeci nagłówek</string>
+    <string name="bold">Pogrubienie</string>
+    <string name="italic">Kursywa</string>
+    <string name="strike_through">Przekreślenie</string>
+    <string name="bullet">Lista punktorów</string>
+    <string name="numbered_list">Lista numerowana</string>
+    <string name="header">Nagłówek</string>
+    <string name="quote">Cytat</string>
+    <string name="link">Link</string>
+    <string name="image">Obraz</string>
+    <string name="deletion">Usunięcia</string>
+    <string name="addition">Wstawienia</string>
+    <string name="changes">Zmiany</string>
+    <string name="status">Status</string>
+    <string name="confirm_message">Na pewno?</string>
+    <string name="success">Udało się</string>
+    <string name="to">do</string>
+    <string name="error_deleting_comment">Błąd podczas usuwania komentarza</string>
+    <string name="delete">Usuń</string>
+    <string name="comments">Komentarze</string>
+    <string name="comment">Komentarz</string>
+    <string name="success_merge">Scalono</string>
+    <string name="file_menu">Menu plików</string>
+    <string name="files">Pliki</string>
+    <string name="download">Pobierz</string>
+    <string name="back">Wstecz</string>
+    <string name="parent_folder">Folder nadrzędny</string>
+    <string name="code_viewer">Przeglądarka plików</string>
+    <string name="open_in_browser">Otwórz w przeglądarce internetowej</string>
+    <string name="big_file">Duży plik</string>
+    <string name="big_file_description">Plik jest zbyt duży żeby go otworzyć.\nWybierz "Tak" żeby go pobrać.</string>
+    <string name="viewer">Przeglądarka</string>
+    <string name="submit">Wyślij</string>
+    <string name="type_here">Napisz coś</string>
+    <string name="description">Opis</string>
+    <string name="file_name">Nazwa pliku</string>
+    <string name="file_name_hint">Nazwa pliku (z rozszerzeniem)</string>
+    <string name="create_secret_gist">Prywatny Gist</string>
+    <string name="create_public_gist">Publiczny Gist</string>
+    <string name="submit_as">Wyślij jako</string>
+    <string name="delete_gist">Usuń</string>
+    <string name="error_deleting_gist">Błąd podazcas usuwania Gista</string>
+    <string name="no_files">Brak plików</string>
+    <string name="required_field">Pole wymagane</string>
+    <string name="successfully_submitted">Wysłano</string>
+    <string name="create_gist">Stwórz Gista</string>
+    <string name="clear">Wyczyść</string>
+    <string name="users">Użytkownicy</string>
+    <string name="title">Tytuł</string>
+    <string name="file">Plik</string>
+    <string name="milestone">Kamień milowy</string>
+    <string name="assign_myself">Przypisz do mnie</string>
+    <string name="submit_issue">Wyślij problem</string>
+    <string name="error_creating_issue">Błąd podczas tworzenia problemu</string>
+    <string name="create_issue">Zgłoś problem</string>
+    <string name="error_highlighting_editor">Wyłącz kolorowanie składni, żeby kontynuować edycję.</string>
+    <string name="notifications">Powiadomienia</string>
+    <string name="unread_notification">Masz nieprzeczytane powiadomienia</string>
+    <string name="open">Otwórz</string>
+    <string name="open_new_window">Otwórz w nowym oknie</string>
+    <string name="notification_type">Typ powiadomienia</string>
+    <string name="labels">Etykiety</string>
+    <string name="no_labels">Brak etykiet</string>
+    <string name="labels_added_successfully">Etykiety dodane</string>
+    <string name="submit_feedback">Podziel się wrażeniami</string>
+    <string name="logout">Wyloguj</string>
+    <string name="thank_you_for_feedback">Dzięki za podzielenie się wrażeniami!</string>
+    <string name="current_version">Aktualna wersja</string>
+    <string name="version">Wersja</string>
+    <string name="support_development_enable_ads">Wspomóż rozwój aplikacji, odblokuj reklamy</string>
+    <string name="username">Użytkownik</string>
+    <string name="password">Hasło</string>
+    <string name="twoFactor">Kod 2-etapowej weryfikacji</string>
+    <string name="login">Login</string>
+    <string name="gist_description">Opis Gista</string>
+    <string name="avatar_click_hint">Kliknięcie na awatarze otwiera profil użytkownika</string>
+    <string name="feeds_fork_hint">Kliknij i przytrzymaj fork event, żeby otworzyć oryginalne lub sforkowane repo.</string>
+    <string name="click_here_to_download_release_hint">Pobierz wydania</string>
+    <string name="options">Opcje</string>
+    <string name="click_file_option_hint">Poblierz plik lub udostępnij folder</string>
+    <string name="comment_hint">Kliknij na komentarzu, żeby otagować jego autora lub edytować swój komentarz.
+        \nKliknij i przytrzymaj na swoim komentarzu, żeby usunąć komentarz.</string>
+    <string name="star_hint">Oznacz/Odznacz gwiazdką repo</string>
+    <string name="watch">Obserwuj</string>
+    <string name="watch_hint">Obserwuj/Przestań obserwować repo</string>
+    <string name="pin_repo_hint">Przypnij repozytoria, aby uzyskać do nich szybki dostęp w menu bocznym.</string>
+    <string name="dismiss_all">Pomiń wszystkie</string>
+    <string name="no_url">Nie znaleziono URLa</string>
+    <string name="last_updated">Ostatnio aktualizowane</string>
+    <string name="preview">Podgląd</string>
+    <string name="view_code">Kolorowanie składni</string>
+    <string name="click_to_toggle_highlighting">Włącz lub wyłącz kolorowanie składni.
+        \nPozostałe ikony edytora plików Markdown kontrolują więcej opcji.</string>
+    <string name="creation_date">Data utworzenia</string>
+    <string name="creation_date_hint">Kiedy utworzono plik</string>
+    <string name="last_updated_hint">Kiedy ostatnio aktualizowano plik</string>
+    <string name="mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
+    <string name="all_notifications">Wszystkie powiadomienia</string>
+    <string name="unread">Nowe</string>
+    <string name="all">Wszystkie</string>
+    <string name="delete_repo">Usuń Repo</string>
+    <string name="delete_repo_warning">Usunięcie repo jest nieodwracalne</string>
+    <string name="thirty_minutes">30 minut</string>
+    <string name="twenty_minutes">20 minut</string>
+    <string name="ten_minutes">10 minut</string>
+    <string name="five_minutes">5 minut</string>
+    <string name="one_minute">1 minuta</string>
+    <string name="one_hour">1 godzina</string>
+    <string name="two_hour">2 godziny</string>
+    <string name="three_hour">3 godziny</string>
+    <string name="created_repo">Stworzono</string>
+    <string name="committed">Wcommitowano</string>
+    <string name="downloaded">Pobrano</string>
+    <string name="followed">Obserwowani</string>
+    <string name="commented_on_issue">Skomentuj problem</string>
+    <string name="member">Uczestnik</string>
+    <string name="pr_comment_review">Skomentuj pull request</string>
+    <string name="pushed">Wpushowano do</string>
+    <string name="team_event">Team</string>
+    <string name="deleted">Usunięte</string>
+    <string name="unknown">Nieznane</string>
+    <string name="commented_on_commit">Skomentowano commit</string>
+    <string name="switch_branch">Zmień brancha</string>
+    <string name="assignees">Przydzieleni</string>
+    <string name="edit">Edytuj</string>
+    <string name="edited">\u2022 edytowany</string>
+    <string name="update_issue">Aktualizuj problem</string>
+    <string name="update_pull_request">Aktualizuj pull request</string>
+    <string name="no_milestones">Brak kamieni milowych</string>
+    <string name="add">Dodaj</string>
+    <string name="done">Gotowe</string>
+    <string name="home">Ekran powitalny</string>
+    <string name="create_milestone">Utwórz kamień milowy</string>
+    <string name="error_creating_milestone">Błąd podczas tworzenia kamienia milowego</string>
+    <string name="due_on">Termin do</string>
+    <string name="no_assignees">Nikogo nie przypisano</string>
+    <string name="this_value">ten</string>
+    <string name="commits_reflected">Podmieniono commity na te z wybranego brancha</string>
+    <string name="general_settings">Ogólne</string>
+    <string name="background_job_summary">Ustaw jak często FastHub ma sprawdzać, czy są nowe powiadomienia</string>
+    <string name="background_job_title">Interwał synchronizacji</string>
+    <string name="every">Co</string>
+    <string name="behavior">Zachowanie</string>
+    <string name="customization">Dostosuj</string>
+    <string name="recycler_view_animation_summary">Odblokuj animacje list</string>
+    <string name="recycler_view_animation_title">Animacje list</string>
+    <string name="back_button_summary">Prośba o potwierdzenie wyjścia z aplikacji nie będzie wyświetlana</string>
+    <string name="back_button_title">Wyłącz potwierdzenie przed wyjściem</string>
+    <string name="restore">Przywróć</string>
+    <string name="backup">Kopia zapasowa</string>
+    <string name="backed_up">Utworzono kopię zapasową!</string>
+    <string name="select_backup">Wybierz kopię zapasową, którą chcesz przywrócić</string>
+    <string name="permission_failed">Brak dostępu.</string>
+    <string name="backup_summary">Ostatnia aktualizacja: %s</string>
+    <string name="now">Teraz</string>
+    <string name="unsaved_data_warning">Odrzucić niezapisane zmiany?</string>
+    <string name="private_repo">Prywatne</string>
+    <string name="rect_avatar_summary">Wyświetlaj awatary w kwadratowej ramce zamiast w okrągłej</string>
+    <string name="rect_avatar_title">Kwadratowe awatary</string>
+    <string name="rate_app">Oceń tą appkę</string>
+    <string name="author">Autor</string>
+    <string name="fork_github">Sforkuj na GitHub</string>
+    <string name="send_email">Wyślij e-mail</string>
+    <string name="question_concerning_fasthub">Pytanie odnośnie FastHub</string>
+    <string name="feedback">Podziel się wrażeniami</string>
+    <string name="report_issue">Zgłoś problem</string>
+    <string name="report_issue_here">Napotkałeś problem? Zgłoś go tutaj</string>
+    <string name="about">O aplikacji</string>
+    <string name="notification_settings">Powiadomienia</string>
+    <string name="turn_off">Wyłącz</string>
+    <string name="unauthorized_user">Nieautoryzowany użytkownik</string>
+    <string name="two_factors_otp_error">Wymagane jednorazowe hasło (OTP)</string>
+    <string name="copy">Skopiuj URL</string>
+    <string name="success_copied">Skopiowano</string>
+    <string name="commit_message">Wiadomość commita</string>
+    <string name="network_error">Błąd komunikacji z serwerem</string>
+    <string name="unexpected_error">Nieznany błąd wywołania API</string>
+    <string name="request_error">Brak połączenia z siecią</string>
+    <string name="marking_as_read">Powiadomienie oznaczone jako przeczytane</string>
+    <string name="forking_gist">Forkowanie Gista</string>
+    <string name="login_using_your_default_browser">Zaloguj używając domyślnej przeglądarki internetowej (OAuth)</string>
+    <string name="or_character">LUB</string>
+    <string name="mark_notification_title">Nie oznaczaj powiadomień jako przeczytane</string>
+    <string name="mark_notification_summary">Zablokuj automatyczne oznaczanie powiadomienia jako przeczytanego, po kliknięciu na nim.</string>
+    <string name="theme_title">Motyw</string>
+    <string name="theme_summary">Wybierz domyślny motyw</string>
+    <string name="theme_color_summary">Wybierz kolor akcentów motywu</string>
+    <string name="theme_color_title">Kolor akcentów motywu</string>
+    <string name="website">Strona</string>
+    <string name="support_development">Wspomóż rozwój aplikacji</string>
+    <string name="success_purchase_message">Dziękuję, to było niesamowite!</string>
+    <string name="change_theme_warning">Jeśli motyw w pełni się nie załadował, spróbuj zabić proces aplikacji i uruchomić ją ponownie.</string>
+    <string name="pin">Przypnij</string>
+    <string name="pinned">Przypięte</string>
+    <string name="unpin">Odepnij</string>
+    <string name="empty_pinned_repos">Brak przypiętych repozytoriów, przypnij jakieś żeby je tu zobaczyć.\nP.S: Im częściej odwiedzasz repo, tym wyżej będzie na liście.</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="no_feeds">Brak aktualności</string>
+    <string name="no_gists">Brak Gistów</string>
+    <string name="no_comments">Brak komentarzy</string>
+    <string name="no_notifications">Brak powiadomień</string>
+    <string name="no_followers">Brak obserwujących</string>
+    <string name="no_followings">Brak obserwowanych</string>
+    <string name="no_repos">Brak repozytoriów</string>
+    <string name="no_starred_repos">Brak repozytoriów oznaczonych gwiazdką</string>
+    <string name="no_commits">Brak commitów</string>
+    <string name="no_contributors">Brak współtwórców</string>
+    <string name="no_releases">Brak wydań</string>
+    <string name="no_events">Brak zdarzeń</string>
+    <string name="no_pull_requests">Brak pull requestów</string>
+    <string name="no_search_results">Brak wyników wyszukiwania</string>
+    <string name="read_write_permission_explanation">Pozwól FastHub przechowywać pliki na twoim urządzeniu, żeby móc je wyświetlić</string>
+    <string name="public_gists">Publiczne Gisty</string>
+    <string name="enable_ads">Odblokuj reklamy</string>
+    <string name="no_issues">Brak problemów</string>
+    <string name="no_unread_notifications">Brak nieprzeczytanych powiadomień.</string>
+    <string name="my_gists">Moje Gisty</string>
+    <string name="changelog">Dziennik zmian</string>
+    <string name="notifications_hint">Kliknij żeby pokazać listę powiadomień, lub przesuń żeby je pominąć</string>
+    <string name="home_long_click_hint">Kliknij i przytrzymaj, żeby przejść na Główną gdziekolwiek jesteś</string>
+    <string name="created">Utworzone</string>
+    <string name="assigned">Przydzielone</string>
+    <string name="mentioned">Byłeś wspomniany</string>
+    <string name="name">Nazwa</string>
+    <string name="color">Kolor</string>
+    <string name="create_label">Stwórz etykietę</string>
+    <string name="organization">Organizacja</string>
+    <string name="organizations">Organizacje</string>
+    <string name="people">Ludzie</string>
+    <string name="teams">Zespoły</string>
+    <string name="members">Uczestnicy</string>
+    <string name="no_members">Brak uczestników</string>
+    <string name="no_teams">Brak zespołów</string>
+    <string name="no_orgs">Brak organizacji</string>
+    <string name="no_orgs_dialog_title">Nie możesz znaleźć swoich organizacji\?</string>
+    <string name="mark_as_read">Oznacz jako przeczytane</string>
+    <string name="animations">Animacje</string>
+    <string name="dialog_animation_summary">Odblokuj animacje okien dialogowych</string>
+    <string name="dialog_animation_title">Animacje okien dialogowych</string>
+    <string name="milestones">Kamienie milowe</string>
+    <string name="assignee">Przydzielone do</string>
+    <string name="checks_failed">Weryfikacja nie powiodła się</string>
+    <string name="checks_pending">Trwa weryfikacja</string>
+    <string name="checks_passed">Weryfikacja przebiegła pomyślnie</string>
+    <string name="sort">Sortuj</string>
+    <string name="newest">Najnowsze</string>
+    <string name="oldest">Najstarsze</string>
+    <string name="most_commented">Najczęściej komentowane</string>
+    <string name="least_commented">Najmniej komentowane</string>
+    <string name="recently_updated">Ostatnio zaktualizowane</string>
+    <string name="least_recent_updated">Dawno nieaktualizowane</string>
+    <string name="up_to_date">Aplikacja zaktualizowana do najnowszej wersji!</string>
+    <string name="new_version">Dostępna jest nowa wersja.</string>
+    <string name="empty_search_error">Pole wyszukiwania nie może być puste</string>
+    <string name="long_press_repo_fab_hint">Kliknij i przytrzymaj, żeby szybko zgłosić problem</string>
+    <string name="commit_can_be_merged">Ten pull request może być scalony</string>
+    <string name="reviewed">zrecenzowany</string>
+    <string name="dismissed_review">zakończył recenzję</string>
+    <string name="approved_these_changes">zaakceptował te zmiany</string>
+    <string name="no_reactions">Brak reakcji</string>
+    <string name="reactions">Reakcje</string>
+    <string name="wrap_content">Zawijaj wiersze</string>
+    <string name="wrap_code_summary">Zawijaj wiersze w przeglądarce kodu</string>
+    <string name="wrap_code_title">Zawijaj wiersze w kodzie</string>
+    <string name="open_source_libs">Biblioteki Open source</string>
+    <string name="enable_notification_sound_summary">Odtwarzaj dźwięk, kiedy otrzymujesz powiadomienia.</string>
+    <string name="enable_notification_sound_title">Odtwarzaj dźwięki powiadomień</string>
+    <string name="enable_notification_title">Odblokuj powiadomienia</string>
+    <string name="login_with_personal_token">Zaloguj się osobistym tokenem (Personal Token)</string>
+    <string name="personal_token">Personal Token</string>
+    <string name="basic_login">Proste logowanie</string>
+    <string name="no_orgs_description">Jeśli jesteś przypisany do organizacji, ale ich tutaj nie widzisz wejdź na poniższą stronę.\n
+        https://help.github.com/articles/about-third-party-application-restrictions\nPS: Do logowania możesz użyć tokena dostępu (Access token),
+        który zezwoli FastHub wyświetlać twoje organizacje.\nMożesz również wejść na https://github.com/settings/applications i wyszukać FastHub,
+        wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\".</string>
+    <string name="insert">Wstaw</string>
+    <string name="select">Wybierz</string>
+    <string name="select_picture">Wybierz obrazek</string>
+    <string name="support_with_2_00">Przekaż $2.00</string>
+    <string name="support_with_5_00">Przekaż $5.00</string>
+    <string name="support_with_10_00">Przekaż $10.00</string>
+    <string name="support_with_20_00">Przekaż $20.00</string>
+    <string name="app_language">Język</string>
+    <string name="language">Język</string>
+    <string name="choose_language_title">Wybierz język</string>
+    <string name="choose_language_summary">Wybierz preferowany język</string>
+    <string name="un_subscribe">Anuluj subskrybcję</string>
+    <string name="from">od</string>
+    <string name="in_value">w</string>
+    <string name="subscribe">Subskrybuj</string>
+    <string name="repo_issues_is_disabled">Problemy dla tego repo są zablokowane</string>
+    <string name="access_token">Token</string>
+    <string name="basic_authentication">Proste logowanie</string>
+    <string name="choose_your_login_type">Wybierz sposób logowania</string>
+    <string name="files_only">W plikach</string>
+    <string name="paths_only">W ścieżkach</string>
+    <string name="review_requests">Prośby o recenzje</string>
+    <string name="join_slack">Dołącz na Slacku</string>
+    <string name="join_slack_message">Chcesz dołączyć do grupy FastHub na Slacku?</string>
+    <string name="successfully_invited">Zaproszono</string>
+    <string name="reply">Odpowiedz</string>
+    <string name="failed_selecting_image">Nie udało się wczytać obrazka.</string>
+    <string name="want_to_merge">chce się scalić</string>
+    <string name="watchers">Obserwujący</string>
+    <string name="reviewers">Recenzenci</string>
+    <string name="no_reviewers">Brak recenzentów</string>
+    <string name="sent_from_fasthub">Wysłano z mojego %1$s za pomocą %2$s%3$s</string>
+    <string name="enable_signature">Odblokuj podpis</string>
+    <string name="enable_signature_summary">Odblokuj podpis \"wysłano przez\"</string>
+    <string name="enable_signature_box">Odblokuj ramkę z podpisem</string>
+    <string name="enable_signature_box_summary">Odblokuj pole wyboru, żeby móc załączyć podpis w edytorze tekstu</string>
+    <string name="tags">Tagi</string>
+    <string name="add_comment">Skomentuj</string>
+    <string name="banners">Prezentujemy banery</string>
+    <string name="banners_info">Od wersji 2.5.0 FastHub pozwala na lepsze wyrażenie siebie za pomocą
+        banerów na stronie twojego profilu.\n\nKażdy użytkownik appki FastHub będzie widzieć twój
+        nagłówek, a ty zobaczysz nagłówki również u innych! Jeśli chcesz stworzyć swój baner,
+        upewnij się że ma rozdzielczość proporcjonalną do 1280x384, przeciwnie zostanie on
+        przycięty.\n\nAby dodać lub zmienić swój baner, swórz Gista o nazwie \"header.fst\" z
+        plikiem zawierającym bezpośredni link do grafiki twojego nagłówka.\n\nAlbo prościej, po
+        prostu wybierz plik obrazu używając przycisku poniżej!
+    </string>
+    <string name="edit_banner">WYBIERZ BANER</string>
+    <string name="image_error">Błąd podczas wczytywaniu pliku obrazu, spróbuj ponownie.</string>
+    <string name="trending">Na czasie</string>
+    <string name="not_really_working">Sortowanie po emoji nie działa z powodu ograniczeń GitHub</string>
+    <string name="scroll_up">Przewiń w górę</string>
+    <string name="scroll_down">Przewiń w dół</string>
+    <string name="participated">Byłeś uczestnikiem</string>
+    <string name="todo_checked">Todo zaznaczone</string>
+    <string name="todo_unchecked">Todo odznaczone</string>
+    <string name="divider">Separator</string>
+    <string name="no_user_found">Brak użytkowników</string>
+    <string name="no_trending">Nic się nie dzieje</string>
+    <string name="reset">Reset</string>
+    <string name="apply">Zastosuj</string>
+    <string name="filter">Filtr</string>
+    <string name="type">Typ</string>
+    <string name="sort_direction">Kryteria sortowania</string>
+    <string name="assignee_added">Assignee added successfully</string>
+    <string name="reviewer_added">Reviewer added successfully</string>
+    <string name="milestone_added">Milestone added successfully</string>
+    <string name="feed">Aktualności</string>
+    <string name="premium_theme">Motyw Premium</string>
+    <string name="choose_code_theme">Paleta kolorów dla kodu</string>
+    <string name="enterprise_login_warning">Zaloguj się używając twojego loginu do konta GitHub, żeby uzyskać dostęp do wszystkiego co oferuje GitHub API,
+        przeciwnie będzie cię wyrzucało za każdym razem jak spróbujesz uzyskać dostęp do czegokolwiek innego niż twój GitHub Enterprise, ponieważ token
+        wysyłany do GitHub API pochodzi z twojego konta Enterprise.</string>
+    <string name="add_account">Dodaj konto</string>
+    <string name="choose_account">Wybierz konto</string>
+    <string name="not_match">Brak dopasowania</string>
+    <string name="warning">Ostrzeżenie</string>
+    <string name="owner">Właściciel</string>
+    <string name="original_poster">Wysyłający (pierwotnie)</string>
+    <string name="cancel_reviews">Odrzuć recenzje</string>
+    <string name="colored_navbar_summary">Nie pozwalaj motywom zmieniać koloru paska nawigacji</string>
+    <string name="colored_navbar_title">Przezroczysty pasek nawigacji</string>
+    <string name="sound_chooser_summary">Wybierz niestandardowy dźwięk powiadomień</string>
+    <string name="sound_chooser_title">Wybierz dźwięk powiadomień</string>
+    <string name="disable_auto_gif_summary">Wyłącz automatyczne odtwarzanie GIFów</string>
+    <string name="disable_auto_gif_title">Wyłącz autoodtwarzanie GIFów</string>
+    <string name="request_changes">sugerowane zmiany</string>
+    <string name="google_play_service_error">Usługi Google Play są niedostępne</string>
+    <string name="edit_gist">Edytuj Gista</string>
+    <string name="content">Treść</string>
+    <string name="expand">Rozwiń</string>
+    <string name="copy_sha">Skopiuj SHA-1</string>
+    <string name="view_as_code">Wyświetl kod</string>
+    <string name="app_animation_title">Wyłącz animacje</string>
+    <string name="app_animation_summary">Wyłącz animacje w aplikacji.</string>
+    <string name="can_not_merge_pr">Ten PR nie może być teraz scalony.</string>
+    <string name="projects">Projekty</string>
+    <string name="no_projects">Brak projektów</string>
+    <string name="no_cards">Brak kart</string>
+    <string name="card_added_by">Dodane przez %s %s</string>
+    <string name="too_large_changes">Zbyt wiele różnic do wyświetlenia. Wyświetl je w przeglądarce internetowej.</string>
+    <string name="project">Projekt</string>
+    <string name="please_read">PRZECZYTAJ TO!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Dlaczego nie widzę moich <i>Prywatnych</i> ani <i>Publicznych</i> organizacji?</h5>
+        <p>Wejdź na https://github.com/settings/applications i wyszukaj FastHub, wejdź tam, przewiń do "Organization access" i kliknij przycisk "Grant".
+        Możesz również zalogować się za pomocą <b>Tokena dostępu</b> (<i>Access Token</i>), co uprości cały proces.</p>
+
+        <h5>• Próbowałem się zalogować za pomocą Tokena (<i>Access Token</i>) i jednorazowego hasła (<i>One-Time Password</i>, OTP), ale bez powodzenia. Co jest nie tak?</h5>
+        <p>Nie możesz jednocześnie logować się za pomocą Tokena i jednorazowego hasła. Z uwagi na ograniczoną żywotność takich haseł, trzeba by powtarzać proces logowania co kilka sekund.</p>
+
+        <h5>• Dlaczego nie widzę stron Wiki moich Prywatnych repozytoriów ani repozytoriów Enterprise?</h5>
+        <p>Aplikacja nie jest w stanie pobrać tokena sesji wymaganego przez Prywatne repozytoria z uwagi na sposób w jaki FastHub pobiera z GitHub strony Wiki.</p>
+
+        <h5>• Zalogowałem się na moje konto Enterprise. Dlaczego nie mam dostępu do niczego innego poza moim GitHub Enterprise?</h5>
+        <p>Cóż, to logiczne, że nie masz dostępu do niczego poza twoim kontem Enterprise. FastHub próbuje uzyskać wszystkie możliwe zezwolenia, ale w większości sytuacji nie może
+        zrobić nic poza tym, ponieważ twoje dane logowania są poza serwerem GitHub. Jednak w <b>niektórych</b> przypadkach, twój token OAuth może rozwiązać sprawę.</p>
+
+        <h5>• Dlaczego mam problemy z edycją Problemów/Pull Requestów (PRów)?</h5>
+        <p>Jeśli nie możesz edytować Problemów/PRów w twoich publicznych repozytoriach Organizacji, zwróć się z prośbą do twojej Organizacji o przydzielenie dostępu dla FastHub.
+        Możesz również zalogować się za pomocą Tokena (<i>Access Token</i>).</p>
+
+        <h5>• Mam kłopoty! / Chciałbym zasugerować zmiany!</h5>
+        <p>Wejdź na https://github.com/k0shk0sh/FastHub/issues/new i zgłoś Problem, żeby poinformować o błędach i propozycjach nowych funkcjonalności. Zanim zgłosisz swój problem, zachęcam
+        do użycia wyszukiwarki, żeby sprawdzić czy podobny problem nie został już stworzony. Każdy duplikat zgłoszenia zostanie oznaczony jako duplikat i takie zgłoszenie zostanie zamknięte.</p>
+
+        <h5>• Jak zdobyć KOD PROMO?</h5>
+        <p>Jeśli jesteś studentem, będę potrzebować na to dowodu. Prześlij poniższe dokumenty na mój adres e-mail:</p>
+        <ul>
+        <li>Nazwa użytkownika na GitHub;</li>
+        <li>Skan legitymacji studenckiej oraz dowodu osobistego/paszportu (tak żeby było widać twoje imię i nazwisko oraz zdjęcie, żebym mógł je porównać!);</li>
+        <li>Datę rozpoczęcia i ukończenia uczelni.</li>
+        </ul>
+        <p>Jeśli nie jesteś studentem ale nie stać się na zakup wersji PRO, musisz:</p>
+        <ul>
+        <li>Podać nazwę użytkownika na GitHub;</li>
+        <li>Napisać artykuł o FastHub na jakimś portalu społecznościowym, na przykład Medium;</li>
+        <li>Udowodnić, że ten artykuł jest twojego autorstwa.</li>
+        </ul>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Dodano komentarze</string>
+    <string name="clear_search_keywords">Wyczyść historię wyszukiwania</string>
+    <string name="restore_purchases">Dokonane płatności</string>
+    <string name="include_forks">Uwzględnij Forki</string>
+    <string name="comment_is_too_far_to_paginate">Komentarz jest za długi, żeby podzielić go na strony</string>
+    <string name="search_results_warning">Zbyt wiele odpowiedzi \nPokazywane jest tylko tyle na ile pozwala API</string>
+    <string name="disable_loading_image_title">Zablokuj wczytywanie obrazków</string>
+    <string name="disable_loading_image_summary">Nie wczytuj obrazków przy włączonej transmisji danych</string>
+    <string name="report_issue_warning">Problem zostnie zgłoszony do repozytorium FastHub w serwisie GitHub</string>
+    <string name="block">Zablokuj</string>
+</resources>

@@ -226,7 +226,6 @@
     <string name="turn_off">Vypnout</string>
     <string name="unauthorized_user">Neoprávněný uživatel</string>
     <string name="two_factors_otp_error">Je zapotřebí dvou faktorové OTP</string>
-    <string name="no_issue">Žádný problém</string>
     <string name="copy">Kopírovat</string>
     <string name="success_copied">Zkopírováno</string>
     <string name="commit_message">Zpráva k příspěvku</string>
@@ -264,11 +263,8 @@
     <string name="no_commits">Žádné příspěvky</string>
     <string name="no_contributors">Žádní přispěvatelé</string>
     <string name="no_releases">Žádná vydání</string>
-    <string name="no_closed_issues">Žádné uzavřené problémy</string>
-    <string name="no_opened_issues">Žádné otevřené problémy</string>
     <string name="no_events">Žádné události</string>
-    <string name="no_open_pull_requests">Žádné otevřené požadavky</string>
-    <string name="no_closed_pull_request">Žádné uzavřené požadavky</string>
+    <string name="no_pull_requests">Žádné pull requests</string>
     <string name="no_search_results">Žádné výsledky vyhledávání</string>
     <string name="read_write_permission_explanation">Prosím, povolte oprávnění pro povolení službě FastHub
         ukládat soubory do vašeho zařízení pro jejich pozdější zobrazení</string>
