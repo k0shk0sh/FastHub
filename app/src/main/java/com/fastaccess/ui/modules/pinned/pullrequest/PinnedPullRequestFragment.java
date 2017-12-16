@@ -64,7 +64,7 @@ public class PinnedPullRequestFragment extends BaseFragment<PinnedPullRequestMvp
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         adapter = new PullRequestAdapter(getPresenter().getPinnedPullRequest(), true, true);
         adapter.setListener(getPresenter());
-        stateLayout.setEmptyText(getString(R.string.no) + " " + getString(R.string.pull_requests));
+        stateLayout.setEmptyText(getString((R.string.no_pull_requests)));
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();

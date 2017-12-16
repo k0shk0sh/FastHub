@@ -228,7 +228,6 @@
     <string name="turn_off">Matikan</string>
     <string name="unauthorized_user">Pengguna tidak sah</string>
     <string name="two_factors_otp_error">Dua faktor OTP diperlukan</string>
-    <string name="no_issue">Tidak ada isu</string>
     <string name="copy">Salin</string>
     <string name="success_copied">Disalin</string>
     <string name="commit_message">Pesan komit</string>
@@ -266,11 +265,8 @@
     <string name="no_commits">Tidak ada komit</string>
     <string name="no_contributors">Tidak ada kontributor</string>
     <string name="no_releases">Tidak ada rilis</string>
-    <string name="no_closed_issues">Tidak ada isu tertutup</string>
-    <string name="no_opened_issues">Tidak ada isu terbuka</string>
     <string name="no_events">Tidak ada peristiwa</string>
-    <string name="no_open_pull_requests">Tidak ada pull request terbuka</string>
-    <string name="no_closed_pull_request">Tidak ada pull request tertutup</string>
+    <string name="no_pull_requests">Tidak ada pull request</string>
     <string name="no_search_results">Tidak ada hasil pencarian</string>
     <string name="read_write_permission_explanation">Tolong menerima perintah izin dari FastHub untuk menyimpan berkas di
         perangkat Anda sehingga FastHub dapat meninjau mereka</string>

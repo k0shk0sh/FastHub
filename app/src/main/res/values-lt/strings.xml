@@ -226,7 +226,6 @@
     <string name="turn_off">Išjungti</string>
     <string name="unauthorized_user">Neautorizuotas naudotojas</string>
     <string name="two_factors_otp_error">Reikia 2FA OTP kodo</string>
-    <string name="no_issue">Nėra talonų(-o)</string>
     <string name="copy">Kopijuoti</string>
     <string name="success_copied">Nukopijuota</string>
     <string name="commit_message">Pakeitimo (commito) pastabos</string>
@@ -264,11 +263,8 @@
     <string name="no_commits">Nėra pakeitimų</string>
     <string name="no_contributors">Nėra bendrų autorių</string>
     <string name="no_releases">Nėra leidimų</string>
-    <string name="no_closed_issues">Nėra užvertų talonų</string>
-    <string name="no_opened_issues">Nėra atvertų talonų</string>
     <string name="no_events">Nėra įvykių</string>
-    <string name="no_open_pull_requests">Nėra atvirų PR</string>
-    <string name="no_closed_pull_request">Nėra užvertų PR</string>
+    <string name="no_pull_requests">Nėra PR</string>
     <string name="no_search_results">Paieška nieko nerado</string>
     <string name="read_write_permission_explanation">Leiskite programėlei talpinti failus, jeigu norite peržiūrėti juos</string>
     <string name="public_gists">Vieši gistai</string>

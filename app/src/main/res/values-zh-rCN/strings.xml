@@ -19,7 +19,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
 
 <!-- 原文版本 (Original strings): 2017/09/24 -->
 <resources>
-    <string name="in_progress">加载中, 请稍候...</string>
+    <string name="in_progress">加载中, 请稍候…</string>
     <string name="action">动作</string>
     <string name="settings">设置</string>
     <string name="discard">丢弃</string>
@@ -50,8 +50,8 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="minimum_three_chars">最少字数 (3)</string>
     <string name="no_file_found">未找到文件</string>
     <string name="no_readme_found">没有 Readme</string>
-    <string name="downloading">下载中...</string>
-    <string name="downloading_file">下载文件中...</string>
+    <string name="downloading">下载中…</string>
+    <string name="downloading_file">下载文件中…</string>
     <string name="released">发布于</string>
     <string name="drafted">草稿</string>
     <string name="releases">发布</string>
@@ -252,7 +252,6 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="turn_off">关闭</string>
     <string name="unauthorized_user">未登录</string>
     <string name="two_factors_otp_error">需要两步验证</string>
-    <string name="no_issue">没有 Issue</string>
     <string name="copy">复制</string>
     <string name="success_copied">已复制</string>
     <string name="commit_message">提交说明</string>
@@ -290,11 +289,8 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="no_commits">没有 Commit</string>
     <string name="no_contributors">没有贡献者</string>
     <string name="no_releases">没有 Releases</string>
-    <string name="no_closed_issues">没有关闭的 Issue</string>
-    <string name="no_opened_issues">没有打开的 Issue</string>
     <string name="no_events">没有事件</string>
-    <string name="no_open_pull_requests">没有打开的 Pull Request</string>
-    <string name="no_closed_pull_request">没有关闭的 Pull Request</string>
+    <string name="no_pull_requests">没有 Pull Request</string>
     <string name="no_search_results">没有搜索结果</string>
     <string name="read_write_permission_explanation">请接受权限请求, 允许 FastHub 在设备上储存文件</string>
     <string name="public_gists">公共 Gist</string>

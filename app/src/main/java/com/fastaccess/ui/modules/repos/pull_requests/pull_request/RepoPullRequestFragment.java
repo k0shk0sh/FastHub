@@ -109,8 +109,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
         } else if (getPresenter().getPullRequests().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
-        stateLayout.setEmptyText(getPresenter().getIssueState() == IssueState.open
-                                 ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
+        stateLayout.setEmptyText(R.string.no_pull_requests);
         fastScroller.attachRecyclerView(recycler);
     }
 
