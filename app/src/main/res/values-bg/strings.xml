@@ -228,7 +228,6 @@
     <string name="turn_off">Изключване</string>
     <string name="unauthorized_user">Неоторизиран потребител</string>
     <string name="two_factors_otp_error">Необходима е еднократна парола за двуфакторно удостоверяване</string>
-    <string name="no_issue">Няма issue</string>
     <string name="copy">Копирай URL</string>
     <string name="success_copied">Копирано</string>
     <string name="commit_message">Commit съобщение</string>
@@ -267,11 +266,8 @@
     <string name="no_commits">Няма commits</string>
     <string name="no_contributors">Няма сътрудници</string>
     <string name="no_releases">Няма releases</string>
-    <string name="no_closed_issues">Няма затворени issues</string>
-    <string name="no_opened_issues">Няма отворени issues</string>
     <string name="no_events">Няма събития</string>
-    <string name="no_open_pull_requests">Няма отворени pull requests</string>
-    <string name="no_closed_pull_request">Няма затворени pull requests</string>
+    <string name="no_pull_requests">Няма pull requests</string>
     <string name="no_search_results">Няма резултати от търсене</string>
     <string name="read_write_permission_explanation">Моля приеми изискваните разрешения, за да може FastHub да
         съхранява файлове на устройството ти, които да можеш да преглеждаш</string>

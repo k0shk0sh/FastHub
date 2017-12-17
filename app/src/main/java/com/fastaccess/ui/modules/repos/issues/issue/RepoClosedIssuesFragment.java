@@ -95,7 +95,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, issues can't be proceeded.");
         }
-        stateLayout.setEmptyText(R.string.no_closed_issues);
+        stateLayout.setEmptyText(R.string.no_issues);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

@@ -226,7 +226,6 @@
     <string name="turn_off">Apagar</string>
     <string name="unauthorized_user">Usuario sin autorización</string>
     <string name="two_factors_otp_error">Se requiere OTP de dos factores</string>
-    <string name="no_issue">Sin issues</string>
     <string name="copy">Copiar</string>
     <string name="success_copied">Copiado</string>
     <string name="commit_message">Mensaje del commit</string>
@@ -264,11 +263,8 @@
     <string name="no_commits">No hay commits</string>
     <string name="no_contributors">No hay colaboradores</string>
     <string name="no_releases">No hay releases</string>
-    <string name="no_closed_issues">No hay issues cerrados</string>
-    <string name="no_opened_issues">No hay issues abiertos</string>
     <string name="no_events">No hay eventos</string>
-    <string name="no_open_pull_requests">No hay pull requests abiertos</string>
-    <string name="no_closed_pull_request">No hay pull requests cerrados</string>
+    <string name="no_pull_requests">No hay pull requests</string>
     <string name="no_search_results">Búsqueda sin resultados</string>
     <string name="read_write_permission_explanation">Por favor acepta los permisos para que FastHub almacene archivos en tu dispositivo para poder verlos</string>
     <string name="public_gists">Gists publicos</string>
