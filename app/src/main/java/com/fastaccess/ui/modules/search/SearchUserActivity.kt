@@ -30,7 +30,7 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
     @State var username = ""
     @State var searchTerm = ""
 
-    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    @OnTextChanged(value = [R.id.searchEditText], callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     fun onTextChange(str: Editable) {
         searchTerm = str.toString()
         if (searchTerm.isEmpty()) {
