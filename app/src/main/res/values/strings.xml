@@ -126,6 +126,7 @@
     <string name="feeds" translatable="false">Feeds</string>
     <!-- END OF DO NOT COPY, START COPYING FROM LINE BELOW -->
 
+    <!--Please DO NOT translate github terms, such as Pull Request, Issues, Commits & etc.-->
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
