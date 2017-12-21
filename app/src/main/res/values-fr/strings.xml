@@ -12,7 +12,7 @@
     <string name="failed_login">Impossible de se connecter</string>
     <string name="sign_in">Se connecter</string>
     <string name="share">Partager</string>
-    <string name="reload">Rafraichir</string>
+    <string name="reload">Rafraîchir</string>
     <string name="profile">Profil</string>
     <string name="error">Erreur</string>
     <string name="press_again_to_exit">Appuyer à nouveau pour quitter</string>
@@ -26,7 +26,7 @@
     <string name="unfollow">Se désabonner</string>
     <string name="user">Utilisateur</string>
     <string name="details">Détails</string>
-    <string name="archive_file_detected_error">Fichier compressé détecté, merci de le télécharger pour pouvoir voir son contenu.</string>
+    <string name="archive_file_detected_error">Fichier compressé détecté, merci de le télécharger pour pouvoir afficher son contenu.</string>
     <string name="minimum_three_chars">Nombre minimum de caractères (2)</string>
     <string name="no_file_found">Aucun fichier trouvé</string>
     <string name="no_readme_found">Aucun fichier readme trouvé</string>
@@ -317,7 +317,7 @@
     <string name="approved_these_changes">Valider ces changements</string>
     <string name="no_reactions">Aucune réaction</string>
     <string name="reactions">Réactions</string>
-    <string name="wrap_content">Wrap content</string>
+    <string name="wrap_content">Retour à la ligne du contenu</string>
     <string name="wrap_code_summary">Wrap code in code viewer by default</string>
     <string name="wrap_code_title">Wrap Code</string>
     <string name="open_source_libs">Logiciels Open source</string>
@@ -416,19 +416,19 @@
     <string name="sound_chooser_title">Choisir le son de notification</string>
     <string name="disable_auto_gif_summary">Désactiver la lecture automatique des GIFs</string>
     <string name="disable_auto_gif_title">Désactiver la lecture des GIFs</string>
-    <string name="request_changes">requested changes</string>
+    <string name="request_changes">changements requis</string>
     <string name="google_play_service_error">Google Play Services sont indisponibles</string>
     <string name="edit_gist">Éditer le Gist</string>
-    <string name="content">Content</string>
-    <string name="expand">expand</string>
+    <string name="content">Contenu</string>
+    <string name="expand">développer</string>
     <string name="copy_sha">Copier SHA-1</string>
     <string name="view_as_code">Voir le code</string>
-    <string name="app_animation_title">Disable In-App Animations</string>
-    <string name="app_animation_summary">Disable in-app animations everywhere.</string>
+    <string name="app_animation_title">Désactiver les animations In-App</string>
+    <string name="app_animation_summary">Désactiver les animations In-App partout.</string>
     <string name="can_not_merge_pr">Cette Pull Request ne peut pas être fusionnée actuellement.</string>
     <string name="projects">Projets</string>
     <string name="no_projects">Aucun projet</string>
-    <string name="no_cards">No Cards</string>
+    <string name="no_cards">Aucune carte</string>
     <string name="card_added_by">Ajouté par %s %s</string>
     <string name="too_large_changes">Trop de différences à afficher. Merci de les afficher via le navigateur</string>
     <string name="project">Projet</string>
@@ -476,9 +476,9 @@
     <string name="restore_purchases">Restore Purchases</string>
     <string name="include_forks">Inclure les Forks</string>
     <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
-    <string name="search_results_warning">Please be more specific with your search</string>
-    <string name="disable_loading_image_title">Disable Loading Image</string>
+    <string name="search_results_warning">Merci de préciser votre recherche</string>
+    <string name="disable_loading_image_title">Désactiver image de chargement</string>
     <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
-    <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
+    <string name="report_issue_warning">Ce ticket sera soumis au dépôt FastHub sur GitHub</string>
     <string name="block">Block</string>
 </resources>
