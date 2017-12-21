@@ -342,4 +342,537 @@
     <string name="successfully_invited">Invitato con successo</string>
     <string name="reply">Rispondi</string>
     <string name="failed_selecting_image">Caricamento immagine fallito.</string>
+    <string name="private_repo">Private</string>
+
+<string name="rect_avatar_summary">Use rounded squarish avatars instead of circular ones</string>
+
+<string name="rect_avatar_title">Squarish Avatars</string>
+
+<string name="rate_app">Rate this app</string>
+
+<string name="author">Author</string>
+
+<string name="fork_github">Fork on GitHub</string>
+
+<string name="send_email">Send an email</string>
+
+<string name="question_concerning_fasthub">Question concerning FastHub</string>
+
+<string name="feedback">Feedback</string>
+
+<string name="report_issue">Report an issue</string>
+
+<string name="report_issue_here">Having an issue? Report it here</string>
+
+<string name="about">About</string>
+
+<string name="notification_settings">Notifications</string>
+
+<string name="turn_off">Turn off</string>
+
+<string name="unauthorized_user">Unauthorized user</string>
+
+<string name="two_factors_otp_error">Two factors OTP is required</string>
+
+<string name="copy">Copy URL</string>
+
+<string name="success_copied">Copied</string>
+
+<string name="commit_message">Commit message</string>
+
+<string name="network_error">Error occurred while communicating to the server</string>
+
+<string name="unexpected_error">Unexpected error while requesting API</string>
+
+<string name="request_error">Error requesting server, please try again later</string>
+
+<string name="marking_as_read">Marking notification as read</string>
+
+<string name="forking_gist">Forking gist</string>
+
+<string name="login_using_your_default_browser">Login using your default browser (OAuth)</string>
+
+<string name="or_character">OR</string>
+
+<string name="mark_notification_title">Disable Notification Read Status</string>
+
+<string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
+
+<string name="theme_title">Theme</string>
+
+<string name="theme_summary">Choose your default theme</string>
+
+<string name="theme_color_summary">Choose theme accent color</string>
+
+<string name="theme_color_title">Theme Accent Color</string>
+
+<string name="website">Website</string>
+
+<string name="support_development">Support Development</string>
+
+<string name="success_purchase_message">Thanks for being extremely awesome!</string>
+
+<string name="change_theme_warning">If the theme didn\'t apply properly, please kill and open the app manually.</string>
+
+<string name="pin">Pin</string>
+
+<string name="pinned">Pinned</string>
+
+<string name="unpin">Unpin</string>
+
+<string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.\nP.S: The more you access a Repo the more on top
+
+it will be.</string>
+
+<string name="yes">Yes</string>
+
+<string name="no">No</string>
+
+<string name="no_feeds">No feeds</string>
+
+<string name="no_gists">No gists</string>
+
+<string name="no_comments">No comments</string>
+
+<string name="no_notifications">No notifications</string>
+
+<string name="no_followers">No followers</string>
+
+<string name="no_followings">No followings</string>
+
+<string name="no_repos">No repositories</string>
+
+<string name="no_starred_repos">No starred repositories</string>
+
+<string name="no_commits">No commits</string>
+
+<string name="no_contributors">No contributors</string>
+
+<string name="no_releases">No releases</string>
+
+<string name="no_events">No events</string>
+
+<string name="no_pull_requests">No pull requests</string>
+
+<string name="no_search_results">No search results</string>
+
+<string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
+
+store the files on your device to be able to view them</string>
+
+<string name="public_gists">Public Gists</string>
+
+<string name="enable_ads">Enable Ads</string>
+
+<string name="no_issues">No issues</string>
+
+<string name="no_unread_notifications">No unread notifications.</string>
+
+<string name="my_gists">My Gists</string>
+
+<string name="changelog">Changelog</string>
+
+<string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
+
+<string name="home_long_click_hint">Long press to navigate to main screen from anywhere</string>
+
+<string name="created">Created</string>
+
+<string name="assigned">Assigned</string>
+
+<string name="mentioned">Mentioned</string>
+
+<string name="name">Name</string>
+
+<string name="color">Color</string>
+
+<string name="create_label">Create Label</string>
+
+<string name="organization">Organization</string>
+
+<string name="organizations">Organizations</string>
+
+<string name="people">People</string>
+
+<string name="teams">Teams</string>
+
+<string name="members">Members</string>
+
+<string name="no_members">No members</string>
+
+<string name="no_teams">No teams</string>
+
+<string name="no_orgs">No Organizations</string>
+
+<string name="no_orgs_dialog_title">Can\'t find your Organisations\?</string>
+
+<string name="mark_as_read">Mark as read</string>
+
+<string name="animations">Animations</string>
+
+<string name="dialog_animation_summary">Enable popups animations</string>
+
+<string name="dialog_animation_title">Popup animation</string>
+
+<string name="milestones">Milestones</string>
+
+<string name="assignee">Assignee</string>
+
+<string name="checks_failed">Some checks have failed</string>
+
+<string name="checks_pending">Some checks are pending</string>
+
+<string name="checks_passed">All checks have passed</string>
+
+<string name="sort">Sort</string>
+
+<string name="newest">Newest</string>
+
+<string name="oldest">Oldest</string>
+
+<string name="most_commented">Most commented</string>
+
+<string name="least_commented">Least commented</string>
+
+<string name="recently_updated">Recently updated</string>
+
+<string name="least_recent_updated">Least recently updated</string>
+
+<string name="up_to_date">You\'re up to date!</string>
+
+<string name="new_version">A new version is available.</string>
+
+<string name="empty_search_error">Search field can\'t be empty</string>
+
+<string name="long_press_repo_fab_hint">Long press to create issue ticket on the fly</string>
+
+<string name="commit_can_be_merged">This pull request can be merged</string>
+
+<string name="reviewed">reviewed</string>
+
+<string name="dismissed_review">dismissed their review</string>
+
+<string name="approved_these_changes">approved these changes</string>
+
+<string name="no_reactions">No reactions</string>
+
+<string name="reactions">Reactions</string>
+
+<string name="wrap_content">Wrap content</string>
+
+<string name="wrap_code_summary">Wrap code in code viewer by default</string>
+
+<string name="wrap_code_title">Wrap Code</string>
+
+<string name="open_source_libs">Open source libraries</string>
+
+<string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
+
+<string name="enable_notification_sound_title">Enable Notification Sound</string>
+
+<string name="enable_notification_title">Enable Notifications</string>
+
+<string name="login_with_personal_token">Login with a personal token</string>
+
+<string name="personal_token">Personal Token</string>
+
+<string name="basic_login">Login via basic auth</string>
+
+<string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
+
+below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
+
+grant FastHub access to list your organizations.\nYou could also open up https://github.com/settings/applications and look for
+
+FastHub, open it then scroll to Organization access and click on Grant Button.</string>
+
+<string name="insert">Insert</string>
+
+<string name="select">Select</string>
+
+<string name="select_picture">Select Picture</string>
+
+<string name="support_with_2_00">Support with $2.00</string>
+
+<string name="support_with_5_00">Support with $5.00</string>
+
+<string name="support_with_10_00">Support with $10.00</string>
+
+<string name="support_with_20_00">Support with $20.00</string>
+
+<string name="app_language">Language</string>
+
+<string name="language">Language</string>
+
+<string name="choose_language_title">Choose Language</string>
+
+<string name="choose_language_summary">Choose your preferred language</string>
+
+<string name="un_subscribe">Unsubscribe</string>
+
+<string name="from">from</string>
+
+<string name="in_value">in</string>
+
+<string name="subscribe">Subscribe</string>
+
+<string name="repo_issues_is_disabled">Issues have been disabled in this repo</string>
+
+<string name="access_token">Access Token</string>
+
+<string name="basic_authentication">Basic Authentication</string>
+
+<string name="choose_your_login_type">Choose your login type</string>
+
+<string name="files_only">In Files</string>
+
+<string name="paths_only">In Paths</string>
+
+<string name="review_requests">Review Requests</string>
+
+<string name="join_slack">Join Slack</string>
+
+<string name="join_slack_message">Would you like to join FastHub Slack group?</string>
+
+<string name="successfully_invited">Successfully invited</string>
+
+<string name="reply">Reply</string>
+
+<string name="failed_selecting_image">Failed to load image.</string>
+
+<string name="want_to_merge">wants to merge</string>
+
+<string name="watchers">Watchers</string>
+
+<string name="reviewers">Reviewers</string>
+
+<string name="no_reviewers">No reviewers</string>
+
+<string name="sent_from_fasthub">Sent from my %1$s using %2$s%3$s</string>
+
+<string name="enable_signature">Enable Signature</string>
+
+<string name="enable_signature_summary">Enable sent via signature</string>
+
+<string name="enable_signature_box">Enable Signature Box</string>
+
+<string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
+
+<string name="tags">Tags</string>
+
+<string name="add_comment">Add comment</string>
+
+<string name="banners">Introducing Banners</string>
+
+<string name="banners_info">With FastHub 2.5.0, you can now better express yourself with banners
+
+for your profile page.\n\nAnyone using the FastHub app, will see your header, and you\'ll
+
+begin seeing other peoples headers as well! If you\'d like to create a banner for yourself,
+
+make it 1280x384 or divisible, otherwise, it may get cropped.\n\nYou can add or change your
+
+banner at any time, by creating a gist described "header.fst" with a file containing a
+
+direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
+
+</string>
+
+<string name="edit_banner">CHOOSE BANNER</string>
+
+<string name="image_error">Error loading image, please try again.</string>
+
+<string name="trending">Trending</string>
+
+<string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
+
+<string name="scroll_up">Scroll Up</string>
+
+<string name="scroll_down">Scroll down</string>
+
+<string name="participated">Participated</string>
+
+<string name="todo_checked">Todo checked</string>
+
+<string name="todo_unchecked">Todo unchecked</string>
+
+<string name="divider">Divider</string>
+
+<string name="no_user_found">No user found</string>
+
+<string name="no_trending">No trending</string>
+
+<string name="reset">Reset</string>
+
+<string name="apply">Apply</string>
+
+<string name="filter">Filter</string>
+
+<string name="type">Type</string>
+
+<string name="sort_direction">Sort direction</string>
+
+<string name="assignee_added">Assignee added successfully</string>
+
+<string name="reviewer_added">Reviewer added successfully</string>
+
+<string name="milestone_added">Milestone added successfully</string>
+
+<string name="feed">Feed</string>
+
+<string name="premium_theme">Premium Theme</string>
+
+<string name="choose_code_theme">Code color palette</string>
+
+<string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
+
+otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
+
+GitHub API is coming from your Enterprise Account.</string>
+
+<string name="add_account">Add Account</string>
+
+<string name="choose_account">Choose Account</string>
+
+<string name="not_match">Not match</string>
+
+<string name="warning">Warning</string>
+
+<string name="owner">Owner</string>
+
+<string name="original_poster">Original Poster</string>
+
+<string name="cancel_reviews">Cancel Reviews</string>
+
+<string name="colored_navbar_summary">Disable colored navigation bar in themes</string>
+
+<string name="colored_navbar_title">Colorless Navbar</string>
+
+<string name="sound_chooser_summary">Choose custom notification sound</string>
+
+<string name="sound_chooser_title">Choose Notification Sound</string>
+
+<string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
+
+<string name="disable_auto_gif_title">Disable Playing GIF</string>
+
+<string name="request_changes">requested changes</string>
+
+<string name="google_play_service_error">Google Play Services are unavailable</string>
+
+<string name="edit_gist">Edit Gist</string>
+
+<string name="content">Content</string>
+
+<string name="expand">expand</string>
+
+<string name="copy_sha">Copy SHA-1</string>
+
+<string name="view_as_code">View as code</string>
+
+<string name="app_animation_title">Disable In-App Animations</string>
+
+<string name="app_animation_summary">Disable in-app animations everywhere.</string>
+
+<string name="can_not_merge_pr">This PR can\'t be merged now.</string>
+
+<string name="projects">Projects</string>
+
+<string name="no_projects">No Projects</string>
+
+<string name="no_cards">No Cards</string>
+
+<string name="card_added_by">Added by %s %s</string>
+
+<string name="too_large_changes">Too many differences to display. Please, view them via browser</string>
+
+<string name="project">Project</string>
+
+<string name="please_read">PLEASE READ!</string>
+
+<string name="fasthub_faq_description">
+
+<![CDATA[
+
+<h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+
+<p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
+
+Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+
+<h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
+
+<p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
+
+<h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
+
+<p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
+
+<h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
+
+<p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
+
+in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
+
+<h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
+
+<p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+
+<h5>• I\'m having problems! / I want to suggest you some things!</h5>
+
+<p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+
+search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
+
+<h5>• How can I get a PROMO CODE?</h5>
+
+<p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
+
+<ul>
+
+<li>Your GitHub username;</li>
+
+<li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
+
+<li>Your education start and graduation dates.</li>
+
+</ul>
+
+<p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
+
+<ul>
+
+<li>Your GitHub username;</li>
+
+<li>Write an article about FastHub in any social media, such as Medium;</li>
+
+<li>Prove your authorship.</li>
+
+</ul>
+
+]]></string>
+
+<string name="faq">FAQ</string>
+
+<string name="comments_added_successfully">Comments added successfully</string>
+
+<string name="clear_search_keywords">Clear Search History</string>
+
+<string name="restore_purchases">Restore Purchases</string>
+
+<string name="include_forks">Include Forks</string>
+
+<string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+
+<string name="search_results_warning">Too many responses \nShowing the max API allows</string>
+
+<string name="disable_loading_image_title">Disable Loading Image</string>
+
+<string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+
+<string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
+
+<string name="block">Block</string>
+
+
 </resources>
