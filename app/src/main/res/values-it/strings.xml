@@ -342,35 +342,35 @@
     <string name="successfully_invited">Invitato con successo</string>
     <string name="reply">Rispondi</string>
     <string name="failed_selecting_image">Caricamento immagine fallito.</string>
-    <string name="private_repo">Private</string>
+    <string name="private_repo">Privato</string>
 
-<string name="rect_avatar_summary">Use rounded squarish avatars instead of circular ones</string>
+<string name="rect_avatar_summary">Usa gli avatar rotondi squadrati invece che quelli circolari</string>
 
-<string name="rect_avatar_title">Squarish Avatars</string>
+<string name="rect_avatar_title">Avatar Squadrati</string>
 
-<string name="rate_app">Rate this app</string>
+<string name="rate_app">Valuta questa app</string>
 
-<string name="author">Author</string>
+<string name="author">Autore</string>
 
-<string name="fork_github">Fork on GitHub</string>
+<string name="fork_github">Fork su GitHub</string>
 
-<string name="send_email">Send an email</string>
+<string name="send_email">Invia una email</string>
 
-<string name="question_concerning_fasthub">Question concerning FastHub</string>
+<string name="question_concerning_fasthub">Domanda riguardante FastHub</string>
 
 <string name="feedback">Feedback</string>
 
-<string name="report_issue">Report an issue</string>
+<string name="report_issue">Segnala un problema</string>
 
-<string name="report_issue_here">Having an issue? Report it here</string>
+<string name="report_issue_here">Hai un problema? Segnalalo qui</string>
 
-<string name="about">About</string>
+<string name="about">Informazioni</string>
 
-<string name="notification_settings">Notifications</string>
+<string name="notification_settings">Notifiche</string>
 
-<string name="turn_off">Turn off</string>
+<string name="turn_off">Disattiva</string>
 
-<string name="unauthorized_user">Unauthorized user</string>
+<string name="unauthorized_user">Utenti non autorizzati</string>
 
 <string name="two_factors_otp_error">Two factors OTP is required</string>
 
