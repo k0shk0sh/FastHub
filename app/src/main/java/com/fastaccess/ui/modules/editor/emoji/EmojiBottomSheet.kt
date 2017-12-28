@@ -7,12 +7,12 @@ import android.view.View
 import butterknife.BindView
 import butterknife.OnTextChanged
 import com.fastaccess.R
-import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.ui.adapter.EmojiAdapter
 import com.fastaccess.ui.base.BaseMvpBottomSheetDialogFragment
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 
 /**
  * Created by kosh on 17/08/2017.
@@ -54,16 +54,16 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
         adapter.clear()
     }
 
-    override fun onAddEmoji(emoji: Emoji) {
+    override fun onAddEmoji(emoji: EmojiModel) {
         adapter.addItem(emoji)
     }
 
-    override fun onItemClick(position: Int, v: View?, item: Emoji) {
+    override fun onItemClick(position: Int, v: View?, item: EmojiModel) {
         emojiCallback?.onEmojiAdded(item)
         dismiss()
     }
 
-    override fun onItemLongClick(position: Int, v: View?, item: Emoji?) {}
+    override fun onItemLongClick(position: Int, v: View?, item: EmojiModel?) {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

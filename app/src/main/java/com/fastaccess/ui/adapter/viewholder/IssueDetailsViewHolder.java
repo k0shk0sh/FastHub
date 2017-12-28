@@ -23,7 +23,6 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
-import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -201,13 +200,13 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     private void bind(@NonNull Issue issueModel) {
-        setup(issueModel.getUser(), issueModel.getBodyHtml(), issueModel.getReactions());
+        setup(issueModel.getUser(), issueModel.getBody(), issueModel.getReactions());
         setupDate(issueModel.getCreatedAt(), issueModel.getUpdatedAt());
         setupLabels(issueModel.getLabels());
     }
 
     private void bind(@NonNull PullRequest pullRequest) {
-        setup(pullRequest.getUser(), pullRequest.getBodyHtml(), pullRequest.getReactions());
+        setup(pullRequest.getUser(), pullRequest.getBody(), pullRequest.getReactions());
         setupDate(pullRequest.getCreatedAt(), pullRequest.getUpdatedAt());
         setupLabels(pullRequest.getLabels());
     }
@@ -268,9 +267,9 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     @Override protected void onViewIsDetaching() {
-        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
-        if (drawableGetter != null) {
-            drawableGetter.clear(drawableGetter);
-        }
+//        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
+//        if (drawableGetter != null) {
+//            drawableGetter.clear(drawableGetter);
+//        }
     }
 }

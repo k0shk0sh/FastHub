@@ -4,20 +4,20 @@ import android.view.View
 import android.view.ViewGroup
 import butterknife.BindView
 import com.fastaccess.R
-import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.ui.widgets.FontTextView
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 
 /**
  * Created by kosh on 17/08/2017.
  */
 class EmojiViewHolder private constructor(view: View, adapter: BaseRecyclerAdapter<*, *, *>)
-    : BaseViewHolder<Emoji>(view, adapter) {
+    : BaseViewHolder<EmojiModel>(view, adapter) {
 
     @BindView(R.id.emoji) lateinit var emojiTextView: FontTextView
 
-    override fun bind(t: Emoji) {
+    override fun bind(t: EmojiModel) {
         emojiTextView.text = t.unicode
     }
 

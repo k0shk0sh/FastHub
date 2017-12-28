@@ -1,9 +1,10 @@
 package com.fastaccess.ui.modules.editor.emoji
 
-import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.emoji.EmojiManager
+
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import io.reactivex.Observable
+import ru.noties.markwon.extension.emoji.loader.EmojiManager
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 
 /**
  * Created by kosh on 17/08/2017.
@@ -11,7 +12,7 @@ import io.reactivex.Observable
 
 class EmojiPresenter : BasePresenter<EmojiMvp.View>(), EmojiMvp.Presenter {
     override fun onLoadEmoji() {
-        manageObservable(Observable.create<Emoji> { e ->
+        manageObservable(Observable.create<EmojiModel> { e ->
             val emojies = EmojiManager.getAll()
             emojies?.let {
                 it.onEach {

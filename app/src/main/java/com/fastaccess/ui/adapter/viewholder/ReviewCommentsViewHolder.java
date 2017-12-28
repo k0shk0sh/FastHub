@@ -22,7 +22,6 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
-import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -157,9 +156,9 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
             }
         }
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
-        if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {
+        if (!InputHelper.isEmpty(commentModel.getBody())) {
             int width = adapter != null ? adapter.getRowWidth() : 0;
-            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(), width > 0 ? width : viewGroup.getWidth());
+            HtmlHelper.htmlIntoTextView(comment, commentModel.getBody(), width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }
@@ -233,9 +232,9 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     @Override protected void onViewIsDetaching() {
-        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
-        if (drawableGetter != null) {
-            drawableGetter.clear(drawableGetter);
-        }
+//        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
+//        if (drawableGetter != null) {
+//            drawableGetter.clear(drawableGetter);
+//        }
     }
 }

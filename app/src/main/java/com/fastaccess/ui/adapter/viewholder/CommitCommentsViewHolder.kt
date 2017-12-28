@@ -14,7 +14,6 @@ import com.fastaccess.helper.ParseDateFormat
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.provider.scheme.LinkParserHelper
-import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter
 import com.fastaccess.ui.adapter.callback.OnToggleView
 import com.fastaccess.ui.widgets.AvatarLayout
 import com.fastaccess.ui.widgets.FontTextView
@@ -77,12 +76,7 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
             name.text = null
         }
         if (!InputHelper.isEmpty(t.body)) {
-            val width = adapter?.getRowWidth() ?: 0
-            if (width > 0) {
-                MarkDownProvider.setMdText(comment, t.body, width)
-            } else {
-                MarkDownProvider.setMdText(comment, t.body)
-            }
+            MarkDownProvider.setMdText(comment, t.body)
         } else {
             comment.text = ""
         }
@@ -109,8 +103,8 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     }
 
     override fun onViewIsDetaching() {
-        val drawableGetter = comment.getTag(R.id.drawable_callback) as DrawableGetter?
-        drawableGetter?.clear(drawableGetter)
+//        val drawableGetter = comment.getTag(R.id.drawable_callback) as DrawableGetter?
+//        drawableGetter?.clear(drawableGetter)
     }
 
     companion object {

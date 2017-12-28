@@ -17,7 +17,6 @@ import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
-import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.provider.timeline.CommentsHelper
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
@@ -29,6 +28,8 @@ import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
+import ru.noties.markwon.extension.emoji.Emoji
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 
 /**
  * Created by kosh on 21/08/2017.
@@ -120,7 +121,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
 
     override fun getSavedText(): CharSequence? = commentText.savedText
 
-    override fun onEmojiAdded(emoji: Emoji?) = markdDownLayout.onEmojiAdded(emoji)
+    override fun onEmojiAdded(emoji: EmojiModel?) = markdDownLayout.onEmojiAdded(emoji)
 
     @SuppressLint("SetTextI18n")
     fun onCreateComment(text: String, bundle: Bundle?) {

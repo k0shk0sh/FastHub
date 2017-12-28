@@ -33,7 +33,6 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.adapter.ProfilePinnedReposAdapter;
@@ -53,6 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import github.GetPinnedReposQuery;
+import ru.noties.markwon.extension.emoji.loader.EmojiParser;
 
 import static android.view.Gravity.TOP;
 import static android.view.View.GONE;

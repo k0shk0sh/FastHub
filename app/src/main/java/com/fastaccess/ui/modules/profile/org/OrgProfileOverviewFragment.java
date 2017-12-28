@@ -19,7 +19,6 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.org.project.OrgProjectActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -27,6 +26,7 @@ import com.fastaccess.ui.widgets.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import ru.noties.markwon.extension.emoji.loader.EmojiParser;
 
 import static android.view.View.GONE;
 

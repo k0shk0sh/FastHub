@@ -34,7 +34,6 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -55,7 +54,6 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRe
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -110,7 +108,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
-        Logger.e(FirebaseInstanceId.getInstance().getToken());
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);

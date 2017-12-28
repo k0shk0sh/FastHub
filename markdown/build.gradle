@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 100
+        versionName "1.0.0"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api "com.android.support:appcompat-v7:$supportVersion"
+    api "com.android.support:support-annotations:$supportVersion"
+    api "com.atlassian.commonmark:commonmark:${commonMarkVersion}"
+    implementation "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonMarkVersion}"
+    implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonMarkVersion}"
+    implementation "com.atlassian.commonmark:commonmark-ext-autolink:${commonMarkVersion}"
+    implementation "com.atlassian.commonmark:commonmark-ext-ins:${commonMarkVersion}"
+    implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonMarkVersion}"
+    implementation 'com.caverock:androidsvg:1.2.1'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+}

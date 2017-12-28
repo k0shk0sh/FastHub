@@ -25,7 +25,7 @@ public class LinkParserHelper {
     static final String HOST_GISTS_RAW = "gist.githubusercontent.com";
     static final String RAW_AUTHORITY = "raw.githubusercontent.com";
     static final String API_AUTHORITY = "api.github.com";
-    static final String PROTOCOL_HTTPS = "https";
+    public static final String PROTOCOL_HTTPS = "https";
     static final List<String> IGNORED_LIST = Arrays.asList("notifications", "settings", "blog",
             "explore", "dashboard", "repositories", "logout", "sessions", "site", "security",
             "contact", "about", "logos", "login", "pricing", "");

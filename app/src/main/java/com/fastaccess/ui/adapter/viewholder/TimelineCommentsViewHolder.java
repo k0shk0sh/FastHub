@@ -22,7 +22,6 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
-import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
@@ -179,8 +178,8 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             pathText.setText("");
             pathText.setVisibility(View.GONE);
         }
-        if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            String body = commentsModel.getBodyHtml();
+        if (!InputHelper.isEmpty(commentsModel.getBody())) {
+            String body = commentsModel.getBody();
             int width = adapter != null ? adapter.getRowWidth() : 0;
             HtmlHelper.htmlIntoTextView(comment, body, width > 0 ? width : viewGroup.getWidth());
         } else {
@@ -262,9 +261,9 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     @Override protected void onViewIsDetaching() {
-        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
-        if (drawableGetter != null) {
-            drawableGetter.clear(drawableGetter);
-        }
+//        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
+//        if (drawableGetter != null) {
+//            drawableGetter.clear(drawableGetter);
+//        }
     }
 }

@@ -1,0 +1,13 @@
+package ru.noties.markwon.renderer.html;
+
+import android.support.annotation.NonNull;
+
+import ru.noties.markwon.spans.EmphasisSpan;
+
+class ItalicsProvider implements SpannableHtmlParser.SpanProvider {
+
+    @Override
+    public Object provide(@NonNull SpannableHtmlParser.Tag tag) {
+        return new EmphasisSpan();
+    }
+}

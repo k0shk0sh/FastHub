@@ -15,8 +15,6 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 
-import org.apache.tools.ant.ExitException;
-
 /**
  * Created by Kosh on 09 Dec 2016, 12:31 PM
  */
@@ -51,7 +49,7 @@ public class LinksParserActivity extends Activity {
                     Uri uri = Uri.parse(sharedText);
                     onUriReceived(uri);
                 }
-            } catch (ExitException ignored) {}
+            } catch (Exception ignored) {}
         } else if (intent.getAction().equals(Intent.ACTION_VIEW)) {
             if (intent.getData() != null) {
                 onUriReceived(intent.getData());

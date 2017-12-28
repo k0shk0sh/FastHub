@@ -20,11 +20,11 @@ import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
-import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.ui.base.BaseDialogFragment
 import com.fastaccess.ui.modules.gists.create.dialog.AddGistMvp.AddGistFileListener
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 
 /**
  * Created by kosh on 14/08/2017.
@@ -109,7 +109,7 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onEmojiAdded(emoji: Emoji?) {
+    override fun onEmojiAdded(emoji: EmojiModel?) {
         markDownLayout.onEmojiAdded(emoji)
     }
 

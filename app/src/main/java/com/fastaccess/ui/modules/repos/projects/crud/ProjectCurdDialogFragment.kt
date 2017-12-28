@@ -15,7 +15,6 @@ import com.fastaccess.R
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
-import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.ui.base.BaseDialogFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -23,6 +22,7 @@ import com.fastaccess.ui.modules.editor.emoji.EmojiMvp
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 
 /**
  * Created by Hashemsergani on 15.09.17.
@@ -95,7 +95,7 @@ class ProjectCurdDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresent
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onEmojiAdded(emoji: Emoji?) {
+    override fun onEmojiAdded(emoji: EmojiModel?) {
         markDownLayout.onEmojiAdded(emoji)
     }
 

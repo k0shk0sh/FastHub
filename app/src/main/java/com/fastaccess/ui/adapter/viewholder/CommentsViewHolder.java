@@ -73,9 +73,9 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         } else {
             avatar.setUrl(null, null, false, false);
         }
-        if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
+        if (!InputHelper.isEmpty(commentsModel.getBody())) {
             int width = adapter != null ? adapter.getRowWidth() : 0;
-            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml(), width > 0 ? width : viewGroup.getWidth());
+            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBody(), width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }

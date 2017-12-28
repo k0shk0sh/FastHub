@@ -3,7 +3,6 @@ package com.fastaccess.provider.markdown;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.view.ViewTreeObserver;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,22 +10,12 @@ import android.widget.TextView;
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
-import com.fastaccess.provider.markdown.extension.emoji.EmojiExtension;
-import com.fastaccess.provider.markdown.extension.mention.MentionExtension;
-import com.fastaccess.provider.timeline.HtmlHelper;
 
-import org.commonmark.Extension;
-import org.commonmark.ext.autolink.AutolinkExtension;
-import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
-import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
-import org.commonmark.ext.gfm.tables.TablesExtension;
-import org.commonmark.ext.ins.InsExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
-import java.util.Arrays;
-import java.util.List;
+import ru.noties.markwon.Markwon;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
@@ -46,52 +35,18 @@ public class MarkDownProvider {
 
     private MarkDownProvider() {}
 
+
+
     public static void setMdText(@NonNull TextView textView, String markdown) {
         if (!InputHelper.isEmpty(markdown)) {
-            int width = textView.getMeasuredWidth();
-            if (width > 0) {
-                render(textView, markdown, width);
-            } else {
-                textView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                    @Override public boolean onPreDraw() {
-                        textView.getViewTreeObserver().removeOnPreDrawListener(this);
-                        render(textView, markdown, textView.getMeasuredWidth());
-                        return true;
-                    }
-                });
-            }
+            render(textView, markdown);
+        } else {
+            textView.setText("");
         }
     }
 
-    public static void setMdText(@NonNull TextView textView, String markdown, int width) {
-        if (!InputHelper.isEmpty(markdown)) {
-            render(textView, markdown, width);
-        }
-    }
-
-    protected static void render(@NonNull TextView textView, String markdown, int width) {
-        List<Extension> extensions = Arrays.asList(
-                StrikethroughExtension.create(),
-                AutolinkExtension.create(),
-                TablesExtension.create(),
-                InsExtension.create(),
-                EmojiExtension.create(),
-                MentionExtension.create(),
-                YamlFrontMatterExtension.create());
-        Parser parser = Parser.builder()
-                .extensions(extensions)
-                .build();
-        try {
-            Node node = parser.parse(markdown);
-            String rendered = HtmlRenderer
-                    .builder()
-                    .extensions(extensions)
-                    .build()
-                    .render(node);
-            HtmlHelper.htmlIntoTextView(textView, rendered, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
-        } catch (Exception ignored) {
-            HtmlHelper.htmlIntoTextView(textView, markdown, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
-        }
+    public static void render(@NonNull TextView textView, String markdown) {
+        Markwon.setMarkdown(textView, markdown);
     }
 
     public static void stripMdText(@NonNull TextView textView, String markdown) {

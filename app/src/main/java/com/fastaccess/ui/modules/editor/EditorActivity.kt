@@ -22,13 +22,13 @@ import com.fastaccess.R
 import com.fastaccess.data.dao.EditReviewCommentModel
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.helper.*
-import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.widgets.FontTextView
 import com.fastaccess.ui.widgets.dialog.MessageDialogView
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 import java.util.*
 
 /**
@@ -195,7 +195,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun fragmentManager(): FragmentManager = supportFragmentManager
 
     @SuppressLint("SetTextI18n")
-    override fun onEmojiAdded(emoji: Emoji?) {
+    override fun onEmojiAdded(emoji: EmojiModel?) {
         markDownLayout.onEmojiAdded(emoji)
     }
 

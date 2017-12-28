@@ -24,7 +24,7 @@ android {
         }
     }
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.2'
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
@@ -143,15 +143,7 @@ dependencies {
     implementation "io.requery:requery:${requery}"
     implementation "io.requery:requery-android:${requery}"
     implementation('com.mikepenz:aboutlibraries:5.9.7@aar') { transitive = true }
-    implementation 'com.github.nightwhistler:HtmlSpanner:0.4'
-    implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
-    implementation "com.atlassian.commonmark:commonmark:${commonmark}"
-    implementation "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}"
-    implementation "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}"
-    implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}"
-    implementation "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}"
-    implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
     implementation "com.google.firebase:firebase-core:${gms}"
     implementation "com.google.firebase:firebase-messaging:${gms}"
     implementation "com.google.firebase:firebase-database:${gms}"
@@ -169,6 +161,7 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation 'com.airbnb.android:lottie:2.2.5'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
+    implementation project(':markdown')
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
     kapt "com.evernote:android-state-processor:${state_version}"

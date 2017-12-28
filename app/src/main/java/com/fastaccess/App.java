@@ -8,12 +8,12 @@ import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.DeviceNameGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
-import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.fabric.FabricProvider;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
+import io.reactivex.Observable;
 import io.requery.Persistable;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.meta.EntityModel;
@@ -22,6 +22,7 @@ import io.requery.reactivex.ReactiveSupport;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import io.requery.sql.TableCreationMode;
+import ru.noties.markwon.extension.emoji.loader.EmojiManager;
 import shortbread.Shortbread;
 
 
@@ -52,7 +53,10 @@ public class App extends Application {
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);
-        EmojiManager.load();
+        Observable.fromCallable(() -> {
+            EmojiManager.load(this);
+            return true;
+        }).subscribe();
         ColorsProvider.load();
         DeviceNameGetter.getInstance().loadDevice();
         try {

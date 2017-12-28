@@ -17,10 +17,10 @@ import com.fastaccess.R
 import com.fastaccess.helper.AppHelper
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
-import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.modules.editor.emoji.EmojiBottomSheet
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment
+import ru.noties.markwon.extension.emoji.loader.EmojiModel
 
 /**
  * Created by kosh on 11/08/2017.
@@ -137,7 +137,7 @@ class MarkDownLayout : LinearLayout {
         }
     }
 
-    fun onEmojiAdded(emoji: Emoji?) {
+    fun onEmojiAdded(emoji: EmojiModel?) {
         markdownListener?.getEditText()?.let { editText ->
             ViewHelper.showKeyboard(editText)
             emoji?.let {
