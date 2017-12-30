@@ -2,6 +2,7 @@ package com.fastaccess.data.dao
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.fastaccess.helper.KParcelable
 
 /**
  * Created by Hashemsergani on 01/09/2017.
@@ -13,7 +14,7 @@ data class EditRepoFileModel(val login: String,
                              val sha: String?,
                              val contentUrl: String?,
                              val fileName: String?,
-                             val isEdit: Boolean) : Parcelable {
+                             val isEdit: Boolean) : KParcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
@@ -33,10 +34,6 @@ data class EditRepoFileModel(val login: String,
         parcel.writeString(contentUrl)
         parcel.writeString(fileName)
         parcel.writeByte(if (isEdit) 1 else 0)
-    }
-
-    override fun describeContents(): Int {
-        return 0
     }
 
     companion object CREATOR : Parcelable.Creator<EditRepoFileModel> {

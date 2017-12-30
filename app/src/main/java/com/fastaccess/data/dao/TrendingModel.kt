@@ -2,6 +2,7 @@ package com.fastaccess.data.dao
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.fastaccess.helper.KParcelable
 
 data class TrendingModel(
         val title: String? = null,
@@ -9,7 +10,7 @@ data class TrendingModel(
         val language: String? = null,
         val stars: String? = null,
         val forks: String? = null,
-        val todayStars: String? = null) : Parcelable {
+        val todayStars: String? = null) : KParcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<TrendingModel> = object : Parcelable.Creator<TrendingModel> {
             override fun createFromParcel(source: Parcel): TrendingModel = TrendingModel(source)
@@ -25,8 +26,6 @@ data class TrendingModel(
             source.readString(),
             source.readString()
     )
-
-    override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(title)
