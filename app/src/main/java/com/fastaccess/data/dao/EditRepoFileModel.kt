@@ -25,15 +25,15 @@ data class EditRepoFileModel(val login: String,
             parcel.readString(),
             parcel.readByte() != 0.toByte())
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(login)
-        parcel.writeString(repoId)
-        parcel.writeString(path)
-        parcel.writeString(ref)
-        parcel.writeString(sha)
-        parcel.writeString(contentUrl)
-        parcel.writeString(fileName)
-        parcel.writeByte(if (isEdit) 1 else 0)
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(login)
+        writeString(repoId)
+        writeString(path)
+        writeString(ref)
+        writeString(sha)
+        writeString(contentUrl)
+        writeString(fileName)
+        writeByte(if (isEdit) 1 else 0)
     }
 
     companion object {

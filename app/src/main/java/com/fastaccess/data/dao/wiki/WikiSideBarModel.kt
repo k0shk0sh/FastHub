@@ -17,8 +17,8 @@ data class WikiSideBarModel(val title: String? = null, val link: String? = null)
             source.readString()
     )
 
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(title)
-        dest.writeString(link)
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(title)
+        writeString(link)
     }
 }

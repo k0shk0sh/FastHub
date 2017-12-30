@@ -24,12 +24,12 @@ data class TrendingModel(
             source.readString()
     )
 
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(title)
-        dest.writeString(description)
-        dest.writeString(language)
-        dest.writeString(stars)
-        dest.writeString(forks)
-        dest.writeString(todayStars)
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(title)
+        writeString(description)
+        writeString(language)
+        writeString(stars)
+        writeString(forks)
+        writeString(todayStars)
     }
 }
