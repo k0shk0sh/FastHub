@@ -1,8 +1,8 @@
 package com.fastaccess.data.dao
 
 import android.os.Parcel
-import android.os.Parcelable
 import com.fastaccess.helper.KParcelable
+import com.fastaccess.helper.parcelableCreator
 
 data class TrendingModel(
         val title: String? = null,
@@ -12,10 +12,7 @@ data class TrendingModel(
         val forks: String? = null,
         val todayStars: String? = null) : KParcelable {
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<TrendingModel> = object : Parcelable.Creator<TrendingModel> {
-            override fun createFromParcel(source: Parcel): TrendingModel = TrendingModel(source)
-            override fun newArray(size: Int): Array<TrendingModel?> = arrayOfNulls(size)
-        }
+        @JvmField val CREATOR = parcelableCreator(::TrendingModel)
     }
 
     constructor(source: Parcel) : this(

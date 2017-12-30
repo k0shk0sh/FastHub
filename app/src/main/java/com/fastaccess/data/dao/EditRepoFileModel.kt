@@ -1,8 +1,8 @@
 package com.fastaccess.data.dao
 
 import android.os.Parcel
-import android.os.Parcelable
 import com.fastaccess.helper.KParcelable
+import com.fastaccess.helper.parcelableCreator
 
 /**
  * Created by Hashemsergani on 01/09/2017.
@@ -36,13 +36,7 @@ data class EditRepoFileModel(val login: String,
         parcel.writeByte(if (isEdit) 1 else 0)
     }
 
-    companion object CREATOR : Parcelable.Creator<EditRepoFileModel> {
-        override fun createFromParcel(parcel: Parcel): EditRepoFileModel {
-            return EditRepoFileModel(parcel)
-        }
-
-        override fun newArray(size: Int): Array<EditRepoFileModel?> {
-            return arrayOfNulls(size)
-        }
+    companion object {
+        @JvmField val CREATOR = parcelableCreator(::EditRepoFileModel)
     }
 }
