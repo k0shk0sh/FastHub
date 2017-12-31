@@ -1,7 +1,7 @@
 package com.fastaccess.data.dao
 
 import android.os.Parcel
-import com.fastaccess.helper.KParcelable
+import com.fastaccess.helper.KotlinParcelable
 import com.fastaccess.helper.parcelableCreator
 import com.fastaccess.helper.readBoolean
 import com.fastaccess.helper.writeBoolean
@@ -16,7 +16,7 @@ data class EditRepoFileModel(val login: String,
                              val sha: String?,
                              val contentUrl: String?,
                              val fileName: String?,
-                             val isEdit: Boolean) : KParcelable {
+                             val isEdit: Boolean) : KotlinParcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),

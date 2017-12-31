@@ -1,7 +1,7 @@
 package com.fastaccess.data.dao
 
 import android.os.Parcel
-import com.fastaccess.helper.KParcelable
+import com.fastaccess.helper.KotlinParcelable
 import com.fastaccess.helper.parcelableCreator
 
 data class TrendingModel(
@@ -10,7 +10,7 @@ data class TrendingModel(
         val language: String? = null,
         val stars: String? = null,
         val forks: String? = null,
-        val todayStars: String? = null) : KParcelable {
+        val todayStars: String? = null) : KotlinParcelable {
     companion object {
         @JvmField val CREATOR = parcelableCreator(::TrendingModel)
     }
