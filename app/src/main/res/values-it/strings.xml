@@ -331,7 +331,7 @@
     <string name="in_value">in</string>
     <string name="subscribe">Sottoscrivi</string>
     <string name="repo_issues_is_disabled">La repo non ha alcuna scheda Issues</string>
-    <string name="access_token">Access Token di accesso</string>
+    <string name="access_token">Token di accesso</string>
     <string name="basic_authentication">Autenticazione Base</string>
     <string name="choose_your_login_type">Scegli il tuo tipo di accesso</string>
     <string name="files_only">Nei File</string>
