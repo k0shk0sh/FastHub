@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedGists;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -100,6 +101,12 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
                         sendToView(GistMvp.View::onSetupDetails);
                     }));
         }
+    }
+
+    @Override public void onPinUnpinGist() {
+        if (getGist() == null) return;
+        PinnedGists.pinUpin(getGist());
+        sendToView(view -> view.onUpdatePinIcon(getGist()));
     }
 
     @Override public void callApi() {

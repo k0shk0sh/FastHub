@@ -61,12 +61,13 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
                     .replace(R.id.commentFragmentContainer, fragment, "CommentEditorFragment")
                     .commitNow()
         }
-        val item = arguments.getParcelable<CommitLinesModel>(BundleConstant.ITEM)
+        val item = arguments!!.getParcelable<CommitLinesModel>(BundleConstant.ITEM)
         lineNo.text = SpannableBuilder.builder()
                 .append(if (item.leftLineNo >= 0) String.format("%s.", item.leftLineNo) else "")
                 .append(if (item.rightLineNo >= 0) String.format("%s.", item.rightLineNo) else "")
         lineNo.visibility = if (InputHelper.isEmpty(lineNo)) View.GONE else View.VISIBLE
 
+        val context = context ?: return
         when (item.color) {
             CommitLinesModel.ADDITION -> textView.setBackgroundColor(ViewHelper.getPatchAdditionColor(context))
             CommitLinesModel.DELETION -> textView.setBackgroundColor(ViewHelper.getPatchDeletionColor(context))
@@ -89,7 +90,7 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
             } else {
                 commentEditorFragment?.getEditText()?.error = null
                 commentCallback?.onCommentAdded(InputHelper.toString(commentEditorFragment?.getEditText()?.text),
-                        item, arguments.getBundle(BundleConstant.EXTRA))
+                        item, arguments!!.getBundle(BundleConstant.EXTRA))
                 dismiss()
             }
             return@setOnMenuItemClickListener true

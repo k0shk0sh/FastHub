@@ -98,7 +98,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
     }
 
     @Override public void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @NonNull String path,
-                                               @NonNull String ref, boolean clear, @NonNull RepoFile toAppend) {
+                                               @NonNull String ref, boolean clear, @Nullable RepoFile toAppend) {
         if (clear) pathsModel.clear();
         this.login = login;
         this.repoId = repoId;

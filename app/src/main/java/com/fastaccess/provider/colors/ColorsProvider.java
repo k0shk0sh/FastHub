@@ -35,7 +35,7 @@ import io.reactivex.Observable;
 public class ColorsProvider {
 
     private static List<String> POPULAR_LANG = Stream.of("Java", "Kotlin", "JavaScript", "Python", "CSS", "PHP",
-            "Ruby", "C++", "C", "GO", "Swift").toList();//predefined languages.
+            "Ruby", "C++", "C", "Go", "Swift").toList();//predefined languages.
 
     private static Map<String, LanguageColorModel> colors = new LinkedHashMap<>();
 

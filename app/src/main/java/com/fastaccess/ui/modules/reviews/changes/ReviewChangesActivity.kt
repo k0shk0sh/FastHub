@@ -70,7 +70,7 @@ class ReviewChangesActivity : BaseDialogFragment<ReviewChangesMvp.View, ReviewCh
             isClosed = bundle.getBoolean(BundleConstant.EXTRA_FIVE)
             isAuthor = bundle.getBoolean(BundleConstant.EXTRA_FOUR)
         }
-        toolbar.navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_clear)
+        toolbar.navigationIcon = ContextCompat.getDrawable(context!!, R.drawable.ic_clear)
         toolbar.inflateMenu(R.menu.done_menu)
         toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener {

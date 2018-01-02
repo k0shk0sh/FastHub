@@ -247,7 +247,6 @@ APP
     <string name="turn_off">關閉</string>
     <string name="unauthorized_user">未驗證的使用者</string>
     <string name="two_factors_otp_error">必須兩步驟驗證</string>
-    <string name="no_issue">沒有 Issue</string>
     <string name="copy">複製</string>
     <string name="success_copied">已複製</string>
     <string name="commit_message">Commit 訊息</string>
@@ -285,11 +284,8 @@ APP
     <string name="no_commits">沒有 Commit</string>
     <string name="no_contributors">沒有貢獻者</string>
     <string name="no_releases">沒有releases</string>
-    <string name="no_closed_issues">沒有關閉的 Issue</string>
-    <string name="no_opened_issues">沒有開啟的 Issue</string>
     <string name="no_events">沒有事件</string>
-    <string name="no_open_pull_requests">沒有開啟的 Pull Request</string>
-    <string name="no_closed_pull_request">沒有關閉的 Pull Request</string>
+    <string name="no_pull_requests">沒有 Pull Requests</string>
     <string name="no_search_results">沒有搜尋結果</string>
     <string name="read_write_permission_explanation">請同意權限請求以讓 FastHub 能夠儲存檔案</string>
     <string name="public_gists">公開 Gist</string>

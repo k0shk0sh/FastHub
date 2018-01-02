@@ -179,11 +179,13 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     }
 
     @Override public void onBackPressed() {
-        int position = adapter.getItemCount() > 2 ? adapter.getItemCount() - 2 : adapter.getItemCount() - 1;
-        if (position > 0 && position <= adapter.getItemCount()) {
-            if (position == 1) position = 0;
-            RepoFile repoFilesModel = adapter.getItem(position);
-            onItemClicked(repoFilesModel, position);
+        if (getRepoFilesView().isRefreshing()) return;
+        if (adapter.getItemCount() > 1) {
+            adapter.removeItem(adapter.getItemCount() - 1);
+            RepoFile model = adapter.getItem(adapter.getItemCount() - 1);
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
+                    Objects.toString(model.getPath(), ""), ref, false, null);
+            recycler.scrollToPosition(adapter.getItemCount() - 1);
         } else {
             onBackClicked();
         }

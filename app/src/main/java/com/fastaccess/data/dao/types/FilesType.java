@@ -13,7 +13,7 @@ public enum FilesType {
     dir(R.drawable.ic_folder),
     blob(R.drawable.ic_file_document),
     tree(R.drawable.ic_folder),
-    symlink(R.drawable.ic_file_document);
+    symlink(R.drawable.ic_submodule);
 
     int icon;
 

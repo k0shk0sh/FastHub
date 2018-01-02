@@ -2,10 +2,10 @@
 buildscript {
     ext {
         butterKnifeVersion = '8.5.1'
-        state_version = '1.1.0'
+        state_version = '1.1.6'
         lombokVersion = '1.16.18'
-        supportVersion = "26.1.0"
-        gms = "11.4.2"
+        supportVersion = "27.0.2"
+        gms = "11.6.2"
         thirtyinchVersion = '0.8.0'
         retrofit = '2.3.0'
         junitVersion = '4.12'
@@ -13,16 +13,17 @@ buildscript {
         assertjVersion = '2.5.0'
         espresseVersion = '2.2.2'
         requery = '1.3.2'
-        kotlin_version = '1.1.51'
-        commonmark = '0.9.0'
+        kotlin_version = '1.2.0'
+        commonmark = '0.10.0'
+        glideVersion = '3.7.0'
     }
     repositories {
+        google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-rc2'
+        classpath 'com.android.tools.build:gradle:3.1.0-alpha05'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
@@ -35,8 +36,8 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 }
 

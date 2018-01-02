@@ -7,12 +7,12 @@
     <string name="ok">OK</string>
     <string name="no_data">Aucune donnée disponible</string>
     <string name="search">Chercher</string>
-    <string name="please_login">Merci de vous connecter pour continuer à utiliser FastHub</string>
+    <string name="please_login">Merci de vous connecter pour commencer à utiliser FastHub</string>
     <string name="sign_in_to_github">Connectez-vous avec votre compte GitHub pour pouvoir utiliser FastHub</string>
     <string name="failed_login">Impossible de se connecter</string>
     <string name="sign_in">Se connecter</string>
     <string name="share">Partager</string>
-    <string name="reload">Rafraichir</string>
+    <string name="reload">Rafraîchir</string>
     <string name="profile">Profil</string>
     <string name="error">Erreur</string>
     <string name="press_again_to_exit">Appuyer à nouveau pour quitter</string>
@@ -26,8 +26,8 @@
     <string name="unfollow">Se désabonner</string>
     <string name="user">Utilisateur</string>
     <string name="details">Détails</string>
-    <string name="archive_file_detected_error">Fichier compressé détecté, merci de le télécharger pour pouvoir voir son contenu.</string>
-    <string name="minimum_three_chars">Nombre minimum de caractères (3)</string>
+    <string name="archive_file_detected_error">Fichier compressé détecté, merci de le télécharger pour pouvoir afficher son contenu.</string>
+    <string name="minimum_three_chars">Nombre minimum de caractères (2)</string>
     <string name="no_file_found">Aucun fichier trouvé</string>
     <string name="no_readme_found">Aucun fichier readme trouvé</string>
     <string name="downloading">Téléchargement…</string>
@@ -227,7 +227,6 @@
     <string name="turn_off">Éteindre</string>
     <string name="unauthorized_user">Utilisateur non autorisé</string>
     <string name="two_factors_otp_error">L\'authentification Two factors est requise</string>
-    <string name="no_issue">Aucun ticket</string>
     <string name="copy">Copier URL</string>
     <string name="success_copied">Copié</string>
     <string name="commit_message">Message de Commit</string>
@@ -255,7 +254,7 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="no_feeds">Aucun flux</string>
-    <string name="no_gists">Aucun Gist</string>
+    <string name="no_gists">Aucun gist</string>
     <string name="no_comments">Aucun commentaire</string>
     <string name="no_notifications">Aucune notification</string>
     <string name="no_followers">Aucun abonné</string>
@@ -265,16 +264,13 @@
     <string name="no_commits">Aucun Commit</string>
     <string name="no_contributors">Aucun contributeur</string>
     <string name="no_releases">No releases</string>
-    <string name="no_closed_issues">Aucun ticket fermé</string>
-    <string name="no_opened_issues">Aucun ticket ouvert</string>
     <string name="no_events">Aucun évènement</string>
-    <string name="no_open_pull_requests">Aucune Pull Request ouverte</string>
-    <string name="no_closed_pull_request">Aucune Pull Request fermée</string>
+    <string name="no_pull_requests">Aucune pull request</string>
     <string name="no_search_results">Aucun résultat de recherche</string>
     <string name="read_write_permission_explanation">Merci d\'accepter les permissions afin que FastHub puisse enregistrer des fichiers sur votre appareil pour pouvoir y accèder plus tard</string>
     <string name="public_gists">Gists publiques</string>
     <string name="enable_ads">Activer la publicité</string>
-    <string name="no_issues">Aucun ticket</string>
+    <string name="no_issues">Aucune issue</string>
     <string name="no_unread_notifications">Aucune notification non lue.</string>
     <string name="my_gists">Mes Gists</string>
     <string name="changelog">Changelog</string>
@@ -302,7 +298,7 @@
     <string name="milestones">Jalon</string>
     <string name="assignee">Destinataire</string>
     <string name="checks_failed">Quelques vérifications ont échoué</string>
-    <string name="checks_pending">Tous les tests sont en attente</string>
+    <string name="checks_pending">Quelques tests sont en attente de validation</string>
     <string name="checks_passed">Tous les tests sont validés</string>
     <string name="sort">Trier</string>
     <string name="newest">Nouveau</string>
@@ -321,7 +317,7 @@
     <string name="approved_these_changes">Valider ces changements</string>
     <string name="no_reactions">Aucune réaction</string>
     <string name="reactions">Réactions</string>
-    <string name="wrap_content">Wrap content</string>
+    <string name="wrap_content">Retour à la ligne du contenu</string>
     <string name="wrap_code_summary">Wrap code in code viewer by default</string>
     <string name="wrap_code_title">Wrap Code</string>
     <string name="open_source_libs">Logiciels Open source</string>
@@ -420,4 +416,69 @@
     <string name="sound_chooser_title">Choisir le son de notification</string>
     <string name="disable_auto_gif_summary">Désactiver la lecture automatique des GIFs</string>
     <string name="disable_auto_gif_title">Désactiver la lecture des GIFs</string>
+    <string name="request_changes">changements requis</string>
+    <string name="google_play_service_error">Google Play Services sont indisponibles</string>
+    <string name="edit_gist">Éditer le Gist</string>
+    <string name="content">Contenu</string>
+    <string name="expand">développer</string>
+    <string name="copy_sha">Copier SHA-1</string>
+    <string name="view_as_code">Voir le code</string>
+    <string name="app_animation_title">Désactiver les animations In-App</string>
+    <string name="app_animation_summary">Désactiver les animations In-App partout.</string>
+    <string name="can_not_merge_pr">Cette Pull Request ne peut pas être fusionnée actuellement.</string>
+    <string name="projects">Projets</string>
+    <string name="no_projects">Aucun projet</string>
+    <string name="no_cards">Aucune carte</string>
+    <string name="card_added_by">Ajouté par %s %s</string>
+    <string name="too_large_changes">Trop de différences à afficher. Merci de les afficher via le navigateur</string>
+    <string name="project">Projet</string>
+    <string name="please_read">MERCI DE LIRE !</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
+        Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+
+        <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
+        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
+
+        <h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
+        <p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
+
+        <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
+        <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
+        in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
+
+        <h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
+        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+
+        <h5>• I\'m having problems! / I want to suggest you some things!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+        search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
+
+        <h5>• How can I get a PROMO CODE?</h5>
+        <p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
+        <ul>
+        <li>Your GitHub username;</li>
+        <li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
+        <li>Your education start and graduation dates.</li>
+        </ul>
+        <p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
+        <ul>
+        <li>Your GitHub username;</li>
+        <li>Write an article about FastHub in any social media, such as Medium;</li>
+        <li>Prove your authorship.</li>
+        </ul>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Commentaires ajoutés avec succès</string>
+    <string name="clear_search_keywords">Vider l'historique de recherche</string>
+    <string name="restore_purchases">Restore Purchases</string>
+    <string name="include_forks">Inclure les Forks</string>
+    <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+    <string name="search_results_warning">Merci de préciser votre recherche</string>
+    <string name="disable_loading_image_title">Désactiver image de chargement</string>
+    <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+    <string name="report_issue_warning">Ce ticket sera soumis au dépôt FastHub sur GitHub</string>
+    <string name="block">Block</string>
 </resources>

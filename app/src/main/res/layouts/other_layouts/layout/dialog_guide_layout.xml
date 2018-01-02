@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="?android:toolbarStyle">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="?android:toolbarStyle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize"
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_xs_large"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/back"
+                    android:padding="@dimen/spacing_micro"
+                    android:src="@drawable/ic_clear"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/title"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:ellipsize="end"
+                    android:gravity="start|center"
+                    android:maxLines="3"
+                    android:textColor="?android:textColorPrimary"
+                    tools:text="Remember: shreded ramen tastes best when flattened in a sauté pan enameled with rum."/>
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.prettifier.pretty.PrettifyWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:webview_background="?android:windowBackground"/>
+    </LinearLayout>
+
+</LinearLayout>

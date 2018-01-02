@@ -27,7 +27,6 @@ import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
-import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -210,50 +209,8 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     private void appendEmojies(ReactionsModel reaction) {
-        SpannableBuilder spannableBuilder = SpannableBuilder.builder()
-                .append(CommentsHelper.getThumbsUp()).append(" ")
-                .append(String.valueOf(reaction.getPlusOne()))
-                .append("   ");
-        thumbsUp.setText(spannableBuilder);
-        thumbsUpReaction.setText(spannableBuilder);
-        spannableBuilder = SpannableBuilder.builder()
-                .append(CommentsHelper.getThumbsDown()).append(" ")
-                .append(String.valueOf(reaction.getMinusOne()))
-                .append("   ");
-        thumbsDown.setText(spannableBuilder);
-        thumbsDownReaction.setText(spannableBuilder);
-        spannableBuilder = SpannableBuilder.builder()
-                .append(CommentsHelper.getHooray()).append(" ")
-                .append(String.valueOf(reaction.getHooray()))
-                .append("   ");
-        hurray.setText(spannableBuilder);
-        hurrayReaction.setText(spannableBuilder);
-        spannableBuilder = SpannableBuilder.builder()
-                .append(CommentsHelper.getSad()).append(" ")
-                .append(String.valueOf(reaction.getConfused()))
-                .append("   ");
-        sad.setText(spannableBuilder);
-        sadReaction.setText(spannableBuilder);
-        spannableBuilder = SpannableBuilder.builder()
-                .append(CommentsHelper.getLaugh()).append(" ")
-                .append(String.valueOf(reaction.getLaugh()))
-                .append("   ");
-        laugh.setText(spannableBuilder);
-        laughReaction.setText(spannableBuilder);
-        spannableBuilder = SpannableBuilder.builder()
-                .append(CommentsHelper.getHeart()).append(" ")
-                .append(String.valueOf(reaction.getHeart()));
-        heart.setText(spannableBuilder);
-        heartReaction.setText(spannableBuilder);
-        if (reaction.getPlusOne() > 0 || reaction.getMinusOne() > 0
-                || reaction.getLaugh() > 0 || reaction.getHooray() > 0
-                || reaction.getConfused() > 0 || reaction.getHeart() > 0) {
-            reactionsList.setVisibility(View.VISIBLE);
-            reactionsList.setTag(true);
-        } else {
-            reactionsList.setVisibility(View.GONE);
-            reactionsList.setTag(false);
-        }
+        CommentsHelper.appendEmojies(reaction, thumbsUp, thumbsUpReaction, thumbsDown, thumbsDownReaction, hurray, hurrayReaction, sad,
+                sadReaction, laugh, laughReaction, heart, heartReaction, reactionsList);
     }
 
     private long getId() {

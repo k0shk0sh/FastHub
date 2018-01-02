@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.danielstone.materialaboutlibrary.ConvenienceBuilder;
 import com.evernote.android.state.State;
@@ -284,6 +285,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
         }
         getPresenter().checkAuthority(login, repoId);
         if (isFeedback || ("k0shk0sh".equalsIgnoreCase(login) && repoId.equalsIgnoreCase("FastHub"))) {
+            Toasty.info(App.getInstance(), getString(R.string.report_issue_warning), Toast.LENGTH_LONG).show();
             setTitle(R.string.submit_feedback);
             getPresenter().onCheckAppVersion();
         }

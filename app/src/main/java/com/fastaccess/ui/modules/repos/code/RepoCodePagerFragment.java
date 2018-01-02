@@ -102,9 +102,11 @@ public class RepoCodePagerFragment extends BaseFragment<RepoCodePagerMvp.View, R
     }
 
     @Override public void onBackPressed() {
-        RepoFilePathFragment pathView = (RepoFilePathFragment) pager.getAdapter().instantiateItem(pager, 1);
-        if (pathView != null) {
-            pathView.onBackPressed();
+        if (pager != null && pager.getAdapter() != null) {
+            RepoFilePathFragment pathView = (RepoFilePathFragment) pager.getAdapter().instantiateItem(pager, 1);
+            if (pathView != null) {
+                pathView.onBackPressed();
+            }
         }
     }
 

@@ -10,6 +10,7 @@
     <item
         android:id="@+id/code"
         android:color="?colorPrimary"
+        android:contentDescription="@string/code"
         android:icon="@drawable/ic_code"
         android:title="@string/code"/>
 
@@ -17,16 +18,19 @@
         android:id="@+id/issues"
         android:color="?colorPrimary"
         android:icon="@drawable/ic_issues"
+        android:contentDescription="@string/issues"
         android:title="@string/issues"/>
     <item
         android:id="@+id/pullRequests"
         android:color="?colorPrimary"
+        android:contentDescription="@string/pull_requests"
         android:icon="@drawable/ic_pull_requests"
         android:title="@string/pull_requests"/>
 
     <item
         android:id="@+id/profile"
         android:color="?colorPrimary"
+        android:contentDescription="@string/profile"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile"/>
 

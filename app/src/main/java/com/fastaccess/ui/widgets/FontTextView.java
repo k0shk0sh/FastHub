@@ -93,4 +93,5 @@ public class FontTextView extends AppCompatTextView {
         ViewHelper.tintDrawable(drawable, ViewHelper.getTertiaryTextColor(getContext()));
         setCompoundDrawablesWithIntrinsicBounds(sd, null, null, null);
     }
+
 }

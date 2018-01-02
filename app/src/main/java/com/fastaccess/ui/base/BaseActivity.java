@@ -27,6 +27,7 @@ import com.evernote.android.state.State;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.FastHubNotification;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
@@ -45,6 +46,7 @@ import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.main.notifications.FastHubNotificationDialog;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
@@ -53,6 +55,7 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRe
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -107,6 +110,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
+        Logger.e(FirebaseInstanceId.getInstance().getToken());
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);
@@ -118,6 +122,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             }
         }
         if (!validateAuth()) return;
+        if (savedInstanceState == null) {
+            if (showInAppNotifications()) {
+                FastHubNotificationDialog.Companion.show(getSupportFragmentManager());
+            }
+        }
         showChangelog();
         initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
@@ -270,6 +279,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onOpenUrlInBrowser() {
         if (!InputHelper.isEmpty(schemeUrl)) {
             ActivityHelper.startCustomTab(this, schemeUrl);
+            try {
+                finish();
+            } catch (Exception ignored) {}// fragment might be committed and calling finish will crash the app.
         }
     }
 
@@ -523,5 +535,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
+    }
+
+    private boolean showInAppNotifications() {
+        return FastHubNotification.hasNotifications();
     }
 }

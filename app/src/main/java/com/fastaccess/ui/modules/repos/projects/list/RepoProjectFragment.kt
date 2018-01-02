@@ -116,9 +116,7 @@ class RepoProjectFragment : BaseFragment<RepoProjectMvp.View, RepoProjectPresent
 
     override fun onScrollTop(index: Int) {
         super.onScrollTop(index)
-        if (recycler != null) {
-            recycler.scrollToPosition(0)
-        }
+        recycler?.scrollToPosition(0)
     }
 
     override fun onDestroyView() {
@@ -131,7 +129,7 @@ class RepoProjectFragment : BaseFragment<RepoProjectMvp.View, RepoProjectPresent
         stateLayout.showReload(adapter.itemCount)
     }
 
-    private fun getState(): IssueState = arguments.getSerializable(BundleConstant.EXTRA_TYPE) as IssueState
+    private fun getState(): IssueState = arguments!!.getSerializable(BundleConstant.EXTRA_TYPE) as IssueState
 
     companion object {
         fun newInstance(login: String, repoId: String? = null, state: IssueState): RepoProjectFragment {

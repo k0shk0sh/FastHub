@@ -131,9 +131,11 @@
             android:id="@+id/reactionsList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/spacing_xs_large"
             android:scrollbarStyle="insideOverlay"
             android:visibility="gone">
 

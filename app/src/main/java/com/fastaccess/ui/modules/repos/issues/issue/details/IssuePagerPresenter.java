@@ -55,7 +55,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onError(@NonNull Throwable throwable) {
         if (RestProvider.getErrorCode(throwable) == 404) {
-            sendToView(IssuePagerMvp.View::onFinishActivity);
+            sendToView(BaseMvp.FAView::onOpenUrlInBrowser);
         } else {
             onWorkOffline(issueNumber, login, repoId);
         }
@@ -258,8 +258,10 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     private void getIssueFromApi() {
+        Login loginUser = Login.getUser();
+        if (loginUser == null) return;
         makeRestCall(RxHelper.getObservable(Observable.zip(RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
-                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
+                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, loginUser.getLogin()),
                 (issue, booleanResponse) -> {
                     isCollaborator = booleanResponse.code() == 204;
                     return issue;

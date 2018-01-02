@@ -29,7 +29,6 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -168,8 +167,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.issue_menu, menu);
         menu.findItem(R.id.closeIssue).setVisible(getPresenter().isOwner());
-        menu.findItem(R.id.lockIssue).setVisible(getPresenter().isOwner());
-        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner());
+        menu.findItem(R.id.lockIssue).setVisible(getPresenter().isRepoOwner() || getPresenter().isCollaborator);
+        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner() || getPresenter().isCollaborator);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -254,7 +253,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         labels.setVisible(isCollaborator || isRepoOwner);
         assignees.setVisible(isCollaborator || isRepoOwner);
         edit.setVisible(isCollaborator || isRepoOwner || isOwner);
-        lockIssue.setVisible(isOwner || isCollaborator);
+        lockIssue.setVisible(isRepoOwner || isCollaborator);
         labels.setVisible(getPresenter().isRepoOwner() || isCollaborator);
         closeIssue.setVisible(isOwner || isCollaborator);
         if (getPresenter().getIssue() != null) {
@@ -428,7 +427,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     private void updateViews(@NonNull Issue issueModel) {
         User userModel = issueModel.getUser();
         title.setText(issueModel.getTitle());
-        detailsIcon.setVisibility(InputHelper.isEmpty(issueModel.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
+        detailsIcon.setVisibility(View.VISIBLE);
         if (userModel != null) {
             size.setVisibility(View.GONE);
             String username;

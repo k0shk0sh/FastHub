@@ -5,6 +5,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
@@ -30,6 +31,11 @@ import static org.junit.Assert.assertNotNull;
 
 public class MainActivityTest {
     @Rule public IntentsTestRule<MainActivity> testRule = new IntentsTestRule<>(MainActivity.class);
+
+    @Test public void noUserTest() {
+        assertEquals(testRule.getActivity().isLoggedIn(), false);
+        intended(hasComponent(LoginChooserActivity.class.getName()));
+    }
 
     @Test public void onInitTest() {
         assertEquals(testRule.getActivity().isLoggedIn(), true);

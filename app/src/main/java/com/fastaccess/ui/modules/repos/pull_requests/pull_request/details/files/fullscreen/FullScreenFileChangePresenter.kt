@@ -14,11 +14,13 @@ class FullScreenFileChangePresenter : BasePresenter<FullScreenFileChangeMvp.View
 
     var model: CommitFileChanges? = null
     var position: Int = -1
+    var isCommit: Boolean = false
 
     override fun onLoad(intent: Intent) {
         intent.extras?.let {
             position = it.getInt(BundleConstant.ITEM)
             model = it.getParcelable(BundleConstant.EXTRA)
+            isCommit = it.getBoolean(BundleConstant.YES_NO_EXTRA)
         }
         model?.let {
             manageDisposable(RxHelper.getObservable(Observable.fromIterable(it.linesModel))

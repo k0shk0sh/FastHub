@@ -33,7 +33,6 @@ import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment;
 import com.fastaccess.ui.modules.profile.repos.ProfileReposFragment;
-import com.fastaccess.ui.modules.search.SearchUserActivity;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
@@ -256,6 +255,19 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+//        final int blockId = 10110;
+//        MenuItem blockItem;
+//        if (menu.findItem(blockId) == null) {
+//            blockItem = menu.add(0, blockId, 0, getString(R.string.block));
+//        } else {
+//            blockItem = menu.findItem(blockId);
+//        }
+//        blockItem.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_block))
+//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void hideShowFab(int position) {

@@ -4,16 +4,14 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
-import com.apollographql.apollo.ApolloClient;
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.DeviceNameGetter;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.fabric.FabricProvider;
-import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
 import io.requery.Persistable;
@@ -34,7 +32,6 @@ import shortbread.Shortbread;
 public class App extends Application {
     private static App instance;
     private ReactiveEntityStore<Persistable> dataStore;
-    private ApolloClient apolloClient;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -47,7 +44,7 @@ public class App extends Application {
     }
 
     private void init() {
-        FabricProvider.initFabric(this);
+        FabricProvider.INSTANCE.initFabric(this);
         RxBillingService.register(this);
         deleteDatabase("database.db");
         getDataStore();
@@ -58,6 +55,9 @@ public class App extends Application {
         EmojiManager.load();
         ColorsProvider.load();
         DeviceNameGetter.getInstance().loadDevice();
+        try {
+            FirebaseMessaging.getInstance().subscribeToTopic("FastHub");
+        } catch (Exception ignored) {}
     }
 
     private void setupPreference() {
@@ -72,7 +72,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 14);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 17);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);
@@ -80,15 +80,5 @@ public class App extends Application {
             dataStore = ReactiveSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }
         return dataStore;
-    }
-
-    public ApolloClient getApolloClient() {
-        if (apolloClient == null) {
-            apolloClient = ApolloClient.builder()
-                    .serverUrl("https://" + (PrefGetter.isEnterprise() ? PrefGetter.getEnterpriseUrl() : "api.github.com") + "/graphql")
-                    .okHttpClient(RestProvider.provideOkHttpClient())
-                    .build();
-        }
-        return apolloClient;
     }
 }

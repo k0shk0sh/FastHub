@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/grid_spacing"
+    android:foreground="?android:selectableItemBackground"
+    app:cardBackgroundColor="?card_background"
+    app:cardCornerRadius="0dp"
+    app:contentPaddingBottom="@dimen/spacing_normal"
+    app:contentPaddingLeft="@dimen/spacing_xs_large"
+    app:contentPaddingRight="@dimen/spacing_normal"
+    app:contentPaddingTop="@dimen/spacing_normal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="?android:textColorPrimary"
+            android:textStyle="bold"
+            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/type"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:gravity="start|center"
+                android:textColor="?colorAccent"
+                tools:text="GUIDE"
+                tools:visibility="visible"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/date"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|center"
+                android:textColor="?android:textColorTertiary"
+                tools:text="50 minutes ago"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -86,9 +86,6 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
             sendToView(BaseMvp.FAView::onRequireLogin);
             return;
         }
-        if (code == 404) {
-            sendToView(BaseMvp.FAView::onOpenUrlInBrowser);
-        }
         GitHubErrorResponse errorResponse = RestProvider.getErrorResponse(throwable);
         if (errorResponse != null && errorResponse.getMessage() != null) {
             sendToView(v -> v.showErrorMessage(errorResponse.getMessage()));

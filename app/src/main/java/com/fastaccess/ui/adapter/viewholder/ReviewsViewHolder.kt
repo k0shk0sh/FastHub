@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.TimelineModel
-import com.fastaccess.data.dao.types.IssueEventType
 import com.fastaccess.helper.ParseDateFormat
 import com.fastaccess.provider.timeline.HtmlHelper
 import com.fastaccess.ui.widgets.AvatarLayout
@@ -43,8 +42,7 @@ class ReviewsViewHolder private constructor(itemView: View,
                 it.user.login
             } else {
                 ""
-            }).append(" ${if (model.event == IssueEventType.reviewed) "reviewed" else "requested changes"} ")
-                    .append(ParseDateFormat.getTimeAgo(it.submittedAt))
+            }).append(" ${review.state.replace("_", " ")} ").append(ParseDateFormat.getTimeAgo(it.submittedAt))
             if (!it.bodyHtml.isNullOrBlank()) {
                 HtmlHelper.htmlIntoTextView(body, it.bodyHtml, viewGroup.width)
                 body.visibility = View.VISIBLE

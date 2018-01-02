@@ -131,6 +131,8 @@
         <item>Español</item>
         <item>Български</item>
         <item>한국어</item>
+        <item>Polski</item>
+        <item>Português (Portugal)</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -150,6 +152,8 @@
         <item>es</item>
         <item>bg</item>
         <item>ko</item>
+        <item>pl</item>
+        <item>pt-rPT</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">

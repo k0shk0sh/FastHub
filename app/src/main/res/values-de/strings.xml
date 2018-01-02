@@ -149,7 +149,7 @@
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
     <string name="all_notifications">Alle Benachrichtigungen</string>
     <string name="unread">Ungelesen</string>
-    <string name="all">Alle / Jede</string>
+    <string name="all">Alle</string>
     <string name="delete_repo">Repo löschen</string>
     <string name="delete_repo_warning">Wenn du das Repo löschst, kannst du es nicht mehr wiederherstellen</string>
     <string name="thirty_minutes">30 Minuten</string>
@@ -157,7 +157,7 @@
     <string name="ten_minutes">10 Minuten</string>
     <string name="five_minutes">5 Minuten</string>
     <string name="one_minute">Minute</string>
-	<string name="one_hour">Stunde</string>
+    <string name="one_hour">Stunde</string>
     <string name="two_hour">2 Stunden</string>
     <string name="three_hour">3 Stunden</string>
     <string name="created_repo">Erstellt</string>
@@ -213,7 +213,6 @@
     <string name="turn_off">Ausschalten</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
     <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>
-    <string name="no_issue">Kein Issue</string>
     <string name="copy">Kopieren</string>
     <string name="success_copied">kopiert</string>
     <string name="commit_message">Commitnachricht</string>
@@ -251,11 +250,8 @@
     <string name="no_commits">Keine Commits</string>
     <string name="no_contributors">Keine Mitwirkenden</string>
     <string name="no_releases">Keine Releases</string>
-    <string name="no_closed_issues">Keine geschlossenen Issues</string>
-    <string name="no_opened_issues">Keine geöffneten Issues</string>
     <string name="no_events">Keine Ereignisse</string>
-    <string name="no_open_pull_requests">Keine offenen Pull Requests</string>
-    <string name="no_closed_pull_request">Keine geschlossenen Pull Requests</string>
+    <string name="no_pull_requests">Keine Pull Requests</string>
     <string name="no_search_results">Keine Suchergebnisse</string>
     <string name="read_write_permission_explanation">Bitte erlaube FastHub Zugriff auf die SD-Karte um Dateien abzuspeichern.</string>
     <string name="public_gists">Öffentliche Gists</string>
@@ -348,7 +344,7 @@
     <string name="no_reviewers">Keine Reviewer</string>
     <string name="sent_from_fasthub">Gesendet von meinem %1$s mit %2$s%3$s</string>
     <string name="enable_signature">Signatur aktivieren</string>
-    <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
+    <string name="enable_signature_summary">&quot;Gesendet von meinem…&quot;-Signatur aktivieren</string>
     <string name="enable_signature_box">Signaturbox aktivieren</string>
     <string name="enable_signature_box_summary">Aktivieren, damit Signatur im Editor angezeigt wird</string>
     <string name="tags">Tags</string>
@@ -467,12 +463,20 @@
     <string name="backed_up">Erfolgreich gesichert!</string>
     <string name="select_backup">Backup auswählen</string>
     <string name="permission_failed">Rechte nicht gewährt.</string>
-    <string name="backup_summary">Letzes Update: %s</string>
+    <string name="backup_summary">Letztes Update: %s</string>
     <string name="now">Jetzt</string>
     <string name="no_orgs_dialog_title">Organisation(en) nicht auffindbar?</string>
     <string name="up_to_date">Du hast die aktuellste Version!</string>
     <string name="new_version">Eine neue Version ist verfügbar.</string>
     <string name="enable_notification_title">Benachrichtigungen aktivieren</string>
+    <string name="clear_search_keywords">Suchverlauf löschen</string>
+    <string name="restore_purchases">Einkäufe wiederherstellen</string>
+    <string name="include_forks">Forks einschließen</string>
+    <string name="search_results_warning">Bitte sei bei deiner Suche etwas genauer</string>
+    <string name="comment_is_too_far_to_paginate">Dieser Kommentar liegt zu weit zurück, um ihn anzuzeigen</string>
+    <string name="disable_loading_image_title">Ladebild deaktivieren</string>
+    <string name="report_issue_warning">Dieses Problem wird zum FastHub Repo in GitHub übermittelt</string>
+    <string name="disable_loading_image_summary">Bei Nutzung des mobilen Internets Ladebild deaktivieren</string>
 </resources>
 
 
