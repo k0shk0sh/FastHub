@@ -234,7 +234,7 @@
     <string name="rect_avatar_title">Квадратные аватары</string>
     <string name="rate_app">Оценить это приложение</string>
     <string name="author">Автор</string>
-    <string name="fork_github">Сделать Fork на GitHub</string>
+    <string name="fork_github">Создать Fork на GitHub</string>
     <string name="send_email">Отправить сообщение эл. почты</string>
     <string name="question_concerning_fasthub">Вопрос относительно FastHub</string>
     <string name="feedback">Обратная связь</string>
@@ -449,8 +449,8 @@
         <h5>• Почему я испытываю проблемы при редактировании Issue/Pull Request`а?</h5>
         <p>Если редактирование Issue и/или Pull Request`ов в репозиториях Публичных Организаций недоступно, то обратитесь к администраторам этих Организаций, чтобы они предоставили доступ FastHub. В качестве альтернативы вы можете выполнить вход при помощи Маркера доступа (Access Token).</p>
         <h5>• Я обнаружил ошибку! / Я хочу предложить вам ввести новую функцию!</h5>
-        <p>Чтобы сообщить об ошибке или сделать предложение, перейдите по ссылке https://github.com/k0shk0sh/FastHub/issues/new и создайте новый issue. Я призываю вас искать похожие issue перед открытием нового.
-        Любой дублирующийся issue будет помечен как дубликат и закрыт.</p>
+        <p>Чтобы сообщить об ошибке или сделать предложение, перейдите по ссылке https://github.com/k0shk0sh/FastHub/issues/new и создайте новый Issue. Я призываю вас искать похожие Issue перед открытием нового.
+        Любой дублирующийся Issue будет помечен как дубликат и закрыт.</p>
         <h5>• Как мне получить ПРОМОКОД?</h5>
         <p>Если вы студент, то вы должны будете подтвердить мне это, предоставив мне по электронной почте данные, которые перечислены ниже:</p>
         <ul>
@@ -474,6 +474,6 @@
     <string name="search_results_warning">Пожалуйста, используйте более конкретный поисковый запрос</string>
     <string name="disable_loading_image_title">Отключить загрузку изображений</string>
     <string name="disable_loading_image_summary">Отключить загрузку изображений в режиме передачи данных</string>
-    <string name="report_issue_warning">Этот issue будет опубликован в репозитории FastHub</string>
+    <string name="report_issue_warning">Этот Issue будет опубликован в репозитории FastHub</string>
     <string name="block">Заблокировать</string>
 </resources>
