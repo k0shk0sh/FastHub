@@ -28,7 +28,7 @@
     <string name="from">от</string>
     <string name="in_value">в</string>
     <string name="subscribe">Подписаться</string>
-    <string name="repo_issues_is_disabled">Тикеты отключены для этого репозитория</string>
+    <string name="repo_issues_is_disabled">Issue отключены для этого репозитория</string>
     <string name="access_token">Маркер доступа (Access Token)</string>
     <string name="basic_authentication">Базовая аутентификация</string>
     <string name="choose_your_login_type">Выберите метод входа</string>
@@ -52,25 +52,25 @@
     <string name="drafted">запланировал(а)</string>
     <string name="releases">Сборки</string>
     <string name="no_body">Содержимое отсутствует</string>
-    <string name="contributors">Вкладчики</string>
-    <string name="contributions">Вклады</string>
+    <string name="contributors">Contributor`ы</string>
+    <string name="contributions">Сontribution`ы</string>
     <string name="by"></string>
     <string name="english_please">Пожалуйста, в отзыве используйте английский язык.</string>
-    <string name="close_issue">Закрыть Тикет</string>
-    <string name="re_open_issue">Открыть Тикет</string>
+    <string name="close_issue">Закрыть Issue</string>
+    <string name="re_open_issue">Открыть Issue</string>
     <string name="re_open">Открыть</string>
     <string name="close">Закрыть</string>
     <string name="success_re_opened">Успешно открыт</string>
-    <string name="lock_issue_details">Блокировка обсуждения значит:\n&#183;Другие пользователи не смогут оставлять комментарии к этому Тикету.\n&#183;Вы и другие
+    <string name="lock_issue_details">Блокировка обсуждения значит:\n&#183;Другие пользователи не смогут оставлять комментарии к этому Issue.\n&#183;Вы и другие
         соучастники с доступом к этому репозиторию всё ещё сможете оставлять комментарии, которые смогут видеть остальные.\n&#183;В дальнейшем вы всегда сможете снять
         эту блокировку.\n</string>
-    <string name="unlock_issue_details">Снятие блокировки обсуждения значит:\n&#183;Любой пользователь сможет оставлять комментарии к этому Тикету.\n&#183;В дальнейшем
+    <string name="unlock_issue_details">Снятие блокировки обсуждения значит:\n&#183;Любой пользователь сможет оставлять комментарии к этому Issue.\n&#183;В дальнейшем
         вы всегда сможете заблокировать обсуждения снова.\n</string>
     <string name="lock_issue">Заблокировать обсуждение</string>
     <string name="unlock_issue">Разблокировать обсуждение</string>
-    <string name="error_closing_issue">Ошибка закрытия Тикета. Пожалуйста, попробуйте позже.</string>
-    <string name="error_re_opening_issue">Ошибка повторного открытия Тикета. Пожалуйста, попробуйте позже.</string>
-    <string name="success_closed">Тикет успешно закрыт</string>
+    <string name="error_closing_issue">Ошибка закрытия Issue. Пожалуйста, попробуйте позже.</string>
+    <string name="error_re_opening_issue">Ошибка повторного открытия Issue. Пожалуйста, попробуйте позже.</string>
+    <string name="success_closed">Issue успешно закрыт</string>
     <string name="no_description_provided"><p>Без описания</p></string>
     <string name="header_one">Большой заголовок</string>
     <string name="header_two">Средний заголовок</string>
@@ -115,7 +115,7 @@
     <string name="create_public_gist">Публичный Gist</string>
     <string name="submit_as">Опубликовать как</string>
     <string name="delete_gist">Удалить</string>
-    <string name="error_deleting_gist">Ошибка удаления Gist\'a</string>
+    <string name="error_deleting_gist">Ошибка удаления Gist`a</string>
     <string name="no_files">Файлы отсутствуют</string>
     <string name="required_field">Необходимое поле</string>
     <string name="successfully_submitted">Успешно опубликовано</string>
@@ -125,9 +125,9 @@
     <string name="title">Название</string>
     <string name="milestone">Цель</string>
     <string name="assign_myself">Назначить себя</string>
-    <string name="submit_issue">Опубликовать Тикет</string>
-    <string name="error_creating_issue">Ошибка создания Тикета</string>
-    <string name="create_issue">Создать Тикет</string>
+    <string name="submit_issue">Опубликовать Issue</string>
+    <string name="error_creating_issue">Ошибка создания Issue</string>
+    <string name="create_issue">Создать Issue</string>
     <string name="error_highlighting_editor">Отмените выделение, чтобы продолжить редактирование.</string>
     <string name="notifications">Уведомления</string>
     <string name="unread_notification">У вас есть новые уведомления</string>
@@ -147,9 +147,9 @@
     <string name="password">Пароль</string>
     <string name="twoFactor">Код двухфакторной аутентификации</string>
     <string name="login">Логин</string>
-    <string name="gist_description">Описание Gist\'а</string>
+    <string name="gist_description">Описание Gist`а</string>
     <string name="avatar_click_hint">Нажатие с любого экрана на аватар пользователя откроет его профиль</string>
-    <string name="feeds_fork_hint">Долгое нажатие на событие клонирования позволяет открыть оригинальный или клонированный репозиторий.</string>
+    <string name="feeds_fork_hint">Долгое нажатие на событие fork`a позволяет открыть оригинальный репозиторий или его fork.</string>
     <string name="click_here_to_download_release_hint">Скачать сборки</string>
     <string name="options">Опции</string>
     <string name="click_file_option_hint">Скачать файл или поделиться папкой</string>
@@ -187,30 +187,30 @@
     <string name="committed">зафиксировал(а) изменения</string>
     <string name="downloaded">Скачено</string>
     <string name="followed">отслеживает</string>
-    <string name="commented_on_issue">комментарий к тикету</string>
+    <string name="commented_on_issue">комментарий к issue</string>
     <string name="member">Участник</string>
-    <string name="pr_comment_review">комментарий к запросу на слияние</string>
+    <string name="pr_comment_review">комментарий к pull request`у</string>
     <string name="pushed">отправил(а)</string>
     <string name="team_event">Команда</string>
     <string name="deleted">Удалено</string>
     <string name="unknown">Неизвестно</string>
-    <string name="commented_on_commit">оставил(а) комментарий к фиксации</string>
+    <string name="commented_on_commit">оставил(а) комментарий к commit`у</string>
     <string name="switch_branch">Переключить ветвь</string>
     <string name="assignees">Назначения</string>
     <string name="edit">Редактировать</string>
     <string name="edited">\u2022 изменено</string>
-    <string name="update_issue">Обновить Тикет</string>
-    <string name="update_pull_request">Обновить Запрос на слияние</string>
-    <string name="no_milestones">Цели отсутствуют</string>
+    <string name="update_issue">Обновить Issue</string>
+    <string name="update_pull_request">Обновить Pull Request</string>
+    <string name="no_milestones">Mileston`ы отсутствуют</string>
     <string name="add">Добавить</string>
     <string name="done">Завершено</string>
     <string name="home">Начальный экран</string>
-    <string name="create_milestone">Создать цель</string>
-    <string name="error_creating_milestone">Ошибка создания цели</string>
+    <string name="create_milestone">Создать Milestone</string>
+    <string name="error_creating_milestone">Ошибка создания Mileston`а</string>
     <string name="due_on">Due on</string>
     <string name="no_assignees">Нет назначений</string>
     <string name="this_value">этот</string>
-    <string name="commits_reflected">Фиксации были переключены на выбранную ветвь</string>
+    <string name="commits_reflected">Commit`ы были переключены на выбранную ветвь</string>
     <string name="general_settings">Основные</string>
     <string name="background_job_summary">Выберите, как часто FastHub будет проверять наличие новых уведомлений</string>
     <string name="background_job_title">Интервал синхронизации</string>
@@ -234,7 +234,7 @@
     <string name="rect_avatar_title">Квадратные аватары</string>
     <string name="rate_app">Оценить это приложение</string>
     <string name="author">Автор</string>
-    <string name="fork_github">Клонировать на GitHub</string>
+    <string name="fork_github">Создать Fork на GitHub</string>
     <string name="send_email">Отправить сообщение эл. почты</string>
     <string name="question_concerning_fasthub">Вопрос относительно FastHub</string>
     <string name="feedback">Обратная связь</string>
@@ -247,12 +247,12 @@
     <string name="two_factors_otp_error">Необходим одноразовый пароль двухфакторной аутентификации</string>
     <string name="copy">Копировать</string>
     <string name="success_copied">Скопировано</string>
-    <string name="commit_message">Сообщение Фиксации</string>
+    <string name="commit_message">Сообщение Commit`а</string>
     <string name="network_error">Ошибка соединения с сервером</string>
     <string name="unexpected_error">Возникло непредвиденное исключение при работе с API </string>
     <string name="request_error">Произошла ошибка при запросе на сервер, повторите попытку позже</string>
     <string name="marking_as_read">Маркировка уведомления как прочтённое</string>
-    <string name="forking_gist">Клонирование Gist\'a</string>
+    <string name="forking_gist">Создание Fork`а Gist`a</string>
     <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию (OAuth)</string>
     <string name="or_character">ИЛИ</string>
     <string name="mark_notification_title">Отключить автопрочтение</string>
@@ -273,26 +273,26 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="no_feeds">Новости отсутствуют</string>
-    <string name="no_gists">Gist\'ы отсутствуют</string>
+    <string name="no_gists">Gist`ы отсутствуют</string>
     <string name="no_comments">Комментарии отсутствуют</string>
     <string name="no_notifications">Уведомления отсутствуют</string>
     <string name="no_followers">Подписчики отсутствуют</string>
     <string name="no_followings">Подписки отсутствуют</string>
     <string name="no_repos">Репозитории отсутствуют</string>
     <string name="no_starred_repos">Избранные репозитории отсутствуют</string>
-    <string name="no_commits">Фиксации отсутствуют</string>
-    <string name="no_contributors">Вкладчики отсутствуют</string>
+    <string name="no_commits">Commit`ы отсутствуют</string>
+    <string name="no_contributors">Contributor`ы отсутствуют</string>
     <string name="no_releases">Сборки отсутствуют</string>
     <string name="no_events">События отсутствуют</string>
-    <string name="no_pull_requests">Нет pull requests</string>
-    <string name="no_search_results">Нет результатов</string>
+    <string name="no_pull_requests">Pull request`ы отсутствуют</string>
+    <string name="no_search_results">Результаты отсутствуют</string>
     <string name="read_write_permission_explanation">Пожалуйста, предоставьте FastHub доступ к следующим разрешениям, чтобы появилась возможность
         хранить файлы на вашей SD карте, а также просматривать их</string>
-    <string name="public_gists">Публичные Gist\'ы</string>
+    <string name="public_gists">Публичные Gist`ы</string>
     <string name="enable_ads">Включить рекламу</string>
-    <string name="no_issues">Тикеты отсутствуют</string>
+    <string name="no_issues">Issue отсутствуют</string>
     <string name="no_unread_notifications">Нет новых уведомлений.</string>
-    <string name="my_gists">Мои Gist\'ы</string>
+    <string name="my_gists">Мои Gist`ы</string>
     <string name="changelog">Список изменений</string>
     <string name="notifications_hint">Нажмите, чтобы открыть список уведомлений или сделайте свайп, чтобы отклонить</string>
     <string name="home_long_click_hint">Сделайте долгое нажатие, чтобы вернуться к главному экрану откуда угодно</string>
@@ -330,8 +330,8 @@
     <string name="up_to_date">Вы используете последнюю версию!</string>
     <string name="new_version">Доступно обновление.</string>
     <string name="empty_search_error">Поле поиска не может быть пустым</string>
-    <string name="long_press_repo_fab_hint">Долгое нажатие мгновенно создаёт новый Тикет</string>
-    <string name="commit_can_be_merged">Этот Запрос на слияние может быть объединён</string>
+    <string name="long_press_repo_fab_hint">Долгое нажатие мгновенно создаёт новый Issue</string>
+    <string name="commit_can_be_merged">Этот Pull Request может быть объединён</string>
     <string name="reviewed">проверил(а)</string>
     <string name="dismissed_review">отклонил(а) проверку</string>
     <string name="approved_these_changes">одобрил(а) эти изменения</string>
@@ -352,7 +352,7 @@
         который может предоставить FastHub доступ к списку ваших организаций.</string>
     <string name="insert">Вставить</string>
     <string name="select">Выбрать</string>
-    <string name="select_picture">Выберите картинку</string>
+    <string name="select_picture">Выберите изображение</string>
     <string name="support_with_2_00">Пожертвовать $2.00</string>
     <string name="support_with_5_00">Пожертвовать $5.00</string>
     <string name="support_with_10_00">Пожертвовать $10.00</string>
@@ -416,8 +416,8 @@
     <string name="colored_navbar_title">Бесцветная нав. панель</string>
     <string name="sound_chooser_summary">Установить пользовательский звук уведомлений</string>
     <string name="sound_chooser_title">Звук уведомлений</string>
-    <string name="disable_auto_gif_summary">Отключить автоматическое проигрывание GIF</string>
-    <string name="disable_auto_gif_title">Откл. автопроигрывание GIF</string>
+    <string name="disable_auto_gif_summary">Отключить автоматическое воспроизведение GIF</string>
+    <string name="disable_auto_gif_title">Откл. автовоспроизведение GIF</string>
     <string name="request_changes">запросил(а) изменения</string>
     <string name="google_play_service_error">Сервисы Google Play недоступны</string>
     <string name="edit_gist">Редактировать Gist</string>
@@ -446,11 +446,11 @@
         <h5>• Я вошёл в свой Корпоративный аккаунт. Почему я могу взаимодействовать только с Корпоративной версией GitHub?</h5>
         <p>Ну, это логично, что вы не можете работать с чем-либо ещё, кроме Корпоративной части GitHub. FastHub пытается получить все возможные права доступа, но в большинстве
         случаев это не работает, так как ваши данные авторизации не находятся на сервере GitHub. Но в <b>некоторых</b> случаях маркер OAuth вашего аккаунта GitHub может сработать.</p>
-        <h5>• Почему я испытываю проблемы при редактировании Тикетов/Запросов на слияние?</h5>
-        <p>Если редактирование Тикетов и/или Запросов на слияние в репозиториях Публичных Организаций недоступно, то обратитесь к администраторам этих Организаций, чтобы они предоставили доступ FastHub. В качестве альтернативы вы можете выполнить вход при помощи Маркера доступа (Access Token).</p>
+        <h5>• Почему я испытываю проблемы при редактировании Issue/Pull Request`а?</h5>
+        <p>Если редактирование Issue и/или Pull Request`ов в репозиториях Публичных Организаций недоступно, то обратитесь к администраторам этих Организаций, чтобы они предоставили доступ FastHub. В качестве альтернативы вы можете выполнить вход при помощи Маркера доступа (Access Token).</p>
         <h5>• Я обнаружил ошибку! / Я хочу предложить вам ввести новую функцию!</h5>
-        <p>Чтобы сообщить об ошибке или сделать предложение, перейдите по ссылке https://github.com/k0shk0sh/FastHub/issues/new и создайте новый тикет. Я призываю вас искать похожие тикеты перед открытием нового.
-        Любой дублирующийся тикет будет помечен как дубликат и закрыт.</p>
+        <p>Чтобы сообщить об ошибке или сделать предложение, перейдите по ссылке https://github.com/k0shk0sh/FastHub/issues/new и создайте новый Issue. Я призываю вас искать похожие Issue перед открытием нового.
+        Любой дублирующийся Issue будет помечен как дубликат и закрыт.</p>
         <h5>• Как мне получить ПРОМОКОД?</h5>
         <p>Если вы студент, то вы должны будете подтвердить мне это, предоставив мне по электронной почте данные, которые перечислены ниже:</p>
         <ul>
@@ -469,10 +469,11 @@
     <string name="comments_added_successfully">Комментарии успешно добавлены</string>
     <string name="clear_search_keywords">Очистить историю поиска</string>
     <string name="restore_purchases">Восстановить покупки</string>
-    <string name="include_forks">Включая клонированные</string>
+    <string name="include_forks">Включая fork`и</string>
     <string name="comment_is_too_far_to_paginate">Комментарий находится слишком далеко для отображения.</string>
     <string name="search_results_warning">Пожалуйста, используйте более конкретный поисковый запрос</string>
     <string name="disable_loading_image_title">Отключить загрузку изображений</string>
     <string name="disable_loading_image_summary">Отключить загрузку изображений в режиме передачи данных</string>
-    <string name="report_issue_warning">Этот тикет будет опубликован в репозитории FastHub</string>
+    <string name="report_issue_warning">Этот Issue будет опубликован в репозитории FastHub</string>
+    <string name="block">Заблокировать</string>
 </resources>
