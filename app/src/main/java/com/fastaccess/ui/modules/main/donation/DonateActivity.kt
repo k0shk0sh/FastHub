@@ -101,16 +101,16 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
 
         fun enableProduct(productKey: String, context: Context) {
             when (productKey) {
-                context.getString(R.string.donation_product_1), context.getString(R.string.amlod_theme_purchase) -> PrefGetter.enableAmlodTheme()
-                context.getString(R.string.midnight_blue_theme_purchase) -> PrefGetter.enableMidNightBlueTheme()
-                context.getString(R.string.theme_bluish_purchase) -> PrefGetter.enableBluishTheme()
-                context.getString(R.string.donation_product_2), context.getString(R.string.fasthub_pro_purchase) -> PrefGetter.setProItems()
-                context.getString(R.string.fasthub_enterprise_purchase) -> PrefGetter.setEnterpriseItem()
                 context.getString(R.string.donation_product_3), context.getString(R.string.donation_product_4),
                 context.getString(R.string.fasthub_all_features_purchase) -> {
                     PrefGetter.setProItems()
                     PrefGetter.setEnterpriseItem()
                 }
+                context.getString(R.string.donation_product_2), context.getString(R.string.fasthub_pro_purchase) -> PrefGetter.setProItems()
+                context.getString(R.string.fasthub_enterprise_purchase) -> PrefGetter.setEnterpriseItem()
+                context.getString(R.string.donation_product_1), context.getString(R.string.amlod_theme_purchase) -> PrefGetter.enableAmlodTheme()
+                context.getString(R.string.midnight_blue_theme_purchase) -> PrefGetter.enableMidNightBlueTheme()
+                context.getString(R.string.theme_bluish_purchase) -> PrefGetter.enableBluishTheme()
                 else -> Logger.e(productKey)
             }
         }
