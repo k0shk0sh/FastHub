@@ -1,10 +1,13 @@
 package com.fastaccess.ui.widgets.markdown
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
+import com.crashlytics.android.Crashlytics
 import com.fastaccess.ui.widgets.FontEditText
 import java.util.*
 
@@ -53,6 +56,17 @@ class MarkdownEditText : FontEditText {
                 mention(it)
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n") override fun setText(text: CharSequence, type: TextView.BufferType) {
+        try {
+            super.setText(text, type)
+        } catch (e: Exception) {
+            setText("I tried, but your OEM just sucks because they modify the framework components and therefore causing the app to crash!" + "" +
+                    ".\nFastHub")
+            Crashlytics.logException(e)
+        }
+
     }
 
     fun mention(charSequence: CharSequence) {
