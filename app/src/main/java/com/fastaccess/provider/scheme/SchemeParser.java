@@ -21,6 +21,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
@@ -147,8 +148,9 @@ public class SchemeParser {
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
+                Intent label = getLabel(context, data);
                 Optional<Intent> intentOptional = returnNonNull(trending, projects, userIntent, repoIssues, repoPulls,
-                        pullRequestIntent, commit, commits, createIssueIntent, issueIntent, releasesIntent, repoIntent,
+                        pullRequestIntent, label, commit, commits, createIssueIntent, issueIntent, releasesIntent, repoIntent,
                         repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
@@ -268,6 +270,18 @@ public class SchemeParser {
         Logger.e(commentId);
         return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn,
                 LinkParserHelper.isEnterprise(uri.toString()), commentId == null ? 0 : commentId);
+    }
+
+    @Nullable private static Intent getLabel(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.size() < 3) return null;
+        String owner = segments.get(0);
+        String repoName = segments.get(1);
+        String lastPath = segments.get(2);
+        if ("labels".equalsIgnoreCase(lastPath)) {
+            return FilterIssuesActivity.getIntent(context, owner, repoName, "label:\"" + segments.get(3) + "\"");
+        }
+        return null;
     }
 
     @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {
