@@ -21,6 +21,7 @@ import butterknife.OnTextChanged
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.*
+import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
@@ -133,6 +134,11 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
             R.id.menu -> {
                 drawerLayout.openDrawer(Gravity.END)
                 true
+            }
+            R.id.share -> {
+                ActivityHelper.shareUrl(this, "${LinkParserHelper.PROTOCOL_HTTPS}://${LinkParserHelper.HOST_DEFAULT}" +
+                        "/trending/$selectedTitle")
+                return true
             }
             android.R.id.home -> {
                 startActivity(Intent(this, MainActivity::class.java))

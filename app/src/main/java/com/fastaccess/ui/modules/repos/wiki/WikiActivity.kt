@@ -16,6 +16,7 @@ import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.NameParser
 import com.fastaccess.data.dao.wiki.WikiContentModel
+import com.fastaccess.helper.ActivityHelper
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.Logger
@@ -115,6 +116,11 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
         when (item?.itemId) {
             R.id.menu -> {
                 drawerLayout.openDrawer(Gravity.END)
+                return true
+            }
+            R.id.share -> {
+                ActivityHelper.shareUrl(this, "${LinkParserHelper.PROTOCOL_HTTPS}://${LinkParserHelper.HOST_DEFAULT}" +
+                        "${presenter.login}/${presenter.repoId}/wiki/$selectedTitle")
                 return true
             }
             android.R.id.home -> {
