@@ -36,6 +36,7 @@ public class CommitLinesViewHolder extends BaseViewHolder<CommitLinesModel> {
         patchAdditionColor = ViewHelper.getPatchAdditionColor(itemView.getContext());
         patchDeletionColor = ViewHelper.getPatchDeletionColor(itemView.getContext());
         patchRefColor = ViewHelper.getPatchRefColor(itemView.getContext());
+        textView.setOnLongClickListener(this);
     }
 
     public static CommitLinesViewHolder newInstance(@NonNull ViewGroup viewGroup, @NonNull BaseRecyclerAdapter adapter) {

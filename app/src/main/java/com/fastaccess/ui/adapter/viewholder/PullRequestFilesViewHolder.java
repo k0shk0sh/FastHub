@@ -9,6 +9,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.data.dao.CommitLinesModel;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.adapter.CommitLinesAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesMvp;
@@ -136,5 +137,12 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommitLinesModel item) {}
+    @Override public void onItemLongClick(int position, View v, CommitLinesModel item) {
+        if (adapter == null) return;
+        int groupPosition = getAdapterPosition();
+        CommitFileChanges commitFileChanges = (CommitFileChanges) adapter.getItem(groupPosition);
+        int lineNo = item.getLeftLineNo() > 0 ? item.getLeftLineNo() : item.getRightLineNo();
+        String url = commitFileChanges.getCommitFileModel().getBlobUrl() + "#L" + lineNo;
+        AppHelper.copyToClipboard(v.getContext(), url);
+    }
 }
