@@ -149,7 +149,8 @@ public class SchemeParser {
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
                 Intent label = getLabel(context, data);
-                Optional<Intent> intentOptional = returnNonNull(trending, projects, userIntent, repoIssues, repoPulls,
+                Intent search = getSearchIntent(context, data);
+                Optional<Intent> intentOptional = returnNonNull(trending, projects, search, userIntent, repoIssues, repoPulls,
                         pullRequestIntent, label, commit, commits, createIssueIntent, issueIntent, releasesIntent, repoIntent,
                         repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
@@ -267,7 +268,6 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        Logger.e(commentId);
         return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn,
                 LinkParserHelper.isEnterprise(uri.toString()), commentId == null ? 0 : commentId);
     }
@@ -463,6 +463,11 @@ public class SchemeParser {
         if (segments != null && segments.size() == 3 && uri.getLastPathSegment().equalsIgnoreCase("issues")) {
             String owner = segments.get(0);
             String repo = segments.get(1);
+            Uri encoded = Uri.parse(uri.toString().replace("utf8=%E2%9C%93&amp;", ""));
+            if (encoded.getQueryParameter("q") != null) {
+                String query = encoded.getQueryParameter("q");
+                return FilterIssuesActivity.getIntent(context, owner, repo, query);
+            }
             return RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES);
         }
         return null;
@@ -473,6 +478,11 @@ public class SchemeParser {
         if (segments != null && segments.size() == 3 && uri.getLastPathSegment().equalsIgnoreCase("pulls")) {
             String owner = segments.get(0);
             String repo = segments.get(1);
+            Uri encoded = Uri.parse(uri.toString().replace("utf8=%E2%9C%93&amp;", ""));
+            if (encoded.getQueryParameter("q") != null) {
+                String query = encoded.getQueryParameter("q");
+                return FilterIssuesActivity.getIntent(context, owner, repo, query);
+            }
             return RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST);
         }
         return null;
@@ -549,6 +559,19 @@ public class SchemeParser {
     @Nullable private static Intent getGistFile(@NonNull Context context, @NonNull Uri uri) {
         if (HOST_GISTS_RAW.equalsIgnoreCase(uri.getHost())) {
             return CodeViewerActivity.createIntent(context, uri.toString(), uri.toString());
+        }
+        return null;
+    }
+
+    @Nullable private static Intent getSearchIntent(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.size() > 1) return null;
+        String search = segments.get(0);
+        if ("search".equalsIgnoreCase(search)) {
+            Uri encoded = Uri.parse(uri.toString().replace("utf8=%E2%9C%93&amp;", ""));
+            String query = encoded.getQueryParameter("q");
+            Logger.e(encoded, query);
+            return SearchActivity.getIntent(context, query);
         }
         return null;
     }

@@ -3,6 +3,7 @@ package com.fastaccess.provider.timeline.handler.drawable;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.widget.TextView;
 
@@ -36,8 +37,10 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
             Context context = container.get().getContext();
             final GenericRequestBuilder load = Glide.with(context)
                     .load(url)
+                    .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_image))
                     .dontAnimate();
             final GlideDrawableTarget target = new GlideDrawableTarget(urlDrawable, container, width);
+            load.override(width, width / 2);
             load.into(target);
             cachedTargets.add(target);
         }
