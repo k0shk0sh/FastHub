@@ -1,1 +1,7 @@
 since-tag=4.5.5
+issues-wo-labels=false
+issue-line-labels=true
+exclude-labels=Type: Invalid,Type: Duplicate,Type: Unknown,Type: Question,Type: No API,Type: Work as Intended,Type: Can't Reproduce,Status: Won't Fix
+include-labels=Status: Completed
+bug-labels=Type: Bug
+enhancement-labels=Type: Enhancement,Type: Feature Request
