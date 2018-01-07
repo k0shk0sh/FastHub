@@ -372,59 +372,57 @@
 
 <string name="unauthorized_user">Utenti non autorizzati</string>
 
-<string name="two_factors_otp_error">Two factors OTP is required</string>
+<string name="two_factors_otp_error">Due fattori OTP sono richiesti</string>
 
-<string name="copy">Copy URL</string>
+<string name="copy">Copia URL</string>
 
-<string name="success_copied">Copied</string>
+<string name="success_copied">Copiato</string>
 
-<string name="commit_message">Commit message</string>
+<string name="commit_message">Messaggio di impegno</string>
 
-<string name="network_error">Error occurred while communicating to the server</string>
+<string name="network_error">È stato riscontrato un errore nella comunicazione al server</string>
 
-<string name="unexpected_error">Unexpected error while requesting API</string>
+<string name="unexpected_error">Errore inaspettato nella richiesta API</string>
 
-<string name="request_error">Error requesting server, please try again later</string>
+<string name="request_error">Errore richiedendo il server, perfavore riprovare più tardi</string>
 
-<string name="marking_as_read">Marking notification as read</string>
+<string name="marking_as_read">Sto marcando la notifica come letta</string>
 
-<string name="forking_gist">Forking gist</string>
+<string name="forking_gist">Sto dividendo il concetto</string>
 
-<string name="login_using_your_default_browser">Login using your default browser (OAuth)</string>
+<string name="login_using_your_default_browser">Accedi usando il tuo browser predefinito (OAuth)</string>
 
-<string name="or_character">OR</string>
+<string name="or_character">O</string>
 
-<string name="mark_notification_title">Disable Notification Read Status</string>
+<string name="mark_notification_title">Disabilita lo Stato di Lettura della Notifica</string>
 
-<string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
+<string name="mark_notification_summary">Disabilita marcare come letto subito dopo aver cliccato una notifica.</string>
 
-<string name="theme_title">Theme</string>
+<string name="theme_title">Tema</string>
 
-<string name="theme_summary">Choose your default theme</string>
+<string name="theme_summary">Scegli il tuo tema predefinito</string>
 
-<string name="theme_color_summary">Choose theme accent color</string>
+<string name="theme_color_summary">Scegli il colore in evidenza del tema</string>
 
-<string name="theme_color_title">Theme Accent Color</string>
+<string name="theme_color_title">Colore in evidenza del Tema</string>
 
-<string name="website">Website</string>
+<string name="website">Sito web</string>
 
-<string name="support_development">Support Development</string>
+<string name="support_development">Supporta lo Sviluppo</string>
 
-<string name="success_purchase_message">Thanks for being extremely awesome!</string>
+<string name="success_purchase_message">Grazie per essere così estremamente fantastico!</string>
 
-<string name="change_theme_warning">If the theme didn\'t apply properly, please kill and open the app manually.</string>
+<string name="change_theme_warning">Se il tema non applica correttamente, perfavore chiudi e apri l\' app manualmente.</string>
 
-<string name="pin">Pin</string>
+<string name="pin">Fissa</string>
 
-<string name="pinned">Pinned</string>
+<string name="pinned">Fissato</string>
 
-<string name="unpin">Unpin</string>
+<string name="unpin">Non Fissare</string>
 
-<string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.\nP.S: The more you access a Repo the more on top
+<string name="empty_pinned_repos">Nessun deposito fissato ancora, fissane alcuni per vederli qui.\nP.S: Più accedi a un deposito più in alto sarà.</string>
 
-it will be.</string>
-
-<string name="yes">Yes</string>
+<string name="yes">Sì</string>
 
 <string name="no">No</string>
 
