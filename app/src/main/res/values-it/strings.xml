@@ -426,23 +426,23 @@
 
 <string name="no">No</string>
 
-<string name="no_feeds">No feeds</string>
+<string name="no_feeds">Nessun feed</string>
 
-<string name="no_gists">No gists</string>
+<string name="no_gists">Nessun concetto</string>
 
-<string name="no_comments">No comments</string>
+<string name="no_comments">Nessun commento</string>
 
-<string name="no_notifications">No notifications</string>
+<string name="no_notifications">Nessuna notifica</string>
 
-<string name="no_followers">No followers</string>
+<string name="no_followers">Nessun seguace</string>
 
-<string name="no_followings">No followings</string>
+<string name="no_followings">Non segui nessuno</string>
 
-<string name="no_repos">No repositories</string>
+<string name="no_repos">Nessun deposito</string>
 
-<string name="no_starred_repos">No starred repositories</string>
+<string name="no_starred_repos">Nessun deposito contrassegnato</string>
 
-<string name="no_commits">No commits</string>
+<string name="no_commits">Nessun commits</string>
 
 <string name="no_contributors">No contributors</string>
 
