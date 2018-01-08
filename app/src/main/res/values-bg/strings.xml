@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Зареждане, моля изчакай…</string>
     <string name="action">Действие</string>
     <string name="settings">Настройки</string>
@@ -373,16 +374,6 @@
     <string name="enable_signature_box_summary">Активиране на отметка за подпис в текстовия редактор</string>
     <string name="tags">Тагове</string>
     <string name="add_comment">Добави коментар</string>
-    <string name="banners">Представяне на банери</string>
-    <string name="banners_info">С FastHub 2.5.0, можеш да изразиш себе си по-добре като използваш банери
-        на профилната си страница.\n\nВсеки, който използва приложението FastHub, може да види заглавието,
-        което си сложил/а. Ще можеш да виждаш заглавията и на другите хора. Ако искаш да създадеш собствен
-        банер, направи го с размери 1280x384 или кратни такива, в противен случай може да бъде отрязан.\n\n
-        Можеш да добавиш или смениш банера си по всяко време, като създадеш gist с име "header.fst" с файл
-        съдържащ директна връзка към заглавно изображение.\n\nИли пък за по-лесно, направо използвай вграденият
-        диалог за избор на изображения.
-    </string>    
-    <string name="edit_banner">ИЗБЕРИ БАНЕР</string>
     <string name="image_error">Грешка при зареждане на изображение, моля опитай пак.</string>
     <string name="trending">Тенденции</string>
     <string name="not_really_working">Сортиране по емотикони не работи поради ограничения в GitHub</string>
