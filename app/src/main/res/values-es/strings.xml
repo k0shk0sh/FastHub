@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Cargando, por favor espere…</string>
     <string name="action">Acción</string>
     <string name="settings">Configuración</string>
@@ -368,15 +369,6 @@
     <string name="enable_signature_box_summary">Habilitar un checkbox para poner o quitar la firma en el editor de mensajes</string>
     <string name="tags">Etiquetas</string>
     <string name="add_comment">Agregar comentario</string>
-    <string name="banners">Introducing Banners</string>
-    <string name="banners_info">Con FastHub 2.5.0, ahora puedes expresarte mejor con banners para tu página de perfil.\n\n
-		Cualquiera usando FastHub, podrá ver tu cabecera y tu verás las cabeceras de otros también! Si quisieras
-		crear un banner para ti, hazlo de 1280x384 o múltiplo, de otro modo quedará cortado\n\n
-		Puedes agregar o modificar tu banner en cualquier momento creando un Gist "header.fst" con un archivo conteniendo
-		un vínculo directo a la imagen de la cabecera.\n\n
-		O más fácilmente ¡usá el selector de imagen incorporado!
-    </string>
-    <string name="edit_banner">ELIGE UN BANNER</string>
     <string name="image_error">Error cargando imagen, por favor intenta nuevamente.</string>
     <string name="trending">Tendencias</string>
     <string name="not_really_working">Ordenar por emojies no funciona debido a una limitación de GitHub</string>

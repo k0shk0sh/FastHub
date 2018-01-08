@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Chargement, veuillez patienter…</string>
     <string name="action">Action</string>
     <string name="settings">Paramètres</string>
@@ -369,15 +370,6 @@
     <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
     <string name="tags">Étiquettes</string>
     <string name="add_comment">Ajouter un commentaire</string>
-    <string name="banners">Bannières d\'introduction</string>
-    <string name="banners_info">With FastHub 2.5.0, you can now better express yourself with banners
-        for your profile page.\n\nAnyone using the FastHub app, will see your header, and you\'ll
-        begin seeing other peoples headers as well! If you\'d like to create a banner for yourself,
-        make it 1280x384 or divisible, otherwise, it may get cropped.\n\nYou can add or change your
-        banner at any time, by creating a gist described "header.fst" with a file containing a
-        direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
-    </string>
-    <string name="edit_banner">CHOISISSEZ UNE BANNIÈRE</string>
     <string name="image_error">Erreur de chargement de l\'image, merci de recommencer.</string>
     <string name="trending">Trending</string>
     <string name="not_really_working">Trier par emojis ne fonctionne pas suite à une limitation de GitHub</string>

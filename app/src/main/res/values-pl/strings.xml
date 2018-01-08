@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Wczytywanie, proszę czekać…</string>
     <string name="action">Akcja</string>
     <string name="settings">Ustawienia</string>
@@ -372,16 +373,6 @@
     <string name="enable_signature_box_summary">Odblokuj pole wyboru, żeby móc załączyć podpis w edytorze tekstu</string>
     <string name="tags">Tagi</string>
     <string name="add_comment">Skomentuj</string>
-    <string name="banners">Prezentujemy banery</string>
-    <string name="banners_info">Od wersji 2.5.0 FastHub pozwala na lepsze wyrażenie siebie za pomocą
-        banerów na stronie twojego profilu.\n\nKażdy użytkownik appki FastHub będzie widzieć twój
-        nagłówek, a ty zobaczysz nagłówki również u innych! Jeśli chcesz stworzyć swój baner,
-        upewnij się że ma rozdzielczość proporcjonalną do 1280x384, przeciwnie zostanie on
-        przycięty.\n\nAby dodać lub zmienić swój baner, swórz Gista o nazwie \"header.fst\" z
-        plikiem zawierającym bezpośredni link do grafiki twojego nagłówka.\n\nAlbo prościej, po
-        prostu wybierz plik obrazu używając przycisku poniżej!
-    </string>
-    <string name="edit_banner">WYBIERZ BANER</string>
     <string name="image_error">Błąd podczas wczytywaniu pliku obrazu, spróbuj ponownie.</string>
     <string name="trending">Na czasie</string>
     <string name="not_really_working">Sortowanie po emoji nie działa z powodu ograniczeń GitHub</string>
