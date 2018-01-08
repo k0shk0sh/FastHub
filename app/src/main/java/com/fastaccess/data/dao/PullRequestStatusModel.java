@@ -25,6 +25,7 @@ import lombok.Setter;
     private String url;
     private boolean mergable;
     private Date createdAt;
+    private String mergeableState;
 
     public PullRequestStatusModel() {}
 
@@ -39,9 +40,10 @@ import lombok.Setter;
         dest.writeString(this.url);
         dest.writeByte(this.mergable ? (byte) 1 : (byte) 0);
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
+        dest.writeString(this.mergeableState);
     }
 
-    private PullRequestStatusModel(Parcel in) {
+    protected PullRequestStatusModel(Parcel in) {
         int tmpState = in.readInt();
         this.state = tmpState == -1 ? null : StatusStateType.values()[tmpState];
         this.sha = in.readString();
@@ -52,6 +54,7 @@ import lombok.Setter;
         this.mergable = in.readByte() != 0;
         long tmpCreatedAt = in.readLong();
         this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        this.mergeableState = in.readString();
     }
 
     public static final Creator<PullRequestStatusModel> CREATOR = new Creator<PullRequestStatusModel>() {

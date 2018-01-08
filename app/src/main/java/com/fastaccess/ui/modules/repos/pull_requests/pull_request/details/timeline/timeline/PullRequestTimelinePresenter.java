@@ -375,7 +375,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             List<TimelineModel> models = TimelineConverter.INSTANCE.convert(response.getItems(), comments);
                             if (page == 1 && status != null) {
                                 status.setMergable(parameter.isMergeable());
-                                if (status.getState() != null) models.add(0, new TimelineModel(status));
+                                status.setMergeableState(parameter.getMergeableState());
+                                if (status.getState() != null) {
+                                    models.add(0, new TimelineModel(status));
+                                }
                             }
                             return models;
                         } else {

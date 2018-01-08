@@ -18,7 +18,6 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.timeline.CommentsHelper
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -96,7 +95,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         }
         markdDownLayout.markdownListener = this
         if (savedInstanceState == null) {
-            commentText.setText(arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA))
+            arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA)?.let { commentText.setText(it) }
         }
     }
 

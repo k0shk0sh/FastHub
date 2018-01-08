@@ -110,7 +110,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
-        Logger.e(FirebaseInstanceId.getInstance().getToken());
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);
