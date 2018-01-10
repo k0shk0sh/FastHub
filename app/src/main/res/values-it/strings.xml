@@ -330,7 +330,7 @@
     <string name="from">da</string>
     <string name="in_value">in</string>
     <string name="subscribe">Sottoscrivi</string>
-    <string name="repo_issues_is_disabled">La repo non ha alcuna scheda Issues</string>
+    <string name="repo_issues_is_disabled">La repo non ha alcuna scheda Problemi</string>
     <string name="access_token">Token di accesso</string>
     <string name="basic_authentication">Autenticazione Base</string>
     <string name="choose_your_login_type">Scegli il tuo tipo di accesso</string>
@@ -388,7 +388,7 @@
 
 <string name="marking_as_read">Sto marcando la notifica come letta</string>
 
-<string name="forking_gist">Sto dividendo il gist</string>
+<string name="forking_gist">Sto clonando il gist</string>
 
 <string name="login_using_your_default_browser">Accedi usando il tuo browser predefinito (OAuth)</string>
 
@@ -456,7 +456,7 @@
 
 <string name="read_write_permission_explanation">Perfavore accetta i permessi di FastHub per
 
-store the files on your device to be able to view them</string>
+memorizzare i file sul tuo dispositivo ed essere in grado di visualizzarli</string>
 
 <string name="public_gists">Public Gists</string>
 
