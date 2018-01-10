@@ -388,7 +388,7 @@
 
 <string name="marking_as_read">Sto marcando la notifica come letta</string>
 
-<string name="forking_gist">Sto dividendo il concetto</string>
+<string name="forking_gist">Sto dividendo il gist</string>
 
 <string name="login_using_your_default_browser">Accedi usando il tuo browser predefinito (OAuth)</string>
 
@@ -420,7 +420,7 @@
 
 <string name="unpin">Non Fissare</string>
 
-<string name="empty_pinned_repos">Nessun deposito fissato ancora, fissane alcuni per vederli qui.\nP.S: Più accedi a un deposito più in alto sarà.</string>
+<string name="empty_pinned_repos">Nessun repo fissato ancora, fissane alcuni per vederli qui.\nP.S: Più accedi a un deposito più in alto sarà.</string>
 
 <string name="yes">Sì</string>
 
@@ -428,7 +428,7 @@
 
 <string name="no_feeds">Nessun feed</string>
 
-<string name="no_gists">Nessun concetto</string>
+<string name="no_gists">Nessun gist</string>
 
 <string name="no_comments">Nessun commento</string>
 
@@ -438,23 +438,23 @@
 
 <string name="no_followings">Non segui nessuno</string>
 
-<string name="no_repos">Nessun deposito</string>
+<string name="no_repos">Nessun repo</string>
 
-<string name="no_starred_repos">Nessun deposito contrassegnato</string>
+<string name="no_starred_repos">Nessun repo contrassegnato</string>
 
-<string name="no_commits">Nessun commits</string>
+<string name="no_commits">Nessun commit</string>
 
-<string name="no_contributors">No contributors</string>
+<string name="no_contributors">Nessun contributore</string>
 
-<string name="no_releases">No releases</string>
+<string name="no_releases">Nessun rilascio</string>
 
-<string name="no_events">No events</string>
+<string name="no_events">Nessun evento</string>
 
-<string name="no_pull_requests">No pull requests</string>
+<string name="no_pull_requests">Nessuna richiesta di unione</string>
 
-<string name="no_search_results">No search results</string>
+<string name="no_search_results">Nessun risultato di ricerca</string>
 
-<string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
+<string name="read_write_permission_explanation">Perfavore accetta i permessi di FastHub per
 
 store the files on your device to be able to view them</string>
 
