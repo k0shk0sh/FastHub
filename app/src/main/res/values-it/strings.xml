@@ -378,7 +378,7 @@
 
 <string name="success_copied">Copiato</string>
 
-<string name="commit_message">Messaggio di impegno</string>
+<string name="commit_message">Messaggio del commit</string>
 
 <string name="network_error">È stato riscontrato un errore nella comunicazione al server</string>
 
@@ -420,7 +420,7 @@
 
 <string name="unpin">Non Fissare</string>
 
-<string name="empty_pinned_repos">Nessun repo fissato ancora, fissane alcuni per vederli qui.\nP.S: Più accedi a un deposito più in alto sarà.</string>
+<string name="empty_pinned_repos">Nessun repo fissato ancora, fissane alcuni per vederli qui.\nP.S: Più accedi a un repo più in alto sarà.</string>
 
 <string name="yes">Sì</string>
 
@@ -450,7 +450,7 @@
 
 <string name="no_events">Nessun evento</string>
 
-<string name="no_pull_requests">Nessuna richiesta di unione</string>
+<string name="no_pull_requests">Nessuna Pull Request</string>
 
 <string name="no_search_results">Nessun risultato di ricerca</string>
 
@@ -458,31 +458,31 @@
 
 memorizzare i file sul tuo dispositivo ed essere in grado di visualizzarli</string>
 
-<string name="public_gists">Public Gists</string>
+<string name="public_gists">Gist Pubblici</string>
 
-<string name="enable_ads">Enable Ads</string>
+<string name="enable_ads">Abilita Annunci</string>
 
-<string name="no_issues">No issues</string>
+<string name="no_issues">Nessun Problema</string>
 
-<string name="no_unread_notifications">No unread notifications.</string>
+<string name="no_unread_notifications">Nessuna notifica non letta.</string>
 
-<string name="my_gists">My Gists</string>
+<string name="my_gists">I miei Gist</string>
 
-<string name="changelog">Changelog</string>
+<string name="changelog">Registro delle modifiche</string>
 
-<string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
+<string name="notifications_hint">Clicca per aprire la lista delle notifiche o effettuare uno swipe per ignorare</string>
 
-<string name="home_long_click_hint">Long press to navigate to main screen from anywhere</string>
+<string name="home_long_click_hint">Tocco prolungato per navigare allo schermo principale da qualunque parte</string>
 
-<string name="created">Created</string>
+<string name="created">Creato</string>
 
-<string name="assigned">Assigned</string>
+<string name="assigned">Assegnato</string>
 
-<string name="mentioned">Mentioned</string>
+<string name="mentioned">Menzionato</string>
 
-<string name="name">Name</string>
+<string name="name">Nome</string>
 
-<string name="color">Color</string>
+<string name="color">Colore</string>
 
 <string name="create_label">Create Label</string>
 
