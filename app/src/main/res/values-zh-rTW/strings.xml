@@ -20,7 +20,8 @@ Readme
 APP
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">載入中，請稍後</string>
     <string name="action">動作</string>
     <string name="settings">設定</string>
@@ -385,11 +386,6 @@ APP
     <string name="enable_signature_box_summary">選擇複選框以在編輯器中切換簽名</string>
     <string name="tags">標籤</string>
     <string name="add_comment">新增</string>
-    <string name="banners">介紹橫幅</string>
-    <string name="banners_info">透過 FastHub 2.5.0, 您可以在個人資料頁面快速的表達您的橫幅。\n\n任何使用 FastHub 的人都能看到，而且您也能看到他人的! 如果您想要自己創建橫幅
-        ，讓他的解析度為 1280x384 或等比例，否則可能會被裁減。\n\n您可以在任何時候更改橫幅, 透過創建一個 gist 叫做「header.fst」包含著圖片的直接連結。\n\n或是也可以用內建的圖片選擇器。
-    </string>
-    <string name="edit_banner">選擇橫幅</string>
     <string name="image_error">載入圖片錯誤，請重試。</string>
     <string name="trending">趨勢</string>
     <string name="not_really_working">因為 GitHub 的限制，無法使用表情符號來排序。</string>
