@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="premium_theme">Aukšt. kokyb. tema</string>
     <string name="in_progress">Prašome palaukti…</string>
     <string name="action">Veiksmas</string>
@@ -364,12 +365,6 @@
     <string name="enable_signature_box_summary">Rodyti parašą, kai rašau komentarą</string>
     <string name="tags">Etiketės</string>
     <string name="add_comment">Pridėti komentarą</string>
-    <string name="banners">Nauja funkcija: profilio viršeliai</string>
-    <string name="banners_info">Pastabos: Profilio viršelius mato tik „FastHub“ 2.5+ programėlės vartotojai.
-        Geriausias dydis viršeliui yra: 1280x384. Jeigu neturite „FastHub“ programėlės, bet vistiek
-        norite pakeisti viršelį, sukurkite gistą, kuris pavadintas „header.fst“. Jis gali nustatyti
-        jūsų viršelį. Giste turi būti nuoroda, kurioje yra patalpintas viršelis (pvz. „Imgur direct link“).
-    </string>
     <string name="edit_banner">Pasirinkti viršelio nuotrauką</string>
     <string name="image_error">Nepavyko įkrauti paveikslėlį, dar kartą pabandykite vėliau.</string>
     <string name="trending">Populiaru</string>
