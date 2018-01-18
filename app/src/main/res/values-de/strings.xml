@@ -481,6 +481,7 @@
     <string name="disable_loading_image_title">Ladebild deaktivieren</string>
     <string name="report_issue_warning">Dieses Problem wird zum FastHub Repo in GitHub übermittelt</string>
     <string name="disable_loading_image_summary">Bei Nutzung des mobilen Internets Ladebild deaktivieren</string>
+	<string name="block">blockieren</string>
 </resources>
 
 
