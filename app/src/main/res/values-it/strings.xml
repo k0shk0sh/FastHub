@@ -508,15 +508,15 @@ memorizzare i file sul tuo dispositivo ed essere in grado di visualizzarli</stri
 
 <string name="animations">Animazioni</string>
 
-<string name="dialog_animation_summary">Enable popups animations</string>
+<string name="dialog_animation_summary">Abilita le animazioni popup</string>
 
-<string name="dialog_animation_title">Popup animation</string>
+<string name="dialog_animation_title">Animazioni Popup</string>
 
-<string name="milestones">Milestones</string>
+<string name="milestones">Milestone</string>
 
-<string name="assignee">Assignee</string>
+<string name="assignee">Assegnato a</string>
 
-<string name="checks_failed">Some checks have failed</string>
+<string name="checks_failed">Alcuni controlli sono falliti</string>
 
 <string name="checks_pending">Some checks are pending</string>
 
