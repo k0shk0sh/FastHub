@@ -486,27 +486,27 @@ memorizzare i file sul tuo dispositivo ed essere in grado di visualizzarli</stri
 
 <string name="create_label">Crea Et</string>
 
-<string name="organization">Organization</string>
+<string name="organization">Organizzazione</string>
 
-<string name="organizations">Organizations</string>
+<string name="organizations">Organizzazioni</string>
 
-<string name="people">People</string>
+<string name="people">Persone</string>
 
-<string name="teams">Teams</string>
+<string name="teams">Team</string>
 
-<string name="members">Members</string>
+<string name="members">Membri</string>
 
-<string name="no_members">No members</string>
+<string name="no_members">Nessun membro</string>
 
-<string name="no_teams">No teams</string>
+<string name="no_teams">Nessun team</string>
 
-<string name="no_orgs">No Organizations</string>
+<string name="no_orgs">Nessuna Organizzazione</string>
 
-<string name="no_orgs_dialog_title">Can\'t find your Organisations\?</string>
+<string name="no_orgs_dialog_title">Impossibile trovare le tue Organizzazioni\?</string>
 
-<string name="mark_as_read">Mark as read</string>
+<string name="mark_as_read">Marca come letto</string>
 
-<string name="animations">Animations</string>
+<string name="animations">Animazioni</string>
 
 <string name="dialog_animation_summary">Enable popups animations</string>
 
