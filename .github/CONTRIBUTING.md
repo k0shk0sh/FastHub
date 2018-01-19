@@ -1,11 +1,18 @@
 # Contributing to FastHub
 
+**Updated: 19 Jan 2018**
+
 ## Table of contents
 
 1. [Submitting Issues](#submitting-issues)
 1. [How to contribute. Importing and assembling](#how-to-contribute-importing-and-assembling)
-   i. [Custom keys *(optional)*](#custom-keys-optional)
-   ii. [Before importing into Android Studio](#before-importing-into-android-studio)
+   1. [Custom keys *(optional)*](#custom-keys-optional)
+   1. [Before importing into Android Studio](#before-importing-into-android-studio)
+   1. [Before import](#before-importation)
+   1. [Importing Android Studio project](#importing-android-studio-project)
+   1. [Submitting Pull Request](#submitting-pull-request)
+1. [Working with translations](#working-with-translations)
+1. [Translations Contributors](#translations-contributors)
 
 ## Submitting Issues
 
@@ -19,7 +26,7 @@
 
 ## How to contribute. Importing and assembling
 
-If you have a question in mind, feel free to come our public [Slack](http://rebrand.ly/fasthub) channel.
+If you have any questions, feel free to join our public [Slack](http://rebrand.ly/fasthub) channel.
 
 ### Custom keys *(optional)*
 
@@ -28,13 +35,13 @@ If you have a question in mind, feel free to come our public [Slack](http://rebr
   - `github_secret=` -- your GitHub secret;
   - `redirect_url=` -- the url defined in `AndroidManifest` under `LoginView`.
 
-### Before importing into Android Studio
+### Before importation
 
 - Make sure you are running *Android Studio 3.0 C4* or above;
 - Import *Android Studio Settings* (to follow project's code style) from [this file](https://raw.githubusercontent.com/k0shk0sh/FastHub/master/fasthub_as_settings.jar);
 - Install *Lombok Plugin* from Android Studio Plugins and enable Annotations Processors in Android Studio Preferences.
 
-### Importing into Android Studio
+### Importing Android Studio project
 
 - Fork the repository.
 - Clone it to your workstation.
@@ -77,6 +84,6 @@ If you have a question in mind, feel free to come our public [Slack](http://rebr
 1. Push your local changes into your forked repository by typing `git push origin <new branch>`.
 1. Finally, create a Pull Request from your branch to our main branch *development*.
 
-## Translation Contributors
+## Translations Contributors
 
 - *See [README.md](https://github.com/k0shk0sh/FastHub#language-contributors)*
