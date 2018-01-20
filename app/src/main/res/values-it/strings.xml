@@ -562,121 +562,105 @@ memorizzare i file sul tuo dispositivo ed essere in grado di visualizzarli</stri
 
 <string name="wrap_code_title">Impacchetta Codice</string>
 
-<string name="open_source_libs">Open source libraries</string>
+<string name="open_source_libs">Librerie Open source</string>
 
-<string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
+<string name="enable_notification_sound_summary">Abilita il suono di notifica una volta che la notifica è ricevuta.</string>
 
-<string name="enable_notification_sound_title">Enable Notification Sound</string>
+<string name="enable_notification_sound_title">Abilita Suona di Notifica</string>
 
-<string name="enable_notification_title">Enable Notifications</string>
+<string name="enable_notification_title">Abilita Notifiche</string>
 
-<string name="login_with_personal_token">Login with a personal token</string>
+<string name="login_with_personal_token">Accedi con un token personale</string>
 
-<string name="personal_token">Personal Token</string>
+<string name="personal_token">Token Personale</string>
 
-<string name="basic_login">Login via basic auth</string>
+<string name="basic_login">Accedi tramite autenticazione base</string>
 
-<string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
+<string name="no_orgs_description">Se sei attualmente legato ad una organizzazione e non puoi  vederla qui per favore segui il link qui sotto.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nP.S.: Puoi usare il Token di Accesso  per accedere, che permetterà a FastHub di accedere alla lista delle tue organizzazioni.\nPuoi anche aprire https://github.com/settings/applications e cercare FastHub, aprirlo e poi scorrere a Accesso alle Organizzazione e cliccare sul pulsante Permetti.</string>
 
-below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
+<string name="insert">Inserisci</string>
 
-grant FastHub access to list your organizations.\nYou could also open up https://github.com/settings/applications and look for
+<string name="select">Seleziona</string>
 
-FastHub, open it then scroll to Organization access and click on Grant Button.</string>
+<string name="select_picture">Seleziona Immagine</string>
 
-<string name="insert">Insert</string>
+<string name="support_with_2_00">Supporta con $2.00</string>
 
-<string name="select">Select</string>
+<string name="support_with_5_00">Supporta con $5.00</string>
 
-<string name="select_picture">Select Picture</string>
+<string name="support_with_10_00">Supporta con $10.00</string>
 
-<string name="support_with_2_00">Support with $2.00</string>
+<string name="support_with_20_00">Supporta con $20.00</string>
 
-<string name="support_with_5_00">Support with $5.00</string>
+<string name="app_language">Lingua</string>
 
-<string name="support_with_10_00">Support with $10.00</string>
+<string name="language">Lingua</string>
 
-<string name="support_with_20_00">Support with $20.00</string>
+<string name="choose_language_title">Scegli Lingua</string>
 
-<string name="app_language">Language</string>
+<string name="choose_language_summary">Scegli la tua lingua preferita</string>
 
-<string name="language">Language</string>
+<string name="un_subscribe">Disiscrivi</string>
 
-<string name="choose_language_title">Choose Language</string>
-
-<string name="choose_language_summary">Choose your preferred language</string>
-
-<string name="un_subscribe">Unsubscribe</string>
-
-<string name="from">from</string>
+<string name="from">da</string>
 
 <string name="in_value">in</string>
 
-<string name="subscribe">Subscribe</string>
+<string name="subscribe">Sottoscrivi</string>
 
-<string name="repo_issues_is_disabled">Issues have been disabled in this repo</string>
+<string name="repo_issues_is_disabled">I Problemi sono stati disattivati in questo repo</string>
 
-<string name="access_token">Access Token</string>
+<string name="access_token">Token di Accesso</string>
 
-<string name="basic_authentication">Basic Authentication</string>
+<string name="basic_authentication">Autenticazione base</string>
 
-<string name="choose_your_login_type">Choose your login type</string>
+<string name="choose_your_login_type">Scegli il tuo tipo di accesso</string>
 
-<string name="files_only">In Files</string>
+<string name="files_only">Nei File</string>
 
-<string name="paths_only">In Paths</string>
+<string name="paths_only">Nei Percorsi</string>
 
-<string name="review_requests">Review Requests</string>
+<string name="review_requests">Richiedi Revisione</string>
 
-<string name="join_slack">Join Slack</string>
+<string name="join_slack">Unisciti a Slack</string>
 
-<string name="join_slack_message">Would you like to join FastHub Slack group?</string>
+<string name="join_slack_message">Vorresti unirti al gruppo Slack di FastHub?</string>
 
-<string name="successfully_invited">Successfully invited</string>
+<string name="successfully_invited">Invitato con successo</string>
 
-<string name="reply">Reply</string>
+<string name="reply">Rispondi</string>
 
-<string name="failed_selecting_image">Failed to load image.</string>
+<string name="failed_selecting_image">Impossibile caricare l\'immagine.</string>
 
-<string name="want_to_merge">wants to merge</string>
+<string name="want_to_merge">vuole unire</string>
 
-<string name="watchers">Watchers</string>
+<string name="watchers">Osservatori</string>
 
-<string name="reviewers">Reviewers</string>
+<string name="reviewers">Critici</string>
 
-<string name="no_reviewers">No reviewers</string>
+<string name="no_reviewers">Nessun critico</string>
 
-<string name="sent_from_fasthub">Sent from my %1$s using %2$s%3$s</string>
+<string name="sent_from_fasthub">Inviato dal mio %1$s usando %2$s%3$s</string>
 
-<string name="enable_signature">Enable Signature</string>
+<string name="enable_signature">Attiva Firma</string>
 
-<string name="enable_signature_summary">Enable sent via signature</string>
+<string name="enable_signature_summary">Attiva la firma inviato tramite</string>
 
-<string name="enable_signature_box">Enable Signature Box</string>
+<string name="enable_signature_box">Attiva Box Firma</string>
 
-<string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
+<string name="enable_signature_box_summary">Attiva la casella di controllo per inserire la firma tra gli elementi dell\'editor di testo</string>
 
-<string name="tags">Tags</string>
+<string name="tags">Tag</string>
 
-<string name="add_comment">Add comment</string>
+<string name="add_comment">Aggiungi commento</string>
 
-<string name="banners">Introducing Banners</string>
+<string name="banners">Introduzione Banner</string>
 
-<string name="banners_info">With FastHub 2.5.0, you can now better express yourself with banners
-
-for your profile page.\n\nAnyone using the FastHub app, will see your header, and you\'ll
-
-begin seeing other peoples headers as well! If you\'d like to create a banner for yourself,
-
-make it 1280x384 or divisible, otherwise, it may get cropped.\n\nYou can add or change your
-
-banner at any time, by creating a gist described "header.fst" with a file containing a
-
-direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
+<string name="banners_info">Con FastHub 2.5.0, puoi ora esprimerti meglio con i banner per la tua pagina profilo.\n\nChiunque usi l\'app FastHub, vedrà la tua intestazione, e inizierai a vedere anche le intestazioni! Se vorresti creare un banner da solo, fallo 1280x384 o divisibile, altrimenti, potrebbe essere tagliato.\n\nPuoi aggiungere o cambiare il tuo banner in ogni momento, creando un gist nominato "header.fst" con un file contenente in link diretto all\'immagine cell\'intestazione.\n\nO ancora più semplice, usa il selettore immagine integrato!
 
 </string>
 
-<string name="edit_banner">CHOOSE BANNER</string>
+<string name="edit_banner">SCEGLI BANNER</string>
 
 <string name="image_error">Error loading image, please try again.</string>
 
@@ -852,25 +836,25 @@ search for similar issues before opening a new one. Any duplicated ticket will b
 
 <string name="faq">FAQ</string>
 
-<string name="comments_added_successfully">Comments added successfully</string>
+<string name="comments_added_successfully">Commenti aggiunti con successo</string>
 
-<string name="clear_search_keywords">Clear Search History</string>
+<string name="clear_search_keywords">Pulisci la Cronologia di Ricerca</string>
 
-<string name="restore_purchases">Restore Purchases</string>
+<string name="restore_purchases">Ripristina Pagamenti</string>
 
-<string name="include_forks">Include Forks</string>
+<string name="include_forks">Includi i Fork</string>
 
-<string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+<string name="comment_is_too_far_to_paginate">Il commento è troppo distante per paginare</string>
 
-<string name="search_results_warning">Too many responses \nShowing the max API allows</string>
+<string name="search_results_warning">Troppe risposte \nSto mostrando il massimo che l\' API permette</string>
 
-<string name="disable_loading_image_title">Disable Loading Image</string>
+<string name="disable_loading_image_title">Disattiva Immagine di Caricamento</string>
 
-<string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+<string name="disable_loading_image_summary">Disattiva immagine di caricamento mentre si utilizza un piano dati</string>
 
-<string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
+<string name="report_issue_warning">Questo problema sarà inserito al repo di FastHub su GitHub</string>
 
-<string name="block">Block</string>
+<string name="block">Blocco</string>
 
 
 </resources>
