@@ -25,7 +25,7 @@ import lombok.Setter;
 
     public ImgurReponseModel() {}
 
-    protected ImgurReponseModel(Parcel in) {
+    private ImgurReponseModel(Parcel in) {
         this.success = in.readByte() != 0;
         this.status = in.readInt();
         this.data = in.readParcelable(ImgurImage.class.getClassLoader());
@@ -52,7 +52,7 @@ import lombok.Setter;
             dest.writeString(this.link);
         }
 
-        protected ImgurImage(Parcel in) {
+        private ImgurImage(Parcel in) {
             this.title = in.readString();
             this.description = in.readString();
             this.link = in.readString();

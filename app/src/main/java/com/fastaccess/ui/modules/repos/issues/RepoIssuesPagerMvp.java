@@ -19,6 +19,8 @@ public interface RepoIssuesPagerMvp {
         void onChangeIssueSort(boolean isLastUpdated);
 
         @IntRange(from = 0, to = 1) int getCurrentItem();
+
+        void onScrolled(boolean isUp);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {}

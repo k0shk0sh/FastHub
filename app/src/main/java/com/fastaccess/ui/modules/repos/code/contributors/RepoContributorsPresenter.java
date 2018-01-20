@@ -8,7 +8,6 @@ import android.view.View;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -25,8 +24,8 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State String repoId;
-    @icepick.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
 
     @Override public int getCurrentPage() {
         return page;
@@ -44,7 +43,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -52,18 +51,16 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoContributorsMvp.View::hideProgress);
-            return;
+            return false;
         }
-        makeRestCall(RestProvider.getRepoService().getContributors(login, repoId, page),
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getContributors(login, repoId, page),
                 response -> {
                     if (response != null) {
                         lastPage = response.getLast();
-                        if (getCurrentPage() == 1) {
-                            manageObservable(User.saveUserContributorList(response.getItems(), repoId));
-                        }
                     }
                     sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
                 });
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
@@ -80,12 +77,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
     }
 
     @Override public void onWorkOffline() {
-        if (users.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(User.getUserContributorList(repoId).toObservable())
-                    .subscribe(userModels -> sendToView(view -> view.onNotifyAdapter(userModels, 1))));
-        } else {
-            sendToView(BaseMvp.FAView::hideProgress);
-        }
+        sendToView(BaseMvp.FAView::hideProgress);
     }
 
     @NonNull @Override public ArrayList<User> getUsers() {

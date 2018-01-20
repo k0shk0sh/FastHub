@@ -5,8 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.fastaccess.helper.Logger;
-
 /**
  * Created by Kosh on 17 May 2016, 10:02 PM
  */
@@ -27,12 +25,16 @@ public class GridManager extends GridLayoutManager {
     }
 
     @Override public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        super.onLayoutChildren(recycler, state);
-        updateCount();
+        try {
+            super.onLayoutChildren(recycler, state);
+            updateCount();
+        } catch (Exception ignored) {}
     }
 
     @Override public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-        super.onMeasure(recycler, state, widthSpec, heightSpec);
+        try {
+            super.onMeasure(recycler, state, widthSpec, heightSpec);
+        } catch (Exception ignored) {}
     }
 
     private void updateCount() {
@@ -41,7 +43,6 @@ public class GridManager extends GridLayoutManager {
             if (spanCount < 1) {
                 spanCount = 1;
             }
-            Logger.e(spanCount);
             this.setSpanCount(spanCount);
         }
     }

@@ -25,6 +25,7 @@ import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
@@ -99,7 +101,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new IssuesAdapter(getPresenter().getIssues(), true);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
@@ -108,6 +110,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         } else if (getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public RepoIssuesPresenter providePresenter() {
@@ -153,7 +156,12 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<>(getPresenter());
+            onLoadMore = new OnLoadMore<IssueState>(getPresenter()) {
+                @Override public void onScrolled(boolean isUp) {
+                    super.onScrolled(isUp);
+                    if (pagerCallback != null) pagerCallback.onScrolled(isUp);
+                }
+            };
         }
         onLoadMore.setParameter(IssueState.closed);
         return onLoadMore;
@@ -169,7 +177,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @Override public void onOpenIssue(@NonNull PullsIssuesParser parser) {
         startActivityForResult(IssuePagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(),
-                parser.getNumber()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
+                parser.getNumber(), false, isEnterprise()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
     }
 
     @Override public void onRefresh(boolean isLastUpdated) {

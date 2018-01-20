@@ -20,13 +20,6 @@ public class OnLoadMore<P> extends InfiniteScroll {
         this.parameter = parameter;
     }
 
-    @Override protected void onLoadMore(int page, int previousTotal) {
-        super.onLoadMore(page, previousTotal);
-        if (presenter != null) {
-            presenter.setPreviousTotal(previousTotal);
-            presenter.onCallApi(page + 1, parameter);
-        }
-    }
 
     public void setParameter(@Nullable P parameter) {
         this.parameter = parameter;
@@ -34,5 +27,13 @@ public class OnLoadMore<P> extends InfiniteScroll {
 
     @Nullable public P getParameter() {
         return parameter;
+    }
+
+    @Override public boolean onLoadMore(int page, int totalItemsCount) {
+        if (presenter != null) {
+            presenter.setPreviousTotal(totalItemsCount);
+            return presenter.onCallApi(page + 1, parameter);
+        }
+        return false;
     }
 }

@@ -18,7 +18,7 @@
             android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_micro"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:orientation="horizontal">
 
             <com.fastaccess.ui.widgets.AvatarLayout
@@ -29,29 +29,55 @@
                 android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/name"
-                style="@style/TextAppearance.AppCompat.Medium"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="?android:textColorPrimary"
-                tools:text="When one acquires"/>
+                android:orientation="vertical">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:maxLines="1"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="50 minutes"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/name"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="?android:textColorPrimary"
+                        tools:text="When one acquires"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/date"
+                        style="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxLines="1"
+                        android:textColor="?android:attr/textColorSecondary"
+                        tools:text="50 minutes"/>
+
+                </LinearLayout>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/owner"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:visibility="gone"
+                    tools:text="@string/owner"
+                    tools:visibility="visible"/>
+            </LinearLayout>
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/toggle"
@@ -59,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="@string/options"
+                android:contentDescription="@string/reactions"
                 android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_add_emoji"/>
 
@@ -80,27 +106,97 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_micro"
             android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:textIsSelectable="true"
             tools:text="Hello World"/>
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/reactionsText"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:id="@+id/reactionsList"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:layout_marginEnd="@dimen/spacing_xs_large"
             android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_micro"
-            android:gravity="start"
-            android:paddingEnd="@dimen/spacing_xs_large"
-            android:visibility="gone"
-            tools:ignore="RtlSymmetry"
-            tools:text="U+1F602"
-            tools:visibility="visible"/>
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:scrollbarStyle="insideOverlay"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/thumbsUpReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/thumbsDownReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/laughReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/hurrayReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/sadReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/heartReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
     </LinearLayout>
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

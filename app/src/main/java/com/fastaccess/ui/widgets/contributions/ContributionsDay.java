@@ -13,7 +13,7 @@ public class ContributionsDay {
     // Level is used to record the color of the block
     public int level = Integer.MIN_VALUE;
     // Data is used to calculated the height of the pillar
-    public int data = Integer.MIN_VALUE;
+    private int data = Integer.MIN_VALUE;
 
     public ContributionsDay(int year, int month, int day, int level, int data) {
         this.year = year;

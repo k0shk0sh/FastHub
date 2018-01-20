@@ -16,6 +16,7 @@ import com.fastaccess.ui.adapter.CommitsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore onLoadMore;
     private CommitsAdapter adapter;
 
@@ -71,7 +73,7 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new CommitsAdapter(getPresenter().getCommits());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
@@ -80,6 +82,7 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
         } else if (getPresenter().getCommits().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public PullRequestCommitsPresenter providePresenter() {
@@ -88,7 +91,7 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

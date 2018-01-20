@@ -34,7 +34,7 @@
                     android:layout_gravity="center"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/back"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_clear"/>
 
@@ -54,9 +54,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/add"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_add"
                     android:visibility="gone"/>
@@ -68,7 +69,7 @@
                     android:layout_gravity="center"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/submit"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_send"/>
 
@@ -80,12 +81,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-            android:id="@+id/recycler"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            app:layoutManager="@string/linear_layout_manager"/>
+            android:layout_height="match_parent">
+
+            <com.fastaccess.ui.widgets.AppbarRefreshLayout
+                android:id="@+id/refresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="@string/linear_layout_manager"/>
+
+            </com.fastaccess.ui.widgets.AppbarRefreshLayout>
+
+            <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+                android:id="@+id/fastScroller"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/refresh"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/refresh"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
         <include layout="@layout/state_layout"/>
     </FrameLayout>

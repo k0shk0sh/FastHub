@@ -5,32 +5,32 @@ import android.support.annotation.Nullable;
 import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.ReactionsModel;
+import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
+import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
-import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import butterknife.BindView;
-
-/**
- * Created by Kosh on 15 Feb 2017, 10:29 PM
- */
 
 public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel> {
 
@@ -48,10 +48,19 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     @BindView(R.id.heart) FontTextView heart;
     @BindView(R.id.commentMenu) ImageView commentMenu;
     @BindView(R.id.commentOptions) RelativeLayout commentOptions;
-    @BindView(R.id.reactionsText) FontTextView reactionsText;
+    @BindView(R.id.owner) FontTextView owner;
+    @BindView(R.id.reactionsList) View reactionsList;
+    @BindView(R.id.thumbsUpReaction) FontTextView thumbsUpReaction;
+    @BindView(R.id.thumbsDownReaction) FontTextView thumbsDownReaction;
+    @BindView(R.id.laughReaction) FontTextView laughReaction;
+    @BindView(R.id.hurrayReaction) FontTextView hurrayReaction;
+    @BindView(R.id.sadReaction) FontTextView sadReaction;
+    @BindView(R.id.heartReaction) FontTextView heartReaction;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
     private ViewGroup viewGroup;
+    private String repoOwner;
+    private String poster;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
@@ -67,11 +76,23 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     private ReviewCommentsViewHolder(@NonNull View itemView, ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                     String repoOwner, String poster) {
         super(itemView, adapter);
+        if (adapter != null && adapter.getRowWidth() == 0) {
+            itemView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override public boolean onPreDraw() {
+                    itemView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    adapter.setRowWidth(itemView.getWidth() - ViewHelper.dpToPx(itemView.getContext(), 48));
+                    return false;
+                }
+            });
+        }
         this.onToggleView = onToggleView;
         this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         toggle.setOnClickListener(this);
@@ -89,20 +110,56 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         hurray.setOnLongClickListener(this);
         heart.setOnLongClickListener(this);
         heart.setOnClickListener(this);
+        laughReaction.setOnClickListener(this);
+        sadReaction.setOnClickListener(this);
+        thumbsDownReaction.setOnClickListener(this);
+        thumbsUpReaction.setOnClickListener(this);
+        hurrayReaction.setOnClickListener(this);
+        heartReaction.setOnClickListener(this);
+        laughReaction.setOnLongClickListener(this);
+        sadReaction.setOnLongClickListener(this);
+        thumbsDownReaction.setOnLongClickListener(this);
+        thumbsUpReaction.setOnLongClickListener(this);
+        hurrayReaction.setOnLongClickListener(this);
+        heartReaction.setOnLongClickListener(this);
     }
 
     public static ReviewCommentsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,
-                                                       @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                                       @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                                       String repoOwner, String poster) {
         return new ReviewCommentsViewHolder(getView(viewGroup, R.layout.review_comments_row_item),
-                viewGroup, adapter, onToggleView, reactionsCallback);
+                viewGroup, adapter, onToggleView, reactionsCallback, repoOwner, poster);
     }
 
     @Override public void bind(@NonNull ReviewCommentModel commentModel) {
-        avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser().isOrganizationType());
-        name.setText(commentModel.getUser().getLogin());
+        if (commentModel.getUser() != null) {
+            avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser()
+                    .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getHtmlUrl()));
+            name.setText(commentModel.getUser().getLogin());
+            if (commentModel.getAuthorAssociation() != null && !"none".equalsIgnoreCase(commentModel.getAuthorAssociation())) {
+                owner.setText(commentModel.getAuthorAssociation().toLowerCase());
+                owner.setVisibility(View.VISIBLE);
+            } else {
+                boolean isRepoOwner = TextUtils.equals(commentModel.getUser().getLogin(), repoOwner);
+                if (isRepoOwner) {
+                    owner.setVisibility(View.VISIBLE);
+                    owner.setText(R.string.owner);
+                } else {
+                    boolean isPoster = TextUtils.equals(commentModel.getUser().getLogin(), poster);
+                    if (isPoster) {
+                        owner.setVisibility(View.VISIBLE);
+                        owner.setText(R.string.original_poster);
+                    } else {
+                        owner.setText(null);
+                        owner.setVisibility(View.GONE);
+                    }
+                }
+            }
+        }
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml());
+            int width = adapter != null ? adapter.getRowWidth() : 0;
+            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(), width > 0 ? width : viewGroup.getWidth());
         } else {
             comment.setText("");
         }
@@ -121,21 +178,27 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
                     case R.id.heart:
+                    case R.id.heartReaction:
                         reactionsModel.setHeart(!isReacted ? reactionsModel.getHeart() + 1 : reactionsModel.getHeart() - 1);
                         break;
                     case R.id.sad:
+                    case R.id.sadReaction:
                         reactionsModel.setConfused(!isReacted ? reactionsModel.getConfused() + 1 : reactionsModel.getConfused() - 1);
                         break;
                     case R.id.thumbsDown:
+                    case R.id.thumbsDownReaction:
                         reactionsModel.setMinusOne(!isReacted ? reactionsModel.getMinusOne() + 1 : reactionsModel.getMinusOne() - 1);
                         break;
                     case R.id.thumbsUp:
+                    case R.id.thumbsUpReaction:
                         reactionsModel.setPlusOne(!isReacted ? reactionsModel.getPlusOne() + 1 : reactionsModel.getPlusOne() - 1);
                         break;
                     case R.id.laugh:
+                    case R.id.laughReaction:
                         reactionsModel.setLaugh(!isReacted ? reactionsModel.getLaugh() + 1 : reactionsModel.getLaugh() - 1);
                         break;
                     case R.id.hurray:
+                    case R.id.hurrayReaction:
                         reactionsModel.setHooray(!isReacted ? reactionsModel.getHooray() + 1 : reactionsModel.getHooray() - 1);
                         break;
                 }
@@ -146,74 +209,8 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     private void appendEmojies(ReactionsModel reaction) {
-        SpannableBuilder spannableBuilder = SpannableBuilder.builder();
-        reactionsText.setText("");
-        thumbsUp.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getThumbsUp()).append(" ")
-                .append(String.valueOf(reaction.getPlusOne()))
-                .append("   "));
-        thumbsDown.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getThumbsDown()).append(" ")
-                .append(String.valueOf(reaction.getMinusOne()))
-                .append("   "));
-        hurray.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getHooray()).append(" ")
-                .append(String.valueOf(reaction.getHooray()))
-                .append("   "));
-        sad.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getSad()).append(" ")
-                .append(String.valueOf(reaction.getConfused()))
-                .append("   "));
-        laugh.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getLaugh()).append(" ")
-                .append(String.valueOf(reaction.getLaugh()))
-                .append("   "));
-        heart.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getHeart()).append(" ")
-                .append(String.valueOf(reaction.getHeart())));
-        if (reaction.getPlusOne() > 0) {
-            spannableBuilder.append(CommentsHelper.getThumbsUp())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getPlusOne()))
-                    .append("   ");
-        }
-        if (reaction.getMinusOne() > 0) {
-            spannableBuilder.append(CommentsHelper.getThumbsDown())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getMinusOne()))
-                    .append("   ");
-        }
-        if (reaction.getLaugh() > 0) {
-            spannableBuilder.append(CommentsHelper.getLaugh())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getLaugh()))
-                    .append("   ");
-        }
-        if (reaction.getHooray() > 0) {
-            spannableBuilder.append(CommentsHelper.getHooray())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getHooray()))
-                    .append("   ");
-        }
-        if (reaction.getConfused() > 0) {
-            spannableBuilder.append(CommentsHelper.getSad())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getConfused()))
-                    .append("   ");
-        }
-        if (reaction.getHeart() > 0) {
-            spannableBuilder.append(CommentsHelper.getHeart())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getHeart()));
-        }
-        if (spannableBuilder.length() > 0) {
-            reactionsText.setText(spannableBuilder);
-            if (!onToggleView.isCollapsed(getId())) {
-                reactionsText.setVisibility(View.VISIBLE);
-            }
-        } else {
-            reactionsText.setVisibility(View.GONE);
-        }
+        CommentsHelper.appendEmojies(reaction, thumbsUp, thumbsUpReaction, thumbsDown, thumbsDownReaction, hurray, hurrayReaction, sad,
+                sadReaction, laugh, laughReaction, heart, heartReaction, reactionsList);
     }
 
     private long getId() {
@@ -230,8 +227,15 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         }
         toggle.setRotation(!expanded ? 0.0F : 180F);
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
-        if (!InputHelper.isEmpty(reactionsText)) {
-            reactionsText.setVisibility(!expanded ? View.VISIBLE : View.GONE);
+        reactionsList.setVisibility(expanded ? View.GONE : View.VISIBLE);
+        reactionsList.setVisibility(expanded ? View.GONE : reactionsList.getTag() == null || (!((Boolean) reactionsList.getTag()))
+                                                           ? View.GONE : View.VISIBLE);
+    }
+
+    @Override protected void onViewIsDetaching() {
+        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
+        if (drawableGetter != null) {
+            drawableGetter.clear(drawableGetter);
         }
     }
 }

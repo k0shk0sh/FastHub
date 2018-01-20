@@ -140,10 +140,21 @@
 
 
     <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">@color/cardview_light_background</item>
+        <item name="icon_color">#212121</item>
+        <item name="comment_box_style">@style/CommentBoxLight</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundLight</item>
+        <item name="patch_addition">@color/light_patch_addition_color</item>
+        <item name="patch_deletion">@color/light_patch_deletion_color</item>
+        <item name="patch_ref">@color/light_patch_ref_color</item>
+        <item name="dividerColor">@color/lightDivider</item>
+        <item name="android:windowBackground">@color/lightWindowBackground</item>
         <item name="colorPrimary">@color/light_primary</item>
         <item name="colorPrimaryDark">@color/light_primary_dark</item>
         <item name="colorAccent">@color/light_accent</item>
-        <item name="android:windowBackground">@color/lightWindowBackground</item>
     </style>
 
     <style name="DialogThemeLight.Red" parent="DialogThemeLight">
@@ -215,6 +226,7 @@
         <item name="mal_color_primary">#212121</item>
         <item name="mal_color_secondary">#727272</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="mal_card_background">@color/cardview_light_background</item>
     </style>
 
 

@@ -15,4 +15,19 @@
         android:visible="false"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/copyUrl"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/copySha"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy_sha"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+
 </menu>

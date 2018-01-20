@@ -47,7 +47,7 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -58,16 +58,17 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(ProfileFollowingMvp.View::hideProgress);
-            return;
+            return false;
         }
-        makeRestCall(RestProvider.getUserService().getFollowing(parameter, page),
+        makeRestCall(RestProvider.getUserService(isEnterprise()).getFollowing(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(User.saveUserFollowingList(response.getItems(), parameter));
+                        manageDisposable(User.saveUserFollowingList(response.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<User> getFollowing() {

@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.colors.ColorsProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.LabelSpan;
@@ -80,7 +81,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
             boolean isOrg = repo.getOwner() != null && repo.getOwner().isOrganizationType();
             if (avatarLayout != null) {
                 avatarLayout.setVisibility(View.VISIBLE);
-                avatarLayout.setUrl(avatar, login, isOrg);
+                avatarLayout.setUrl(avatar, login, isOrg, LinkParserHelper.isEnterprise(repo.getHtmlUrl()));
             }
         }
         long repoSize = repo.getSize() > 0 ? (repo.getSize() * 1000) : repo.getSize();

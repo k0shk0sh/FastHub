@@ -5,9 +5,15 @@ import android.support.annotation.StringDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_GIST_COMMENT_EXTRA;
-import static com.fastaccess.helper.BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA;
-import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_GIST_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.EDIT_COMMIT_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.EDIT_GIST_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.EDIT_ISSUE_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.EDIT_REVIEW_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.FOR_RESULT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.NEW_COMMIT_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.NEW_GIST_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.NEW_ISSUE_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.NEW_REVIEW_COMMENT_EXTRA;
 
 /**
  * Created by Kosh on 12 Nov 2016, 3:55 PM
@@ -27,18 +33,27 @@ public class BundleConstant {
     public static final String EXTRA_TYPE = "extra_type";
     public static final String YES_NO_EXTRA = "yes_no_extra";
     public static final String NOTIFICATION_ID = "notification_id";
+    public static final String IS_ENTERPRISE = "is_enterprise";
     public static final String REVIEW_EXTRA = "review_extra";
+    public static final String SCHEME_URL = "scheme_url";
     public static final int REQUEST_CODE = 2016;
     public static final int REVIEW_REQUEST_CODE = 2017;
+    public static int REFRESH_CODE = 64;
 
 
     @StringDef({
-            NEW_GIST_COMMENT_EXTRA,
+            FOR_RESULT_EXTRA,
             EDIT_GIST_COMMENT_EXTRA,
-            FOR_RESULT_EXTRA
+            NEW_GIST_COMMENT_EXTRA,
+            EDIT_ISSUE_COMMENT_EXTRA,
+            NEW_ISSUE_COMMENT_EXTRA,
+            EDIT_COMMIT_COMMENT_EXTRA,
+            NEW_COMMIT_COMMENT_EXTRA,
+            NEW_REVIEW_COMMENT_EXTRA,
+            EDIT_REVIEW_COMMENT_EXTRA
     })
 
-    @Retention(RetentionPolicy.SOURCE) public @interface ExtraTYpe {
+    @Retention(RetentionPolicy.SOURCE) public @interface ExtraType {
         String FOR_RESULT_EXTRA = "for_result_extra";
         String EDIT_GIST_COMMENT_EXTRA = "edit_comment_extra";
         String NEW_GIST_COMMENT_EXTRA = "new_gist_comment_extra";

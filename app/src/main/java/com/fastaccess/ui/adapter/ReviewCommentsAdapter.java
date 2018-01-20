@@ -20,20 +20,25 @@ import java.util.List;
 public class ReviewCommentsAdapter extends BaseRecyclerAdapter<ReviewCommentModel, ReviewCommentsViewHolder, BaseViewHolder
         .OnItemClickListener<ReviewCommentModel>> {
 
-    private OnToggleView onToggleView;
-    private ReactionsCallback reactionsCallback;
+    private final OnToggleView onToggleView;
+    private final ReactionsCallback reactionsCallback;
+    private final String repoOwner;
+    private final String poster;
 
     public ReviewCommentsAdapter(@NonNull List<ReviewCommentModel> data,
                                  @Nullable BaseViewHolder.OnItemClickListener<ReviewCommentModel> listener,
-                                 OnToggleView onToggleView, ReactionsCallback reactionsCallback) {
+                                 OnToggleView onToggleView, ReactionsCallback reactionsCallback, String repoOwner, String poster) {
         super(data, listener);
         this.onToggleView = onToggleView;
         this.reactionsCallback = reactionsCallback;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
     }
 
 
     @Override protected ReviewCommentsViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return ReviewCommentsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback);
+        return ReviewCommentsViewHolder.newInstance(parent, this, onToggleView,
+                reactionsCallback, repoOwner, poster);
     }
 
     @Override protected void onBindView(ReviewCommentsViewHolder holder, int position) {

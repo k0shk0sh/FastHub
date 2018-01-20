@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="midnightWindowBackground">#1F2933</color>
+    <color name="midnightDivider">#10FFFFFF</color>
+    <color name="midnight_patch_addition_color">@color/material_green_900</color>
+    <color name="midnight_patch_deletion_color">@color/material_red_900</color>
+    <color name="midnight_patch_ref_color">@color/material_blue_grey_500</color>
+
+    <style name="ThemeMidnight" parent="ThemeMidnight.Base"/>
+
+    <style name="ThemeMidnight.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="card_background">#171F27</item>
+        <item name="comment_box_style">@style/CommentBoxMidnight</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundMidnight</item>
+        <item name="patch_addition">@color/midnight_patch_addition_color</item>
+        <item name="patch_deletion">@color/midnight_patch_deletion_color</item>
+        <item name="patch_ref">@color/midnight_patch_ref_color</item>
+        <item name="dividerColor">@color/midnightDivider</item>
+        <item name="android:windowBackground">@color/midnightWindowBackground</item>
+        <item name="colorPrimary">#171F27</item>
+        <item name="colorPrimaryDark">#0A0F14</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:textColorSecondary">#9E9E9E</item>
+        <item name="android:textColorTertiary">#ffe0e0e0</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:dialogTheme">@style/DialogThemeMidnight</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleMidnight</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuMidnight</item>
+        <item name="android:spinnerDropDownItemStyle">@style/PopupMenuMidnight</item>
+    </style>
+
+    <style name="PopupMenuMidnight" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/midnightWindowBackground</item>
+    </style>
+
+    <style name="ThemeMidnight.Red" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Red</item>
+    </style>
+
+    <style name="ThemeMidnight.Pink" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Pink</item>
+    </style>
+
+    <style name="ThemeMidnight.Purple" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Purple</item>
+    </style>
+
+    <style name="ThemeMidnight.DeepPurple" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.DeepPurple</item>
+    </style>
+
+    <style name="ThemeMidnight.Indigo" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Indigo</item>
+    </style>
+
+    <style name="ThemeMidnight.LightBlue" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.LightBlue</item>
+    </style>
+
+    <style name="ThemeMidnight.Cyan" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Cyan</item>
+    </style>
+
+    <style name="ThemeMidnight.Teal" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_teal_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Teal</item>
+    </style>
+
+    <style name="ThemeMidnight.Green" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Green</item>
+    </style>
+
+    <style name="ThemeMidnight.LightGreen" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.LightGreen</item>
+    </style>
+
+    <style name="ThemeMidnight.Lime" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Lime</item>
+    </style>
+
+    <style name="ThemeMidnight.Yellow" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Yellow</item>
+    </style>
+
+    <style name="ThemeMidnight.Amber" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Amber</item>
+    </style>
+
+    <style name="ThemeMidnight.Orange" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.Orange</item>
+    </style>
+
+    <style name="ThemeMidnight.DeepOrange" parent="ThemeMidnight.Base">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeMidnight.DeepOrange</item>
+    </style>
+
+    <style name="ToolbarStyleMidnight">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">#42ffffff</item>
+        <item name="popupTheme">@style/PopupThemeMidnight</item>
+    </style>
+
+    <style name="PopupThemeMidnight" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/midnightWindowBackground</item>
+    </style>
+
+    <style name="TimeLineBackgroundMidnight">
+        <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+        <item name="android:backgroundTint">#171F27</item>
+    </style>
+
+    <style name="CommentBoxMidnight">
+        <item name="android:background">@drawable/ic_edittext</item>
+        <item name="android:backgroundTint">#171F27</item>
+    </style>
+
+    <style name="DialogThemeMidnight" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleMidnight</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">#171F27</item>
+        <item name="comment_box_style">@style/CommentBoxMidnight</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundMidnight</item>
+        <item name="colorPrimary">#171F27</item>
+        <item name="colorPrimaryDark">#0A0F14</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="android:windowBackground">@color/midnightWindowBackground</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Red" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Pink" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Purple" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.DeepPurple" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Indigo" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.LightBlue" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Cyan" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Teal" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Green" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.LightGreen" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Lime" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Yellow" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Amber" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.Orange" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+    </style>
+
+    <style name="DialogThemeMidnight.DeepOrange" parent="DialogThemeMidnight">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+    </style>
+
+    <style name="AppTheme.AboutActivity.Midnight" parent="ThemeMidnight">
+        <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
+        <item name="colorPrimary">#171F27</item>
+        <item name="colorPrimaryDark">#0A0F14</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="mal_lightActionBar">false</item>
+        <item name="mal_color_primary">#eee</item>
+        <item name="mal_color_secondary">#ffe0e0e0</item>
+        <item name="mal_card_background">#171F27</item>
+    </style>
+
+</resources>

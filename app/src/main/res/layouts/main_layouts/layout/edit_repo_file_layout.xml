@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layoutHolder"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar_elevation_dark"/>
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:theme="?android:toolbarStyle"
+            app:elevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/commitHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_micro"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/commit_message"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:maxLines="3"/>
+
+                    </android.support.design.widget.TextInputLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/fileNameHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_micro"
+                    android:layout_marginTop="@dimen/spacing_micro"
+                    app:cardBackgroundColor="?card_background"
+                    app:cardElevation="0dp"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/fileName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/file_name_hint"
+                            android:inputType="text"
+                            android:maxLines="1"/>
+
+                    </android.support.design.widget.TextInputLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/scroll_behavior">
+
+            <com.fastaccess.ui.widgets.markdown.MarkDownLayout
+                android:id="@+id/markDownLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="?card_background"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:outlineProvider="background"/>
+
+            <ScrollView
+                android:id="@+id/parentView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:fillViewport="true"
+                android:nestedScrollingEnabled="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.fastaccess.ui.widgets.markdown.MarkdownEditText
+                        android:id="@+id/editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:gravity="top|start"
+                        android:hint="@string/type_here"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:minLines="5"
+                        android:padding="@dimen/spacing_xs_large"
+                        android:scrollbars="vertical"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        tools:ignore="ScrollViewSize"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

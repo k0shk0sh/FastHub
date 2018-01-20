@@ -43,12 +43,11 @@
         </menu>
     </item>
 
-
     <item
         android:icon="@drawable/ic_subscribe"
         android:title="@string/subscribe"
         android:visible="false"
-        app:showAsAction="always">
+        app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/subscribe"
@@ -64,15 +63,21 @@
     </item>
 
     <item
+        android:id="@+id/pinUnpin"
+        android:icon="@drawable/ic_pin"
+        android:title="@string/pin"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/browser"
         android:icon="@drawable/ic_brower"
         android:title="@string/open_in_browser"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 
 </menu>

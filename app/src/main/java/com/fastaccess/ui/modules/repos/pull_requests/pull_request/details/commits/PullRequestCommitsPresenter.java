@@ -21,9 +21,9 @@ import java.util.ArrayList;
  */
 
 class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.View> implements PullRequestCommitsMvp.Presenter {
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State long number;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State long number;
     private ArrayList<Commit> commits = new ArrayList<>();
     private int page;
     private int previousTotal;
@@ -50,7 +50,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -58,17 +58,18 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(PullRequestCommitsMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequestCommits(login, repoId, number, page),
+        if (repoId == null || login == null) return false;
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestCommits(login, repoId, number, page),
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Commit.save(response.getItems(), repoId, login, number));
+                        manageDisposable(Commit.save(response.getItems(), repoId, login, number));
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {

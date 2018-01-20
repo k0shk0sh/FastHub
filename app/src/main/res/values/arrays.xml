@@ -30,6 +30,7 @@
     <string-array name="theme_modes" translatable="false">
         <item>@string/light_theme_mode</item>
         <item>@string/dark_theme_mode</item>
+        <item>@string/amlod_theme_mode</item>
     </string-array>
 
     <string-array name="theme_colors" translatable="false">
@@ -50,6 +51,25 @@
         <item>@string/orange_theme_mode</item>
         <item>@string/deep_orange_theme_mode</item>
     </string-array>
+
+    <array name="theme_colors_hex" translatable="false">
+        <item>@color/material_red_700</item>
+        <item>@color/material_pink_700</item>
+        <item>@color/material_purple_700</item>
+        <item>@color/material_deep_purple_700</item>
+        <item>@color/material_indigo_700</item>
+        <item>@color/material_blue_700</item>
+        <item>@color/material_light_blue_700</item>
+        <item>@color/material_cyan_700</item>
+        <item>@color/material_teal_700</item>
+        <item>@color/material_green_700</item>
+        <item>@color/material_light_green_700</item>
+        <item>@color/material_lime_700</item>
+        <item>@color/material_yellow_700</item>
+        <item>@color/material_amber_700</item>
+        <item>@color/material_orange_700</item>
+        <item>@color/material_deep_orange_700</item>
+    </array>
 
     <string-array name="issues_filter">
         <item>@string/created</item>
@@ -96,26 +116,40 @@
 
     <string-array name="languages_array" translatable="false">
         <item>English</item>
-        <item>German</item>
-        <item>Turkish</item>
-        <item>Chinese</item>
+        <item>Français</item>
+        <item>Deutsch</item>
+        <item>Türk</item>
+        <item>简体中文</item>
+        <item>正體中文</item>
         <item>Bahasa Indonesia</item>
-        <item>Russian</item>
-        <item>Italian</item>
-        <item>Japanese</item>
-        <item>Lithuanian</item>
+        <item>Русский</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>Lietuvos</item>
+        <item>Português (Brasil)</item>
+        <item>Český</item>
+        <item>Español</item>
+        <item>Български</item>
+        <item>한국어</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
         <item>en</item>
+        <item>fr</item>
         <item>de</item>
         <item>tr</item>
-        <item>zh</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
         <item>in</item>
         <item>ru</item>
         <item>it</item>
         <item>ja</item>
         <item>lt</item>
+        <item>pt-rBR</item>
+        <item>cs</item>
+        <item>es</item>
+        <item>bg</item>
+        <item>ko</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">
@@ -124,10 +158,22 @@
         <item>@string/all</item>
     </string-array>
 
-    <string-array name="trending_days_array">
+    <string-array name="trending_days_array" translatable="false">
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
+    </string-array>
+
+    <string-array name="merge_method" translatable="false">
+        <item>@string/merge</item>
+        <item>@string/squash</item>
+        <item>@string/rebase</item>
+    </string-array>
+
+    <string-array name="review_methods" translatable="false">
+        <item>APPROVE</item>
+        <item>REQUEST CHANGES</item>
+        <item>COMMENT</item>
     </string-array>
 
     <!-- EmojiCompat Downloadable Fonts Arrays -->

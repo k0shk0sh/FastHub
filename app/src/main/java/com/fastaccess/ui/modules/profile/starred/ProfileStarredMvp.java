@@ -22,6 +22,8 @@ interface ProfileStarredMvp {
         void onNotifyAdapter(@Nullable List<Repo> items, int page);
 
         @NonNull OnLoadMore<String> getLoadMore();
+
+        void onUpdateCount(int starredCount);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

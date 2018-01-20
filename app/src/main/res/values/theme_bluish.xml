@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <color name="bluish_background">#111C2C</color>
+    <color name="bluish_primary">#FF2A456B</color>
+    <color name="bluish_primary_dark">#213755</color>
+    <color name="bluish_accent">#448AFF</color>
+
+    <color name="bluishWindowBackground">@color/bluish_background</color>
+    <color name="bluishDivider">#802A456B</color>
+
+    <style name="ThemeBluish" parent="ThemeBluish.Base"/>
+
+    <style name="ThemeBluish.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="card_background">#182A44</item>
+        <item name="comment_box_style">@style/CommentBoxDarkBluish</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundBluish</item>
+        <item name="patch_addition">@color/dark_patch_addition_color</item>
+        <item name="patch_deletion">@color/dark_patch_deletion_color</item>
+        <item name="patch_ref">@color/dark_patch_ref_color</item>
+        <item name="dividerColor">@color/bluishDivider</item>
+        <item name="android:windowBackground">@color/bluishWindowBackground</item>
+        <item name="colorPrimary">@color/bluish_primary</item>
+        <item name="colorPrimaryDark">@color/bluish_primary_dark</item>
+        <item name="colorAccent">@color/bluish_accent</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:textColorPrimary">#eee</item>
+        <item name="android:textColorSecondary">#9E9E9E</item>
+        <item name="android:textColorTertiary">#ffe0e0e0</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:dialogTheme">@style/DialogThemeBluish</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleBluish</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuBluish</item>
+    </style>
+
+    <style name="PopupMenuBluish" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/bluishWindowBackground</item>
+    </style>
+
+    <style name="ThemeBluish.Red" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Red</item>
+    </style>
+
+    <style name="ThemeBluish.Pink" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Pink</item>
+    </style>
+
+    <style name="ThemeBluish.Purple" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Purple</item>
+    </style>
+
+    <style name="ThemeBluish.DeepPurple" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.DeepPurple</item>
+    </style>
+
+    <style name="ThemeBluish.Indigo" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Indigo</item>
+    </style>
+
+    <style name="ThemeBluish.LightBlue" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.LightBlue</item>
+    </style>
+
+    <style name="ThemeBluish.Cyan" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Cyan</item>
+    </style>
+
+    <style name="ThemeBluish.Teal" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_teal_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Teal</item>
+    </style>
+
+    <style name="ThemeBluish.Green" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Green</item>
+    </style>
+
+    <style name="ThemeBluish.LightGreen" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.LightGreen</item>
+    </style>
+
+    <style name="ThemeBluish.Lime" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Lime</item>
+    </style>
+
+    <style name="ThemeBluish.Yellow" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Yellow</item>
+    </style>
+
+    <style name="ThemeBluish.Amber" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Amber</item>
+    </style>
+
+    <style name="ThemeBluish.Orange" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.Orange</item>
+    </style>
+
+    <style name="ThemeBluish.DeepOrange" parent="ThemeBluish.Base">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeBluish.DeepOrange</item>
+    </style>
+
+    <style name="ToolbarStyleBluish">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">#42ffffff</item>
+        <item name="popupTheme">@style/PopupThemeBluish</item>
+    </style>
+
+    <style name="PopupThemeBluish" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/bluishWindowBackground</item>
+    </style>
+
+    <style name="TimeLineBackgroundBluish">
+        <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+        <item name="android:backgroundTint">#182A44</item>
+    </style>
+
+    <style name="CommentBoxDarkBluish">
+        <item name="android:background">@drawable/ic_edittext</item>
+        <item name="android:backgroundTint">#182A44</item>
+    </style>
+
+    <style name="DialogThemeBluish" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleBluish</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">#182A44</item>
+        <item name="comment_box_style">@style/CommentBoxDarkBluish</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundBluish</item>
+        <item name="patch_addition">@color/dark_patch_addition_color</item>
+        <item name="patch_deletion">@color/dark_patch_deletion_color</item>
+        <item name="patch_ref">@color/dark_patch_ref_color</item>
+        <item name="dividerColor">@color/bluishDivider</item>
+        <item name="android:windowBackground">@color/bluishWindowBackground</item>
+        <item name="colorPrimary">@color/bluish_primary</item>
+        <item name="colorPrimaryDark">@color/bluish_primary_dark</item>
+        <item name="colorAccent">@color/bluish_accent</item>
+    </style>
+
+    <style name="DialogThemeBluish.Red" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Pink" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Purple" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.DeepPurple" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Indigo" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.LightBlue" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Cyan" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Teal" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Green" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.LightGreen" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Lime" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Yellow" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Amber" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.Orange" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+    </style>
+
+    <style name="DialogThemeBluish.DeepOrange" parent="DialogThemeBluish">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+    </style>
+
+    <style name="AppTheme.AboutActivity.Bluish" parent="ThemeBluish">
+        <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
+        <item name="colorPrimary">@color/bluish_primary</item>
+        <item name="colorPrimaryDark">@color/bluish_primary_dark</item>
+        <item name="colorAccent">@color/bluish_accent</item>
+        <item name="mal_lightActionBar">false</item>
+        <item name="mal_color_primary">#eee</item>
+        <item name="mal_color_secondary">#ffe0e0e0</item>
+        <item name="mal_card_background">#182A44</item>
+    </style>
+
+</resources>

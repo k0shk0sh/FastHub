@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -61,6 +64,7 @@ public class DynamicRecyclerView extends RecyclerView {
         }
     }
 
+
     public void removeBottomDecoration() {
         if (bottomPaddingDecoration != null) {
             removeItemDecoration(bottomPaddingDecoration);
@@ -73,7 +77,7 @@ public class DynamicRecyclerView extends RecyclerView {
         addItemDecoration(bottomPaddingDecoration);
     }
 
-    public void showEmptyView() {
+    private void showEmptyView() {
         Adapter<?> adapter = getAdapter();
         if (adapter != null) {
             if (emptyView != null) {
@@ -91,7 +95,7 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     private void showParentOrSelf(boolean showRecyclerView) {
-        if(parentView!=null)
+        if (parentView != null)
             parentView.setVisibility(VISIBLE);
         setVisibility(VISIBLE);
         emptyView.setVisibility(!showRecyclerView ? VISIBLE : GONE);
@@ -116,7 +120,7 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     public void addKeyLineDivider() {
-        if (!ViewHelper.isTablet(getContext())) {
+        if (canAddDivider()) {
             Resources resources = getResources();
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
                     resources.getDimensionPixelSize(R.dimen.keyline_2), ViewHelper.getListDivider(getContext())));
@@ -124,7 +128,7 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     public void addDivider() {
-        if (!ViewHelper.isTablet(getContext())) {
+        if (canAddDivider()) {
             Resources resources = getResources();
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
                     ViewHelper.getListDivider(getContext())));
@@ -136,10 +140,23 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     public void addDivider(@NonNull Class toDivide) {
-        if (!ViewHelper.isTablet(getContext())) {
+        if (canAddDivider()) {
             Resources resources = getResources();
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
                     ViewHelper.getListDivider(getContext()), toDivide));
         }
+    }
+
+    private boolean canAddDivider() {
+        if (getLayoutManager() != null) {
+            if (getLayoutManager() instanceof LinearLayoutManager) {
+                return true;
+            } else if (getLayoutManager() instanceof GridLayoutManager) {
+                return ((GridLayoutManager) getLayoutManager()).getSpanCount() == 1;
+            } else if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
+                return ((StaggeredGridLayoutManager) getLayoutManager()).getSpanCount() == 1;
+            }
+        }
+        return false;
     }
 }

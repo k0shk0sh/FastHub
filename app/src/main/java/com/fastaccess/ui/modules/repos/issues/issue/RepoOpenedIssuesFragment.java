@@ -17,7 +17,6 @@ import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -28,6 +27,7 @@ import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -41,6 +41,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
     private RepoIssuesPagerMvp.View pagerCallback;
@@ -102,7 +103,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         refresh.setOnRefreshListener(this);
         adapter = new IssuesAdapter(getPresenter().getIssues(), true);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
@@ -111,11 +112,11 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         } else if (getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Logger.e(requestCode, resultCode);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 onRefresh();
@@ -161,7 +162,12 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<>(getPresenter());
+            onLoadMore = new OnLoadMore<IssueState>(getPresenter()) {
+                @Override public void onScrolled(boolean isUp) {
+                    super.onScrolled(isUp);
+                    if (pagerCallback != null) pagerCallback.onScrolled(isUp);
+                }
+            };
         }
         onLoadMore.setParameter(IssueState.open);
         return onLoadMore;
@@ -171,7 +177,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         String login = getPresenter().login();
         String repoId = getPresenter().repoId();
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            CreateIssueActivity.startForResult(this, login, repoId);
+            CreateIssueActivity.startForResult(this, login, repoId, isEnterprise());
         }
     }
 
@@ -181,7 +187,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @Override public void onOpenIssue(@NonNull PullsIssuesParser parser) {
         startActivityForResult(IssuePagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(),
-                parser.getNumber()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
+                parser.getNumber(), false, isEnterprise()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
     }
 
     @Override public void onRefresh(boolean isLastUpdated) {

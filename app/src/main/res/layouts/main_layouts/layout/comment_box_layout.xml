@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/commentBox"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?colorPrimary"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/markdownBtnHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bottom_border"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.fastaccess.ui.widgets.markdown.MarkDownLayout
+            android:id="@+id/markdDownLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="24dp"
+            android:paddingBottom="@dimen/spacing_micro"
+            android:paddingTop="@dimen/spacing_micro"/>
+
+        <ImageButton
+            android:id="@+id/fullScreenComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            android:contentDescription="@string/expand"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_micro"
+            android:src="@drawable/ic_fullscreen"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal"
+        tools:showIn="@layout/issue_pager_activity">
+
+        <ImageButton
+            android:id="@+id/toggleButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?colorPrimaryDark"
+            android:contentDescription="@string/expand"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingStart="@dimen/spacing_normal"
+            android:rotation="180"
+            android:src="@drawable/arrow_toggle_drawable"
+            android:tint="?colorAccent"/>
+
+        <com.fastaccess.ui.widgets.markdown.MarkdownEditText
+            android:id="@+id/commentText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:hint="@string/comment"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="5"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingStart="@dimen/spacing_normal"
+            android:scrollbars="vertical"/>
+
+        <ImageButton
+            android:id="@+id/sendComment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?colorPrimaryDark"
+            android:contentDescription="@string/comment"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingStart="@dimen/spacing_normal"
+            android:src="@drawable/ic_send"
+            android:tint="?colorAccent"/>
+    </LinearLayout>
+</LinearLayout>

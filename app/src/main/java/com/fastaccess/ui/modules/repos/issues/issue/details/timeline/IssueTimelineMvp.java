@@ -32,13 +32,13 @@ public interface IssueTimelineMvp {
 
         void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
 
-        @NonNull OnLoadMore getLoadMore();
+        @NonNull OnLoadMore<Issue> getLoadMore();
 
         void onEditComment(@NonNull Comment item);
 
         void onRemove(@NonNull TimelineModel timelineModel);
 
-        void onStartNewComment();
+        void onStartNewComment(String text);
 
         void onShowDeleteMsg(long id);
 
@@ -50,32 +50,40 @@ public interface IssueTimelineMvp {
 
         void onSetHeader(@NonNull TimelineModel timelineModel);
 
-        void onRefresh(@NonNull Issue issue);
+        @Nullable Issue getIssue();
+
+        void onUpdateHeader();
+
+        void onHandleComment(String text, @Nullable Bundle bundle);
+
+        void addNewComment(@NonNull TimelineModel timelineModel);
+
+        @NonNull ArrayList<String> getNamesToTag();
+
+        void onHideBlockingProgress();
+
+        long getCommentId();
+
+        void addComment(@Nullable TimelineModel timelineModel, int index);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
-            BaseMvp.PaginationListener {
+            BaseMvp.PaginationListener<Issue> {
 
         boolean isPreviouslyReacted(long commentId, int vId);
 
         @NonNull ArrayList<TimelineModel> getEvents();
 
-        void onFragmentCreated(@Nullable Bundle bundle);
-
         void onWorkOffline();
 
         void onHandleDeletion(@Nullable Bundle bundle);
-
-        @Nullable String repoId();
-
-        @Nullable String login();
-
-        int number();
 
         void onHandleReaction(@IdRes int viewId, long id, @ReactionsProvider.ReactionType int reactionType);
 
         boolean isCallingApi(long id, int vId);
 
-        void onUpdateIssue(@NonNull Issue issue);
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
+
+        void setCommentId(long commentId);
     }
 }

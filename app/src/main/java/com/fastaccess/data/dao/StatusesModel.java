@@ -16,7 +16,6 @@ import lombok.Setter;
 
 @Getter @Setter public class StatusesModel implements Parcelable {
     private String url;
-    private int id;
     private StatusStateType state;
     private String description;
     private String targetUrl;
@@ -30,7 +29,6 @@ import lombok.Setter;
 
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
-        dest.writeInt(this.id);
         dest.writeInt(this.state == null ? -1 : this.state.ordinal());
         dest.writeString(this.description);
         dest.writeString(this.targetUrl);
@@ -39,9 +37,8 @@ import lombok.Setter;
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
     }
 
-    protected StatusesModel(Parcel in) {
+    private StatusesModel(Parcel in) {
         this.url = in.readString();
-        this.id = in.readInt();
         int tmpState = in.readInt();
         this.state = tmpState == -1 ? null : StatusStateType.values()[tmpState];
         this.description = in.readString();

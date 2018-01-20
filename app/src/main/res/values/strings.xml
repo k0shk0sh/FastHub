@@ -1,4 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- DO NOT COPY!  -->
+
     <string name="app_name" translatable="false">FastHub</string>
     <string name="app_name_full" translatable="false">FastHub for Android</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
@@ -6,6 +8,124 @@
     <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
     <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
     <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
+    <string name="gists" translatable="false">Gists</string>
+    <string name="readme" translatable="false">Readme</string>
+    <string name="commits" translatable="false">Commits</string>
+    <string name="repos" translatable="false">Repositories</string>
+    <string name="forked" translatable="false">Forked</string>
+    <string name="starred" translatable="false">Starred</string>
+    <string name="icon_transition" translatable="false">profile_image_transition</string>
+    <string name="title_transition" translatable="false">profile_title_transition</string>
+    <string name="code" translatable="false">Code</string>
+    <string name="issues" translatable="false">Issues</string>
+    <string name="pull_requests" translatable="false">Pull Requests</string>
+    <string name="repo" translatable="false">Repository</string>
+    <string name="download_as_zip" translatable="false">Source code (zip)</string>
+    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
+    <string name="merged" translatable="false">Merged</string>
+    <string name="star" translatable="false">Star</string>
+    <string name="stars" translatable="false">Stars</string>
+    <string name="fork" translatable="false">Fork</string>
+    <string name="forks" translatable="false">Forks</string>
+    <string name="issue" translatable="false">Issue</string>
+    <string name="merge" translatable="false">Merge</string>
+    <string name="pull_request" translatable="false">Pull Request</string>
+    <string name="commit" translatable="false">Commit</string>
+    <string name="markdown" translatable="false">Markdown</string>
+    <string name="gist" translatable="false">Gist</string>
+    <string name="back_slash" translatable="false">/</string>
+    <string name="fork_repo_hint" translatable="false">Fork repo</string>
+    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
+    <string name="created_gist" translatable="false">@string/gist</string>
+    <string name="gollum" translatable="false">Wiki</string>
+    <string name="created_issue" translatable="false">Issue</string>
+    <string name="public_event" translatable="false">Open-sourced</string>
+    <string name="organization_event" translatable="false">Organization</string>
+    <string name="card_event" translatable="false">Card</string>
+    <string name="project_event" translatable="false">Project</string>
+    <string name="pr_review_event" translatable="false">Pull Request</string>
+    <string name="repo_event" translatable="false">Repository</string>
+    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
+    <string name="forking" formatted="true" translatable="false">Forking %s</string>
+    <string name="starring" formatted="true" translatable="false">Starring %s</string>
+    <string name="un_starring" formatted="true" translatable="false">Unstarring %s</string>
+    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
+    <string name="watching" formatted="true" translatable="false">Watching %s</string>
+    <string name="light_theme_mode" translatable="false">Light Theme</string>
+    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="amlod_theme_mode" translatable="false">Amlod Theme</string>
+    <string name="mid_night_blue_theme_mode" translatable="false">Mid Night Blue</string>
+    <string name="bluish_theme" translatable="false">Bluish Theme</string>
+    <string name="red_theme_mode" translatable="false">Red</string>
+    <string name="pink_theme_mode" translatable="false">Pink</string>
+    <string name="purple_theme_mode" translatable="false">Purple</string>
+    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
+    <string name="indigo_theme_mode" translatable="false">Indigo</string>
+    <string name="blue_theme_mode" translatable="false">Blue</string>
+    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
+    <string name="cyan_theme_mode" translatable="false">Cyan</string>
+    <string name="teal_theme_mode" translatable="false">Teal</string>
+    <string name="green_theme_mode" translatable="false">Green</string>
+    <string name="light_green_theme_mode" translatable="false">Light Green</string>
+    <string name="lime_theme_mode" translatable="false">Lime</string>
+    <string name="yellow_theme_mode" translatable="false">Yellow</string>
+    <string name="amber_theme_mode" translatable="false">Amber</string>
+    <string name="orange_theme_mode" translatable="false">Orange</string>
+    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
+    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
+    <string name="google_plus" translatable="false">Google+</string>
+    <string name="twitter" translatable="false">Twitter</string>
+    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="squash" translatable="false">Squash</string>
+    <string name="rebase" translatable="false">Rebase</string>
+    <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
+    <string name="review_changes" translatable="false">Review Changes</string>
+    <string name="enterprise" translatable="false">Enterprise</string>
+    <string name="endpoint_hint" translatable="false">example.com</string>
+    <string name="no_branches" translatable="false">No Branches or Tags</string>
+    <string name="pro_features" translatable="false">PRO Features</string>
+    <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
+        • All PRO Themes\n
+        • PR Reviews & On-line code comments (PRs & Commits)\n
+        • Commit from FastHub (Edit, Create & Delete files)\n
+        • Supports 2 more Merging methods (Rebase & Squash)\n
+        • Login to unlimited accounts\n
+        • Edit & Add unlimited Gist Files\n
+        • Project Columns & Cards (Edit, Create & Delete)\n
+        • Pin Issues, PRs & Gists\n
+        • New upcoming PRO features (Coming soon...)
+    ]]></string>
+    <string name="enterprise_pro_description" translatable="false"><![CDATA[
+            • Login to unlimited number of Enterprise & GitHub accounts\n
+            • Access GitHub contents along side your Enterprise Account
+    ]]></string>
+    <string name="purchase" translatable="false">Purchase</string>
+    <string name="get_all" translatable="false">Purchase All (7.00USD)</string>
+    <string name="fasthub_premium_features" translatable="false">FastHub Premium Features</string>
+    <string name="secret_code" translatable="false">Promo Code</string>
+    <string name="branches" translatable="false">Branches</string>
+    <string name="github_enterprise_reply" translatable="false">
+        <![CDATA[ <small><i>Reply from GitHub support regards OAuth login for Enterprise:</i></small>
+                <p></p>
+                <blockquote>
+                <h4>Hi Kosh,</h4>
+                <p>A GitHub Enterprise appliance is entirely separate from GitHub.com, and will not have your OAuth application configured.
+                You will need to setup your OAuth application again for <b>FastHub</b> on the GitHub Enterprise appliance, which will provide you
+                with new client_id and client_secret credentials. <b>This will have to be completed for each new GitHub Enterprise appliance
+                your application communicates with</b>. GitHub Enterprise comes preconfigured with the GitHub Desktop OAuth application set up,
+                this is how GitHub Desktop is able to complete the authentication successfully for GitHub Enterprise appliances.</p>
+                </blockquote>
+        ]]>
+    </string>
+    <string name="purchase_all" formatted="false" translatable="false">Purchase All for %price%</string>
+    <string name="unlock" translatable="false">Unlock</string>
+    <string name="unlock_everything" translatable="false">Unlock Everything</string>
+    <string name="feeds" translatable="false">Feeds</string>
+    <!-- END OF DO NOT COPY, START COPYING FROM LINE BELOW -->
+
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
@@ -14,40 +134,27 @@
     <string name="ok">OK</string>
     <string name="no_data">No data available</string>
     <string name="search">Search</string>
-    <string name="please_login">Please sign in to continue using FastHub</string>
-    <string name="sign_in_to_github">Sign in to your GitHub account to get the best out of FastHub</string>
-    <string name="failed_login">Failed to sign in</string>
+    <string name="please_login">Please sign in to begin using FastHub</string>
+    <string name="sign_in_to_github">Sign in using your GitHub account to use FastHub</string>
+    <string name="failed_login">Sign in failed</string>
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
     <string name="reload">Reload</string>
-    <string name="feeds">Feeds</string>
-    <string name="gists" translatable="false">Gists</string>
     <string name="profile">Profile</string>
     <string name="error">Error</string>
     <string name="press_again_to_exit">Press once again to exit</string>
-    <string name="readme" translatable="false">Readme</string>
     <string name="opened">Opened</string>
     <string name="closed">Closed</string>
     <string name="repo_chooser">Choose Repo</string>
-    <string name="commits" translatable="false">Commits</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="overview">Overview</string>
-    <string name="repos" translatable="false">Repositories</string>
-    <string name="forked" translatable="false">Forked</string>
-    <string name="starred" translatable="false">Starred</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
     <string name="user">User</string>
-    <string name="icon_transition" translatable="false">profile_image_transition</string>
-    <string name="title_transition" translatable="false">profile_title_transition</string>
-    <string name="code" translatable="false">Code</string>
-    <string name="issues" translatable="false">Issues</string>
-    <string name="pull_requests" translatable="false">Pull Requests</string>
     <string name="details">Details</string>
-    <string name="repo" translatable="false">Repository</string>
     <string name="archive_file_detected_error">Archive file detected, please download the file to view its content.</string>
-    <string name="minimum_three_chars">Minimum characters (3)</string>
+    <string name="minimum_three_chars">Minimum characters (2)</string>
     <string name="no_file_found">No file found</string>
     <string name="no_readme_found">No readme found</string>
     <string name="downloading">Downloading…</string>
@@ -56,16 +163,10 @@
     <string name="drafted">Drafted</string>
     <string name="releases">Releases</string>
     <string name="no_body">No body</string>
-    <string name="download_as_zip" translatable="false">Source code (zip)</string>
-    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">Contributors</string>
     <string name="contributions">Contributions</string>
-    <string name="merged" translatable="false">Merged</string>
     <string name="by">by</string>
-    <string name="star" translatable="false">Star</string>
-    <string name="stars" translatable="false">Stars</string>
-    <string name="fork" translatable="false">Fork</string>
-    <string name="forks" translatable="false">Forks</string>
+    <string name="english_please">Please submit your request in english.</string>
     <string name="close_issue">Close Issue</string>
     <string name="re_open_issue">Reopen Issue</string>
     <string name="re_open">Reopen</string>
@@ -105,10 +206,6 @@
     <string name="delete">Delete</string>
     <string name="comments">Comments</string>
     <string name="comment">Comment</string>
-    <string name="issue" translatable="false">Issue</string>
-    <string name="merge" translatable="false">Merge</string>
-    <string name="pull_request" translatable="false">Pull Request</string>
-    <string name="commit" translatable="false">Commit</string>
     <string name="success_merge">Successfully merged</string>
     <string name="file_menu">File menu</string>
     <string name="files">Files</string>
@@ -118,9 +215,8 @@
     <string name="code_viewer">Code viewer</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="big_file">Large file</string>
-    <string name="big_file_description">The file is too big to open.\nPress "OK" to download it instead.</string>
+    <string name="big_file_description">The file is too big to open.\nPress "Yes" to download it instead.</string>
     <string name="viewer">Viewer</string>
-    <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">Submit</string>
     <string name="type_here">Type here</string>
     <string name="description">Description</string>
@@ -134,8 +230,7 @@
     <string name="no_files">No files</string>
     <string name="required_field">Required field</string>
     <string name="successfully_submitted">Successfully submitted</string>
-    <string name="create_gist">Create Gist</string>
-    <string name="gist" translatable="false">Gist</string>
+    <string name="create_gist">Create a Gist</string>
     <string name="clear">Clear</string>
     <string name="users">Users</string>
     <string name="title">Title</string>
@@ -149,8 +244,8 @@
     <string name="notifications">Notifications</string>
     <string name="unread_notification">You have unread notifications</string>
     <string name="open">Open</string>
+    <string name="open_new_window">Open in new window</string>
     <string name="notification_type">Notification type</string>
-    <string name="back_slash" translatable="false">/</string>
     <string name="labels">Labels</string>
     <string name="no_labels">No labels</string>
     <string name="labels_added_successfully">Labels added successfully</string>
@@ -175,7 +270,6 @@
     <string name="star_hint">Star/unstar repo</string>
     <string name="watch">Watch</string>
     <string name="watch_hint">Watch/unwatch repo</string>
-    <string name="fork_repo_hint" translatable="false">Fork repo</string>
     <string name="pin_repo_hint">Pin repos to access them faster from the navigation drawer.</string>
     <string name="dismiss_all">Dismiss All</string>
     <string name="no_url">No URL found</string>
@@ -187,7 +281,6 @@
     <string name="creation_date">Creation date</string>
     <string name="creation_date_hint">When the file was created</string>
     <string name="last_updated_hint">When the file was last updated</string>
-    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
     <string name="mark_all_as_read">Mark all as read</string>
     <string name="all_notifications">All notifications</string>
     <string name="unread">Unread</string>
@@ -206,23 +299,14 @@
     <string name="committed">Committed</string>
     <string name="downloaded">Downloaded</string>
     <string name="followed">Followed</string>
-    <string name="created_gist" translatable="false">@string/gist</string>
-    <string name="gollum" translatable="false">Wiki</string>
     <string name="commented_on_issue">Comment on Issue</string>
-    <string name="created_issue" translatable="false">Issue</string>
     <string name="member">Member</string>
-    <string name="public_event" translatable="false">Open-sourced</string>
     <string name="pr_comment_review">Pull Request comment</string>
     <string name="pushed">Pushed to</string>
     <string name="team_event">Team</string>
     <string name="deleted">Deleted</string>
     <string name="unknown">Unknown</string>
     <string name="commented_on_commit">Commented on commit</string>
-    <string name="organization_event" translatable="false">Organization</string>
-    <string name="card_event" translatable="false">Card</string>
-    <string name="project_event" translatable="false">Project</string>
-    <string name="pr_review_event" translatable="false">Pull Request</string>
-    <string name="repo_event" translatable="false">Repository</string>
     <string name="switch_branch">Switch branch</string>
     <string name="assignees">Assignees</string>
     <string name="edit">Edit</string>
@@ -241,14 +325,14 @@
     <string name="commits_reflected">Commits have been switched to the selected branch</string>
     <string name="general_settings">General</string>
     <string name="background_job_summary">Change how frequently FastHub checks for new notifications</string>
-    <string name="background_job_title">Notification Sync Interval</string>
+    <string name="background_job_title">Sync Interval</string>
     <string name="every">Every</string>
     <string name="behavior">Behavior</string>
     <string name="customization">Customization</string>
     <string name="recycler_view_animation_summary">Enable list animations</string>
     <string name="recycler_view_animation_title">List Animation</string>
     <string name="back_button_summary">Disable dialog preventing accidental app closure</string>
-    <string name="back_button_title">Press Back to Exit</string>
+    <string name="back_button_title">Disable Exit Confirmation</string>
     <string name="restore">Restore</string>
     <string name="backup">Backup</string>
     <string name="backed_up">Successfully backed up!</string>
@@ -256,26 +340,25 @@
     <string name="permission_failed">Permission Not Granted.</string>
     <string name="backup_summary">Last update: %s</string>
     <string name="now">Now</string>
-    <string name="unsaved_data_warning">Any unsaved changes will be discarded</string>
+    <string name="unsaved_data_warning">Discard unsaved changes?</string>
     <string name="private_repo">Private</string>
-    <string name="rect_avatar_summary">Use rounded rectangle avatars instead of circular avatars</string>
-    <string name="rect_avatar_title">Avatar Appearance</string>
+    <string name="rect_avatar_summary">Use rounded squarish avatars instead of circular ones</string>
+    <string name="rect_avatar_title">Squarish Avatars</string>
     <string name="rate_app">Rate this app</string>
     <string name="author">Author</string>
     <string name="fork_github">Fork on GitHub</string>
     <string name="send_email">Send an email</string>
-    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
     <string name="question_concerning_fasthub">Question concerning FastHub</string>
     <string name="feedback">Feedback</string>
     <string name="report_issue">Report an issue</string>
     <string name="report_issue_here">Having an issue? Report it here</string>
     <string name="about">About</string>
-    <string name="notification_settings">Notification</string>
+    <string name="notification_settings">Notifications</string>
     <string name="turn_off">Turn off</string>
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
     <string name="no_issue">No issue</string>
-    <string name="copy">Copy</string>
+    <string name="copy">Copy URL</string>
     <string name="success_copied">Copied</string>
     <string name="commit_message">Commit message</string>
     <string name="network_error">Error occurred while communicating to the server</string>
@@ -283,48 +366,23 @@
     <string name="request_error">Error requesting server, please try again later</string>
     <string name="marking_as_read">Marking notification as read</string>
     <string name="forking_gist">Forking gist</string>
-    <string name="forking" formatted="true" translatable="false">Forking %s</string>
-    <string name="starring" formatted="true" translatable="false">Starring %s</string>
-    <string name="un_starring" formatted="true" translatable="false">Unstarring %s</string>
-    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
-    <string name="watching" formatted="true" translatable="false">Watching %s</string>
     <string name="login_using_your_default_browser">Login using your default browser (OAuth)</string>
     <string name="or_character">OR</string>
     <string name="mark_notification_title">Disable Notification Read Status</string>
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
-    <string name="light_theme_mode" translatable="false">Light Theme</string>
-    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
-    <string name="red_theme_mode" translatable="false">Red</string>
-    <string name="pink_theme_mode" translatable="false">Pink</string>
-    <string name="purple_theme_mode" translatable="false">Purple</string>
-    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
-    <string name="indigo_theme_mode" translatable="false">Indigo</string>
-    <string name="blue_theme_mode" translatable="false">Blue</string>
-    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
-    <string name="cyan_theme_mode" translatable="false">Cyan</string>
-    <string name="teal_theme_mode" translatable="false">Teal</string>
-    <string name="green_theme_mode" translatable="false">Green</string>
-    <string name="light_green_theme_mode" translatable="false">Light Green</string>
-    <string name="lime_theme_mode" translatable="false">Lime</string>
-    <string name="yellow_theme_mode" translatable="false">Yellow</string>
-    <string name="amber_theme_mode" translatable="false">Amber</string>
-    <string name="orange_theme_mode" translatable="false">Orange</string>
-    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
-    <string name="theme_title">Choose Theme</string>
+    <string name="theme_title">Theme</string>
     <string name="theme_summary">Choose your default theme</string>
     <string name="theme_color_summary">Choose theme accent color</string>
     <string name="theme_color_title">Theme Accent Color</string>
-    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
-    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Website</string>
-    <string name="twitter" translatable="false">Twitter</string>
     <string name="support_development">Support Development</string>
     <string name="success_purchase_message">Thanks for being extremely awesome!</string>
     <string name="change_theme_warning">If the theme didn\'t apply properly, please kill and open the app manually.</string>
     <string name="pin">Pin</string>
     <string name="pinned">Pinned</string>
     <string name="unpin">Unpin</string>
-    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here</string>
+    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.\nP.S: The more you access a Repo the more on top
+    it will be.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_feeds">No feeds</string>
@@ -353,7 +411,6 @@
     <string name="my_gists">My Gists</string>
     <string name="changelog">Changelog</string>
     <string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
-    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
     <string name="home_long_click_hint">Long press to navigate to main screen from anywhere</string>
     <string name="created">Created</string>
     <string name="assigned">Assigned</string>
@@ -369,15 +426,16 @@
     <string name="no_members">No members</string>
     <string name="no_teams">No teams</string>
     <string name="no_orgs">No Organizations</string>
+    <string name="no_orgs_dialog_title">Can\'t find your Organisations\?</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="animations">Animations</string>
     <string name="dialog_animation_summary">Enable popups animations</string>
     <string name="dialog_animation_title">Popup animation</string>
     <string name="milestones">Milestones</string>
     <string name="assignee">Assignee</string>
-    <string name="checks_failed">All checks failed</string>
-    <string name="checks_pending">All checks are pending</string>
-    <string name="checks_passed">All checks are passed</string>
+    <string name="checks_failed">Some checks have failed</string>
+    <string name="checks_pending">Some checks are pending</string>
+    <string name="checks_passed">All checks have passed</string>
     <string name="sort">Sort</string>
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
@@ -402,12 +460,13 @@
     <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
     <string name="enable_notification_sound_title">Enable Notification Sound</string>
     <string name="enable_notification_title">Enable Notifications</string>
-    <string name="login_with_personal_token">Login with personal token</string>
+    <string name="login_with_personal_token">Login with a personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
-        grant FastHub access to see list your organizations.</string>
+        grant FastHub access to list your organizations.\nYou could also open up https://github.com/settings/applications and look for
+        FastHub, open it then scroll to Organization access and click on Grant Button.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
@@ -415,7 +474,7 @@
     <string name="support_with_5_00">Support with $5.00</string>
     <string name="support_with_10_00">Support with $10.00</string>
     <string name="support_with_20_00">Support with $20.00</string>
-    <string name="app_language">App Language</string>
+    <string name="app_language">Language</string>
     <string name="language">Language</string>
     <string name="choose_language_title">Choose Language</string>
     <string name="choose_language_summary">Choose your preferred language</string>
@@ -423,7 +482,7 @@
     <string name="from">from</string>
     <string name="in_value">in</string>
     <string name="subscribe">Subscribe</string>
-    <string name="repo_issues_is_disabled">The repo has no issues tab</string>
+    <string name="repo_issues_is_disabled">Issues have been disabled in this repo</string>
     <string name="access_token">Access Token</string>
     <string name="basic_authentication">Basic Authentication</string>
     <string name="choose_your_login_type">Choose your login type</string>
@@ -466,8 +525,96 @@
     <string name="divider">Divider</string>
     <string name="no_user_found">No user found</string>
     <string name="no_trending">No trending</string>
-    <string name="daily" translatable="false">Daily</string>
-    <string name="weekly" translatable="false">Weekly</string>
-    <string name="monthly" translatable="false">Monthly</string>
+    <string name="reset">Reset</string>
+    <string name="apply">Apply</string>
     <string name="filter">Filter</string>
+    <string name="type">Type</string>
+    <string name="sort_direction">Sort direction</string>
+    <string name="assignee_added">Assignee added successfully</string>
+    <string name="reviewer_added">Reviewer added successfully</string>
+    <string name="milestone_added">Milestone added successfully</string>
+    <string name="feed">Feed</string>
+    <string name="premium_theme">Premium Theme</string>
+    <string name="choose_code_theme">Code color palette</string>
+    <string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
+        otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
+        GitHub API is coming from your Enterprise Account.</string>
+    <string name="add_account">Add Account</string>
+    <string name="choose_account">Choose Account</string>
+    <string name="not_match">Not match</string>
+    <string name="warning">Warning</string>
+    <string name="owner">Owner</string>
+    <string name="original_poster">Original Poster</string>
+    <string name="cancel_reviews">Cancel Reviews</string>
+    <string name="colored_navbar_summary">Disable colored navigation bar in themes</string>
+    <string name="colored_navbar_title">Colorless Navbar</string>
+    <string name="sound_chooser_summary">Choose custom notification sound</string>
+    <string name="sound_chooser_title">Choose Notification Sound</string>
+    <string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
+    <string name="disable_auto_gif_title">Disable Playing GIF</string>
+    <string name="request_changes">requested changes</string>
+    <string name="google_play_service_error">Google Play Services are unavailable</string>
+    <string name="edit_gist">Edit Gist</string>
+    <string name="content">Content</string>
+    <string name="expand">expand</string>
+    <string name="copy_sha">Copy SHA-1</string>
+    <string name="view_as_code">View as code</string>
+    <string name="app_animation_title">Disable In-App Animations</string>
+    <string name="app_animation_summary">Disable in-app animations everywhere.</string>
+    <string name="can_not_merge_pr">This PR can\'t be merged now.</string>
+    <string name="projects">Projects</string>
+    <string name="no_projects">No Projects</string>
+    <string name="no_cards">No Cards</string>
+    <string name="card_added_by">Added by %s %s</string>
+    <string name="too_large_changes">Too many differences to display. Please, view them via browser</string>
+    <string name="project">Project</string>
+    <string name="please_read">PLEASE READ!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
+        Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+
+        <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
+        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
+
+        <h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
+        <p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
+
+        <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
+        <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
+        in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
+
+        <h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
+        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+
+        <h5>• I\'m having problems! / I want to suggest you some things!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+        search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
+
+        <h5>• How can I get a PROMO CODE?</h5>
+        <p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
+        <ul>
+        <li>Your GitHub username;</li>
+        <li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
+        <li>Your education start and graduation dates.</li>
+        </ul>
+        <p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
+        <ul>
+        <li>Your GitHub username;</li>
+        <li>Write an article about FastHub in any social media, such as Medium;</li>
+        <li>Prove your authorship.</li>
+        </ul>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Comments added successfully</string>
+    <string name="clear_search_keywords">Clear Search History</string>
+    <string name="restore_purchases">Restore Purchases</string>
+    <string name="include_forks">Include Forks</string>
+    <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+    <string name="search_results_warning">Please be more specific with your search</string>
+    <string name="disable_loading_image_title">Disable Loading Image</string>
+    <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+    <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
+    <string name="block">Block</string>
 </resources>

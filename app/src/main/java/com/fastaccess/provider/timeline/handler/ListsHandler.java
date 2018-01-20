@@ -47,7 +47,7 @@ import lombok.NoArgsConstructor;
         TodoItems todoItem = null;
         if (node.getChildTags() != null && node.getChildTags().length > 0) {
             for (TagNode tagNode : node.getChildTags()) {
-                Logger.e(tagNode.getName(), tagNode.getAttributes(), tagNode.getText());
+                Logger.e(tagNode.getName(), tagNode.getText());
                 if (tagNode.getName() != null && tagNode.getName().equals("input")) {
                     todoItem = new TodoItems();
                     todoItem.isChecked = tagNode.getAttributeByName("checked") != null;
@@ -56,7 +56,7 @@ import lombok.NoArgsConstructor;
             }
         }
         if ("ol".equals(getParentName(node))) {
-            builder.append("").append(String.valueOf(getMyIndex(node))).append(". ");
+            builder.append(String.valueOf(getMyIndex(node))).append(". ");
         } else if ("ul".equals(getParentName(node))) {
             if (todoItem != null) {
                 if (checked == null || unchecked == null) {
@@ -64,10 +64,10 @@ import lombok.NoArgsConstructor;
                 } else {
                     builder.append(SpannableBuilder.builder()
                             .append(todoItem.isChecked ? checked : unchecked))
-                            .append("   ");
+                            .append(" ");
                 }
             } else {
-                builder.append("\u2022  ");
+                builder.append("\u2022 ");
             }
         }
     }

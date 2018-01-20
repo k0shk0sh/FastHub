@@ -8,6 +8,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
@@ -21,11 +22,11 @@ import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:48 PM
@@ -36,6 +37,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State IssueState issueState;
     private OnLoadMore<IssueState> onLoadMore;
     private PullRequestAdapter adapter;
@@ -147,15 +149,15 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
         refresh.setOnRefreshListener(this);
         adapter = new PullRequestAdapter(getPresenter().getPullRequests(), false, true);
         adapter.setListener(getPresenter());
-        recycler.addDivider();
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
-        recycler.addKeyLineDivider();
+        recycler.addDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null || (getPresenter().getPullRequests().isEmpty() && !getPresenter().isApiCalled())) {
             onRefresh();
         }
         stateLayout.setEmptyText(getString(R.string.no) + " " + getString(R.string.pull_requests));
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public MyPullRequestsPresenter providePresenter() {

@@ -17,12 +17,18 @@ import java.util.List;
 
 public class PinnedReposAdapter extends BaseRecyclerAdapter<PinnedRepos, PinnedReposViewHolder, BaseViewHolder.OnItemClickListener<PinnedRepos>> {
 
+    private boolean singleLine;
+
+    public PinnedReposAdapter(boolean singleLine) {
+        this.singleLine = singleLine;
+    }
+
     public PinnedReposAdapter(@NonNull List<PinnedRepos> data, @Nullable BaseViewHolder.OnItemClickListener<PinnedRepos> listener) {
         super(data, listener);
     }
 
     @Override protected PinnedReposViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return PinnedReposViewHolder.newInstance(parent, this);
+        return PinnedReposViewHolder.newInstance(parent, this, singleLine);
     }
 
     @Override protected void onBindView(PinnedReposViewHolder holder, int position) {

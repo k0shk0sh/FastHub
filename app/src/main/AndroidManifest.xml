@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.fastaccess"
           xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+          xmlns:tools="http://schemas.android.com/tools"
+          android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -26,8 +27,13 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".ui.modules.main.donation.CheckPurchaseActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:theme="@style/ThemeTranslucent"/>
+        <activity
             android:name=".ui.modules.main.MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -38,7 +44,7 @@
             android:name=".ui.modules.login.LoginActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme">
             <intent-filter>
@@ -53,7 +59,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.modules.login.LoginChooserActivity"
+            android:name=".ui.modules.login.chooser.LoginChooserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
@@ -78,7 +84,8 @@
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
@@ -98,7 +105,8 @@
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
@@ -110,7 +118,8 @@
         <activity
             android:name=".ui.modules.editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/markdown"/>
+            android:label="@string/markdown"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.modules.gists.create.CreateGistActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -118,7 +127,8 @@
         <activity
             android:name=".ui.modules.gists.gist.GistActivity"
             android:label="@string/gist"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
@@ -165,8 +175,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-        <activity android:name=".ui.modules.settings.SettingsActivity"/>
-        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity"/>
+        <activity
+            android:name=".ui.modules.settings.SettingsActivity"
+            android:configChanges="keyboard|orientation|screenSize"/>
+        <activity
+            android:name=".ui.modules.settings.category.SettingsCategoryActivity"
+            android:configChanges="keyboard|orientation|screenSize"/>
         <activity
             android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
             android:label="@string/releases"
@@ -175,6 +189,74 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
+        <activity
+            android:name=".ui.modules.trending.TrendingActivity"
+            android:label="@string/trending"
+            android:parentActivityName=".ui.modules.main.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainActivity"/>
+        </activity>
+        <activity android:name=".ui.modules.theme.ThemeActivity"/>
+        <activity
+            android:name=".ui.modules.theme.code.ThemeCodeActivity"
+            android:label="@string/theme_title"/>
+        <activity
+            android:name=".ui.modules.main.donation.DonateActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:theme="@style/ThemeTranslucent"/>
+        <activity
+            android:name=".ui.modules.repos.wiki.WikiActivity"
+            android:label="@string/gollum"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.modules.main.premium.PremiumActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".ui.modules.repos.git.EditRepoFileActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/markdown"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.modules.repos.code.commit.history.FileCommitHistoryActivity"
+            android:label="@string/commits"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.modules.repos.projects.details.ProjectPagerActivity"
+            android:label="@string/project"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.modules.profile.org.project.OrgProjectActivity"
+            android:label="@string/projects"
+            android:parentActivityName=".ui.modules.user.UserPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.user.UserPagerActivity"/>
+        </activity>
+
+        <activity android:name=".ui.modules.main.playstore.PlayStoreWarningActivity"/>
+
+        <activity
+            android:name=".ui.modules.repos.pull_requests.pull_request.details.files.fullscreen.FullScreenFileChangeActivity"
+            android:configChanges="keyboard|orientation|screenSize"/>
+
+        <activity android:name=".ui.modules.search.SearchUserActivity"/>
+
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -206,6 +288,13 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <data android:mimeType="text/plain"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
 
         <service
@@ -219,6 +308,7 @@
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
+        <service android:name=".provider.tasks.version.CheckVersionService"/>
         <service
             android:name=".provider.fcm.PushNotificationService"
             android:exported="false">
@@ -230,10 +320,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e"/>
-
-        <activity android:name=".ui.modules.trending.TendingActivity">
-        </activity>
-        <activity android:name=".ui.modules.trending.TrendingActivity"/>
     </application>
 
 </manifest>

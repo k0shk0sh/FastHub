@@ -26,14 +26,14 @@ import static com.annimon.stream.Collectors.toList;
 
 @Getter @Setter public class GroupedNotificationModel {
     public static final int HEADER = 1;
-
     public static final int ROW = 2;
+
     private int type;
     private Repo repo;
     private Notification notification;
     private Date date;
 
-    public GroupedNotificationModel(Repo repo) {
+    private GroupedNotificationModel(Repo repo) {
         this.type = HEADER;
         this.repo = repo;
     }
@@ -48,6 +48,7 @@ import static com.annimon.stream.Collectors.toList;
         List<GroupedNotificationModel> models = new ArrayList<>();
         if (items == null || items.isEmpty()) return models;
         Map<Repo, List<Notification>> grouped = Stream.of(items)
+                .filter(value -> !value.isUnread())
                 .collect(Collectors.groupingBy(Notification::getRepository, LinkedHashMap::new,
                         Collectors.mapping(o -> o, toList())));
         Stream.of(grouped)

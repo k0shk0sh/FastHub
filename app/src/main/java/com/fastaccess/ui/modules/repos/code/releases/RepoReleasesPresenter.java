@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implements RepoReleasesMvp.Presenter {
     private ArrayList<Release> releases = new ArrayList<>();
-    @icepick.State String login;
-    @icepick.State String repoId;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -49,7 +49,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -57,31 +57,41 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoReleasesMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService().getReleases(login, repoId, page),
+        if (repoId == null || login == null) return false;
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getReleases(login, repoId, page),
                 response -> {
                     if (response.getItems() == null || response.getItems().isEmpty()) {
-                        makeRestCall(RestProvider.getRepoService().getTagReleases(login, repoId, page), this::onResponse);
+                        makeRestCall(RestProvider.getRepoService(isEnterprise()).getTagReleases(login, repoId, page), this::onResponse);
                         return;
                     }
                     onResponse(response);
                 });
+        return true;
 
-    }
-
-    private void onResponse(Pageable<Release> response) {
-        lastPage = response.getLast();
-        if (getCurrentPage() == 1) {
-            manageObservable(Release.save(response.getItems(), repoId, login));
-        }
-        sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
+        String tag = bundle.getString(BundleConstant.EXTRA_THREE);
+        long id = bundle.getLong(BundleConstant.EXTRA_TWO, -1);
+        if (!InputHelper.isEmpty(tag)) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).getTagRelease(login, repoId, tag)
+                    .doOnNext(release -> {
+                        if (release != null) {
+                            sendToView(view -> view.onShowDetails(release));
+                        }
+                    }));
+        } else if (id > 0) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).getRelease(login, repoId, id)
+                    .doOnNext(release -> {
+                        if (release != null) {
+                            sendToView(view -> view.onShowDetails(release));
+                        }
+                    }));
+        }
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
         }
@@ -110,4 +120,12 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
     }
 
     @Override public void onItemLongClick(int position, View v, Release item) {}
+
+    private void onResponse(Pageable<Release> response) {
+        lastPage = response.getLast();
+        if (getCurrentPage() == 1) {
+            manageDisposable(Release.save(response.getItems(), repoId, login));
+        }
+        sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
+    }
 }

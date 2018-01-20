@@ -28,11 +28,11 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<User> users = new ArrayList<>();
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State long id;
-    @icepick.State ReactionTypes reactionType;
-    @icepick.State @ReactionsProvider.ReactionType int reactionTypeMode;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State long id;
+    @com.evernote.android.state.State ReactionTypes reactionType;
+    @com.evernote.android.state.State @ReactionsProvider.ReactionType int reactionTypeMode;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {
@@ -65,32 +65,32 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0 || (login == null || repoId == null || reactionType == null)) {
             sendToView(ReactionsDialogMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         Observable<Pageable<ReactionsModel>> observable = null;
         switch (reactionTypeMode) {
             case ReactionsProvider.COMMENT:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getIssueCommentReaction(login, repoId, id, reactionType.getContent(), page);
                 break;
             case ReactionsProvider.COMMIT:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getCommitReaction(login, repoId, id, reactionType.getContent(), page);
                 break;
             case ReactionsProvider.HEADER:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getIssueReaction(login, repoId, id, reactionType.getContent(), page);
                 break;
             case ReactionsProvider.REVIEW_COMMENT:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getPullRequestReactions(login, repoId, id, reactionType.getContent(), page);
                 break;
         }
@@ -104,6 +104,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
                     .map(ReactionsModel::getUser)
                     .collect(Collectors.toList()), page));
         });
+        return true;
     }
 
     ReactionTypes getReactionType() {

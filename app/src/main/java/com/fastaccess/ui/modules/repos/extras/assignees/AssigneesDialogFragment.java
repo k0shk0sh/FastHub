@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
@@ -18,6 +20,7 @@ import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +30,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
 
 /**
  * Created by Kosh on 22 Feb 2017, 7:23 PM
@@ -38,6 +40,8 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.refresh) SwipeRefreshLayout refresh;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Integer, User> selectionMap;
 
     private AssigneesAdapter adapter;
@@ -75,20 +79,18 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            if (getArguments() != null) {
-                //noinspection ConstantConditions
-                getPresenter().onCallApi(getArguments().getString(BundleConstant.EXTRA),
-                        getArguments().getString(BundleConstant.ID),
-                        getArguments().getBoolean(BundleConstant.EXTRA_TWO));
-            }
+            callApi();
         }
+        refresh.setOnRefreshListener(this::callApi);
+        stateLayout.setOnReloadListener(v -> callApi());
         boolean isAssinees = getArguments().getBoolean(BundleConstant.EXTRA_TWO);
         stateLayout.setEmptyText(isAssinees ? R.string.no_assignees : R.string.no_reviewers);
-        recycler.setEmptyView(stateLayout);
+        recycler.setEmptyView(stateLayout, refresh);
         recycler.addKeyLineDivider();
         title.setText(isAssinees ? R.string.assignees : R.string.reviewers);
         adapter = new AssigneesAdapter(getPresenter().getList(), this);
         recycler.setAdapter(adapter);
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public AssigneesPresenter providePresenter() {
@@ -118,9 +120,7 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
                         .filter(value -> value.getValue() != null)
                         .map(Map.Entry::getValue)
                         .collect(Collectors.toCollection(ArrayList::new));
-                if (labels != null && !labels.isEmpty()) {
-                    callback.onSelectedAssignees(labels, getArguments().getBoolean(BundleConstant.EXTRA_TWO));
-                }
+                callback.onSelectedAssignees(labels != null ? labels : new ArrayList<>(), getArguments().getBoolean(BundleConstant.EXTRA_TWO));
                 dismiss();
                 break;
         }
@@ -137,10 +137,12 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
 
     @Override public void showProgress(@StringRes int resId) {
         stateLayout.showProgress();
+        refresh.setRefreshing(true);
     }
 
     @Override public void hideProgress() {
         stateLayout.hideProgress();
+        refresh.setRefreshing(false);
     }
 
     @Override public void showErrorMessage(@NonNull String message) {
@@ -163,5 +165,12 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
             selectionMap = new LinkedHashMap<>();
         }
         return selectionMap;
+    }
+
+    private void callApi() {
+        //noinspection ConstantConditions
+        getPresenter().onCallApi(getArguments().getString(BundleConstant.EXTRA),
+                getArguments().getString(BundleConstant.ID),
+                getArguments().getBoolean(BundleConstant.EXTRA_TWO));
     }
 }

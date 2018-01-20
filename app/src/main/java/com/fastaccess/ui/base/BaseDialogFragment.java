@@ -15,17 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 
 import net.grandcentrix.thirtyinch.TiDialogFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
 
 /**
  * Created by Kosh on 22 Feb 2017, 7:28 PM
@@ -36,6 +38,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     protected BaseMvp.FAView callback;
 
     @Nullable private Unbinder unbinder;
+    protected boolean suppressAnimation = false;
 
     @LayoutRes protected abstract int fragmentLayout();
 
@@ -55,7 +58,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
         getPresenter().onSaveInstanceState(outState);
     }
 
@@ -63,18 +66,28 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, AppHelper.isNightMode(getResources()) ? R.style.DialogThemeDark : R.style.DialogThemeLight);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
+        getPresenter().setEnterprise(isEnterprise());
     }
 
     @Override public void dismiss() {
-        AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
-            @Override public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                BaseDialogFragment.super.dismiss();
-            }
-        });
+        if (suppressAnimation) {
+            super.dismiss();
+            return;
+        }
+        if (PrefGetter.isAppAnimationDisabled()) {
+            super.dismiss();
+        } else {
+            AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime),
+                    new AnimatorListenerAdapter() {
+                        @Override public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            BaseDialogFragment.super.dismiss();
+                        }
+                    });
+        }
     }
 
     @SuppressLint("RestrictedApi") @Nullable @Override
@@ -91,8 +104,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
-                getResources().getInteger(android.R.integer.config_longAnimTime)));
+        if (!PrefGetter.isAppAnimationDisabled() && !(this instanceof ProgressDialogFragment) && !suppressAnimation) {
+            dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
+                    getResources().getInteger(android.R.integer.config_longAnimTime)));
+        }
         return dialog;
     }
 
@@ -103,6 +118,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @Override public void showProgress(@StringRes int resId) {
         callback.showProgress(resId);
+    }
+
+    @Override public void showBlockingProgress(int resId) {
+        callback.showBlockingProgress(resId);
     }
 
     @Override public void hideProgress() {
@@ -129,10 +148,6 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     }
 
-    @Override public void onDialogDismissed() {
-
-    }
-
     @Override public void onRequireLogin() {
         callback.onRequireLogin();
     }
@@ -155,4 +170,17 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void onScrollTop(int index) {}
+
+    @Override public void onDialogDismissed() {
+
+    }
+
+    @Override public boolean isEnterprise() {
+        return callback != null && callback.isEnterprise();
+    }
+
+    @Override public void onOpenUrlInBrowser() {
+        callback.onOpenUrlInBrowser();
+    }
 }
+

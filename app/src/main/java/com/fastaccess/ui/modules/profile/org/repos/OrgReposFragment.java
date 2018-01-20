@@ -14,8 +14,10 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.profile.repos.ProfileReposFilterBottomSheetDialog;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -25,11 +27,13 @@ import butterknife.BindView;
  * Created by Kosh on 03 Dec 2016, 3:56 PM
  */
 
-public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPresenter> implements OrgReposMvp.View {
+public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPresenter> implements OrgReposMvp.View,
+        ProfileReposFilterBottomSheetDialog.ProfileReposFilterChangeListener {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
 
@@ -64,16 +68,16 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new ReposAdapter(getPresenter().getRepos(), false);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public OrgReposPresenter providePresenter() {
@@ -82,7 +86,7 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -121,6 +125,32 @@ refresh.setRefreshing(true);
     @Override public void onScrollTop(int index) {
         super.onScrollTop(index);
         if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    @Override public void onRepoFilterClicked() {
+        ProfileReposFilterBottomSheetDialog.newInstance(getPresenter().getFilterOptions())
+                .show(getChildFragmentManager(), "ProfileReposFilterBottomSheetDialog");
+    }
+
+    @Override public void onFilterApply() {
+        getPresenter().onFilterApply(getArguments().getString(BundleConstant.EXTRA));
+    }
+
+    @Override public void onTypeSelected(String selectedType) {
+        getPresenter().onTypeSelected(selectedType);
+    }
+
+    @Override public void onSortOptionSelected(String selectedSortOption) {
+        //Not supported for org profile
+    }
+
+    @Override public void onSortDirectionSelected(String selectedSortDirection) {
+        //Not supported for org profile
+    }
+
+    @Override
+    public String getLogin() {
+        return getArguments().getString(BundleConstant.EXTRA);
     }
 
     private void showReload() {

@@ -6,17 +6,38 @@ import android.support.annotation.DrawableRes;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Created by Kosh on 27 Apr 2017, 6:10 PM
  */
 
-@Getter @Setter public class TabsCountStateModel implements Parcelable, Serializable {
+public class TabsCountStateModel implements Parcelable, Serializable {
     private int count;
     private int tabIndex;
     @DrawableRes private int drawableId;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
+    }
+
+    public int getDrawableId() {
+        return drawableId;
+    }
+
+    public void setDrawableId(int drawableId) {
+        this.drawableId = drawableId;
+    }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;

@@ -3,15 +3,15 @@ package com.fastaccess.helper;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.ColorStateList;
-import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
@@ -21,16 +21,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.util.Pair;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.ui.modules.parser.LinksParserActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,25 +38,11 @@ import es.dmoral.toasty.Toasty;
  */
 public class ActivityHelper {
 
-    private static int BUTTON_ID = 32;
-
     @Nullable public static Activity getActivity(@Nullable Context content) {
         if (content == null) return null;
         else if (content instanceof Activity) return (Activity) content;
         else if (content instanceof ContextWrapper) return getActivity(((ContextWrapper) content).getBaseContext());
         return null;
-    }
-
-    public static void login(@NonNull Activity activity, @NonNull Uri url) {
-        try {
-            Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
-            Intent i = new Intent(Intent.ACTION_VIEW, uri);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(i);
-        } catch (ActivityNotFoundException e) {
-            Toasty.info(activity, "Chrome is required to login").show();
-            e.printStackTrace();
-        }
     }
 
     public static void startCustomTab(@NonNull Activity context, @NonNull Uri url) {
@@ -71,7 +53,11 @@ public class ActivityHelper {
                     .setShowTitle(true)
                     .build();
             customTabsIntent.intent.setPackage(packageNameToUse);
-            customTabsIntent.launchUrl(context, url);
+            try {
+                customTabsIntent.launchUrl(context, url);
+            } catch (ActivityNotFoundException ignored) {
+                openChooser(context, url, true);
+            }
         } else {
             openChooser(context, url, true);
         }
@@ -92,21 +78,24 @@ public class ActivityHelper {
         if (finalIntent != null) {
             try {
                 context.startActivity(finalIntent);
-            } catch (ActivityNotFoundException ignored) {}
+            } catch (ActivityNotFoundException ignored) {
+            }
         } else {
             if (!fromCustomTab) {
                 Activity activity = ActivityHelper.getActivity(context);
                 if (activity == null) {
                     try {
                         context.startActivity(i);
-                    } catch (ActivityNotFoundException ignored) {}
+                    } catch (ActivityNotFoundException ignored) {
+                    }
                     return;
                 }
                 startCustomTab(activity, url);
             } else {
                 try {
                     context.startActivity(i);
-                } catch (ActivityNotFoundException ignored) {}
+                } catch (ActivityNotFoundException ignored) {
+                }
             }
         }
     }
@@ -128,27 +117,40 @@ public class ActivityHelper {
     }
 
     public static void startReveal(@NonNull Activity activity, Intent intent, @NonNull View sharedElement, int requestCode) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
-                sharedElement.getHeight() / 2,
-                sharedElement.getWidth(), sharedElement.getHeight());
-        activity.startActivityForResult(intent, requestCode, options.toBundle());
+        if (!PrefGetter.isAppAnimationDisabled()) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                    sharedElement.getHeight() / 2,
+                    sharedElement.getWidth(), sharedElement.getHeight());
+            activity.startActivityForResult(intent, requestCode, options.toBundle());
+        } else {
+            activity.startActivityForResult(intent, requestCode);
+        }
     }
 
     public static void startReveal(@NonNull Fragment fragment, Intent intent, @NonNull View sharedElement, int requestCode) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
-                sharedElement.getHeight() / 2,
-                sharedElement.getWidth(), sharedElement.getHeight());
-        fragment.startActivityForResult(intent, requestCode, options.toBundle());
+        if (!PrefGetter.isAppAnimationDisabled()) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                    sharedElement.getHeight() / 2,
+                    sharedElement.getWidth(), sharedElement.getHeight());
+            fragment.startActivityForResult(intent, requestCode, options.toBundle());
+        } else {
+            fragment.startActivityForResult(intent, requestCode);
+        }
     }
 
     public static void startReveal(@NonNull Activity activity, Intent intent, @NonNull View sharedElement) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
-                sharedElement.getHeight() / 2,
-                sharedElement.getWidth(), sharedElement.getHeight());
-        activity.startActivity(intent, options.toBundle());
+        if (!PrefGetter.isAppAnimationDisabled()) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                    sharedElement.getHeight() / 2,
+                    sharedElement.getWidth(), sharedElement.getHeight());
+            activity.startActivity(intent, options.toBundle());
+        } else {
+            activity.startActivity(intent);
+        }
     }
 
-    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent, @NonNull Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent,
+                                          @NonNull Pair<View, String>... sharedElements) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
 
@@ -160,11 +162,11 @@ public class ActivityHelper {
         try {
             ShareCompat.IntentBuilder.from(activity)
                     .setChooserTitle(context.getString(R.string.share))
-                    .setType("text/*")
+                    .setType("text/plain")
                     .setText(url)
                     .startChooser();
         } catch (ActivityNotFoundException e) {
-            Toasty.error(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toasty.error(App.getInstance(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -207,7 +209,7 @@ public class ActivityHelper {
             return false;
         } else if (isExplanationNeeded(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 || isExplanationNeeded(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Toasty.error(activity, activity.getString(R.string.read_write_permission_explanation), Toast.LENGTH_LONG).show();
+            Toasty.error(App.getInstance(), activity.getString(R.string.read_write_permission_explanation), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -243,71 +245,19 @@ public class ActivityHelper {
         return chooserIntent;
     }
 
-    public static void showDismissHints(@NonNull Context context, @NonNull Runnable runnable) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.weight = 1;
-        params.gravity = Gravity.START;
-        int margin = (int) context.getResources().getDimension(R.dimen.spacing_normal);
-        params.setMargins(margin, margin, margin, margin);
-        Button button = new Button(context);
-        button.setLayoutParams(params);
-        button.setText(context.getResources().getString(R.string.dismiss_all));
-        button.setTextColor(context.getResources().getColor(R.color.material_grey_200));
-        button.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.material_red_accent_700)));
-        button.setAllCaps(true);
-        button.setOnClickListener(v -> {
-            PrefGetter.isCommentHintShowed();
-            PrefGetter.isEditorHintShowed();
-            PrefGetter.isFileOptionHintShow();
-            PrefGetter.isHomeButoonHintShowed();
-            PrefGetter.isNavDrawerHintShowed();
-            PrefGetter.isReleaseHintShow();
-            PrefGetter.isRepoFabHintShowed();
-            PrefGetter.isRepoGuideShowed();
-            runnable.run();
-            ActivityHelper.hideDismissHints(context);
-        });
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        RelativeLayout relativeLayout = new RelativeLayout(context);
-        relativeLayout.setId(BUTTON_ID);
-        relativeLayout.setLayoutParams(
-                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        relativeLayout.setPadding(0, getNotificationBarHeight(context), 0, 0);
-
-        relativeLayout.addView(button);
-        parentView.addView(relativeLayout);
+    public static void activateLinkInterceptorActivity(Context context, boolean activate) {
+        final PackageManager pm = context.getPackageManager();
+        final int flag = activate ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        pm.setComponentEnabledSetting(new ComponentName(context, LinksParserActivity.class), flag, PackageManager.DONT_KILL_APP);
     }
 
-    public static void hideDismissHints(@NonNull Context context) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        View button = parentView.findViewById(BUTTON_ID);
-        if (button != null)
-            parentView.removeView(button);
-    }
-
-    public static void bringDismissAllToFront(@NonNull Context context) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        View button = parentView.findViewById(BUTTON_ID);
-        if (button != null)
-            button.bringToFront();
-    }
-
-    private static int getNotificationBarHeight(@NonNull Context context) {
-        Rect rectangle = new Rect();
-        Activity activity = getActivity(context);
-        if (activity == null) return 0;
-        Window window = activity.getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-        int statusBarHeight = rectangle.top;
-        int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
-
-        return Math.abs(contentViewTop - statusBarHeight);
+    public static Intent editBundle(@NonNull Intent intent, boolean isEnterprise) {
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+            intent.putExtras(bundle);
+        }
+        return intent;
     }
 
 }

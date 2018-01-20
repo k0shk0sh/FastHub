@@ -17,15 +17,15 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class GitCommitModel implements Parcelable {
 
-    private String sha;
-    private String url;
-    private String message;
-    private User author;
-    private User committer;
-    private User tree;
-    private @SerializedName("distinct") boolean distincted;
-    private GitCommitListModel parents;
-    private int commentCount;
+    public String sha;
+    public String url;
+    public String message;
+    public User author;
+    public User committer;
+    public User tree;
+    public @SerializedName("distinct") boolean distincted;
+    public GitCommitListModel parents;
+    public int commentCount;
 
     @Override public int describeContents() { return 0; }
 
@@ -49,8 +49,8 @@ public class GitCommitModel implements Parcelable {
         this.committer = in.readParcelable(User.class.getClassLoader());
         this.tree = in.readParcelable(User.class.getClassLoader());
         this.distincted = in.readByte() != 0;
-        in.readList(parents, parents.getClass().getClassLoader());
-        in.readList(this.parents, GitCommitModel.class.getClassLoader());
+        this.parents = new GitCommitListModel();
+        in.readList(this.parents, this.parents.getClass().getClassLoader());
         this.commentCount = in.readInt();
     }
 
@@ -59,4 +59,13 @@ public class GitCommitModel implements Parcelable {
 
         @Override public GitCommitModel[] newArray(int size) {return new GitCommitModel[size];}
     };
+
+    @Override public String toString() {
+	if (message != null) {
+            return (sha != null && sha.length() > 7 ? sha.substring(0, 7) + " - " : "") + message.split(System.lineSeparator())[0];
+        } else if (sha != null && sha.length() > 10) {
+            return sha.substring(0, 10);
+        }
+        return "N/A";
+    }
 }

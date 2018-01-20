@@ -3,10 +3,9 @@ package com.fastaccess.ui.base;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,39 +20,42 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.evernote.android.state.State;
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.FastHubNotification;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.PrefHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.markdown.CachedComments;
+import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
-import com.fastaccess.ui.modules.gists.GistsListActivity;
-import com.fastaccess.ui.modules.login.LoginActivity;
-import com.fastaccess.ui.modules.login.LoginChooserActivity;
+import com.fastaccess.ui.modules.gists.gist.GistActivity;
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.main.donation.DonationActivity;
+import com.fastaccess.ui.modules.main.notifications.FastHubNotificationDialog;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
-import com.fastaccess.ui.modules.notification.NotificationActivity;
-import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
+import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
-import com.fastaccess.ui.modules.trending.TrendingActivity;
-import com.fastaccess.ui.modules.user.UserPagerActivity;
-import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -61,9 +63,11 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
-import icepick.Icepick;
-import icepick.State;
+import io.reactivex.Observable;
+
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -73,13 +77,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
-    @Nullable @BindView(R.id.toolbar) public Toolbar toolbar;
-    @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
-    @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
+    @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar;
+    @Nullable @BindView(R.id.appbar) protected AppBarLayout appbar;
+    @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+    @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
+    @State String schemeUrl;
+
     @State Bundle presenterStateBundle = new Bundle();
 
-    private static int REFRESH_CODE = 64;
+    private MainNavDrawer mainNavDrawer;
 
     private long backPressTimer;
     private Toast toast;
@@ -94,35 +101,38 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
         getPresenter().onSaveInstanceState(presenterStateBundle);
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTaskName(null);
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
+        Logger.e(FirebaseInstanceId.getInstance().getToken());
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);
         }
-        if (!isSecured()) {
-            if (!isLoggedIn()) {
-                onRequireLogin();
-                return;
+        if (savedInstanceState == null) {
+            getPresenter().onCheckGitHubStatus();
+            if (getIntent() != null) {
+                schemeUrl = getIntent().getStringExtra(BundleConstant.SCHEME_URL);
             }
         }
-        Icepick.setDebug(BuildConfig.DEBUG);
-        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
-            getPresenter().onRestoreInstanceState(presenterStateBundle);
+        if (!validateAuth()) return;
+        if (savedInstanceState == null) {
+            if (showInAppNotifications()) {
+                FastHubNotificationDialog.Companion.show(getSupportFragmentManager());
+            }
         }
+        showChangelog();
+        initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
-        //showHideAds();
-        if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
-            new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
-        }
-        setupNavigationView(extraNav);
+        initEnterpriseExtra(savedInstanceState);
+        mainNavDrawer = new MainNavDrawer(this, extraNav, accountsNav);
+        setupNavigationView();
         setupDrawer();
     }
 
@@ -149,8 +159,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             boolean logout = bundle.getBoolean("logout");
             if (logout) {
                 onRequireLogin();
-//                if(App.getInstance().getGoogleApiClient().isConnected())
-//                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
             }
         }
     }//pass
@@ -162,12 +170,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
         hideProgress();
         if (toast != null) toast.cancel();
-        Context context;
-        if (!isFinishing()) {
-            context = this;
-        } else {
-            context = App.getInstance();
-        }
+        Context context = App.getInstance(); // WindowManager$BadTokenException
         toast = titleRes.equals(context.getString(R.string.error))
                 ? Toasty.error(context, msgRes, Toast.LENGTH_LONG)
                 : Toasty.info(context, msgRes, Toast.LENGTH_LONG);
@@ -179,23 +182,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public boolean isLoggedIn() {
-        return !InputHelper.isEmpty(PrefGetter.getToken()) && Login.getUser() != null;
+        return Login.getUser() != null;
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        String msg = getString(R.string.in_progress);
-        if (resId != 0) {
-            msg = getString(resId);
-        }
-        if (!isProgressShowing) {
-            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
-                    ProgressDialogFragment.TAG);
-            if (fragment == null) {
-                isProgressShowing = true;
-                fragment = ProgressDialogFragment.newInstance(msg, false);
-                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
-            }
-        }
+        showProgress(resId, true);
+    }
+
+    @Override public void showBlockingProgress(int resId) {
+        showProgress(resId, false);
     }
 
     @Override public void hideProgress() {
@@ -208,62 +203,33 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onRequireLogin() {
-        Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        ImageLoader.getInstance().clearDiskCache();
-        ImageLoader.getInstance().clearMemoryCache();
-        PrefHelper.clearKey("token");
-        App.getInstance().getDataStore()
-                .delete(Login.class)
-                .get()
-                .value();
-        Intent intent = new Intent(this, LoginChooserActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finishAffinity();
+        Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
+        final Glide glide = Glide.get(App.getInstance());
+        getPresenter().manageViewDisposable(RxHelper.getObservable(Observable.fromCallable(() -> {
+            glide.clearDiskCache();
+            PrefGetter.setToken(null);
+            PrefGetter.setOtpCode(null);
+            PrefGetter.resetEnterprise();
+            Login.logout();
+            return true;
+        })).subscribe(aBoolean -> {
+            glide.clearMemory();
+            Intent intent = new Intent(this, LoginChooserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
+        }));
     }
 
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (drawer != null) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        if (item.isChecked()) return false;
-        new Handler().postDelayed(() -> {
-            if (isFinishing()) return;
-            if (item.getItemId() == R.id.navToRepo) {
-                onNavToRepoClicked();
-            } else if (item.getItemId() == R.id.supportDev) {
-                startActivity(new Intent(this, DonationActivity.class));
-            } else if (item.getItemId() == R.id.gists) {
-                GistsListActivity.startActivity(this, false);
-            } else if (item.getItemId() == R.id.pinnedMenu) {
-                PinnedReposActivity.startActivity(this);
-            } else if (item.getItemId() == R.id.mainView) {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            } else if (item.getItemId() == R.id.profile) {
-                startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
-            } else if (item.getItemId() == R.id.logout) {
-                onLogoutPressed();
-            } else if (item.getItemId() == R.id.settings) {
-                onOpenSettings();
-            } else if (item.getItemId() == R.id.about) {
-                startActivity(new Intent(this, FastHubAboutActivity.class));
-            } else if (item.getItemId() == R.id.orgs) {
-                onOpenOrgsDialog();
-            } else if (item.getItemId() == R.id.notifications) {
-                startActivity(new Intent(this, NotificationActivity.class));
-            } else if (item.getItemId() == R.id.trending) {
-                startActivity(new Intent(this, TrendingActivity.class));
-            }
-        }, 250);
+        closeDrawer();
+        mainNavDrawer.onMainNavItemClick(item);
         return false;
     }
 
     @Override public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer();
         } else {
             boolean clickTwiceToExit = !PrefGetter.isTwiceBackButtonDisabled();
             superOnBackPressed(clickTwiceToExit);
@@ -292,19 +258,46 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onOpenSettings() {
-        startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
+        startActivityForResult(new Intent(this, SettingsActivity.class), BundleConstant.REFRESH_CODE);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REFRESH_CODE) {
-            if (resultCode == RESULT_OK) {
-                recreate();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == BundleConstant.REFRESH_CODE) {
+                onThemeChanged();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override public void onScrollTop(int index) {}
+
+    @Override public boolean isEnterprise() {
+        return getPresenter() != null && getPresenter().isEnterprise();
+    }
+
+    @Override public void onOpenUrlInBrowser() {
+        if (!InputHelper.isEmpty(schemeUrl)) {
+            ActivityHelper.startCustomTab(this, schemeUrl);
+            try {
+                finish();
+            } catch (Exception ignored) {}// fragment might be committed and calling finish will crash the app.
+        }
+    }
+
+    @Optional @OnClick(R.id.logout) void onLogoutClicked() {
+        closeDrawer();
+        onLogoutPressed();
+    }
+
+    @Override protected void onDestroy() {
+        clearCachedComments();
+        super.onDestroy();
+    }
+
+    protected void setTaskName(@Nullable String name) {
+        setTaskDescription(new ActivityManager.TaskDescription(name, null, ViewHelper.getPrimaryDarkColor(this)));
+    }
 
     protected void selectHome(boolean hideRepo) {
         if (extraNav != null) {
@@ -321,24 +314,19 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     protected void selectProfile() {
         selectHome(true);
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.profile).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.profile).setChecked(true);
-        }
+        selectMenuItem(R.id.profile);
     }
 
     protected void selectPinned() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.pinnedMenu).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.pinnedMenu).setChecked(true);
-        }
+        selectMenuItem(R.id.pinnedMenu);
     }
 
     protected void onSelectNotifications() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.notifications).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.notifications).setChecked(true);
-        }
+        selectMenuItem(R.id.notifications);
+    }
+
+    protected void onSelectTrending() {
+        selectMenuItem(R.id.trending);
     }
 
     protected void onOpenOrgsDialog() {
@@ -348,6 +336,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     protected void showNavToRepoItem() {
         if (extraNav != null) {
             extraNav.getMenu().findItem(R.id.navToRepo).setVisible(true);
+        }
+    }
+
+    protected void selectMenuItem(@IdRes int id) {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(id).setCheckable(true);
+            extraNav.getMenu().findItem(id).setChecked(true);
         }
     }
 
@@ -397,140 +392,18 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
-        if (this instanceof LoginActivity || this instanceof LoginChooserActivity)
-            return; // we really should consider putting this outside as it starts growing :D
-        int themeMode = PrefGetter.getThemeType(getApplicationContext());
-        int themeColor = PrefGetter.getThemeColor(getApplicationContext());
-        if (themeMode == PrefGetter.LIGHT) {
-            switch (themeColor) {
-                case PrefGetter.RED:
-                    setTheme(R.style.ThemeLight_Red);
-                    break;
-                case PrefGetter.PINK:
-                    setTheme(R.style.ThemeLight_Pink);
-                    break;
-                case PrefGetter.PURPLE:
-                    setTheme(R.style.ThemeLight_Purple);
-                    break;
-                case PrefGetter.DEEP_PURPLE:
-                    setTheme(R.style.ThemeLight_DeepPurple);
-                    break;
-                case PrefGetter.INDIGO:
-                    setTheme(R.style.ThemeLight_Indigo);
-                    break;
-                case PrefGetter.BLUE:
-                    setTheme(R.style.ThemeLight);
-                    break;
-                case PrefGetter.LIGHT_BLUE:
-                    setTheme(R.style.ThemeLight_LightBlue);
-                    break;
-                case PrefGetter.CYAN:
-                    setTheme(R.style.ThemeLight_Cyan);
-                    break;
-                case PrefGetter.TEAL:
-                    setTheme(R.style.ThemeLight_Teal);
-                    break;
-                case PrefGetter.GREEN:
-                    setTheme(R.style.ThemeLight_Green);
-                    break;
-                case PrefGetter.LIGHT_GREEN:
-                    setTheme(R.style.ThemeLight_LightGreen);
-                    break;
-                case PrefGetter.LIME:
-                    setTheme(R.style.ThemeLight_Lime);
-                    break;
-                case PrefGetter.YELLOW:
-                    setTheme(R.style.ThemeLight_Yellow);
-                    break;
-                case PrefGetter.AMBER:
-                    setTheme(R.style.ThemeLight_Amber);
-                    break;
-                case PrefGetter.ORANGE:
-                    setTheme(R.style.ThemeLight_Orange);
-                    break;
-                case PrefGetter.DEEP_ORANGE:
-                    setTheme(R.style.ThemeLight_DeepOrange);
-                    break;
-                default:
-                    setTheme(R.style.ThemeLight);
-            }
-        } else if (themeMode == PrefGetter.DARK) {
-            switch (themeColor) {
-                case PrefGetter.RED:
-                    setTheme(R.style.ThemeDark_Red);
-                    break;
-                case PrefGetter.PINK:
-                    setTheme(R.style.ThemeDark_Pink);
-                    break;
-                case PrefGetter.PURPLE:
-                    setTheme(R.style.ThemeDark_Purple);
-                    break;
-                case PrefGetter.DEEP_PURPLE:
-                    setTheme(R.style.ThemeDark_DeepPurple);
-                    break;
-                case PrefGetter.INDIGO:
-                    setTheme(R.style.ThemeDark_Indigo);
-                    break;
-                case PrefGetter.BLUE:
-                    setTheme(R.style.ThemeDark);
-                    break;
-                case PrefGetter.LIGHT_BLUE:
-                    setTheme(R.style.ThemeDark_LightBlue);
-                    break;
-                case PrefGetter.CYAN:
-                    setTheme(R.style.ThemeDark_Cyan);
-                    break;
-                case PrefGetter.TEAL:
-                    setTheme(R.style.ThemeDark_Teal);
-                    break;
-                case PrefGetter.GREEN:
-                    setTheme(R.style.ThemeDark_Green);
-                    break;
-                case PrefGetter.LIGHT_GREEN:
-                    setTheme(R.style.ThemeDark_LightGreen);
-                    break;
-                case PrefGetter.LIME:
-                    setTheme(R.style.ThemeDark_Lime);
-                    break;
-                case PrefGetter.YELLOW:
-                    setTheme(R.style.ThemeDark_Yellow);
-                    break;
-                case PrefGetter.AMBER:
-                    setTheme(R.style.ThemeDark_Amber);
-                    break;
-                case PrefGetter.ORANGE:
-                    setTheme(R.style.ThemeDark_Orange);
-                    break;
-                case PrefGetter.DEEP_ORANGE:
-                    setTheme(R.style.ThemeDark_DeepOrange);
-                    break;
-                default:
-                    setTheme(R.style.ThemeDark);
-            }
-        }
-        setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
-                BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(this)));
+        ThemeEngine.INSTANCE.apply(this);
     }
 
-    protected void setupNavigationView(@Nullable NavigationView extraNav) {
+    protected void setupNavigationView() {
         if (extraNav != null) {
             extraNav.setNavigationItemSelectedListener(this);
-            Login userModel = Login.getUser();
-            if (userModel != null) {
-                View view = extraNav.getHeaderView(0);
-                if (view != null) {
-                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin());
-                    ((TextView) view.findViewById(R.id.username)).setText(userModel.getLogin());
-                    if (!InputHelper.isEmpty(userModel.getName())) {
-                        ((TextView) view.findViewById(R.id.email)).setText(userModel.getName());
-                    } else {
-                        view.findViewById(R.id.email).setVisibility(View.GONE);
-                    }
-                    view.findViewById(R.id.userHolder).setOnClickListener(v -> UserPagerActivity.startActivity(this, userModel.getLogin()));
-
-                }
-            }
         }
+        mainNavDrawer.setupViewDrawer();
+    }
+
+    protected void closeDrawer() {
+        if (drawer != null) drawer.closeDrawer(GravityCompat.START);
     }
 
     private void setupDrawer() {
@@ -544,7 +417,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                                 super.onDrawerOpened(drawerView);
                                 drawerView.postDelayed(() -> {
                                     if (drawer != null) {
-                                        drawer.closeDrawer(GravityCompat.START);
+                                        closeDrawer();
                                         drawer.removeDrawerListener(this);
                                     }
                                 }, 1000);
@@ -576,7 +449,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (backPressTimer + 2000 > System.currentTimeMillis()) {
             return true;
         } else {
-            Toast.makeText(getBaseContext(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.getInstance(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
         }
         backPressTimer = System.currentTimeMillis();
         return false;
@@ -594,5 +467,77 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         if (hadContentDescription) toolbar.setNavigationContentDescription(null);
         return navIcon;
+    }
+
+    protected void onRestartApp() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finishAndRemoveTask();
+    }
+
+    private void showProgress(int resId, boolean cancelable) {
+        String msg = getString(R.string.in_progress);
+        if (resId != 0) {
+            msg = getString(resId);
+        }
+        if (!isProgressShowing && !isFinishing()) {
+            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                    ProgressDialogFragment.TAG);
+            if (fragment == null) {
+                isProgressShowing = true;
+                fragment = ProgressDialogFragment.newInstance(msg, cancelable);
+                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
+            }
+        }
+    }
+
+    /**
+     * not really needed but meh.
+     */
+    private void clearCachedComments() {
+        if (this instanceof IssuePagerActivity || this instanceof CommitPagerActivity ||
+                this instanceof PullRequestPagerActivity || this instanceof GistActivity) {
+            CachedComments.Companion.getInstance().clear();
+        }
+    }
+
+    private boolean validateAuth() {
+        if (!isSecured()) {
+            if (!isLoggedIn()) {
+                onRequireLogin();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void initEnterpriseExtra(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            if (getIntent() != null) {
+                if (getIntent().getExtras() != null) {
+                    getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
+                } else if (getIntent().hasExtra(BundleConstant.IS_ENTERPRISE)) {
+                    getPresenter().setEnterprise(getIntent().getBooleanExtra(BundleConstant.IS_ENTERPRISE, false));
+                }
+            }
+        }
+    }
+
+    private void initPresenterBundle(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            StateSaver.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(presenterStateBundle);
+        }
+    }
+
+    private void showChangelog() {
+        if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
+            new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
+        }
+    }
+
+    private boolean showInAppNotifications() {
+        return FastHubNotification.hasNotifications();
     }
 }
