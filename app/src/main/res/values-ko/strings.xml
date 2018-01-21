@@ -265,7 +265,7 @@
     <string name="no_contributors">기여자 없음</string>
     <string name="no_releases">릴리즈 없음</string>
     <string name="no_events">이벤트 없음</string>
-    <string name="no_pull_requests">아니요 Pull Requests</string>
+    <string name="no_pull_requests">풀 리퀘스트 없음</string>
     <string name="no_search_results">검색 결과 없음</string>
     <string name="read_write_permission_explanation">파일을 보기 위해 FastHub에서 파일을 저장하려면 권한을 허용하세요</string>
     <string name="public_gists">공개 Gist</string>
