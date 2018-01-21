@@ -53,13 +53,13 @@ If you have any questions, feel free to join our public [Slack](http://rebrand.l
 > Please use meaningful commit messages.
 
 - Create a new Branch with the changes you made.
-- Submit your Pull Request with an explanation of what have you done and why (~~if applicable~~).
+- Submit your Pull Request with an explanation of what have you done and why.
 
 > I really appreciate your efforts on contributing to this project.
 
 ## Working with translations
 
-1. Firstly you have to fork the repository by clicking the **Fork** button.
+1. Firstly, you have to fork the repository by clicking the **Fork** button.
 1. Clone your own forked repository to your workstation.
 1. Create and switch branch by typing `git checkout -b <new branch>` where `<new branch>` is the name of the branch you want to work with. We recommend you to name it into the language you want to translate in.
 1. Create a new directory named like `values-<language code>`, where `<language code>` is a 2 letter ISO code of the language. For example `values-es` for Spanish, `values-fr` for French.
