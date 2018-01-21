@@ -1,11 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">FastHub</string>
-    <string name="app_name_full" translatable="false">FastHub for Android</string>
-    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
-    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
-    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
-    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
-    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
     <string name="in_progress">جارِ التحميل، برجاء الإنتظار…</string>
     <string name="action">فعل</string>
     <string name="settings">الإعدادات</string>
@@ -21,31 +14,19 @@
     <string name="share">مشاركة</string>
     <string name="reload">إعادة التحميل</string>
     <string name="feeds">التغذية</string>
-    <string name="gists" translatable="false">Gists</string>
     <string name="profile">الملف الشخصي</string>
     <string name="error">خطأ</string>
     <string name="press_again_to_exit">اضغط مرة أخرى للخروج</string>
-    <string name="readme" translatable="false">Readme</string>
     <string name="opened">مفتوح</string>
     <string name="closed">مُغلق</string>
     <string name="repo_chooser">اختر مستودع</string>
-    <string name="commits" translatable="false">Commits</string>
     <string name="followers">المتابِعين</string>
     <string name="following">المتابَعين</string>
-    <string name="overview">Overview</string>
-    <string name="repos" translatable="false">Repositories</string>
-    <string name="forked" translatable="false">Forked</string>
-    <string name="starred" translatable="false">Starred</string>
+    <string name="overview">نظرة عامة</string>
     <string name="follow">تابع</string>
     <string name="unfollow">ألغِ المتابعة</string>
     <string name="user">المستخدِم</string>
-    <string name="icon_transition" translatable="false">profile_image_transition</string>
-    <string name="title_transition" translatable="false">profile_title_transition</string>
-    <string name="code" translatable="false">Code</string>
-    <string name="issues" translatable="false">Issues</string>
-    <string name="pull_requests" translatable="false">Pull Requests</string>
     <string name="details">التفاصيل</string>
-    <string name="repo" translatable="false">Repository</string>
     <string name="archive_file_detected_error">تم اكتشاف ملف مضغوط, من فضلك قم بتحميله لاكتشاف محتواه.</string>
     <string name="minimum_three_chars">الحد الأدنى للرموز (3)</string>
     <string name="no_file_found">لا توجد ملفات</string>
@@ -56,16 +37,9 @@
     <string name="drafted">حُفِظَ كمسودة</string>
     <string name="releases">الإصدارات</string>
     <string name="no_body">لا يوجد مضمون</string>
-    <string name="download_as_zip" translatable="false">Source code (zip)</string>
-    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">المساهمون</string>
     <string name="contributions">المساهمات</string>
-    <string name="merged" translatable="false">Merged</string>
     <string name="by">بواسطة</string>
-    <string name="star" translatable="false">Star</string>
-    <string name="stars" translatable="false">Stars</string>
-    <string name="fork" translatable="false">Fork</string>
-    <string name="forks" translatable="false">Forks</string>
     <string name="close_issue">إغلاق العلة</string>
     <string name="re_open_issue">إعادة فتح العلة</string>
     <string name="re_open">إعادة الفتح</string>
@@ -78,7 +52,9 @@
     <string name="error_closing_issue">حدث خطأ أثناء محاولة غلق العلة، من فضل أعد المحاولة.</string>
     <string name="error_re_opening_issue">حدث خطأ أثناء محاولة إعادة فتح العلة، من فضل أعد المحاولة.</string>
     <string name="success_closed">تم إغلاق العلة بنجاح</string>
-    <string name="no_description_provided"><p>لم يتم تقديم وصف</p></string>
+    <string name="no_description_provided">
+        <p>لم يتم تقديم وصف</p>
+    </string>
     <string name="header_one">العنوان الأول</string>
     <string name="header_two">العنوان الثاني</string>
     <string name="header_three">العنوان الثالث</string>
@@ -102,10 +78,6 @@
     <string name="delete">حذف</string>
     <string name="comments">التعليقات</string>
     <string name="comment">تعليق</string>
-    <string name="issue" translatable="false">Issue</string>
-    <string name="merge" translatable="false">Merge</string>
-    <string name="pull_request" translatable="false">Pull Request</string>
-    <string name="commit" translatable="false">Commit</string>
     <string name="success_merge">تم الدمج بنجاح</string>
     <string name="file_menu">قائمة الملف</string>
     <string name="files">الملفات</string>
@@ -117,7 +89,6 @@
     <string name="big_file">ملف كبير</string>
     <string name="big_file_description">هذا الملف كبير جدا ولا يمكن فتحه.\nاضغط "حسنا" لتحميله.</string>
     <string name="viewer">مستعرِض</string>
-    <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">اعتمد</string>
     <string name="type_here">اكتب هنا</string>
     <string name="description">الوصف</string>
@@ -132,7 +103,6 @@
     <string name="required_field">حقل مطلوب</string>
     <string name="successfully_submitted">تم الإعتماد بنجاح</string>
     <string name="create_gist">إنشاء مقال</string>
-    <string name="gist" translatable="false">Gist</string>
     <string name="clear">مسح</string>
     <string name="users">مستخدمون</string>
     <string name="title">العنوان</string>
@@ -147,7 +117,6 @@
     <string name="unread_notification">لديك إشعارات غير مقروءة</string>
     <string name="open">افتح</string>
     <string name="notification_type">نوع الإشعار</string>
-    <string name="back_slash" translatable="false">/</string>
     <string name="labels">علامات</string>
     <string name="no_labels">بدون علامات</string>
     <string name="labels_added_successfully">تم إضافة علامات</string>
@@ -172,7 +141,6 @@
     <string name="star_hint">إعطاء نجمة أو إلغائها لمستودع</string>
     <string name="watch">مشاهدة</string>
     <string name="watch_hint">مشاهدة/إلغاء مشاهدة مستودع</string>
-    <string name="fork_repo_hint" translatable="false">Fork repo</string>
     <string name="pin_repo_hint">تثبيت المستودعات لسهولة الولوج إليهم من درج الملاحة.</string>
     <string name="dismiss_all">إلغاء الكل</string>
     <string name="no_url">لم يتم العثور على عنوان</string>
@@ -180,11 +148,10 @@
     <string name="preview">عرض</string>
     <string name="view_code">محسّن عرض الأكواد</string>
     <string name="click_to_toggle_highlighting">تشغيل/تعطيل محسّن عرض الأكواد.
-        \n اسحب أيقونات محرر Markdown لمزيد من الخيارات.</string>
+        \n اسحب أيقونات محرر مارك داون لمزيد من الخيارات.</string>
     <string name="creation_date">وقت الإنشاء</string>
     <string name="creation_date_hint">عندما تم إنشاء الملف</string>
     <string name="last_updated_hint">عندما تم تحديث الملف آخر مرة</string>
-    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
     <string name="mark_all_as_read">تحديد الكل كمقروء</string>
     <string name="all_notifications">كل الإشعارات</string>
     <string name="unread">غير مقروء</string>
@@ -203,23 +170,14 @@
     <string name="committed">تم التسليم</string>
     <string name="downloaded">تم التحميل</string>
     <string name="followed">تمت المتابعة</string>
-    <string name="created_gist" translatable="false">@string/gist</string>
-    <string name="gollum" translatable="false">Wiki</string>
     <string name="commented_on_issue">التعليق على العلة</string>
-    <string name="created_issue" translatable="false">Issue</string>
     <string name="member">عضو</string>
-    <string name="public_event" translatable="false">Open-sourced</string>
     <string name="pr_comment_review">تعليق على طلب السحب</string>
     <string name="pushed">تم الدفع إلى</string>
     <string name="team_event">فريق</string>
     <string name="deleted">تم الحذف</string>
     <string name="unknown">مجهول</string>
     <string name="commented_on_commit">تم التعليق على التسليم</string>
-    <string name="organization_event" translatable="false">Organization</string>
-    <string name="card_event" translatable="false">Card</string>
-    <string name="project_event" translatable="false">Project</string>
-    <string name="pr_review_event" translatable="false">Pull Request</string>
-    <string name="repo_event" translatable="false">Repository</string>
     <string name="switch_branch">تبديل الفرع</string>
     <string name="assignees">التعيينات</string>
     <string name="edit">تحرير</string>
@@ -261,7 +219,6 @@
     <string name="author">المؤلف</string>
     <string name="fork_github">إنشاء فرع في جِتْ هَب</string>
     <string name="send_email">إرسال بريد إلكتروني</string>
-    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
     <string name="question_concerning_fasthub">سؤال حول فاست هَبْ</string>
     <string name="feedback">ملاحظة</string>
     <string name="report_issue">التبليغ عن عِلّة</string>
@@ -280,41 +237,15 @@
     <string name="request_error">حدث خطأ أثناء الاتصال بالخادم، من فضلك أعد المحاولة مرة أخرى</string>
     <string name="marking_as_read">تحديد الإشعارات كمقروء</string>
     <string name="forking_gist">إنشاء تفرع من المقال</string>
-    <string name="forking" formatted="true" translatable="false">Forking %s</string>
-    <string name="starring" formatted="true" translatable="false">Starring %s</string>
-    <string name="un_starring" formatted="true" translatable="false">Unstarring %s</string>
-    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
-    <string name="watching" formatted="true" translatable="false">Watching %s</string>
     <string name="login_using_your_default_browser">تسجيل الدخول عن طريق المتصفح</string>
     <string name="or_character">أو</string>
     <string name="mark_notification_title">تعطيل وضع قراءة الإشعارات</string>
     <string name="mark_notification_summary">تعطيل تحديد الإشعار كمقروء عند النقر عليه.</string>
-    <string name="light_theme_mode" translatable="false">Light Theme</string>
-    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
-    <string name="red_theme_mode" translatable="false">Red</string>
-    <string name="pink_theme_mode" translatable="false">Pink</string>
-    <string name="purple_theme_mode" translatable="false">Purple</string>
-    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
-    <string name="indigo_theme_mode" translatable="false">Indigo</string>
-    <string name="blue_theme_mode" translatable="false">Blue</string>
-    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
-    <string name="cyan_theme_mode" translatable="false">Cyan</string>
-    <string name="teal_theme_mode" translatable="false">Teal</string>
-    <string name="green_theme_mode" translatable="false">Green</string>
-    <string name="light_green_theme_mode" translatable="false">Light Green</string>
-    <string name="lime_theme_mode" translatable="false">Lime</string>
-    <string name="yellow_theme_mode" translatable="false">Yellow</string>
-    <string name="amber_theme_mode" translatable="false">Amber</string>
-    <string name="orange_theme_mode" translatable="false">Orange</string>
-    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
     <string name="theme_title">اختيار السمة</string>
     <string name="theme_summary">اختيار السمة الافتراضية</string>
     <string name="theme_color_summary">اختيار لون السمة</string>
     <string name="theme_color_title">لون السمة</string>
-    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
-    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">الموقع الإلكتروني</string>
-    <string name="twitter" translatable="false">Twitter</string>
     <string name="support_development">دعم التطوير</string>
     <string name="success_purchase_message">شكرا لك من أعماق قلبي!</string>
     <string name="change_theme_warning">إذا لم تعمل السمة، فالرجاء إيقاف التطبيق بالقوة.</string>
@@ -349,7 +280,6 @@
     <string name="my_gists">مقالاتي</string>
     <string name="changelog">سجل التغييرات</string>
     <string name="notifications_hint">اضغط لفتح قائمة الإشعارات أو اسحب لتجاهلها</string>
-    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
     <string name="home_long_click_hint">الضغط المطول من أي مكان للانتقال للصفحة الرئيسية</string>
     <string name="created">تم الإنشاء</string>
     <string name="assigned">تم التعيين</string>
@@ -455,8 +385,5 @@
     <string name="divider">فاصل</string>
     <string name="no_user_found">لا يوجد مستخدمون</string>
     <string name="no_trending">لا يوجد شائع</string>
-    <string name="daily" translatable="false">Daily</string>
-    <string name="weekly" translatable="false">Weekly</string>
-    <string name="monthly" translatable="false">Monthly</string>
     <string name="filter">مرشح</string>
-</resources>  
+</resources>
