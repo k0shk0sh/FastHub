@@ -14,11 +14,23 @@ public interface UserPagerMvp {
 
     interface View extends BaseMvp.FAView, ProfilePagerMvp.View, RepoPagerMvp.TabsBadgeListener {
         void onInitOrg(boolean isMember);
+
+        void onUserBlocked();
+
+        void onInvalidateMenu();
+
+        void onUserUnBlocked();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
+        void onCheckBlocking(@NonNull String login);
+
         void checkOrgMembership(@NonNull String org);
+
+        void onBlockUser(@NonNull String login);
+
+        void onUnblockUser(@NonNull String login);
     }
 
 }

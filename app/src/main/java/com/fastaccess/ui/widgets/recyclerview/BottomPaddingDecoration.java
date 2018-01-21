@@ -35,7 +35,14 @@ class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         int dataSize = state.getItemCount();
         int position = parent.getChildAdapterPosition(view);
-        if (parent.getLayoutManager() instanceof LinearLayoutManager) {
+        if (parent.getLayoutManager() instanceof GridLayoutManager) {
+            GridLayoutManager grid = (GridLayoutManager) parent.getLayoutManager();
+            if ((dataSize - position) <= grid.getSpanCount()) {
+                outRect.set(0, 0, 0, bottomPadding);
+            } else {
+                outRect.set(0, 0, 0, 0);
+            }
+        } else if (parent.getLayoutManager() instanceof LinearLayoutManager) {
             if (dataSize > 0 && position == dataSize - 1) {
                 outRect.set(0, 0, 0, bottomPadding);
             } else {
@@ -43,13 +50,6 @@ class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
             }
         } else if (parent.getLayoutManager() instanceof StaggeredGridLayoutManager) {
             StaggeredGridLayoutManager grid = (StaggeredGridLayoutManager) parent.getLayoutManager();
-            if ((dataSize - position) <= grid.getSpanCount()) {
-                outRect.set(0, 0, 0, bottomPadding);
-            } else {
-                outRect.set(0, 0, 0, 0);
-            }
-        } else if (parent.getLayoutManager() instanceof GridLayoutManager) {
-            GridLayoutManager grid = (GridLayoutManager) parent.getLayoutManager();
             if ((dataSize - position) <= grid.getSpanCount()) {
                 outRect.set(0, 0, 0, bottomPadding);
             } else {

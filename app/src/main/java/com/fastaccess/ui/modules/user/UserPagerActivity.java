@@ -25,6 +25,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
@@ -117,8 +118,12 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                 login = getIntent().getExtras().getString(BundleConstant.EXTRA);
                 isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
                 index = getIntent().getExtras().getInt(BundleConstant.EXTRA_TWO, -1);
-                if (!InputHelper.isEmpty(login) && isOrg) {
-                    getPresenter().checkOrgMembership(login);
+                if (!InputHelper.isEmpty(login)) {
+                    if (isOrg) {
+                        getPresenter().checkOrgMembership(login);
+                    } else {
+                        if (!Login.getUser().getLogin().equalsIgnoreCase(login)) getPresenter().onCheckBlocking(login);
+                    }
                 }
             } else {
                 Login user = Login.getUser();
@@ -208,6 +213,21 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         setTaskName(login);
     }
 
+    @Override public void onUserBlocked() {
+        showMessage(R.string.success, R.string.user_blocked);
+        onInvalidateMenu();
+    }
+
+    @Override public void onInvalidateMenu() {
+        hideProgress();
+        supportInvalidateOptionsMenu();
+    }
+
+    @Override public void onUserUnBlocked() {
+        showMessage(R.string.success, R.string.user_unblocked);
+        onInvalidateMenu();
+    }
+
     @Override public void onCheckType(boolean isOrg) {
         if (!this.isOrg == isOrg) {
             startActivity(this, login, isOrg, isEnterprise(), index);
@@ -253,20 +273,25 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                     .appendPath(login)
                     .toString());
             return true;
+        } else if (item.getItemId() == R.id.block && !InputHelper.isEmpty(login)) {
+            getPresenter().onBlockUser(login);
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
-//        final int blockId = 10110;
-//        MenuItem blockItem;
-//        if (menu.findItem(blockId) == null) {
-//            blockItem = menu.add(0, blockId, 0, getString(R.string.block));
-//        } else {
-//            blockItem = menu.findItem(blockId);
-//        }
-//        blockItem.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_block))
-//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        Logger.e(getPresenter().isUserBlockedRequested(), getPresenter().isUserBlocked());
+        if (getPresenter().isUserBlockedRequested()) {
+            Login login = Login.getUser();
+            if (login != null && !isOrg) {
+                String username = login.getLogin();
+                if (!username.equalsIgnoreCase(this.login)) {
+                    menu.findItem(R.id.block)
+                            .setIcon(getPresenter().isUserBlocked() ? R.drawable.ic_unlock : R.drawable.ic_lock)
+                            .setVisible(true);
+                }
+            }
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
