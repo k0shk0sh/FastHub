@@ -27,7 +27,7 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder implemen
         return LayoutInflater.from(parent.getContext()).inflate(layoutRes, parent, false);
     }
 
-    public BaseViewHolder(@NonNull View itemView) {
+    protected BaseViewHolder(@NonNull View itemView) {
         this(itemView, null);
     }
 
@@ -57,5 +57,7 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder implemen
     }
 
     public abstract void bind(@NonNull T t);
+
+    protected void onViewIsDetaching() {}
 
 }

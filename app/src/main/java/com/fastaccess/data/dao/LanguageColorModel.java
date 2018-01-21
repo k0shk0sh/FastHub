@@ -12,8 +12,8 @@ import lombok.ToString;
  */
 
 @Getter @Setter @ToString public class LanguageColorModel implements Parcelable {
-    private String color;
-    private String url;
+    public String color;
+    public String url;
 
     @Override public int describeContents() { return 0; }
 
@@ -24,7 +24,7 @@ import lombok.ToString;
 
     public LanguageColorModel() {}
 
-    protected LanguageColorModel(Parcel in) {
+    private LanguageColorModel(Parcel in) {
         this.color = in.readString();
         this.url = in.readString();
     }

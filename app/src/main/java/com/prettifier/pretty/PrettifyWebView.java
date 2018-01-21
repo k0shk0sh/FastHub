@@ -32,9 +32,12 @@ import com.prettifier.pretty.helper.PrettifyHelper;
 public class PrettifyWebView extends NestedWebView {
     private OnContentChangedListener onContentChangedListener;
     private boolean interceptTouch;
+    private boolean enableNestedScrolling;
 
     public interface OnContentChangedListener {
         void onContentChanged(int progress);
+
+        void onScrollChanged(boolean reachedTop, int scroll);
     }
 
     public PrettifyWebView(Context context) {
@@ -53,7 +56,7 @@ public class PrettifyWebView extends NestedWebView {
         initView(attrs);
     }
 
-    @Override public boolean onInterceptTouchEvent(MotionEvent p_event) {
+    @Override public boolean onInterceptTouchEvent(MotionEvent p) {
         return true;
     }
 
@@ -85,7 +88,7 @@ public class PrettifyWebView extends NestedWebView {
         settings.setJavaScriptEnabled(true);
         settings.setAppCachePath(getContext().getCacheDir().getPath());
         settings.setAppCacheEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setDefaultTextEncodingName("utf-8");
         settings.setLoadsImagesAutomatically(true);
         settings.setBlockNetworkImage(false);
@@ -99,6 +102,18 @@ public class PrettifyWebView extends NestedWebView {
         });
     }
 
+    @Override protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (onContentChangedListener != null) {
+            onContentChangedListener.onScrollChanged(t == 0, t);
+        }
+    }
+
+    @Override protected void onDetachedFromWindow() {
+        onContentChangedListener = null;
+        super.onDetachedFromWindow();
+    }
+
     private boolean hitLinkResult(WebView.HitTestResult result) {
         return result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE || result.getType() == HitTestResult.IMAGE_TYPE ||
                 result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE;
@@ -108,65 +123,99 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source, boolean wrap, @Nullable String url) {
-        WebSettings settings = getSettings();
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        settings.setSupportZoom(!wrap);
-        settings.setBuiltInZoomControls(!wrap);
-        if (!wrap) settings.setDisplayZoomControls(false);
+    public void setThemeSource(@NonNull String source, @Nullable String theme) {
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
-            post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
-            int lineNo = getLineNo(url);
-            if (lineNo != 0) {
-                setOnContentChangedListener(progress -> {
-                    Logger.e(progress);
-                    if (progress == 100) {
-                        if (isAttachedToWindow()) loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
-                    }
-                });
-            }
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(true);
+            settings.setBuiltInZoomControls(true);
+            settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, theme);
+            loadCode(page);
         }
     }
 
-    private int getLineNo(@Nullable String url) {
-        int lineNo = 0;
+    public void setSource(@NonNull String source, boolean wrap) {
+        if (!InputHelper.isEmpty(source)) {
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(!wrap);
+            settings.setBuiltInZoomControls(!wrap);
+            if (!wrap) settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
+            loadCode(page);
+        }
+    }
+
+    private void loadCode(String page) {
+        post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
+    }
+
+    public void scrollToLine(@NonNull String url) {
+        String[] lineNo = getLineNo(url);
+        if (lineNo != null && lineNo.length > 1) {
+            loadUrl("javascript:scrollToLineNumber('" + lineNo[0] + "', '" + lineNo[1] + "')");
+        } else if (lineNo != null) {
+            loadUrl("javascript:scrollToLineNumber('" + lineNo[0] + "', '0')");
+        }
+    }
+
+    public static String[] getLineNo(@Nullable String url) {
+        String lineNo[] = null;
         if (url != null) {
             try {
                 Uri uri = Uri.parse(url);
                 String lineNumber = uri.getEncodedFragment();
-                Logger.e(lineNumber);
                 if (lineNumber != null) {
-                    String[] toSplit = lineNumber.split("-");
-                    if (toSplit.length > 1) {
-                        lineNumber = toSplit[toSplit.length - 1];
-                    }
-                    Logger.e(lineNumber);
-                    lineNumber = lineNumber.replace("L", "");
-                    lineNo = Integer.valueOf(lineNumber);
-                    Logger.e(lineNo);
+                    lineNo = lineNumber.replaceAll("L", "").split("-");
                 }
             } catch (Exception ignored) {}
         }
         return lineNo;
     }
 
-    public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
-        addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
-        String page = GithubHelper.generateContent(source, baseUrl, AppHelper.isNightMode(getResources()));
+    public void setGithubContentWithReplace(@NonNull String source, @Nullable String baseUrl, boolean replace) {
+        setGithubContent(source, baseUrl, false);
+        addJavascriptInterface(new MarkDownInterceptorInterface(this, false), "Android");
+        String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()), false, replace);
         post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }
 
-    public void loadImage(@NonNull String url) {
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling) {
+        setGithubContent(source, baseUrl, toggleNestScrolling, true);
+    }
+
+    public void setWikiContent(@NonNull String source, @Nullable String baseUrl) {
+        addJavascriptInterface(new MarkDownInterceptorInterface(this, true), "Android");
+        String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()), AppHelper.isNightMode
+                (getResources()), true);
+        post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
+    }
+
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling, boolean enableBridge) {
+        if (enableBridge) addJavascriptInterface(new MarkDownInterceptorInterface(this, toggleNestScrolling), "Android");
+        String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()),
+                AppHelper.isNightMode(getResources()), false);
+        post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
+    }
+
+    public void loadImage(@NonNull String url, boolean isSvg) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
-        String html = "<html><head><style>img{display: inline; height: auto; max-width: 100%;}</style></head><body><img src=\"" + url +
-                "\"/></body></html>";
+        String html;
+        if (isSvg) {
+            html = url;
+        } else {
+            html = "<html><head><style>img{display: inline; height: auto; max-width: 100%;}</style></head><body>" +
+                    "<img src=\"" + url + "\"/></body></html>";
+        }
+        Logger.e(html);
         loadData(html, "text/html", null);
     }
 
@@ -174,9 +223,15 @@ public class PrettifyWebView extends NestedWebView {
         this.interceptTouch = interceptTouch;
     }
 
+    public void setEnableNestedScrolling(boolean enableNestedScrolling) {
+        if (this.enableNestedScrolling != enableNestedScrolling) {
+            setNestedScrollingEnabled(enableNestedScrolling);
+            this.enableNestedScrolling = enableNestedScrolling;
+        }
+    }
+
     private void startActivity(@Nullable Uri url) {
         if (url == null) return;
-        Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerActivity.startActivity(getContext(), url.toString(), url.toString());
         } else {
@@ -209,6 +264,6 @@ public class PrettifyWebView extends NestedWebView {
             startActivity(Uri.parse(url));
             return true;
         }
-    }
 
+    }
 }

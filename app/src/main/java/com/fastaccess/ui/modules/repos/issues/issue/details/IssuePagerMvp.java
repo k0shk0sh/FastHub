@@ -10,11 +10,11 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:21 AM
@@ -23,14 +23,13 @@ import java.util.List;
 public interface IssuePagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
-            AssigneesMvp.SelectedAssigneesListener {
-        void onSetupIssue();
+            AssigneesMvp.SelectedAssigneesListener, IssuePrCallback<Issue>,
+            CommentEditorFragment.CommentListener {
+        void onSetupIssue(boolean isUpdate);
 
         void showSuccessIssueActionMsg(boolean isClose);
 
         void showErrorIssueActionMsg(boolean isClose);
-
-        void onLabelsRetrieved(@NonNull List<LabelModel> items);
 
         void onUpdateTimeline();
 
@@ -65,8 +64,6 @@ public interface IssuePagerMvp {
 
         void onLockUnlockIssue();
 
-        void onLoadLabels();
-
         void onPutMilestones(@NonNull MilestoneModel milestone);
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
@@ -80,6 +77,11 @@ public interface IssuePagerMvp {
         void onUpdateIssue(@NonNull Issue issueModel);
 
         void onSubscribeOrMute(boolean mute);
+
+        void onPinUnpinIssue();
     }
 
+    interface IssuePrCallback<T> {
+        @Nullable T getData();
+    }
 }

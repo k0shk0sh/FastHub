@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by Kosh on 08 Dec 2016, 8:20 PM
  */
-class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp.Presenter {
+public class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp.Presenter {
     private ArrayList<SearchHistory> hints = new ArrayList<>();
 
     @Override protected void onAttachView(@NonNull SearchMvp.View view) {
@@ -41,7 +41,7 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
     }
 
     @Override public void onSearchClicked(@NonNull ViewPager viewPager, @NonNull AutoCompleteTextView editText) {
-        boolean isEmpty = InputHelper.isEmpty(editText) || InputHelper.toString(editText).length() < 3;
+        boolean isEmpty = InputHelper.isEmpty(editText) || InputHelper.toString(editText).length() < 2;
         editText.setError(isEmpty ? editText.getResources().getString(R.string.minimum_three_chars) : null);
         if (!isEmpty) {
             editText.dismissDropDown();

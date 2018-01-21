@@ -1,30 +1,40 @@
 package com.fastaccess.ui.adapter.viewholder;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
+import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
+
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -49,17 +59,31 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.commentOptions) View commentOptions;
     @BindView(R.id.toggleHolder) View toggleHolder;
     @BindView(R.id.emojiesList) View emojiesList;
-    @BindView(R.id.reactionsText) TextView reactionsText;
+    @BindView(R.id.owner) TextView owner;
+    @BindView(R.id.labels) TextView labels;
+    @BindView(R.id.labelsHolder) View labelsHolder;
+    @BindView(R.id.reactionsList) View reactionsList;
+    @BindView(R.id.thumbsUpReaction) FontTextView thumbsUpReaction;
+    @BindView(R.id.thumbsDownReaction) FontTextView thumbsDownReaction;
+    @BindView(R.id.laughReaction) FontTextView laughReaction;
+    @BindView(R.id.hurrayReaction) FontTextView hurrayReaction;
+    @BindView(R.id.sadReaction) FontTextView sadReaction;
+    @BindView(R.id.heartReaction) FontTextView heartReaction;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
     private ViewGroup viewGroup;
+    private String repoOwner;
+    private String poster;
 
     private IssueDetailsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                   @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                   @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                   String repoOwner, String poster) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
         this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
@@ -77,12 +101,25 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         hooray.setOnLongClickListener(this);
         heart.setOnLongClickListener(this);
         heart.setOnClickListener(this);
+        laughReaction.setOnClickListener(this);
+        sadReaction.setOnClickListener(this);
+        thumbsDownReaction.setOnClickListener(this);
+        thumbsUpReaction.setOnClickListener(this);
+        hurrayReaction.setOnClickListener(this);
+        heartReaction.setOnClickListener(this);
+        laughReaction.setOnLongClickListener(this);
+        sadReaction.setOnLongClickListener(this);
+        thumbsDownReaction.setOnLongClickListener(this);
+        thumbsUpReaction.setOnLongClickListener(this);
+        hurrayReaction.setOnLongClickListener(this);
+        heartReaction.setOnLongClickListener(this);
     }
 
     public static IssueDetailsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                                     @NonNull String repoOwner, @NonNull String poster) {
         return new IssueDetailsViewHolder(getView(viewGroup, R.layout.issue_detail_header_row_item), viewGroup,
-                adapter, onToggleView, reactionsCallback);
+                adapter, onToggleView, reactionsCallback, repoOwner, poster);
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {
@@ -110,7 +147,6 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     private void addReactionCount(View v) {
         if (adapter != null) {
             TimelineModel timelineModel = (TimelineModel) adapter.getItem(getAdapterPosition());
-            Logger.e(timelineModel);
             if (timelineModel == null) return;
             ReactionsModel reactionsModel = null;
             PullRequest pullRequest = timelineModel.getPullRequest();
@@ -128,21 +164,27 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
             boolean isCallingApi = reactionsCallback != null && reactionsCallback.isCallingApi(number, v.getId());
             switch (v.getId()) {
                 case R.id.heart:
+                case R.id.heartReaction:
                     reactionsModel.setHeart(!isReacted ? reactionsModel.getHeart() + 1 : reactionsModel.getHeart() - 1);
                     break;
                 case R.id.sad:
+                case R.id.sadReaction:
                     reactionsModel.setConfused(!isReacted ? reactionsModel.getConfused() + 1 : reactionsModel.getConfused() - 1);
                     break;
                 case R.id.thumbsDown:
+                case R.id.thumbsDownReaction:
                     reactionsModel.setMinusOne(!isReacted ? reactionsModel.getMinusOne() + 1 : reactionsModel.getMinusOne() - 1);
                     break;
                 case R.id.thumbsUp:
+                case R.id.thumbsUpReaction:
                     reactionsModel.setPlusOne(!isReacted ? reactionsModel.getPlusOne() + 1 : reactionsModel.getPlusOne() - 1);
                     break;
                 case R.id.laugh:
+                case R.id.laughReaction:
                     reactionsModel.setLaugh(!isReacted ? reactionsModel.getLaugh() + 1 : reactionsModel.getLaugh() - 1);
                     break;
                 case R.id.hurray:
+                case R.id.hurrayReaction:
                     reactionsModel.setHooray(!isReacted ? reactionsModel.getHooray() + 1 : reactionsModel.getHooray() - 1);
                     break;
             }
@@ -159,102 +201,60 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     private void bind(@NonNull Issue issueModel) {
-        avatar.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
-        name.setText(issueModel.getUser().getLogin());
-        date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));
-        if (!InputHelper.isEmpty(issueModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, issueModel.getBodyHtml());
-        } else {
-            comment.setText(R.string.no_description_provided);
-        }
-        if (issueModel.getReactions() != null) {
-            appendEmojies(issueModel.getReactions());
-        }
+        setup(issueModel.getUser(), issueModel.getBodyHtml(), issueModel.getReactions());
+        setupDate(issueModel.getCreatedAt(), issueModel.getUpdatedAt());
+        setupLabels(issueModel.getLabels());
     }
 
     private void bind(@NonNull PullRequest pullRequest) {
-        avatar.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
-        name.setText(pullRequest.getUser().getLogin());
-        date.setText(ParseDateFormat.getTimeAgo(pullRequest.getCreatedAt()));
-        if (!InputHelper.isEmpty(pullRequest.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, pullRequest.getBodyHtml());
+        setup(pullRequest.getUser(), pullRequest.getBodyHtml(), pullRequest.getReactions());
+        setupDate(pullRequest.getCreatedAt(), pullRequest.getUpdatedAt());
+        setupLabels(pullRequest.getLabels());
+    }
+
+    private void setup(User user, String description, ReactionsModel reactionsModel) {
+        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType(), LinkParserHelper.isEnterprise(user.getHtmlUrl()));
+        name.setText(user.getLogin());
+        boolean isOwner = TextUtils.equals(repoOwner, user.getLogin());
+        if (isOwner) {
+            owner.setVisibility(View.VISIBLE);
+            owner.setText(R.string.owner);
+        } else {
+            owner.setText(null);
+            owner.setVisibility(View.GONE);
+        }
+        if (reactionsModel != null) {
+            appendEmojies(reactionsModel);
+        }
+        if (!InputHelper.isEmpty(description)) {
+            HtmlHelper.htmlIntoTextView(comment, description, viewGroup.getWidth() - ViewHelper.dpToPx(itemView.getContext(), 24));
         } else {
             comment.setText(R.string.no_description_provided);
         }
-        if (pullRequest.getReactions() != null) {
-            appendEmojies(pullRequest.getReactions());
+    }
+
+    private void setupDate(@NonNull Date createdDate, @NonNull Date updated) {
+        date.setText(ParseDateFormat.getTimeAgo(createdDate));
+    }
+
+    private void setupLabels(@Nullable List<LabelModel> labelList) {
+        if (labelList != null && !labelList.isEmpty()) {
+            SpannableBuilder builder = SpannableBuilder.builder();
+            for (LabelModel labelModel : labelList) {
+                int color = Color.parseColor("#" + labelModel.getColor());
+                builder.append(" ").append(" " + labelModel.getName() + " ", new LabelSpan(color));
+            }
+            labels.setText(builder);
+            labelsHolder.setVisibility(View.VISIBLE);
+        } else {
+            labels.setText("");
+            labelsHolder.setVisibility(View.GONE);
         }
     }
 
-    private void appendEmojies(@NonNull ReactionsModel reaction) {
-        SpannableBuilder spannableBuilder = SpannableBuilder.builder();
-        reactionsText.setText("");
-        thumbsUp.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getThumbsUp()).append(" ")
-                .append(String.valueOf(reaction.getPlusOne()))
-                .append("   "));
-        thumbsDown.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getThumbsDown()).append(" ")
-                .append(String.valueOf(reaction.getMinusOne()))
-                .append("   "));
-        hooray.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getHooray()).append(" ")
-                .append(String.valueOf(reaction.getHooray()))
-                .append("   "));
-        sad.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getSad()).append(" ")
-                .append(String.valueOf(reaction.getConfused()))
-                .append("   "));
-        laugh.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getLaugh()).append(" ")
-                .append(String.valueOf(reaction.getLaugh()))
-                .append("   "));
-        heart.setText(SpannableBuilder.builder()
-                .append(CommentsHelper.getHeart()).append(" ")
-                .append(String.valueOf(reaction.getHeart())));
-        if (reaction.getPlusOne() > 0) {
-            spannableBuilder.append(CommentsHelper.getThumbsUp())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getPlusOne()))
-                    .append("   ");
-        }
-        if (reaction.getMinusOne() > 0) {
-            spannableBuilder.append(CommentsHelper.getThumbsDown())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getMinusOne()))
-                    .append("   ");
-        }
-        if (reaction.getLaugh() > 0) {
-            spannableBuilder.append(CommentsHelper.getLaugh())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getLaugh()))
-                    .append("   ");
-        }
-        if (reaction.getHooray() > 0) {
-            spannableBuilder.append(CommentsHelper.getHooray())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getHooray()))
-                    .append("   ");
-        }
-        if (reaction.getConfused() > 0) {
-            spannableBuilder.append(CommentsHelper.getSad())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getConfused()))
-                    .append("   ");
-        }
-        if (reaction.getHeart() > 0) {
-            spannableBuilder.append(CommentsHelper.getHeart())
-                    .append(" ")
-                    .append(String.valueOf(reaction.getHeart()));
-        }
-        if (spannableBuilder.length() > 0) {
-            reactionsText.setText(spannableBuilder);
-            if (!onToggleView.isCollapsed(getAdapterPosition())) {
-                reactionsText.setVisibility(View.VISIBLE);
-            }
-        } else {
-            reactionsText.setVisibility(View.GONE);
-        }
+    private void appendEmojies(ReactionsModel reaction) {
+        CommentsHelper.appendEmojies(reaction, thumbsUp, thumbsUpReaction, thumbsDown, thumbsDownReaction, hooray, hurrayReaction, sad,
+                sadReaction, laugh, laughReaction, heart, heartReaction, reactionsList);
     }
 
     private void onToggle(boolean expanded, boolean animate) {
@@ -263,8 +263,14 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         }
         toggle.setRotation(!expanded ? 0.0F : 180F);
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
-        if (!InputHelper.isEmpty(reactionsText)) {
-            reactionsText.setVisibility(!expanded ? View.VISIBLE : View.GONE);
+        reactionsList.setVisibility(expanded ? View.GONE : reactionsList.getTag() == null || (!((Boolean) reactionsList.getTag()))
+                                                           ? View.GONE : View.VISIBLE);
+    }
+
+    @Override protected void onViewIsDetaching() {
+        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
+        if (drawableGetter != null) {
+            drawableGetter.clear(drawableGetter);
         }
     }
 }

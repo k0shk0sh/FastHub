@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 
 /**
  * Created by Kosh on 04 Dec 2016, 1:11 PM
@@ -11,7 +12,7 @@ import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 
 public interface UserPagerMvp {
 
-    interface View extends BaseMvp.FAView, ProfilePagerMvp.View {
+    interface View extends BaseMvp.FAView, ProfilePagerMvp.View, RepoPagerMvp.TabsBadgeListener {
         void onInitOrg(boolean isMember);
     }
 

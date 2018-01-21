@@ -66,11 +66,25 @@
         android:layout_height="@dimen/divider_height"
         android:background="?dividerColor"/>
 
-    <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-        android:id="@+id/languageList"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:scrollbars="vertical"
-        app:layoutManager="@string/linear_layout_manager"/>
+        android:layout_height="match_parent">
+
+        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/languageList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="@string/linear_layout_manager"/>
+
+        <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+            android:id="@+id/fastScroller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/recycler"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/recycler"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
 </LinearLayout>

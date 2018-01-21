@@ -23,7 +23,6 @@
             android:id="@+id/orgs"
             android:icon="@drawable/ic_people"
             android:title="@string/organizations"/>
-
         <item
             android:id="@+id/notifications"
             android:icon="@drawable/ic_ring"
@@ -53,21 +52,27 @@
         android:id="@+id/group_three"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/supportDev"
-            android:icon="@drawable/ic_heart"
-            android:title="@string/support_development"/>
+            android:id="@+id/reportBug"
+            android:icon="@drawable/ic_bug"
+            android:title="@string/report_issue"/>
+        <item
+            android:id="@+id/faq"
+            android:icon="@drawable/ic_info"
+            android:title="@string/faq"/>
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings"/>
+
+        <item
+            android:id="@+id/restorePurchase"
+            android:icon="@drawable/ic_money"
+            android:title="@string/restore_purchases"/>
+
         <item
             android:id="@+id/about"
             android:icon="@drawable/ic_info"
             android:title="@string/about"/>
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/ic_logout"
-            android:title="@string/logout"/>
     </group>
 
 </menu>

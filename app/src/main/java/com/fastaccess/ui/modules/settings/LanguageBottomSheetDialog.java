@@ -10,19 +10,18 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.helper.PrefHelper;
+import com.fastaccess.data.dao.AppLanguageModel;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
-import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontTextView;
 
-import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
+import io.reactivex.functions.Action;
 
 /**
  * Created by JediB on 5/12/2017.
@@ -30,28 +29,20 @@ import static android.app.Activity.RESULT_OK;
 
 public class LanguageBottomSheetDialog extends BaseBottomSheetDialog {
     public interface LanguageDialogListener {
-        void onDismissed();
+        void onLanguageChanged(Action action);
     }
 
     public static final String TAG = LanguageBottomSheetDialog.class.getSimpleName();
 
-    private String names[];
-    private String values[];
-
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.picker) RadioGroup radioGroup;
-    @BindView(R.id.cancel) FontButton cancel;
-    @BindView(R.id.ok) FontButton ok;
-    private SlackBottomSheetDialog.SlackDialogListener listener;
+    private LanguageDialogListener listener;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof SlackBottomSheetDialog.SlackDialogListener) {
-            listener = (SlackBottomSheetDialog.SlackDialogListener) context;
+        if (context instanceof LanguageDialogListener) {
+            listener = (LanguageDialogListener) context;
         }
-
-        names = context.getResources().getStringArray(R.array.languages_array);
-        values = context.getResources().getStringArray(R.array.languages_array_values);
     }
 
     @Override public void onDetach() {
@@ -63,54 +54,36 @@ public class LanguageBottomSheetDialog extends BaseBottomSheetDialog {
         return R.layout.picker_dialog;
     }
 
-    @OnClick({R.id.cancel, R.id.ok}) public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.cancel:
-                getActivity().setResult(RESULT_CANCELED);
-        }
-        if (listener != null) listener.onDismissed();
-        dismiss();
-    }
-
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int selected = Arrays.asList(values).indexOf(PrefHelper.getString("app_language"));
-        String language = PrefHelper.getString("app_language");
-        cancel.setText(R.string.cancel);
-        ok.setText(R.string.ok);
-
-        for (int i = 0; i < names.length; i++) {
+        String language = PrefGetter.getAppLanguage();
+        String[] values = getResources().getStringArray(R.array.languages_array_values);
+        List<AppLanguageModel> languageModels = Stream.of(getResources().getStringArray(R.array.languages_array))
+                .mapIndexed((index, s) -> new AppLanguageModel(values[index], s))
+                .sortBy(AppLanguageModel::getLabel)
+                .toList();
+        int padding = getResources().getDimensionPixelSize(R.dimen.spacing_xs_large);
+        for (int i = 0; i < languageModels.size(); i++) {
             RadioButton radioButtonView = new RadioButton(getContext());
             RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             radioButtonView.setLayoutParams(params);
-            radioButtonView.setText(names[i]);
+            AppLanguageModel model = languageModels.get(i);
+            radioButtonView.setText(model.getLabel());
             radioButtonView.setId(i);
+            radioButtonView.setTag(model.getValue());
             radioButtonView.setGravity(Gravity.CENTER_VERTICAL);
-            radioButtonView.setPadding((int) getResources().getDimension(R.dimen.spacing_xs_large), (int) getResources().getDimension(R.dimen
-                            .spacing_xs_large),
-                    (int) getResources().getDimension(R.dimen.spacing_xs_large), (int) getResources().getDimension(R.dimen.spacing_xs_large));
+            radioButtonView.setPadding(padding, padding, padding, padding);
             radioGroup.addView(radioButtonView);
-            if (i == selected)
-                radioGroup.check(i);
+            if (model.getValue().equalsIgnoreCase(language)) radioGroup.check(i);
         }
-
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int index = radioGroup.indexOfChild(radioGroup.findViewById(radioGroup.getCheckedRadioButtonId()));
-
-            PrefHelper.set("app_language", values[index]);
-            if (language != values[index])
-                getActivity().setResult(RESULT_OK);
+            String tag = (String) radioGroup.getChildAt(checkedId).getTag();
+            Logger.e(tag);
+            if (!tag.equalsIgnoreCase(language)) {
+                PrefGetter.setAppLangauge(tag);
+                if (listener != null) listener.onLanguageChanged(this::dismiss);
+            }
         });
 
-    }
-
-    @Override protected void onHidden() {
-        if (listener != null) listener.onDismissed();
-        super.onHidden();
-    }
-
-    @Override protected void onDismissedByScrolling() {
-        if (listener != null) listener.onDismissed();
-        super.onDismissedByScrolling();
     }
 }

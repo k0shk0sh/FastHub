@@ -23,7 +23,7 @@ import lombok.Setter;
 
     public SlackResponseModel() {}
 
-    protected SlackResponseModel(Parcel in) {
+    private SlackResponseModel(Parcel in) {
         this.ok = in.readByte() != 0;
         this.error = in.readString();
     }

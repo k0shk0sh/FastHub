@@ -10,6 +10,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.ViewPagerView;
@@ -64,4 +65,6 @@ public class ProfilePagerFragment extends BaseFragment<ProfilePagerMvp.View, Pro
     @Override public void onNavigateToFollowing() {
         pager.setCurrentItem(5);
     }
+
+    @Override public void onCheckType(boolean isOrg) {}
 }

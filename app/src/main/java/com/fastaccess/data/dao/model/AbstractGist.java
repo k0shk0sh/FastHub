@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.LongStream;
 import com.annimon.stream.Stream;
 import com.fastaccess.App;
@@ -12,7 +13,6 @@ import com.fastaccess.data.dao.GithubFileModel;
 import com.fastaccess.data.dao.converters.GitHubFilesConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.ObjectsCompat;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -20,22 +20,27 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
+
+import static com.fastaccess.data.dao.model.Gist.ID;
+import static com.fastaccess.data.dao.model.Gist.OWNER_NAME;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:32 PM
  */
 
-@Entity @NoArgsConstructor public abstract class AbstractGist implements Parcelable {
+@Entity() @NoArgsConstructor public abstract class AbstractGist implements Parcelable {
     @SerializedName("nooope") @Key long id;
     String url;
     String forksUrl;
@@ -56,34 +61,39 @@ import lombok.NoArgsConstructor;
     @Column(name = "user_column") @Convert(UserConverter.class) User user;
     @Convert(UserConverter.class) User owner;
 
-    public Single<Gist> save(Gist entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
-    }
-
-    public static Observable<Gist> save(@NonNull List<Gist> gists) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
-                .where(Gist.OWNER_NAME.isNull())
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(gists))
-                .flatMap(gist -> gist.save(gist).toObservable()));
-    }
-
-    public static Observable<Gist> save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
-                .where(Gist.OWNER_NAME.equal(ownerName))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(gists))
-                .filter(ObjectsCompat::nonNull)
-                .flatMap(gist -> {
-                    gist.setOwnerName(ownerName);
-                    return gist.save(gist).toObservable();
-                }));
+    public static Disposable save(@NonNull List<Gist> models, @NonNull String ownerName) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                Login login = Login.getUser();
+                if (login != null) {
+                    if (login.getLogin().equalsIgnoreCase(ownerName)) {
+                        BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                        dataSource.delete(Gist.class)
+                                .where(Gist.OWNER_NAME.equal(ownerName))
+                                .get()
+                                .value();
+                        if (!models.isEmpty()) {
+                            for (Gist gistModel : models) {
+                                dataSource.delete(Gist.class).where(ID.eq(gistModel.getId())).get().value();
+                                gistModel.setOwnerName(ownerName);
+                                dataSource.insert(gistModel);
+                            }
+                        }
+                    } else {
+                        App.getInstance().getDataStore().toBlocking()
+                                .delete(Gist.class)
+                                .where(Gist.OWNER_NAME.notEqual(ownerName)
+                                        .or(OWNER_NAME.isNull()))
+                                .get()
+                                .value();
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     @NonNull public static Single<List<Gist>> getMyGists(@NonNull String ownerName) {
@@ -126,12 +136,13 @@ import lombok.NoArgsConstructor;
         return url != null ? url.hashCode() : 0;
     }
 
-    @NonNull public List<FilesListModel> getFilesAsList() {
-        List<FilesListModel> models = new ArrayList<>();
+    @NonNull public ArrayList<FilesListModel> getFilesAsList() {
         if (files != null) {
-            models.addAll(files.values());
+            return Stream.of(files)
+                    .map(Map.Entry::getValue)
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
-        return models;
+        return new ArrayList<>();
     }
 
     @NonNull public SpannableBuilder getDisplayTitle(boolean isFromProfile) {
@@ -168,7 +179,16 @@ import lombok.NoArgsConstructor;
             spannableBuilder.append(description);
         }
         if (InputHelper.isEmpty(spannableBuilder.toString())) {
-            if (isFromProfile) spannableBuilder.bold("N/A");
+            if (isFromProfile) {
+                List<FilesListModel> files = getFilesAsList();
+                if (!files.isEmpty()) {
+                    FilesListModel filesListModel = files.get(0);
+                    if (!InputHelper.isEmpty(filesListModel.getFilename()) && filesListModel.getFilename().trim().length() > 2) {
+                        spannableBuilder.append(" ")
+                                .append(filesListModel.getFilename());
+                    }
+                }
+            }
         }
         return spannableBuilder;
     }

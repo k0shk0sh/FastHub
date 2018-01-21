@@ -2,7 +2,6 @@ package com.fastaccess.provider.timeline.handler;
 
 import android.text.SpannableStringBuilder;
 
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.emoji.Emoji;
 import com.fastaccess.provider.emoji.EmojiManager;
@@ -18,13 +17,17 @@ import org.htmlcleaner.TagNode;
 public class EmojiHandler extends TagNodeHandler {
 
     @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
-        Logger.e(builder);
         String emoji = node.getAttributeByName("alias");
-        Logger.e(emoji);
-        if (!InputHelper.isEmpty(emoji)) {
+        if (emoji != null) {
             Emoji unicode = EmojiManager.getForAlias(emoji);
             if (unicode != null && unicode.getUnicode() != null) {
-                builder.replace(start, end, unicode.getUnicode());
+                builder.replace(start, end, " " + unicode.getUnicode() + " ");
+            }
+        } else if (node.getText() != null) {
+            Logger.e(node.getText());
+            Emoji unicode = EmojiManager.getForAlias(node.getText().toString());
+            if (unicode != null && unicode.getUnicode() != null) {
+                builder.replace(start, end, " " + unicode.getUnicode() + " ");
             }
         }
     }

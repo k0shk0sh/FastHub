@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
@@ -255,5 +256,5 @@
     <color name="material_yellow_accent_200">#FFFF00</color>
     <color name="material_yellow_accent_400">#FFEA00</color>
     <color name="material_yellow_accent_700">#FFD600</color>
-
+    <color name="ic_app_shortcut_background">#F5F5F5</color>
 </resources>

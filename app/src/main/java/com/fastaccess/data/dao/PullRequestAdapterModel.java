@@ -55,7 +55,7 @@ public class PullRequestAdapterModel implements Parcelable {
         dest.writeParcelable(this.pullRequest, flags);
     }
 
-    protected PullRequestAdapterModel(Parcel in) {
+    private PullRequestAdapterModel(Parcel in) {
         this.type = in.readInt();
         this.issueEvent = in.readParcelable(IssueEvent.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());

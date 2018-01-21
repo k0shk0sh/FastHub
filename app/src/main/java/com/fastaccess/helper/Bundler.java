@@ -143,22 +143,42 @@ public class Bundler {
     }
 
     public Bundler put(@NonNull String key, Parcelable value) {
-        bundle.putParcelable(key, value);
+        Bundle safeBundle = new Bundle();
+        safeBundle.putParcelable(key, value);
+        if (isValidBundleSize(safeBundle)) {
+            bundle.putParcelable(key, value);
+        }
+        clearBundle(safeBundle);
         return this;
     }
 
     public Bundler put(@NonNull String key, Parcelable[] value) {
-        bundle.putParcelableArray(key, value);
+        Bundle safeBundle = new Bundle();
+        safeBundle.putParcelableArray(key, value);
+        if (isValidBundleSize(safeBundle)) {
+            bundle.putParcelableArray(key, value);
+        }
+        clearBundle(safeBundle);
         return this;
     }
 
     public Bundler putParcelableArrayList(@NonNull String key, ArrayList<? extends Parcelable> value) {
-        bundle.putParcelableArrayList(key, value);
+        Bundle safeBundle = new Bundle();
+        safeBundle.putParcelableArrayList(key, value);
+        if (isValidBundleSize(safeBundle)) {
+            bundle.putParcelableArrayList(key, value);
+        }
+        clearBundle(safeBundle);
         return this;
     }
 
     public Bundler putSparseParcelableArray(@NonNull String key, SparseArray<? extends Parcelable> value) {
-        bundle.putSparseParcelableArray(key, value);
+        Bundle safeBundle = new Bundle();
+        safeBundle.putSparseParcelableArray(key, value);
+        if (isValidBundleSize(safeBundle)) {
+            bundle.putSparseParcelableArray(key, value);
+        }
+        clearBundle(safeBundle);
         return this;
     }
 
@@ -173,7 +193,12 @@ public class Bundler {
     }
 
     public Bundler put(@NonNull String key, Serializable value) {
-        bundle.putSerializable(key, value);
+        Bundle safeBundle = new Bundle();
+        safeBundle.putSerializable(key, value);
+        if (isValidBundleSize(safeBundle)) {
+            bundle.putSerializable(key, value);
+        }
+        clearBundle(safeBundle);
         return this;
     }
 
@@ -185,7 +210,7 @@ public class Bundler {
     /**
      * Get the underlying start.
      */
-    public Bundle get() {
+    private Bundle get() {
         return bundle;
     }
 
@@ -200,5 +225,15 @@ public class Bundler {
         return get();
     }
 
+    public static boolean isValidBundleSize(@NonNull Bundle bundle) {
+        Parcel parcel = Parcel.obtain();
+        bundle.writeToParcel(parcel, 0);
+        return parcel.dataSize() < 500000;
+    }
+
+    private void clearBundle(Bundle safeBundle) {
+        safeBundle.clear();
+        safeBundle = null;
+    }
 
 }

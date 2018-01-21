@@ -31,7 +31,10 @@ public class LabelsViewHolder extends BaseViewHolder<LabelModel> {
     @Override public void onClick(View v) {
         if (onSelectLabel != null) {
             int position = getAdapterPosition();
-            onSelectLabel.onToggleSelection(position, !onSelectLabel.isLabelSelected(position));
+            if (adapter != null) {
+                LabelModel labelModel = (LabelModel) adapter.getItem(position);
+                onSelectLabel.onToggleSelection(labelModel, !onSelectLabel.isLabelSelected(labelModel));
+            }
         } else {
             super.onClick(v);
         }
@@ -53,12 +56,12 @@ public class LabelsViewHolder extends BaseViewHolder<LabelModel> {
             int color = Color.parseColor(labelModel.getColor().startsWith("#") ? labelModel.getColor() : "#" + labelModel.getColor());
             colorImage.setBackgroundColor(color);
             if (onSelectLabel != null) {
-                if (onSelectLabel.isLabelSelected(getAdapterPosition())) {
+                if (onSelectLabel.isLabelSelected(labelModel)) {
                     name.setTextColor(ViewHelper.generateTextColor(color));
                 } else {
                     name.setTextColor(ViewHelper.getPrimaryTextColor(itemView.getContext()));
                 }
-                itemView.setBackgroundColor(onSelectLabel.isLabelSelected(getAdapterPosition()) ? color : 0);
+                itemView.setBackgroundColor(onSelectLabel.isLabelSelected(labelModel) ? color : 0);
             }
         } else {
             colorImage.setBackgroundColor(0);

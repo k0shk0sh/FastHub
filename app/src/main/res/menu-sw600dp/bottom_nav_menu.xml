@@ -10,24 +10,28 @@
     <item
         android:id="@+id/feeds"
         android:color="?colorPrimary"
+        android:contentDescription="@string/feeds"
         android:icon="@drawable/ic_github"
         android:title="@string/feeds"/>
 
     <item
         android:id="@+id/pinned"
         android:color="?colorPrimary"
+        android:contentDescription="@string/issues"
         android:icon="@drawable/ic_issues"
         android:title="@string/issues"/>
 
     <item
         android:id="@+id/pullRequests"
         android:color="?colorPrimary"
+        android:contentDescription="@string/pull_requests"
         android:icon="@drawable/ic_pull_requests"
         android:title="@string/pull_requests"/>
 
     <item
         android:id="@+id/profile"
         android:color="?colorPrimary"
+        android:contentDescription="@string/profile"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile"/>
 

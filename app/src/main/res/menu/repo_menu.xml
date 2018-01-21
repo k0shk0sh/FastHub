@@ -8,9 +8,20 @@
         app:showAsAction="never"/>
 
     <item
+        android:id="@+id/browser"
+        android:icon="@drawable/ic_brower"
+        android:title="@string/open_in_browser"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/copy"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/deleteRepo"
-        android:visible="false"
         android:title="@string/delete_repo"
+        android:visible="false"
         app:showAsAction="never"/>
 
     <item

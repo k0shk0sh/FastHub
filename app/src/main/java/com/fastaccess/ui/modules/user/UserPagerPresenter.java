@@ -13,10 +13,10 @@ import lombok.Getter;
  */
 
 @Getter class UserPagerPresenter extends BasePresenter<UserPagerMvp.View> implements UserPagerMvp.Presenter {
-    @icepick.State int isMember = -1;
+    @com.evernote.android.state.State int isMember = -1;
 
     @Override public void checkOrgMembership(@NonNull String org) {
-        makeRestCall(RestProvider.getOrgService().isMember(org, Login.getUser().getLogin()),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).isMember(org, Login.getUser().getLogin()),
                 booleanResponse -> sendToView(view -> {
                     isMember = booleanResponse.code() == 204 ? 1 : 0;
                     view.onInitOrg(isMember == 1);

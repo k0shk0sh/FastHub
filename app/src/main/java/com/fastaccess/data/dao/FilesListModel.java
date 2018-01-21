@@ -6,22 +6,24 @@ import android.os.Parcelable;
 import java.io.Serializable;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Created by Kosh on 12 Nov 2016, 11:09 AM
  */
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class FilesListModel implements Parcelable, Serializable {
-    private String filename;
-    private String type;
-    private String rawUrl;
-    private long size;
-    private String content;
-    private boolean needFetching;
-    private String language;
+    public String filename;
+    public String type;
+    public String rawUrl;
+    public Long size;
+    public String content;
+    public Boolean needFetching;
+    public String language;
+
+    public FilesListModel() {
+    }
 
     @Override public int describeContents() { return 0; }
 
@@ -29,9 +31,9 @@ public class FilesListModel implements Parcelable, Serializable {
         dest.writeString(this.filename);
         dest.writeString(this.type);
         dest.writeString(this.rawUrl);
-        dest.writeLong(this.size);
+        dest.writeValue(this.size);
         dest.writeString(this.content);
-        dest.writeByte(this.needFetching ? (byte) 1 : (byte) 0);
+        dest.writeValue(this.needFetching);
         dest.writeString(this.language);
     }
 
@@ -39,9 +41,9 @@ public class FilesListModel implements Parcelable, Serializable {
         this.filename = in.readString();
         this.type = in.readString();
         this.rawUrl = in.readString();
-        this.size = in.readLong();
+        this.size = (Long) in.readValue(Long.class.getClassLoader());
         this.content = in.readString();
-        this.needFetching = in.readByte() != 0;
+        this.needFetching = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.language = in.readString();
     }
 

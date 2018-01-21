@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -26,7 +27,6 @@ import net.grandcentrix.thirtyinch.TiDialogFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
 
 /**
  * Created by Kosh on 27 May 2017, 1:51 PM
@@ -55,7 +55,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
         getPresenter().onSaveInstanceState(outState);
     }
 
@@ -63,9 +63,10 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, AppHelper.isNightMode(getResources()) ? R.style.DialogThemeDark : R.style.DialogThemeLight);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
+        getPresenter().setEnterprise(isEnterprise());
     }
 
     @SuppressLint("RestrictedApi") @Nullable @Override
@@ -82,6 +83,10 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
 
     @Override public void showProgress(@StringRes int resId) {
         callback.showProgress(resId);
+    }
+
+    @Override public void showBlockingProgress(int resId) {
+        callback.showBlockingProgress(resId);
     }
 
     @Override public void hideProgress() {
@@ -104,9 +109,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
         return callback.isLoggedIn();
     }
 
-    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
-
-    }
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {}
 
     @Override public void onDialogDismissed() {
 
@@ -139,7 +142,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final BottomSheetDialog dialog = new BottomSheetDialog(getContext(), getTheme());
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setOnShowListener(dialogInterface -> {
             if (ViewHelper.isTablet(getActivity())) {
                 if (dialog.getWindow() != null) {
@@ -150,6 +153,14 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
             }
         });
         return dialog;
+    }
+
+    @Override public boolean isEnterprise() {
+        return callback != null && callback.isEnterprise();
+    }
+
+    @Override public void onOpenUrlInBrowser() {
+        callback.onOpenUrlInBrowser();
     }
 
 }

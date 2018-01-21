@@ -16,6 +16,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -34,6 +35,7 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
 
     public interface onSimpleItemSelection<O extends Parcelable> {
         void onItemSelected(O item);
@@ -51,10 +53,12 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
         title.setText(titleText);
         if (objects != null) {
             SimpleListAdapter<O> adapter = new SimpleListAdapter<>(objects, this);
+            recycler.addDivider();
             recycler.setAdapter(adapter);
         } else {
             dismiss();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onAttach(Context context) {

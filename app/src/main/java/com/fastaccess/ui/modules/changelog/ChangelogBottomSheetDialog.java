@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.changelog;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -61,12 +62,20 @@ public class ChangelogBottomSheetDialog extends BaseMvpBottomSheetDialogFragment
         return new ChangelogPresenter();
     }
 
+    @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
+    }
+
     private void showChangelog(String html) {
+        if (prettifyWebView == null) return;
         webProgress.setVisibility(View.GONE);
         if (html != null) {
             message.setVisibility(View.GONE);
             prettifyWebView.setVisibility(View.VISIBLE);
-            prettifyWebView.setGithubContent(html, null);
+            prettifyWebView.setGithubContent(html, null, false, false);
             prettifyWebView.setNestedScrollingEnabled(false);
         }
     }

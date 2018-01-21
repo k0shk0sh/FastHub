@@ -23,7 +23,7 @@
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/name"
-                style="@style/TextAppearance.AppCompat.Subhead"
+                style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -76,7 +76,7 @@
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/changes"
-                    style="@style/TextAppearance.AppCompat.Small"
+                    style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
@@ -85,7 +85,7 @@
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/addition"
-                    style="@style/TextAppearance.AppCompat.Small"
+                    style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
@@ -94,7 +94,7 @@
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/deletion"
-                    style="@style/TextAppearance.AppCompat.Small"
+                    style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
@@ -103,7 +103,7 @@
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/status"
-                    style="@style/TextAppearance.AppCompat.Small"
+                    style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"

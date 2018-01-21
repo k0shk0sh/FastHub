@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -37,27 +38,30 @@ class SearchUsersPresenter extends BasePresenter<SearchUsersMvp.View> implements
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         setCurrentPage(page);
-        if (page > lastPage || lastPage == 0) {
+        if (page > lastPage || lastPage == 0 || parameter == null) {
             sendToView(SearchUsersMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (parameter == null) {
-            return;
-        }
-        makeRestCall(RestProvider.getSearchService().searchUsers(parameter, page),
+        makeRestCall(RestProvider.getSearchService(isEnterprise()).searchUsers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> {
                         view.onNotifyAdapter(response.isIncompleteResults() ? null : response.getItems(), page);
-                        view.onSetTabCount(response.getTotalCount());
+                        if (!response.isIncompleteResults()) {
+                            view.onSetTabCount(response.getTotalCount());
+                        } else {
+                            view.onSetTabCount(0);
+                            view.showMessage(R.string.error, R.string.search_results_warning);
+                        }
                     });
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<User> getUsers() {

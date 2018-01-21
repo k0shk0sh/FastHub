@@ -1,13 +1,17 @@
 package com.fastaccess.ui.modules.profile.org;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.transition.TransitionManager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.ActivityHelper;
@@ -17,12 +21,12 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.profile.org.project.OrgProjectActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
 
 import static android.view.View.GONE;
 
@@ -41,6 +45,7 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
     @BindView(R.id.link) FontTextView link;
     @BindView(R.id.joined) FontTextView joined;
     @BindView(R.id.progress) LinearLayout progress;
+    @BindView(R.id.projects) View projects;
 
     @State User userModel;
 
@@ -54,7 +59,15 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
     }
 
-    @Override public void onInitViews(@Nullable User userModel) {
+    @OnClick(R.id.projects) void onOpenProjects() {
+        OrgProjectActivity.Companion.startActivity(getContext(), getPresenter().getLogin(), isEnterprise());
+    }
+
+    @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
+        if (getView() != null) {
+            TransitionManager.beginDelayedTransition((ViewGroup) getView());
+        }
+        if (this.userModel != null) return;
         progress.setVisibility(View.GONE);
         if (userModel == null) return;
         this.userModel = userModel;
@@ -65,32 +78,35 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         } else {
             description.setVisibility(GONE);
         }
-        avatarLayout.setUrl(userModel.getAvatarUrl(), null);
-        location.setText(InputHelper.toNA(userModel.getLocation()));
-        email.setText(InputHelper.toNA(userModel.getEmail()));
-        link.setText(InputHelper.toNA(userModel.getBlog()));
-        joined.setText(userModel.getCreatedAt() != null ? ParseDateFormat.getTimeAgo(userModel.getCreatedAt()) : "N/A");
-        ViewGroup parent = (ViewGroup) location.getParent();
-        if (location.getText().equals("N/A")) {
-            int i = parent.indexOfChild(location);
-            ((ViewGroup) location.getParent()).removeViewAt(i + 1);
-            location.setVisibility(GONE);
+        avatarLayout.setUrl(userModel.getAvatarUrl(), null, false, false);
+        avatarLayout.findViewById(R.id.avatar).setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
+                return true;
+            }
+            return false;
+        });
+        location.setText(userModel.getLocation());
+        email.setText(userModel.getEmail());
+        link.setText(userModel.getBlog());
+        joined.setText(ParseDateFormat.getTimeAgo(userModel.getCreatedAt()));
+
+        if (!InputHelper.isEmpty(userModel.getLocation())) {
+            location.setVisibility(View.VISIBLE);
         }
-        if (email.getText().equals("N/A")) {
-            int i = parent.indexOfChild(email);
-            ((ViewGroup) email.getParent()).removeViewAt(i + 1);
-            email.setVisibility(GONE);
+        if (!InputHelper.isEmpty(userModel.getEmail())) {
+            email.setVisibility(View.VISIBLE);
         }
-        if (link.getText().equals("N/A")) {
-            int i = parent.indexOfChild(link);
-            ((ViewGroup) link.getParent()).removeViewAt(i + 1);
-            link.setVisibility(GONE);
+        if (!InputHelper.isEmpty(userModel.getBlog())) {
+            link.setVisibility(View.VISIBLE);
         }
-        if (joined.getText().equals("N/A")) {
-            int i = parent.indexOfChild(joined);
-            ((ViewGroup) joined.getParent()).removeViewAt(i + 1);
-            joined.setVisibility(GONE);
+        if (!InputHelper.isEmpty(userModel.getCreatedAt())) {
+            joined.setVisibility(View.VISIBLE);
         }
+        if (!InputHelper.isEmpty(userModel.getEmail())) {
+            email.setVisibility(View.VISIBLE);
+        }
+        projects.setVisibility(userModel.isHasOrganizationProjects() ? View.VISIBLE : View.GONE);
     }
 
     @Override protected int fragmentLayout() {

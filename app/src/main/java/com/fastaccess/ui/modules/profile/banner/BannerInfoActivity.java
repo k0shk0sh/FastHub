@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Button;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -74,7 +75,7 @@ public class BannerInfoActivity extends BaseActivity<BannerInfoMvp.View, BannerI
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showFileChooser();
                 } else {
-                    Toasty.error(this, getString(R.string.permission_failed)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.permission_failed)).show();
                 }
             }
         }

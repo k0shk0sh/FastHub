@@ -4,16 +4,12 @@ import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.TooltipCompat;
 import android.util.AttributeSet;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import com.fastaccess.helper.ViewHelper;
 
-
 public class ForegroundImageView extends AppCompatImageView {
-    private Toast toast;
-
 
     public ForegroundImageView(@NonNull Context context) {
         this(context, null);
@@ -22,16 +18,7 @@ public class ForegroundImageView extends AppCompatImageView {
     public ForegroundImageView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         if (getContentDescription() != null) {
-            setOnLongClickListener(view -> {
-                if (getContentDescription() != null) {
-                    if (toast != null) toast.cancel();
-                    toast = Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                    return true;
-                }
-                return false;
-            });
+            TooltipCompat.setTooltipText(this, getContentDescription());
         }
     }
 

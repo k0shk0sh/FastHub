@@ -24,6 +24,8 @@ public interface BaseMvp {
 
         @CallOnMainThread void showProgress(@StringRes int resId);
 
+        @CallOnMainThread void showBlockingProgress(@StringRes int resId);
+
         @CallOnMainThread void hideProgress();
 
         @CallOnMainThread void showMessage(@StringRes int titleRes, @StringRes int msgRes);
@@ -41,6 +43,10 @@ public interface BaseMvp {
         void onThemeChanged();
 
         void onOpenSettings();
+
+        boolean isEnterprise();
+
+        void onOpenUrlInBrowser();
     }
 
     interface FAPresenter {
@@ -57,11 +63,15 @@ public interface BaseMvp {
 
         boolean isApiCalled();
 
-        void onSubscribed();
+        void onSubscribed(boolean cancelable);
 
         void onError(@NonNull Throwable throwable);
 
         <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext);
+
+        <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext, boolean cancelable);
+
+        void onCheckGitHubStatus();
     }
 
     interface PaginationListener<P> {
@@ -73,7 +83,7 @@ public interface BaseMvp {
 
         void setPreviousTotal(int previousTotal);
 
-        void onCallApi(int page, @Nullable P parameter);
+        boolean onCallApi(int page, @Nullable P parameter);
     }
 
     interface OnScrollTopListener {

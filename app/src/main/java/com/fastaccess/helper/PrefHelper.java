@@ -23,21 +23,27 @@ public class PrefHelper {
      *         <p/>
      *         non can be null!!!
      */
-    @SuppressLint("ApplySharedPref") public static void set(@NonNull String key, @NonNull Object value) {
+    @SuppressLint("ApplySharedPref") public static <T> void set(@NonNull String key, @Nullable T value) {
         if (InputHelper.isEmpty(key)) {
             throw new NullPointerException("Key must not be null! (key = " + key + "), (value = " + value + ")");
         }
         SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).edit();
+        if (InputHelper.isEmpty(value)) {
+            clearKey(key);
+            return;
+        }
         if (value instanceof String) {
             edit.putString(key, (String) value);
         } else if (value instanceof Integer) {
-            edit.putInt(key, (int) value);
+            edit.putInt(key, (Integer) value);
         } else if (value instanceof Long) {
-            edit.putLong(key, (long) value);
+            edit.putLong(key, (Long) value);
         } else if (value instanceof Boolean) {
-            edit.putBoolean(key, (boolean) value);
+            edit.putBoolean(key, (Boolean) value);
         } else if (value instanceof Float) {
-            edit.putFloat(key, (float) value);
+            edit.putFloat(key, (Float) value);
+        } else {
+            edit.putString(key, value.toString());
         }
         edit.commit();//apply on UI
     }
@@ -47,11 +53,13 @@ public class PrefHelper {
     }
 
     public static boolean getBoolean(@NonNull String key) {
-        return PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean(key, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        return preferences.getAll().get(key) instanceof Boolean && preferences.getBoolean(key, false);
     }
 
     public static int getInt(@NonNull String key) {
-        return PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getInt(key, 0);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        return preferences.getAll().get(key) instanceof Integer ? preferences.getInt(key, 0) : -1;
     }
 
     public static long getLong(@NonNull String key) {

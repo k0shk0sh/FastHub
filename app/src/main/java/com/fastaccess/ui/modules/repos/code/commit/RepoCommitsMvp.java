@@ -9,6 +9,7 @@ import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.repos.extras.branches.BranchesMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
@@ -21,16 +22,12 @@ import java.util.List;
 interface RepoCommitsMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
-            android.view.View.OnClickListener {
+            android.view.View.OnClickListener, BranchesMvp.BranchSelectionListener {
         void onNotifyAdapter(@Nullable List<Commit> items, int page);
 
         @NonNull OnLoadMore getLoadMore();
 
         void setBranchesData(@NonNull List<BranchesModel> branches, boolean firstTime);
-
-        void showBranchesProgress();
-
-        void hideBranchesProgress();
 
         void onShowCommitCount(long sum);
     }
@@ -41,8 +38,6 @@ interface RepoCommitsMvp {
         void onFragmentCreated(@NonNull Bundle bundle);
 
         @NonNull ArrayList<Commit> getCommits();
-
-        @NonNull ArrayList<BranchesModel> getBranches();
 
         void onWorkOffline();
 

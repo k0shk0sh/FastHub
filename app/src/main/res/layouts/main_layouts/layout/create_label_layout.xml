@@ -66,14 +66,29 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-            android:id="@+id/recycler"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            app:layoutManager="@string/grid_layout_manager"
-            app:spanCount="3"
-            tools:listitem="@layout/simple_color_row_item"/>
+            android:layout_height="match_parent">
+
+            <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                app:layoutManager="@string/grid_layout_manager"
+                app:spanCount="3"
+                tools:listitem="@layout/simple_color_row_item"/>
+
+
+            <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+                android:id="@+id/fastScroller"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/recycler"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/recycler"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
     </LinearLayout>
 

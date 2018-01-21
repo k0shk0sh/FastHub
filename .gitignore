@@ -3,14 +3,9 @@
 /local.properties
 .DS_Store
 /build
-/captures
-.externalNativeBuild
 /gradle.properties
 /.idea/
 /app/google-services.json
-/app/db/
 /app/build/
 /app/src/main/res/values/secrets.xml
 /app/fastaccess-key
-fast-for-github-firebase-crashreporting-7lngx-6b5be91d98.json
-/fastScroller/build/

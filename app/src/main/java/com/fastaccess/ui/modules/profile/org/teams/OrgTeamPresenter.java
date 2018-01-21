@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.TeamsModel;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.profile.org.teams.details.TeamPagerActivity;
@@ -42,7 +43,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -53,13 +54,14 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(OrgTeamMvp.View::hideProgress);
-            return;
+            return false;
         }
-        makeRestCall(RestProvider.getOrgService().getOrgTeams(parameter, page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgTeams(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<TeamsModel> getTeams() {
@@ -71,6 +73,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
     }
 
     @Override public void onItemClick(int position, View v, TeamsModel item) {
+        Logger.e(item.getUrl());
         TeamPagerActivity.startActivity(v.getContext(), item.getId(), item.getName());
     }
 

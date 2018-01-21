@@ -3,13 +3,15 @@ package com.fastaccess.ui.modules.trending.fragment
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
+import butterknife.BindView
+import com.evernote.android.state.State
 import com.fastaccess.R
-import com.fastaccess.data.dao.kot.TrendingResponse
-import com.fastaccess.helper.Logger
+import com.fastaccess.data.dao.TrendingModel
+import com.fastaccess.ui.adapter.TrendingAdapter
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-import icepick.State
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
 
 /**
  * Created by Kosh on 30 May 2017, 11:37 PM
@@ -17,49 +19,50 @@ import icepick.State
 
 class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragmentPresenter>(), TrendingFragmentMvp.View {
 
-    val recycler by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
-    val refresh by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
-    val stateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
+    @BindView(R.id.recycler) lateinit var recycler: DynamicRecyclerView
+    @BindView(R.id.refresh) lateinit var refresh: SwipeRefreshLayout
+    @BindView(R.id.stateLayout) lateinit var stateLayout: StateLayout
+    @BindView(R.id.fastScroller) lateinit var fastScroller: RecyclerViewFastScroller
 
-    @State var lang: String? = null
-    @State var since: String? = null
+    private val adapter by lazy { TrendingAdapter(presenter.getTendingList()) }
 
-    override fun providePresenter(): TrendingFragmentPresenter {
-        return TrendingFragmentPresenter()
-    }
+    @State var lang: String = ""
+    @State var since: String = ""
 
-    override fun fragmentLayout(): Int {
-        return R.layout.micro_grid_refresh_list
-    }
+    override fun providePresenter(): TrendingFragmentPresenter = TrendingFragmentPresenter()
+
+    override fun fragmentLayout(): Int = R.layout.small_grid_refresh_list
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         stateLayout.setEmptyText(R.string.no_trending)
         recycler.setEmptyView(stateLayout, refresh)
         refresh.setOnRefreshListener { onCallApi() }
         stateLayout.setOnReloadListener { onCallApi() }
-        //TODO
+        adapter.listener = presenter
+        recycler.adapter = adapter
+        fastScroller.attachRecyclerView(recycler)
     }
 
-    override fun onNotifyAdapter(items: List<TrendingResponse>) {
-        hideProgress()
-        Logger.e(items)
+    override fun onNotifyAdapter(items: TrendingModel) {
+        adapter.addItem(items)
     }
 
     override fun onSetQuery(lang: String, since: String) {
         this.lang = lang
         this.since = since
-        //TODO CLEAR ADAPTER
+        adapter.clear()
         presenter.onCallApi(lang, since)
     }
 
     override fun showProgress(resId: Int) {
         refresh.isRefreshing = true
-        stateLayout.hideProgress()
+        stateLayout.showProgress()
     }
 
     override fun hideProgress() {
         refresh.isRefreshing = false
         stateLayout.hideProgress()
+        stateLayout.showReload(adapter.itemCount)
     }
 
     override fun showMessage(titleRes: Int, msgRes: Int) {
@@ -78,6 +81,10 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     }
 
     private fun onCallApi() {
-        if (lang != null && since != null) presenter.onCallApi(lang!!, since!!)
+        presenter.onCallApi(lang, since)
+    }
+
+    override fun clearAdapter() {
+        adapter.clear()
     }
 }

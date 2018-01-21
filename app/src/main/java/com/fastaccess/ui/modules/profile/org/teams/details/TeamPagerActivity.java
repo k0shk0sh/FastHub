@@ -21,7 +21,7 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Apr 2017, 10:08 PM

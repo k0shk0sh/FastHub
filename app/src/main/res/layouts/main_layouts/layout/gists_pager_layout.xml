@@ -3,6 +3,7 @@
     android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -10,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <android.support.design.widget.CoordinatorLayout
@@ -35,14 +37,46 @@
                     android:background="?colorPrimary">
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
-                        android:id="@+id/startGist"
+                        android:id="@+id/pinUnpin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/open_in_browser"
+                        android:padding="@dimen/spacing_micro"
+                        android:src="@drawable/ic_pin"/>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/open_in_browser"
+                        android:padding="@dimen/spacing_micro"
+                        android:src="@drawable/ic_edit"
+                        android:visibility="gone"/>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/browser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/open_in_browser"
+                        android:padding="@dimen/spacing_micro"
+                        android:src="@drawable/ic_brower"/>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/startGist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/star"
-                        android:padding="@dimen/spacing_normal"
-                        android:scaleType="centerCrop"
+                        android:padding="@dimen/spacing_micro"
+
                         android:src="@drawable/ic_star"/>
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
@@ -50,10 +84,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
+                        android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/fork"
-                        android:padding="@dimen/spacing_normal"
-                        android:scaleType="centerCrop"
+                        android:padding="@dimen/spacing_micro"
+
                         android:src="@drawable/ic_fork"/>
                 </android.support.v7.widget.Toolbar>
 
@@ -84,7 +119,12 @@
 
         </android.support.design.widget.CoordinatorLayout>
 
-        <include layout="@layout/add_banner_layout"/>
+        <fragment
+            android:id="@+id/commentFragment"
+            android:name="com.fastaccess.ui.modules.editor.comment.CommentEditorFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/comment_box_layout"/>
     </LinearLayout>
 
     <include layout="@layout/nav_menu_layout"/>

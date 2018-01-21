@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.starred;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,8 +15,10 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -30,13 +33,30 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
+    private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static ProfileStarredFragment newInstance(@NonNull String username) {
         ProfileStarredFragment view = new ProfileStarredFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, username).end());
         return view;
+    }
+
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        tabsBadgeListener = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<Repo> items, int page) {
@@ -64,16 +84,16 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new ReposAdapter(getPresenter().getRepos(), true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public ProfileStarredPresenter providePresenter() {
@@ -81,9 +101,7 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
         refresh.setRefreshing(true);
-
         stateLayout.showProgress();
     }
 
@@ -107,6 +125,12 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
             onLoadMore = new OnLoadMore<>(getPresenter(), getArguments().getString(BundleConstant.EXTRA));
         }
         return onLoadMore;
+    }
+
+    @Override public void onUpdateCount(int starredCount) {
+        if (tabsBadgeListener != null) {
+            tabsBadgeListener.onSetBadge(3, starredCount);
+        }
     }
 
     @Override public void onRefresh() {

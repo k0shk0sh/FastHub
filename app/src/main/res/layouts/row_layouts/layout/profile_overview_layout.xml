@@ -12,7 +12,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xs_large"
         android:orientation="vertical">
 
         <LinearLayout
@@ -26,8 +25,7 @@
                 android:layout_height="150dp"
                 android:background="@color/material_light_white"
                 android:gravity="bottom|start"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:visibility="gone">
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/banner_edit"
@@ -49,7 +47,6 @@
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="?card_background"
                 app:cardCornerRadius="0dp"
-                app:cardUseCompatPadding="false"
                 app:contentPaddingBottom="@dimen/spacing_normal"
                 app:contentPaddingLeft="@dimen/spacing_xs_large"
                 app:contentPaddingRight="@dimen/spacing_xs_large"
@@ -68,8 +65,7 @@
                         android:layout_marginBottom="@dimen/spacing_normal"
                         android:background="?card_background"
                         android:text="@string/edit_banner"
-                        android:visibility="gone"
-                        tools:visibility="visible"/>
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:id="@+id/userInformation"
@@ -93,8 +89,8 @@
                             android:orientation="vertical">
 
                             <com.fastaccess.ui.widgets.FontTextView
-                                android:id="@+id/username"
-                                style="@style/Base.TextAppearance.AppCompat.Title"
+                                android:id="@+id/fullname"
+                                style="@style/Base.TextAppearance.AppCompat.Medium"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
@@ -102,8 +98,8 @@
                                 tools:text="Cum classis nocere"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
-                                android:id="@+id/fullname"
-                                style="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:id="@+id/username"
+                                style="@style/Base.TextAppearance.AppCompat.Title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
@@ -123,55 +119,8 @@
                         android:paddingTop="@dimen/spacing_normal"
                         tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_xs_large">
+                    <include layout="@layout/profile_follow_action_layout"/>
 
-                        <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/following"
-                            style="@style/Base.TextAppearance.AppCompat.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/spacing_xs_large"
-                            android:layout_marginStart="@dimen/spacing_xs_large"
-                            android:layout_toStartOf="@+id/followBtn"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:gravity="center"
-                            tools:text="Following\n40"/>
-
-                        <com.fastaccess.ui.widgets.FontButton
-                            android:id="@+id/followBtn"
-                            style="@style/Widget.AppCompat.Button.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_centerVertical="true"
-                            android:drawablePadding="@dimen/spacing_normal"
-                            android:drawableStart="@drawable/asl_follow"
-                            android:text="@string/follow"
-                            android:textColor="@color/white"
-                            android:visibility="gone"
-                            tools:visibility="visible"/>
-
-                        <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/followers"
-                            style="@style/Base.TextAppearance.AppCompat.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/spacing_xs_large"
-                            android:layout_marginStart="@dimen/spacing_xs_large"
-                            android:layout_toEndOf="@+id/followBtn"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:gravity="center"
-                            tools:text="Followers\n140"/>
-
-                    </RelativeLayout>
 
                     <LinearLayout
                         android:id="@+id/section_container"
@@ -184,77 +133,66 @@
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_xs_large"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_group"
+                            android:gravity="center|start"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
                             tools:text="Cum classis nocere"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?dividerColor"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/location"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_xs_large"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
-                            android:autoLink="map"
+                            android:background="@drawable/top_border"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_location"
-
+                            android:gravity="center|start"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
                             tools:text="Cum classis nocere"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?dividerColor"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/email"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_xs_large"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:autoLink="email"
+                            android:background="@drawable/top_border"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_email"
+                            android:gravity="center|start"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
                             tools:text="Cum classis nocere"/>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?dividerColor"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/link"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_xs_large"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:autoLink="web"
+                            android:background="@drawable/top_border"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_insert_link"
+                            android:gravity="center|start"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
                             tools:text="Cum classis nocere"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?dividerColor"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/joined"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
+                            android:background="@drawable/top_border"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_time"
+                            android:gravity="center|start"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
                             tools:text="Cum classis nocere"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -281,7 +219,6 @@
                 android:visibility="gone"
                 app:cardBackgroundColor="?card_background"
                 app:cardCornerRadius="0dp"
-                app:cardUseCompatPadding="false"
                 app:contentPaddingBottom="@dimen/spacing_normal"
                 app:contentPaddingLeft="@dimen/spacing_xs_large"
                 app:contentPaddingRight="@dimen/spacing_xs_large"
@@ -292,10 +229,48 @@
                     android:id="@+id/orgsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
                     app:layoutManager="@string/grid_layout_manager"
                     app:spanCount="3"
                     tools:listitem="@layout/profile_org_row_item"/>
+
+            </android.support.v7.widget.CardView>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/pinnedReposTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:paddingLeft="@dimen/spacing_xs_large"
+                android:paddingRight="@dimen/spacing_xs_large"
+                android:text="@string/pinned"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/pinnedReposCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cardBackgroundColor="?card_background"
+                app:cardCornerRadius="0dp"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal"
+                tools:visibility="visible">
+
+                <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                    android:id="@+id/pinnedList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    app:layoutManager="@string/grid_layout_manager"
+                    app:spanCount="@integer/small_spans"/>
 
             </android.support.v7.widget.CardView>
 
@@ -320,7 +295,6 @@
                 android:visibility="gone"
                 app:cardBackgroundColor="?card_background"
                 app:cardCornerRadius="0dp"
-                app:cardUseCompatPadding="false"
                 app:contentPaddingBottom="@dimen/spacing_normal"
                 app:contentPaddingLeft="@dimen/spacing_xs_large"
                 app:contentPaddingRight="@dimen/spacing_xs_large"

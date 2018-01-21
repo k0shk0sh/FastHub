@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedGists;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -17,10 +19,10 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
  */
 
 class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Presenter {
-    @icepick.State boolean isGistStarred;
-    @icepick.State boolean isGistForked;
-    @icepick.State Gist gist;
-    @icepick.State String gistId;
+    @com.evernote.android.state.State boolean isGistStarred;
+    @com.evernote.android.state.State boolean isGistForked;
+    @com.evernote.android.state.State Gist gist;
+    @com.evernote.android.state.State String gistId;
 
     @Nullable @Override public Gist getGist() {
         return gist;
@@ -40,21 +42,16 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
             checkStarring(gist.getGistId());
             sendToView(GistMvp.View::onSetupDetails);
         } else if (gistId != null) {
-            checkStarring(gistId);
-            makeRestCall(RestProvider.getGistService().getGist(gistId),
-                    gistsModel -> {
-                        this.gist = gistsModel;
-                        sendToView(GistMvp.View::onSetupDetails);
-                    });
+            callApi();
         } else {
-            sendToView(GistMvp.View::onSetupDetails); // tell the activity to finish!
+            sendToView(GistMvp.View::onSetupDetails);
         }
     }
 
     @Override public void onDeleteGist() {
         if (getGist() == null) return;
-        manageDisposable(RxHelper.getObserver(RestProvider.getGistService().deleteGist(getGist().getGistId()))
-                .doOnSubscribe(disposable -> onSubscribed())
+        manageDisposable(RxHelper.getObservable(RestProvider.getGistService(isEnterprise()).deleteGist(getGist().getGistId()))
+                .doOnSubscribe(disposable -> onSubscribed(false))
                 .doOnNext(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         sendToView(GistMvp.View::onSuccessDeleted);
@@ -62,9 +59,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
                         sendToView(GistMvp.View::onErrorDeleting);
                     }
                 })
-                .subscribe(booleanResponse -> {/**/}, throwable -> {
-                    sendToView(view -> view.showErrorMessage(throwable.getMessage()));
-                }));
+                .subscribe(booleanResponse -> {/**/}, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage()))));
     }
 
     @Override public boolean isOwner() {
@@ -91,7 +86,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
     }
 
     @Override public void checkStarring(@NonNull String gistId) {
-        makeRestCall(RestProvider.getGistService().checkGistStar(gistId),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).checkGistStar(gistId),
                 booleanResponse -> {
                     isGistStarred = booleanResponse.code() == 204;
                     sendToView(view -> view.onGistStarred(isGistStarred));
@@ -100,11 +95,27 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (gist == null) {
-            manageDisposable(RxHelper.getObserver(Gist.getGist(gistId))
+            manageDisposable(RxHelper.getObservable(Gist.getGist(gistId))
                     .subscribe(gistsModel -> {
                         this.gist = gistsModel;
                         sendToView(GistMvp.View::onSetupDetails);
                     }));
+        }
+    }
+
+    @Override public void onPinUnpinGist() {
+        if (getGist() == null) return;
+        PinnedGists.pinUpin(getGist());
+        sendToView(view -> view.onUpdatePinIcon(getGist()));
+    }
+
+    @Override public void callApi() {
+        if (!InputHelper.isEmpty(gistId)) {
+            checkStarring(gistId);
+            makeRestCall(RestProvider.getGistService(isEnterprise()).getGist(gistId), gistsModel -> {
+                this.gist = gistsModel;
+                sendToView(GistMvp.View::onSetupDetails);
+            });
         }
     }
 }

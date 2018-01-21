@@ -9,10 +9,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.evernote.android.state.State;
+import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
@@ -22,14 +27,13 @@ import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
 import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
 
-@Shortcut(id = "feeds", icon = R.drawable.ic_github_shortcut, shortLabelRes = R.string.feeds, rank = 1)
 public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
     @State @MainMvp.NavigationType int navType = MainMvp.FEEDS;
@@ -65,6 +69,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
             }
         }
+        getPresenter().setEnterprise(PrefGetter.isEnterprise());
         selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
@@ -83,9 +88,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        if (isLoggedIn() && Notification.hasUnreadNotifications()) {
-            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -104,6 +106,16 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         return super.onOptionsItemSelected(item);
     }
 
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        if (isLoggedIn() && Notification.hasUnreadNotifications()) {
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
+        } else {
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications)
+                    .setIcon(R.drawable.ic_notifications_none).getIcon(), ViewHelper.getIconColor(this));
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
         if (navType == MainMvp.PROFILE) {
             getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
@@ -118,13 +130,26 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onUpdateDrawerMenuHeader() {
-        setupNavigationView(extraNav);
+        setupNavigationView();
     }
 
-    @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
+    @Override public void onOpenProfile() {
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise(), -1);
+    }
+
+    @Override public void onInvalidateNotification() {
+        invalidateOptionsMenu();
+    }
+
+    @Override public void onUserIsBlackListed() {
+        Toast.makeText(App.getInstance(), "You are blacklisted, please contact the dev", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    @Shortcut(id = "myIssues", icon = R.drawable.ic_app_shortcut_issues, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
     public void myIssues() {}//do nothing
 
-    @Shortcut(id = "myPulls", icon = R.drawable.ic_pull_requests_shortcut, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
+    @Shortcut(id = "myPulls", icon = R.drawable.ic_app_shortcut_pull_requests, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
     public void myPulls() {}//do nothing
 
     private void onInit(@Nullable Bundle savedInstanceState) {
@@ -154,7 +179,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 if (attachFeeds) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.container, FeedsFragment.newInstance(), FeedsFragment.TAG)
+                            .replace(R.id.container, FeedsFragment.newInstance(null), FeedsFragment.TAG)
                             .commit();
                 }
             }

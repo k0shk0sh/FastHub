@@ -14,12 +14,11 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
+import com.evernote.android.state.State;
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
-
-import icepick.Icepick;
-import icepick.State;
 
 
 /**
@@ -44,11 +43,11 @@ public class FontTextView extends AppCompatTextView {
     }
 
     @Override public Parcelable onSaveInstanceState() {
-        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+        return StateSaver.saveInstanceState(this, super.onSaveInstanceState());
     }
 
     @Override public void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
+        super.onRestoreInstanceState(StateSaver.restoreInstanceState(this, state));
         tintDrawables(tintColor);
         setSelected(selected);
     }
@@ -94,4 +93,5 @@ public class FontTextView extends AppCompatTextView {
         ViewHelper.tintDrawable(drawable, ViewHelper.getTertiaryTextColor(getContext()));
         setCompoundDrawablesWithIntrinsicBounds(sd, null, null, null);
     }
+
 }

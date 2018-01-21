@@ -11,13 +11,16 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullReqeustMvp;
+import com.fastaccess.ui.modules.reviews.changes.ReviewChangesMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:21 AM
@@ -26,13 +29,11 @@ import java.util.List;
 public interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
-            AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback {
+            AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback,
+            IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback,
+            CommentEditorFragment.CommentListener, ReviewChangesMvp.ReviewSubmissionCallback {
 
-        void onSetupIssue();
-
-        void onLabelsRetrieved(@NonNull List<LabelModel> items);
-
-        void onUpdateMenu();
+        void onSetupIssue(boolean update);
 
         void showSuccessIssueActionMsg(boolean isClose);
 
@@ -43,9 +44,11 @@ public interface PullRequestPagerMvp {
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
 
         void onFinishActivity();
+
+        void onUpdateMenu();
     }
 
-    interface Presenter extends BaseMvp.FAPresenter {
+    interface Presenter extends BaseMvp.FAPresenter, PullRequestFilesMvp.CommitCommentCallback {
 
         @Nullable PullRequest getPullRequest();
 
@@ -71,9 +74,7 @@ public interface PullRequestPagerMvp {
 
         @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
-        void onMerge(String msg);
-
-        void onLoadLabels();
+        void onMerge(String s, String msg);
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
 
@@ -88,6 +89,12 @@ public interface PullRequestPagerMvp {
         boolean isCollaborator();
 
         void onUpdatePullRequest(@NonNull PullRequest pullRequestModel);
+
+        void onRefresh();
+
+        void onPinUnpinPullRequest();
+
+        void onSubscribeOrMute(boolean mute);
     }
 
 }

@@ -44,7 +44,6 @@ public class EmojiManager {
                         EMOJIS_BY_ALIAS.put(alias, emoji);
                     }
                 }
-
                 EMOJI_TRIE = new EmojiTrie(emojis);
                 stream.close();
             } catch (IOException e) {
@@ -88,7 +87,7 @@ public class EmojiManager {
         return EMOJI_TRIE.getEmoji(unicode);
     }
 
-    public static Collection<Emoji> getAll() {
+    public static List<Emoji> getAll() {
         return ALL_EMOJIS;
     }
 

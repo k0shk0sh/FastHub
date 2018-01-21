@@ -15,7 +15,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
  */
 
 public class OrgProfileOverviewPresenter extends BasePresenter<OrgProfileOverviewMvp.View> implements OrgProfileOverviewMvp.Presenter {
-    @icepick.State String login;
+    @com.evernote.android.state.State String login;
 
     @Override public void onError(@NonNull Throwable throwable) {
         if (!InputHelper.isEmpty(login)) {
@@ -30,7 +30,7 @@ public class OrgProfileOverviewPresenter extends BasePresenter<OrgProfileOvervie
         }
         login = bundle.getString(BundleConstant.EXTRA);
         if (login != null) {
-            makeRestCall(RestProvider.getOrgService().getOrganization(login),
+            makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrganization(login),
                     this::onSendUserToView);
         }
     }

@@ -71,13 +71,17 @@
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_micro"
+                        android:background="@drawable/bottom_border"
+                        android:paddingBottom="@dimen/spacing_normal"
                         tools:text="Hello world"/>
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/body"
-                        style="@style/TextAppearance.AppCompat.Small"
+                        style="@style/TextAppearance.AppCompat.Caption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/spacing_normal"
                         tools:text="Hello world"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -112,8 +116,6 @@
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingTop="@dimen/spacing_normal"
                         tools:text="Username"/>
 
                 </android.support.v7.widget.CardView>
@@ -150,8 +152,6 @@
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingTop="@dimen/spacing_normal"
                         tools:text="Label 1"/>
 
                 </android.support.v7.widget.CardView>
@@ -193,8 +193,6 @@
                             style="@style/TextAppearance.AppCompat.Medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/spacing_normal"
-                            android:paddingTop="@dimen/spacing_normal"
                             tools:text="Label 1"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
@@ -202,8 +200,6 @@
                             style="@style/TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/spacing_normal"
-                            android:paddingTop="@dimen/spacing_normal"
                             tools:text="Label 1"/>
                     </LinearLayout>
 
@@ -218,6 +214,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:baselineAligned="false"
         android:orientation="horizontal">
 

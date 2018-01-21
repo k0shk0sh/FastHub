@@ -13,15 +13,14 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class RxHelper {
-    public static <T> Observable<T> getObserver(@NonNull Observable<T> observable) {
+    public static <T> Observable<T> getObservable(@NonNull Observable<T> observable) {
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     public static <T> Observable<T> safeObservable(@NonNull Observable<T> observable) {
-        return getObserver(observable)
-                .onErrorReturn(throwable -> (T) new Object())
+        return getObservable(observable)
                 .doOnError(Throwable::printStackTrace);
     }
 

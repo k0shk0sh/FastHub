@@ -4,12 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 
 import java.util.ArrayList;
 
@@ -40,27 +39,30 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         setCurrentPage(page);
-        if (page > lastPage || lastPage == 0) {
+        if (page > lastPage || lastPage == 0 || parameter == null) {
             sendToView(SearchIssuesMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (parameter == null) {
-            return;
-        }
-        makeRestCall(RestProvider.getSearchService().searchIssues(parameter, page),
+        makeRestCall(RestProvider.getSearchService(isEnterprise()).searchIssues(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> {
                         view.onNotifyAdapter(response.isIncompleteResults() ? null : response.getItems(), page);
-                        view.onSetTabCount(response.getTotalCount());
+                        if (!response.isIncompleteResults()) {
+                            view.onSetTabCount(response.getTotalCount());
+                        } else {
+                            view.onSetTabCount(0);
+                            view.showMessage(R.string.error, R.string.search_results_warning);
+                        }
                     });
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Issue> getIssues() {
@@ -68,19 +70,7 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
     }
 
     @Override public void onItemClick(int position, View v, Issue item) {
-        if (item.getPullRequest() == null) {
-            PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
-            if (parser != null) {
-                v.getContext().startActivity(IssuePagerActivity.createIntent(v.getContext(), parser.getRepoId(),
-                        parser.getLogin(), parser.getNumber(), true));
-            }
-        } else {
-            PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
-            if (parser != null) {
-                v.getContext().startActivity(PullRequestPagerActivity.createIntent(v.getContext(), parser.getRepoId(),
-                        parser.getLogin(), parser.getNumber(), true));
-            }
-        }
+        SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
     @Override public void onItemLongClick(int position, View v, Issue item) {

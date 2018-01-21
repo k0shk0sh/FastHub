@@ -8,6 +8,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.helper.InputHelper;
@@ -18,11 +19,11 @@ import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -34,6 +35,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<String> onLoadMore;
     private IssuesAdapter adapter;
     private SearchMvp.View countCallback;
@@ -77,7 +79,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         stateLayout.setEmptyText(R.string.no_search_results);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
@@ -91,6 +93,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         if (InputHelper.isEmpty(searchQuery)) {
             stateLayout.showEmptyState();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public SearchIssuesPresenter providePresenter() {
@@ -123,7 +126,6 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         this.searchQuery = query;
         getLoadMore().reset();
         adapter.clear();
-        recycler.scrollToPosition(0);
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());
             recycler.addOnScrollListener(getLoadMore());
