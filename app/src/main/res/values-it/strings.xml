@@ -550,10 +550,10 @@
 <string name="projects">Projects</string>
 <string name="no_projects">No Projects</string>
 <string name="no_cards">No Cards</string>
-<string name="card_added_by">Added by %s %s</string>
-<string name="too_large_changes">Too many differences to display. Please, view them via browser</string>
-<string name="project">Project</string>
-<string name="please_read">PLEASE READ!</string>
+<string name="card_added_by">Aggiunto da %s %s</string>
+<string name="too_large_changes">Troppe differenze da visualizzare. Perfavore, visualizzarli tramite un browser.</string>
+<string name="project">Progetto</string>
+<string name="please_read">PERFAVORE LEGGERE!</string>
 <string name="fasthub_faq_description">
 
 <![CDATA[
