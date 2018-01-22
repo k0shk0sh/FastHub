@@ -11,7 +11,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.types.StatusStateType;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -45,10 +44,11 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
     }
 
     @Override public void bind(@NonNull PullRequestStatusModel pullRequestStatusModel) {
-        Logger.e(pullRequestStatusModel.getState(), pullRequestStatusModel.isMergable());
         if (pullRequestStatusModel.getState() != null) {
             StatusStateType stateType = pullRequestStatusModel.getState();
             stateImage.setImageResource(stateType.getDrawableRes());
+            String mergeableState = pullRequestStatusModel.getMergeableState();
+            boolean isBlocked = "blocked".equalsIgnoreCase(mergeableState);
             if (stateType == StatusStateType.failure) {
                 stateImage.tintDrawableColor(red);
                 if (pullRequestStatusModel.isMergable()) {
@@ -63,7 +63,7 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
                 if (pullRequestStatusModel.isMergable()) {
                     stateImage.setImageResource(R.drawable.ic_check_small);
                     stateImage.tintDrawableColor(green);
-                    status.setText(R.string.commit_can_be_merged);
+                    status.setText(!isBlocked ? R.string.commit_can_be_merged : R.string.can_not_merge_pr);
                 } else {
                     stateImage.setImageResource(stateType.getDrawableRes());
                     stateImage.tintDrawableColor(indigo);
@@ -72,7 +72,7 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
             } else {
                 stateImage.tintDrawableColor(green);
                 if (pullRequestStatusModel.isMergable()) {
-                    status.setText(R.string.commit_can_be_merged);
+                    status.setText(!isBlocked ? R.string.commit_can_be_merged : R.string.can_not_merge_pr);
                 } else {
                     status.setText(R.string.checks_passed);
                 }

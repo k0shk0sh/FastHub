@@ -1,7 +1,10 @@
 package com.fastaccess.data.dao
 
 import android.os.Parcel
-import android.os.Parcelable
+import com.fastaccess.helper.KotlinParcelable
+import com.fastaccess.helper.parcelableCreator
+import com.fastaccess.helper.readBoolean
+import com.fastaccess.helper.writeBoolean
 
 /**
  * Created by Hashemsergani on 01/09/2017.
@@ -13,7 +16,7 @@ data class EditRepoFileModel(val login: String,
                              val sha: String?,
                              val contentUrl: String?,
                              val fileName: String?,
-                             val isEdit: Boolean) : Parcelable {
+                             val isEdit: Boolean) : KotlinParcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
@@ -22,30 +25,20 @@ data class EditRepoFileModel(val login: String,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readByte() != 0.toByte())
+            parcel.readBoolean())
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(login)
-        parcel.writeString(repoId)
-        parcel.writeString(path)
-        parcel.writeString(ref)
-        parcel.writeString(sha)
-        parcel.writeString(contentUrl)
-        parcel.writeString(fileName)
-        parcel.writeByte(if (isEdit) 1 else 0)
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(login)
+        writeString(repoId)
+        writeString(path)
+        writeString(ref)
+        writeString(sha)
+        writeString(contentUrl)
+        writeString(fileName)
+        writeBoolean(isEdit)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<EditRepoFileModel> {
-        override fun createFromParcel(parcel: Parcel): EditRepoFileModel {
-            return EditRepoFileModel(parcel)
-        }
-
-        override fun newArray(size: Int): Array<EditRepoFileModel?> {
-            return arrayOfNulls(size)
-        }
+    companion object {
+        @JvmField val CREATOR = parcelableCreator(::EditRepoFileModel)
     }
 }

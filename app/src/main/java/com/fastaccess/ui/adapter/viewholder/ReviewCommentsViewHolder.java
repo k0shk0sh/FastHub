@@ -150,7 +150,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
                         owner.setVisibility(View.VISIBLE);
                         owner.setText(R.string.original_poster);
                     } else {
-                        owner.setText(null);
+                        owner.setText("");
                         owner.setVisibility(View.GONE);
                     }
                 }

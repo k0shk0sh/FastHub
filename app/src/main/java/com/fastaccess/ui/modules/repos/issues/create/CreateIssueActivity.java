@@ -396,7 +396,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
             milestoneDescription.setText(milestoneModel.getDescription());
             milestoneDescription.setVisibility(View.VISIBLE);
         } else {
-            milestoneDescription.setText(null);
+            milestoneDescription.setText("");
             milestoneDescription.setVisibility(View.GONE);
         }
     }

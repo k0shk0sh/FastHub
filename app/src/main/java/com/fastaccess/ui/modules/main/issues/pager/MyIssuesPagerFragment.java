@@ -109,6 +109,16 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
                 .orElse(null);
     }
 
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (pager != null && pager.getAdapter() != null) {
+            MyIssuesFragment myIssuesFragment = (MyIssuesFragment) pager.getAdapter().instantiateItem(pager, pager.getCurrentItem());
+            if (myIssuesFragment != null) {
+                myIssuesFragment.onScrollTop(0);
+            }
+        }
+    }
+
     private void selectTab(int position, boolean fromViewPager) {
         if (!fromViewPager) {
             onShowFilterMenu(getModelAtIndex(position), ViewHelper.getTabTextView(tabs, position));

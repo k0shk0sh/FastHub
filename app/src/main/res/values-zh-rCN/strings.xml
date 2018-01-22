@@ -18,7 +18,8 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
 -->
 
 <!-- 原文版本 (Original strings): 2017/09/24 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">加载中, 请稍候…</string>
     <string name="action">动作</string>
     <string name="settings">设置</string>
@@ -395,15 +396,6 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="enable_signature_box_summary">在编辑器下选择每次是否签名</string>
     <string name="tags">标签</string>
     <string name="add_comment">添加评论</string>
-    <string name="banners">简介横幅</string>
-    <string name="banners_info">
-        从 FastHub 2.5.0 开始, 您可以在个人页面使用横幅来更好的展示自己. \n\n
-        任何使用 FastHub 应用的人都会看到您的横幅, 您也可以看到其他人的横幅!
-        如果您想为自己创建一个横幅, 确保其分辨率为 1280x384 或其他等比例大小, 否则显示时可能会被裁剪.\n\n
-        您可以按照以下步骤随意设置或更改您的横幅: 创建一个描述为 "header.fst", 内容为横幅图片的直链链接的 Gist.\n\n
-        或还可以更简单, 直接使用内置的图片选择器!
-    </string>
-    <string name="edit_banner">选择横幅</string>
     <string name="image_error">加载图片时出错, 请重试.</string>
     <string name="trending">趋势</string>
     <string name="not_really_working">由于 GitHub 的限制, 无法正常按 Emoji 排序</string>

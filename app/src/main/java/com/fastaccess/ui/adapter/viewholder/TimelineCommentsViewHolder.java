@@ -162,14 +162,14 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
                         owner.setVisibility(View.VISIBLE);
                         owner.setText(R.string.original_poster);
                     } else {
-                        owner.setText(null);
+                        owner.setText("");
                         owner.setVisibility(View.GONE);
                     }
                 }
             }
         } else {
             avatar.setUrl(null, null, false, false);
-            name.setText(null);
+            name.setText("");
         }
         if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
             pathText.setVisibility(View.VISIBLE);

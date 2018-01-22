@@ -359,9 +359,6 @@
     <string name="enable_signature_box_summary">テキストエディタで署名を切り替えるチェックボックスを有効にします。</string>
     <string name="tags">タグ</string>
     <string name="add_comment">コメントを追加</string>
-    <string name="banners">チュートリアルバナー</string>
-    <string name="banners_info">FastHub 2.5.0では、プロフィールページのバナーでより良い自己紹介をすることができます。\n\nFastHubユーザーは、あなたのヘッダーを見ることができ、同じように他の人のヘッダーも見ることができます！バナーを自作したい場合、1280x384またはその割り切れる比で作成してください。\n\nバナーはヘッダー画像へのダイレクトリンクを含む「header.fst」というGistを作成することによりいつでも追加・変更できます。\n\nもっと簡単な方法として、システム組み込みの画像選択機能を使う方法もあります！</string>
-    <string name="edit_banner">バナーを選択</string>
     <string name="image_error">画像の読み込みでエラーが発生しました、再試行してください。</string>
     <string name="trending">トレンド</string>
     <string name="not_really_working">絵文字での並びかえはGitHubの制限により実際には動作しません</string>

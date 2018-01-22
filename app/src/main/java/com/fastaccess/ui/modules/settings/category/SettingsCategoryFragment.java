@@ -226,10 +226,10 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 String json = new Gson().toJson(preferences);
                 String path = FileHelper.PATH;
                 File folder = new File(path);
-                boolean mkDirs = folder.mkdirs();
+                folder.mkdirs();
                 File backup = new File(folder, "backup.json");
                 try {
-                    boolean isCreated = backup.createNewFile();
+                    backup.createNewFile();
                     try (FileOutputStream outputStream = new FileOutputStream(backup)) {
                         try (OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream)) {
                             myOutWriter.append(json);
@@ -239,6 +239,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     Log.e(getTag(), "Couldn't backup: " + e.toString());
                 }
                 PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
+                Toasty.success(App.getInstance(), getString(R.string.backed_up)).show();
             } else {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             }

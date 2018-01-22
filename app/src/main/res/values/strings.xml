@@ -1,4 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <!-- DO NOT COPY!  -->
 
     <string name="app_name" translatable="false">FastHub</string>
@@ -502,15 +503,6 @@
     <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
     <string name="tags">Tags</string>
     <string name="add_comment">Add comment</string>
-    <string name="banners">Introducing Banners</string>
-    <string name="banners_info">With FastHub 2.5.0, you can now better express yourself with banners
-        for your profile page.\n\nAnyone using the FastHub app, will see your header, and you\'ll
-        begin seeing other peoples headers as well! If you\'d like to create a banner for yourself,
-        make it 1280x384 or divisible, otherwise, it may get cropped.\n\nYou can add or change your
-        banner at any time, by creating a gist described "header.fst" with a file containing a
-        direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
-    </string>
-    <string name="edit_banner">CHOOSE BANNER</string>
     <string name="image_error">Error loading image, please try again.</string>
     <string name="trending">Trending</string>
     <string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
@@ -590,18 +582,7 @@
         search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
 
         <h5>• How can I get a PROMO CODE?</h5>
-        <p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
-        <ul>
-        <li>Your GitHub username;</li>
-        <li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
-        <li>Your education start and graduation dates.</li>
-        </ul>
-        <p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
-        <ul>
-        <li>Your GitHub username;</li>
-        <li>Write an article about FastHub in any social media, such as Medium;</li>
-        <li>Prove your authorship.</li>
-        </ul>
+        <p>This program is no longer exists.</p>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Comments added successfully</string>
@@ -614,4 +595,6 @@
     <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
     <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
     <string name="block">Block</string>
+    <string name="user_blocked">User blocked</string>
+    <string name="user_unblocked">User unlocked</string>
 </resources>

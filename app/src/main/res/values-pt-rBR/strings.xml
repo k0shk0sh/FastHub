@@ -1,4 +1,5 @@
-﻿<resources>
+﻿<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Carregando, por favor aguarde…</string>
     <string name="action">Ação</string>
     <string name="settings">Configurações</string>
@@ -369,15 +370,6 @@
     <string name="enable_signature_box_summary">Habilitar checkbox para alternar a assinatura no editor de texto</string>
     <string name="tags">Tags</string>
     <string name="add_comment">Adicionar comentário</string>
-    <string name="banners">Apresentando Banners</string>
-    <string name="banners_info">Com o FastHub 2.5.0, agora você pode se expressar melhor com banners
-        para a sua página de perfil.\n\nQualquer um usando o app FastHub, verá o seu cabeçalho, e você
-        começará a ver os cabeçalhos de outras pessoas também! Se você quiser criar um banner para si,
-        faça-o 1280x384 oi divisível, caso contrário, ele pode ser cortado.\n\nVocê pode adicionar ou mudar
-        o seu banner a qualquer momento, criando um gist descrito "header.fst" com um arquivo contendo um
-        link direto para a imagem de cabeçalho.\n\nOu ainda mais simples, use o escolhedor de imagens embutido!
-    </string>
-    <string name="edit_banner">ESCOLHER BANNER</string>
     <string name="image_error">Erro ao carregar a imagem, por favor tente novamente.</string>
     <string name="trending">Em alta</string>
     <string name="not_really_working">Organizar por emojis ainda não está funcionando devido à limitações do GitHub</string>
