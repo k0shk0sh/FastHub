@@ -524,32 +524,32 @@
 <string name="premium_theme">Tema Premium</string>
 <string name="choose_code_theme">Tavolozza colore codice</string>
 <string name="enterprise_login_warning">Si prega di entrare nel proprio account GitHub per accedere a tutto dall\'API  GitHub API altrimenti finirai con l\'essere espulso ogni volta che accederai a qualcosa invece che il tuo account GitHub Enterprise a causa del token trasmesso all\'API di GitHub che viene dal tuo Account Enterprise.</string>
-<string name="add_account">Add Account</string>
-<string name="choose_account">Choose Account</string>
-<string name="not_match">Not match</string>
-<string name="warning">Warning</string>
-<string name="owner">Owner</string>
-<string name="original_poster">Original Poster</string>
-<string name="cancel_reviews">Cancel Reviews</string>
-<string name="colored_navbar_summary">Disable colored navigation bar in themes</string>
-<string name="colored_navbar_title">Colorless Navbar</string>
-<string name="sound_chooser_summary">Choose custom notification sound</string>
-<string name="sound_chooser_title">Choose Notification Sound</string>
-<string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
-<string name="disable_auto_gif_title">Disable Playing GIF</string>
-<string name="request_changes">requested changes</string>
-<string name="google_play_service_error">Google Play Services are unavailable</string>
-<string name="edit_gist">Edit Gist</string>
-<string name="content">Content</string>
-<string name="expand">expand</string>
-<string name="copy_sha">Copy SHA-1</string>
-<string name="view_as_code">View as code</string>
-<string name="app_animation_title">Disable In-App Animations</string>
-<string name="app_animation_summary">Disable in-app animations everywhere.</string>
-<string name="can_not_merge_pr">This PR can\'t be merged now.</string>
-<string name="projects">Projects</string>
-<string name="no_projects">No Projects</string>
-<string name="no_cards">No Cards</string>
+<string name="add_account">Aggiungi Account</string>
+<string name="choose_account">Scegli Account</string>
+<string name="not_match">Non corrisponde</string>
+<string name="warning">Attenzione</string>
+<string name="owner">Proprietario</string>
+<string name="original_poster">Creatore Originale</string>
+<string name="cancel_reviews">Annulla Revisioni</string>
+<string name="colored_navbar_summary">Disattiva barra di navigazione colorata nei temi</string>
+<string name="colored_navbar_title">Barra di Navigazione Piatta</string>
+<string name="sound_chooser_summary">Scegli suono personalizzato della notifica</string>
+<string name="sound_chooser_title">Scegli Suono Notifica</string>
+<string name="disable_auto_gif_summary">Disattiva riproduzione GIF automatica</string>
+<string name="disable_auto_gif_title">Disattiva riproduzione GIF</string>
+<string name="request_changes">richiesti cambiamenti</string>
+<string name="google_play_service_error">Google Play Services non sono disponibili</string>
+<string name="edit_gist">Modifica Gist</string>
+<string name="content">Contenuto</string>
+<string name="expand">espandi</string>
+<string name="copy_sha">Copia SHA-1</string>
+<string name="view_as_code">Visualizza come codice</string>
+<string name="app_animation_title">Disattiva Animazioni In-App</string>
+<string name="app_animation_summary">Disattiva le animazioni in-app dappertutto.</string>
+<string name="can_not_merge_pr">Questa PR non può essere unita al momento.</string>
+<string name="projects">Progetti</string>
+<string name="no_projects">Nessun Progetto</string>
+<string name="no_cards">Nessuna Card</string>
 <string name="card_added_by">Aggiunto da %s %s</string>
 <string name="too_large_changes">Troppe differenze da visualizzare. Perfavore, visualizzarli tramite un browser.</string>
 <string name="project">Progetto</string>
@@ -558,7 +558,7 @@
 
 <![CDATA[
 
-<h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+<h5>• Perchè non posso visualizzare le mie <b>Organizzazioni</b> <i>Private</i> o <i>Pubbliche</i>?</h5>
 
 <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
 
