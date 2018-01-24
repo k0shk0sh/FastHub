@@ -614,19 +614,19 @@
 
 <h5>• Perchè non posso visualizzare le mie <b>Organizzazioni</b> <i>Private</i> o <i>Pubbliche</i>?</h5>
 
-<p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
+<p>Apri https://github.com/settings/applications e cerca FastHub, aprilo e scorri fino a Accesso organizzazione("Organization access") e cliccare il pulsante Permetti("Grant")
 
-Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+Alternativamente puoi accedere utilizzando il <b>Token di Accesso</b> che faciliterà il processo..</p>
 
-<h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
+<h5>• Ho provato ad accedere con un Token di accesso e una Password One-Time (OTP) senza alcun successo. Cosa c\'è di sbagliato?</h5>
 
-<p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
+<p>Non puoi accedere con il Token si accesso e con OTP tutto insieme. A causa del limitato tempo di vita do queste password, devi ripetere ogni procedura di accesso ogni qualche secondo.</p>
 
-<h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
+<h5>• Perché non sono le mie Wiki nei repository privati ​​ed Enterprise mostrati?</h5>
 
-<p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
+<p>Mentre FastHub ritrae le pagine Wiki di GitHub, l'applicazione non è in grado di ottenere alcun token di sessione richiesto dai repository privati.</p>
 
-<h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
+<h5>• Ho effettuato l'accesso al mio account aziendale. Perché non posso interagire con qualcosa di diverso dal mio Enterprise GitHub?</h5>
 
 <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
 
