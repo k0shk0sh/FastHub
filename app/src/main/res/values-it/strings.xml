@@ -628,43 +628,39 @@ Alternativamente puoi accedere utilizzando il <b>Token di Accesso</b> che facili
 
 <h5>• Ho effettuato l'accesso al mio account aziendale. Perché non posso interagire con qualcosa di diverso dal mio Enterprise GitHub?</h5>
 
-<p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
+<p>Bene, logicamente, non puoi accedere ad altro che non sia la tua Enterprise. FastHub tenta di richiedere il maggior numero possibile di autorizzazioni, ma non può fare altro nella maggior parte dei casi, poiché le credenziali non sono sul server di GitHub. Ma in <b>alcuni</b> casi il token OAuth del tuo account GitHub farà tutto.</p>
 
-in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
+<h5>• Perché ho problemi con la modifica di Problemi/Pull Requests (PRs)?</h5>
 
-<h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
+<p>Se non si è in grado di modificare Problemi/PR nel repository di un'organizzazione pubblica, contattare la propria organizzazione per concedere l'accesso a FastHub. In alternativa puoi accedere con un token di accesso.</p>
 
-<p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+<h5>• Sto avendo problemi!/Voglio suggerirti alcune cose!</h5>
 
-<h5>• I\'m having problems! / I want to suggest you some things!</h5>
+<p>Vai a https://github.com/k0shk0sh/FastHub/issues/new e crea un nuovo problema per eventuali bug e richieste di funzionalità. Ti incoraggio davvero a cercare problemi simili prima di aprirne uno nuovo. Qualsiasi ticket duplicato sarà etichettato come duplicato e chiuso immediatamente.</p>
 
-<p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+<h5>• Come posso ottenere un CODICE PROMOZIONALE?</h5>
 
-search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
-
-<h5>• How can I get a PROMO CODE?</h5>
-
-<p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
+<p>Se sei uno studente, dovrai dimostrarlo a me. I documenti elencati di seguito devono essere forniti tramite e-mail:</p>
 
 <ul>
 
-<li>Your GitHub username;</li>
+<li>Il tuo nome utente GitHub;</li>
 
-<li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
+<li>La tua carta studente e la tua carta d'identità/passaporto (che mostra il tuo nome e la faccia per confrontarli!);</li>
 
-<li>Your education start and graduation dates.</li>
+<li>Le date dell\'inizio della tua formazione della laurea.</li>
 
 </ul>
 
-<p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
+<p>Se non sei uno studente e non ti puoi permettere l'acquisto di PRO, dovrai:</p>
 
 <ul>
 
-<li>Your GitHub username;</li>
+<li>Il tuo nome utente GitHub;</li>
 
-<li>Write an article about FastHub in any social media, such as Medium;</li>
+<li>Scrivi un articolo su FastHub in qualsiasi social media, come Medium;</li>
 
-<li>Prove your authorship.</li>
+<li>Dimostra la tua autorità.</li>
 
 </ul>
 
