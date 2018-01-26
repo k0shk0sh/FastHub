@@ -213,8 +213,7 @@
     <string name="notification_settings">Benachrichtigung</string>
     <string name="turn_off">Ausschalten</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
-    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>
-	<string name="no_issues">Kein Issue</string>										   
+    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>							   
     <string name="copy">Kopieren</string>
     <string name="success_copied">kopiert</string>
     <string name="commit_message">Commitnachricht</string>
