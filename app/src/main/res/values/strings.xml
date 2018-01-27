@@ -595,6 +595,7 @@
     <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
     <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
     <string name="block">Block</string>
+    <string name="unblock">Unblock</string>
     <string name="user_blocked">User blocked</string>
     <string name="user_unblocked">User unlocked</string>
 </resources>
