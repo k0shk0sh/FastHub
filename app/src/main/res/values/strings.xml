@@ -597,5 +597,5 @@
     <string name="block">Block</string>
     <string name="unblock">Unblock</string>
     <string name="user_blocked">User blocked</string>
-    <string name="user_unblocked">User unlocked</string>
+    <string name="user_unblocked">User unblocked</string>
 </resources>
