@@ -314,7 +314,7 @@
     <string name="personal_token">Persönlicher Token</string>
     <string name="basic_login">Normal anmelden</string>
     <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link
-\nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
     <string name="insert">Einfügen</string>
     <string name="select">Auswählen</string>
     <string name="select_picture">Bild auswählen</string>
@@ -376,7 +376,7 @@
     <string name="premium_theme">Premiumdesign</string>
     <string name="choose_code_theme">Farbcodepalette auswählen</string>
     <string name="enterprise_login_warning">Bitte logge dich per OAuth ein um den ganzen Umfang der GitHub API benutzen 
-	zu können und um zufällige Logouts bezüglich Enterprise und Logintokens zu verhindern.</string>
+	    zu können und um zufällige Logouts bezüglich Enterprise und Logintokens zu verhindern.</string>
     <string name="add_account">Account hinzufügen</string>
     <string name="choose_account">Account auswählen</string>
 	<string name="not_match">Keine Übereinstimmung</string>
@@ -430,19 +430,6 @@
         <h5>• Ich habe das problem oder  Ich möchte dies &amp; das!!</h5>
         <p>Gehe zu https://github.com/k0shk0sh/FastHub/issues/new und erstelle ein neues issue  für bugs oder Feature Requests, Ich möchte dich ermutigen
         das du vor dem erstellen eines Tickets suchst ob es das schon existiert.Jeder doppelter Request wird dazu führen dass du sofort ausgeschlossen wirst.</p>
-
-        <h5>• Wie bekomme ich einen PROMO CODE?</h5>
-        <p>Wenn du ein Student bist musst du  mir eine e-Mail schicken,in der du mir beweist das du ein Student bist, Du brauchst die unten stehen den dokumente:</p>
-        <ul>
-        <li>Deine Universitätenausweis & deinen Personalausweis (der deinen Namen zeigt & und dein Gesicht um es zu vergleichen!)</li>
-        <li>Dein Uni-Start & Enddatum</li>
-        <li>Bewerte FastHub im Play Store</li>
-        </ul>
-        <p>Wenn du kein Student bist und du kannst es dir nicht leisten für PRO zu bezahlen, musst du:</p>
-        <ul>
-        <li>Einen Arctikel über Fasthub schreiben in Social Media wie (Medium)</li>
-        <li>Bewerte FastHub im Play Store</li>
-        </ul>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Kommentare erfolgreich hinzugefügt</string>

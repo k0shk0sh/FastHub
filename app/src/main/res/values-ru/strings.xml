@@ -17,8 +17,8 @@
     <string name="profile">Профиль</string>
     <string name="error">Ошибка</string>
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
-    <string name="opened">Открыт</string>
-    <string name="closed">Закрыт</string>
+    <string name="opened">Открытые</string>
+    <string name="closed">Закрытые</string>
     <string name="repo_chooser">Выбрать репозиторий</string>
     <string name="followers">Подписчики</string>
     <string name="following">Подписки</string>
@@ -316,7 +316,7 @@
     <string name="dialog_animation_summary">Включить всплывающие анимации</string>
     <string name="dialog_animation_title">Всплывающая анимация</string>
     <string name="milestones">Цели</string>
-    <string name="assignee">Назначенные</string>
+    <string name="assignee">Назначен</string>
     <string name="checks_failed">Одна или несколько проверок не пройдены</string>
     <string name="checks_pending">Ожидаются результаты проверок</string>
     <string name="checks_passed">Все проверки успешно пройдены</string>
@@ -443,19 +443,8 @@
         <h5>• Я обнаружил ошибку! / Я хочу предложить вам ввести новую функцию!</h5>
         <p>Чтобы сообщить об ошибке или сделать предложение, перейдите по ссылке https://github.com/k0shk0sh/FastHub/issues/new и создайте новый Issue. Я призываю вас искать похожие Issue перед открытием нового.
         Любой дублирующийся Issue будет помечен как дубликат и закрыт.</p>
-        <h5>• Как мне получить ПРОМОКОД?</h5>
-        <p>Если вы студент, то вы должны будете подтвердить мне это, предоставив мне по электронной почте данные, которые перечислены ниже:</p>
-        <ul>
-        <li>Ваше имя пользователя GitHub;</li>
-        <li>Ваши студенческую карту и удостоверение личности/паспорт (для сравнения необходимо, чтобы были видны ваши имя и лицо!);</li>
-        <li>Даты начала и конца периодов вашего обучения.</li>
-        </ul>
-        <p>Если же вы не студент и не можете позволить себе приобретение PRO-версии, вам необходимо будет:</p>
-        <ul>
-        <li>Предоставить мне ваше имя пользователя GitHub;</li>
-        <li>Написать статью о FastHub в личном блоге или другом подобном медиа (например, Medium);</li>
-        <li>Подтвердить своё авторство.</li>
-        </ul>
+        <h5>• Как мне получить бесплатный ПРОМОКОД?</h5>
+        <p>К сожалению, данная акция больше не действительна.</p>
     ]]></string>
     <string name="faq">ЧаВо</string>
     <string name="comments_added_successfully">Комментарии успешно добавлены</string>
@@ -468,4 +457,7 @@
     <string name="disable_loading_image_summary">Отключить загрузку изображений в режиме передачи данных</string>
     <string name="report_issue_warning">Этот Issue будет опубликован в репозитории FastHub</string>
     <string name="block">Заблокировать</string>
+    <string name="unblock">Заблокировать</string>
+    <string name="user_blocked">Пользователь заблокирован</string>
+    <string name="user_unblocked">Пользователь разблокирован</string>
 </resources>
