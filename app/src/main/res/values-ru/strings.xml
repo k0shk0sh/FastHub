@@ -457,7 +457,7 @@
     <string name="disable_loading_image_summary">Отключить загрузку изображений в режиме передачи данных</string>
     <string name="report_issue_warning">Этот Issue будет опубликован в репозитории FastHub</string>
     <string name="block">Заблокировать</string>
-    <string name="unblock">Заблокировать</string>
+    <string name="unblock">Разблокировать</string>
     <string name="user_blocked">Пользователь заблокирован</string>
     <string name="user_unblocked">Пользователь разблокирован</string>
 </resources>
