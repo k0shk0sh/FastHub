@@ -365,7 +365,6 @@
     <string name="enable_signature_box_summary">Rodyti parašą, kai rašau komentarą</string>
     <string name="tags">Etiketės</string>
     <string name="add_comment">Pridėti komentarą</string>
-    <string name="edit_banner">Pasirinkti viršelio nuotrauką</string>
     <string name="image_error">Nepavyko įkrauti paveikslėlį, dar kartą pabandykite vėliau.</string>
     <string name="trending">Populiaru</string>
     <string name="not_really_working">„GitHub“ neleidžia rūšiuoti pagal jaustukus dėl techninių limitacijų.</string>
