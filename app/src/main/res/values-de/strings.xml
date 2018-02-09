@@ -64,7 +64,7 @@
     <string name="link">Link</string>
     <string name="image">Bild</string>
     <string name="deletion">Löschung</string>
-    <string name="addition">Additionen</string>
+    <string name="addition">Neuerungen</string>
     <string name="changes">Änderungen</string>
     <string name="status">Status</string>
     <string name="confirm_message">Bist du sicher?</string>
@@ -100,7 +100,7 @@
     <string name="required_field">Benötigtes Feld</string>
     <string name="successfully_submitted">Erfolgreich abgeschickt!</string>
     <string name="create_gist">Gist erstellen</string>
-    <string name="clear">leeren</string>
+    <string name="clear">Leeren</string>
     <string name="users">Benutzer</string>
     <string name="title">Titel</string>
     <string name="milestone">Meilenstein</string>
@@ -128,7 +128,7 @@
     <string name="login">Anmelden</string>
     <string name="gist_description">Gist-Beschreibung</string>
     <string name="avatar_click_hint">Tippe auf einen Avatar um zu dem jeweiligen Profil zu gelangen</string>
-    <string name="feeds_fork_hint">Tippe länger auf einen Fork um entweder die originale- oder die geforkte Repo anzuzeigen</string>
+    <string name="feeds_fork_hint">Tippe länger auf einen Fork um entweder das originale- oder das geforkte Repo anzuzeigen</string>
     <string name="click_here_to_download_release_hint">Releases herunterladen</string>
     <string name="options">Optionen</string>
     <string name="click_file_option_hint">Datei herunterladen oder Ordner teilen</string> <!-- Unsure -->
@@ -137,7 +137,7 @@
     <string name="star_hint">Repo favorisieren</string>
     <string name="watch">Beobachten</string>
     <string name="watch_hint">Repo Beobachten</string>
-    <string name="pin_repo_hint">Pinne repos an um schneller auf sie zuzugreifen zu können</string>
+    <string name="pin_repo_hint">Pinne Repos an um schneller auf sie zuzugreifen zu können</string>
     <string name="no_url">Keine URL gefunden</string>
     <string name="last_updated">Zuletzt geupdatet.</string>
     <string name="preview">Vorschau</string>
@@ -158,7 +158,7 @@
     <string name="ten_minutes">10 Minuten</string>
     <string name="five_minutes">5 Minuten</string>
     <string name="one_minute">Minute</string>
-    <string name="one_hour">Stunde</string>
+    <string name="one_hour">1 Stunde</string>
     <string name="two_hour">2 Stunden</string>
     <string name="three_hour">3 Stunden</string>
     <string name="created_repo">Erstellt</string>
@@ -215,13 +215,13 @@
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
     <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>							   
     <string name="copy">Kopieren</string>
-    <string name="success_copied">kopiert</string>
+    <string name="success_copied">Kopiert</string>
     <string name="commit_message">Commitnachricht</string>
     <string name="network_error">Konnte nicht mit dem Server kommunizieren</string>
     <string name="unexpected_error">Konnte API nicht erreichen</string>
     <string name="request_error">Konnte Server nicht erreichen, versuche es später erneut</string>
     <string name="marking_as_read">Benachrichtigung als gelesen markieren</string>
-    <string name="forking_gist">gist forken</string>
+    <string name="forking_gist">Gist forken</string>
     <string name="login_using_your_default_browser">Mit dem Standardbrowser anmelden (OAuth)</string>
     <string name="or_character">ODER</string>
     <string name="mark_notification_title">Lesestatus deaktivieren</string>
@@ -409,27 +409,26 @@
 	<string name="please_read">BITTE LESEN!</string>
 	<string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Warum kann ich meine <b> Organisationen </b> entweder <i> private </i> oder <i> öffentliche </i> sehen\nicht sehen?</h5>
+        <h5>• Warum kann ich meine <b> Organisationen </b> entweder <i> private </i> oder <i> öffentliche </i> sehen\\nicht sehen?</h5>
         <p>Öffne https://github.com/Settings/Applications und suche nach FastHub, öffne es dann Blätter zu Organisation Zugang und klicke auf den Grant Knopf,
         Alternativ melde dich über  einen <b> Zugang Token </b> an welches das Setup vereinfacht.</p>
 
-        <h5>• Ich habe versuchtt mich mit einem Zugangs Token anzumelden amp; OTP aber es funtioniert nicht?</h5>
-        <p>Du kannst dich nicht mit einem zugangs token anmelden &amp; OTP alle Zusammen wegen der Lebenszeit des OTP codes, du musst dich alle paar sekunden anmelden</p>
+        <h5>• Ich habe versuchtt mich mit einem Zugangs Token anzumelden &amp; OTP aber es funtioniert nicht?</h5>
+        <p>Du kannst dich nicht mit einem Zugangs Token anmelden &amp; OTP alle Zusammen wegen der Lebenszeit des OTP codes, du musst dich alle paar sekunden anmelden</p>
 
         <h5>• Warum werden mein privates Repo &amp; Enterprise Wiki nicht angezeigt?</h5>
-        <p>Es wie FastHub die GitHub Wiki page holt &amp; Private Repos benötigen einen Sitzungs token denn FastHub nicht bekommen kann.</p>
+        <p>Es wie FastHub die GitHub Wiki page holt &amp; Private Repos benötigen einen Sitzungs Token denn FastHub nicht bekommen kann.</p>
 
-        <h5>• Ich habe mich mit meinen Enterprise account angemeldet kann\kann nicht mit anderen sachen interagieren außer meinem Enterprise GitHub?</h5>
-        <p>Nun, logisch, kannst du nicht auf etwas anderes als Ihr Unternehmen zugreifen. FastHub versucht, so viel möglich zu erlauben, aber kann
-        in den meisten Fällen nicht viel dafür tun, da Ihre Anmeldedaten auf den GitHub Server nicht vorhanden sind. Aber in einem <b> paar </b>
-        fällen Ihr GitHub Konto OAuth Token wird den Trick tun.</p>
+        <h5>• Ich habe mich mit meinen Enterprise Account angemeldet kann\\kann nicht mit anderen Sachen interagieren außer meinem Enterprise GitHub?</h5>
+        <p>Logischerweise kannst du nicht auf etwas anderes als dein Unternehmen zugreifen. FastHub versucht dir möglichst viel zu ermöglichen, aber kann
+        natürlich nicht viel tun wenn deine Anmeldedaten auf den GitHub Servern nicht vorhanden sind. In ein <b> paar </b>
+        Fällen kann es allerdings helfen dich mit deinem OAuth Token anzumelden.</p>
 
-        <h5>• Warum habe ich Probleme bei der Bearbeitung von Problemen/PRS?</h5>
-        <p>Wenn du ein öffentliches organisations-repo bearbeiten willst, wende dich bitte an deine organisation, um Zugang zu FastHub zu gewähren oder Zugangsdaten zu verwenden!.</p>
+        <h5>• Ich habe Schwierigkeiten bei der Bearbeitung von Problemen/PRS!</h5>
+        <p>Wenn du ein öffentliches Organisations-Repo bearbeiten willst, wende dich bitte an deine Organisation, um den Zugang für FastHub genehmigen zu lassen oder verwende den entsprechenden Access Token!.</p>
 
-        <h5>• Ich habe das problem oder  Ich möchte dies &amp; das!!</h5>
-        <p>Gehe zu https://github.com/k0shk0sh/FastHub/issues/new und erstelle ein neues issue  für bugs oder Feature Requests, Ich möchte dich ermutigen
-        das du vor dem erstellen eines Tickets suchst ob es das schon existiert.Jeder doppelter Request wird dazu führen dass du sofort ausgeschlossen wirst.</p>
+        <h5>• Ich habe einen Fehler gefunden oder habe Verbesserungsvorschläge!</h5>
+        <p>Gehe zu https://github.com/k0shk0sh/FastHub/issues/new und erstelle ein neues Issue für Bugs oder Feature Requests. Bitte suche aber vor dem Erstellen nach bereits existierenden Tickets. Jede doppelte Anfrage wird sofort als Duplikat makiert und geschlossen.</p>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Kommentare erfolgreich hinzugefügt</string>
@@ -439,12 +438,12 @@
     <string name="open_new_window">In neuem Fenster öffnen</string>
     <string name="dismiss_all">Alles Verwerfen</string>
     <string name="edited">• bearbeitet</string>
-    <string name="customization">Personalisation</string>
+    <string name="customization">Personalisierungen</string>
     <string name="restore">Wiederherstellen</string>
     <string name="backup">Sichern</string>
     <string name="backed_up">Erfolgreich gesichert!</string>
     <string name="select_backup">Backup auswählen</string>
-    <string name="permission_failed">Rechte nicht gewährt.</string>
+    <string name="permission_failed">Keine Berechigungen.</string>
     <string name="backup_summary">Letztes Update: %s</string>
     <string name="now">Jetzt</string>
     <string name="no_orgs_dialog_title">Organisation(en) nicht auffindbar?</string>
@@ -458,8 +457,8 @@
     <string name="comment_is_too_far_to_paginate">Dieser Kommentar liegt zu weit zurück, um ihn anzuzeigen</string>
     <string name="disable_loading_image_title">Ladebild deaktivieren</string>
     <string name="report_issue_warning">Dieses Problem wird zum FastHub Repo in GitHub übermittelt</string>
-    <string name="disable_loading_image_summary">Bei Nutzung des mobilen Internets Ladebild deaktivieren</string>
-	<string name="block">blockieren</string>
+    <string name="disable_loading_image_summary">Bei Nutzung einer mobilen Datenverbindung Ladebild deaktivieren</string>
+	<string name="block">Blockieren</string>
     <string name="user_blocked">Nutzer blockiert</string>
     <string name="user_unblocked">Nutzer entblockt</string>
 </resources>
