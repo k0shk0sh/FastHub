@@ -450,4 +450,42 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="too_large_changes">更改内容过多. 请在浏览器中查看.</string>
     <string name="project">项目</string>
     <string name="faq">常见问题</string>
+    <string name="please_read">请阅读!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• 为什么我不能看见我的 <i>Private</i> 或者我的 <i>Public</i> <b>Organizations</b>?</h5>
+        <p>打开 https://github.com/settings/applications 并找到 FastHub, 打开它, 向下滚动到 "Organization access" 并点击 "Grant" 按钮.
+        或者, 你可以使用 <b>Access Token</b> 登陆, 这样会更简便.</p>
+
+        <h5>• 我尝试使用 Access Token 和 a One-Time Password (OTP) 却不能登录, 为什么?</h5>
+        <p>你无法使用 Access Token 和 OTP 一起登录. 由于这类密码生命周期有限, 你需要每隔几秒进行一次登陆操作.</p>
+
+        <h5>• 为什么我的 Private 和 Enterprise Repositories\' Wikis 没有显示?</h5>
+        <p>这是因为FastHub 将 GitHub\'s Wiki 页面分开, 因此应用无法获取 Private Repositories 的任何 session token.</p>
+
+        <h5>• 我已经登录到了我的 Enterprise account. 为什么除了我的 Enterprise GitHub 不能进行其他操作?</h5>
+        <p>是的, 从逻辑上讲, 你不能访问除了你的 Enterprise 外的任何操作. 虽然 FastHub 尝试要求尽可能多的权限, 但在大多数情况下不能这么做, 因为你的凭据不在 GitHub\'s 服务器上. 但是在 <b>某些</b> 情况下你的 GitHub 帐号 OAuth token 却可以.</p>
+
+        <h5>• 为什么我在编辑 Issues/Pull Requests (PRs) 时遇到问题?</h5>
+        <p>如果你无法编辑 Public Organization\'s repository 的 Issues/PRs, 请联系你的 Organization 为 FastHub 授予权限. 或者你可以使用 Access Token 登录.</p>
+
+        <h5>• 我有一些问题! / 我有一些给你的建议!</h5>
+        <p>前往 https://github.com/k0shk0sh/FastHub/issues/new 为 bus 和新功能请求创建一个 issue. 我希望你能在这之前查询一下类似的 issue, 然后再打开一个新的. 任何重复的 ticket 就将会被标记为重复, 并立即关闭.</p>
+
+        <h5>• 我怎么才能获取到 PROMO CODE?</h5>
+        <p>这个方案已经被取消了.</p>
+    ]]></string>
+    <string name="comments_added_successfully">成功添加评论</string>
+    <string name="clear_search_keywords">清除搜索历史</string>
+    <string name="restore_purchases">恢复购买</string>
+    <string name="include_forks">引入 Forks</string>
+    <string name="comment_is_too_far_to_paginate">这个 comment 因为过远不能分页</string>
+    <string name="search_results_warning">响应过多 \n显示最大的 API</string>
+    <string name="disable_loading_image_title">禁止加载图像</string>
+    <string name="disable_loading_image_summary">在数据网络下禁止加载图像</string>
+    <string name="report_issue_warning">这个 issue 将被提交到 GitHub 中 FastHub\'s 的 repository 里</string>
+    <string name="block">阻止</string>
+    <string name="unblock">允许</string>
+    <string name="user_blocked">被阻止的用户</string>
+    <string name="user_unblocked">被允许的用户</string>
 </resources>
