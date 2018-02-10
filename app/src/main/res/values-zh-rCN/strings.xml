@@ -479,7 +479,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="clear_search_keywords">清除搜索历史</string>
     <string name="restore_purchases">恢复购买</string>
     <string name="include_forks"> 包括 Forks</string>
-    <string name="comment_is_too_far_to_paginate">这个 comment 因为难以分页</string>
+    <string name="comment_is_too_far_to_paginate">这个 comment 难以分页</string>
     <string name="search_results_warning">响应过多 \n超过 API 上限</string>
     <string name="disable_loading_image_title">禁止加载图像</string>
     <string name="disable_loading_image_summary">在数据网络下禁止加载图像</string>
