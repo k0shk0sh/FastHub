@@ -478,14 +478,14 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="comments_added_successfully">成功添加评论</string>
     <string name="clear_search_keywords">清除搜索历史</string>
     <string name="restore_purchases">恢复购买</string>
-    <string name="include_forks">引入 Forks</string>
-    <string name="comment_is_too_far_to_paginate">这个 comment 因为过远不能分页</string>
-    <string name="search_results_warning">响应过多 \n显示最大的 API</string>
+    <string name="include_forks"> 包括 Forks</string>
+    <string name="comment_is_too_far_to_paginate">这个 comment 因为难以分页</string>
+    <string name="search_results_warning">响应过多 \n超过 API 上限</string>
     <string name="disable_loading_image_title">禁止加载图像</string>
     <string name="disable_loading_image_summary">在数据网络下禁止加载图像</string>
     <string name="report_issue_warning">这个 issue 将被提交到 GitHub 中 FastHub\'s 的 repository 里</string>
     <string name="block">阻止</string>
-    <string name="unblock">允许</string>
-    <string name="user_blocked">被阻止的用户</string>
-    <string name="user_unblocked">被允许的用户</string>
+    <string name="unblock">取消阻止</string>
+    <string name="user_blocked">已阻止该用户</string>
+    <string name="user_unblocked">被允许的已取消阻止该用户</string>
 </resources>
