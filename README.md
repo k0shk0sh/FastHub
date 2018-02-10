@@ -167,12 +167,6 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
   <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests. I really encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
 </details>
 
-<details>
-  <summary>How do I get PROMO CODE?</summary>
-  <p>Please refer to the in-app FAQ for details.</p>
-</details>
-
-
 ## License
 
 > Copyright (C) 2017 Kosh.  
