@@ -448,7 +448,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (backPressTimer + 2000 > System.currentTimeMillis()) {
             return true;
         } else {
-            Toast.makeText(App.getInstance(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.press_again_to_exit, R.string.press_again_to_exit);
         }
         backPressTimer = System.currentTimeMillis();
         return false;
