@@ -27,6 +27,10 @@
             android:id="@+id/notifications"
             android:icon="@drawable/ic_ring"
             android:title="@string/notifications"/>
+        <item
+            android:id="@+id/repos"
+            android:icon="@drawable/ic_repo"
+            android:title="@string/repos"/>
     </group>
 
 
