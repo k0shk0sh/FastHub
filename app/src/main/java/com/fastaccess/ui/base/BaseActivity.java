@@ -59,6 +59,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
+import org.apache.tools.ant.taskdefs.Length;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;

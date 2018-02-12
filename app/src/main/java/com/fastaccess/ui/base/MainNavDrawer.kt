@@ -9,13 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.fastaccess.R
+import com.fastaccess.R.id.view
 import com.fastaccess.data.dao.model.Login
 import com.fastaccess.data.dao.model.PinnedRepos
+import com.fastaccess.data.dao.model.Repo
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.scheme.SchemeParser
 import com.fastaccess.ui.adapter.LoginAdapter
 import com.fastaccess.ui.adapter.PinnedReposAdapter
+import com.fastaccess.ui.adapter.viewholder.RepoFilePathsViewHolder
 import com.fastaccess.ui.modules.about.FastHubAboutActivity
 import com.fastaccess.ui.modules.gists.GistsListActivity
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
@@ -25,6 +28,17 @@ import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity
 import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity
+import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment
+import com.fastaccess.ui.modules.profile.repos.ProfileReposFragment
+import com.fastaccess.ui.modules.repos.DummyFragment
+import com.fastaccess.ui.modules.repos.RepoPagerActivity
+import com.fastaccess.ui.modules.repos.RepoPagerActivity_ViewBinding
+import com.fastaccess.ui.modules.repos.RepoPagerMvp
+import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment
+import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity
+import com.fastaccess.ui.modules.repos.code.files.activity.`RepoFilesActivity$$StateSaver`
+import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment_ViewBinding
+import com.fastaccess.ui.modules.repos.code.files.paths.`RepoFilePathFragment$$StateSaver`
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity
 import com.fastaccess.ui.modules.trending.TrendingActivity
 import com.fastaccess.ui.modules.user.UserPagerActivity
@@ -177,6 +191,11 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                     }
                     item.itemId == R.id.profile -> userModel?.let {
                         UserPagerActivity.startActivity(view, it.login, false, PrefGetter.isEnterprise(), 0)
+                    }
+                    item.itemId == R.id.repos -> {
+                        if (userModel != null) {
+                            UserPagerActivity.startActivity(view, userModel.login, false, PrefGetter.isEnterprise(), 2)
+                        }
                     }
                     item.itemId == R.id.settings -> view.onOpenSettings()
                     item.itemId == R.id.about -> view.startActivity(Intent(view, FastHubAboutActivity::class.java))
