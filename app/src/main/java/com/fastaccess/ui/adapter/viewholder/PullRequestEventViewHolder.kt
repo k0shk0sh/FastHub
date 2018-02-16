@@ -149,7 +149,7 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
             stateText.text = SpannableBuilder.builder()
                     .bold(it.login())
                     .append(" ")
-                    .append(if (event.isCrossRepository) "cross referenced this" else "referenced this")
+                    .append("referenced in")
                     .append(" ")
                     .append("from").append(" ")
                     .url(if (event.commit() != null) {
