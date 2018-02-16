@@ -154,6 +154,7 @@
         <item>ko</item>
         <item>pl</item>
         <item>pt-rPT</item>
+        <item>ar</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">
@@ -178,6 +179,13 @@
         <item>APPROVE</item>
         <item>REQUEST CHANGES</item>
         <item>COMMENT</item>
+    </string-array>
+
+    <string-array name="lock_reasons" translatable="false">
+        <item>off-topic</item>
+        <item>too heated</item>
+        <item>resolved</item>
+        <item>spam</item>
     </string-array>
 
     <!-- EmojiCompat Downloadable Fonts Arrays -->

@@ -68,7 +68,7 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
     }
 
     private fun reset() {
-        stateText.text = null
+        stateText.text = ""
         avatarLayout.setUrl(null, null, false, false)
     }
 

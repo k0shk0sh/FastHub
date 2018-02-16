@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
 apply plugin: 'io.fabric'
@@ -24,7 +25,7 @@ android {
         }
     }
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
@@ -133,7 +134,7 @@ dependencies {
     implementation 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
     implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     implementation 'com.annimon:stream:1.1.9'
@@ -158,7 +159,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-base:${gms}"
     implementation('com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0') { transitive = false }
     implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0') { transitive = false }
-    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') { transitive = true }
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') { transitive = true }
     implementation "com.github.miguelbcr:RxBillingService:0.0.3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlin_version}"
     implementation 'org.jsoup:jsoup:1.10.3'
@@ -188,5 +189,4 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
 }
 
-apply plugin: 'ManifestClasspath'
 apply plugin: 'com.google.gms.google-services'

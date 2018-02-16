@@ -15,6 +15,7 @@ import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.LockIssuePrModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.NotificationSubscriptionBodyModel;
@@ -128,18 +129,22 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             if (proceedCloseIssue) {
                 onOpenCloseIssue();
             } else if (proceedLockUnlock) {
-                onLockUnlockConversations();
+                onLockUnlockConversations(null);
             }
         }
     }
 
-    @Override public void onLockUnlockConversations() {
+    @Override public void onLockUnlockConversations(String reason) {
         PullRequest currentPullRequest = getPullRequest();
         if (currentPullRequest == null) return;
         IssueService service = RestProvider.getIssueService(isEnterprise());
+        LockIssuePrModel model = null;
+        if (!isLocked() && !InputHelper.isEmpty(reason)) {
+            model = new LockIssuePrModel(true, reason);
+        }
         Observable<Response<Boolean>> observable = RxHelper
-                .getObservable(isLocked() ? service.unlockIssue(login, repoId, issueNumber) :
-                               service.lockIssue(login, repoId, issueNumber));
+                .getObservable(model == null ? service.unlockIssue(login, repoId, issueNumber) :
+                               service.lockIssue(model, login, repoId, issueNumber));
         makeRestCall(observable, booleanResponse -> {
             int code = booleanResponse.code();
             if (code == 204) {

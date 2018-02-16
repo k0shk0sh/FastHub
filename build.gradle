@@ -3,7 +3,7 @@ buildscript {
     ext {
         butterKnifeVersion = '8.5.1'
         state_version = '1.1.6'
-        lombokVersion = '1.16.18'
+        lombokVersion = '1.16.20'
         supportVersion = "27.0.2"
         gms = "11.8.0"
         thirtyinchVersion = '0.8.0'
@@ -23,14 +23,13 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha09'
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha03'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
         classpath 'io.fabric.tools:gradle:1.24.1'
         classpath 'com.apollographql.apollo:gradle-plugin:0.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
-        classpath "com.github.viswaramamoorthy:gradle-util-plugins:0.1.0-RELEASE"
     }
 }
 
