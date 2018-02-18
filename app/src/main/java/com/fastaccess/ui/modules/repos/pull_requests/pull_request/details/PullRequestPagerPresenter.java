@@ -314,9 +314,11 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     private void callApi() {
+        Login loggedInUser = Login.getUser();
+        if (loggedInUser == null) return;
         makeRestCall(RxHelper.getObservable(Observable.zip(RestProvider.getPullRequestService(isEnterprise())
                         .getPullRequest(login, repoId, issueNumber),
-                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
+                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, loggedInUser.getLogin()),
                 RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
                 (pullRequestModel, booleanResponse, issue) -> {
                     this.pullRequest = pullRequestModel;
