@@ -25,6 +25,9 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
             repoId = bundle.getString(BundleConstant.ID)
             login = bundle.getString(BundleConstant.EXTRA)
             val page = bundle.getString(BundleConstant.EXTRA_TWO)
+            if (!page.isNullOrEmpty()) {
+                sendToView { it.onSetPage(page) }
+            }
             if (!repoId.isNullOrEmpty() && !login.isNullOrEmpty()) {
                 onSidebarClicked(WikiSideBarModel("Home", "$login/$repoId/wiki" +
                         if (!page.isNullOrEmpty()) "/$page" else ""))
