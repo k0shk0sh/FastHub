@@ -461,6 +461,9 @@
 	<string name="block">Blockieren</string>
     <string name="user_blocked">Nutzer blockiert</string>
     <string name="user_unblocked">Nutzer entblockt</string>
+    <string name="unblock">Entblockieren</string>
+    <string name="clear_image_cache">Bilder Cache leeren</string>
+    <string name="restart_app_message">Bitte die App neu starten</string>
 </resources>
 
 
