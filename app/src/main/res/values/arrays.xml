@@ -133,6 +133,7 @@
         <item>한국어</item>
         <item>Polski</item>
         <item>Português (Portugal)</item>
+        <item>Arabic</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
