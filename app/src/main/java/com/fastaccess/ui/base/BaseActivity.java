@@ -434,6 +434,28 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             }
         }
         if (drawer != null && accountsNav != null) {
+            if (this instanceof MainActivity) {
+                if (!PrefGetter.isAccountNavDrawerHintShowed()) {
+                    drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override public boolean onPreDraw() {
+                            drawer.openDrawer(GravityCompat.END);
+                            drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                                @Override public void onDrawerOpened(View drawerView) {
+                                    super.onDrawerOpened(drawerView);
+                                    drawerView.postDelayed(() -> {
+                                        if (drawer != null) {
+                                            closeDrawer();
+                                            drawer.removeDrawerListener(this);
+                                        }
+                                    }, 1000);
+                                }
+                            });
+                            drawer.getViewTreeObserver().removeOnPreDrawListener(this);
+                            return true;
+                        }
+                    });
+                }
+            }
             drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
                 @Override public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
