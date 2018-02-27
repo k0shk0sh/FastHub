@@ -391,4 +391,79 @@
     <string name="feed">Actividad</string>
     <string name="premium_theme">Tema Premium </string>
     <string name="choose_code_theme">Elige el código del tema</string>
+    <string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
+        otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
+        GitHub API is coming from your Enterprise Account.</string>
+    <string name="add_account">Add Account</string>
+    <string name="choose_account">Choose Account</string>
+    <string name="not_match">Not match</string>
+    <string name="warning">Warning</string>
+    <string name="owner">Owner</string>
+    <string name="original_poster">Original Poster</string>
+    <string name="cancel_reviews">Cancel Reviews</string>
+    <string name="colored_navbar_summary">Disable colored navigation bar in themes</string>
+    <string name="colored_navbar_title">Colorless Navbar</string>
+    <string name="sound_chooser_summary">Choose custom notification sound</string>
+    <string name="sound_chooser_title">Choose Notification Sound</string>
+    <string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
+    <string name="disable_auto_gif_title">Disable Playing GIF</string>
+    <string name="request_changes">requested changes</string>
+    <string name="google_play_service_error">Google Play Services are unavailable</string>
+    <string name="edit_gist">Edit Gist</string>
+    <string name="content">Content</string>
+    <string name="expand">expand</string>
+    <string name="copy_sha">Copy SHA-1</string>
+    <string name="view_as_code">View as code</string>
+    <string name="app_animation_title">Disable In-App Animations</string>
+    <string name="app_animation_summary">Disable in-app animations everywhere.</string>
+    <string name="can_not_merge_pr">This PR can\'t be merged now.</string>
+    <string name="projects">Projects</string>
+    <string name="no_projects">No Projects</string>
+    <string name="no_cards">No Cards</string>
+    <string name="card_added_by">Added by %s %s</string>
+    <string name="too_large_changes">Too many differences to display. Please, view them via browser</string>
+    <string name="project">Project</string>
+    <string name="please_read">PLEASE READ!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
+        Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+
+        <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
+        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
+
+        <h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
+        <p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
+
+        <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
+        <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
+        in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
+
+        <h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
+        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+
+        <h5>• I\'m having problems! / I want to suggest you some things!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+        search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
+
+        <h5>• How can I get a PROMO CODE?</h5>
+        <p>This program is no longer exists.</p>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Comments added successfully</string>
+    <string name="clear_search_keywords">Clear Search History</string>
+    <string name="restore_purchases">Restore Purchases</string>
+    <string name="include_forks">Include Forks</string>
+    <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+    <string name="search_results_warning">Too many responses \nShowing the max API allows</string>
+    <string name="disable_loading_image_title">Disable Loading Image</string>
+    <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+    <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
+    <string name="block">Block</string>
+    <string name="unblock">Unblock</string>
+    <string name="user_blocked">User blocked</string>
+    <string name="user_unblocked">User unblocked</string>
+    <string name="clear_image_cache">Clear Images Cache</string>
+    <string name="restart_app_message">Please restart the app</string>
 </resources>
