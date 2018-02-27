@@ -33,9 +33,9 @@
     <string name="no_readme_found">No se encontró léeme</string>
     <string name="downloading">Descargando…</string>
     <string name="downloading_file">Descargando archivo…</string>
-    <string name="released">Released</string>
+    <string name="released">Lanzado</string>
     <string name="drafted">En borrador</string>
-    <string name="releases">Releases</string>
+    <string name="releases">Lanzamientos</string>
     <string name="no_body">Sin body</string>
     <string name="contributors">Colaboradores</string>
     <string name="contributions">Colaboraciones</string>
@@ -127,12 +127,12 @@
     <string name="support_development_enable_ads">Ayuda a los desarrolladores, permite la publicidad</string>
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
-    <string name="twoFactor">Código de autenticación de dos factores</string>
+    <string name="twoFactor">Autenticación por dos factores</string>
     <string name="login">Iniciar sesión</string>
     <string name="gist_description">Descripción del Gist </string>
     <string name="avatar_click_hint">Siempre que haya una imagen de perfil, puedes clickear en ella para abrir el perfil del usuario</string>
     <string name="feeds_fork_hint">Mantén presionado en un \'fork\' para abrir el repositorio original ó la división.</string>
-    <string name="click_here_to_download_release_hint">Descargar releases</string>
+    <string name="click_here_to_download_release_hint">Descargar versiones lanzadas</string>
     <string name="options">Opciones</string>
     <string name="click_file_option_hint">Descargar archivo o compartir directorio</string>
     <string name="comment_hint">Toca un comentario para etiquetar a su autor o para editar tu comentario.
@@ -149,8 +149,8 @@
     <string name="click_to_toggle_highlighting">Encender/apagar resaltado de sintáxis.
         \nDesplaza los íconos del editor para más opciones.</string>
     <string name="creation_date">Fecha de creación</string>
-    <string name="creation_date_hint">Cuando fue creado el archivo</string>
-    <string name="last_updated_hint">Cuando fue modificado por última vez</string>
+    <string name="creation_date_hint">Cuándo fue creado el archivo</string>
+    <string name="last_updated_hint">Cuándo fue modificado por última vez</string>
     <string name="mark_all_as_read">Marcar todas como leídas</string>
     <string name="all_notifications">Todas las notificaciones</string>
     <string name="unread">No leídas</string>
@@ -226,7 +226,7 @@
     <string name="notification_settings">Notificación</string>
     <string name="turn_off">Apagar</string>
     <string name="unauthorized_user">Usuario sin autorización</string>
-    <string name="two_factors_otp_error">Se requiere OTP de dos factores</string>
+    <string name="two_factors_otp_error">Se requiere OTP de dos factores(2FA)</string>
     <string name="copy">Copiar</string>
     <string name="success_copied">Copiado</string>
     <string name="commit_message">Mensaje del commit</string>
@@ -246,14 +246,14 @@
     <string name="website">Sitio web</string>
     <string name="support_development">Ayuda al desarrollo</string>
     <string name="success_purchase_message">¡Gracias por ser extremadamente genial!</string>
-    <string name="change_theme_warning">Si el tema no se aplicó apropiadamente, por favor \'mata\' la aplicación y abrela nuevamente.</string>
+    <string name="change_theme_warning">Si el tema no se aplicó apropiadamente, por favor \'mata\' la aplicación y ábrela nuevamente.</string>
     <string name="pin">Fijar</string>
     <string name="pinned">Fijados</string>
     <string name="unpin">Desfijar</string>
     <string name="empty_pinned_repos">No hay repositorios fijados todavía. Fija alguno para verlo aquí.</string>
-    <string name="yes">Si</string>
+    <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="no_feeds">No hay noticias</string>
+    <string name="no_feeds">No hay actividad</string>
     <string name="no_gists">No hay gists</string>
     <string name="no_comments">No hay comentarios</string>
     <string name="no_notifications">No hay notificaciones</string>
@@ -263,7 +263,7 @@
     <string name="no_starred_repos">No hay repositorios con estrella</string>
     <string name="no_commits">No hay commits</string>
     <string name="no_contributors">No hay colaboradores</string>
-    <string name="no_releases">No hay releases</string>
+    <string name="no_releases">No hay versiones lanzadas</string>
     <string name="no_events">No hay eventos</string>
     <string name="no_pull_requests">No hay pull requests</string>
     <string name="no_search_results">Búsqueda sin resultados</string>
@@ -276,8 +276,8 @@
     <string name="changelog">Historial de cambios</string>
     <string name="notifications_hint">Toca para abrir la lista de notificaciones o desliza para descartar</string>
     <string name="home_long_click_hint">Mantén presionado para navegar a la pantalla principal desde cualquier lugar</string>
-    <string name="created">Creado</string>
-    <string name="assigned">Asignado</string>
+    <string name="created">Creados</string>
+    <string name="assigned">Asignados</string>
     <string name="mentioned">Mencionado</string>
     <string name="name">Nombre</string>
     <string name="color">Color</string>
@@ -374,7 +374,7 @@
     <string name="not_really_working">Ordenar por emojies no funciona debido a una limitación de GitHub</string>
     <string name="scroll_up">Sube</string>
     <string name="scroll_down">Baja</string>
-    <string name="participated">Participado</string>
+    <string name="participated">Participando</string>
     <string name="todo_checked">Por hacer tildado</string>
     <string name="todo_unchecked">Por hacer destildado</string>
     <string name="divider">Divisor</string>
@@ -388,7 +388,7 @@
     <string name="assignee_added">Asignado exitosamente</string>
     <string name="reviewer_added">Revisor agregado con éxito</string>
     <string name="milestone_added">Milestone agregado con éxito</string>
-    <string name="feed">Noticias</string>
+    <string name="feed">Actividad</string>
     <string name="premium_theme">Tema Premium </string>
     <string name="choose_code_theme">Elige el código del tema</string>
 </resources>
