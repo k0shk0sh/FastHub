@@ -390,7 +390,7 @@
     <string name="milestone_added">Milestone agregado con éxito</string>
     <string name="feed">Actividad</string>
     <string name="premium_theme">Tema Premium </string>
-    <string name="choose_code_theme">Elige el código del tema</string>
+    <string name="choose_code_theme">Código del tema</string>
     <string name="enterprise_login_warning">Por favor, inicia sesión con tu cuenta de GitHub para acceder a todo el contenido
         de su API, de otro modo tu sesión expirará cada vez que accedas a cualquier sección que no pertenezca a tu cuenta Enterprise.</string>
     <string name="add_account">Agregar cuenta</string>
