@@ -5,14 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.converters.GistConverter;
-import com.fastaccess.data.dao.converters.IssueConverter;
-import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
@@ -41,7 +37,7 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
             PinnedGists pinned = new PinnedGists();
             pinned.setLogin(Login.getUser().getLogin());
             pinned.setGist(gist);
-            pinned.setGistId(gist.getId());
+            pinned.setGistId(gist.getGistId().hashCode());
             try {
                 App.getInstance().getDataStore().toBlocking().insert(pinned);
             } catch (Exception ignored) {}
@@ -62,18 +58,6 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
                 .where(PinnedGists.GIST_ID.eq(gistId))
                 .get()
                 .value();
-    }
-
-    @NonNull public static Disposable updateEntry(long gistId) {
-        return RxHelper.getObservable(Observable.fromPublisher(e -> {
-            PinnedGists pinned = get(gistId);
-            if (pinned != null) {
-                pinned.setEntryCount(pinned.getEntryCount() + 1);
-                App.getInstance().getDataStore().toBlocking().update(pinned);
-                e.onNext("");
-            }
-            e.onComplete();
-        })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
     @NonNull public static Single<List<Gist>> getMyPinnedGists() {
