@@ -274,7 +274,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == EditRepoFileActivity.Companion.getEDIT_RQ()) {
+        if (resultCode == Activity.RESULT_OK && requestCode == EditRepoFileActivity.EDIT_RQ) {
             getRepoFilesView().onRefresh();
         }
     }
