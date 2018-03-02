@@ -288,6 +288,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                 if (!username.equalsIgnoreCase(this.login)) {
                     menu.findItem(R.id.block)
                             .setIcon(getPresenter().isUserBlocked() ? R.drawable.ic_unlock : R.drawable.ic_lock)
+                            .setTitle(getPresenter().isUserBlocked() ? getString(R.string.unblock) : getString(R.string.block))
                             .setVisible(true);
                 }
             }

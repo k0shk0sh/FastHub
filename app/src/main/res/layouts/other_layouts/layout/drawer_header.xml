@@ -4,11 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
+    android:minHeight="100dp"
     android:background="?selectableItemBackground"
     android:gravity="bottom"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_s_large">
+    android:paddingTop="@dimen/spacing_large"
+    android:paddingBottom="@dimen/spacing_xs_large"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -84,14 +86,6 @@
             android:text="PRO"
             android:textColor="?colorAccent"
             android:visibility="gone"/>
-
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/navToggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_arrow_drop_down"/>
 
     </LinearLayout>
 

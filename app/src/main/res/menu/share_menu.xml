@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_lock"
         android:title="@string/block"
         android:visible="false"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/share"

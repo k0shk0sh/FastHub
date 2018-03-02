@@ -101,5 +101,5 @@
     </RelativeLayout>
 
     <include layout="@layout/nav_menu_layout"/>
-
+    <include layout="@layout/nav_menu_end_layout"/>
 </android.support.v4.widget.DrawerLayout>

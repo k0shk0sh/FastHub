@@ -34,7 +34,6 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -55,7 +54,6 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRe
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -227,7 +225,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onBackPressed() {
-        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && (drawer.isDrawerOpen(GravityCompat.START) || drawer.isDrawerOpen(GravityCompat.END))) {
             closeDrawer();
         } else {
             boolean clickTwiceToExit = !PrefGetter.isTwiceBackButtonDisabled();
@@ -402,7 +400,14 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void closeDrawer() {
-        if (drawer != null) drawer.closeDrawer(GravityCompat.START);
+        if (drawer != null) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else if (drawer.isDrawerOpen(GravityCompat.END)) {
+                drawer.closeDrawer(GravityCompat.END);
+            }
+            drawer.closeDrawers();
+        }
     }
 
     private void setupDrawer() {
@@ -428,6 +433,36 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 });
             }
         }
+        if (drawer != null && accountsNav != null) {
+            if (this instanceof MainActivity) {
+                if (!PrefGetter.isAccountNavDrawerHintShowed()) {
+                    drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override public boolean onPreDraw() {
+                            drawer.openDrawer(GravityCompat.END);
+                            drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                                @Override public void onDrawerOpened(View drawerView) {
+                                    super.onDrawerOpened(drawerView);
+                                    drawerView.postDelayed(() -> {
+                                        if (drawer != null) {
+                                            closeDrawer();
+                                            drawer.removeDrawerListener(this);
+                                        }
+                                    }, 1000);
+                                }
+                            });
+                            drawer.getViewTreeObserver().removeOnPreDrawListener(this);
+                            return true;
+                        }
+                    });
+                }
+            }
+            drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                @Override public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    if (mainNavDrawer != null) mainNavDrawer.setupViewDrawer();
+                }
+            });
+        }
     }
 
     private void superOnBackPressed(boolean didClickTwice) {
@@ -448,7 +483,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (backPressTimer + 2000 > System.currentTimeMillis()) {
             return true;
         } else {
-            Toast.makeText(App.getInstance(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.press_again_to_exit, R.string.press_again_to_exit);
         }
         backPressTimer = System.currentTimeMillis();
         return false;

@@ -138,7 +138,11 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
     @Override public void onDownload(@NonNull Release item) {
         ArrayList<SimpleUrlsModel> models = new ArrayList<>();
         if (!InputHelper.isEmpty(item.getZipBallUrl())) {
-            models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), item.getZipBallUrl()));
+            String url = item.getZipBallUrl();
+            if (!url.endsWith(".tar.gz")) {
+                url = url + ".tar.gz";
+            }
+            models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), url));
         }
         if (!InputHelper.isEmpty(item.getTarballUrl())) {
             models.add(new SimpleUrlsModel(getString(R.string.download_as_tar), item.getTarballUrl()));
