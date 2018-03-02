@@ -231,7 +231,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     }
 
     @Override public void onDelete(@NonNull String message, int position) {
-        getPresenter().onDeleteFile(message, adapter.getItem(position));
+        getPresenter().onDeleteFile(message, adapter.getItem(position), getParent() != null ? getParent().getRef() : "master");
     }
 
     private void showReload() {

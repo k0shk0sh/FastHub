@@ -282,4 +282,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     private void showReload() {
         hideProgress();
     }
+
+    @NonNull public String getRef() {
+        return !InputHelper.isEmpty(ref) ? ref : "master";
+    }
 }

@@ -13,7 +13,7 @@ buildscript {
         assertjVersion = '2.5.0'
         espresseVersion = '2.2.2'
         requery = '1.3.2'
-        kotlin_version = '1.2.30'
+        kotlin_version = '1.2.10'
         commonmark = '0.10.0'
         glideVersion = '3.7.0'
     }

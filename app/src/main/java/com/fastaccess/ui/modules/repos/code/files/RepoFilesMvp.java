@@ -47,7 +47,7 @@ interface RepoFilesMvp {
 
         @Nullable List<RepoFile> getCachedFiles(@NonNull String url, @NonNull String ref);
 
-        void onDeleteFile(@NonNull String message, @NonNull RepoFile item);
+        void onDeleteFile(@NonNull String message, @NonNull RepoFile item, @NonNull String branch);
     }
 
 
