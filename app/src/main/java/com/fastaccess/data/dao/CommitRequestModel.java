@@ -11,7 +11,7 @@ public class CommitRequestModel {
     private String sha;
     private String branch;
 
-    public CommitRequestModel(String message, String content, String sha,String branch) {
+    public CommitRequestModel(String message, String content, String sha, String branch) {
         this.message = message;
         this.content = content;
         this.sha = sha;

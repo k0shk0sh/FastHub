@@ -45,7 +45,7 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
         val priceText = bundle.getString(BundleConstant.EXTRA_FIVE)
         subscription = RxHelper.getSingle<Purchase>(RxBillingService.getInstance(this, BuildConfig.DEBUG)
                 .purchase(ProductType.IN_APP, productKey, "inapp:com.fastaccess.github:" + productKey))
-                .subscribe({ p: Purchase?, throwable: Throwable? ->
+                .subscribe({ _: Purchase?, throwable: Throwable? ->
                     if (throwable == null) {
                         FabricProvider.logPurchase(productKey, price, priceText)
                         showMessage(R.string.success, R.string.success_purchase_message)
