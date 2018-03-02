@@ -9,7 +9,7 @@
     android:background="?selectableItemBackground"
     android:gravity="bottom"
     android:paddingTop="@dimen/spacing_large"
-    android:paddingBottom="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_large"
     android:orientation="horizontal">
 
     <RelativeLayout
