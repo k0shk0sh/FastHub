@@ -24,6 +24,8 @@
     <string name="unlock" translatable="false">Desbloquear</string>
     <string name="unlock_everything" translatable="false">Desbloquear todo</string>
     <string name="feeds" translatable="false">Actividad reciente</string>
+    <string name="logo_designer" formatted="true" translatable="false">Diseño del logo (%s)</string>
+
     <!-- END OF PREVIOUSLY UN-TRANSLATED TERMS, NOW TRANSLATED ACCORDING TO ISSUE #1329 -->
 
     <string name="in_progress">Cargando, por favor espere…</string>
