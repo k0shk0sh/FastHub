@@ -1,41 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
            tools:ignore="MissingTranslation">
 <!-- PREVIOUSLY UN-TRANSLATED TERMS, NOW TRANSLATED ACCORDING TO ISSUE #1329  -->
-<string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
-        • All PRO Themes\n
-        • PR Reviews & On-line code comments (PRs & Commits)\n
-        • Commit from FastHub (Edit, Create & Delete files)\n
-        • Supports 2 more Merging methods (Rebase & Squash)\n
-        • Login to unlimited accounts\n
-        • Edit & Add unlimited Gist Files\n
-        • Project Columns & Cards (Edit, Create & Delete)\n
-        • Pin Issues, PRs & Gists\n
-        • New upcoming PRO features (Coming soon...)
+<string name="pro_features_list" translatable="false"><![CDATA[Obten las características PRO de FastHub, incluyen:\n
+        • Todos los Temas PRO\n
+        • Revisión de PRs y comentarios en línea (PRs y Commits)\n
+        • Commit desde FastHub (Editar, Crear y borrar archivos)\n
+        • Soporta dos métodos extra para Merging (Rebase y Squash)\n
+        • Login a ilimitadas cuentas\n
+        • Editar y agregar Gists ilimitados\n
+        • Project Board Columns & Cards (Editar, crear y borrar)\n
+        • Fijar Issues, PRs y Gists\n
+        • Nuevas características PRO (pronto...)
     ]]></string>
     <string name="enterprise_pro_description" translatable="false"><![CDATA[
-            • Login to unlimited number of Enterprise & GitHub accounts\n
-            • Access GitHub contents along side your Enterprise Account
+            • Login a ilimitadas cuentas Enterprise y GitHub\n
+            • Acceso al contenido de GitHub juto con tu cuenta Enterprise
     ]]></string>
-    <string name="purchase" translatable="false">Purchase</string>
-    <string name="get_all" translatable="false">Purchase All (7.00USD)</string>
-    <string name="fasthub_premium_features" translatable="false">FastHub Premium Features</string>
-    <string name="github_enterprise_reply" translatable="false">
-        <![CDATA[ <small><i>Reply from GitHub support regards OAuth login for Enterprise:</i></small>
-                <p></p>
-                <blockquote>
-                <h4>Hi Kosh,</h4>
-                <p>A GitHub Enterprise appliance is entirely separate from GitHub.com, and will not have your OAuth application configured.
-                You will need to setup your OAuth application again for <b>FastHub</b> on the GitHub Enterprise appliance, which will provide you
-                with new client_id and client_secret credentials. <b>This will have to be completed for each new GitHub Enterprise appliance
-                your application communicates with</b>. GitHub Enterprise comes preconfigured with the GitHub Desktop OAuth application set up,
-                this is how GitHub Desktop is able to complete the authentication successfully for GitHub Enterprise appliances.</p>
-                </blockquote>
-        ]]>
-    </string>
-    <string name="purchase_all" formatted="false" translatable="false">Purchase All for %price%</string>
-    <string name="unlock" translatable="false">Unlock</string>
-    <string name="unlock_everything" translatable="false">Unlock Everything</string>
-    <string name="feeds" translatable="false">Actividad</string>
+    <string name="purchase" translatable="false">Comprar</string>
+    <string name="get_all" translatable="false">Comprar todo (7.00USD)</string>
+    <string name="fasthub_premium_features" translatable="false">Características Premium FastHub</string>
+    
+    <string name="purchase_all" formatted="false" translatable="false">Comprar todo por %price%</string>
+    <string name="unlock" translatable="false">Desbloquear</string>
+    <string name="unlock_everything" translatable="false">Desbloquear todo</string>
+    <string name="feeds" translatable="false">Actividad reciente</string>
     <!-- END OF PREVIOUSLY UN-TRANSLATED TERMS, NOW TRANSLATED ACCORDING TO ISSUE #1329 -->
 
     <string name="in_progress">Cargando, por favor espere…</string>
