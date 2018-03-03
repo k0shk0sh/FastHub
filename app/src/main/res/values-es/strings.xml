@@ -68,6 +68,7 @@
     <string name="contributors">Colaboradores</string>
     <string name="contributions">Contribuciones</string>
     <string name="by">por</string>
+    <string name="english_please">Por favor, envía el mensaje en inglés.</string>
     <string name="close_issue">Cerrar Issue</string>
     <string name="re_open_issue">Reabrir Issue</string>
     <string name="re_open">Reabrir</string>
