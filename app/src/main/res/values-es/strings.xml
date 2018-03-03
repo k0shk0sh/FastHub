@@ -144,6 +144,7 @@
     <string name="notifications">Notificaciones</string>
     <string name="unread_notification">Tienes notificaciones sin leer</string>
     <string name="open">Abrir</string>
+	<string name="open_new_window">Abrir en nueva ventana</string>
     <string name="notification_type">Tipo de notificaciones</string>
     <string name="labels">Etiquetas</string>
     <string name="no_labels">Sin etiquetas</string>
