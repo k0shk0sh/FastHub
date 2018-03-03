@@ -460,4 +460,6 @@
     <string name="unblock">Разблокировать</string>
     <string name="user_blocked">Пользователь заблокирован</string>
     <string name="user_unblocked">Пользователь разблокирован</string>
+    <string name="clear_image_cache">Очистить кэш изображений</string>
+    <string name="restart_app_message">Пожалуйста, перезапустите приложение</string>
 </resources>
