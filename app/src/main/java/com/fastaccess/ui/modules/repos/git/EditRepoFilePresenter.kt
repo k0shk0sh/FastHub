@@ -42,7 +42,7 @@ class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFil
         }
         if (!text.isNullOrBlank() && !description.isNullOrBlank() && !filename.isNullOrBlank()) {
             model?.let {
-                val commitModel = CommitRequestModel(description!!, Base64.encodeToString(text!!.toByteArray(), Base64.DEFAULT), it.sha)
+                val commitModel = CommitRequestModel(description!!, Base64.encodeToString(text!!.toByteArray(), Base64.DEFAULT), it.sha, it.ref)
                 val observable = RestProvider.getContentService(isEnterprise).updateCreateFile(it.login, it.repoId,
                         if (it.path.isNullOrBlank()) {
                             filename!!

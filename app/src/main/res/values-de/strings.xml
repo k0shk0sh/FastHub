@@ -399,7 +399,7 @@
 	<string name="view_as_code">Als Code anzeigen</string>
 	<string name="app_animation_title">In-App-Animationen deaktivieren</string>
 	<string name="app_animation_summary">Deaktiviere in-App-Animationen überall.</string>
-	<string name="can_not_merge_pr">Dieser PR kann jetzt\jetzt nicht zusammengeführt werden.</string>
+	<string name="can_not_merge_pr">Diese PR kann jetzt nicht zusammengeführt werden</string>
 	<string name="projects">Projekte</string>
     <string name="no_projects">Keine Projekte</string>
 	<string name="no_cards">Keine Karten</string>
