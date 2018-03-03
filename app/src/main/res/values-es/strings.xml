@@ -318,6 +318,7 @@
     <string name="no_members">No hay miembros</string>
     <string name="no_teams">No hay equipos</string>
     <string name="no_orgs">No hay organizaciones</string>
+    <string name="no_orgs_dialog_title">No encuentras tus organizaciones\?</string>
     <string name="mark_as_read">Marcar como leído</string>
     <string name="animations">Animaciones</string>
     <string name="dialog_animation_summary">Activar animaciones</string>
