@@ -444,7 +444,7 @@
     <string name="restore_purchases">이전 구매 여부 복구</string>
     <string name="include_forks">Fork한 Repo 포함하기</string>
     <string name="comment_is_too_far_to_paginate">댓글이 너무 많아 페이지 매김을 할 수 없습니다.</string>
-    <string name="search_results_warning">응답이 너무 많습니다. \n최대 API 응답수를 표시합니다.</string>
+    <string name="search_results_warning">응답이 너무 많습니다.\n최대 API 응답수를 표시합니다.</string>
     <string name="disable_loading_image_title">이미지 로딩 중단하기</string>
     <string name="disable_loading_image_summary">모바일 데이터 사용중에 이미지 로딩 사용 중지</string>
     <string name="report_issue_warning">이 Issue는 GitHub의 FastHub Repo에 제출됩니다.</string>
@@ -452,4 +452,7 @@
     <string name="unblock">차단 취소</string>
     <string name="user_blocked">유저 차단됨</string>
     <string name="user_unblocked">유저 차단 취소됨</string>
+    <string name="clear_image_cache">이미지 캐시 지우기</string>
+    <string name="restart_app_message">앱을 재시작 해주세요.</string>
+	
 </resources>
