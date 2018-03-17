@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/download"
+            android:contentDescription="@string/add"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_add"
             android:visibility="gone"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/download"
+            android:contentDescription="@string/search"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_search"/>
 

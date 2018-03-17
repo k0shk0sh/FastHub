@@ -421,18 +421,6 @@
 
         <h5>• Sorunlarım var! / Bir şeyler önermek istiyorum!</h5>
         <p>https://github.com/k0shk0sh/FastHub/issues/new adresine gidin ve herhangi bir hata ya da öneri için bir issue açın. Bundan önce de daha önce açılmış benzer bir issue var mı diye aramanızı da şiddetle tavsiye ederim. Kopya olarak işaretlenmiş issueler anında kapatılacaktır.</p>
-
-        <h5>• PROMO KODU nasıl elde ederim?</h5>
-        <p>Eüer öğrenci iseniz bunu bana kanıtlamanız lazım. Aşağıdaki listedeki dökümanlar bana E-mail yolu ile yollayın. :</p>
-        <ul>
-        <li>Öğrenci kartınız ve kimlik kartınız/pasaportunuz (sonuncusu ile isminizi ve fotoğranızı doğrulamamı sağlıyor);</li>
-        <li>Eğitim başlangıç ve bitiş tarihleri.</li>
-        </ul>
-        <p>Eğer öğrenci değilseniz ve PRO\'yu alacak gücünüz yoksa şunları yapmanız gerekiyor:</p>
-        <ul>
-        <li>FastHub ile ilgili sosyal medyada (örn: Medium) bir makale yazın;</li>
-        <li>Yazanın siz olduğunu kanıtlayın.</li>
-        </ul>
     ]]></string>
     <string name="faq">SSS</string>
     <string name="comments_added_successfully">Yorumlar başarıyla eklendi</string>

@@ -122,11 +122,7 @@ class ReviewChangesActivity : BaseDialogFragment<ReviewChangesMvp.View, ReviewCh
     override fun onTagUser(username: String) {}
 
     override fun onClearEditText() {
-        commentEditorFragment?.let {
-            it.commentText.let {
-                it.text = null
-            }
-        }
+        commentEditorFragment?.commentText?.setText("")
     }
 
     override fun getNamesToTag(): ArrayList<String>? {

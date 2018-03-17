@@ -37,7 +37,8 @@ public enum IssueEventType {
     reviewed(R.drawable.ic_eye),
     changes_requested(R.drawable.ic_eye),
     added_to_project(R.drawable.ic_add),
-    GROUPED(R.drawable.ic_eye);
+    GROUPED(R.drawable.ic_eye),
+    deployed(R.drawable.ic_rocket);
 
     int iconResId;
 

@@ -44,6 +44,7 @@ import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.locking.LockIssuePrBottomSheetDialog;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFragment;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesFragment;
@@ -205,13 +206,17 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.lockIssue) {
-            MessageDialogView.newInstance(
-                    getPresenter().isLocked() ? getString(R.string.unlock_issue) : getString(R.string.lock_issue),
-                    getPresenter().isLocked() ? getString(R.string.unlock_issue_details) : getString(R.string.lock_issue_details),
-                    Bundler.start().put(BundleConstant.EXTRA_TWO, true)
-                            .put(BundleConstant.YES_NO_EXTRA, true)
-                            .end())
-                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            if (!getPresenter().isLocked()) {
+                LockIssuePrBottomSheetDialog.Companion
+                        .newInstance()
+                        .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            } else {
+                MessageDialogView.newInstance(getString(R.string.unlock_issue), getString(R.string.unlock_issue_details),
+                        Bundler.start().put(BundleConstant.EXTRA_TWO, true)
+                                .put(BundleConstant.YES_NO_EXTRA, true)
+                                .end())
+                        .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            }
             return true;
         } else if (item.getItemId() == R.id.labels) {
             LabelsDialogFragment.newInstance(getPresenter().getPullRequest() != null ? getPresenter().getPullRequest().getLabels() : null,
@@ -486,6 +491,10 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             return fragment.getNamesToTag();
         }
         return new ArrayList<>();
+    }
+
+    @Override public void onLock(String reason) {
+        getPresenter().onLockUnlockConversations(reason);
     }
 
     protected void hideAndClearReviews() {

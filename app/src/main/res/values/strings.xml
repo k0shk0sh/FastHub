@@ -598,4 +598,6 @@
     <string name="unblock">Unblock</string>
     <string name="user_blocked">User blocked</string>
     <string name="user_unblocked">User unblocked</string>
+    <string name="clear_image_cache">Clear Images Cache</string>
+    <string name="restart_app_message">Please restart the app</string>
 </resources>

@@ -451,20 +451,6 @@
         <h5>• Mam kłopoty! / Chciałbym zasugerować zmiany!</h5>
         <p>Wejdź na https://github.com/k0shk0sh/FastHub/issues/new i zgłoś Problem, żeby poinformować o błędach i propozycjach nowych funkcjonalności. Zanim zgłosisz swój problem, zachęcam
         do użycia wyszukiwarki, żeby sprawdzić czy podobny problem nie został już stworzony. Każdy duplikat zgłoszenia zostanie oznaczony jako duplikat i takie zgłoszenie zostanie zamknięte.</p>
-
-        <h5>• Jak zdobyć KOD PROMO?</h5>
-        <p>Jeśli jesteś studentem, będę potrzebować na to dowodu. Prześlij poniższe dokumenty na mój adres e-mail:</p>
-        <ul>
-        <li>Nazwa użytkownika na GitHub;</li>
-        <li>Skan legitymacji studenckiej oraz dowodu osobistego/paszportu (tak żeby było widać twoje imię i nazwisko oraz zdjęcie, żebym mógł je porównać!);</li>
-        <li>Datę rozpoczęcia i ukończenia uczelni.</li>
-        </ul>
-        <p>Jeśli nie jesteś studentem ale nie stać się na zakup wersji PRO, musisz:</p>
-        <ul>
-        <li>Podać nazwę użytkownika na GitHub;</li>
-        <li>Napisać artykuł o FastHub na jakimś portalu społecznościowym, na przykład Medium;</li>
-        <li>Udowodnić, że ten artykuł jest twojego autorstwa.</li>
-        </ul>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Dodano komentarze</string>

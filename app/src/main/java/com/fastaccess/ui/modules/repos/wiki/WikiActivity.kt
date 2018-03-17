@@ -19,7 +19,6 @@ import com.fastaccess.data.dao.wiki.WikiContentModel
 import com.fastaccess.helper.ActivityHelper
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
-import com.fastaccess.helper.Logger
 import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.repos.RepoPagerActivity
@@ -53,16 +52,19 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
             loadMenu()
         }
         if (wiki.content != null) {
-            val baseUrl = Uri.Builder().scheme("https")
+            val baseUrl = Uri.Builder().scheme(LinkParserHelper.PROTOCOL_HTTPS)
                     .authority(LinkParserHelper.HOST_DEFAULT)
                     .appendPath(presenter.login)
                     .appendPath(presenter.repoId)
                     .appendPath("wiki")
                     .build()
                     .toString()
-            Logger.e(baseUrl)
             webView.setWikiContent(wiki.content, baseUrl)
         }
+    }
+
+    override fun onSetPage(page: String) {
+        selectedTitle = page
     }
 
     private fun loadMenu() {

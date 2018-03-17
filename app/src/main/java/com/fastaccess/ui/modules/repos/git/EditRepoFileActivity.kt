@@ -129,7 +129,7 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
     }
 
     companion object {
-        val EDIT_RQ = 2017
+        const val EDIT_RQ = 2017
 
         fun startForResult(activity: Activity, model: EditRepoFileModel, isEnterprise: Boolean) {
             val bundle = Bundler.start()

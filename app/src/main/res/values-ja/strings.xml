@@ -40,6 +40,7 @@
     <string name="contributors">貢献者</string>
     <string name="contributions">貢献</string>
     <string name="by">by</string>
+    <string name="english_please">リクエストを英語で送ってください。</string>
     <string name="close_issue">Issueをクローズする</string>
     <string name="re_open_issue">Issueを再オープンする</string>
     <string name="re_open">再オープン</string>
@@ -114,6 +115,7 @@
     <string name="notifications">通知</string>
     <string name="unread_notification">未読の通知があります</string>
     <string name="open">開く</string>
+    <string name="open_new_window">新しいウィンドウで開く</string>
     <string name="notification_type">通知の種類</string>
     <string name="labels">ラベル</string>
     <string name="no_labels">ラベルがありません</string>
@@ -140,6 +142,7 @@
     <string name="watch">ウォッチ</string>
     <string name="watch_hint">レポジトリをウォッチまたは解除します</string>
     <string name="pin_repo_hint">ナビゲーションドロワーからより素早くアクセスするためにレポジトリを固定します。</string>
+    <string name="dismiss_all">すべて解除</string>
     <string name="no_url">URLが見つかりません</string>
     <string name="last_updated">最終更新</string>
     <string name="preview">プレビュー</string>
@@ -160,6 +163,9 @@
     <string name="ten_minutes">10分</string>
     <string name="five_minutes">5分</string>
     <string name="one_minute">1分</string>
+    <string name="one_hour">1時間</string>
+    <string name="two_hour">2時間</string>
+    <string name="three_hour">3時間</string>
     <string name="created_repo">作成されたレポジトリ</string>
     <string name="committed">Commitされました</string>
     <string name="downloaded">ダウンロードされた</string>
@@ -175,6 +181,7 @@
     <string name="switch_branch">Branchを切り替え</string>
     <string name="assignees">譲受人</string>
     <string name="edit">編集</string>
+    <string name="edited">\u2022 編集済み</string>
     <string name="update_issue">Issueをアップデート</string>
     <string name="update_pull_request">Pull Requestをアップデート</string>
     <string name="no_milestones">マイルストーンはありません</string>
@@ -395,5 +402,65 @@
     <string name="sound_chooser_title">通知音を選択</string>
     <string name="disable_auto_gif_summary">GIFの自動再生を無効にします。</string>
     <string name="disable_auto_gif_title">GIFの再生を無効化</string>
+    <string name="request_changes">依頼された変更</string>
+    <string name="google_play_service_error">Google Play Servicesが使用できません。</string>
+    <string name="edit_gist">Gistを編集する</string>
+    <string name="content">Content</string>
+    <string name="expand">展開する</string>
+    <string name="copy_sha">SHA-1をコピーする</string>
+    <string name="view_as_code">コードを表示する</string>
+    <string name="app_animation_title">アプリ内のアニメーションを無効にする</string>
+    <string name="app_animation_summary">アプリ内で再生されるすべてのアニメーションを無効にします。</string>
+    <string name="can_not_merge_pr">このPull requestはmergeできません。</string>
+    <string name="projects">プロジェクト</string>
+    <string name="no_projects">プロジェクトがありません</string>
+    <string name="no_cards">カードがありません</string>
+    <string name="card_added_by">%s %s によって追加されました</string>
+    <string name="too_large_changes">変更箇所が多すぎて表示できません。ブラウザを使ってご覧ください。</string>
+    <string name="project">Project</string>
+    <string name="please_read">お読みください！</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• <i>Private</i>もしくは<i>Public</i>な<b>Organizations</b>が表示されないのはなぜですか？</h5>
+        <p>https://github.com/settings/applications を開いてFastHubを探し、その要素を開き、"Organization access"までスクロールして"Grant"と書かれたボタンをクリックしてください。
+        もしくは<b>Access Token</b>を用いてログインしてください。こちらのほうが手続きが簡素です。</p>
 
+        <h5>• Access TokenとOne-Time Password (OTP)を用いてsign inを試みましたが、うまく行きません。何を間違えているのでしょうか？</h5>
+        <p>Access TokenとOTPの両方を用いてsign inすることはできません。そのようなパスワードの寿命は非常に短いため、sign inの手順を毎秒繰り返さなくてはならなくなってしまいます。</p>
+
+        <h5>• 自分のPrivateもしくはEnterpriseなRepositoriesのWikiが表示されないのはなぜですか？</h5>
+        <p>FastHubはGitHubのWiki pageを破棄するので、Private Repositoriesが必要とするいかなるsession tokenも入手することができません。</p>
+
+        <h5>• Enterprise accountにsigin inしました。私のEnterprise GitHub以外のものにアクセスできないのはなぜですか？</h5>
+        <p>論理的には、あなたのEnterprise以外のものにはアクセスできません。 FastHubはできるだけ多くの権限を要求しますが、あなたの資格情報がGitHubのサーバーにないので、
+        ほとんどの場合、これ以上のことはできません。しかし、場合によってはGitHubアカウントのOAuthトークンでうまくいくかもしれません。</p>
+
+        <h5>• IssuesやPull Requests (PRs)を編集しているときに問題が起こるのはなぜですか？</h5>
+        <p>もしPublic OrganizationのrepositoryにあるIssuesやPRsを編集できない場合は、OrganizationにFastHubのアクセスを許可するよう言ってください。
+        もしくは、Access Tokenを用いてsigin inしてください。</p>
+
+        <h5>• 問題が起こりました！ / FastHubチームに提案したいことがあります！</h5>
+        <p>https://github.com/k0shk0sh/FastHub/issues/newを開いて、問題点や新機能リクエストのIssueを作成してください。
+        ただし、似たようなIssueが前に投稿されていないか調べてみることをおすすめします。
+        あらゆる重複したIssueは重複とラベル付され、即座にcloseされます。</p>
+
+        <h5>• PROMO CODEはどうやったら入手できますか？</h5>
+        <p>その計画はもはや存在していません。</p>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">コメントが正常に追加されました。</string>
+    <string name="clear_search_keywords">検索履歴を削除する</string>
+    <string name="restore_purchases">購入記録の復元</string>
+    <string name="include_forks">Forkを含める</string>
+    <string name="comment_is_too_far_to_paginate">このcommitはpaginateするには遠すぎます。</string>
+    <string name="search_results_warning">レスポンスが多すぎます。 \nShowing the max API allows</string>
+    <string name="disable_loading_image_title">画像の読み込みを無効化</string>
+    <string name="disable_loading_image_summary">モバイルデータ通信では画像の読み込みを無効化します。</string>
+    <string name="report_issue_warning">このissueはGitHub上のFastHubのrepositoryに送信されます。</string>
+    <string name="block">ブロックする</string>
+    <string name="unblock">ブロックを外す</string>
+    <string name="user_blocked">このユーザーをブロックしました。</string>
+    <string name="user_unblocked">このユーザーのブロックを外しました。</string>
+    <string name="clear_image_cache">画像のキャッシュを削除する</string>
+    <string name="restart_app_message">アプリを再起動してください。</string>
 </resources>

@@ -67,7 +67,9 @@ public class InputHelper {
     public static long toLong(@NonNull String text) {
         if (!isEmpty(text)) {
             try {
-                return Long.valueOf(text.replace(".", "").replaceAll(",", ""));
+                return Long.valueOf(text.replace(".", "")
+                        .replaceAll(",", "")
+                        .replaceAll(" ", ""));
             } catch (NumberFormatException ignored) {}
         }
         return 0;

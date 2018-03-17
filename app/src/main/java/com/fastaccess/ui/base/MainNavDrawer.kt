@@ -3,10 +3,8 @@ package com.fastaccess.ui.base
 import android.content.Intent
 import android.os.Handler
 import android.support.design.widget.NavigationView
-import android.support.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
@@ -39,14 +37,12 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: NavigationView?, private val accountsNav: NavigationView?)
     : BaseViewHolder.OnItemClickListener<Login> {
 
-    private var menusHolder: ViewGroup? = null
     private val togglePinned: View? = view.findViewById(R.id.togglePinned)
     private val pinnedList: DynamicRecyclerView? = view.findViewById(R.id.pinnedList)
     private val pinnedListAdapter = PinnedReposAdapter(true)
     private val userModel: Login? = Login.getUser()
 
     init {
-        menusHolder = view.findViewById(R.id.menusHolder)
         pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
             override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
                 if (v != null && item != null) {
@@ -65,11 +61,9 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
     }
 
     fun setupViewDrawer() {
-        extraNav?.let {
+        accountsNav?.let {
             val header = it.getHeaderView(0)
             setupView(header)
-        }
-        accountsNav?.let {
             setupAccounts()
             setupPinned()
             setupItems()
@@ -92,10 +86,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
     private fun setupAccounts() {
         val addAccount = view.findViewById<View>(R.id.addAccLayout)
         val recyclerView = view.findViewById<DynamicRecyclerView>(R.id.accLists)
-        val toggleImage = view.findViewById<View>(R.id.toggleImage)
-        val toggle = view.findViewById<View>(R.id.toggle)
         val toggleAccountsLayout = view.findViewById<View>(R.id.toggleAccountsLayout)
-        toggleImage.rotation = if (toggleAccountsLayout.visibility == View.VISIBLE) 180f else 0f
         addAccount.setOnClickListener {
             view.closeDrawer()
             Handler().postDelayed({
@@ -107,12 +98,6 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                     view.startActivity(Intent(view, PremiumActivity::class.java))
                 }
             }, 250)
-        }
-        toggle.setOnClickListener {
-            TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
-            val isVisible = recyclerView.visibility == View.VISIBLE
-            recyclerView.visibility = if (isVisible) View.GONE else View.VISIBLE
-            toggleImage.rotation = if (recyclerView.visibility == View.VISIBLE) 180f else 0f
         }
         val adapter = LoginAdapter(true)
         view.getPresenter().manageViewDisposable(Login.getAccounts()
@@ -150,14 +135,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
             }
             view.findViewById<View>(R.id.donatedIcon).visibility = if (PrefGetter.hasSupported()) View.VISIBLE else View.GONE
             view.findViewById<View>(R.id.proTextView).visibility = if (PrefGetter.isProEnabled()) View.VISIBLE else View.GONE
-            view.findViewById<View>(R.id.navAccHolder).setOnClickListener {
-                if (extraNav != null && accountsNav != null) {
-                    TransitionManager.beginDelayedTransition(menusHolder ?: extraNav)
-                    accountsNav.visibility = if (accountsNav.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                    view.findViewById<View>(R.id.navToggle).rotation = if (accountsNav.visibility == View.VISIBLE) 180f else 0f
-                    setupPinned()
-                }
-            }
+            setupPinned()
         }
     }
 
