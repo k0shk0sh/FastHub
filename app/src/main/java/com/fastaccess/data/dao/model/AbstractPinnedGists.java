@@ -32,7 +32,7 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
     @io.requery.Nullable long gistId;
 
     public static void pinUpin(@NonNull Gist gist) {
-        PinnedGists pinnedIssues = get(gist.getId());
+        PinnedGists pinnedIssues = get(gist.getGistId().hashCode());
         if (pinnedIssues == null) {
             PinnedGists pinned = new PinnedGists();
             pinned.setLogin(Login.getUser().getLogin());
@@ -42,7 +42,7 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
                 App.getInstance().getDataStore().toBlocking().insert(pinned);
             } catch (Exception ignored) {}
         } else {
-            delete(gist.getId());
+            delete(gist.getGistId().hashCode());
         }
     }
 
@@ -73,5 +73,4 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
     public static boolean isPinned(long gistId) {
         return get(gistId) != null;
     }
-
 }

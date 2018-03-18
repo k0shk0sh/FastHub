@@ -39,7 +39,7 @@ APP
     <string name="profile">個人檔案</string>
     <string name="error">錯誤</string>
     <string name="press_again_to_exit">再點一次以離開</string>
-    <string name="opened">開啟中</string>
+    <string name="opened">已開啟</string>
     <string name="closed">已關閉</string>
     <string name="repo_chooser">選擇 Repo</string>
     <string name="followers">跟隨者</string>
@@ -215,7 +215,7 @@ APP
     <string name="this_value">這個</string>
     <string name="commits_reflected">Commit 已被切換到選擇的分支</string>
     <string name="general_settings">一般</string>
-    <string name="background_job_summary">更改檢查通知頻率</string>
+    <string name="background_job_summary">更改通知的檢查頻率</string>
     <string name="background_job_title">檢查通知間隔</string>
     <string name="every">每個</string>
     <string name="behavior">行為</string>
@@ -299,7 +299,7 @@ APP
     <string name="home_long_click_hint">長按以從任何地方前往主畫面</string>
     <string name="created">已開啟</string>
     <string name="assigned">已分配</string>
-    <string name="mentioned">提到我</string>
+    <string name="mentioned">被提到</string>
     <string name="name">名字</string>
     <string name="color">顏色</string>
     <string name="create_label">新增標籤</string>
@@ -341,7 +341,7 @@ APP
     <string name="wrap_code_summary">在程式碼檢視器中預設摺疊程式碼</string>
     <string name="wrap_code_title">摺疊程式碼</string>
     <string name="open_source_libs">開源 Libraries</string>
-    <string name="enable_notification_sound_summary">開啟收到通知音效</string>
+    <string name="enable_notification_sound_summary">開啟通知音效</string>
     <string name="enable_notification_sound_title">開啟通知音效</string>
     <string name="enable_notification_title">開啟通知</string>
     <string name="login_with_personal_token">用個人 Token 來登入</string>
@@ -381,7 +381,7 @@ APP
     <string name="no_reviewers">沒有審核者</string>
     <string name="sent_from_fasthub">從我的 %1$s，使用 %2$s%3$s 發送。</string>
     <string name="enable_signature">開啟簽名</string>
-    <string name="enable_signature_summary">開啟傳送通過簽名</string>
+    <string name="enable_signature_summary">在傳送時加入簽名</string>
     <string name="enable_signature_box">開啟簽名欄</string>
     <string name="enable_signature_box_summary">選擇複選框以在編輯器中切換簽名</string>
     <string name="tags">標籤</string>
@@ -442,5 +442,45 @@ APP
     <string name="too_large_changes">差異太多無法顯示。請於瀏覽器檢視它們</string>
     <string name="project">專案</string>
     <string name="faq">FAQ</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• 為何我無法看到我的 <b>組織</b> 的 <i>私人</i> / <i>公開</i> 的東西?</h5>
+        <p>打開 https://github.com/settings/applications 並找到 FastHub， 點擊它並滑到 Organization access 並點擊 Grant 按鈕，
+        或是透過 <b>Access Token</b> 登入將不需要做這件事</p>
+
+        <h5>• 我試著透過 Access Token &amp; OTP 登入，但沒作用?</h5>
+        <p>你不能透過 Access Token &amp; OTP 登入，因為 OTP code 的時限緣故， 你會需要在幾秒鐘內登入。</p>
+
+        <h5>• 為何我的私人&amp;企業的 Repo Wiki 無法顯示?</h5>
+        <p>因為 FastHub 在擷取 GitHub Wiki &amp; 私人 Repos 時需要 session token ，但 FastHub 沒有。</p>
+
+        <h5>• 使用企業帳號時無法與任何其他非我的企業的東西互動?</h5>\n
+        <p>邏輯上來說，你無法存取任何東西非你的企業的東西，不過 FastHub 讓它能成功存取，但沒辦法再做到更多了。
+        在大部分的情況下你的登入認證不存在於 GitHub 的伺服器上。
+        但在少數情形之下你的 GitHub 帳號的 Oauth token 能達成這個技巧。</p>
+
+        <h5>• 我在編輯 Issues/PRs 遇到困難?</h5>
+        <p>如果你正在編輯一個公開組職的 Repo ，請聯絡你的組織以取得權限給 FastHub 或是使用 Access Token 來登入!</p>
+		
+        <h5>• 我有困難/我想要有新功能!!</h5>
+        <p>前往 https://github.com/k0shk0sh/FastHub/issues/new 並創建一個 bug/feature requests 的 issue。
+		我非常鼓勵你在發布某些東西前先搜尋有沒有重複的，否則會被馬上關閉。</p>
+
+        <h5>• 我要怎麼取得 PROMO CODE?</h5>
+        <p>這個方案已不再存在。</p>
+    ]]></string>
     <string name="please_read">請閱讀!</string>
+    <string name="comments_added_successfully">評論新增成功</string>
+    <string name="clear_search_keywords">清空搜尋紀錄</string>
+    <string name="restore_purchases">回復購買</string>
+    <string name="include_forks">包括 Forks</string>
+    <string name="comment_is_too_far_to_paginate">這個評論難以分頁</string>
+    <string name="search_results_warning">回應數量超過 API 的上限</string>
+    <string name="disable_loading_image_title">禁止載入圖片</string>
+    <string name="disable_loading_image_summary">在使用行動網路時禁止載入圖片</string>
+    <string name="report_issue_warning">這個 issue 會被傳送到 GitHub 上的 FastHub\'s repo</string>
+    <string name="block">阻擋</string>
+    <string name="unblock">取消阻擋</string>
+    <string name="user_blocked">已阻擋此使用者</string>
+    <string name="user_unblocked">已取消阻擋此使用者</string>
 </resources>
