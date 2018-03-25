@@ -13,11 +13,4 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search"
         app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/secondMenu"
-        android:visible="false"
-        android:icon="@drawable/ic_profile"
-        android:title="@string/profile"
-        app:showAsAction="always"/>
 </menu>

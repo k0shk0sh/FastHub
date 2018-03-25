@@ -220,7 +220,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onBackPressed() {
-        if (drawer != null && (drawer.isDrawerOpen(GravityCompat.START) || drawer.isDrawerOpen(GravityCompat.END))) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             closeDrawer();
         } else {
             boolean clickTwiceToExit = !PrefGetter.isTwiceBackButtonDisabled();
@@ -400,10 +400,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (drawer != null) {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
-            } else if (drawer.isDrawerOpen(GravityCompat.END)) {
-                drawer.closeDrawer(GravityCompat.END);
             }
-            drawer.closeDrawers();
         }
     }
 

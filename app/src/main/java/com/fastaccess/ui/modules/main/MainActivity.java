@@ -91,7 +91,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        menu.findItem(R.id.secondMenu).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -105,9 +104,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         } else if (item.getItemId() == R.id.notifications) {
             ViewHelper.tintDrawable(item.setIcon(R.drawable.ic_notifications_none).getIcon(), ViewHelper.getIconColor(this));
             startActivity(new Intent(this, NotificationActivity.class));
-            return true;
-        } else if (item.getItemId() == R.id.secondMenu) {
-            if (drawer != null) drawer.openDrawer(GravityCompat.END);
             return true;
         }
         return super.onOptionsItemSelected(item);
