@@ -67,14 +67,11 @@ public class InputHelper {
     public static long toLong(@NonNull String text) {
         if (!isEmpty(text)) {
             try {
-                return Long.valueOf(text.replace(".", "")
-                        .replaceAll(",", "")
-                        .replaceAll(" ", ""));
+                return Long.valueOf(text.replaceAll("[^0-9]", ""));
             } catch (NumberFormatException ignored) {}
         }
         return 0;
     }
-
 
     public static int getSafeIntId(long id) {
         return id > Integer.MAX_VALUE ? (int) (id - Integer.MAX_VALUE) : (int) id;

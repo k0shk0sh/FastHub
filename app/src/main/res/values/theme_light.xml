@@ -14,7 +14,7 @@
 
     <style name="ThemeLight.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="card_background">@color/cardview_light_background</item>
-        <item name="icon_color">#666</item>
+        <item name="icon_color">#212121</item>
         <item name="comment_box_style">@style/CommentBoxLight</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundLight</item>
         <item name="patch_addition">@color/light_patch_addition_color</item>
