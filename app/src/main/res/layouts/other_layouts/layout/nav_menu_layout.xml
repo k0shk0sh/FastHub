@@ -9,7 +9,33 @@
     android:clickable="true"
     android:fitsSystemWindows="true"
     android:focusable="true"
+    app:headerLayout="@layout/drawer_header"
     app:itemBackground="@color/transparent"
     app:itemIconTint="@color/search_tab_highlighter"
-    app:itemTextColor="@color/search_tab_highlighter"
-    app:menu="@menu/drawer_menu"/>
+    app:itemTextColor="@color/search_tab_highlighter">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/drawerTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:windowBackground"
+            android:elevation="2dp"
+            android:outlineProvider="background"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="?colorAccent"
+            app:tabTextColor="?android:textColorTertiary"/>
+
+        <com.fastaccess.ui.widgets.ViewPagerView
+            android:id="@+id/drawerViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"/>
+    </LinearLayout>
+
+</android.support.design.widget.NavigationView>

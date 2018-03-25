@@ -600,4 +600,5 @@
     <string name="user_unblocked">User unblocked</string>
     <string name="clear_image_cache">Clear Images Cache</string>
     <string name="restart_app_message">Please restart the app</string>
+    <string name="menu_label">Menu</string>
 </resources>

@@ -370,7 +370,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         getPresenter().onPutAssignees(users);
     }
 
-    @Override protected void onNavToRepoClicked() {
+    @Override public void onNavToRepoClicked() {
         Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(),
                 getPresenter().getLogin(), RepoPagerMvp.ISSUES), isEnterprise());
         startActivity(intent);

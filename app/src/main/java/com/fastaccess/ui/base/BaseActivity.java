@@ -13,6 +13,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -39,12 +40,14 @@ import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.CachedComments;
 import com.fastaccess.provider.theme.ThemeEngine;
+import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.main.drawer.MainDrawerFragment;
 import com.fastaccess.ui.modules.main.notifications.FastHubNotificationDialog;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity;
@@ -71,15 +74,14 @@ import io.reactivex.Observable;
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
-        BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements BaseMvp.FAView {
 
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) protected AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
-    @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
+    @Nullable @BindView(R.id.drawerViewPager) ViewPager drawerViewPager;
     @State String schemeUrl;
 
     @State Bundle presenterStateBundle = new Bundle();
@@ -128,8 +130,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
         initEnterpriseExtra(savedInstanceState);
-        mainNavDrawer = new MainNavDrawer(this, extraNav, accountsNav);
-        setupNavigationView();
+        mainNavDrawer = new MainNavDrawer(this, extraNav);
         setupDrawer();
     }
 
@@ -218,12 +219,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }));
     }
 
-    @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        closeDrawer();
-        mainNavDrawer.onMainNavItemClick(item);
-        return false;
-    }
-
     @Override public void onBackPressed() {
         if (drawer != null && (drawer.isDrawerOpen(GravityCompat.START) || drawer.isDrawerOpen(GravityCompat.END))) {
             closeDrawer();
@@ -297,15 +292,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void selectHome(boolean hideRepo) {
-        if (extraNav != null) {
+        Menu menu = getMainDrawerMenu();
+        if (menu != null) {
             if (hideRepo) {
-                extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
-                extraNav.getMenu().findItem(R.id.mainView).setVisible(true);
+                menu.findItem(R.id.navToRepo).setVisible(false);
+                menu.findItem(R.id.mainView).setVisible(true);
                 return;
             }
-            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
-            extraNav.getMenu().findItem(R.id.mainView).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.mainView).setChecked(true);
+            menu.findItem(R.id.navToRepo).setVisible(false);
+            menu.findItem(R.id.mainView).setCheckable(true);
+            menu.findItem(R.id.mainView).setChecked(true);
         }
     }
 
@@ -326,24 +322,26 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         selectMenuItem(R.id.trending);
     }
 
-    protected void onOpenOrgsDialog() {
+    public void onOpenOrgsDialog() {
         OrgListDialogFragment.newInstance().show(getSupportFragmentManager(), "OrgListDialogFragment");
     }
 
     protected void showNavToRepoItem() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(true);
+        Menu menu = getMainDrawerMenu();
+        if (menu != null) {
+            menu.findItem(R.id.navToRepo).setVisible(true);
         }
     }
 
     protected void selectMenuItem(@IdRes int id) {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(id).setCheckable(true);
-            extraNav.getMenu().findItem(id).setChecked(true);
+        Menu menu = getMainDrawerMenu();
+        if (menu != null) {
+            menu.findItem(id).setCheckable(true);
+            menu.findItem(id).setChecked(true);
         }
     }
 
-    protected void onNavToRepoClicked() {}
+    public void onNavToRepoClicked() {}
 
     private void setupToolbarAndStatusBar(@Nullable Toolbar toolbar) {
         changeStatusBarColor(isTransparent());
@@ -393,13 +391,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void setupNavigationView() {
-        if (extraNav != null) {
-            extraNav.setNavigationItemSelectedListener(this);
+        if (mainNavDrawer != null) {
+            mainNavDrawer.setupView();
         }
-        mainNavDrawer.setupViewDrawer();
     }
 
-    protected void closeDrawer() {
+    public void closeDrawer() {
         if (drawer != null) {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
@@ -432,36 +429,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                     }
                 });
             }
-        }
-        if (drawer != null && accountsNav != null) {
-            if (this instanceof MainActivity) {
-                if (!PrefGetter.isAccountNavDrawerHintShowed()) {
-                    drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                        @Override public boolean onPreDraw() {
-                            drawer.openDrawer(GravityCompat.END);
-                            drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                                @Override public void onDrawerOpened(View drawerView) {
-                                    super.onDrawerOpened(drawerView);
-                                    drawerView.postDelayed(() -> {
-                                        if (drawer != null) {
-                                            closeDrawer();
-                                            drawer.removeDrawerListener(this);
-                                        }
-                                    }, 1000);
-                                }
-                            });
-                            drawer.getViewTreeObserver().removeOnPreDrawListener(this);
-                            return true;
-                        }
-                    });
-                }
-            }
-            drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                @Override public void onDrawerOpened(View drawerView) {
-                    super.onDrawerOpened(drawerView);
-                    if (mainNavDrawer != null) mainNavDrawer.setupViewDrawer();
-                }
-            });
         }
     }
 
@@ -503,7 +470,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         return navIcon;
     }
 
-    protected void onRestartApp() {
+    public void onRestartApp() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -573,5 +540,18 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     private boolean showInAppNotifications() {
         return FastHubNotification.hasNotifications();
+    }
+
+    private Menu getMainDrawerMenu() {
+        if (drawerViewPager != null) {
+            FragmentsPagerAdapter adapter = (FragmentsPagerAdapter) drawerViewPager.getAdapter();
+            if (adapter != null) {
+                MainDrawerFragment fragment = (MainDrawerFragment) adapter.instantiateItem(drawerViewPager, 0);
+                if (fragment != null) {
+                    return fragment.getMenu();
+                }
+            }
+        }
+        return null;
     }
 }
