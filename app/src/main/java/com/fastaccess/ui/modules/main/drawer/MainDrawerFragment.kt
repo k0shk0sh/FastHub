@@ -40,9 +40,10 @@ class MainDrawerFragment : BaseFragment<MainMvp.View, BasePresenter<MainMvp.View
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val activity = activity as? BaseActivity<*, *>? ?: return false
+        activity.closeDrawer()
         if (item.isChecked) return false
         mainNav.postDelayed({
-            val activity = activity as? BaseActivity<*, *>? ?: return@postDelayed
             if (!activity.isFinishing()) {
                 when {
                     item.itemId == R.id.navToRepo -> activity.onNavToRepoClicked()
