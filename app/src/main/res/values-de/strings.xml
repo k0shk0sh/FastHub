@@ -464,6 +464,7 @@
     <string name="unblock">Entblockieren</string>
     <string name="clear_image_cache">Bilder Cache leeren</string>
     <string name="restart_app_message">Bitte die App neu starten</string>
+	<string name="menu_label">Menü</string>
 </resources>
 
 
