@@ -81,11 +81,11 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.submit) {
             val text = editText.text
-            if (text.isNotEmpty()) {
-                presenter.onSubmit(editText.text?.toString(), fileName.editText?.text?.toString(), description.editText?.text?.toString())
-            } else {
+            if (presenter.fileContent == text.toString() && presenter.model?.fileName == fileName.editText?.text.toString()) {
                 showErrorMessage(getString(R.string.commit_file_required))
+                return true
             }
+            presenter.onSubmit(editText.text?.toString(), fileName.editText?.text?.toString(), description.editText?.text?.toString())
             return true
         }
         return super.onOptionsItemSelected(item)
