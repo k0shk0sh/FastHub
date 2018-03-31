@@ -97,7 +97,7 @@ _Ads currently not available._
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `Collections`
 - [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding
 - [**Android State**](https://github.com/evernote/android-state) for saving instance states
-- [**Lombok**](https://projectlombok.github.io) for getters and setters
+- [**Lombok**](https://projectlombok.org/) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs
 - [**Glide**](https://github.com/bumptech/glide) for loading images
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
