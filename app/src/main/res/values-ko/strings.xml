@@ -454,5 +454,7 @@
     <string name="user_unblocked">유저 차단 취소됨</string>
     <string name="clear_image_cache">이미지 캐시 지우기</string>
     <string name="restart_app_message">앱을 재시작 해주세요.</string>
+    <string name="menu_label">Menu</string>
+    <string name="commit_file_required">No file changes</string>
 	
 </resources>
