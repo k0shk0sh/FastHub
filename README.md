@@ -104,6 +104,7 @@ _Ads currently not available._
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
+- [**Lottie**](https://github.com/airbnb/lottie-android) for animations
 - [**Fabric**](https://fabric.io/kits/android/crashlytics) analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
 
