@@ -50,10 +50,12 @@ class MainDrawerFragment : BaseFragment<MainMvp.View, BasePresenter<MainMvp.View
                     item.itemId == R.id.gists -> GistsListActivity.startActivity(activity)
                     item.itemId == R.id.pinnedMenu -> PinnedReposActivity.startActivity(activity)
                     item.itemId == R.id.mainView -> {
-                        val intent = Intent(activity, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        activity.startActivity(intent)
-                        activity.finish()
+                        if (activity !is MainActivity) {
+                            val intent = Intent(activity, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            activity.startActivity(intent)
+                            activity.finish()
+                        }
                     }
                     item.itemId == R.id.profile -> userModel?.let {
                         UserPagerActivity.startActivity(activity, it.login, false, PrefGetter.isEnterprise(), 0)

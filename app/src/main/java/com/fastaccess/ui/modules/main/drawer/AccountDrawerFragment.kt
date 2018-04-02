@@ -52,6 +52,13 @@ class AccountDrawerFragment : BaseFragment<MainMvp.View, BasePresenter<MainMvp.V
         }
         accLists.adapter = adapter
 
+        logout.setOnClickListener {
+            postDelayedAndClose {
+                activity?.let {
+                    (it as? BaseActivity<*, *>)?.onLogoutPressed()
+                }
+            }
+        }
         togglePinned?.setOnClickListener {
             postDelayedAndClose { PinnedReposActivity.startActivity(it.context) }
         }
