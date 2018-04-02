@@ -8,8 +8,8 @@
     <string name="ok">OK</string>
     <string name="no_data">Доступные данные отсутствуют</string>
     <string name="search">Поиск</string>
-    <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
-    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы начать использовать FastHub</string>
+    <string name="please_login">Пожалуйста, войдите, чтобы использовать FastHub</string>
+    <string name="sign_in_to_github">Войдите в учётную запись GitHub, чтобы начать использовать FastHub</string>
     <string name="failed_login">Не удалось войти</string>
     <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
@@ -207,14 +207,14 @@
     <string name="home">Начальный экран</string>
     <string name="create_milestone">Создать Milestone</string>
     <string name="error_creating_milestone">Ошибка создания Mileston`а</string>
-    <string name="due_on">Due on</string>
+    <string name="due_on">Выполнить к</string>
     <string name="no_assignees">Нет назначений</string>
-    <string name="this_value">этот</string>
+    <string name="this_value">это</string>
     <string name="commits_reflected">Commit`ы были переключены на выбранную ветвь</string>
     <string name="general_settings">Основные</string>
     <string name="background_job_summary">Выберите, как часто FastHub будет проверять наличие новых уведомлений</string>
     <string name="background_job_title">Интервал синхронизации</string>
-    <string name="every">Каждые</string>
+    <string name="every">Интергвал синхронизации</string>
     <string name="behavior">Поведение</string>
     <string name="customization">Персонализация</string>
     <string name="recycler_view_animation_summary">Включить анимации списка</string>
@@ -228,13 +228,13 @@
     <string name="permission_failed">Доступ не предоставлен.</string>
     <string name="backup_summary">Последнее обновление: %s</string>
     <string name="now">Сейчас</string>
-    <string name="unsaved_data_warning">Все несохранённые изменения будут сброшены.</string>
+    <string name="unsaved_data_warning">Все несохранённые изменения будут утеряны.</string>
     <string name="private_repo">Частный</string>
     <string name="rect_avatar_summary">Использовать скруглённые квадратные аватары вместо круглых</string>
     <string name="rect_avatar_title">Квадратные аватары</string>
     <string name="rate_app">Оценить это приложение</string>
     <string name="author">Автор</string>
-    <string name="fork_github">Создать Fork на GitHub</string>
+    <string name="fork_github">Проект на GitHub</string>
     <string name="send_email">Отправить сообщение эл. почты</string>
     <string name="question_concerning_fasthub">Вопрос относительно FastHub</string>
     <string name="feedback">Обратная связь</string>
@@ -249,7 +249,7 @@
     <string name="success_copied">Скопировано</string>
     <string name="commit_message">Сообщение Commit`а</string>
     <string name="network_error">Ошибка соединения с сервером</string>
-    <string name="unexpected_error">Возникло непредвиденное исключение при работе с API </string>
+    <string name="unexpected_error">Возникло непредвиденное исключение при работе с API</string>
     <string name="request_error">Произошла ошибка при запросе на сервер, повторите попытку позже</string>
     <string name="marking_as_read">Маркировка уведомления как прочтённое</string>
     <string name="forking_gist">Создание Fork`а Gist`a</string>
@@ -269,7 +269,7 @@
     <string name="pinned">Закладки</string>
     <string name="unpin">Открепить</string>
     <string name="empty_pinned_repos">Сохранённые репозитории отсутствуют. Они будут отображены здесь\n
-        P.S: Чем чаще вы посещаете репозиторий, тем выше он будет находиться</string>
+        P.S.: Чем чаще вы посещаете репозиторий, тем выше он находится в списке</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="no_feeds">Новости отсутствуют</string>
@@ -347,9 +347,9 @@
     <string name="login_with_personal_token">Войти при помощи личного маркера</string>
     <string name="personal_token">Личный маркер</string>
     <string name="basic_login">Войти через основную форму авторизации</string>
-    <string name="no_orgs_description">Если вы состоите в каких-либо организациях, но они здесь отсутствуют, то перейдите по ссылке ниже.
-        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Вы можете выполнить вход при помощи Маркера доступа (Access token), 
-        который может предоставить FastHub доступ к списку ваших организаций.</string>
+    <string name="no_orgs_description">Ознакомьтесь с информацией по ссылке, если вы состоите в каких-либо организациях, но они отсутствуют в списке.
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nP.S.: Вы также можете выполнить вход при помощи Маркера доступа (Access token), 
+        который может предоставить FastHub необходимые разрешения.</string>
     <string name="insert">Вставить</string>
     <string name="select">Выбрать</string>
     <string name="select_picture">Выберите изображение</string>
@@ -428,7 +428,7 @@
     <string name="please_read">ПОЖАЛУЙСТА, ПРОЧТИТЕ!</string>
     <string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Почему я не вижу ни Публичных, ни Частных Организаций, в которых состою?</h5>
+        <h5>• Почему я не вижу Организаций, в которых состою?</h5>
         <p>Перейдите по ссылке https://github.com/settings/applications, выберите FastHub, напротив "Organization access" ("Доступ к организациям") нажмите кнопку "Grant" ("Предоставить").
         Хорошей и простой альтернативой будет выполнение входа при помощи Маркера доступа (Access Token).</p>
         <h5>• Я попытался выполнить вход, используя Маркер доступа (Access Token) и одноразовый пароль, но безуспешно. В чём дело?</h5>
@@ -438,13 +438,13 @@
         <h5>• Я вошёл в свой Корпоративный аккаунт. Почему я могу взаимодействовать только с Корпоративной версией GitHub?</h5>
         <p>Ну, это логично, что вы не можете работать с чем-либо ещё, кроме Корпоративной части GitHub. FastHub пытается получить все возможные права доступа, но в большинстве
         случаев это не работает, так как ваши данные авторизации не находятся на сервере GitHub. Но в <b>некоторых</b> случаях маркер OAuth вашего аккаунта GitHub может сработать.</p>
-        <h5>• Почему я испытываю проблемы при редактировании Issue/Pull Request`а?</h5>
+        <h5>• Почему я имею проблемы при редактировании Issue/Pull Request`а?</h5>
         <p>Если редактирование Issue и/или Pull Request`ов в репозиториях Публичных Организаций недоступно, то обратитесь к администраторам этих Организаций, чтобы они предоставили доступ FastHub. В качестве альтернативы вы можете выполнить вход при помощи Маркера доступа (Access Token).</p>
         <h5>• Я обнаружил ошибку! / Я хочу предложить вам ввести новую функцию!</h5>
         <p>Чтобы сообщить об ошибке или сделать предложение, перейдите по ссылке https://github.com/k0shk0sh/FastHub/issues/new и создайте новый Issue. Я призываю вас искать похожие Issue перед открытием нового.
         Любой дублирующийся Issue будет помечен как дубликат и закрыт.</p>
         <h5>• Как мне получить бесплатный ПРОМОКОД?</h5>
-        <p>К сожалению, данная акция больше не действительна.</p>
+        <p>К сожалению, данная акция больше не действует.</p>
     ]]></string>
     <string name="faq">ЧаВо</string>
     <string name="comments_added_successfully">Комментарии успешно добавлены</string>
@@ -455,11 +455,13 @@
     <string name="search_results_warning">Пожалуйста, используйте более конкретный поисковый запрос</string>
     <string name="disable_loading_image_title">Отключить загрузку изображений</string>
     <string name="disable_loading_image_summary">Отключить загрузку изображений в режиме передачи данных</string>
-    <string name="report_issue_warning">Этот Issue будет опубликован в репозитории FastHub</string>
+    <string name="report_issue_warning">Новый Issue будет опубликован в репозитории FastHub</string>
     <string name="block">Заблокировать</string>
     <string name="unblock">Разблокировать</string>
     <string name="user_blocked">Пользователь заблокирован</string>
     <string name="user_unblocked">Пользователь разблокирован</string>
     <string name="clear_image_cache">Очистить кэш изображений</string>
     <string name="restart_app_message">Пожалуйста, перезапустите приложение</string>
+    <string name="menu_label">Меню</string>
+    <string name="commit_file_required">Нет изменений файла</string>
 </resources>
