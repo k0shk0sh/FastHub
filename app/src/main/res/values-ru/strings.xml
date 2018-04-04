@@ -251,12 +251,12 @@
     <string name="network_error">Ошибка соединения с сервером</string>
     <string name="unexpected_error">Возникло непредвиденное исключение при работе с API</string>
     <string name="request_error">Произошла ошибка при запросе на сервер, повторите попытку позже</string>
-    <string name="marking_as_read">Маркировка уведомления как прочтённое</string>
+    <string name="marking_as_read">Помечаем уведомление как прочтённое</string>
     <string name="forking_gist">Создание Fork`а Gist`a</string>
     <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию (OAuth)</string>
     <string name="or_character">ИЛИ</string>
     <string name="mark_notification_title">Отключить автопрочтение</string>
-    <string name="mark_notification_summary">Отключить автоматическое прочтение уведомления</string>
+    <string name="mark_notification_summary">Отключить автоматическое прочтение уведомлений</string>
     <string name="theme_title">Тема оформления</string>
     <string name="theme_summary">Выбрать тему по умолчанию</string>
     <string name="theme_color_summary">Выбрать акцентный цвет темы</string>
@@ -416,7 +416,7 @@
     <string name="content">Содержимое</string>
     <string name="copy_sha">Копировать SHA-1</string>
     <string name="view_as_code">Открыть как код</string>
-    <string name="app_animation_summary">Отключить все анимации</string>
+    <string name="app_animation_summary">Отключить все анимации в приложении</string>
     <string name="app_animation_title">Отключить анимации</string>
     <string name="can_not_merge_pr">Этот PR не может быть объединён сейчас.</string>
     <string name="projects">Проекты</string>
@@ -429,7 +429,7 @@
     <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• Почему я не вижу Организаций, в которых состою?</h5>
-        <p>Перейдите по ссылке https://github.com/settings/applications, выберите FastHub, напротив """Organization access"" (""Доступ к организациям"") нажмите кнопку ""Grant"" (""Предоставить"").
+        <p>Перейдите по ссылке https://github.com/settings/applications, выберите FastHub, напротив 'Organization access' ('Доступ к организациям') нажмите кнопку 'Grant' ('Предоставить').
         Хорошей и простой альтернативой будет выполнение входа при помощи Маркера доступа (Access Token).</p>
         <h5>• Я попытался выполнить вход, используя Маркер доступа (Access Token) и одноразовый пароль, но безуспешно. В чём дело?</h5>
         <p>Вы не сможете выполнить вход при помощи Маркера доступа и одноразового пароля. Так как такие пароли имеют ограниченный срок действия, вам придётся проделывать операцию входа каждые несколько секунд.</p>
