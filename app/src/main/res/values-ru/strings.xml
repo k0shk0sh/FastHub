@@ -53,7 +53,7 @@
     <string name="releases">Сборки</string>
     <string name="no_body">Содержимое отсутствует</string>
     <string name="contributors">Contributor`ы</string>
-    <string name="contributions">Вклад за последний год</string>
+    <string name="contributions">Вклады за последний год</string>
     <string name="by"></string>
     <string name="english_please">Пожалуйста, при составлении тикета используйте английский язык.</string>
     <string name="close_issue">Закрыть Issue</string>
