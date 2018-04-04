@@ -53,9 +53,9 @@
     <string name="releases">Сборки</string>
     <string name="no_body">Содержимое отсутствует</string>
     <string name="contributors">Contributor`ы</string>
-    <string name="contributions">Сontribution`ы</string>
+    <string name="contributions">Вклад за последний год</string>
     <string name="by"></string>
-    <string name="english_please">Пожалуйста, в отзыве используйте английский язык.</string>
+    <string name="english_please">Пожалуйста, при составлении тикета используйте английский язык.</string>
     <string name="close_issue">Закрыть Issue</string>
     <string name="re_open_issue">Открыть Issue</string>
     <string name="re_open">Открыть</string>
@@ -203,7 +203,7 @@
     <string name="update_pull_request">Обновить Pull Request</string>
     <string name="no_milestones">Mileston`ы отсутствуют</string>
     <string name="add">Добавить</string>
-    <string name="done">Завершено</string>
+    <string name="done">Готово</string>
     <string name="home">Начальный экран</string>
     <string name="create_milestone">Создать Milestone</string>
     <string name="error_creating_milestone">Ошибка создания Mileston`а</string>
@@ -212,16 +212,16 @@
     <string name="this_value">это</string>
     <string name="commits_reflected">Commit`ы были переключены на выбранную ветвь</string>
     <string name="general_settings">Основные</string>
-    <string name="background_job_summary">Выберите, как часто FastHub будет проверять наличие новых уведомлений</string>
+    <string name="background_job_summary">Выберите, как часто будет выполняться проверка новых уведомлений</string>
     <string name="background_job_title">Интервал синхронизации</string>
-    <string name="every">Интергвал синхронизации</string>
+    <string name="every">Интервал синхронизации</string>
     <string name="behavior">Поведение</string>
     <string name="customization">Персонализация</string>
     <string name="recycler_view_animation_summary">Включить анимации списка</string>
     <string name="recycler_view_animation_title">Анимации списка</string>
-    <string name="back_button_summary">Отключить диалог, который предотвращал случайный выход из FastHub</string>
+    <string name="back_button_summary">Отключить диалог, который предотвращал случайный выход из приложения</string>
     <string name="back_button_title">Откл. диалог при выходе</string>
-    <string name="restore">Восстановить</string>
+    <string name="restore">Восстановить из рез. копии</string>
     <string name="backup">Создать резервную копию</string>
     <string name="backed_up">Копия успешно создана!</string>
     <string name="select_backup">Выберите резервную копию для восстановления</string>
@@ -256,7 +256,7 @@
     <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию (OAuth)</string>
     <string name="or_character">ИЛИ</string>
     <string name="mark_notification_title">Отключить автопрочтение</string>
-    <string name="mark_notification_summary">Отключить автопрочтение без клика на уведомление.</string>
+    <string name="mark_notification_summary">Отключить автоматическое прочтение уведомления</string>
     <string name="theme_title">Тема оформления</string>
     <string name="theme_summary">Выбрать тему по умолчанию</string>
     <string name="theme_color_summary">Выбрать акцентный цвет темы</string>
@@ -268,7 +268,7 @@
     <string name="pin">Закрепить</string>
     <string name="pinned">Закладки</string>
     <string name="unpin">Открепить</string>
-    <string name="empty_pinned_repos">Сохранённые репозитории отсутствуют. Они будут отображены здесь\n
+    <string name="empty_pinned_repos">Сохранённые репозитории будут отображены здесь\n
         P.S.: Чем чаще вы посещаете репозиторий, тем выше он находится в списке</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
@@ -341,7 +341,7 @@
     <string name="wrap_code_summary">Переносить строки в средстве просмотра кода по умолчанию</string>
     <string name="wrap_code_title">Перенос строк</string>
     <string name="open_source_libs">Библиотеки с открытым исходным кодом</string>
-    <string name="enable_notification_sound_summary">Включить звуковые оповещения при получении новых уведомлений.</string>
+    <string name="enable_notification_sound_summary">Включить звуковые оповещения при получении новых уведомлений</string>
     <string name="enable_notification_sound_title">Звуковые оповещения</string>
     <string name="enable_notification_title">Включить уведомления</string>
     <string name="login_with_personal_token">Войти при помощи личного маркера</string>
@@ -416,7 +416,7 @@
     <string name="content">Содержимое</string>
     <string name="copy_sha">Копировать SHA-1</string>
     <string name="view_as_code">Открыть как код</string>
-    <string name="app_animation_summary">Отключить внутрипрограммные анимации везде.</string>
+    <string name="app_animation_summary">Отключить все анимации</string>
     <string name="app_animation_title">Отключить анимации</string>
     <string name="can_not_merge_pr">Этот PR не может быть объединён сейчас.</string>
     <string name="projects">Проекты</string>
@@ -425,11 +425,11 @@
     <string name="card_added_by">Добавлено %s %s</string>
     <string name="too_large_changes">Слишком много изменений для отображения. Посмотрите их, пожалуйста, в браузере</string>
     <string name="project">Проект</string>
-    <string name="please_read">ПОЖАЛУЙСТА, ПРОЧТИТЕ!</string>
+    <string name="please_read">ПОЖАЛУЙСТА, ОЗНАКОМЬТЕСЬ!</string>
     <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• Почему я не вижу Организаций, в которых состою?</h5>
-        <p>Перейдите по ссылке https://github.com/settings/applications, выберите FastHub, напротив "Organization access" ("Доступ к организациям") нажмите кнопку "Grant" ("Предоставить").
+        <p>Перейдите по ссылке https://github.com/settings/applications, выберите FastHub, напротив """Organization access"" (""Доступ к организациям"") нажмите кнопку ""Grant"" (""Предоставить"").
         Хорошей и простой альтернативой будет выполнение входа при помощи Маркера доступа (Access Token).</p>
         <h5>• Я попытался выполнить вход, используя Маркер доступа (Access Token) и одноразовый пароль, но безуспешно. В чём дело?</h5>
         <p>Вы не сможете выполнить вход при помощи Маркера доступа и одноразового пароля. Так как такие пароли имеют ограниченный срок действия, вам придётся проделывать операцию входа каждые несколько секунд.</p>
@@ -453,8 +453,8 @@
     <string name="include_forks">Включая fork`и</string>
     <string name="comment_is_too_far_to_paginate">Комментарий находится слишком далеко для отображения.</string>
     <string name="search_results_warning">Пожалуйста, используйте более конкретный поисковый запрос</string>
-    <string name="disable_loading_image_title">Отключить загрузку изображений</string>
-    <string name="disable_loading_image_summary">Отключить загрузку изображений в режиме передачи данных</string>
+    <string name="disable_loading_image_title">Откл. загрузку изображений</string>
+    <string name="disable_loading_image_summary">Отключить загрузку изображений в режиме мобильной передачи данных</string>
     <string name="report_issue_warning">Новый Issue будет опубликован в репозитории FastHub</string>
     <string name="block">Заблокировать</string>
     <string name="unblock">Разблокировать</string>
