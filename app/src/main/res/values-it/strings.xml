@@ -8,7 +8,7 @@
     <string name="ok">OK</string>
     <string name="no_data">Nessun dato disponibile</string>
     <string name="search">Cerca</string>
-    <string name="please_login">Per favore accedi per continuare ad utilizzare FastHub</string>
+    <string name="please_login">Per favore accedi per utilizzare FastHub</string>
     <string name="sign_in_to_github">Accedi al tuo account GitHub per ottenere il meglio da FastHub</string>
     <string name="failed_login">Accesso fallito</string>
     <string name="sign_in">Accedi</string>
@@ -27,12 +27,12 @@
     <string name="unfollow">Smetti di seguire</string>
     <string name="user">Utente</string>
     <string name="details">Dettagli</string>
-    <string name="archive_file_detected_error">File archivio rilevato, per favore scarica il file per vedere il suo contenuto.</string>
+    <string name="archive_file_detected_error">Archivio rilevato, per favore scarica il file per vedere il suo contenuto.</string>
     <string name="minimum_three_chars">Caratteri minimi (3)</string>
     <string name="no_file_found">Nessun file trovato</string>
     <string name="no_readme_found">Nessun readme trovato</string>
-    <string name="downloading">Scaricando…</string>
-    <string name="downloading_file">Scaricando il file…</string>
+    <string name="downloading">Download in corso…</string>
+    <string name="downloading_file">Download del file…</string>
     <string name="released">Rilasciato</string>
     <string name="drafted">Abbozzato</string>
     <string name="releases">Pubblicazioni</string>
@@ -40,8 +40,8 @@
     <string name="contributors">Collaboratori</string>
     <string name="contributions">Contributi</string>
     <string name="by">da</string>
-    <string name="english_please">Perfavore invia la tua richiesta in inglese.</string>
-    <string name="close_issue">Risolvi Problema</string>
+    <string name="english_please">Per favore invia la tua richiesta in inglese.</string>
+    <string name="close_issue">Chiudi Problema</string>
     <string name="re_open_issue">Riapri Problema</string>
     <string name="re_open">Riapri</string>
     <string name="close">Chiudi</string>
@@ -161,7 +161,7 @@
     <string name="all_notifications">Tutte le notifiche</string>
     <string name="unread">Non letto</string>
     <string name="all">Tutto</string>
-    <string name="delete_repo">Elimina Repo</string>
+    <string name="delete_repo">Elimina repository</string>
     <string name="delete_repo_warning">L\'eliminazione di questa repo non può essere annullata</string>
     <string name="thirty_minutes">30 minuti</string>
     <string name="twenty_minutes">20 minuti</string>
@@ -198,9 +198,9 @@
     <string name="due_on">Scadenza</string>
     <string name="no_assignees">Nessun assegnatario</string>
     <string name="this_value">questo</string>
-    <string name="commits_reflected">I Commit sono stati commutati al branch selezionato</string>
-    <string name="general_settings">Generale</string>
-    <string name="background_job_summary">Scegli quanto spesso FastHub controllerà le notifiche</string>
+    <string name="commits_reflected">I commit sono stati applicati al branch selezionato</string>
+    <string name="general_settings">Generali</string>
+    <string name="background_job_summary">Scegli quanto spesso FastHub controllerà per delle notifiche</string>
     <string name="background_job_title">Intervallo sincronizzazione delle notifiche</string>
     <string name="every">Ogni</string>
     <string name="behavior">Comportamento</string>
@@ -242,17 +242,17 @@
     <string name="marking_as_read">Segnando le notifiche come lette</string>
     <string name="forking_gist">Clonando gist</string>
     <string name="login_using_your_default_browser">Accedi utilizzando il tuo browser predefinito (OAuth)</string>
-    <string name="or_character">O</string>
+    <string name="or_character">o</string>
     <string name="mark_notification_title">Disabilita lo stato di notifica letta</string>
     <string name="mark_notification_summary">Premendo su una notifica non la segnerà come letta.</string>
     <string name="theme_title">Tema</string>
     <string name="theme_summary">Scegli il tuo tema predefinito</string>
     <string name="theme_color_summary">Scegli il colore di evidenza</string>
-    <string name="theme_color_title">Colore in Evidenza del Tema</string>
+    <string name="theme_color_title">Colore in evidenza del tema</string>
     <string name="website">Sito Web</string>
     <string name="support_development">Supporta lo sviluppo</string>
-    <string name="success_purchase_message">Grazie di essere così estremamente fantastico!</string>
-    <string name="change_theme_warning">Se il tema non è stato applicato correttamente, per favore termina e riapri l\'app manualmente.</string>
+    <string name="success_purchase_message">Grazie di essere stato così estremamente fantastico!</string>
+    <string name="change_theme_warning">Se il tema non è stato applicato correttamente, per favore chiudi e riapri l\'app manualmente.</string>
     <string name="pin">Fissa</string>
     <string name="pinned">Fissato</string>
     <string name="unpin">Togli</string>
@@ -279,7 +279,7 @@
     <string name="enable_ads">Abilita Pubblicità</string>
     <string name="no_issues">Nessun problema</string>
     <string name="no_unread_notifications">Nessuna notifica non letta.</string>
-    <string name="my_gists">I miei Gist</string>
+    <string name="my_gists">I miei Gists</string>
     <string name="changelog">Changelog</string>
     <string name="notifications_hint">Premi per aprire la lista delle notifiche o fai uno swipe per chiudere</string>
     <string name="home_long_click_hint">Pressione prolungata per navigare ovunque dalla schermata principale</string>
@@ -344,10 +344,10 @@
     <string name="insert">Inserisci</string>
     <string name="select">Seleziona</string>
     <string name="select_picture">Seleziona immagine</string>
-    <string name="support_with_2_00">Supporta con $2.00</string>
-    <string name="support_with_5_00">Supporta con $5.00</string>
-    <string name="support_with_10_00">Supporta con $10.00</string>
-    <string name="support_with_20_00">Supporta con $20.00</string>
+    <string name="support_with_2_00">Supporta con 2.00€</string>
+    <string name="support_with_5_00">Supporta con 5.00€</string>
+    <string name="support_with_10_00">Supporta con 10.00€</string>
+    <string name="support_with_20_00">Supporta con 20.00€</string>
     <string name="app_language">Lingua</string>
     <string name="language">Lingua</string>
     <string name="choose_language_title">Scegli la lingua</string>
@@ -370,8 +370,8 @@
     <string name="failed_selecting_image">Caricamento immagine fallito.</string>
     <string name="want_to_merge">vuole unire</string>
     <string name="watchers">Osservatori</string>
-    <string name="reviewers">Critici</string>
-    <string name="no_reviewers">Nessun critico</string>
+    <string name="reviewers">Revisori</string>
+    <string name="no_reviewers">Nessun revisore</string>
     <string name="sent_from_fasthub">Inviato dal mio %1$s usando %2$s%3$s</string>
     <string name="enable_signature">Attiva Firma</string>
     <string name="enable_signature_summary">Attiva la firma inviato tramite</string>
@@ -380,7 +380,7 @@
         dell\'editor di testo</string>
     <string name="tags">Tag</string>
     <string name="add_comment">Aggiungi commento</string>
-    <string name="image_error">Errore caricando l\'immagine, per favore riprova ancora.</string>
+    <string name="image_error">Errore di caricamento dell\'immagine, per favore riprova ancora.</string>
     <string name="trending">Tendenza</string>
     <string name="not_really_working">L\' ordinamento per emoji non funziona in realtà a causa delle limitazioni di GitHub</string>
     <string name="scroll_up">Scorrere verso l\'alto</string>
@@ -390,7 +390,7 @@
     <string name="todo_unchecked">Da fare non controllato</string>
     <string name="divider">Divisore</string>
     <string name="no_user_found">Nessun utente trovato</string>
-    <string name="no_trending">Niente di tendenza</string>
+    <string name="no_trending">Niente in tendenza</string>
     <string name="reset">Ripristina</string>
     <string name="apply">Applica</string>
     <string name="filter">Filtro</string>
@@ -462,18 +462,18 @@ Alternativamente puoi accedere utilizzando il <b>Token di Accesso</b> che facili
 ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Commenti aggiunti con successo</string>
-    <string name="clear_search_keywords">Pulisci la Cronologia di Ricerca</string>
+    <string name="clear_search_keywords">Pulisci la cronologia di ricerca</string>
     <string name="restore_purchases">Ripristina Pagamenti</string>
     <string name="include_forks">Includi i Fork</string>
     <string name="comment_is_too_far_to_paginate">Il commento è troppo distante per paginare</string>
-    <string name="search_results_warning">Troppe risposte \nSto mostrando il massimo che l\' API permette</string>
+    <string name="search_results_warning">Troppe risposte trovate\nSto mostrando il massimo numero che l\' API permette</string>
     <string name="disable_loading_image_title">Disattiva Immagine di Caricamento</string>
     <string name="disable_loading_image_summary">Disattiva immagine di caricamento mentre si utilizza un piano dati</string>
-    <string name="report_issue_warning">Questo problema sarà inserito al repo di FastHub su GitHub</string>
+    <string name="report_issue_warning">Questo problema sarà inserito alla repository di FastHub su GitHub</string>
     <string name="block">Blocca</string>
     <string name="unblock">Sblocca</string>
     <string name="user_blocked">Utente bloccato</string>
     <string name="user_unblocked">Utente sbloccato</string>
-    <string name="clear_image_cache">Pulisci Cache Immagini</string>
-    <string name="restart_app_message">Perfavore riavviare l\' app</string>
+    <string name="clear_image_cache">Pulisci la Cache delle Immagini</string>
+    <string name="restart_app_message">Per favore riavviare l\' app</string>
 </resources>
