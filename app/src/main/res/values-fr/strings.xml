@@ -34,9 +34,9 @@
     <string name="downloading">Téléchargement…</string>
     <string name="downloading_file">Fichier en cours de téléchargement…</string>
     <string name="released">Released</string>
-    <string name="drafted">Drafted</string>
+    <string name="drafted">Rédigé</string>
     <string name="releases">Releases</string>
-    <string name="no_body">No body</string>
+    <string name="no_body">Personne</string>
     <string name="contributors">Contributeurs</string>
     <string name="contributions">Contributions</string>
     <string name="by">par</string>
@@ -133,7 +133,7 @@
     <string name="gist_description">Description du Gist</string>
     <string name="avatar_click_hint">Tout partout où il y a un avatar d\'utilisateur, vous pouvez cliquer dessus pour accèder à son profil</string>
     <string name="feeds_fork_hint">Cliquer longuement sur un fork pour ouvrir le dépôt original ou le fork.</string>
-    <string name="click_here_to_download_release_hint">Download releases</string>
+    <string name="click_here_to_download_release_hint">Télécharger les versions</string>
     <string name="options">Options</string>
     <string name="click_file_option_hint">Télécharger un fichier ou partager un dossier</string>
     <string name="comment_hint">Appuyer sur un commentaire pour tagguer son auteur ou éditer l\'un des vôtres.
@@ -147,8 +147,8 @@
     <string name="last_updated">Dernière modification</string>
     <string name="preview">Prévisualisation</string>
     <string name="view_code">Surlignage syntaxique</string>
-    <string name="click_to_toggle_highlighting">Toggle syntax highlighting.
-        \nScroll the Markdown editor icons for more options.</string>
+    <string name="click_to_toggle_highlighting">Activer le surlignage syntaxique.
+        \nFaites défiler les icônes de l\'éditeur pour plus d'options.</string>
     <string name="creation_date">Date de création</string>
     <string name="creation_date_hint">Date de création du fichier</string>
     <string name="last_updated_hint">Date de la dernière modification du fichier</string>
@@ -213,8 +213,8 @@
     <string name="now">Maintenant</string>
     <string name="unsaved_data_warning">Annuler les changements non sauvegardés ?</string>
     <string name="private_repo">Privé</string>
-    <string name="rect_avatar_summary">Use rounded squarish avatars instead of circular ones</string>
-    <string name="rect_avatar_title">Squarish Avatars</string>
+    <string name="rect_avatar_summary">Utiliser des avatars carrés avec des bords arrondis au lieu des avatars circulaires</string>
+    <string name="rect_avatar_title">Avatars carrés aux bords arrondis</string>
     <string name="rate_app">Noter cette application</string>
     <string name="author">Auteur</string>
     <string name="fork_github">Fork sur GitHub</string>
@@ -243,7 +243,7 @@
     <string name="theme_title">Thème</string>
     <string name="theme_summary">Choisir votre thème par défaut</string>
     <string name="theme_color_summary">Choose theme accent color</string>
-    <string name="theme_color_title">Theme Accent Color</string>
+    <string name="theme_color_title">Couleur d\'accentuation du thème</string>
     <string name="website">Site web</string>
     <string name="support_development">Supporter le développement</string>
     <string name="success_purchase_message">Merci d\'être extrêmement génial !</string>
@@ -353,7 +353,7 @@
     <string name="choose_your_login_type">Choisissez votre type de connexion</string>
     <string name="files_only">In Files</string>
     <string name="paths_only">In Paths</string>
-    <string name="review_requests">Review Requests</string>
+    <string name="review_requests">Examiner les demandes</string>
     <string name="join_slack">Rejoindre Slack</string>
     <string name="join_slack_message">Voulez-vous rejoindre le groupe FastHub sur Slack ?</string>
     <string name="successfully_invited">Invité avec succès</string>
@@ -364,14 +364,14 @@
     <string name="reviewers">Relecteurs</string>
     <string name="no_reviewers">Aucun relecteur</string>
     <string name="sent_from_fasthub">Envoyé depuis mon %1$s en utilisant %2$s%3$s</string>
-    <string name="enable_signature">Enable Signature</string>
+    <string name="enable_signature">Activer la signature</string>
     <string name="enable_signature_summary">Enable sent via signature</string>
-    <string name="enable_signature_box">Enable Signature Box</string>
-    <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
+    <string name="enable_signature_box">Activer la case de signature</string>
+    <string name="enable_signature_box_summary">Activer la case à cocher pour activer la signature dans l\'éditeur de texte</string>
     <string name="tags">Étiquettes</string>
     <string name="add_comment">Ajouter un commentaire</string>
     <string name="image_error">Erreur de chargement de l\'image, merci de recommencer.</string>
-    <string name="trending">Trending</string>
+    <string name="trending">Tendances</string>
     <string name="not_really_working">Trier par emojis ne fonctionne pas suite à une limitation de GitHub</string>
     <string name="scroll_up">Défiler vers le haut</string>
     <string name="scroll_down">Défiler vers le bas</string>
@@ -392,17 +392,17 @@
     <string name="feed">Flux</string>
     <string name="premium_theme">Thème Premium</string>
     <string name="choose_code_theme">Code color palette</string>
-    <string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
-        otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
-        GitHub API is coming from your Enterprise Account.</string>
+    <string name="enterprise_login_warning">Veuillez vous connecter à votre compte GitHub pour pouvoir accéder à tout l\'API GitHub
+         sinon, vous finirez par être expulsé chaque fois que vous accéderez à autre chose que votre Enterprise GitHub en raison du jeton transmis à
+         l\'API GitHub provennant de votre compte d\'entreprise..</string>
     <string name="add_account">Ajouter un compte</string>
     <string name="choose_account">Choisir un compte</string>
     <string name="not_match">Aucune correspondance</string>
     <string name="warning">Attention</string>
     <string name="owner">Propriétaire</string>
-    <string name="original_poster">Original Poster</string>
-    <string name="cancel_reviews">Cancel Reviews</string>
-    <string name="colored_navbar_summary">Disable colored navigation bar in themes</string>
+    <string name="original_poster">Autheur d\'origine</string>
+    <string name="cancel_reviews">Annuler les avis</string>
+    <string name="colored_navbar_summary">Désactivez la barre de navigation coloré dans les thèmes.</string>
     <string name="colored_navbar_title">Barre de navigation sans couleur</string>
     <string name="sound_chooser_summary">Choisir le son de notification personnalisé</string>
     <string name="sound_chooser_title">Choisir le son de notification</string>
@@ -427,9 +427,9 @@
     <string name="please_read">MERCI DE LIRE !</string>
     <string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
-        <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
-        Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+        <h5>• Pourquoi ne puis-je pas voir mon <b>organisation</b> <i>Privée</i> ou <i>Publique</i>?</h5>
+        <p>Ouvrez https://github.com/settings/applications et cherchez FastHub, ouvrez-le, descendez à "Accès aux organisations" et cliquez sur le bouton "Accorder".
+        Autrement, vous pouvez vous connecter en utilisant un <b>Jeton d\'accès</b> qui facilitera le processus.</p>
 
         <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
         <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
@@ -451,12 +451,12 @@
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Commentaires ajoutés avec succès</string>
     <string name="clear_search_keywords">Vider l'historique de recherche</string>
-    <string name="restore_purchases">Restore Purchases</string>
+    <string name="restore_purchases">Restorer les achats</string>
     <string name="include_forks">Inclure les Forks</string>
-    <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+    <string name="comment_is_too_far_to_paginate">Le commentaire est trop loin pour être trouvé</string>
     <string name="search_results_warning">Merci de préciser votre recherche</string>
     <string name="disable_loading_image_title">Désactiver image de chargement</string>
-    <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+    <string name="disable_loading_image_summary">Désactiver le chargement des images en réseaux mobiles.</string>
     <string name="report_issue_warning">Ce ticket sera soumis au dépôt FastHub sur GitHub</string>
     <string name="block">Block</string>
 </resources>
