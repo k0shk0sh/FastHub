@@ -105,6 +105,7 @@ _Ads currently not available._
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
 - [**Fabric**](https://fabric.io/kits/android/crashlytics) analytics & crash reporting.
+- [**Lottie**](https://github.com/airbnb/lottie-android) for animations
 - **Android Support Libraries**, the almighty ;-)
 
 ## Contribution
