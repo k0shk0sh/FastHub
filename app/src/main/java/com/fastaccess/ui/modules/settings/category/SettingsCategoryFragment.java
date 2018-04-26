@@ -351,7 +351,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 Map<String, ?> savedPref = gson.fromJson(json.toString(), typeOfHashMap);
                 if (savedPref != null && !savedPref.isEmpty()) {
                     for (Map.Entry<String, ?> stringEntry : savedPref.entrySet()) {
-                        PrefHelper.set(stringEntry.getKey(), stringEntry.getKey());
+                        PrefHelper.set(stringEntry.getKey(), stringEntry.getValue());
                     }
                 }
                 callback.onThemeChanged();
