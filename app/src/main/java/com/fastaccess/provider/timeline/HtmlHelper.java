@@ -26,7 +26,7 @@ import com.fastaccess.provider.timeline.handler.LinkHandler;
 import com.fastaccess.provider.timeline.handler.ListsHandler;
 import com.fastaccess.provider.timeline.handler.MarginHandler;
 import com.fastaccess.provider.timeline.handler.PreTagHandler;
-import com.fastaccess.provider.timeline.handler.QouteHandler;
+import com.fastaccess.provider.timeline.handler.QuoteHandler;
 import com.fastaccess.provider.timeline.handler.StrikethroughHandler;
 import com.fastaccess.provider.timeline.handler.SubScriptHandler;
 import com.fastaccess.provider.timeline.handler.SuperScriptHandler;
@@ -89,7 +89,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, theme));
         mySpanner.registerHandler("img", new DrawableHandler(textView, width));
         mySpanner.registerHandler("g-emoji", new EmojiHandler());
-        mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
+        mySpanner.registerHandler("blockquote", new QuoteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
         mySpanner.registerHandler("strong", new BoldHandler());
         mySpanner.registerHandler("i", new ItalicHandler());
