@@ -19,9 +19,8 @@ import lombok.AllArgsConstructor;
 
     @ColorInt private int color;
 
+    @Override
     public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
-        builder.append("\n");
-        builder.setSpan(new MarkDownQuoteSpan(color), (start > builder.length() - 1) ? start + 1 : start, builder.length() - 1, 33);
-        builder.append("\n");
+        builder.setSpan(new MarkDownQuoteSpan(color), start + 1, builder.length(), 33);
     }
 }
