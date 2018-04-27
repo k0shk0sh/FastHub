@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
  * Created by Kosh on 23 Apr 2017, 11:30 AM
  */
 
-@AllArgsConstructor public class QouteHandler extends TagNodeHandler {
+@AllArgsConstructor public class QuoteHandler extends TagNodeHandler {
 
     @ColorInt private int color;
 
