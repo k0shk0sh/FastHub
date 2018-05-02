@@ -54,7 +54,7 @@
         <item
             android:id="@+id/reportBug"
             android:icon="@drawable/ic_feedback_black_24dp"
-            android:title="@string/report_issue"/>
+            android:title="@string/send_feedback"/>
         <item
             android:id="@+id/faq"
             android:icon="@drawable/ic_info"
