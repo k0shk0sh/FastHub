@@ -426,4 +426,5 @@
     <string name="comments_added_successfully">Yorumlar başarıyla eklendi</string>
     <string name="clear_search_keywords">Arama Geçmişini Temizle</string>
     <string name="restore_purchases">Satın alımları geri al</string>
+    <string name="send_feedback">Geri bildirim</string>
 </resources>
