@@ -17,11 +17,11 @@
     <group android:id="@+id/profile_group">
         <item
             android:id="@+id/profile"
-            android:icon="@drawable/ic_profile"
+            android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/profile"/>
         <item
             android:id="@+id/orgs"
-            android:icon="@drawable/ic_people"
+            android:icon="@drawable/ic_group_black_24dp"
             android:title="@string/organizations"/>
         <item
             android:id="@+id/notifications"
@@ -44,7 +44,7 @@
             android:title="@string/trending"/>
         <item
             android:id="@+id/gists"
-            android:icon="@drawable/ic_gists"
+            android:icon="@drawable/ic_code_black_24dp"
             android:title="@string/gists"/>
     </group>
 
