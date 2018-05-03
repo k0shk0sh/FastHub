@@ -228,7 +228,7 @@
     <string name="success_purchase_message">Olağanüstü harika olduğunuz için teşekkürler!</string>
     <string name="change_theme_warning">Eğer tema etkin olmadıysa, uygulamayı durdurup yeniden başlatınız.</string>
     <string name="pin">Pin</string>
-    <string name="pinned">Pinlendi</string>
+    <string name="pinned">Sabitlenenler</string>
     <string name="unpin">Pini Kaldır</string>
     <string name="empty_pinned_repos">Pinlemiş repository bulunmuyor. Repository\'leri pinleyerek burada görülmesini sağlayabilirsiniz.</string>
     <string name="yes">Evet</string>
@@ -371,7 +371,7 @@
         GitHub hesabından ziyade kendi GitHub hesabınızla giriş yapın çünkü diğer türlü GitHub API\'ye giden 
         kod Enterprise hesabından gönderildiği için ne yapmaya çalışırsanız çalışın siztem sizi atacak.
     </string>
-    <string name="add_account">Hesap Ekle</string>
+    <string name="add_account">Hesap ekle</string>
     <string name="choose_account">Hesap Seç</string>
     <string name="not_match">Birbirini tutmuyor</string>
     <string name="warning">Uyarı</string>
@@ -425,5 +425,6 @@
     <string name="faq">SSS</string>
     <string name="comments_added_successfully">Yorumlar başarıyla eklendi</string>
     <string name="clear_search_keywords">Arama Geçmişini Temizle</string>
-    <string name="restore_purchases">Satın Alımları Eski Haline Getir</string>
+    <string name="restore_purchases">Satın alımları geri al</string>
+    <string name="send_feedback">Geri bildirim</string>
 </resources>
