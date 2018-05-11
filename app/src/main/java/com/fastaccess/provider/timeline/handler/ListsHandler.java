@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
@@ -42,10 +43,11 @@ import lombok.NoArgsConstructor;
         return node.getParent() == null ? null : node.getParent().getName();
     }
 
-    @Override public void beforeChildren(TagNode node, SpannableStringBuilder builder)  {
+    @Override public void beforeChildren(TagNode node, SpannableStringBuilder builder) {
         TodoItems todoItem = null;
         if (node.getChildTags() != null && node.getChildTags().length > 0) {
             for (TagNode tagNode : node.getChildTags()) {
+                Logger.e(tagNode.getName(), tagNode.getText());
                 if (tagNode.getName() != null && tagNode.getName().equals("input")) {
                     todoItem = new TodoItems();
                     todoItem.isChecked = tagNode.getAttributeByName("checked") != null;

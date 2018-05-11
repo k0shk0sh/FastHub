@@ -257,6 +257,19 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         return super.onOptionsItemSelected(item);
     }
 
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+//        final int blockId = 10110;
+//        MenuItem blockItem;
+//        if (menu.findItem(blockId) == null) {
+//            blockItem = menu.add(0, blockId, 0, getString(R.string.block));
+//        } else {
+//            blockItem = menu.findItem(blockId);
+//        }
+//        blockItem.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_block))
+//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void hideShowFab(int position) {
         if (isOrg) {
             if (getPresenter().getIsMember() == 1) {

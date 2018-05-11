@@ -20,6 +20,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -46,6 +47,8 @@ import lombok.Getter;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    @com.evernote.android.state.State boolean isCollaborator;
+    private long commentId;
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
@@ -60,7 +63,7 @@ import lombok.Getter;
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, issue.getLogin(), item.getComment().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, issue.getLogin(), item.getComment().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -112,7 +115,8 @@ import lombok.Getter;
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, item.getIssue().getLogin(), item.getIssue().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, item.getIssue().getLogin(),
+                            item.getIssue().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
@@ -213,11 +217,21 @@ import lombok.Getter;
             if (bundle == null) {
                 CommentRequestModel commentRequestModel = new CommentRequestModel();
                 commentRequestModel.setBody(text);
-                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(issue.getLogin(), issue.getRepoId(),
-                        issue.getNumber(), commentRequestModel),
-                        comment -> sendToView(view -> view.addNewComment(TimelineModel.constructComment(comment))));
+                manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise()).createIssueComment(issue.getLogin(), issue
+                                .getRepoId(),
+                        issue.getNumber(), commentRequestModel))
+                        .doOnSubscribe(disposable -> sendToView(view -> view.showBlockingProgress(0)))
+                        .subscribe(comment -> sendToView(view -> view.addNewComment(TimelineModel.constructComment(comment))),
+                                throwable -> {
+                                    onError(throwable);
+                                    sendToView(IssueTimelineMvp.View::onHideBlockingProgress);
+                                }));
             }
         }
+    }
+
+    @Override public void setCommentId(long commentId) {
+        this.commentId = commentId;
     }
 
     @NonNull private ReactionsProvider getReactionsProvider() {
@@ -259,6 +273,11 @@ import lombok.Getter;
         setCurrentPage(page);
         String login = parameter.getLogin();
         String repoId = parameter.getRepoId();
+        if (page == 1) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId,
+                    Login.getUser().getLogin())
+                    .doOnNext(booleanResponse -> isCollaborator = booleanResponse.code() == 204));
+        }
         int number = parameter.getNumber();
         Observable<List<TimelineModel>> observable = RestProvider.getIssueService(isEnterprise())
                 .getTimeline(login, repoId, number, page)
@@ -270,7 +289,40 @@ import lombok.Getter;
                 })
                 .toList()
                 .toObservable();
-        makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));
+        makeRestCall(observable, timeline -> {
+            sendToView(view -> view.onNotifyAdapter(timeline, page));
+            loadComment(page, commentId, login, repoId, timeline);
+        });
         return true;
+    }
+
+    private void loadComment(int page, long commentId, String login, String repoId, List<TimelineModel> timeline) {
+        if (page == 1 && commentId > 0) {
+            Observable<TimelineModel> observable = Observable.create(source -> {
+                int index = -1;
+                if (timeline != null) {
+                    for (int i = 0; i < timeline.size(); i++) {
+                        TimelineModel timelineModel = timeline.get(i);
+                        if (timelineModel.getComment() != null) {
+                            if (timelineModel.getComment().getId() == commentId) {
+                                index = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+                TimelineModel timelineModel = new TimelineModel();
+                timelineModel.setPosition(index);
+                source.onNext(timelineModel);
+                source.onComplete();
+            });
+            manageObservable(observable.doOnNext(timelineModel -> sendToView(view -> {
+                if (timelineModel.getComment() != null) {
+                    view.addComment(timelineModel, -1);
+                } else {
+                    view.addComment(null, timelineModel.getPosition());
+                }
+            })));
+        }
     }
 }

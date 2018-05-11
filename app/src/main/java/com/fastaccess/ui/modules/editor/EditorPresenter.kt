@@ -93,7 +93,7 @@ class EditorPresenter : BasePresenter<EditorMvp.View>(), EditorMvp.Presenter {
     }
 
     private fun onEditReviewComment(reviewComment: EditReviewCommentModel, savedText: CharSequence, repoId: String,
-                                    login: String, issueNumber: Int, id: Long) {
+                                    login: String, @Suppress("UNUSED_PARAMETER") issueNumber: Int, id: Long) {
         if (!InputHelper.isEmpty(savedText)) {
             val requestModel = CommentRequestModel()
             requestModel.body = savedText.toString()

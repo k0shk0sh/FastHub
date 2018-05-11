@@ -88,7 +88,7 @@ public class PrettifyWebView extends NestedWebView {
         settings.setJavaScriptEnabled(true);
         settings.setAppCachePath(getContext().getCacheDir().getPath());
         settings.setAppCacheEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setDefaultTextEncodingName("utf-8");
         settings.setLoadsImagesAutomatically(true);
         settings.setBlockNetworkImage(false);
@@ -107,6 +107,11 @@ public class PrettifyWebView extends NestedWebView {
         if (onContentChangedListener != null) {
             onContentChangedListener.onScrollChanged(t == 0, t);
         }
+    }
+
+    @Override protected void onDetachedFromWindow() {
+        onContentChangedListener = null;
+        super.onDetachedFromWindow();
     }
 
     private boolean hitLinkResult(WebView.HitTestResult result) {

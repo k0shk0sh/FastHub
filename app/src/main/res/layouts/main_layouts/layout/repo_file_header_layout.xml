@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/toParentFolder"
             android:layout_width="wrap_content"
@@ -78,6 +79,18 @@
             android:contentDescription="@string/download"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_download"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/addFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_micro"
+            android:src="@drawable/ic_add"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/searchRepoFiles"

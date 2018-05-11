@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.format.Formatter;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedGists;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -31,6 +33,7 @@ import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
+import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
@@ -39,6 +42,8 @@ import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -61,6 +66,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     @BindView(R.id.forkGist) ForegroundImageView forkGist;
     @BindView(R.id.detailsIcon) View detailsIcon;
     @BindView(R.id.edit) View edit;
+    @BindView(R.id.pinUnpin) ForegroundImageView pinUnpin;
     private int accentColor;
     private int iconColor;
     private CommentEditorFragment commentEditorFragment;
@@ -105,6 +111,14 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     @OnClick(R.id.edit) void onEdit() {
         if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
             if (getPresenter().getGist() != null) CreateGistActivity.start(this, getPresenter().getGist());
+        } else {
+            PremiumActivity.Companion.startActivity(this);
+        }
+    }
+
+    @OnClick(R.id.pinUnpin) void pinUpin() {
+        if (PrefGetter.isProEnabled()) {
+            getPresenter().onPinUnpinGist();
         } else {
             PremiumActivity.Companion.startActivity(this);
         }
@@ -161,6 +175,10 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                             .put(BundleConstant.YES_NO_EXTRA, true)
                             .put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            GistsListActivity.startActivity(this);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -223,6 +241,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         if (gistsModel == null) {
             return;
         }
+        onUpdatePinIcon(gistsModel);
         String url = gistsModel.getOwner() != null ? gistsModel.getOwner().getAvatarUrl() :
                      gistsModel.getUser() != null ? gistsModel.getUser().getAvatarUrl() : "";
         String login = gistsModel.getOwner() != null ? gistsModel.getOwner().getLogin() :
@@ -258,6 +277,12 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         });
     }
 
+    @Override public void onUpdatePinIcon(@NonNull Gist gist) {
+        pinUnpin.setImageDrawable(PinnedGists.isPinned(gist.getId())
+                                  ? ContextCompat.getDrawable(this, R.drawable.ic_pin_filled)
+                                  : ContextCompat.getDrawable(this, R.drawable.ic_pin));
+    }
+
     @Override public void onScrollTop(int index) {
         if (pager == null || pager.getAdapter() == null) return;
         Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
@@ -267,8 +292,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
-        if (pager == null || pager.getAdapter() == null) return;
-        GistCommentsFragment view = (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+        GistCommentsFragment view = getGistCommentsFragment();
         if (view != null) {
             view.onHandleComment(text, bundle);
         }
@@ -278,6 +302,24 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         commentEditorFragment.onAddUserName(username);
     }
 
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
+    }
+
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        GistCommentsFragment view = getGistCommentsFragment();
+        if (view != null) return view.getNamesToTag();
+        return new ArrayList<>();
+    }
+
+    @Nullable private GistCommentsFragment getGistCommentsFragment() {
+        if (pager == null || pager.getAdapter() == null) return null;
+        return (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+    }
 
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
@@ -285,9 +327,5 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         } else {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
-    }
-
-    @Override public void onCreateComment(String text, Bundle bundle) {
-
     }
 }

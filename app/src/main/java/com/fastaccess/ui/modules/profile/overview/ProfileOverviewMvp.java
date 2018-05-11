@@ -13,7 +13,7 @@ import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import java.util.ArrayList;
 import java.util.List;
 
-import pr.GetPinnedReposQuery;
+import github.GetPinnedReposQuery;
 
 /**
  * Created by Kosh on 03 Dec 2016, 9:15 AM

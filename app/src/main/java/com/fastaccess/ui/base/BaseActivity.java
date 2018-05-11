@@ -27,10 +27,14 @@ import com.evernote.android.state.State;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.FastHubNotification;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -42,13 +46,16 @@ import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.main.notifications.FastHubNotificationDialog;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
+import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -75,6 +82,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
     @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
+    @State String schemeUrl;
 
     @State Bundle presenterStateBundle = new Bundle();
 
@@ -102,33 +110,27 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
+        Logger.e(FirebaseInstanceId.getInstance().getToken());
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);
         }
-        if (!isSecured()) {
-            if (!isLoggedIn()) {
-                onRequireLogin();
-                return;
-            }
-        }
-        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            StateSaver.restoreInstanceState(this, savedInstanceState);
-            getPresenter().onRestoreInstanceState(presenterStateBundle);
-        }
-        setupToolbarAndStatusBar(toolbar);
         if (savedInstanceState == null) {
+            getPresenter().onCheckGitHubStatus();
             if (getIntent() != null) {
-                if (getIntent().getExtras() != null) {
-                    getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
-                } else if (getIntent().hasExtra(BundleConstant.IS_ENTERPRISE)) {
-                    getPresenter().setEnterprise(getIntent().getBooleanExtra(BundleConstant.IS_ENTERPRISE, false));
-                }
-            }
-            if (PrefGetter.showWhatsNew()) {
-                new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
+                schemeUrl = getIntent().getStringExtra(BundleConstant.SCHEME_URL);
             }
         }
+        if (!validateAuth()) return;
+        if (savedInstanceState == null) {
+            if (showInAppNotifications()) {
+                FastHubNotificationDialog.Companion.show(getSupportFragmentManager());
+            }
+        }
+        showChangelog();
+        initPresenterBundle(savedInstanceState);
+        setupToolbarAndStatusBar(toolbar);
+        initEnterpriseExtra(savedInstanceState);
         mainNavDrawer = new MainNavDrawer(this, extraNav, accountsNav);
         setupNavigationView();
         setupDrawer();
@@ -157,8 +159,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             boolean logout = bundle.getBoolean("logout");
             if (logout) {
                 onRequireLogin();
-//                if(App.getInstance().getGoogleApiClient().isConnected())
-//                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
             }
         }
     }//pass
@@ -274,6 +274,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public boolean isEnterprise() {
         return getPresenter() != null && getPresenter().isEnterprise();
+    }
+
+    @Override public void onOpenUrlInBrowser() {
+        if (!InputHelper.isEmpty(schemeUrl)) {
+            ActivityHelper.startCustomTab(this, schemeUrl);
+            try {
+                finish();
+            } catch (Exception ignored) {}// fragment might be committed and calling finish will crash the app.
+        }
     }
 
     @Optional @OnClick(R.id.logout) void onLogoutClicked() {
@@ -491,5 +500,44 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 this instanceof PullRequestPagerActivity || this instanceof GistActivity) {
             CachedComments.Companion.getInstance().clear();
         }
+    }
+
+    private boolean validateAuth() {
+        if (!isSecured()) {
+            if (!isLoggedIn()) {
+                onRequireLogin();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void initEnterpriseExtra(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            if (getIntent() != null) {
+                if (getIntent().getExtras() != null) {
+                    getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
+                } else if (getIntent().hasExtra(BundleConstant.IS_ENTERPRISE)) {
+                    getPresenter().setEnterprise(getIntent().getBooleanExtra(BundleConstant.IS_ENTERPRISE, false));
+                }
+            }
+        }
+    }
+
+    private void initPresenterBundle(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            StateSaver.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(presenterStateBundle);
+        }
+    }
+
+    private void showChangelog() {
+        if (PrefGetter.showWhatsNew() && !(this instanceof PlayStoreWarningActivity)) {
+            new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
+        }
+    }
+
+    private boolean showInAppNotifications() {
+        return FastHubNotification.hasNotifications();
     }
 }

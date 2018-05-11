@@ -16,17 +16,12 @@ import java.util.HashMap;
 
 class CreateGistPresenter extends BasePresenter<CreateGistMvp.View> implements CreateGistMvp.Presenter {
     @Override public void onSubmit(@NonNull String description, @NonNull HashMap<String, FilesListModel> files, boolean isPublic) {
-        boolean isEmptyDesc = InputHelper.isEmpty(description);
-        if (getView() != null) {
-            getView().onDescriptionError(isEmptyDesc);
-        }
-        if (!isEmptyDesc) {
-            CreateGistModel createGistModel = new CreateGistModel();
-            createGistModel.setDescription(InputHelper.toString(description));
-            createGistModel.setPublicGist(isPublic);
-            createGistModel.setFiles(files);
-            onSubmit(createGistModel);
-        }
+        if (files.isEmpty()) return;
+        CreateGistModel createGistModel = new CreateGistModel();
+        createGistModel.setDescription(InputHelper.toString(description));
+        createGistModel.setPublicGist(isPublic);
+        createGistModel.setFiles(files);
+        onSubmit(createGistModel);
     }
 
     @Override public void onSubmit(@NonNull CreateGistModel model) {

@@ -34,9 +34,9 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        when {
-            parentFragment is EmojiMvp.EmojiCallback -> emojiCallback = parentFragment as EmojiMvp.EmojiCallback
-            context is EmojiMvp.EmojiCallback -> emojiCallback = context
+        emojiCallback = when {
+            parentFragment is EmojiMvp.EmojiCallback -> parentFragment as EmojiMvp.EmojiCallback
+            context is EmojiMvp.EmojiCallback -> context
             else -> throw IllegalArgumentException("${context.javaClass.simpleName} must implement EmojiMvp.EmojiCallback")
         }
     }
@@ -65,7 +65,7 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
 
     override fun onItemLongClick(position: Int, v: View?, item: Emoji?) {}
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.adapter = adapter
         fastScroller.attachRecyclerView(recycler)

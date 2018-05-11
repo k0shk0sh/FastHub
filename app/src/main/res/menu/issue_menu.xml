@@ -43,7 +43,6 @@
         </menu>
     </item>
 
-
     <item
         android:icon="@drawable/ic_subscribe"
         android:title="@string/subscribe"
@@ -62,6 +61,12 @@
                 app:showAsAction="never"/>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/pinUnpin"
+        android:icon="@drawable/ic_pin"
+        android:title="@string/pin"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/share"

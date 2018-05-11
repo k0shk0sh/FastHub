@@ -15,13 +15,17 @@ import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 
 public interface CommitPagerMvp {
 
-    interface View extends BaseMvp.FAView, CommentEditorFragment.CommentListener  {
+    interface View extends BaseMvp.FAView, CommentEditorFragment.CommentListener {
 
         void onSetup();
 
         void onFinishActivity();
 
         void onAddComment(@NonNull Comment newComment);
+
+        String getLogin();
+
+        String getRepoId();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

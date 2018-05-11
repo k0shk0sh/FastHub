@@ -107,8 +107,12 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
     @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle, String gistId) {
         CommentRequestModel model = new CommentRequestModel();
         model.setBody(text);
-        makeRestCall(RestProvider.getGistService(isEnterprise()).createGistComment(gistId, model),
-                comment -> sendToView(view -> view.onAddNewComment(comment)));
+        manageDisposable(RxHelper.getObservable(RestProvider.getGistService(isEnterprise()).createGistComment(gistId, model))
+                .doOnSubscribe(disposable -> sendToView(view -> view.showBlockingProgress(0)))
+                .subscribe(comment -> sendToView(view -> view.onAddNewComment(comment)), throwable -> {
+                    onError(throwable);
+                    sendToView(GistCommentsMvp.View::hideBlockingProgress);
+                }));
     }
 
     @Override public void onItemClick(int position, View v, Comment item) {

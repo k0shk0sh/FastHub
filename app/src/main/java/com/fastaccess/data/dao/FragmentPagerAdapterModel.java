@@ -2,6 +2,7 @@ package com.fastaccess.data.dao;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.annimon.stream.Collectors;
@@ -20,7 +21,12 @@ import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
 import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
 import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
+import com.fastaccess.ui.modules.notification.fasthub.FastHubNotificationsFragment;
 import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
+import com.fastaccess.ui.modules.pinned.gist.PinnedGistFragment;
+import com.fastaccess.ui.modules.pinned.issue.PinnedIssueFragment;
+import com.fastaccess.ui.modules.pinned.pullrequest.PinnedPullRequestFragment;
+import com.fastaccess.ui.modules.pinned.repo.PinnedReposFragment;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersFragment;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingFragment;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
@@ -44,6 +50,8 @@ import com.fastaccess.ui.modules.repos.extras.branches.BranchesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineFragment;
+import com.fastaccess.ui.modules.repos.projects.columns.ProjectColumnFragment;
+import com.fastaccess.ui.modules.repos.projects.list.RepoProjectFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.RepoPullRequestFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.commits.PullRequestCommitsFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesFragment;
@@ -67,10 +75,16 @@ import lombok.Setter;
 
     String title;
     Fragment fragment;
+    String key;
 
     private FragmentPagerAdapterModel(String title, Fragment fragment) {
+        this(title, fragment, null);
+    }
+
+    public FragmentPagerAdapterModel(String title, Fragment fragment, String key) {
         this.title = title;
         this.fragment = fragment;
+        this.key = key;
     }
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForProfile(@NonNull Context context, @NonNull String login) {
@@ -105,8 +119,8 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance()))
+    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context, long commentId) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance(commentId)))
                 .collect(Collectors.toList());
     }
 
@@ -160,7 +174,8 @@ import lombok.Setter;
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForNotifications(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.unread), new UnreadNotificationsFragment()),
-                new FragmentPagerAdapterModel(context.getString(R.string.all), AllNotificationsFragment.newInstance()))
+                new FragmentPagerAdapterModel(context.getString(R.string.all), AllNotificationsFragment.newInstance()),
+                new FragmentPagerAdapterModel(context.getString(R.string.app_name), new FastHubNotificationsFragment()))
                 .collect(Collectors.toList());
     }
 
@@ -218,8 +233,8 @@ import lombok.Setter;
         return Stream.of(new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeLight)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeDark)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)),
-                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)),
-                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeMidnight)))
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)))
+//                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeMidnight)))
                 .collect(Collectors.toList());
     }
 
@@ -229,5 +244,43 @@ import lombok.Setter;
                 new FragmentPagerAdapterModel(context.getString(R.string.tags),
                         BranchesFragment.Companion.newInstance(login, repoId, false)))
                 .toList();
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForRepoProjects(@NonNull Context context, @Nullable String repoId,
+                                                                                @NonNull String login) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open),
+                        RepoProjectFragment.Companion.newInstance(login, repoId, IssueState.open)),
+                new FragmentPagerAdapterModel(context.getString(R.string.closed),
+                        RepoProjectFragment.Companion.newInstance(login, repoId, IssueState.closed)))
+                .toList();
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForProjectColumns(@NonNull List<ProjectColumnModel> models, boolean isCollaborator) {
+        return Stream.of(models)
+                .map(projectColumnModel -> new FragmentPagerAdapterModel("", ProjectColumnFragment.Companion
+                        .newInstance(projectColumnModel, isCollaborator), String.valueOf(projectColumnModel.getId())))
+                .toList();
+    }
+
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForPinned(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.repos), PinnedReposFragment.newInstance()),
+                new FragmentPagerAdapterModel(context.getString(R.string.issues), PinnedIssueFragment.newInstance()),
+                new FragmentPagerAdapterModel(context.getString(R.string.pull_requests), PinnedPullRequestFragment.newInstance()),
+                new FragmentPagerAdapterModel(context.getString(R.string.gists), PinnedGistFragment.newInstance()))
+                .collect(Collectors.toList());
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FragmentPagerAdapterModel that = (FragmentPagerAdapterModel) o;
+
+        return key != null ? key.equals(that.key) : that.key == null;
+    }
+
+    @Override public int hashCode() {
+        return key != null ? key.hashCode() : 0;
     }
 }

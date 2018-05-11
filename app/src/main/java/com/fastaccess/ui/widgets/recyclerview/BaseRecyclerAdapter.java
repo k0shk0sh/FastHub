@@ -29,7 +29,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     private boolean showedGuide;
     private GuideListener guideListener;
     private boolean progressAdded;
-
+    private int rowWidth;
 
     protected BaseRecyclerAdapter() {
         this(new ArrayList<>());
@@ -131,7 +131,11 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     public void addItem(M item) {
         removeProgress();
         data.add(item);
-        notifyItemInserted(data.size() - 1);
+        if (data.size() == 0) {
+            notifyDataSetChanged();
+        } else {
+            notifyItemInserted(data.size() - 1);
+        }
     }
 
     @SuppressWarnings("WeakerAccess") public void addItems(@NonNull List<M> items) {
@@ -204,6 +208,17 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void setGuideListener(GuideListener guideListener) {
         this.guideListener = guideListener;
+    }
+
+    public int getRowWidth() {
+        return rowWidth;
+    }
+
+    public void setRowWidth(int rowWidth) {
+        if (this.rowWidth == 0) {
+            this.rowWidth = rowWidth;
+            notifyDataSetChanged();
+        }
     }
 
     private boolean isShowedGuide() {

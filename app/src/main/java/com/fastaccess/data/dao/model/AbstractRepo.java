@@ -120,6 +120,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     int networkCount;
     String starredUser;
     String reposOwner;
+    @Nullable boolean hasProjects;
 
     public Disposable save(Repo entity) {
         return Single.create(e -> {
@@ -322,6 +323,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         dest.writeInt(this.networkCount);
         dest.writeString(this.starredUser);
         dest.writeString(this.reposOwner);
+        dest.writeByte(this.hasProjects ? (byte) 1 : (byte) 0);
     }
 
     protected AbstractRepo(Parcel in) {
@@ -406,6 +408,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         this.networkCount = in.readInt();
         this.starredUser = in.readString();
         this.reposOwner = in.readString();
+        this.hasProjects = in.readByte() != 0;
     }
 
     public static final Creator<Repo> CREATOR = new Creator<Repo>() {

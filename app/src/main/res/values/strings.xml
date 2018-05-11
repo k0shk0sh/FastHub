@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- DO NOT COPY!  -->
 
     <string name="app_name" translatable="false">FastHub</string>
@@ -91,13 +90,16 @@
     <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
         • All PRO Themes\n
         • PR Reviews & On-line code comments (PRs & Commits)\n
-        • Support to other Merge methods (Rebase & Squash)\n
+        • Commit from FastHub (Edit, Create & Delete files)\n
+        • Supports 2 more Merging methods (Rebase & Squash)\n
         • Login to unlimited accounts\n
         • Edit & Add unlimited Gist Files\n
-        • New upcoming PRO features
+        • Project Columns & Cards (Edit, Create & Delete)\n
+        • Pin Issues, PRs & Gists\n
+        • New upcoming PRO features (Coming soon...)
     ]]></string>
     <string name="enterprise_pro_description" translatable="false"><![CDATA[
-            • Login to unlimited number of Enterprise  & GitHub accounts\n
+            • Login to unlimited number of Enterprise & GitHub accounts\n
             • Access GitHub contents along side your Enterprise Account
     ]]></string>
     <string name="purchase" translatable="false">Purchase</string>
@@ -118,11 +120,11 @@
                 </blockquote>
         ]]>
     </string>
-    <string name="purchase_all" translatable="false">Purchase All for ($ 7.99)</string>
+    <string name="purchase_all" formatted="false" translatable="false">Purchase All for %price%</string>
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <string name="feeds" translatable="false">Feeds</string>
-    <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
+    <!-- END OF DO NOT COPY, START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
@@ -132,9 +134,9 @@
     <string name="ok">OK</string>
     <string name="no_data">No data available</string>
     <string name="search">Search</string>
-    <string name="please_login">Please sign in to continue using FastHub</string>
+    <string name="please_login">Please sign in to begin using FastHub</string>
     <string name="sign_in_to_github">Sign in using your GitHub account to use FastHub</string>
-    <string name="failed_login">Failed to sign in</string>
+    <string name="failed_login">Sign in failed</string>
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
     <string name="reload">Reload</string>
@@ -152,7 +154,7 @@
     <string name="user">User</string>
     <string name="details">Details</string>
     <string name="archive_file_detected_error">Archive file detected, please download the file to view its content.</string>
-    <string name="minimum_three_chars">Minimum characters (3)</string>
+    <string name="minimum_three_chars">Minimum characters (2)</string>
     <string name="no_file_found">No file found</string>
     <string name="no_readme_found">No readme found</string>
     <string name="downloading">Downloading…</string>
@@ -228,7 +230,7 @@
     <string name="no_files">No files</string>
     <string name="required_field">Required field</string>
     <string name="successfully_submitted">Successfully submitted</string>
-    <string name="create_gist">Create Gist</string>
+    <string name="create_gist">Create a Gist</string>
     <string name="clear">Clear</string>
     <string name="users">Users</string>
     <string name="title">Title</string>
@@ -551,12 +553,68 @@
     <string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
     <string name="disable_auto_gif_title">Disable Playing GIF</string>
     <string name="request_changes">requested changes</string>
-    <string name="google_play_service_error">Google Play Service unavailable</string>
+    <string name="google_play_service_error">Google Play Services are unavailable</string>
     <string name="edit_gist">Edit Gist</string>
     <string name="content">Content</string>
     <string name="expand">expand</string>
-    <string name="copy_sha">Copy SHA</string>
+    <string name="copy_sha">Copy SHA-1</string>
     <string name="view_as_code">View as code</string>
-    <string name="app_animation_title">In App Animations</string>
-    <string name="app_animation_summary">Disable in App animations everywhere.</string>
+    <string name="app_animation_title">Disable In-App Animations</string>
+    <string name="app_animation_summary">Disable in-app animations everywhere.</string>
+    <string name="can_not_merge_pr">This PR can\'t be merged now.</string>
+    <string name="projects">Projects</string>
+    <string name="no_projects">No Projects</string>
+    <string name="no_cards">No Cards</string>
+    <string name="card_added_by">Added by %s %s</string>
+    <string name="too_large_changes">Too many differences to display. Please, view them via browser</string>
+    <string name="project">Project</string>
+    <string name="please_read">PLEASE READ!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
+        <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
+        Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+
+        <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
+        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
+
+        <h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
+        <p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
+
+        <h5>• I have signed into my Enterprise account. Why can\'t I interact with anything other than my Enterprise GitHub?</h5>
+        <p>Well, logically, you can\'t access anything else other than your Enterprise. FastHub tries to require as many permissions as possible, but can\'t do anything more about it
+        in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
+
+        <h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
+        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+
+        <h5>• I\'m having problems! / I want to suggest you some things!</h5>
+        <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
+        search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
+
+        <h5>• How can I get a PROMO CODE?</h5>
+        <p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
+        <ul>
+        <li>Your GitHub username;</li>
+        <li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
+        <li>Your education start and graduation dates.</li>
+        </ul>
+        <p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
+        <ul>
+        <li>Your GitHub username;</li>
+        <li>Write an article about FastHub in any social media, such as Medium;</li>
+        <li>Prove your authorship.</li>
+        </ul>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Comments added successfully</string>
+    <string name="clear_search_keywords">Clear Search History</string>
+    <string name="restore_purchases">Restore Purchases</string>
+    <string name="include_forks">Include Forks</string>
+    <string name="comment_is_too_far_to_paginate">The comment is too far to paginate</string>
+    <string name="search_results_warning">Please be more specific with your search</string>
+    <string name="disable_loading_image_title">Disable Loading Image</string>
+    <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
+    <string name="report_issue_warning">This issue will be submitted to FastHub\'s repo in GitHub</string>
+    <string name="block">Block</string>
 </resources>

@@ -54,6 +54,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     String issueId;
     String pullRequestId;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
+    String authorAssociation;
 
     public static Disposable saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {
         return RxHelper.getSingle(Single.fromPublisher(s -> {
@@ -188,6 +189,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
         dest.writeString(this.issueId);
         dest.writeString(this.pullRequestId);
         dest.writeParcelable(this.reactions, flags);
+        dest.writeString(this.authorAssociation);
     }
 
     protected AbstractComment(Parcel in) {
@@ -211,6 +213,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
         this.issueId = in.readString();
         this.pullRequestId = in.readString();
         this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
+        this.authorAssociation = in.readString();
     }
 
     public static final Creator<Comment> CREATOR = new Creator<Comment>() {

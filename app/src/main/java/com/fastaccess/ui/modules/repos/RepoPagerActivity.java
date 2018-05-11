@@ -39,13 +39,15 @@ import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.scheme.LinkParserHelper;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
+import com.fastaccess.ui.modules.repos.extras.labels.LabelsDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.license.RepoLicenseBottomSheet;
+import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscMVp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
@@ -102,6 +104,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
+    @State int showWhich = -1;
 
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
     private boolean userInteracted;
@@ -127,11 +130,17 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
                                       @RepoPagerMvp.RepoNavigationType int navType) {
+        return createIntent(context, repoId, login, navType, -1);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      @RepoPagerMvp.RepoNavigationType int navType, int showWhat) {
         Intent intent = new Intent(context, RepoPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, login)
                 .put(BundleConstant.EXTRA_TYPE, navType)
+                .put(BundleConstant.EXTRA_THREE, showWhat)
                 .end());
         return intent;
     }
@@ -254,13 +263,13 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout}) boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
-                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.FORKS);
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), login, repoId, RepoMiscMVp.FORKS);
                 return true;
             case R.id.starRepoLayout:
-                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.STARS);
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), login, repoId, RepoMiscMVp.STARS);
                 return true;
             case R.id.watchRepoLayout:
-                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.WATCHERS);
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), login, repoId, RepoMiscMVp.WATCHERS);
                 return true;
         }
         return false;
@@ -306,8 +315,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             repoId = extras.getString(BundleConstant.ID);
             login = extras.getString(BundleConstant.EXTRA_TWO);
             navType = extras.getInt(BundleConstant.EXTRA_TYPE);
-        }
-        if (savedInstanceState == null) {
+            showWhich = extras.getInt(BundleConstant.EXTRA_THREE);
             getPresenter().onUpdatePinnedEntry(repoId, login);
         }
         getPresenter().onActivityCreate(repoId, login, navType);
@@ -334,7 +342,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
         this.navType = navType;
         //noinspection WrongConstant
-        if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
+        try {
+            if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
+        } catch (Exception ignored) {}
         showHideFab();
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
@@ -348,9 +358,32 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         if (getPresenter().getRepo() == null) {
             return;
         }
+        switch (showWhich) {
+            case 1:
+                onLongClick(watchRepoLayout);
+                break;
+            case 2:
+                onLongClick(starRepoLayout);
+                break;
+            case 3:
+                onLongClick(forkRepoLayout);
+                break;
+            case 4:
+                MilestoneDialogFragment.newInstance(login, repoId)
+                        .show(getSupportFragmentManager(), "MilestoneDialogFragment");
+                break;
+            case 5:
+                LabelsDialogFragment.newInstance(null, repoId, login)
+                        .show(getSupportFragmentManager(), "LabelsDialogFragment");
+                break;
+        }
+        showWhich = -1;
         setTaskName(getPresenter().getRepo().getFullName());
-        bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
+        if (repoModel.isHasProjects()) {
+            bottomNavigation.inflateMenu(R.menu.repo_with_project_bottom_nav_menu);
+        }
+        bottomNavigation.setOnMenuItemClickListener(getPresenter());
         if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
             tagsIcon.setVisibility(View.VISIBLE);
             topicsList.setAdapter(new TopicsAdapter(repoModel.getTopics()));
@@ -478,6 +511,10 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
     }
 
+    @Override public boolean isCollaborator() {
+        return getPresenter().isRepoOwner();
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.repo_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -511,7 +548,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         } else if (item.getItemId() == R.id.originalRepo) {
             if (getPresenter().getRepo() != null && getPresenter().getRepo().getParent() != null) {
                 Repo parent = getPresenter().getRepo().getParent();
-                RepoPagerActivity.startRepoPager(this, new NameParser(parent.getHtmlUrl()));
+                SchemeParser.launchUri(this, parent.getHtmlUrl());
             }
             return true;
         } else if (item.getItemId() == R.id.deleteRepo) {
@@ -541,22 +578,21 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void onBackPressed() {
-        if (navType == RepoPagerMvp.CODE) {
-            RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
-                    RepoCodePagerFragment.TAG);
-            if (codePagerView != null) {
-                if (codePagerView.canPressBack()) {
-                    super.onBackPressed();
-                } else {
-                    codePagerView.onBackPressed();
-                    return;
-                }
-            }
-        } else if (navType == RepoPagerMvp.ISSUES) {
-            if (filterLayout.isShown()) {
-                hideFilterLayout();
-                return;
-            }
+//        if (navType == RepoPagerMvp.CODE) {
+//            RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+//                    RepoCodePagerFragment.TAG);
+//            if (codePagerView != null) {
+//                if (codePagerView.canPressBack()) {
+//                    super.onBackPressed();
+//                } else {
+//                    codePagerView.onBackPressed();
+//                    return;
+//                }
+//            }
+//        } else
+        if (navType == RepoPagerMvp.ISSUES && filterLayout.isShown()) {
+            hideFilterLayout();
+            return;
         }
         super.onBackPressed();
     }

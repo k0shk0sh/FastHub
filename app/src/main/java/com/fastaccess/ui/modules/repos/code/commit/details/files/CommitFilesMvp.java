@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitLinesModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -28,6 +29,8 @@ interface CommitFilesMvp {
         void onCommentAdded(@NonNull Comment newComment);
 
         void clearAdapter();
+
+        void onOpenForResult(int position, CommitFileChanges model);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommitFileChanges> {
@@ -35,6 +38,8 @@ interface CommitFilesMvp {
         void onFragmentCreated(@Nullable Bundle bundle);
 
         void onSubmitComment(@NonNull String comment, @NonNull CommitLinesModel item, @Nullable Bundle bundle);
+
+        void onSubmit(String username, String name, CommentRequestModel commentRequestModel);
     }
 
 

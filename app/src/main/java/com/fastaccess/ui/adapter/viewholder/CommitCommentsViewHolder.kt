@@ -4,11 +4,14 @@ import android.support.transition.ChangeBounds
 import android.support.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.widget.TextView
 import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ParseDateFormat
+import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter
@@ -27,6 +30,15 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     : BaseViewHolder<Comment>(view, adapter) {
 
     init {
+        if (adapter.getRowWidth() == 0) {
+            itemView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    itemView.viewTreeObserver.removeOnPreDrawListener(this)
+                    adapter.setRowWidth(itemView.width - ViewHelper.dpToPx(itemView.context, 48f))
+                    return false
+                }
+            })
+        }
         itemView.setOnClickListener(null)
         itemView.setOnLongClickListener(null)
         commentMenu.setOnClickListener(this)
@@ -43,6 +55,7 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     @BindView(R.id.commentMenu) lateinit var commentMenu: ForegroundImageView
     @BindView(R.id.comment) lateinit var comment: FontTextView
     @BindView(R.id.commentOptions) lateinit var commentOptions: View
+    @BindView(R.id.owner) lateinit var owner: TextView
 
     override fun onClick(v: View) {
         if (v.id == R.id.toggle || v.id == R.id.toggleHolder) {
@@ -64,9 +77,20 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
             name.text = null
         }
         if (!InputHelper.isEmpty(t.body)) {
-            MarkDownProvider.setMdText(comment, t.body)
+            val width = adapter?.getRowWidth() ?: 0
+            if (width > 0) {
+                MarkDownProvider.setMdText(comment, t.body, width)
+            } else {
+                MarkDownProvider.setMdText(comment, t.body)
+            }
         } else {
             comment.text = ""
+        }
+        if (t.authorAssociation != null && !"none".equals(t.authorAssociation, ignoreCase = true)) {
+            owner.text = t.authorAssociation.toLowerCase()
+            owner.visibility = View.VISIBLE
+        } else {
+            owner.visibility = View.GONE
         }
         if (t.createdAt == t.updatedAt) {
             date.text = String.format("%s %s", ParseDateFormat.getTimeAgo(t.updatedAt), itemView

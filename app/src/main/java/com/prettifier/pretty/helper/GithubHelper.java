@@ -26,9 +26,9 @@ public class GithubHelper {
                                                   @Nullable String baseUrl, boolean dark,
                                                   boolean isWiki, boolean replace) {
         if (baseUrl == null) {
-            return mergeContent(context, source, dark, replace);
+            return mergeContent(context, source, dark);
         } else {
-            return mergeContent(context, parseReadme(source, baseUrl, isWiki), dark, replace);
+            return mergeContent(context, parseReadme(source, baseUrl, isWiki), dark);
         }
     }
 
@@ -111,7 +111,7 @@ public class GithubHelper {
         return builder.toString();
     }
 
-    @NonNull private static String mergeContent(@NonNull Context context, @NonNull String source, boolean dark, boolean replace) {
+    @NonNull private static String mergeContent(@NonNull Context context, @NonNull String source, boolean dark) {
         return "<html>\n" +
                 "\n" +
                 "<head>\n" +
@@ -122,7 +122,7 @@ public class GithubHelper {
                 "    <script src=\"./intercept-hash.js\"></script>\n" +
                 "</head>\n" +
                 "\n" +
-                "<body>\n" + (replace ? source.replaceAll("&lt;", "<").replaceAll("&gt;", ">") : source) +
+                "<body>\n" + Jsoup.parse(source).body().html() +
                 "\n<script src=\"./intercept-touch.js\"></script>\n" +
                 "</body>\n" +
                 "\n" +

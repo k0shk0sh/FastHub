@@ -41,7 +41,7 @@ public class MarkDownProvider {
     };
 
     private static final String[] ARCHIVE_EXTENSIONS = {
-            ".zip", ".7z", ".rar", ".tar.gz", ".tgz", ".tar.Z", ".tar.bz2", ".tbz2", ".tar.lzma", ".tlz", ".apk", ".jar", ".dmg"
+            ".zip", ".7z", ".rar", ".tar.gz", ".tgz", ".tar.Z", ".tar.bz2", ".tbz2", ".tar.lzma", ".tlz", ".apk", ".jar", ".dmg", ".pdf", ".ico"
     };
 
     private MarkDownProvider() {}
@@ -52,13 +52,20 @@ public class MarkDownProvider {
             if (width > 0) {
                 render(textView, markdown, width);
             } else {
-                textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override public void onGlobalLayout() {
-                        textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                textView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override public boolean onPreDraw() {
+                        textView.getViewTreeObserver().removeOnPreDrawListener(this);
                         render(textView, markdown, textView.getMeasuredWidth());
+                        return true;
                     }
                 });
             }
+        }
+    }
+
+    public static void setMdText(@NonNull TextView textView, String markdown, int width) {
+        if (!InputHelper.isEmpty(markdown)) {
+            render(textView, markdown, width);
         }
     }
 
@@ -74,14 +81,17 @@ public class MarkDownProvider {
         Parser parser = Parser.builder()
                 .extensions(extensions)
                 .build();
-        Node node = parser.parse(markdown);
-        String rendered = HtmlRenderer
-                .builder()
-                .extensions(extensions)
-                .build()
-                .render(node);
-        Logger.e(rendered);
-        HtmlHelper.htmlIntoTextView(textView, rendered, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
+        try {
+            Node node = parser.parse(markdown);
+            String rendered = HtmlRenderer
+                    .builder()
+                    .extensions(extensions)
+                    .build()
+                    .render(node);
+            HtmlHelper.htmlIntoTextView(textView, rendered, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
+        } catch (Exception ignored) {
+            HtmlHelper.htmlIntoTextView(textView, markdown, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
+        }
     }
 
     public static void stripMdText(@NonNull TextView textView, String markdown) {
@@ -90,6 +100,15 @@ public class MarkDownProvider {
             Node node = parser.parse(markdown);
             textView.setText(stripHtml(HtmlRenderer.builder().build().render(node)));
         }
+    }
+
+    @NonNull public static String stripMdText(String markdown) {
+        if (!InputHelper.isEmpty(markdown)) {
+            Parser parser = Parser.builder().build();
+            Node node = parser.parse(markdown);
+            return stripHtml(HtmlRenderer.builder().build().render(node));
+        }
+        return "";
     }
 
     public static String stripHtml(String html) {
@@ -247,21 +266,13 @@ public class MarkDownProvider {
 
     }
 
-    public static void addPhoto(@NonNull EditText editText) {
-        addLink(editText, "", "");
-    }
-
     public static void addPhoto(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
-        String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
+        String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")";
         insertAtCursor(editText, result);
     }
 
-    public static void addLink(@NonNull EditText editText) {
-        addLink(editText, "", "");
-    }
-
     public static void addLink(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
-        String result = "[" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
+        String result = "[" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")";
         insertAtCursor(editText, result);
     }
 
@@ -308,12 +319,20 @@ public class MarkDownProvider {
         return false;
     }
 
-    private static void insertAtCursor(@NonNull EditText editText, @NonNull String text) {
+    public static void insertAtCursor(@NonNull EditText editText, @NonNull String text) {
         String oriContent = editText.getText().toString();
-        int index = editText.getSelectionStart() >= 0 ? editText.getSelectionStart() : 0;
-        StringBuilder builder = new StringBuilder(oriContent);
-        builder.insert(index, text);
-        editText.setText(builder.toString());
-        editText.setSelection(index + text.length());
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+        Logger.e(start, end);
+        if (start >= 0 && end > 0 && start != end) {
+            editText.setText(editText.getText().replace(start, end, text));
+        } else {
+            int index = editText.getSelectionStart() >= 0 ? editText.getSelectionStart() : 0;
+            Logger.e(start, end, index);
+            StringBuilder builder = new StringBuilder(oriContent);
+            builder.insert(index, text);
+            editText.setText(builder.toString());
+            editText.setSelection(index + text.length());
+        }
     }
 }

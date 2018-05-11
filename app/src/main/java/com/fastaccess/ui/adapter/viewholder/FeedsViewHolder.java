@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitCommitModel;
+import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.TeamsModel;
 import com.fastaccess.data.dao.WikiModel;
@@ -309,7 +310,10 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
 
     private void appendIssueEvent(SpannableBuilder spannableBuilder, Event eventsModel) {
         Issue issue = eventsModel.getPayload().getIssue();
-        spannableBuilder.bold(eventsModel.getPayload().getAction())
+        boolean isLabel = "label".equals(eventsModel.getPayload().getAction());
+        LabelModel label = isLabel ? issue.getLabels() != null && !issue.getLabels().isEmpty()
+                                     ? issue.getLabels().get(issue.getLabels().size() - 1) : null : null;
+        spannableBuilder.bold(isLabel && label != null ? ("Labeled " + label.getName()) : eventsModel.getPayload().getAction())
                 .append(" ")
                 .bold("issue")
                 .append(" ")

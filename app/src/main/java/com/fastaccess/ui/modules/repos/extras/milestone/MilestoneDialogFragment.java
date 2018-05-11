@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -58,8 +57,6 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
             onMilestoneSelected = (MilestoneMvp.OnMilestoneSelected) getParentFragment();
         } else if (context instanceof MilestoneMvp.OnMilestoneSelected) {
             onMilestoneSelected = (MilestoneMvp.OnMilestoneSelected) context;
-        } else {
-            throw new IllegalArgumentException(context.getClass().getSimpleName() + " must implement onMilestoneSelected");
         }
     }
 
@@ -78,7 +75,7 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
     }
 
     @Override public void onMilestoneSelected(@NonNull MilestoneModel milestoneModel) {
-        onMilestoneSelected.onMilestoneSelected(milestoneModel);
+        if (onMilestoneSelected != null) onMilestoneSelected.onMilestoneSelected(milestoneModel);
         if (getParentFragment() instanceof BaseDialogFragment) {
             ((BaseDialogFragment) getParentFragment()).dismiss();
         }
@@ -100,12 +97,16 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
         stateLayout.setEmptyText(R.string.no_milestones);
         toolbar.setTitle(R.string.milestone);
         toolbar.setOnMenuItemClickListener(item -> onAddMilestone());
-        toolbar.inflateMenu(R.menu.add_menu);
+        if (onMilestoneSelected != null) toolbar.inflateMenu(R.menu.add_menu);
         toolbar.setNavigationIcon(R.drawable.ic_clear);
-        toolbar.setNavigationOnClickListener(v -> ((DialogFragment) getParentFragment()).dismiss());
+        toolbar.setNavigationOnClickListener(v -> {
+            if (getParentFragment() instanceof BaseDialogFragment) {
+                ((BaseDialogFragment) getParentFragment()).dismiss();
+            }
+        });
         recycler.addDivider();
         adapter = new MilestonesAdapter(getPresenter().getMilestones());
-        adapter.setListener(getPresenter());
+        if (onMilestoneSelected != null) adapter.setListener(getPresenter());
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();

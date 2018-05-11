@@ -35,10 +35,10 @@ class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<Notificati
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (parentFragment is NotificationSoundMvp.NotificationSoundListener) {
-            listener = parentFragment as NotificationSoundMvp.NotificationSoundListener
+        listener = if (parentFragment is NotificationSoundMvp.NotificationSoundListener) {
+            parentFragment as NotificationSoundMvp.NotificationSoundListener
         } else {
-            listener = context as NotificationSoundMvp.NotificationSoundListener
+            context as NotificationSoundMvp.NotificationSoundListener
         }
     }
 
@@ -69,7 +69,7 @@ class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<Notificati
         canPlaySound = true
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         title.text = getString(R.string.sound_chooser_title)
         okButton.visibility = View.VISIBLE

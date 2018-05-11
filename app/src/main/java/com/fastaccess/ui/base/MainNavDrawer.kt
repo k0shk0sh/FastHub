@@ -20,6 +20,8 @@ import com.fastaccess.ui.modules.about.FastHubAboutActivity
 import com.fastaccess.ui.modules.gists.GistsListActivity
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
 import com.fastaccess.ui.modules.main.MainActivity
+import com.fastaccess.ui.modules.main.donation.CheckPurchaseActivity
+import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity
 import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity
@@ -38,13 +40,13 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
     : BaseViewHolder.OnItemClickListener<Login> {
 
     private var menusHolder: ViewGroup? = null
-    private val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
-    private val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+    private val togglePinned: View? = view.findViewById(R.id.togglePinned)
+    private val pinnedList: DynamicRecyclerView? = view.findViewById(R.id.pinnedList)
     private val pinnedListAdapter = PinnedReposAdapter(true)
     private val userModel: Login? = Login.getUser()
 
     init {
-        menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)
+        menusHolder = view.findViewById(R.id.menusHolder)
         pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
             override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
                 if (v != null && item != null) {
@@ -147,6 +149,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                 }
             }
             view.findViewById<View>(R.id.donatedIcon).visibility = if (PrefGetter.hasSupported()) View.VISIBLE else View.GONE
+            view.findViewById<View>(R.id.proTextView).visibility = if (PrefGetter.isProEnabled()) View.VISIBLE else View.GONE
             view.findViewById<View>(R.id.navAccHolder).setOnClickListener {
                 if (extraNav != null && accountsNav != null) {
                     TransitionManager.beginDelayedTransition(menusHolder ?: extraNav)
@@ -181,6 +184,8 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                     item.itemId == R.id.notifications -> view.startActivity(Intent(view, NotificationActivity::class.java))
                     item.itemId == R.id.trending -> view.startActivity(Intent(view, TrendingActivity::class.java))
                     item.itemId == R.id.reportBug -> view.startActivity(CreateIssueActivity.startForResult(view))
+                    item.itemId == R.id.faq -> view.startActivity(Intent(view, PlayStoreWarningActivity::class.java))
+                    item.itemId == R.id.restorePurchase -> view.startActivity(Intent(view, CheckPurchaseActivity::class.java))
                 }
             }
         }, 250)

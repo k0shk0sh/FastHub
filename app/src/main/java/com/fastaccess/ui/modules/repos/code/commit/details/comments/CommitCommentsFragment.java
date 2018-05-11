@@ -32,6 +32,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -187,9 +188,20 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     }
 
     @Override public void onTagUser(@Nullable User user) {
-        if (commentsCallback != null && user != null) {
-            commentsCallback.onTagUser(user.getLogin());
-        }
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, getPresenter().repoId())
+                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
+                .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
+                .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.NEW_COMMIT_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
+                .end());
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+
     }
 
     @Override public void onReply(User user, String message) {
@@ -202,10 +214,11 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     }
 
     @Override public void addComment(@NonNull Comment newComment) {
-        hideProgress();
+        hideBlockingProgress();
         if (adapter != null) {
             adapter.addItem(TimelineModel.constructComment(newComment));
         }
+        if (commentsCallback != null) commentsCallback.onClearEditText();
     }
 
     @Override public void onDestroyView() {
@@ -290,5 +303,14 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
 
     @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
         getPresenter().onHandleComment(text, bundle);
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTags() {
+        return CommentsHelper.getUsersByTimeline(adapter.getData());
+    }
+
+    @Override public void hideBlockingProgress() {
+        hideProgress();
+        super.hideProgress();
     }
 }

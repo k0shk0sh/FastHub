@@ -21,8 +21,8 @@ import com.fastaccess.ui.widgets.SpannableBuilder
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.zzhoujay.markdown.style.CodeSpan
-import pr.PullRequestTimelineQuery
-import pr.type.StatusState
+import github.PullRequestTimelineQuery
+import github.type.StatusState
 
 /**
  * Created by kosh on 03/08/2017.
@@ -402,8 +402,8 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
         if (value == null) {
             return ""
         }
-        if (value.length <= 7) return value
-        else return value.substring(0, 7)
+        return if (value.length <= 7) value
+        else value.substring(0, 7)
     }
 
     companion object {

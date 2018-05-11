@@ -24,6 +24,8 @@ interface GistMvp {
         void onGistForked(boolean isForked);
 
         void onSetupDetails();
+
+        void onUpdatePinIcon(Gist gist);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -51,5 +53,7 @@ interface GistMvp {
         void callApi();
 
         void onWorkOffline(@NonNull String gistId);
+
+        void onPinUnpinGist();
     }
 }

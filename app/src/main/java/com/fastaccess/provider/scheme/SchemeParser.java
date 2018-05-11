@@ -29,6 +29,7 @@ import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
+import com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
@@ -69,6 +70,7 @@ public class SchemeParser {
         Logger.e(data);
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
+            intent.putExtra(BundleConstant.SCHEME_URL, data.toString());
             if (newDocument) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             }
@@ -132,6 +134,7 @@ public class SchemeParser {
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY) || isEnterprise) {
                 Intent trending = getTrending(context, data);
+                Intent projects = getRepoProject(context, data);
                 Intent userIntent = getUser(context, data);
                 Intent repoIssues = getRepoIssueIntent(context, data);
                 Intent repoPulls = getRepoPullRequestIntent(context, data);
@@ -144,8 +147,9 @@ public class SchemeParser {
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
-                Optional<Intent> intentOptional = returnNonNull(trending, userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
-                        createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
+                Optional<Intent> intentOptional = returnNonNull(trending, projects, userIntent, repoIssues, repoPulls,
+                        pullRequestIntent, commit, commits, createIssueIntent, issueIntent, releasesIntent, repoIntent,
+                        repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     Intent intent = intentOptional.get();
@@ -188,6 +192,16 @@ public class SchemeParser {
         String owner = null;
         String repo = null;
         String number = null;
+        String fragment = uri.getEncodedFragment();//#issuecomment-332236665
+        Long commentId = null;
+        if (!InputHelper.isEmpty(fragment) && fragment.split("-").length > 1) {
+            fragment = fragment.split("-")[1];
+            if (!InputHelper.isEmpty(fragment)) {
+                try {
+                    commentId = Long.parseLong(fragment);
+                } catch (Exception ignored) {}
+            }
+        }
         if (segments.size() > 3) {
             if (("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
                 owner = segments.get(0);
@@ -209,7 +223,8 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return PullRequestPagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn);
+        return PullRequestPagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn,
+                LinkParserHelper.isEnterprise(uri.toString()), commentId == null ? 0 : commentId);
     }
 
     @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
@@ -218,6 +233,16 @@ public class SchemeParser {
         String owner = null;
         String repo = null;
         String number = null;
+        String fragment = uri.getEncodedFragment();//#issuecomment-332236665
+        Long commentId = null;
+        if (!InputHelper.isEmpty(fragment) && fragment.split("-").length > 1) {
+            fragment = fragment.split("-")[1];
+            if (!InputHelper.isEmpty(fragment)) {
+                try {
+                    commentId = Long.parseLong(fragment);
+                } catch (Exception ignored) {}
+            }
+        }
         if (segments.size() > 3) {
             if (segments.get(2).equalsIgnoreCase("issues")) {
                 owner = segments.get(0);
@@ -240,15 +265,56 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn);
+        Logger.e(commentId);
+        return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn,
+                LinkParserHelper.isEnterprise(uri.toString()), commentId == null ? 0 : commentId);
     }
 
     @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 2 || segments.size() > 2) return null;
+        if (segments == null || segments.size() < 2 || segments.size() > 3) return null;
         String owner = segments.get(0);
         String repoName = segments.get(1);
-        return RepoPagerActivity.createIntent(context, repoName, owner);
+        if (!InputHelper.isEmpty(repoName)) {
+            if (repoName.endsWith(".git")) repoName = repoName.replace(".git", "");
+        }
+        if (segments.size() == 3) {
+            String lastPath = uri.getLastPathSegment();
+            if ("milestones".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 4);
+            } else if ("network".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 3);
+            } else if ("stargazers".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 2);
+            } else if ("watchers".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 1);
+            } else if ("labels".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 5);
+            } else {
+                return null;
+            }
+        } else {
+            return RepoPagerActivity.createIntent(context, repoName, owner);
+        }
+    }
+
+    @Nullable private static Intent getRepoProject(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.size() < 3) return null;
+        String owner = segments.get(0);
+        String repoName = segments.get(1);
+        if (segments.size() == 3 && "projects".equalsIgnoreCase(segments.get(2))) {
+            return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.PROJECTS);
+        } else if (segments.size() == 4 && "projects".equalsIgnoreCase(segments.get(2))) {
+            try {
+                int projectId = Integer.parseInt(segments.get(segments.size() - 1));
+                if (projectId > 0) {
+                    return ProjectPagerActivity.Companion.getIntent(context, owner, repoName, projectId,
+                            LinkParserHelper.isEnterprise(uri.toString()));
+                }
+            } catch (Exception ignored) {}
+        }
+        return null;
     }
 
     @Nullable private static Intent getWiki(@NonNull Context context, @NonNull Uri uri) {

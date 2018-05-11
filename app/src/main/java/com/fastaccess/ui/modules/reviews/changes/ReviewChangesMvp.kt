@@ -17,4 +17,8 @@ interface ReviewChangesMvp {
     interface Presenter {
         fun onSubmit(reviewRequest: ReviewRequestModel, repoId: String, owner: String, number: Long, comment: String, method: String)
     }
+
+    interface ReviewSubmissionCallback {
+        fun onSuccessfullyReviewed()
+    }
 }

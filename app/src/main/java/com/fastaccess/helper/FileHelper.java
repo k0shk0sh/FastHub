@@ -62,7 +62,7 @@ public class FileHelper {
                             title = cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE));
                         }
                     }
-                }
+                } catch (Exception ignored) {}
             }
         }
         return title;

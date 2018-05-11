@@ -1,6 +1,8 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,10 +22,12 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.fullscreen.FullScreenFileChangeActivity;
 import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -169,6 +173,10 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         return onLoadMore;
     }
 
+    @Override public void onOpenForResult(int position, @NonNull CommitFileChanges model) {
+        FullScreenFileChangeActivity.Companion.startActivityForResult(this, model, position, false);
+    }
+
     @Override public void onRefresh() {
         getPresenter().onCallApi(1, null);
     }
@@ -178,7 +186,13 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onToggle(long position, boolean isCollapsed) {
-        if (adapter.getItem((int) position).getCommitFileModel().getPatch() == null) {
+        CommitFileChanges model = adapter.getItem((int) position);
+        if (model == null) return;
+        if (model.getCommitFileModel().getPatch() == null) {
+            if ("renamed".equalsIgnoreCase(model.getCommitFileModel().getStatus())) {
+                SchemeParser.launchUri(getContext(), model.getCommitFileModel().getBlobUrl());
+                return;
+            }
             ActivityHelper.startCustomTab(getActivity(), adapter.getItem((int) position).getCommitFileModel().getBlobUrl());
         }
         toggleMap.put(position, isCollapsed);
@@ -215,14 +229,38 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
             CommentRequestModel commentRequestModel = new CommentRequestModel();
             commentRequestModel.setBody(comment);
             commentRequestModel.setPath(path);
-            if (item.getRightLineNo() > 0 && item.getLeftLineNo() > 0) {
-                commentRequestModel.setPosition(item.getPosition());
-            } else {
-                commentRequestModel.setPosition(item.getPosition());
-//                commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
-            }
+            commentRequestModel.setPosition(item.getPosition());
             if (viewCallback != null) viewCallback.onAddComment(commentRequestModel);
+            int groupPosition = bundle.getInt(BundleConstant.EXTRA_TWO);
+            int childPosition = bundle.getInt(BundleConstant.EXTRA_THREE);
+            CommitFileChanges commitFileChanges = adapter.getItem(groupPosition);
+            List<CommitLinesModel> models = commitFileChanges.getLinesModel();
+            if (models != null && !models.isEmpty()) {
+                CommitLinesModel current = models.get(childPosition);
+                if (current != null) {
+                    current.setHasCommentedOn(true);
+                }
+                models.set(childPosition, current);
+                adapter.notifyItemChanged(groupPosition);
+            }
         }
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == FullScreenFileChangeActivity.Companion.getFOR_RESULT_CODE() && data != null) {
+                List<CommentRequestModel> comments = data.getParcelableArrayListExtra(BundleConstant.ITEM);
+                if (comments != null && !comments.isEmpty()) {
+                    if (viewCallback != null) {
+                        for (CommentRequestModel comment : comments) {
+                            viewCallback.onAddComment(comment);
+                        }
+                        showMessage(R.string.success, R.string.comments_added_successfully);
+                    }
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void showReload() {

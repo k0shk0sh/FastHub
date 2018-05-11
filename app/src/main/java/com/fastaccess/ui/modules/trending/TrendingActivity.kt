@@ -2,7 +2,6 @@ package com.fastaccess.ui.modules.trending
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -130,17 +129,17 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+        return when (item?.itemId) {
             R.id.menu -> {
                 drawerLayout.openDrawer(Gravity.END)
-                return true
+                true
             }
             android.R.id.home -> {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -156,9 +155,9 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
-        when (item?.title.toString()) {
-            "All Language" -> selectedTitle = ""
-            else -> selectedTitle = item?.title.toString()
+        selectedTitle = when (item?.title.toString()) {
+            "All Language" -> ""
+            else -> item?.title.toString()
         }
         Logger.e(selectedTitle)
         setValues()
@@ -176,11 +175,11 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun getSince(): String {
-        when {
-            daily.isSelected -> return "daily"
-            weekly.isSelected -> return "weekly"
-            monthly.isSelected -> return "monthly"
-            else -> return "daily"
+        return when {
+            daily.isSelected -> "daily"
+            weekly.isSelected -> "weekly"
+            monthly.isSelected -> "monthly"
+            else -> "daily"
         }
     }
 
@@ -217,7 +216,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         val drawable = GradientDrawable()
         drawable.shape = GradientDrawable.OVAL
         drawable.setSize(24, 24)
-        drawable.setColor(if (color == 0) Color.LTGRAY else color)
+        drawable.setColor(color)
         return drawable
     }
 

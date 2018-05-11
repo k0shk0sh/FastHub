@@ -72,8 +72,6 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
             callback = (LabelsMvp.SelectedLabelsListener) getParentFragment();
         } else if (context instanceof LabelsMvp.SelectedLabelsListener) {
             callback = (LabelsMvp.SelectedLabelsListener) context;
-        } else {
-            throw new IllegalArgumentException("Parent Fragment or Activity must implement LabelsMvp.SelectedLabelsListener");
         }
     }
 
@@ -98,6 +96,7 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
         if (labelModels == null) {
             labelModels = new ArrayList<>();
         }
+        add.setVisibility(callback == null ? View.GONE : View.VISIBLE);
         adapter = new LabelsAdapter(getPresenter().getLabels(), this);
         recycler.setAdapter(adapter);
         fastScroller.attachRecyclerView(recycler);
@@ -157,7 +156,7 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
                 dismiss();
                 break;
             case R.id.ok:
-                callback.onSelectedLabels(labelModels);
+                if (callback != null) callback.onSelectedLabels(labelModels);
                 dismiss();
                 break;
         }

@@ -48,6 +48,10 @@ interface CommitCommentsMvp {
         void showReload();
 
         void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
+
+        @NonNull List<String> getNamesToTags();
+
+        void hideBlockingProgress();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
