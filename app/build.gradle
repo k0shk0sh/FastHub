@@ -1,0 +1,123 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+apply plugin: 'com.novoda.build-properties'
+
+buildProperties {
+    notThere {
+        file rootProject.file('build-dependecies/debug_keys.properties')
+    }
+    secrets {
+        file rootProject.file('build-dependecies/secret_keys.properties')
+    }
+}
+
+android {
+    signingConfigs {
+        signing {
+            keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
+            keyPassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
+            storeFile file('fastaccess-public')
+            storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
+        }
+    }
+
+    def conf = rootProject.ext.android
+
+    compileSdkVersion conf.compileSdkVersion
+
+    defaultConfig {
+        applicationId conf.applicationId
+        minSdkVersion conf.minSdkVersion
+        targetSdkVersion conf.targetSdkVersion
+        versionCode conf.versionCode
+        versionName conf.versionName
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+        buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
+        buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
+        buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
+        buildConfigString "IMGUR_SECRET", (buildProperties.secrets['imgur_secret'] | buildProperties.notThere['imgur_secret']).string
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            ext.alwaysUpdateBuildId = false
+        }
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    "src/main/res/",
+                    "src/main/res/layouts/main_layouts",
+                    "src/main/res/layouts/row_layouts",
+                    "src/main/res/layouts/other_layouts",
+                    "src/main/res/translations",
+                    "src/main/res"
+            ]
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        htmlReport true
+        xmlReport true
+        disable 'InvalidPackage'
+        check 'Interoperability'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+}
+
+dependencies {
+
+    def dependency = rootProject.ext
+
+    implementation project(':data')
+    implementation project(':domain')
+    implementation dependency.kotlin
+    implementation dependency.supportLibraries
+    implementation dependency.networking
+    implementation dependency.rxJava
+    implementation dependency.dagger
+    implementation dependency.archs
+
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') { transitive = true }
+
+    debugImplementation dependency.developmentDependencies
+    releaseImplementation dependency.releaseDevelopmentDependencies
+
+    testImplementation dependency.testing
+
+    kapt dependency.processing
+}
+
+apply plugin: 'com.google.gms.google-services'

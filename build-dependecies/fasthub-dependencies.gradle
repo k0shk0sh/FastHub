@@ -1,0 +1,91 @@
+ext {
+    kotlin = '1.2.41'
+    rxJava2 = '2.1.9'
+    rxKotlin = '2.2.0'
+    rxAndroid = '2.0.1'
+    archComponents = '1.1.1'
+    supportLibrary = '28.0.0-alpha1'
+    constraintLayout = '1.1.0-beta5'
+    dagger2 = '2.11'
+    butterKnife = '8.8.1'
+    javaxAnnotation = '10.0-b28'
+    okHttp = '3.8.0'
+    retrofit2 = '2.3.0'
+    gson = '2.8.1'
+    glide = '4.7.1'
+    timber = '4.6.1'
+    chuck = '1.0.4'
+    junit = '4.12'
+    mockito = '2.8.9'
+    mockitoKotlin = '1.5.0'
+    assertJ = '3.8.0'
+
+
+    kotlin = [
+            "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlin}",
+    ]
+
+    supportLibraries = [
+            "com.android.support:appcompat-v7:${supportLibrary}",
+            "com.android.support:design:${supportLibrary}",
+            "com.android.support:support-v13:${supportLibrary}",
+            "com.android.support:support-annotations:${supportLibrary}",
+            "com.android.support:cardview-v7:${supportLibrary}",
+            "com.android.support:recyclerview-v7:${supportLibrary}",
+            "com.android.support.constraint:constraint-layout:${constraintLayout}"
+    ]
+
+    networking = [
+            "com.squareup.okhttp3:okhttp:${okHttp}",
+            "com.squareup.okhttp3:logging-interceptor:${okHttp}",
+            "com.squareup.retrofit2:retrofit:${retrofit2}",
+            "com.squareup.retrofit2:adapter-rxjava2:${retrofit2}",
+            "com.squareup.retrofit2:converter-gson:${retrofit2}",
+            "com.google.code.gson:gson:${gson}",
+            "com.github.bumptech.glide:glide:${glide}",
+            "com.jakewharton.timber:timber:${timber}"
+    ]
+
+    rxJava = [
+            "io.reactivex.rxjava2:rxjava:${rxJava2}",
+            "io.reactivex.rxjava2:rxkotlin:${rxKotlin}",
+            "io.reactivex.rxjava2:rxandroid:${rxAndroid}"
+    ]
+
+    dagger = [
+            "com.google.dagger:dagger:${dagger2}",
+            "com.google.dagger:dagger-android-support:${dagger2}",
+            "org.glassfish:javax.annotation:${javaxAnnotation}",
+    ]
+
+    archs = [
+            "android.arch.lifecycle:extensions:$archComponents",
+            "android.arch.persistence.room:rxjava2:1.0.0",
+            "android.arch.persistence.room:compiler:1.0.0",
+            'androidx.core:core-ktx:0.3'
+    ]
+
+
+    processing = [
+            "com.google.dagger:dagger-android-processor:${dagger2}",
+            "com.google.dagger:dagger-compiler:${dagger2}",
+            "android.arch.persistence.room:runtime:1.0.0",
+            "com.github.bumptech.glide:compiler:${glide}"
+    ]
+
+
+    testing = [
+            "junit:junit:${junit}",
+            "org.assertj:assertj-core:${assertJ}",
+            "org.mockito:mockito-core:${mockito}",
+            "com.nhaarman:mockito-kotlin:${mockitoKotlin}",
+    ]
+
+    developmentDependencies = [
+            "com.readystatesoftware.chuck:library:${chuck}",
+    ]
+
+    releaseDevelopmentDependencies = [
+            "com.readystatesoftware.chuck:library-no-op:${chuck}"
+    ]
+}

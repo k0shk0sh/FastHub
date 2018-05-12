@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_id": "this-is-a-sample",
+    "project_number": "999999999999",
+    "name": "FastHub Sample",
+    "firebase_url": "https://this-is-a-sample-do-not-use.firebaseio.com",
+    "storage_bucket": "this-is-a-sample-do-not-use.storage.firebase.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999999999999:android:0000000000000000",
+        "android_client_info": {
+          "package_name": "com.fastaccess.github.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fastaccess.github.debug",
+            "certificate_hash": "0000000000000000000000000000000000000000"
+          }
+        },
+        {
+          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fastaccess.github.debug",
+            "certificate_hash": "0000000000000000000000000000000000000000"
+          }
+        },
+        {
+          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "000000000000000000000000000000000000000"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
