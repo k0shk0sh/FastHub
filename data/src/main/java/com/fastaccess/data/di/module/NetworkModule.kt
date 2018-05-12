@@ -1,12 +1,15 @@
 package com.fastaccess.data.di.module
 
+import android.content.Context
 import android.net.Uri
 import com.fastaccess.data.BuildConfig
+import com.fastaccess.data.di.annotations.ForApplication
 import com.fastaccess.data.di.annotations.ForAuth
 import com.fastaccess.data.repository.services.LoginService
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.*
@@ -38,10 +41,12 @@ class NetworkModule(private val url: String = "") {
 
     @Singleton @Provides @ForAuth fun provideForAuthInterceptor() = AuthenticationInterceptor()
 
-    @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor): OkHttpClient = OkHttpClient.Builder()
+    @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor, @ForApplication context: Context): OkHttpClient = OkHttpClient
+            .Builder()
             .addInterceptor(ContentTypeInterceptor())
             .addInterceptor(auth)
             .addInterceptor(PaginationInterceptor())
+            .addInterceptor(ChuckInterceptor(context))
             .addInterceptor(HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
             } else {

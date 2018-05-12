@@ -22,7 +22,7 @@ ext {
 
 
     kotlin = [
-            "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlin}",
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin}",
     ]
 
     supportLibraries = [

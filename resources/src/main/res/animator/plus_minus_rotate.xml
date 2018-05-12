@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@android:integer/config_mediumAnimTime"
+    android:interpolator="@android:interpolator/fast_out_slow_in"
+    android:propertyName="rotation"
+    android:valueFrom="-180"
+    android:valueTo="0"/>

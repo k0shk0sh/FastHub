@@ -7,7 +7,7 @@
 /.idea/
 /app/google-services.json
 /app/build/
-/app/src/main/res/values/secrets.xml
+/resources/src/main/res/values/secrets.xml
 /app/fastaccess-key
 /changelog_generator
 build-dependecies/secret_keys.properties

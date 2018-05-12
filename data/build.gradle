@@ -43,6 +43,9 @@ dependencies {
     implementation dependency.rxJava
     implementation dependency.dagger
     implementation dependency.archs
+    debugImplementation dependency.developmentDependencies
+    releaseImplementation dependency.releaseDevelopmentDependencies
+
     testImplementation dependency.testing
 
     kapt dependency.processing

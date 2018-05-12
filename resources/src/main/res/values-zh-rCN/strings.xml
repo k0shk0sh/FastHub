@@ -1,0 +1,508 @@
+<!--
+Simplified-Chinese Translation Style Guide
+简体中文翻译风格规范 v1.0
+
+继承自作者钦定的翻译贡献指南, 如有冲突请以作者的规定为准:
+https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribute-translations
+
+0. 专有名词 (如 Issue, Pull Request, Fork, Access Token 等) 不进行翻译,
+   尽可能避免熟悉英文原词的用户见到翻译后 "咦这是什么东西来着的" 情况的发生.
+1. 使用半角标点符号
+2. 在西文字符与中文字符前后加入空格 (除标点符号外, 见下一条)
+3. 标点符号后空一格
+4. 错误提示信息除特殊情况外统一为 "xxxx时发生错误"
+5. 统一将 account 译为 "帐号" 而非 "账号" "帐户" 等.
+6. "登录"不是"登陆"; "请稍候"不是"请稍后"; "请稍后再试" 不是 "请稍候再试".
+7. 若觉得此规范有什么问题, 欢迎改进或重写 0w0 只要所有文本的风格大体遵守同一个规范就好.
+   这套规范的主要目的是保持风格统一, 避免出现一个 APP 多种文本的混乱情况.
+-->
+
+<!-- 
+Commit @ 2018-3-14
+CaptainTF @ Github 提议：
+0. “没有”替换为“无”. 即精简文本.
+1. 使用敬语. 即“您”.
+2. 使用全角省略号, 即···而非....
+3. “APP” 替换为 “应用”.
+4. 请勿直译, 部分术语可在有道词典等平台获取已有专业翻译.
+   同时也请符合中文语序.
+-->
+
+<!-- 原文版本 (Original strings): 2018/03/14 -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+    <string name="in_progress">加载中, 请稍候···</string>
+    <string name="action">动作</string>
+    <string name="settings">设置</string>
+    <string name="discard">丢弃</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="no_data">无可用数据</string>
+    <string name="search">搜索</string>
+    <string name="please_login">请登录以使用 FastHub</string>
+    <string name="sign_in_to_github">登录您的 GitHub 账户来使用 FastHub</string>
+    <string name="failed_login">无法登录</string>
+    <string name="sign_in">登录</string>
+    <string name="share">分享</string>
+    <string name="reload">重新加载</string>
+    <string name="profile">资料</string>
+    <string name="error">错误</string>
+    <string name="press_again_to_exit">再按一次退出</string>
+    <string name="opened">开放的</string>
+    <string name="closed">关闭的</string>
+    <string name="repo_chooser">选择仓库</string>
+    <string name="followers">关注者</string>
+    <string name="following">关注中</string>
+    <string name="overview">概述</string>
+    <string name="follow">关注</string>
+    <string name="unfollow">取消关注</string>
+    <string name="user">用户</string>
+    <string name="details">详细信息</string>
+    <string name="archive_file_detected_error">检测到存档文件, 请下载以查看内容.</string>
+    <string name="minimum_three_chars">最少字数 (3)</string>
+    <string name="no_file_found">未找到文件</string>
+    <string name="no_readme_found">没有 Readme</string>
+    <string name="downloading">下载中…</string>
+    <string name="downloading_file">下载文件中…</string>
+    <string name="released">发布于</string>
+    <string name="drafted">草稿</string>
+    <string name="releases">发布</string>
+    <string name="no_body">无内容</string>
+    <string name="contributors">贡献者</string>
+    <string name="contributions">贡献</string>
+    <string name="by">由</string>
+    <string name="english_please">请使用英语描述您的问题.</string>
+    <string name="close_issue">关闭 Issue</string>
+    <string name="re_open_issue">重新打开 Issue</string>
+    <string name="re_open">重新打开</string>
+    <string name="close">关闭</string>
+    <string name="success_re_opened">已重新打开</string>
+    <string name="lock_issue_details">锁定意味着:\n
+        ·其他用户无法为此 Issue 添加新评论;\n
+        ·您和其他有写入权限的协作者仍然可以留下所有人都能看到的评论;\n
+        ·您可以随时解锁此 Issue;\n
+    </string>
+    <string name="unlock_issue_details">解锁意味着:\n
+        ·每个人都可以对这个 Issue 发表评论;\n
+        ·您可以随时再次锁定此 Issue.\n
+    </string>
+    <string name="lock_issue">锁定</string>
+    <string name="unlock_issue">解锁</string>
+
+    <string name="error_closing_issue">关闭 Issue 时发生错误, 请稍后再试.</string>
+    <string name="error_re_opening_issue">重新打开 Issue 时发生错误, 请稍后再试.</string>
+    <string name="success_closed">Issue 已关闭</string>
+    <string name="no_description_provided">无描述</string>
+    <string name="header_one">一级标题</string>
+    <string name="header_two">二级标题</string>
+    <string name="header_three">三级标题</string>
+    <string name="bold">粗体</string>
+    <string name="italic">斜体</string>
+    <string name="strike_through">删除线</string>
+    <string name="bullet">无序列表</string>
+    <string name="numbered_list">有序列表</string>
+    <string name="header">标题</string>
+    <string name="quote">引用</string>
+    <string name="link">链接</string>
+    <string name="image">图片</string>
+    <string name="deletion">删除</string>
+    <string name="addition">添加</string>
+    <string name="changes">变化</string>
+    <string name="status">状态</string>
+    <string name="confirm_message">确定?</string>
+    <string name="success">成功</string>
+    <string name="to">至</string>
+    <string name="error_deleting_comment">删除评论时发生错误</string>
+    <string name="delete">删除</string>
+    <string name="comments">评论</string>
+    <string name="comment">评论</string>
+    <string name="success_merge">已合并</string>
+    <string name="file_menu">文件菜单</string>
+    <string name="files">文件</string>
+    <string name="download">下载</string>
+    <string name="back">返回</string>
+    <string name="parent_folder">上级文件夹</string>
+    <string name="code_viewer">代码查看器</string>
+    <string name="open_in_browser">在浏览器中打开</string>
+    <string name="big_file">大文件</string>
+    <string name="big_file_description">该文件太大, 无法在线预览.\n点按"确定"下载.</string>
+    <string name="viewer">观众</string>
+    <string name="submit">提交</string>
+    <string name="type_here">在此输入内容</string>
+    <string name="description">描述</string>
+    <string name="file_name">文件名</string>
+    <string name="file_name_hint">带扩展名的文件名</string>
+    <string name="create_secret_gist">私有 Gist</string>
+    <string name="create_public_gist">公开 Gist</string>
+    <string name="submit_as">提交为</string>
+    <string name="delete_gist">删除</string>
+    <string name="error_deleting_gist">删除 Gist 时发生错误</string>
+    <string name="no_files">没有文件</string>
+    <string name="required_field">必填</string>
+    <string name="successfully_submitted">已提交</string>
+    <string name="create_gist">创建 Gist</string>
+    <string name="clear">清除</string>
+    <string name="users">用户</string>
+    <string name="title">标题</string>
+    <string name="file">文件</string>
+    <string name="milestone">里程碑</string>
+    <string name="assign_myself">分配给自己</string>
+    <string name="submit_issue">提交 Issue</string>
+    <string name="error_creating_issue">创建 Issue 时发生错误</string>
+    <string name="create_issue">创建 Issue</string>
+    <string name="error_highlighting_editor">请取消选择以继续编辑.</string>
+    <string name="notifications">通知</string>
+    <string name="unread_notification">您有未读的通知</string>
+    <string name="open">打开</string>
+    <string name="open_new_window">在新窗口中打开</string>
+    <string name="notification_type">通知类型</string>
+    <string name="labels">标签</string>
+    <string name="no_labels">没有标签</string>
+    <string name="labels_added_successfully">标签已添加</string>
+    <string name="submit_feedback">提交反馈</string>
+    <string name="logout">注销</string>
+    <string name="thank_you_for_feedback">感谢您的反馈!</string>
+    <string name="current_version">当前版本</string>
+    <string name="version">版本</string>
+    <string name="support_development_enable_ads">支持开发并启用广告</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="twoFactor">两步验证</string>
+    <string name="login">登录</string>
+    <string name="gist_description">Gist 描述</string>
+    <string name="avatar_click_hint">点按头像打开用户的个人资料</string>
+    <string name="feeds_fork_hint">长按 Fork 消息以打开上游仓库或此 Fork 的仓库.</string>
+    <string name="click_here_to_download_release_hint">下载</string>
+    <string name="options">选项</string>
+    <string name="click_file_option_hint">下载或分享</string>
+    <string name="comment_hint">点按评论以标记其作者或编辑您的评论.\n长按您的评论以删除.</string>
+    <string name="star_hint">Star /取消 Star 此仓库</string>
+    <string name="watch">Watch</string>
+    <string name="watch_hint">Watch /取消 Watch 此仓库</string>
+    <string name="pin_repo_hint">加入书签以从导航栏快速访问.</string>
+    <string name="dismiss_all">忽略全部</string>
+    <string name="no_url">找不到网址</string>
+    <string name="last_updated">最后更新</string>
+    <string name="preview">预览</string>
+    <string name="view_code">预览</string>
+    <string name="click_to_toggle_highlighting">切换 Markdown 语法高亮. \n滑动 Markdown 编辑器图标可查看更多选项.</string>
+    <string name="creation_date">创建日期</string>
+    <string name="creation_date_hint">文件的创建时间</string>
+    <string name="last_updated_hint">文件的最后更新时间</string>
+    <string name="mark_all_as_read">全部标记为已读</string>
+    <string name="all_notifications">所有通知</string>
+    <string name="unread">未读</string>
+    <string name="all">全部</string>
+    <string name="delete_repo">删除仓库</string>
+    <string name="delete_repo_warning">删除操作无法撤销</string>
+    <string name="thirty_minutes">30 分钟</string>
+    <string name="twenty_minutes">20 分钟</string>
+    <string name="ten_minutes">10 分钟</string>
+    <string name="five_minutes">5 分钟</string>
+    <string name="one_minute">1 分钟</string>
+    <string name="one_hour">1 小时</string>
+    <string name="two_hour">2 小时</string>
+    <string name="three_hour">3 小时</string>
+    <string name="created_repo">已创建</string>
+    <string name="committed">已提交</string>
+    <string name="downloaded">已下载</string>
+    <string name="followed">已关注</string>
+    <string name="commented_on_issue">评论 Issue</string>
+    <string name="member">成员</string>
+    <string name="pr_comment_review">评论 Pull Request</string>
+    <string name="pushed">Push 到</string>
+    <string name="team_event">团队</string>
+    <string name="deleted">已删除</string>
+    <string name="unknown">未知</string>
+    <string name="commented_on_commit">评论 Commit</string>
+    <string name="switch_branch">切换分支</string>
+    <string name="assignees">受理者</string>
+    <string name="edit">修改</string>
+    <string name="edited">\u2022 已修改</string>
+    <string name="update_issue">更新 Issue</string>
+    <string name="update_pull_request">更新 Pull Request</string>
+    <string name="no_milestones">没有里程碑</string>
+    <string name="add">添加</string>
+    <string name="done">完成</string>
+    <string name="home">主页</string>
+    <string name="create_milestone">建立里程碑</string>
+    <string name="error_creating_milestone">建立里程碑时发生错误</string>
+    <string name="due_on">截止于</string>
+    <string name="no_assignees">没有受理者</string>
+    <string name="this_value">此</string>
+    <string name="commits_reflected">Commit 已被切换到所选分支</string>
+    <string name="general_settings">一般</string>
+    <string name="background_job_summary">更改 FastHub 检查通知的频率</string>
+    <string name="background_job_title">通知同步间隔</string>
+    <string name="every">所有</string>
+    <string name="behavior">行为</string>
+    <string name="customization">自定义</string>
+    <string name="recycler_view_animation_summary">启用列表动画</string>
+    <string name="recycler_view_animation_title">列表动画</string>
+    <string name="back_button_summary">禁用用于防止意外退出的提示框</string>
+    <string name="back_button_title">返回键直接退出</string>
+    <string name="restore">恢复</string>
+    <string name="backup">备份</string>
+    <string name="backed_up">备份成功!</string>
+    <string name="select_backup">选择要还原的备份</string>
+    <string name="permission_failed">没有权限.</string>
+    <string name="backup_summary">最后更新: %s</string>
+    <string name="now">现在</string>
+    <string name="unsaved_data_warning">丢弃所有未保存的更改?</string>
+    <string name="private_repo">私人</string>
+    <string name="rect_avatar_summary">使用圆角矩形头像代替圆形头像</string>
+    <string name="rect_avatar_title">矩形头像</string>
+    <string name="rate_app">为这个应用评分</string>
+    <string name="author">作者</string>
+    <string name="fork_github">在 GitHub 上查看此项目</string>
+    <string name="send_email">发送电子邮件</string>
+    <string name="question_concerning_fasthub">关于 FastHub 的问题</string>
+    <string name="feedback">反馈</string>
+    <string name="report_issue">反馈</string>
+    <string name="report_issue_here">遇到问题? 在此反馈</string>
+    <string name="about">关于</string>
+    <string name="notification_settings">通知</string>
+    <string name="turn_off">关闭</string>
+    <string name="unauthorized_user">未登录</string>
+    <string name="two_factors_otp_error">需要两步验证</string>
+    <string name="copy">复制</string>
+    <string name="success_copied">已复制</string>
+    <string name="commit_message">提交说明</string>
+    <string name="network_error">与服务器通信时发生错误</string>
+    <string name="unexpected_error">调用 API 时出现意外错误</string>
+    <string name="request_error">请求服务器发生错误, 请稍后再试</string>
+    <string name="marking_as_read">将通知标记为已读</string>
+    <string name="forking_gist">Fork 此 Gist</string>
+    <string name="login_using_your_default_browser">使用默认浏览器登录 (OAuth)</string>
+    <string name="or_character">或</string>
+    <string name="mark_notification_title">禁用通知已读状态</string>
+    <string name="mark_notification_summary">点击通知后不再自动标记为已读.</string>
+    <string name="theme_title">选择主题</string>
+    <string name="theme_summary">选择默认主题</string>
+    <string name="theme_color_summary">选择主题强调色</string>
+    <string name="theme_color_title">主题强调色</string>
+    <string name="website">网站</string>
+    <string name="support_development">支持开发</string>
+    <string name="success_purchase_message">非常感谢!</string>
+    <string name="change_theme_warning">若主题没有正常显示, 请手动重启此应用.</string>
+    <string name="pin">书签</string>
+    <string name="pinned">书签</string>
+    <string name="unpin">删除书签</string>
+    <string name="empty_pinned_repos">无书签. \n注: 书签按访问频率降序排列.</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="no_feeds">没有动态</string>
+    <string name="no_gists">没有 Gist</string>
+    <string name="no_comments">没有评论</string>
+    <string name="no_notifications">没有通知</string>
+    <string name="no_followers">没有关注者</string>
+    <string name="no_followings">没有关注的人</string>
+    <string name="no_repos">没有仓库</string>
+    <string name="no_starred_repos">没有已 Star 的仓库</string>
+    <string name="no_commits">没有 Commit</string>
+    <string name="no_contributors">没有贡献者</string>
+    <string name="no_releases">没有 Releases</string>
+    <string name="no_events">没有事件</string>
+    <string name="no_pull_requests">没有 Pull Request</string>
+    <string name="no_search_results">没有搜索结果</string>
+    <string name="read_write_permission_explanation">请接受权限请求, 允许 FastHub 在设备上储存文件</string>
+    <string name="public_gists">公共 Gist</string>
+    <string name="enable_ads">开启广告</string>
+    <string name="no_issues">没有 Issue</string>
+    <string name="no_unread_notifications">没有未读通知</string>
+    <string name="my_gists">我的 Gist</string>
+    <string name="changelog">更新日志</string>
+    <string name="notifications_hint">点按通知列表以查看或滑动以忽略</string>
+    <string name="home_long_click_hint">长按可从任何地方跳转到主屏幕</string>
+    <string name="created">已创建</string>
+    <string name="assigned">被分配</string>
+    <string name="mentioned">提到我</string>
+    <string name="name">名字</string>
+    <string name="color">颜色</string>
+    <string name="create_label">创建标签</string>
+    <string name="organization">组织</string>
+    <string name="organizations">组织</string>
+    <string name="people">成员</string>
+    <string name="teams">团队</string>
+    <string name="members">成员</string>
+    <string name="no_members">没有成员</string>
+    <string name="no_teams">没有团队</string>
+    <string name="no_orgs">没有加入组织</string>
+    <string name="no_orgs_dialog_title">找不到您所属的组织?</string>
+    <string name="mark_as_read">标记为已读</string>
+    <string name="animations">动画</string>
+    <string name="dialog_animation_summary">启用弹出动画</string>
+    <string name="dialog_animation_title">弹出动画</string>
+    <string name="milestones">里程碑</string>
+    <string name="assignee">分配给</string>
+    <string name="checks_failed">所有检查失败</string>
+    <string name="checks_pending">所有检查等待中</string>
+    <string name="checks_passed">所有检查通过</string>
+    <string name="sort">排序</string>
+    <string name="newest">最新的</string>
+    <string name="oldest">最旧的</string>
+    <string name="most_commented">最多评论</string>
+    <string name="least_commented">最少评论</string>
+    <string name="recently_updated">最近更新</string>
+    <string name="least_recent_updated">最久没更新</string>
+    <string name="up_to_date">已是最新版本!</string>
+    <string name="new_version">有新版本可用</string>
+    <string name="empty_search_error">搜索内容不能为空</string>
+    <string name="long_press_repo_fab_hint">长按创建 Issue</string>
+    <string name="commit_can_be_merged">该 Pull Request 可以被合并</string>
+    <string name="reviewed">已审核</string>
+    <string name="dismissed_review">驳回</string>
+    <string name="approved_these_changes">通过更改</string>
+    <string name="no_reactions">没有反馈</string>
+    <string name="reactions">反馈</string>
+    <string name="wrap_content">自动换行</string>
+    <string name="wrap_code_summary">在代码查看器中默认自动换行</string>
+    <string name="wrap_code_title">自动换行</string>
+    <string name="open_source_libs">开源许可</string>
+    <string name="enable_notification_sound_summary">收到通知时发出声音.</string>
+    <string name="enable_notification_sound_title">启用通知声音</string>
+    <string name="enable_notification_title">启用通知</string>
+    <string name="login_with_personal_token">用 Personal Token 登录</string>
+    <string name="personal_token">Personal Token</string>
+    <string name="basic_login">使用 Basic Auth 登录</string>
+    <string name="no_orgs_description">
+        若您实际是某个组织的成员, 但在此没有显示, 请访问下面的链接:\n
+        https://help.github.com/articles/about-oauth-app-access-restrictions\n
+        注: 您可以使用 Access token 登录, 这将授予 FastHub 查看您的组织列表的权限.
+    </string>
+    <string name="insert">插入</string>
+    <string name="select">选择</string>
+    <string name="select_picture">选择图片</string>
+    <string name="support_with_2_00">捐赠 $2.00</string>
+    <string name="support_with_5_00">捐赠 $5.00</string>
+    <string name="support_with_10_00">捐赠 $10.00</string>
+    <string name="support_with_20_00">捐赠 $20.00$</string>
+    <string name="app_language">语言</string>
+    <string name="language">语言</string>
+    <string name="choose_language_title">选择语言</string>
+    <string name="choose_language_summary">选择您希望 FastHub 使用的语言</string>
+    <string name="un_subscribe">取消订阅</string>
+    <string name="from">从</string>
+    <string name="in_value">于</string>
+    <string name="subscribe">订阅</string>
+    <string name="repo_issues_is_disabled">这个仓库禁用了 Issue</string>
+    <string name="access_token">Access Token</string>
+    <string name="basic_authentication">Basic Authentication</string>
+    <string name="choose_your_login_type">选择登录方式</string>
+    <string name="files_only">文件</string>
+    <string name="paths_only">路径</string>
+    <string name="review_requests">审核请求</string>
+    <string name="join_slack">加入 Slack</string>
+    <string name="join_slack_message">您想加入 FastHub Slack 群组吗?</string>
+    <string name="successfully_invited">已邀请</string>
+    <string name="reply">回复</string>
+    <string name="failed_selecting_image">无法加载图像.</string>
+    <string name="want_to_merge">想要合并</string>
+    <string name="watchers">关注者</string>
+    <string name="reviewers">审核者</string>
+    <string name="no_reviewers">没有审核者</string>
+    <string name="sent_from_fasthub">使用 %2$s%3$s 从我的 %1$s 发送</string>
+    <string name="enable_signature">始终签名</string>
+    <string name="enable_signature_summary">始终签名后发送</string>
+    <string name="enable_signature_box">每次选择是否签名</string>
+    <string name="enable_signature_box_summary">在编辑器下选择每次是否签名</string>
+    <string name="tags">标签</string>
+    <string name="add_comment">添加评论</string>
+    <string name="image_error">加载图片时出错, 请重试.</string>
+    <string name="trending">趋势</string>
+    <string name="not_really_working">由于 GitHub 的限制, 无法正常按 Emoji 排序</string>
+    <string name="scroll_up">向上滑动</string>
+    <string name="scroll_down">向下滑动</string>
+    <string name="participated">已加入</string>
+    <string name="todo_checked">Todo 已勾选</string>
+    <string name="todo_unchecked">Todo 已反选</string>
+    <string name="divider">分界线</string>
+    <string name="no_user_found">找不到用户</string>
+    <string name="no_trending">没有趋势</string>
+    <string name="reset">重置</string>
+    <string name="apply">应用</string>
+    <string name="filter">过滤器</string>
+    <string name="type">类型</string>
+    <string name="sort_direction">排序方式</string>
+    <string name="assignee_added">已分配</string>
+    <string name="reviewer_added">审核者已添加</string>
+    <string name="milestone_added">已添加里程碑</string>
+    <string name="feed">动态</string>
+    <string name="premium_theme">付费主题</string>
+    <string name="choose_code_theme">选择代码高亮主题</string>
+    <string name="enterprise_login_warning">
+    	由于 Github API 使用您 Enterprise 帐号的 Token.
+        所以请登录您的 Github 帐号以使用 Github API 提供的功能,
+        否则您将仅限于使用 Enterprise Github 的功能.
+    </string>
+    <string name="add_account">添加帐号</string>
+    <string name="choose_account">选择帐号</string>
+    <string name="not_match">不匹配</string>
+    <string name="warning">警告</string>
+    <string name="owner">所有者</string>
+    <string name="original_poster">楼主</string>
+    <string name="cancel_reviews">取消审核</string>
+    <string name="colored_navbar_summary">导航栏不再随主题颜色</string>
+    <string name="colored_navbar_title">导航栏默认样式</string>
+    <string name="sound_chooser_summary">选择自定义通知提示音</string>
+    <string name="sound_chooser_title">选择通知提示音</string>
+    <string name="disable_auto_gif_summary">禁止自动播放 GIF</string>
+    <string name="disable_auto_gif_title">禁止播放 GIF</string>
+    <string name="request_changes">需要更改</string>
+    <string name="google_play_service_error">Google Play 服务不可用</string>
+    <string name="edit_gist">编辑 Gist</string>
+    <string name="content">内容</string>
+    <string name="expand">展开</string>
+    <string name="copy_sha">复制 SHA-1</string>
+    <string name="view_as_code">作为代码查看</string>
+    <string name="app_animation_title">禁用应用内动画</string>
+    <string name="app_animation_summary">关闭所有应用内动画.</string>
+    <string name="can_not_merge_pr">此 Pull Request 目前无法合并.</string>
+    <string name="projects">项目</string>
+    <string name="no_projects">无项目</string>
+    <string name="no_cards">无卡片</string>
+    <string name="card_added_by">%s 于 %s 新增</string>
+    <string name="too_large_changes">更改内容过多. 请在浏览器中查看.</string>
+    <string name="project">项目</string>
+    <string name="faq">常见问题</string>
+    <string name="please_read">请阅读!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• 为何无法看见我的 <i>Private</i> 或者我的 <i>Public</i> <b>Organizations</b>?</h5>
+        <p>打开 https://github.com/settings/applications 并找到 FastHub, 向下滚动到 "Organization access" 并点击 "Grant" 按钮.
+        或者, 您可以使用 <b>Access Token</b> 登陆, 这样会更简便.</p>
+
+        <h5>• 我尝试使用 Access Token 和 a One-Time Password (OTP) 却不能登录, 为何?</h5>
+        <p>您无法使用 Access Token 和 OTP 一起登录. 由于这类密码生命周期有限, 您需要每隔几秒进行一次登陆操作.</p>
+
+        <h5>• 为何我的 Private 和 Enterprise Repositories\' Wikis 没有显示?</h5>
+        <p>这是因为FastHub 将 GitHub\'s Wiki 页面分开, 因此应用无法获取 Private Repositories 的任何 session token.</p>
+
+        <h5>• 我已经登录到了我的 Enterprise account. 为何除了我的 Enterprise GitHub 不能进行其他操作?</h5>
+        <p>是的, 从逻辑上讲, 您不能访问除了您的 Enterprise 外的任何操作. 虽然 FastHub 尝试要求尽可能多的权限, 但在大多数情况下不能这么做, 因为您的凭据不在 GitHub\'s 服务器上. 但是在 <b>某些</b> 情况下您的 GitHub 帐号 OAuth token 却可以.</p>
+
+        <h5>• 为何我在编辑 Issues/Pull Requests (PRs) 时遇到问题?</h5>
+        <p>若您无法编辑 Public Organization\'s repository 的 Issues/PRs, 请联系您的 Organization 为 FastHub 授予权限. 或者您可以使用 Access Token 登录.</p>
+
+        <h5>• 我有一些问题! / 我想向您提议!</h5>
+        <p>前往 https://github.com/k0shk0sh/FastHub/issues/new 为 Bug 和新功能请求创建 Issue. 但我希望您能在这之前查询一下类似的 Issue, 然后再打开一个新的. 任何重复的 Ticket 就将会标记为重复并被立即关闭.</p>
+
+        <h5>• 我怎么才能获取到促销码?</h5>
+        <p>此计划已被取消.</p>
+    ]]></string>
+    <string name="comments_added_successfully">成功添加评论</string>
+    <string name="clear_search_keywords">清除搜索历史</string>
+    <string name="restore_purchases">恢复购买</string>
+    <string name="include_forks"> 包括 Forks</string>
+    <string name="comment_is_too_far_to_paginate">此 Comment 难以分页</string>
+    <string name="search_results_warning">响应过多 \n超过 API 上限</string>
+    <string name="disable_loading_image_title">禁止加载图像</string>
+    <string name="disable_loading_image_summary">禁止在数据网络下加载图像</string>
+    <string name="report_issue_warning">此 Issue 将提交到 GitHub 中 FastHub 的 Repository 里</string>
+    <string name="block">阻止</string>
+    <string name="unblock">取消阻止</string>
+    <string name="user_blocked">已阻止该用户</string>
+    <string name="user_unblocked">已取消阻止该用户</string>
+    <string name="clear_image_cache">清除图片缓存</string>
+    <string name="restart_app_message">请重启应用</string>
+</resources>

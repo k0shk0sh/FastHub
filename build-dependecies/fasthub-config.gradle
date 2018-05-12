@@ -7,9 +7,4 @@ ext {
             targetSdkVersion : 27,
             compileSdkVersion: 'android-P'
     ]
-
-    endpoints = [
-            restUrl = 'https://api.github.com/',
-            imagurUrl = "https://api.imgur.com/3/"
-    ]
 }

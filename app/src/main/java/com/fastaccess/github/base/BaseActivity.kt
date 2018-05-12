@@ -21,7 +21,6 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         val layoutRes = layoutRes()
         if (layoutRes > 0) setContentView(layoutRes)
-
         if (isLoggedIn()) {
             onActivityCreatedWithUser(savedInstanceState)
         } else {
@@ -30,5 +29,5 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
 
     }
 
-    fun isLoggedIn() = !(preference.get("loggedIn", null) as? String?).isNullOrEmpty()
+    protected fun isLoggedIn() = !((preference.get("loggedIn", null) as String?).isNullOrBlank())
 }
