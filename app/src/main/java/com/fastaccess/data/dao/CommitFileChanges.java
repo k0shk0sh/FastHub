@@ -73,4 +73,11 @@ import lombok.Setter;
         int size = parcel.dataSize();
         return size < 600000;
     }
+
+    @Override public String toString() {
+        return "CommitFileChanges{" +
+                "linesModel=" + linesModel +
+                ", commitFileModel=" + commitFileModel +
+                '}';
+    }
 }

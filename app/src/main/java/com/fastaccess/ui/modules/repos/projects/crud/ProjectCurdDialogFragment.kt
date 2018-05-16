@@ -69,7 +69,7 @@ class ProjectCurdDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresent
         val position: Int = arguments!!.getInt(BundleConstant.ID, -1)
         val isCard: Boolean = arguments!!.getBoolean(BundleConstant.EXTRA)
         if (savedInstanceState == null) {
-            editText.setText(arguments!!.getString(BundleConstant.ITEM))
+            editText.setText(arguments?.getString(BundleConstant.ITEM) ?: "")
         }
         toolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.submit) {

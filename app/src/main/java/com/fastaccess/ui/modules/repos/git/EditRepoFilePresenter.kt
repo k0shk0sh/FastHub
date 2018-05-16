@@ -5,7 +5,6 @@ import android.util.Base64
 import com.fastaccess.data.dao.CommitRequestModel
 import com.fastaccess.data.dao.EditRepoFileModel
 import com.fastaccess.helper.BundleConstant
-import com.fastaccess.helper.Logger
 import com.fastaccess.provider.rest.RestProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 
@@ -15,6 +14,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFileMvp.Presenter {
 
     @com.evernote.android.state.State var model: EditRepoFileModel? = null
+    var fileContent: String? = null
 
     var downloadedContent: String? = null
 
@@ -23,7 +23,6 @@ class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFil
             intent?.let {
                 it.extras?.let {
                     model = it.getParcelable(BundleConstant.ITEM)
-                    Logger.e(model)
                     loadContent()
                 }
             }
@@ -42,7 +41,7 @@ class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFil
         }
         if (!text.isNullOrBlank() && !description.isNullOrBlank() && !filename.isNullOrBlank()) {
             model?.let {
-                val commitModel = CommitRequestModel(description!!, Base64.encodeToString(text!!.toByteArray(), Base64.DEFAULT), it.sha)
+                val commitModel = CommitRequestModel(description!!, Base64.encodeToString(text!!.toByteArray(), Base64.DEFAULT), it.sha, it.ref)
                 val observable = RestProvider.getContentService(isEnterprise).updateCreateFile(it.login, it.repoId,
                         if (it.path.isNullOrBlank()) {
                             filename!!
@@ -61,7 +60,10 @@ class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFil
     private fun loadContent() {
         model?.contentUrl?.let {
             makeRestCall(RestProvider.getRepoService(isEnterprise)
-                    .getFileAsStream(it), { sendToView({ v -> v.onSetText(it) }) })
+                    .getFileAsStream(it), {
+                fileContent = it
+                sendToView({ v -> v.onSetText(it) })
+            })
         }
     }
 }

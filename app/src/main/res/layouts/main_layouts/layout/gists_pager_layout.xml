@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/open_in_browser"
+                        android:contentDescription="@string/pinned"
                         android:padding="@dimen/spacing_micro"
                         android:src="@drawable/ic_pin"/>
 
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/open_in_browser"
+                        android:contentDescription="@string/edit"
                         android:padding="@dimen/spacing_micro"
                         android:src="@drawable/ic_edit"
                         android:visibility="gone"/>

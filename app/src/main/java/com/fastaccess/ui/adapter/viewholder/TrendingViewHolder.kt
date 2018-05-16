@@ -40,7 +40,7 @@ open class TrendingViewHolder(itemView: View, adapter: BaseRecyclerAdapter<Trend
         fork.text = t.forks
         if (t.language.isNullOrBlank()) {
             lang.visibility = View.GONE
-            lang.text = null
+            lang.text = ""
         } else {
             val color = ColorsProvider.getColorAsColor(t.language!!, itemView.context)
             Logger.e(color, t.language)

@@ -11,6 +11,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp
 interface WikiMvp {
     interface View : BaseMvp.FAView {
         fun onLoadContent(wiki: WikiContentModel)
+        fun onSetPage(page: String)
     }
 
     interface Presenter {

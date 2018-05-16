@@ -66,7 +66,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     }
 
     @NonNull @Override public Uri getAuthorizationUrl() {
-       return new Uri.Builder().scheme("https")
+        return new Uri.Builder().scheme("https")
                 .authority("github.com")
                 .appendPath("login")
                 .appendPath("oauth")
@@ -114,25 +114,29 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         getView().onEmptyPassword(passwordIsEmpty);
         getView().onEmptyEndpoint(endpointIsEmpty);
         if ((!usernameIsEmpty && !passwordIsEmpty)) {
-            String authToken = Credentials.basic(username, password);
-            if (isBasicAuth && !isEnterprise()) {
-                AuthModel authModel = new AuthModel();
-                authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
-                authModel.setNote(BuildConfig.APPLICATION_ID);
-                authModel.setClientSecret(GithubConfigHelper.getSecret());
-                authModel.setClientId(GithubConfigHelper.getClientId());
-                authModel.setNoteUrl(GithubConfigHelper.getRedirectUrl());
-                if (!InputHelper.isEmpty(twoFactorCode)) {
-                    authModel.setOtpCode(twoFactorCode);
-                }
-                makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode, null).login(authModel), accessTokenModel -> {
+            try {
+                String authToken = Credentials.basic(username, password);
+                if (isBasicAuth && !isEnterprise()) {
+                    AuthModel authModel = new AuthModel();
+                    authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
+                    authModel.setNote(BuildConfig.APPLICATION_ID);
+                    authModel.setClientSecret(GithubConfigHelper.getSecret());
+                    authModel.setClientId(GithubConfigHelper.getClientId());
+                    authModel.setNoteUrl(GithubConfigHelper.getRedirectUrl());
                     if (!InputHelper.isEmpty(twoFactorCode)) {
-                        PrefGetter.setOtpCode(twoFactorCode);
+                        authModel.setOtpCode(twoFactorCode);
                     }
-                    onTokenResponse(accessTokenModel);
-                });
-            } else {
-                accessTokenLogin(password, endpoint, twoFactorCode, authToken);
+                    makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode, null).login(authModel), accessTokenModel -> {
+                        if (!InputHelper.isEmpty(twoFactorCode)) {
+                            PrefGetter.setOtpCode(twoFactorCode);
+                        }
+                        onTokenResponse(accessTokenModel);
+                    });
+                } else {
+                    accessTokenLogin(password, endpoint, twoFactorCode, authToken);
+                }
+            } catch (Exception e) {
+                sendToView(view -> view.showMessage("Error", "The app was about to crash!!(" + e.getMessage() + ")"));
             }
         }
     }

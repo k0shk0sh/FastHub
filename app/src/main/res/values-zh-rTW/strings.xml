@@ -20,7 +20,8 @@ Readme
 APP
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">載入中，請稍後</string>
     <string name="action">動作</string>
     <string name="settings">設定</string>
@@ -38,7 +39,7 @@ APP
     <string name="profile">個人檔案</string>
     <string name="error">錯誤</string>
     <string name="press_again_to_exit">再點一次以離開</string>
-    <string name="opened">開啟中</string>
+    <string name="opened">已開啟</string>
     <string name="closed">已關閉</string>
     <string name="repo_chooser">選擇 Repo</string>
     <string name="followers">跟隨者</string>
@@ -214,7 +215,7 @@ APP
     <string name="this_value">這個</string>
     <string name="commits_reflected">Commit 已被切換到選擇的分支</string>
     <string name="general_settings">一般</string>
-    <string name="background_job_summary">更改檢查通知頻率</string>
+    <string name="background_job_summary">更改通知的檢查頻率</string>
     <string name="background_job_title">檢查通知間隔</string>
     <string name="every">每個</string>
     <string name="behavior">行為</string>
@@ -247,7 +248,6 @@ APP
     <string name="turn_off">關閉</string>
     <string name="unauthorized_user">未驗證的使用者</string>
     <string name="two_factors_otp_error">必須兩步驟驗證</string>
-    <string name="no_issue">沒有 Issue</string>
     <string name="copy">複製</string>
     <string name="success_copied">已複製</string>
     <string name="commit_message">Commit 訊息</string>
@@ -285,11 +285,8 @@ APP
     <string name="no_commits">沒有 Commit</string>
     <string name="no_contributors">沒有貢獻者</string>
     <string name="no_releases">沒有releases</string>
-    <string name="no_closed_issues">沒有關閉的 Issue</string>
-    <string name="no_opened_issues">沒有開啟的 Issue</string>
     <string name="no_events">沒有事件</string>
-    <string name="no_open_pull_requests">沒有開啟的 Pull Request</string>
-    <string name="no_closed_pull_request">沒有關閉的 Pull Request</string>
+    <string name="no_pull_requests">沒有 Pull Requests</string>
     <string name="no_search_results">沒有搜尋結果</string>
     <string name="read_write_permission_explanation">請同意權限請求以讓 FastHub 能夠儲存檔案</string>
     <string name="public_gists">公開 Gist</string>
@@ -302,7 +299,7 @@ APP
     <string name="home_long_click_hint">長按以從任何地方前往主畫面</string>
     <string name="created">已開啟</string>
     <string name="assigned">已分配</string>
-    <string name="mentioned">提到我</string>
+    <string name="mentioned">被提到</string>
     <string name="name">名字</string>
     <string name="color">顏色</string>
     <string name="create_label">新增標籤</string>
@@ -344,7 +341,7 @@ APP
     <string name="wrap_code_summary">在程式碼檢視器中預設摺疊程式碼</string>
     <string name="wrap_code_title">摺疊程式碼</string>
     <string name="open_source_libs">開源 Libraries</string>
-    <string name="enable_notification_sound_summary">開啟收到通知音效</string>
+    <string name="enable_notification_sound_summary">開啟通知音效</string>
     <string name="enable_notification_sound_title">開啟通知音效</string>
     <string name="enable_notification_title">開啟通知</string>
     <string name="login_with_personal_token">用個人 Token 來登入</string>
@@ -384,16 +381,11 @@ APP
     <string name="no_reviewers">沒有審核者</string>
     <string name="sent_from_fasthub">從我的 %1$s，使用 %2$s%3$s 發送。</string>
     <string name="enable_signature">開啟簽名</string>
-    <string name="enable_signature_summary">開啟傳送通過簽名</string>
+    <string name="enable_signature_summary">在傳送時加入簽名</string>
     <string name="enable_signature_box">開啟簽名欄</string>
     <string name="enable_signature_box_summary">選擇複選框以在編輯器中切換簽名</string>
     <string name="tags">標籤</string>
     <string name="add_comment">新增</string>
-    <string name="banners">介紹橫幅</string>
-    <string name="banners_info">透過 FastHub 2.5.0, 您可以在個人資料頁面快速的表達您的橫幅。\n\n任何使用 FastHub 的人都能看到，而且您也能看到他人的! 如果您想要自己創建橫幅
-        ，讓他的解析度為 1280x384 或等比例，否則可能會被裁減。\n\n您可以在任何時候更改橫幅, 透過創建一個 gist 叫做「header.fst」包含著圖片的直接連結。\n\n或是也可以用內建的圖片選擇器。
-    </string>
-    <string name="edit_banner">選擇橫幅</string>
     <string name="image_error">載入圖片錯誤，請重試。</string>
     <string name="trending">趨勢</string>
     <string name="not_really_working">因為 GitHub 的限制，無法使用表情符號來排序。</string>
@@ -469,26 +461,26 @@ APP
 
         <h5>• 我在編輯 Issues/PRs 遇到困難?</h5>
         <p>如果你正在編輯一個公開組職的 Repo ，請聯絡你的組織以取得權限給 FastHub 或是使用 Access Token 來登入!</p>
-
-        <h5>• 我被禁止使用 FastHub 了，為什麼?</h5>
-        <p>很簡單，因為想要某些功能而給了 FastHub 低評價卻從來不更新你的評價。
-        所以為何你要繼續使用呢?</p>
 		
         <h5>• 我有困難/我想要有新功能!!</h5>
         <p>前往 https://github.com/k0shk0sh/FastHub/issues/new 並創建一個 bug/feature requests 的 issue。
 		我非常鼓勵你在發布某些東西前先搜尋有沒有重複的，否則會被馬上關閉。</p>
 
-        <i><font color="red">給 FastHub 開發者們的訊息</font></i>\n
-
-        <h3>開發者們你好,</h3>\n
-        <p style="text-align:justify;">
-            你應該知道 <b>FastHub</b> 是一個成長很快開源的 App &amp; 是因為許多來自社群的幫助以及你們。
-			\n因為想要回報 issue 或是 request 而在 Play商店 給 <b>FastHub</b> 低評價將會被忽略。
-			\n作為一個開發者我想我們應該知道開發一個像是 <b>FastHub</b> 要付出多大的努力。
-			\n有些人不知道要在 FastHub 的 Repo 回報而是在 Play商店 給低評價並且認為這會強制開發者(我) 去實作及修復他們想要的東西，而他們會更新評價。
-			\n但是這並沒有發生過，他們不是不修改評價就是要求其他功能<i>(如此典型)</i>。
-			\n請於 FastHub repo 回報 Issue & Features，打開側欄功能表並點擊"回報 Issue"，這將會被直接發布在 FastHub repo (我能夠幫助和協助你的地方)。
-        </p>
+        <h5>• 我要怎麼取得 PROMO CODE?</h5>
+        <p>這個方案已不再存在。</p>
     ]]></string>
     <string name="please_read">請閱讀!</string>
+    <string name="comments_added_successfully">評論新增成功</string>
+    <string name="clear_search_keywords">清空搜尋紀錄</string>
+    <string name="restore_purchases">回復購買</string>
+    <string name="include_forks">包括 Forks</string>
+    <string name="comment_is_too_far_to_paginate">這個評論難以分頁</string>
+    <string name="search_results_warning">回應數量超過 API 的上限</string>
+    <string name="disable_loading_image_title">禁止載入圖片</string>
+    <string name="disable_loading_image_summary">在使用行動網路時禁止載入圖片</string>
+    <string name="report_issue_warning">這個 issue 會被傳送到 GitHub 上的 FastHub\'s repo</string>
+    <string name="block">阻擋</string>
+    <string name="unblock">取消阻擋</string>
+    <string name="user_blocked">已阻擋此使用者</string>
+    <string name="user_unblocked">已取消阻擋此使用者</string>
 </resources>

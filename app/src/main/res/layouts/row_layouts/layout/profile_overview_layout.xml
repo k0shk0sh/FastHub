@@ -19,29 +19,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/headerImage"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@color/material_light_white"
-                android:gravity="bottom|start"
-                android:visibility="gone">
-
-                <android.support.v7.widget.AppCompatImageButton
-                    android:id="@+id/banner_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/edit_banner"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:src="@drawable/ic_edit"
-                    android:visibility="gone"
-                    tools:visibility="visible"/>
-
-            </RelativeLayout>
-
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,17 +32,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.fastaccess.ui.widgets.FontButton
-                        android:id="@+id/chooseBanner"
-                        style="@style/Base.Widget.AppCompat.ButtonBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/spacing_normal"
-                        android:background="?card_background"
-                        android:text="@string/edit_banner"
-                        android:visibility="gone"/>
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/spacing_xs_large">
 
                     <LinearLayout
                         android:id="@+id/userInformation"

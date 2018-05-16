@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Yükleniyor, lütfen bekleyiniz…</string>
     <string name="action">Aksiyon</string>
     <string name="settings">Ayarlar</string>
@@ -208,7 +209,6 @@
     <string name="turn_off">Devre dışı bırak</string>
     <string name="unauthorized_user">Yetkilendirilmemiş Kullanıcı</string>
     <string name="two_factors_otp_error">2 adımlı doğrulama OTP kodu gerekli</string>
-    <string name="no_issue">Issue bulunamadı</string>
     <string name="copy">Kopyala</string>
     <string name="success_copied">Kopyalandı</string>
     <string name="commit_message">Commit mesajı</string>
@@ -228,7 +228,7 @@
     <string name="success_purchase_message">Olağanüstü harika olduğunuz için teşekkürler!</string>
     <string name="change_theme_warning">Eğer tema etkin olmadıysa, uygulamayı durdurup yeniden başlatınız.</string>
     <string name="pin">Pin</string>
-    <string name="pinned">Pinlendi</string>
+    <string name="pinned">Sabitlenenler</string>
     <string name="unpin">Pini Kaldır</string>
     <string name="empty_pinned_repos">Pinlemiş repository bulunmuyor. Repository\'leri pinleyerek burada görülmesini sağlayabilirsiniz.</string>
     <string name="yes">Evet</string>
@@ -244,11 +244,8 @@
     <string name="no_commits">Hiç commit yok</string>
     <string name="no_contributors">Katkıda bulunan kimse yok</string>
     <string name="no_releases">Yayınlama yok</string>
-    <string name="no_closed_issues">Kapanmış issue bulunmuyor</string>
-    <string name="no_opened_issues">Açık issue bulunmuyor</string>
     <string name="no_events">Hiç event yok</string>
-    <string name="no_open_pull_requests">Hiç pull request yok</string>
-    <string name="no_closed_pull_request">Kapalı pull request yok</string>
+    <string name="no_pull_requests">Pull request bulunamadı</string>
     <string name="no_search_results">Eşleşen sonuç bulunamadı</string>
     <string name="read_write_permission_explanation">FastHub\'un depolama alanınıza erişmesi için lütfen ilgili izinleri veriniz</string>
     <string name="public_gists">Herkese Açık Gist\'ler</string>
@@ -348,15 +345,6 @@
     <string name="enable_signature_box_summary">Metin editöründe imzayı açıp kapamayı etkinleştirmek için onay kutusunu seç</string>
     <string name="tags">Etiketler</string>
     <string name="add_comment">Yorum ekle</string>
-    <string name="banners">Afişlerin Tanıtımı</string>
-    <string name="banners_info">FastHub 2.5.0 ile beraber artık kendinizi profil sayfanızda yer alan bannerlar 
-        ile daha iyi ifade edebilirsiniz.\n\nFastHub uygulamasını kullanan herkes sizin bannerinizi görebilecek,
-        siz de aynı şekilde başkalarınınkini göreceksiniz! Eğer kendiniz için bir banner yapmak isterseniz onu
-        1280x384 ya da katları ebatlarında yapan, olmazsa ona göre kırpılabililir.\n\nİstediğiniz zaman banner
-        ekleyebilir ya da değiştirebilirsiniz, tek yapmanız gereken "header.fst" isminde bir gist oluşturmak ve
-        buna resmin adresini yazmak.\n\nYa da daha basiti uygulamanın içindeki reim seçiciyi kullanabilirsiniz.
-    </string>
-    <string name="edit_banner">BANNER SEÇ</string>
     <string name="image_error">Resim yüklenirken hata oluştu, lütfen tekrar deneyin.</string>
     <string name="trending">Trendler</string>
     <string name="not_really_working">Emojilere göre sıralamak Github limitasyonlarından ötürü çalışmıyor.</string>
@@ -383,7 +371,7 @@
         GitHub hesabından ziyade kendi GitHub hesabınızla giriş yapın çünkü diğer türlü GitHub API\'ye giden 
         kod Enterprise hesabından gönderildiği için ne yapmaya çalışırsanız çalışın siztem sizi atacak.
     </string>
-    <string name="add_account">Hesap Ekle</string>
+    <string name="add_account">Hesap ekle</string>
     <string name="choose_account">Hesap Seç</string>
     <string name="not_match">Birbirini tutmuyor</string>
     <string name="warning">Uyarı</string>
@@ -395,7 +383,7 @@
     <string name="sound_chooser_summary">Özel bir bildirim sesi seç</string>
     <string name="sound_chooser_title">Bildirim Sesi Seç</string>
     <string name="disable_auto_gif_summary">GIF\'leri otomatik olarak oynatma</string>
-    <string name="disable_auto_gif_title">GIF'leri oynatmayı devre dışı bırak</string>
+    <string name="disable_auto_gif_title">GIF\'leri oynatmayı devre dışı bırak</string>
     <string name="request_changes">istenilen değişiklikler</string>
     <string name="google_play_service_error">Google Play Servisleri müsait değil</string>
     <string name="edit_gist">Gist\'i Düzenle</string>
@@ -433,21 +421,10 @@
 
         <h5>• Sorunlarım var! / Bir şeyler önermek istiyorum!</h5>
         <p>https://github.com/k0shk0sh/FastHub/issues/new adresine gidin ve herhangi bir hata ya da öneri için bir issue açın. Bundan önce de daha önce açılmış benzer bir issue var mı diye aramanızı da şiddetle tavsiye ederim. Kopya olarak işaretlenmiş issueler anında kapatılacaktır.</p>
-
-        <h5>• PROMO KODU nasıl elde ederim?</h5>
-        <p>Eüer öğrenci iseniz bunu bana kanıtlamanız lazım. Aşağıdaki listedeki dökümanlar bana E-mail yolu ile yollayın. :</p>
-        <ul>
-        <li>Öğrenci kartınız ve kimlik kartınız/pasaportunuz (sonuncusu ile isminizi ve fotoğranızı doğrulamamı sağlıyor);</li>
-        <li>Eğitim başlangıç ve bitiş tarihleri.</li>
-        </ul>
-        <p>Eğer öğrenci değilseniz ve PRO\'yu alacak gücünüz yoksa şunları yapmanız gerekiyor:</p>
-        <ul>
-        <li>FastHub ile ilgili sosyal medyada (örn: Medium) bir makale yazın;</li>
-        <li>Yazanın siz olduğunu kanıtlayın.</li>
-        </ul>
     ]]></string>
     <string name="faq">SSS</string>
     <string name="comments_added_successfully">Yorumlar başarıyla eklendi</string>
     <string name="clear_search_keywords">Arama Geçmişini Temizle</string>
-    <string name="restore_purchases">Satın Alımları Eski Haline Getir</string>
+    <string name="restore_purchases">Satın alımları geri al</string>
+    <string name="send_feedback">Geri bildirim</string>
 </resources>

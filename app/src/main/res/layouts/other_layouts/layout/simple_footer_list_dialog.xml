@@ -71,7 +71,7 @@
                     android:contentDescription="@string/submit"
                     android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_send"/>
+                    android:src="@drawable/ic_done"/>
 
             </LinearLayout>
         </android.support.v7.widget.Toolbar>

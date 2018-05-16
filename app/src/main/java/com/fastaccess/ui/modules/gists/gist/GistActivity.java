@@ -278,7 +278,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @Override public void onUpdatePinIcon(@NonNull Gist gist) {
-        pinUnpin.setImageDrawable(PinnedGists.isPinned(gist.getId())
+        pinUnpin.setImageDrawable(PinnedGists.isPinned(gist.getGistId().hashCode())
                                   ? ContextCompat.getDrawable(this, R.drawable.ic_pin_filled)
                                   : ContextCompat.getDrawable(this, R.drawable.ic_pin));
     }
@@ -307,7 +307,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
-        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText("");
     }
 
     @NonNull @Override public ArrayList<String> getNamesToTag() {

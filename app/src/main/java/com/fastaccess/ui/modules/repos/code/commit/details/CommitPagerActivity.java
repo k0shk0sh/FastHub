@@ -243,7 +243,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         super.onBackPressed();
     }
 
-    @Override protected void onNavToRepoClicked() {
+    @Override public void onNavToRepoClicked() {
         NameParser nameParser = new NameParser("");
         nameParser.setName(getPresenter().getRepoId());
         nameParser.setUsername(getPresenter().getLogin());
@@ -268,7 +268,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     }
 
     @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
-        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText("");
     }
 
     @NonNull @Override public ArrayList<String> getNamesToTag() {
