@@ -35,7 +35,7 @@ android {
         versionCode conf.versionCode
         versionName conf.versionName
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath = true
@@ -69,7 +69,6 @@ android {
                     "src/main/res/layouts/main_layouts",
                     "src/main/res/layouts/row_layouts",
                     "src/main/res/layouts/other_layouts",
-                    "src/main/res/translations",
                     "src/main/res"
             ]
         }
@@ -108,6 +107,7 @@ dependencies {
     implementation project(':resources')
     implementation dependency.kotlin
     implementation dependency.supportLibraries
+    implementation dependency.extrasLibraries
     implementation dependency.networking
     implementation dependency.rxJava
     implementation dependency.dagger

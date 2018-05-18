@@ -1,6 +1,6 @@
 package com.fastaccess.data.di.module
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.fastaccess.data.di.annotations.ForApplication
 import com.fastaccess.data.di.annotations.ForDB

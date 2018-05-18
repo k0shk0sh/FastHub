@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="LoginTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorAccent">@color/material_blue_accent_700</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="icon_color">@color/white</item>
+        <item name="card_background">@color/material_light_white</item>
+        <item name="android:windowBackground">@color/material_indigo_800</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+    </style>
+
+    <style name="InfoTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/material_blue_accent_700</item>
+        <item name="colorPrimaryDark">@color/material_indigo_900</item>
+        <item name="colorAccent">@color/material_blue_accent_700</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="icon_color">@color/white</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
+        <item name="icon_color">@color/darkWindowBackground</item> <!-- to display the icons properly since this theme is the default -->
+
+    </style>
+
+    <style name="ThemeTranslucent" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+    </style>
+
+    <style name="TextAppearance.Design.CollapsingToolbar.Expanded.LightText" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <style name="Theme.MaterialComponents.Light.NoActionBar" parent="Theme.MaterialComponents.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="fontFamily">@font/roboto_mono</item>
+    </style>
+
+    <style name="Theme.MaterialComponents.NoActionBar" parent="Theme.MaterialComponents">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="fontFamily">@font/roboto_mono</item>
+    </style>
+
+</resources>

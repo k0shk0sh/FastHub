@@ -251,11 +251,8 @@
     <string name="no_commits">Keine Commits</string>
     <string name="no_contributors">Keine Mitwirkenden</string>
     <string name="no_releases">Keine Releases</string>
-	<string name="no_closed_issues">Keine geschlossenen Issues</string>
-    <string name="no_opened_issues">Keine geöffneten Issues</string>								   
     <string name="no_events">Keine Ereignisse</string>
     <string name="no_pull_requests">Keine Pull Requests</string>
-	<string name="no_closed_pull_request">Keine geschlossenen Pull Requests</string>																				
     <string name="no_search_results">Keine Suchergebnisse</string>
     <string name="read_write_permission_explanation">Bitte erlaube FastHub Zugriff auf die SD-Karte um Dateien abzuspeichern.</string>
     <string name="public_gists">Öffentliche Gists</string>

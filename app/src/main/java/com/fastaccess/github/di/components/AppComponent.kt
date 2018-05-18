@@ -4,7 +4,9 @@ import android.app.Application
 import com.fastaccess.data.di.module.FastHubDatabaseModule
 import com.fastaccess.data.di.module.NetworkModule
 import com.fastaccess.github.App
+import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.di.modules.ActivityBindingModule
+import com.fastaccess.github.di.modules.ActivityModule
 import com.fastaccess.github.di.modules.ApplicationModule
 import dagger.BindsInstance
 import dagger.Component
@@ -22,6 +24,7 @@ import javax.inject.Singleton
     ApplicationModule::class,
     FastHubDatabaseModule::class,
     NetworkModule::class,
+    ActivityModule::class,
     AndroidSupportInjectionModule::class])
 interface AppComponent : AndroidInjector<DaggerApplication> {
 
@@ -33,6 +36,8 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
 
         @BindsInstance fun networkModule(networkModule: NetworkModule): Builder
 
+        @BindsInstance fun activityModule(activityModule: ActivityModule): Builder
+
         fun build(): AppComponent
     }
 
@@ -41,13 +46,11 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
     override fun inject(instance: DaggerApplication)
 
     companion object {
-        fun inject(app: App) {
-            DaggerAppComponent.builder()
-                    .application(app)
-                    .fastHubDatabaseModule(FastHubDatabaseModule())
-                    .networkModule(NetworkModule(/*TODO(add url)*/))
-                    .build()
-                    .inject(app)
-        }
+        fun getComponent(app: App): AppComponent = DaggerAppComponent.builder()
+                .application(app)
+                .fastHubDatabaseModule(FastHubDatabaseModule())
+                .networkModule(NetworkModule(BuildConfig.REST_URL))
+                .activityModule(ActivityModule())
+                .build()
     }
 }

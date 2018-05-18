@@ -18,10 +18,10 @@ class FastHubSharedPreference @Inject constructor(@ForApplication context: Conte
             when (it) {
                 is String -> {
                     when {
-                        it.toBoolean() -> putBoolean(key, it.toBoolean())
+                        it.toBooleanOrNull() != null -> putBoolean(key, it.toBoolean())
                         it.toIntOrNull() != null -> putInt(key, it.toInt())
-                        it.toLongOrNull() != null -> putLong(key, it.toLong())
                         it.toFloatOrNull() != null -> putFloat(key, it.toFloat())
+                        it.toLongOrNull() != null -> putLong(key, it.toLong())
                         else -> putString(key, it)
                     }
                 }
@@ -30,9 +30,7 @@ class FastHubSharedPreference @Inject constructor(@ForApplication context: Conte
                 is Float -> putFloat(key, it)
                 is Long -> putLong(key, it)
             }
-        } ?: run {
-            clearValue(key)
-        }
+        } ?: clearValue(key)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -49,4 +47,10 @@ class FastHubSharedPreference @Inject constructor(@ForApplication context: Conte
     private fun putLong(key: String, value: Long) = editor.putLong(key, value).apply()
     private fun putFloat(key: String, value: Float) = editor.putFloat(key, value).apply()
     private fun putString(key: String, value: String) = editor.putString(key, value).apply()
+
+    private fun String.toBooleanOrNull(): Boolean? = try {
+        java.lang.Boolean.parseBoolean(this)
+    } catch (e: Exception) {
+        null
+    }
 }

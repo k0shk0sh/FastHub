@@ -2,11 +2,9 @@
     <item>
 
         <shape>
-            <solid android:color="?colorPrimary"/>
+            <solid android:color="@color/transparent"/>
         </shape>
     </item>
-
-
     <item>
         <bitmap
             android:gravity="center"

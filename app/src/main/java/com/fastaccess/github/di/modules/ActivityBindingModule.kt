@@ -2,7 +2,6 @@ package com.fastaccess.github.di.modules
 
 import com.fastaccess.domain.di.scopes.PerActivity
 import com.fastaccess.github.MainActivity
-import com.fastaccess.github.base.BaseActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -11,8 +10,5 @@ import dagger.android.ContributesAndroidInjector
  */
 @Module
 abstract class ActivityBindingModule {
-
-    @PerActivity @ContributesAndroidInjector abstract fun baseActivity(): BaseActivity
-
-    @PerActivity @ContributesAndroidInjector abstract fun mainActivity(): MainActivity
+    @PerActivity @ContributesAndroidInjector(modules = [ActivityModule::class]) abstract fun mainActivity(): MainActivity
 }
