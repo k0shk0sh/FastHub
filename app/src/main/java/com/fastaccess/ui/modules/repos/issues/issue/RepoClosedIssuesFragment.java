@@ -101,7 +101,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new IssuesAdapter(getPresenter().getIssues(), true);
         adapter.setListener(getPresenter());
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());

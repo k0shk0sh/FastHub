@@ -17,7 +17,7 @@ import java.util.ArrayList;
 class TeamMembersPresenter extends BasePresenter<TeamMembersMvp.View> implements TeamMembersMvp.Presenter {
 
     private ArrayList<User> users = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

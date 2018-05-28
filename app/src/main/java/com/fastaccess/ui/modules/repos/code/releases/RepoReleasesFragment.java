@@ -91,7 +91,7 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         recycler.addDivider();
         adapter = new ReleasesAdapter(getPresenter().getReleases());
         adapter.setListener(getPresenter());
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {

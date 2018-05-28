@@ -97,6 +97,7 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
             labelModels = new ArrayList<>();
         }
         add.setVisibility(callback == null ? View.GONE : View.VISIBLE);
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         adapter = new LabelsAdapter(getPresenter().getLabels(), this);
         recycler.setAdapter(adapter);
         fastScroller.attachRecyclerView(recycler);

@@ -84,7 +84,7 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         adapter = new ReposAdapter(getPresenter().getRepos(), true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

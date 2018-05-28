@@ -19,7 +19,7 @@ import java.util.ArrayList;
 class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeamMvp.Presenter {
 
     private ArrayList<TeamsModel> users = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

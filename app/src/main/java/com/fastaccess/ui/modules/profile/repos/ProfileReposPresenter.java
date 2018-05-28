@@ -22,7 +22,7 @@ import java.util.ArrayList;
 class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implements ProfileReposMvp.Presenter {
 
     private ArrayList<Repo> repos = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private String username;
     private int lastPage = Integer.MAX_VALUE;

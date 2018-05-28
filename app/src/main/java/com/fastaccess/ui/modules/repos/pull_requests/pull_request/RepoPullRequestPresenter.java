@@ -28,7 +28,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State IssueState issueState;
     private ArrayList<PullRequest> pullRequests = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

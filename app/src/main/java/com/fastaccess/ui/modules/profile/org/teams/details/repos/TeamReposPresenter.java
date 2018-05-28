@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 class TeamReposPresenter extends BasePresenter<TeamReposMvp.View> implements TeamReposMvp.Presenter {
     private ArrayList<Repo> repos = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

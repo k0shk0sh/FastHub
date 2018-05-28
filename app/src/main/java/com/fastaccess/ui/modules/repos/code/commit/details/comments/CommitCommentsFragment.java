@@ -95,7 +95,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         adapter = new IssuesTimelineAdapter(getPresenter().getComments(), this, true,
                 this, getArguments().getString(BundleConstant.EXTRA), null);
         adapter.setListener(getPresenter());
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();

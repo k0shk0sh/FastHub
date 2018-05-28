@@ -19,7 +19,7 @@ import java.util.ArrayList;
 class SearchReposPresenter extends BasePresenter<SearchReposMvp.View> implements SearchReposMvp.Presenter {
 
     private ArrayList<Repo> repos = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

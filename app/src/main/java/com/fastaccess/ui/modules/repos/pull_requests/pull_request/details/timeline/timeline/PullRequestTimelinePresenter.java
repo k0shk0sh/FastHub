@@ -51,7 +51,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private SparseArray<String> pages = new SparseArray<>();
     private ReactionsProvider reactionsProvider;
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State boolean isCollaborator;

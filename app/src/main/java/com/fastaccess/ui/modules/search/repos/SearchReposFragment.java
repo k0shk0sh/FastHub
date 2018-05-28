@@ -81,7 +81,7 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
             stateLayout.hideProgress();
         }
         stateLayout.setEmptyText(R.string.no_search_results);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

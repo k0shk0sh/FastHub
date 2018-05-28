@@ -18,7 +18,7 @@ public class FilterIssuePresenter extends BasePresenter<FilterIssuesMvp.View> im
 
 
     private ArrayList<Issue> issues = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

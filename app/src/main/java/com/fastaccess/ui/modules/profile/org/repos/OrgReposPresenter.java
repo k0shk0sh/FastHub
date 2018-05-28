@@ -20,7 +20,7 @@ import java.util.ArrayList;
 class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgReposMvp.Presenter {
 
     private ArrayList<Repo> repos = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State FilterOptionsModel filterOptions = new FilterOptionsModel();

@@ -72,7 +72,7 @@ public class RepoContributorsFragment extends BaseFragment<RepoContributorsMvp.V
         recycler.addKeyLineDivider();
         adapter = new UsersAdapter(getPresenter().getUsers(), true);
         adapter.setListener(getPresenter());
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {

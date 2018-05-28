@@ -18,7 +18,7 @@ import java.util.ArrayList;
 class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> implements ProfileFollowingMvp.Presenter {
 
     private ArrayList<User> users = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

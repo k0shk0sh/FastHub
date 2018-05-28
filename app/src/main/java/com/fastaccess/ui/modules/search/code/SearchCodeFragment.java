@@ -81,7 +81,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         stateLayout.setEmptyText(R.string.no_search_results);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

@@ -31,7 +31,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State String branch;
     @com.evernote.android.state.State String path;
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

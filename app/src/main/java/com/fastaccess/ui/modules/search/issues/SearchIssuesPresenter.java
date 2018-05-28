@@ -19,7 +19,7 @@ import java.util.ArrayList;
 class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implements SearchIssuesMvp.Presenter {
 
     private ArrayList<Issue> issues = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

@@ -53,7 +53,7 @@ public class StarredGistsFragment extends BaseFragment<StarredGistsMvp.View, Sta
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new GistsAdapter(getPresenter().getGists(), true);
         adapter.setListener(getPresenter());
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
