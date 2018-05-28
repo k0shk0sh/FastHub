@@ -86,6 +86,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         adapter = new IssuesAdapter(getPresenter().getIssues(), false, true, true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         if (!InputHelper.isEmpty(searchQuery) && getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();

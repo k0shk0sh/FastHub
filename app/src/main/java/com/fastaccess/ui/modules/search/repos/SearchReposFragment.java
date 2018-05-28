@@ -88,6 +88,7 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
         adapter = new ReposAdapter(getPresenter().getRepos(), true, true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (!InputHelper.isEmpty(searchQuery) && getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();

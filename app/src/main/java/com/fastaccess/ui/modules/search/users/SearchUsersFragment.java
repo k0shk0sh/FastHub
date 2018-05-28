@@ -84,6 +84,7 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
         adapter = new UsersAdapter(getPresenter().getUsers());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (savedInstanceState != null) {
             if (!InputHelper.isEmpty(searchQuery) && getPresenter().getUsers().isEmpty() && !getPresenter().isApiCalled()) {
