@@ -9,7 +9,7 @@ import com.fastaccess.provider.scheme.LinkParserHelper
  * Created by Hashemsergani on 12.09.17.
  */
 
-object ApolloProdivder {
+object ApolloProvider {
 
     fun getApollo(enterprise: Boolean) = ApolloClient.builder()
             .serverUrl("${if (enterprise && PrefGetter.isEnterprise()) {

@@ -13,7 +13,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
-import com.fastaccess.provider.rest.ApolloProdivder;
+import com.fastaccess.provider.rest.ApolloProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
@@ -106,7 +106,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @SuppressWarnings("ConstantConditions") private void loadPinnedRepos(@NonNull String login) {
-        ApolloCall<GetPinnedReposQuery.Data> apolloCall = ApolloProdivder.INSTANCE.getApollo(isEnterprise())
+        ApolloCall<GetPinnedReposQuery.Data> apolloCall = ApolloProvider.INSTANCE.getApollo(isEnterprise())
                 .query(GetPinnedReposQuery.builder()
                         .login(login)
                         .build());
