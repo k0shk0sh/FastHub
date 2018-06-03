@@ -1,11 +1,11 @@
-package com.fastaccess.data.di.module
+package com.fastaccess.github.di.modules
 
 import android.content.Context
 import android.net.Uri
-import com.fastaccess.data.BuildConfig
-import com.fastaccess.data.di.annotations.ForApplication
-import com.fastaccess.data.di.annotations.ForAuth
 import com.fastaccess.data.repository.services.LoginService
+import com.fastaccess.github.BuildConfig
+import com.fastaccess.github.di.annotations.ForApplication
+import com.fastaccess.github.di.annotations.ForAuth
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -27,7 +27,7 @@ import javax.inject.Singleton
  * Created by Kosh on 11.05.18.
  */
 @Module
-class NetworkModule(private val url: String = "") {
+class NetworkModule {
 
     @Singleton @Provides fun provideGson(): Gson = GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -58,7 +58,7 @@ class NetworkModule(private val url: String = "") {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GithubResponseConverter(gson))
             .client(okHttpClient)
-            .baseUrl(url)
+            .baseUrl(BuildConfig.REST_URL)
             .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)

@@ -2,10 +2,10 @@ package com.fastaccess.github.base
 
 import android.content.Context
 import android.os.Bundle
-import androidx.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import dagger.android.support.DaggerFragment
 
 /**
@@ -27,6 +27,10 @@ abstract class BaseFragment : DaggerFragment() {
     override fun onDetach() {
         activityCallback = null
         super.onDetach()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) { // expose so its easier to find
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

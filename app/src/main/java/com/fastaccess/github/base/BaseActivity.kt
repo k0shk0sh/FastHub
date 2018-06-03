@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.base.engine.ThemeEngine
-import com.fastaccess.github.ui.modules.login.LoginChooserActivity
+import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.utils.BundleConstant
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
@@ -24,7 +24,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
     abstract fun onActivityCreatedWithUser(savedInstanceState: Bundle?)
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        val theme = themeEngine.getTheme()
+        val theme = themeEngine.getTheme(this)
         if (theme > 0) {
             setTheme(theme)
         }
@@ -40,6 +40,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
         if (isLoggedIn()) {
             onActivityCreatedWithUser(savedInstanceState)
         } else {
+            LoginChooserActivity.startActivity(this)
             onActivityCreated(savedInstanceState)
         }
 

@@ -6,7 +6,7 @@
 
     <style name="ThemeAmlod" parent="ThemeAmlod.Base"/>
 
-    <style name="ThemeAmlod.Base" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="ThemeAmlod.Base" parent="Theme.Dark.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="card_background">#050910</item>

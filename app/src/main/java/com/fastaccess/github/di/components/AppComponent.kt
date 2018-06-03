@@ -1,13 +1,9 @@
 package com.fastaccess.github.di.components
 
 import android.app.Application
-import com.fastaccess.data.di.module.FastHubDatabaseModule
-import com.fastaccess.data.di.module.NetworkModule
 import com.fastaccess.github.App
 import com.fastaccess.github.BuildConfig
-import com.fastaccess.github.di.modules.ActivityBindingModule
-import com.fastaccess.github.di.modules.ActivityModule
-import com.fastaccess.github.di.modules.ApplicationModule
+import com.fastaccess.github.di.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -20,11 +16,13 @@ import javax.inject.Singleton
  */
 @Singleton
 @Component(modules = [
-    ActivityBindingModule::class,
     ApplicationModule::class,
     FastHubDatabaseModule::class,
     NetworkModule::class,
+    RepositoryModule::class,
+    ActivityBindingModule::class,
     ActivityModule::class,
+    RepositoryModule::class,
     AndroidSupportInjectionModule::class])
 interface AppComponent : AndroidInjector<DaggerApplication> {
 
@@ -38,6 +36,10 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
 
         @BindsInstance fun activityModule(activityModule: ActivityModule): Builder
 
+        @BindsInstance fun repoModule(repositoryModule: RepositoryModule): Builder
+
+        @BindsInstance fun repositoryModule(repositoryModule: RepositoryModule): Builder
+
         fun build(): AppComponent
     }
 
@@ -49,8 +51,10 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
         fun getComponent(app: App): AppComponent = DaggerAppComponent.builder()
                 .application(app)
                 .fastHubDatabaseModule(FastHubDatabaseModule())
-                .networkModule(NetworkModule(BuildConfig.REST_URL))
+                .networkModule(NetworkModule())
                 .activityModule(ActivityModule())
+                .repoModule(RepositoryModule())
+                .repositoryModule(RepositoryModule())
                 .build()
     }
 }

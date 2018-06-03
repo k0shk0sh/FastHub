@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+    <!--<fragment-->
+    <!--android:id="@+id/loginChooser"-->
+    <!--android:name="com.fastaccess.github.ui.modules.login.chooser.LoginChooserFragment"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:label="@string/login"-->
+    <!--app:defaultNavHost="true"-->
+    <!--app:navGraph="@navigation/login_navigation"-->
+    <!--tools:layout="@layout/login_chooser_fragment_layout"/>-->

@@ -9,7 +9,7 @@
 
     <style name="ThemeDark" parent="ThemeDark.Base"/>
 
-    <style name="ThemeDark.Base" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="ThemeDark.Base" parent="Theme.Dark.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="card_background">#2D3035</item>

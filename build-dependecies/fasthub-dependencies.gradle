@@ -39,11 +39,16 @@ ext {
             "androidx.viewpager:viewpager:$supportLibrary",
             "androidx.fragment:fragment:$supportLibrary",
             "androidx.swiperefreshlayout:swiperefreshlayout:$supportLibrary",
-            "android.arch.navigation:navigation-ui:$navigation",
             "androidx.browser:browser:$supportLibrary",
             "androidx.webkit:webkit:$supportLibrary",
             "androidx.constraintlayout:constraintlayout:$constraintLayout",
-            "androidx.constraintlayout:constraintlayout-solver:$constraintLayout"
+            "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
+            "android.arch.navigation:navigation-ui:$navigation",
+            "android.arch.navigation:navigation-runtime:$navigation",
+            "android.arch.navigation:navigation-runtime-ktx:$navigation",
+            "android.arch.navigation:navigation-fragment:$navigation",
+            "android.arch.navigation:navigation-fragment-ktx:$navigation"
+
 
     ]
 
@@ -83,7 +88,6 @@ ext {
             "androidx.room:room-common:$archComponents",
             "androidx.room:room-rxjava2:$archComponents",
             "androidx.room:room-compiler:$archComponents",
-            "android.arch.navigation:navigation-fragment:$navigation",
             "androidx.core:core-ktx:$supportLibrary",
     ]
 

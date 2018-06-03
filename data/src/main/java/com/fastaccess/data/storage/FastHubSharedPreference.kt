@@ -1,16 +1,15 @@
 package com.fastaccess.data.storage
 
-import android.content.Context
+import android.app.Application
 import android.preference.PreferenceManager
-import com.fastaccess.data.di.annotations.ForApplication
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 12.05.18.
  */
-class FastHubSharedPreference @Inject constructor(@ForApplication context: Context) {
+class FastHubSharedPreference @Inject constructor(app: Application) {
 
-    private val preference = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preference = PreferenceManager.getDefaultSharedPreferences(app)
     private val editor = preference.edit()
 
     fun <T> set(key: String, value: T? = null) {

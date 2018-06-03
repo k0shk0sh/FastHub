@@ -14,8 +14,8 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 11.05.18.
  */
-class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao,
-                                                  private val loginService: LoginService) : LoginRepository, LoginRemoteRepository {
+class LoginLocalRepositoryProvider @Inject constructor(private val loginDao: LoginDao,
+                                                       private val loginService: LoginService) : LoginLocalRepository, LoginRemoteRepository {
     override fun getLogin(): Maybe<LoginModel?> = loginDao.getLogin()
     override fun insert(login: LoginModel): Long = loginDao.insert(login)
     override fun update(login: LoginModel): Int = loginDao.update(login)
@@ -26,7 +26,7 @@ class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao
                                 redirectUrl: String) = loginService.getAccessToken(code, clientId, clientSecret, state, redirectUrl)
 }
 
-interface LoginRepository {
+interface LoginLocalRepository {
     fun getLogin(): Maybe<LoginModel?>
     fun insert(login: LoginModel): Long
     fun update(login: LoginModel): Int

@@ -38,6 +38,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':domain')
+    implementation project(':resources')
     implementation dependency.kotlin
     implementation dependency.networking
     implementation dependency.rxJava

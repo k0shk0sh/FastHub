@@ -1,4 +1,4 @@
-package com.fastaccess.data.di.annotations
+package com.fastaccess.github.di.annotations
 
 /**
  * Created by Kosh on 12.05.18.

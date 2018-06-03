@@ -12,7 +12,7 @@
 
     <style name="ThemeBluish" parent="ThemeBluish.Base"/>
 
-    <style name="ThemeBluish.Base" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="ThemeBluish.Base" parent="Theme.Dark.NoActionBar">
         <item name="card_background">#182A44</item>
         <item name="comment_box_style">@style/CommentBoxDarkBluish</item>
         <item name="icon_color">#eee</item>

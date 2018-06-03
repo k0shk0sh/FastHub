@@ -1,7 +1,8 @@
 package com.fastaccess.github.di.modules
 
-import com.fastaccess.domain.di.scopes.PerActivity
 import com.fastaccess.github.MainActivity
+import com.fastaccess.github.di.scopes.PerActivity
+import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -10,5 +11,6 @@ import dagger.android.ContributesAndroidInjector
  */
 @Module
 abstract class ActivityBindingModule {
-    @PerActivity @ContributesAndroidInjector(modules = [ActivityModule::class]) abstract fun mainActivity(): MainActivity
+    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun mainActivity(): MainActivity
+    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun loginChooser(): LoginChooserActivity
 }

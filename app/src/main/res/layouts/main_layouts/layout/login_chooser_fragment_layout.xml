@@ -15,73 +15,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/multiAccLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_s_large"
-                android:layout_marginStart="@dimen/spacing_s_large"
-                android:minWidth="250dp"
-                android:visibility="gone"
-                app:cardElevation="@dimen/spacing_normal">
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/toggle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
-                        android:orientation="horizontal"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingTop="@dimen/spacing_normal">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:paddingEnd="@dimen/spacing_xs_large"
-                            android:paddingStart="@dimen/spacing_xs_large"
-                            android:text="@string/choose_account"/>
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/toggleImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/spacing_normal"
-                            android:layout_marginStart="@dimen/spacing_normal"
-                            android:src="@drawable/ic_arrow_drop_down"
-                            android:tint="@color/black"/>
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_normal"
-                        android:visibility="gone"/>
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:id="@+id/loginCard"
                 android:layout_marginBottom="@dimen/spacing_s_large"
                 android:layout_marginEnd="@dimen/spacing_s_large"
                 android:layout_marginStart="@dimen/spacing_s_large"
                 android:layout_marginTop="@dimen/spacing_xs_large"
                 android:minHeight="350dp"
                 android:minWidth="250dp"
+                android:transitionName="login_card"
                 app:cardElevation="@dimen/spacing_normal">
 
                 <LinearLayout
@@ -222,7 +167,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

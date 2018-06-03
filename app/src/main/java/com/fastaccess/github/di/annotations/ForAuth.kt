@@ -1,4 +1,4 @@
-package com.fastaccess.data.di.annotations
+package com.fastaccess.github.di.annotations
 
 import javax.inject.Qualifier
 

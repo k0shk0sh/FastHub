@@ -1,14 +1,15 @@
-package com.fastaccess.data.di.module
+package com.fastaccess.github.di.modules
 
-import androidx.room.Room
+import android.app.Application
 import android.content.Context
-import com.fastaccess.data.di.annotations.ForApplication
-import com.fastaccess.data.di.annotations.ForDB
+import androidx.room.Room
 import com.fastaccess.data.persistence.db.DATABASE_NAME
 import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.db.FastHubLoginDatabase
 import com.fastaccess.data.persistence.db.LOGIN_DATABASE_NAME
 import com.fastaccess.data.storage.FastHubSharedPreference
+import com.fastaccess.github.di.annotations.ForApplication
+import com.fastaccess.github.di.annotations.ForDB
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -32,7 +33,7 @@ class FastHubDatabaseModule {
             .allowMainThreadQueries() // allow querying on MainThread
             .build()
 
-    @Singleton @Provides fun providePreference(@ForApplication context: Context): FastHubSharedPreference = FastHubSharedPreference(context)
+    @Singleton @Provides fun providePreference(app: Application): FastHubSharedPreference = FastHubSharedPreference(app)
 
     @ForDB @Singleton @Provides fun provideGson(): Gson = GsonBuilder()
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)

@@ -6,7 +6,7 @@ import timber.log.Timber
 
 class MainActivity : BaseActivity() {
 
-    override fun layoutRes(): Int = R.layout.login_form_layout
+    override fun layoutRes(): Int = R.layout.activity_main
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Timber.e("here")
