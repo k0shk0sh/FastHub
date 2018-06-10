@@ -9,6 +9,7 @@ import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.materialize
+import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
@@ -26,6 +27,9 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     abstract fun onActivityCreated(savedInstanceState: Bundle?)
     abstract fun onActivityCreatedWithUser(savedInstanceState: Bundle?)
+    override fun isLoggedIn() = !preference.token.isNullOrEmpty()
+    override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(BundleConstant.IS_ENTERPRISE) ?: false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         val theme = themeEngine.getTheme(this)
@@ -50,8 +54,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     }
 
-    override fun isLoggedIn() = !((preference.get("loggedIn", null) as String?).isNullOrBlank())
-    override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(BundleConstant.IS_ENTERPRISE) ?: false
     override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
         if (resId == null && message == null) return
         Snackbar.make(root, message ?: getString(resId ?: R.string.unknown), duration)

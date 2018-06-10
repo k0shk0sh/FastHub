@@ -40,7 +40,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (activityCallback?.isLoggedIn() == true) {
+        if (isLoggedIn()) {
             onFragmentCreatedWithUser(view, savedInstanceState)
         } else {
             onFragmentCreated(view, savedInstanceState)
