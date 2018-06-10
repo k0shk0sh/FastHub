@@ -18,7 +18,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
@@ -75,7 +74,6 @@ class AuthenticationInterceptor(var otp: String? = null,
         }
         if (!isScrapping) builder.addHeader("User-Agent", "FastHub")
         val request = builder.build()
-        Timber.e("${request.method()}, ${request.url()} , ${request.body()}")
         return chain.proceed(request)
     }
 }
@@ -138,13 +136,16 @@ private class PaginationInterceptor : Interceptor {
     }
 }
 
-private class GithubResponseConverter(private val gson: Gson) : Converter.Factory() {
+private class GithubResponseConverter(private val gson: Gson,
+                                      private val creator: GsonConverterFactory = GsonConverterFactory.create(gson)) : Converter.Factory() {
 
     override fun responseBodyConverter(type: Type, annotations: Array<Annotation>, retrofit: Retrofit): Converter<ResponseBody, *>? {
         return try {
             if (type === String::class.java) {
                 StringResponseConverter()
-            } else GsonConverterFactory.create(gson).responseBodyConverter(type, annotations, retrofit)
+            } else {
+                creator.responseBodyConverter(type, annotations, retrofit)
+            }
         } catch (ignored: OutOfMemoryError) {
             null
         }
@@ -153,7 +154,7 @@ private class GithubResponseConverter(private val gson: Gson) : Converter.Factor
 
     override fun requestBodyConverter(type: Type, parameterAnnotations: Array<Annotation>,
                                       methodAnnotations: Array<Annotation>, retrofit: Retrofit): Converter<*, RequestBody>? {
-        return GsonConverterFactory.create(gson).requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
+        return creator.requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
     }
 
     private class StringResponseConverter : Converter<ResponseBody, String> {

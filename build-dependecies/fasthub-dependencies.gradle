@@ -11,7 +11,7 @@ ext {
     butterKnife = '8.8.1'
     javaxAnnotation = '10.0-b28'
     okHttp = '3.8.0'
-    retrofit2 = '2.3.0'
+    retrofit2 = '2.4.0'
     gson = '2.8.1'
     glide = '4.7.1'
     timber = '4.6.1'
