@@ -1,11 +1,15 @@
 package com.fastaccess.github.base
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.LayoutRes
 import com.fastaccess.data.storage.FastHubSharedPreference
+import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.utils.BundleConstant
+import com.fastaccess.github.utils.extensions.materialize
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -48,9 +52,16 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     override fun isLoggedIn() = !((preference.get("loggedIn", null) as String?).isNullOrBlank())
     override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(BundleConstant.IS_ENTERPRISE) ?: false
+    override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
+        if (resId == null && message == null) return
+        Snackbar.make(root, message ?: getString(resId ?: R.string.unknown), duration)
+                .materialize()
+                .show()
+    }
 }
 
 interface ActivityCallback {
     fun isLoggedIn(): Boolean
     fun isEnterprise(): Boolean
+    fun showSnackBar(root: View, resId: Int? = null, message: String? = null, duration: Int = Snackbar.LENGTH_LONG)
 }

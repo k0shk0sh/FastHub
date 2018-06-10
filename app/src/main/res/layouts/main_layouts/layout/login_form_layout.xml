@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,11 +9,11 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="1"
+        android:layout_marginBottom="?actionBarSize"
         android:gravity="center">
 
         <com.google.android.material.card.MaterialCardView
@@ -21,10 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/spacing_s_large"
-            android:layout_marginEnd="@dimen/spacing_s_large"
-            android:layout_marginStart="@dimen/spacing_s_large"
-            android:layout_marginTop="?actionBarSize"
+            android:layout_margin="@dimen/spacing_s_large"
             android:transitionName="login_card"
             app:cardElevation="@dimen/spacing_normal">
 
@@ -33,164 +30,172 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/loginForm"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/mainCard"
-                        style="@style/TextAppearance.AppCompat.Title.Inverse"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="?colorAccent"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/spacing_xs_large"
-                        android:paddingEnd="@dimen/spacing_xs_large"
-                        android:paddingStart="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_xs_large"
-                        android:text="@string/sign_in_to_github"/>
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
+                        android:id="@+id/loginForm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/spacing_normal"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingEnd="@dimen/spacing_xs_large"
-                        android:paddingStart="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_normal">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/username"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:hint="@string/username">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/usernameEditText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="text"
-                                android:maxLines="1"/>
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/accessTokenCheckbox"
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/mainCard"
+                            style="@style/TextAppearance.AppCompat.Title.Inverse"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:background="?colorAccent"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
+                            android:text="@string/sign_in_to_github"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginTop="@dimen/spacing_normal"
-                            android:text="@string/access_token"
-                            android:visibility="gone"
-                            tools:visibility="visible"/>
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_normal">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/password"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:hint="@string/password"
-                            app:passwordToggleEnabled="true"
-                            app:passwordToggleTint="?colorAccent">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/passwordEditText"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/username"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:imeOptions="actionSend"
-                                android:inputType="textPassword"
-                                android:maxLines="1"/>
-                        </com.google.android.material.textfield.TextInputLayout>
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:hint="@string/username">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/twoFactor"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:hint="@string/twoFactor"
-                            android:visibility="gone"
-                            tools:visibility="visible">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/usernameEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="text"
+                                    android:maxLines="1"/>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/twoFactorEditText"
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/accessTokenCheckbox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:imeOptions="actionSend"
-                                android:inputType="number"
-                                android:maxLines="1"/>
-                        </com.google.android.material.textfield.TextInputLayout>
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:layout_marginTop="@dimen/spacing_normal"
+                                android:text="@string/access_token"
+                                android:visibility="gone"
+                                tools:visibility="visible"/>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/endpoint"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/endpointEditText"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/password"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/endpoint_hint"
-                                android:imeOptions="actionSend"
-                                android:inputType="text"
-                                android:maxLines="1"/>
-                        </com.google.android.material.textfield.TextInputLayout>
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:hint="@string/password"
+                                app:passwordToggleEnabled="true"
+                                app:passwordToggleTint="?colorAccent">
 
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/passwordEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionSend"
+                                    android:inputType="textPassword"
+                                    android:maxLines="1"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/twoFactor"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:hint="@string/twoFactor"
+                                android:visibility="gone"
+                                tools:visibility="visible">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/twoFactorEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionSend"
+                                    android:inputType="number"
+                                    android:maxLines="1"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/endpoint"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:visibility="gone"
+                                tools:visibility="visible">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/endpointEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/endpoint_hint"
+                                    android:imeOptions="actionSend"
+                                    android:inputType="text"
+                                    android:maxLines="1"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/spacing_s_large"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+                </FrameLayout>
             </androidx.core.widget.NestedScrollView>
+
         </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
+    </FrameLayout>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/bottomLayout"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="110dp">
+        android:layout_gravity="bottom"
+        app:backgroundTint="?android:colorAccent"
+        app:fabAttached="true"
+        app:fabCradleVerticalOffset="12dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:backgroundTint="?android:colorAccent"
-            app:fabAttached="true"
-            app:fabCradleVerticalOffset="12dp"
-            app:navigationIcon="@drawable/ic_back"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingTop="@dimen/spacing_normal"
-                android:text="@string/login"
-                android:textColor="@color/white"/>
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/loginBtn"
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_done"
-            app:fabSize="normal"
-            app:layout_anchor="@+id/bottomBar"
-            app:layout_anchorGravity="center"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</LinearLayout>
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/spacing_normal"
+            android:text="@string/login"
+            android:textColor="@color/white"/>
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/loginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_done"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/bottomBar"
+        app:layout_anchorGravity="center"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

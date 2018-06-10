@@ -1,7 +1,8 @@
 package com.fastaccess.data.storage
 
 import android.app.Application
-import android.preference.PreferenceManager
+import com.fastaccess.data.BuildConfig
+import com.securepreferences.SecurePreferences
 import javax.inject.Inject
 
 /**
@@ -9,7 +10,7 @@ import javax.inject.Inject
  */
 class FastHubSharedPreference @Inject constructor(app: Application) {
 
-    private val preference = PreferenceManager.getDefaultSharedPreferences(app)
+    private val preference = SecurePreferences(app, BuildConfig.APPLICATION_ID, "fasthub_preference_file")
     private val editor = preference.edit()
 
     fun <T> set(key: String, value: T? = null) {

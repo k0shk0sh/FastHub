@@ -41,6 +41,7 @@ dependencies {
     implementation project(':resources')
     implementation dependency.kotlin
     implementation dependency.networking
+    implementation dependency.extrasLibraries
     implementation dependency.rxJava
     implementation dependency.dagger
     implementation dependency.archs

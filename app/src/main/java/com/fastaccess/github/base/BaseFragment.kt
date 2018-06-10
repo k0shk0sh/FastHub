@@ -11,7 +11,7 @@ import dagger.android.support.DaggerFragment
 /**
  * Created by Kosh on 13.05.18.
  */
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : DaggerFragment(), ActivityCallback {
 
     private var activityCallback: ActivityCallback? = null
 
@@ -45,5 +45,13 @@ abstract class BaseFragment : DaggerFragment() {
         } else {
             onFragmentCreated(view, savedInstanceState)
         }
+    }
+
+    override fun isLoggedIn(): Boolean = activityCallback?.isLoggedIn() ?: false
+
+    override fun isEnterprise(): Boolean = activityCallback?.isEnterprise() ?: false
+
+    override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
+        activityCallback?.showSnackBar(root, resId, message, duration)
     }
 }

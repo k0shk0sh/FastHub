@@ -3,9 +3,9 @@ package com.fastaccess.github.di.modules
 import android.content.Context
 import android.net.Uri
 import com.fastaccess.data.repository.services.LoginService
+import com.fastaccess.data.repository.services.UserService
 import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.di.annotations.ForApplication
-import com.fastaccess.github.di.annotations.ForAuth
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -37,9 +37,7 @@ class NetworkModule {
             .setPrettyPrinting()
             .create()
 
-    @Singleton @Provides fun provideAuthInterceptor() = AuthenticationInterceptor() // TODO(add auth)
-
-    @Singleton @Provides @ForAuth fun provideForAuthInterceptor() = AuthenticationInterceptor()
+    @Singleton @Provides fun provideInterceptor() = AuthenticationInterceptor()
 
     @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor, @ForApplication context: Context): OkHttpClient = OkHttpClient
             .Builder()
@@ -62,6 +60,9 @@ class NetworkModule {
             .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)
+
+    @Singleton @Provides fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
+
 }
 
 class AuthenticationInterceptor(var otp: String? = null,

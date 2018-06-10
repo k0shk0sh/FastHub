@@ -4,11 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.Slide
+import androidx.transition.TransitionManager
+import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.data.persistence.models.ValidationError.FieldType.*
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -31,7 +34,7 @@ class BaseAuthLoginFragment : BaseFragment() {
     private lateinit var viewModel: LoginViewModel
     private var callback: LoginChooserCallback? = null
     private val isAccessToken by lazy { arguments?.getBoolean(BundleConstant.EXTRA) ?: false }
-    private val isEnterprise by lazy { arguments?.getBoolean(BundleConstant.EXTRA_TWO) ?: false }
+    private val isEnterpriseBundle by lazy { arguments?.getBoolean(BundleConstant.EXTRA_TWO) ?: false }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -55,7 +58,7 @@ class BaseAuthLoginFragment : BaseFragment() {
         isAccessToken.isTrue {
             password.hint = getString(R.string.access_token)
         }
-        isEnterprise.isTrue {
+        isEnterpriseBundle.isTrue {
             endpoint.isVisible = true
             accessTokenCheckbox.isVisible = true
             accessTokenCheckbox.setOnCheckedChangeListener { _, checked ->
@@ -87,6 +90,23 @@ class BaseAuthLoginFragment : BaseFragment() {
                     PASSWORD -> password.error = if (it.isValid) null else requiredField
                     TWO_FACTOR -> twoFactor.error = if (it.isValid) null else requiredField
                     URL -> endpoint.error = if (it.isValid) null else requiredField
+                }
+            }
+        })
+
+        viewModel.progress.observe(this, Observer {
+            view?.let { TransitionManager.beginDelayedTransition(it as ViewGroup) }
+            loginForm.isVisible = it == false
+            progressBar.isVisible = it == true
+        })
+
+        viewModel.error.observe(this, Observer {
+            it?.let {
+                if (it.errorType == FastHubErrors.ErrorType.TWO_FACTOR) {
+                    twoFactor.isVisible = true
+                }
+                view?.let { view ->
+                    showSnackBar(view, resId = it.resId, message = it.message)
                 }
             }
         })

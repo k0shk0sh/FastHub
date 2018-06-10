@@ -1,6 +1,5 @@
 package com.fastaccess.github
 
-import android.os.StrictMode
 import com.fastaccess.github.di.components.AppComponent
 import com.fastaccess.github.platform.fabric.FabricProvider
 import com.fastaccess.github.platform.timber.FabricTree
@@ -26,8 +25,8 @@ class App : DaggerApplication() {
         FabricProvider.initFabric(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(FastHubTree())
-            StrictMode.enableDefaults()
-        } else
+        } else {
             Timber.plant(FabricTree())
+        }
     }
 }

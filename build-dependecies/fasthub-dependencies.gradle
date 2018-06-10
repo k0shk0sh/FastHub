@@ -54,7 +54,8 @@ ext {
 
     extrasLibraries = [
             'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar',
-            'com.github.daniel-stoneuk:material-about-library:2.1.0'
+            'com.github.daniel-stoneuk:material-about-library:2.1.0',
+            'com.scottyab:secure-preferences-lib:0.1.4'
     ]
 
     networking = [

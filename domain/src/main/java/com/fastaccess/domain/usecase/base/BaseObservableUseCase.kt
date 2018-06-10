@@ -13,9 +13,9 @@ abstract class BaseObservableUseCase<T> : BaseUseCase<T>() {
 
     fun disposeAndExecuteObservable(observer: Observer<T>) {
         disposeAndExecute(buildObservable()
-                .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribe
                 (
                         { observer.onNext(it) },
@@ -26,14 +26,21 @@ abstract class BaseObservableUseCase<T> : BaseUseCase<T>() {
 
     fun executeObservable(observer: Observer<T>) {
         execute(buildObservable()
-                .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribe
                 (
                         { observer.onNext(it) },
                         { observer.onError(it) },
                         { observer.onComplete() }
                 ))
+    }
+
+    fun executeSafely(observable: Observable<T>) {
+        execute(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, { t -> t.printStackTrace() }))
     }
 }
