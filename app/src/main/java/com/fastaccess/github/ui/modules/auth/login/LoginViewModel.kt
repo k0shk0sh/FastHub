@@ -2,16 +2,16 @@ package com.fastaccess.github.ui.modules.auth.login
 
 import androidx.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
+import com.fastaccess.data.persistence.models.FastHubErrors
+import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.ValidationError
-import com.fastaccess.domain.response.AccessTokenResponse
+import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.di.modules.AuthenticationInterceptor
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase
 import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
-import io.reactivex.Observable
 import okhttp3.Credentials
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -23,6 +23,7 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                                          private val interceptor: AuthenticationInterceptor) : BaseViewModel() {
 
     val validationLiveData = MutableLiveData<ValidationError>()
+    val loggedInUser = MutableLiveData<LoginModel>()
 
     fun login(userName: String? = null,
               password: String? = null,
@@ -45,39 +46,37 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                     loginWithAccessToken(password)
                 }
             } catch (e: Exception) {
-                Timber.e(e)
+                error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, resId = R.string.failed_login))
+                e.printStackTrace()
                 Crashlytics.logException(e)
             }
         }
     }
 
-    private fun loginWithAccessToken(password: String) {
-        val observable: Observable<AccessTokenResponse> = accessTokenUseCase.buildObservable()
-        accessTokenUseCase.code = password
-        accessTokenUseCase.executeSafely(observable
-                .doOnSubscribe {
-                    showHideProgress(true)
+    private fun loginWithAccessToken(password: String, twoFactorCode: String? = null, isEnterprise: Boolean? = false, enterpriseUrl: String? = null) {
+        interceptor.token = password
+        loginWithAccessTokenUseCase.executeSafely(loginWithAccessTokenUseCase.buildObservable()
+                .flatMap { user ->
+                    user.isLoggedIn = true
+                    user.otpCode = twoFactorCode
+                    user.token = password
+                    user.isEnterprise = isEnterprise
+                    user.enterpriseUrl = enterpriseUrl
+                    return@flatMap loginWithAccessTokenUseCase.insertUser(user)
                 }
-                .doOnNext {
-
-                }
-                .doOnError {
-                    handleError(it)
-                }
-                .doOnComplete {
-                    showHideProgress(false)
-                })
+                .doOnSubscribe { showProgress() }
+                .doOnNext { loggedInUser.postValue(it) }
+                .doOnError { handleError(it) }
+                .doOnComplete { hideProgress() }
+        )
     }
 
     private fun loginBasic(twoFactorCode: String? = null, isEnterprise: Boolean? = false, enterpriseUrl: String? = null) {
         loginUserCase.setAuthBody(twoFactorCode)
         loginUserCase.executeSafely(loginUserCase.buildObservable()
-                .map {
-                    interceptor.token = it.token ?: it.accessToken
-                    return@map it
-                }
                 .flatMap({
-                    loginWithAccessTokenUseCase.buildObservable()
+                    interceptor.token = it.token ?: it.accessToken
+                    return@flatMap loginWithAccessTokenUseCase.buildObservable()
                 }, { accessToken, user ->
                     user.isLoggedIn = true
                     user.otpCode = twoFactorCode
@@ -87,12 +86,10 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                     return@flatMap user
                 })
                 .flatMap { loginWithAccessTokenUseCase.insertUser(it) }
-                .doOnSubscribe { showHideProgress(true) }
-                .doOnNext {
-                    Timber.e("$it")
-                }
+                .doOnSubscribe { showProgress() }
+                .doOnNext { loggedInUser.postValue(it) }
                 .doOnError { handleError(it) }
-                .doOnComplete { showHideProgress(false) }
+                .doOnComplete { hideProgress() }
         )
 
     }

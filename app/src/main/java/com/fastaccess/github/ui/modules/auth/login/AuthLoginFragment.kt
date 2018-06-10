@@ -14,6 +14,7 @@ import androidx.transition.TransitionManager
 import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.data.persistence.models.ValidationError.FieldType.*
 import com.fastaccess.github.R
+import com.fastaccess.github.R.id.*
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.utils.BundleConstant
@@ -26,7 +27,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 18.05.18.
  */
-class BaseAuthLoginFragment : BaseFragment() {
+class AuthLoginFragment : BaseFragment() {
 
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -110,11 +111,19 @@ class BaseAuthLoginFragment : BaseFragment() {
                 }
             }
         })
+
+        viewModel.loggedInUser.observe(this, Observer {
+            if (it != null) {
+                callback?.onUserLoggedIn(it)
+            } else {
+                view?.let { showSnackBar(it, resId = R.string.failed_login) }
+            }
+        })
     }
 
     companion object {
-        const val TAG = "BaseAuthLoginFragment"
-        fun newInstance(accessToken: Boolean = false, isEnterprise: Boolean = false): BaseAuthLoginFragment = BaseAuthLoginFragment()
+        const val TAG = "AuthLoginFragment"
+        fun newInstance(accessToken: Boolean = false, isEnterprise: Boolean = false): AuthLoginFragment = AuthLoginFragment()
                 .apply {
                     val enter = Slide(Gravity.END)
                     val exit = Slide(Gravity.START)

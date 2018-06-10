@@ -35,7 +35,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.modules.auth.LoginChooserActivity"/>
+        <activity
+            android:name=".ui.modules.auth.LoginChooserActivity"
+            android:theme="@style/LoginTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="login"
+                    android:scheme="fasthub"/>
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

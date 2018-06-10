@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Kosh on 11.05.18.
  */
-data class AccessTokenResponse(val id: Long? = null,
-                               val token: String? = null,
-                               val hashedToken: String? = null,
-                               val accessToken: String? = null,
-                               val tokenType: String? = null)
+data class AccessTokenResponse(var id: Long? = null,
+                               var token: String? = null,
+                               var hashedToken: String? = null,
+                               var accessToken: String? = null,
+                               var tokenType: String? = null)
 
-data class AuthBodyModel(val clientId: String? = null,
-                         val clientSecret: String? = null,
-                         val redirectUri: String? = null,
-                         val scopes: List<String>? = null,
-                         val state: String? = null,
-                         val note: String? = null,
-                         val noteUrl: String? = null,
-                         @SerializedName("X-GitHub-OTP") val otpCode: String? = null)
+data class AuthBodyModel(var clientId: String? = null,
+                         var clientSecret: String? = null,
+                         var redirectUri: String? = null,
+                         var scopes: List<String>? = null,
+                         var state: String? = null,
+                         var note: String? = null,
+                         var noteUrl: String? = null,
+                         @SerializedName("X-GitHub-OTP") var otpCode: String? = null)

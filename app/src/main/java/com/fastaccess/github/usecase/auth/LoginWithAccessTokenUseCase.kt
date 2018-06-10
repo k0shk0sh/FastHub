@@ -15,8 +15,14 @@ class LoginWithAccessTokenUseCase @Inject constructor(private val loginRemoteRep
     override fun buildObservable(): Observable<LoginModel> = loginRemoteRepository.loginAccessToken()
             .map { gson.fromJson(gson.toJson(it), LoginModel::class.java) }
 
-    fun insertUser(loginModel: LoginModel): Observable<Boolean> = Observable.fromCallable {
+    fun insertUser(loginModel: LoginModel): Observable<LoginModel?> = Observable.fromCallable {
         loginRemoteRepository.logoutAll()
-        return@fromCallable loginRemoteRepository.insert(loginModel) > 0
+        loginRemoteRepository.insert(loginModel)
+        val login = loginRemoteRepository.getLoginBlocking()
+        return@fromCallable if (login?.id == loginModel.id) {
+            login
+        } else {
+            null
+        }
     }
 }

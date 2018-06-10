@@ -31,7 +31,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
     override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(BundleConstant.IS_ENTERPRISE) ?: false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+        AndroidInjection.inject(this) // for the sake of theme engine
         val theme = themeEngine.getTheme(this)
         if (theme > 0) {
             setTheme(theme)
@@ -39,7 +39,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
         super.onCreate(savedInstanceState)
         val layoutRes = layoutRes()
         if (layoutRes > 0) setContentView(layoutRes)
-
+        
         if (!isLoggedIn() && this is LoginChooserActivity) {
             onActivityCreated(savedInstanceState)
             return

@@ -13,6 +13,8 @@ import io.reactivex.Maybe
 
     @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` = 1 LIMIT 1") fun getLogin(): Maybe<LoginModel?>
 
+    @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` = 1 LIMIT 1") fun getLoginBlocking(): LoginModel?
+
     @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` != 1") fun getAllLiveData(): LiveData<LoginModel?>
 
     @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` != 1") fun getAll(): Maybe<List<LoginModel?>>

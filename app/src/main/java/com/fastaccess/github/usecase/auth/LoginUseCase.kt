@@ -17,8 +17,15 @@ class LoginUseCase @Inject constructor(private val loginRemoteRepository: LoginR
     override fun buildObservable(): Observable<AccessTokenResponse> = authBodyModel?.let { loginRemoteRepository.login(it) } ?: Observable.empty()
 
     fun setAuthBody(twoFactorCode: String? = null) {
-        this.authBodyModel = AuthBodyModel(BuildConfig.GITHUB_CLIENT_ID, BuildConfig.GITHUB_SECRET,
-                "fasthub://login", arrayListOf("user", "repo", "gist", "notifications", "read:org"),
-                BuildConfig.APPLICATION_ID, BuildConfig.APPLICATION_ID, "fasthub://login", twoFactorCode)
+        this.authBodyModel = AuthBodyModel().apply {
+            clientId = BuildConfig.GITHUB_CLIENT_ID
+            clientSecret = BuildConfig.GITHUB_SECRET
+            redirectUri = "fasthub://login"
+            scopes = listOf("user", "repo", "gist", "notifications", "read:org")
+            state = BuildConfig.APPLICATION_ID
+            note = BuildConfig.APPLICATION_ID
+            noteUrl = "fasthub://login"
+            otpCode = twoFactorCode
+        }
     }
 }

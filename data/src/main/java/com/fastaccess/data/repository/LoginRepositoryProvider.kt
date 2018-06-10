@@ -18,6 +18,7 @@ import javax.inject.Inject
 class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao,
                                                   private val loginService: LoginService) : LoginLocalRepository, LoginRemoteRepository {
     override fun getLogin(): Maybe<LoginModel?> = loginDao.getLogin()
+    override fun getLoginBlocking(): LoginModel? = loginDao.getLoginBlocking()
     override fun getAllLiveData(): LiveData<LoginModel?> = loginDao.getAllLiveData()
     override fun getAll(): Observable<List<LoginModel?>> = loginDao.getAll().toObservable()
     override fun getLoggedInUsers(): Observable<List<LoginModel?>> = loginDao.getLoggedInUsers().toObservable()
@@ -33,6 +34,7 @@ class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao
 
 interface LoginLocalRepository {
     fun getLogin(): Maybe<LoginModel?>
+    fun getLoginBlocking(): LoginModel?
     fun getAllLiveData(): LiveData<LoginModel?>
     fun getAll(): Observable<List<LoginModel?>>
     fun getLoggedInUsers(): Observable<List<LoginModel?>>

@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/baseAuthLoginFragment"
-        android:name="com.fastaccess.github.ui.modules.auth.login.BaseAuthLoginFragment"
+        android:name="com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment"
         android:label="BaseAuthLoginFragment"
         tools:layout="@layout/login_form_layout">
     </fragment>

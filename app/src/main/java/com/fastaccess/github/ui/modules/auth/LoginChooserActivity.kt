@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
-import com.fastaccess.github.di.annotations.ForActivity
+import com.fastaccess.data.persistence.models.LoginModel
+import com.fastaccess.github.MainActivity
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.di.annotations.ForActivity
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
-import com.fastaccess.github.ui.modules.auth.login.BaseAuthLoginFragment
+import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
+import com.fastaccess.github.utils.extensions.*
 
 /**
  * Created by Kosh on 18.05.18.
@@ -34,30 +37,43 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
     override fun navToBasicAuth(view: View) {
         supportFragmentManager.beginTransaction()
                 .addSharedElement(view, ViewCompat.getTransitionName(view) ?: "")
-                .replace(R.id.container, BaseAuthLoginFragment.newInstance(), BaseAuthLoginFragment.TAG)
-                .addToBackStack(BaseAuthLoginFragment.TAG)
+                .replace(R.id.container, AuthLoginFragment.newInstance(), AuthLoginFragment.TAG)
+                .addToBackStack(AuthLoginFragment.TAG)
                 .commit()
     }
 
     override fun navToAccessToken(view: View) {
         supportFragmentManager.beginTransaction()
                 .addSharedElement(view, ViewCompat.getTransitionName(view) ?: "")
-                .replace(R.id.container, BaseAuthLoginFragment.newInstance(accessToken = true), BaseAuthLoginFragment.TAG)
-                .addToBackStack(BaseAuthLoginFragment.TAG)
+                .replace(R.id.container, AuthLoginFragment.newInstance(accessToken = true), AuthLoginFragment.TAG)
+                .addToBackStack(AuthLoginFragment.TAG)
                 .commit()
     }
 
     override fun navToEnterprise(view: View) {
         supportFragmentManager.beginTransaction()
                 .addSharedElement(view, ViewCompat.getTransitionName(view) ?: "")
-                .replace(R.id.container, BaseAuthLoginFragment.newInstance(isEnterprise = true), BaseAuthLoginFragment.TAG)
-                .addToBackStack(BaseAuthLoginFragment.TAG)
+                .replace(R.id.container, AuthLoginFragment.newInstance(isEnterprise = true), AuthLoginFragment.TAG)
+                .addToBackStack(AuthLoginFragment.TAG)
                 .commit()
     }
 
     override fun popStack() = supportFragmentManager.popBackStack()
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {}
+
+    override fun onUserLoggedIn(login: LoginModel) {
+        if (login.isEnterprise == true) {
+            preference.enterpriseOtpCode = login.otpCode
+            preference.enterpriseToken = login.token
+            preference.enterpriseUrl = login.enterpriseUrl
+        } else {
+            preference.token = login.token
+            preference.otpCode = login.otpCode
+        }
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
 
     companion object {
         fun startActivity(@ForActivity activity: Activity) {
