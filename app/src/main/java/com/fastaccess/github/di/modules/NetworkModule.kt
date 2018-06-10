@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.fastaccess.data.repository.services.LoginService
 import com.fastaccess.data.repository.services.UserService
+import com.fastaccess.domain.HttpLoggingInterceptor
 import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.di.annotations.ForApplication
 import com.google.gson.FieldNamingPolicy
@@ -13,11 +14,11 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
@@ -41,22 +42,18 @@ class NetworkModule {
 
     @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor, @ForApplication context: Context): OkHttpClient = OkHttpClient
             .Builder()
-            .addInterceptor(ChuckInterceptor(context).showNotification(true))
             .addInterceptor(ContentTypeInterceptor())
             .addInterceptor(auth)
             .addInterceptor(PaginationInterceptor())
-            .addInterceptor(HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }))
+            .addInterceptor(ChuckInterceptor(context).showNotification(true))
+            .addInterceptor(HttpLoggingInterceptor(debug = BuildConfig.DEBUG))
             .build()
 
     @Singleton @Provides fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.REST_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GithubResponseConverter(gson))
             .client(okHttpClient)
-            .baseUrl(BuildConfig.REST_URL)
             .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)
@@ -73,9 +70,12 @@ class AuthenticationInterceptor(var otp: String? = null,
         val original = chain.request()
         val builder = original.newBuilder()
         token?.let { builder.header("Authorization", if (it.startsWith("Basic")) it else "token $it") }
-        otp?.let { builder.addHeader("X-GitHub-OTP", it.trim()) }
+        otp?.let {
+            if (!it.isEmpty()) builder.addHeader("X-GitHub-OTP", it.trim())
+        }
         if (!isScrapping) builder.addHeader("User-Agent", "FastHub")
         val request = builder.build()
+        Timber.e("${request.method()}, ${request.url()} , ${request.body()}")
         return chain.proceed(request)
     }
 }
