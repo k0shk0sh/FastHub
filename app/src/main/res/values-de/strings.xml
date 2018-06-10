@@ -465,6 +465,8 @@
     <string name="clear_image_cache">Bilder Cache leeren</string>
     <string name="restart_app_message">Bitte die App neu starten</string>
 	<string name="menu_label">Menü</string>
+    <string name="send_feedback">Feedback senden</string>
+    <string name="commit_file_required">Keine Dateien geändert</string>
 </resources>
 
 
