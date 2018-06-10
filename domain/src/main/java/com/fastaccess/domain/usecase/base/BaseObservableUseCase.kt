@@ -8,10 +8,10 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Kosh on 12.05.18.
  */
-abstract class BaseObservableUseCase<T> : BaseUseCase<T>() {
-    abstract override fun buildObservable(): Observable<T>
+abstract class BaseObservableUseCase : BaseUseCase() {
+    abstract override fun buildObservable(): Observable<*>
 
-    fun disposeAndExecuteObservable(observer: Observer<T>) {
+    fun disposeAndExecuteObservable(observer: Observer<Any>) {
         disposeAndExecute(buildObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -24,7 +24,7 @@ abstract class BaseObservableUseCase<T> : BaseUseCase<T>() {
                 ))
     }
 
-    fun executeObservable(observer: Observer<T>) {
+    fun executeObservable(observer: Observer<Any>) {
         execute(buildObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -37,7 +37,7 @@ abstract class BaseObservableUseCase<T> : BaseUseCase<T>() {
                 ))
     }
 
-    fun executeSafely(observable: Observable<T>) {
+    fun <T> executeSafely(observable: Observable<T>) {
         execute(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -8,10 +8,10 @@ import io.reactivex.subscribers.DisposableSubscriber
 /**
  * Created by Kosh on 12.05.18.
  */
-abstract class BaseFlowableUseCase<T> : BaseUseCase<T>() {
-    abstract override fun buildFlowable(): Flowable<T>
+abstract class BaseFlowableUseCase : BaseUseCase() {
+    abstract override fun buildFlowable(): Flowable<*>
 
-    fun disposeAndExecuteObservable(observer: DisposableSubscriber<T>) {
+    fun disposeAndExecuteObservable(observer: DisposableSubscriber<Any>) {
         disposeAndExecute(buildFlowable()
                 .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())
@@ -24,7 +24,7 @@ abstract class BaseFlowableUseCase<T> : BaseUseCase<T>() {
                 ))
     }
 
-    fun executeObservable(observer: DisposableSubscriber<T>) {
+    fun executeObservable(observer: DisposableSubscriber<Any>) {
         execute(buildFlowable()
                 .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())

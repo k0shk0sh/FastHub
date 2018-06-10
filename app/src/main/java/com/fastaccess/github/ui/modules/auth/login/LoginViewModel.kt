@@ -2,17 +2,16 @@ package com.fastaccess.github.ui.modules.auth.login
 
 import androidx.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
-import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.data.persistence.models.ValidationError
-import com.fastaccess.domain.response.AuthBodyModel
-import com.fastaccess.github.BuildConfig
-import com.fastaccess.github.R
+import com.fastaccess.domain.response.AccessTokenResponse
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.di.modules.AuthenticationInterceptor
-import com.fastaccess.github.ui.modules.auth.usecase.GetAccessTokenUseCase
-import com.fastaccess.github.ui.modules.auth.usecase.LoginUseCase
-import com.fastaccess.github.ui.modules.auth.usecase.LoginWithAccessTokenUseCase
+import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
+import com.fastaccess.github.usecase.auth.LoginUseCase
+import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
+import io.reactivex.Observable
 import okhttp3.Credentials
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -40,20 +39,22 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                 val authToken = Credentials.basic(userName, password)
                 interceptor.otp = twoFactorCode
                 interceptor.token = authToken
-                loginBasic()
                 if (isBasicAuth) {
+                    loginBasic(twoFactorCode)
                 } else {
-                    loginWithAccessToken()
+                    loginWithAccessToken(password)
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Timber.e(e)
                 Crashlytics.logException(e)
             }
         }
     }
 
-    private fun loginWithAccessToken() {
-        accessTokenUseCase.executeSafely(accessTokenUseCase.buildObservable()
+    private fun loginWithAccessToken(password: String) {
+        val observable: Observable<AccessTokenResponse> = accessTokenUseCase.buildObservable()
+        accessTokenUseCase.code = password
+        accessTokenUseCase.executeSafely(observable
                 .doOnSubscribe {
                     showHideProgress(true)
                 }
@@ -68,40 +69,32 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                 })
     }
 
-    private fun loginBasic() {
-        loginUserCase.authBodyModel = AuthBodyModel(BuildConfig.GITHUB_CLIENT_ID, BuildConfig.GITHUB_SECRET,
-                "fasthub://login", arrayListOf("user", "repo", "gist", "notifications", "read:org"),
-                BuildConfig.APPLICATION_ID, BuildConfig.APPLICATION_ID, "fasthub://login")
+    private fun loginBasic(twoFactorCode: String? = null, isEnterprise: Boolean? = false, enterpriseUrl: String? = null) {
+        loginUserCase.setAuthBody(twoFactorCode)
         loginUserCase.executeSafely(loginUserCase.buildObservable()
-                .doOnSubscribe {
-                    showHideProgress(true)
+                .map {
+                    interceptor.token = it.token ?: it.accessToken
+                    return@map it
                 }
-                .doOnNext {
-                    val token = it.token ?: it.accessToken
-                    if (token != null) {
-                        loginWithAccessTokenUseCase.executeSafely(loginWithAccessTokenUseCase.buildObservable()
-                                .doOnSubscribe {
-                                    showHideProgress(true)
-                                }
-                                .doOnNext {
-
-                                }
-                                .doOnError {
-                                    handleError(it)
-                                }
-                                .doOnComplete {
-                                    showHideProgress(false)
-                                })
-                    } else {
-                        error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, resId = R.string.failed_login))
-                    }
-                }
-                .doOnError {
-                    handleError(it)
-                }
-                .doOnComplete {
-                    showHideProgress(false)
+                .flatMap({
+                    loginWithAccessTokenUseCase.buildObservable()
+                }, { accessToken, user ->
+                    user.isLoggedIn = true
+                    user.otpCode = twoFactorCode
+                    user.token = accessToken.token ?: accessToken.accessToken
+                    user.isEnterprise = isEnterprise
+                    user.enterpriseUrl = enterpriseUrl
+                    return@flatMap user
                 })
+                .flatMap { loginWithAccessTokenUseCase.insertUser(it) }
+                .doOnSubscribe { showHideProgress(true) }
+                .doOnNext {
+                    Timber.e("$it")
+                }
+                .doOnError { handleError(it) }
+                .doOnComplete { showHideProgress(false) }
+        )
+
     }
 
     override fun onCleared() {

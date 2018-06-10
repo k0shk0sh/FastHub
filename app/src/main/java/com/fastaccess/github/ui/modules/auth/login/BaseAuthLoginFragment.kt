@@ -76,7 +76,7 @@ class BaseAuthLoginFragment : BaseFragment() {
                     passwordEditText.asString(),
                     twoFactorEditText.asString(),
                     endpointEditText.asString(),
-                    accessTokenCheckbox.isChecked)
+                    !accessTokenCheckbox.isChecked)
         }
         observeData()
     }

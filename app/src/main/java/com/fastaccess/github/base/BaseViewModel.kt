@@ -28,6 +28,7 @@ abstract class BaseViewModel : ViewModel() {
     protected fun disposeAll() = disposable.clear()
 
     protected fun handleError(throwable: Throwable) {
+        showHideProgress(false)
         if (throwable is HttpException) {
             val response = throwable.response()
             val message: String? = JSONObject(response.errorBody()?.string() ?: "").getString("message")

@@ -6,7 +6,7 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by Kosh on 12.05.18.
  */
-abstract class BaseUseCase<T> : Disposable, BaseUseCaseDefaults<T> {
+abstract class BaseUseCase : Disposable, BaseUseCaseDefault {
 
     private val disposable = CompositeDisposable()
 

@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Kosh on 12.05.18.
  */
-abstract class BaseCompletableUseCase : BaseUseCase<Any>() {
+abstract class BaseCompletableUseCase : BaseUseCase() {
     abstract override fun buildCompletable(): Completable
 
     fun disposeAndExecuteObservable(observer: CompletableObserver) {

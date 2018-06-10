@@ -13,7 +13,11 @@ import io.reactivex.Maybe
 
     @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` = 1 LIMIT 1") fun getLogin(): Maybe<LoginModel?>
 
-    @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` != 1") fun getLogins(): LiveData<LoginModel?>
+    @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` != 1") fun getAllLiveData(): LiveData<LoginModel?>
+
+    @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` != 1") fun getAll(): Maybe<List<LoginModel?>>
+
+    @Query("SELECT * FROM $TABLE_NAME WHERE `isLoggedIn` == 1") fun getLoggedInUsers(): Maybe<List<LoginModel?>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(login: LoginModel): Long
@@ -22,4 +26,7 @@ import io.reactivex.Maybe
     fun update(login: LoginModel): Int
 
     @Delete fun deleteLogin(login: LoginModel)
+
+    @Query("UPDATE $TABLE_NAME SET `isLoggedIn` = 0 WHERE `isLoggedIn` == 1")
+    fun logoutAll()
 }

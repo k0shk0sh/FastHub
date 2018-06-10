@@ -1,10 +1,13 @@
 package com.fastaccess.github.di.modules
 
 import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.UserRepositoryProvider
 import com.fastaccess.github.di.scopes.PerFragment
-import com.fastaccess.github.ui.modules.auth.usecase.GetAccessTokenUseCase
-import com.fastaccess.github.ui.modules.auth.usecase.LoginUseCase
-import com.fastaccess.github.ui.modules.auth.usecase.LoginWithAccessTokenUseCase
+import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
+import com.fastaccess.github.usecase.auth.LoginUseCase
+import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
+import com.fastaccess.github.usecase.user.UserUseCase
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 
@@ -14,15 +17,16 @@ import dagger.Provides
 @Module(includes = [FastHubDatabaseModule::class, NetworkModule::class])
 class UseCaseModule {
 
-    @PerFragment @Provides fun provideLoginUseCase(
-            loginRemoteRepository: LoginRepositoryProvider): LoginUseCase = LoginUseCase(loginRemoteRepository)
+    @PerFragment @Provides fun provideLoginUseCase(loginRemoteRepository: LoginRepositoryProvider): LoginUseCase = LoginUseCase(loginRemoteRepository)
 
-    @PerFragment @Provides fun provideLoginWithAccessTokenUseCase(loginRemoteRepository: LoginRepositoryProvider): LoginWithAccessTokenUseCase {
-        return LoginWithAccessTokenUseCase(loginRemoteRepository)
+    @PerFragment @Provides fun provideLoginWithAccessTokenUseCase(loginRemoteRepository: LoginRepositoryProvider,
+                                                                  gson: Gson): LoginWithAccessTokenUseCase {
+        return LoginWithAccessTokenUseCase(loginRemoteRepository, gson)
     }
 
     @PerFragment @Provides fun provideGetAccessTokenUseCase(loginRemoteRepository: LoginRepositoryProvider): GetAccessTokenUseCase {
         return GetAccessTokenUseCase(loginRemoteRepository)
     }
 
+    @PerFragment @Provides fun provideUserUseCase(userRepository: UserRepositoryProvider): UserUseCase = UserUseCase(userRepository)
 }

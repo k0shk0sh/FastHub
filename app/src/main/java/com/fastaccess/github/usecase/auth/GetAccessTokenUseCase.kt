@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.auth.usecase
+package com.fastaccess.github.usecase.auth
 
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.domain.response.AccessTokenResponse
@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Created by Kosh on 12.05.18.
  */
 class GetAccessTokenUseCase @Inject constructor(private val loginRemoteRepository: LoginRepositoryProvider) :
-        BaseObservableUseCase<AccessTokenResponse>() {
+        BaseObservableUseCase() {
 
     var code: String? = null
 

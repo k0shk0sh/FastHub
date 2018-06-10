@@ -41,10 +41,10 @@ class NetworkModule {
 
     @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor, @ForApplication context: Context): OkHttpClient = OkHttpClient
             .Builder()
+            .addInterceptor(ChuckInterceptor(context).showNotification(true))
             .addInterceptor(ContentTypeInterceptor())
             .addInterceptor(auth)
             .addInterceptor(PaginationInterceptor())
-            .addInterceptor(ChuckInterceptor(context))
             .addInterceptor(HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
             } else {

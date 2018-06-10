@@ -8,10 +8,10 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Kosh on 12.05.18.
  */
-abstract class BaseMaybeUseCase<T> : BaseUseCase<T>() {
-    abstract override fun buildMaybe(): Maybe<T>
+abstract class BaseMaybeUseCase : BaseUseCase() {
+    abstract override fun buildMaybe(): Maybe<*>
 
-    fun disposeAndExecuteObservable(observer: Observer<T>) {
+    fun disposeAndExecuteObservable(observer: Observer<Any>) {
         disposeAndExecute(buildMaybe()
                 .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())
@@ -24,7 +24,7 @@ abstract class BaseMaybeUseCase<T> : BaseUseCase<T>() {
                 ))
     }
 
-    fun executeObservable(observer: Observer<T>) {
+    fun executeObservable(observer: Observer<Any>) {
         execute(buildMaybe()
                 .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())

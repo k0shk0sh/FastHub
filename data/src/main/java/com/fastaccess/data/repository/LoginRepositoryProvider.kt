@@ -1,5 +1,6 @@
 package com.fastaccess.data.repository
 
+import androidx.lifecycle.LiveData
 import com.fastaccess.data.persistence.dao.LoginDao
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.repository.services.LoginService
@@ -17,9 +18,13 @@ import javax.inject.Inject
 class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao,
                                                   private val loginService: LoginService) : LoginLocalRepository, LoginRemoteRepository {
     override fun getLogin(): Maybe<LoginModel?> = loginDao.getLogin()
+    override fun getAllLiveData(): LiveData<LoginModel?> = loginDao.getAllLiveData()
+    override fun getAll(): Observable<List<LoginModel?>> = loginDao.getAll().toObservable()
+    override fun getLoggedInUsers(): Observable<List<LoginModel?>> = loginDao.getLoggedInUsers().toObservable()
     override fun insert(login: LoginModel): Long = loginDao.insert(login)
     override fun update(login: LoginModel): Int = loginDao.update(login)
     override fun deleteLogin(login: LoginModel) = loginDao.deleteLogin(login)
+    override fun logoutAll() = loginDao.logoutAll()
     override fun loginAccessToken(): Observable<UserResponse> = loginService.loginAccessToken()
     override fun login(authModel: AuthBodyModel): Observable<AccessTokenResponse> = loginService.login(authModel)
     override fun getAccessToken(code: String, clientId: String, clientSecret: String, state: String,
@@ -28,7 +33,11 @@ class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao
 
 interface LoginLocalRepository {
     fun getLogin(): Maybe<LoginModel?>
+    fun getAllLiveData(): LiveData<LoginModel?>
+    fun getAll(): Observable<List<LoginModel?>>
+    fun getLoggedInUsers(): Observable<List<LoginModel?>>
     fun insert(login: LoginModel): Long
     fun update(login: LoginModel): Int
     fun deleteLogin(login: LoginModel)
+    fun logoutAll()
 }

@@ -8,10 +8,10 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Kosh on 12.05.18.
  */
-abstract class BaseSingleUseCase<T> : BaseUseCase<T>() {
-    abstract override fun buildSingle(): Single<T>
+abstract class BaseSingleUseCase : BaseUseCase() {
+    abstract override fun buildSingle(): Single<*>
 
-    fun disposeAndExecuteObservable(observer: SingleObserver<T>) {
+    fun disposeAndExecuteObservable(observer: SingleObserver<Any>) {
         disposeAndExecute(buildSingle()
                 .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())
@@ -23,7 +23,7 @@ abstract class BaseSingleUseCase<T> : BaseUseCase<T>() {
                 ))
     }
 
-    fun executeObservable(observer: SingleObserver<T>) {
+    fun executeObservable(observer: SingleObserver<Any>) {
         execute(buildSingle()
                 .doOnSubscribe { observer.onSubscribe(it) }
                 .subscribeOn(Schedulers.io())
