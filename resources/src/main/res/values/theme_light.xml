@@ -7,6 +7,8 @@
     <color name="light_patch_deletion_color">#FFDDDD</color>
     <color name="light_patch_ref_color">#EEEEEE</color>
     <color name="light_accent">#2962FF</color>
+    <color name="light_primary">#F5F5F5</color>
+    <color name="light_primary_dark">#E0E0E0</color>
 
     <style name="ThemeLight" parent="ThemeLight.Base"/>
 
@@ -20,6 +22,8 @@
         <item name="patch_ref">@color/light_patch_ref_color</item>
         <item name="dividerColor">@color/lightDivider</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
         <item name="colorAccent">@color/light_accent</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="actionModeBackground">?colorPrimary</item>

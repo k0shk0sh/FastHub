@@ -1,6 +1,6 @@
 package com.fastaccess.github.di.modules
 
-import com.fastaccess.github.MainActivity
+import com.fastaccess.github.ui.modules.main.MainActivity
 import com.fastaccess.github.di.scopes.PerActivity
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import dagger.Module

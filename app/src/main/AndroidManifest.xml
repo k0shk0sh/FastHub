@@ -27,7 +27,7 @@
         tools:targetApi="n">
 
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.modules.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

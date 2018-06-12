@@ -9,6 +9,7 @@ import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.materialize
+import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
@@ -21,7 +22,6 @@ import javax.inject.Inject
 abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     @Inject lateinit var preference: FastHubSharedPreference
-    @Inject lateinit var themeEngine: ThemeEngine
 
     @LayoutRes abstract fun layoutRes(): Int
 
@@ -32,14 +32,11 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this) // for the sake of theme engine
-        val theme = themeEngine.getTheme(this)
-        if (theme > 0) {
-            setTheme(theme)
-        }
+        ThemeEngine.setTheme(this, preference.theme)
         super.onCreate(savedInstanceState)
         val layoutRes = layoutRes()
         if (layoutRes > 0) setContentView(layoutRes)
-        
+
         if (!isLoggedIn() && this is LoginChooserActivity) {
             onActivityCreated(savedInstanceState)
             return

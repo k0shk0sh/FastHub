@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.github.MainActivity
+import com.fastaccess.github.ui.modules.main.MainActivity
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.di.annotations.ForActivity

@@ -17,7 +17,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
 
     @LayoutRes abstract fun layoutRes(): Int
     abstract fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?)
-    abstract fun onFragmentCreated(view: View, savedInstanceState: Bundle?)
+    protected open fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {}
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

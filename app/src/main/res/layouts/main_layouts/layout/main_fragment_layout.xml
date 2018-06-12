@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/appbar_center_title_layout"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/fab_margin"
+        app:layout_behavior="@string/scroll_behaviour">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/spacing_xs_large">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pinned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:text="@string/pinned"
+                        android:textAllCaps="false"
+                        app:cornerRadius="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/starred"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:layout_marginStart="@dimen/spacing_micro"
+                        android:text="@string/starred"
+                        android:textAllCaps="false"
+                        app:cornerRadius="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/repos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:layout_marginStart="@dimen/spacing_micro"
+                        android:text="@string/repos"
+                        android:textAllCaps="false"
+                        app:cornerRadius="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/trending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:layout_marginStart="@dimen/spacing_micro"
+                        android:text="@string/trending"
+                        android:textAllCaps="false"
+                        app:cornerRadius="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/gists"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:layout_marginStart="@dimen/spacing_micro"
+                        android:text="@string/gists"
+                        android:textAllCaps="false"
+                        app:cornerRadius="12dp"/>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/notificationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/seeMoreNotifications"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?colorPrimary"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:padding="@dimen/spacing_xs_large"
+                    android:text="@string/notifications"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notificationsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/recycler_view_item"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/feedsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/seeMoreFeeds"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?colorPrimary"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:padding="@dimen/spacing_xs_large"
+                    android:text="@string/feeds"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/feedsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/recycler_view_item"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/issuesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/seeMoreIssues"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?colorPrimary"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:padding="@dimen/spacing_xs_large"
+                    android:text="@string/issues"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/issuesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/recycler_view_item"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/pullRequestsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/seeMorePullRequests"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?colorPrimary"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:padding="@dimen/spacing_xs_large"
+                    android:text="@string/pull_requests"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/pullRequestsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/recycler_view_item"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:fabAttached="true"
+        app:hideOnScroll="true"
+        app:navigationContentDescription="@string/menu_label"
+        app:navigationIcon="@drawable/ic_menu"
+        app:popupTheme="?android:toolbarStyle"
+        app:theme="?android:toolbarStyle"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/loginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_profile"
+        android:tint="@color/white"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/bottomBar"
+        app:layout_anchorGravity="center"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
