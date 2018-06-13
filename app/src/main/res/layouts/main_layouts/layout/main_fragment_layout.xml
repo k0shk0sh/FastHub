@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/coordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -38,7 +39,7 @@
                         android:layout_marginEnd="@dimen/spacing_micro"
                         android:text="@string/pinned"
                         android:textAllCaps="false"
-                        app:cornerRadius="12dp"/>
+                        app:cornerRadius="@dimen/spacing_normal"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/starred"
@@ -48,7 +49,7 @@
                         android:layout_marginStart="@dimen/spacing_micro"
                         android:text="@string/starred"
                         android:textAllCaps="false"
-                        app:cornerRadius="12dp"/>
+                        app:cornerRadius="@dimen/spacing_normal"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/repos"
@@ -58,7 +59,7 @@
                         android:layout_marginStart="@dimen/spacing_micro"
                         android:text="@string/repos"
                         android:textAllCaps="false"
-                        app:cornerRadius="12dp"/>
+                        app:cornerRadius="@dimen/spacing_normal"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/trending"
@@ -68,7 +69,7 @@
                         android:layout_marginStart="@dimen/spacing_micro"
                         android:text="@string/trending"
                         android:textAllCaps="false"
-                        app:cornerRadius="12dp"/>
+                        app:cornerRadius="@dimen/spacing_normal"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/gists"
@@ -78,7 +79,7 @@
                         android:layout_marginStart="@dimen/spacing_micro"
                         android:text="@string/gists"
                         android:textAllCaps="false"
-                        app:cornerRadius="12dp"/>
+                        app:cornerRadius="@dimen/spacing_normal"/>
 
                 </LinearLayout>
             </HorizontalScrollView>
