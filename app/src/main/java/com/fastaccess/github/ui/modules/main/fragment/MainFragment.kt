@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.ui.modules.adapter.MainIssuesAdapter
+import com.fastaccess.github.ui.modules.adapter.MainPullRequestsAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -31,6 +33,7 @@ class MainFragment : BaseFragment() {
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         viewModel.load()
+
         swipeRefresh.setOnRefreshListener { viewModel.load() }
         toolbarTitle.setText(R.string.app_name)
         appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -48,6 +51,30 @@ class MainFragment : BaseFragment() {
     private fun listenToDataChanges() {
         viewModel.progress.observe(this, Observer {
             swipeRefresh.isRefreshing = it == true
+        })
+
+        viewModel.prNode.observe(this, Observer {
+            if (it == null) {
+                pullRequestsList.removeAllCells()
+            } else {
+                it.filterNotNull().forEach { node -> pullRequestsList.addCell(MainPullRequestsAdapter(node)) }
+            }
+        })
+
+        viewModel.issuesNode.observe(this, Observer {
+            if (it == null) {
+                issuesList.removeAllCells()
+            } else {
+                it.filterNotNull().forEach { node -> issuesList.addCell(MainIssuesAdapter(node)) }
+            }
+        })
+
+        viewModel.error.observe(this, Observer {
+            it?.let {
+                view?.let { view ->
+                    showSnackBar(view, resId = it.resId, message = it.message)
+                }
+            }
         })
     }
 

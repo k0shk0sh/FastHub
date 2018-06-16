@@ -14,7 +14,6 @@ import androidx.transition.TransitionManager
 import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.data.persistence.models.ValidationError.FieldType.*
 import com.fastaccess.github.R
-import com.fastaccess.github.R.id.*
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.utils.BundleConstant
@@ -77,7 +76,7 @@ class AuthLoginFragment : BaseFragment() {
                     passwordEditText.asString(),
                     twoFactorEditText.asString(),
                     endpointEditText.asString(),
-                    !accessTokenCheckbox.isChecked)
+                    if (isAccessToken) false else (accessTokenCheckbox.isVisible && !accessTokenCheckbox.isChecked))
         }
         observeData()
     }

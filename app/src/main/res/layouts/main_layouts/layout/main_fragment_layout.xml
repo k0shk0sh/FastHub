@@ -85,7 +85,7 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:fillViewport="true"
-                android:paddingBottom="@dimen/fab_margin">
+                android:paddingBottom="@dimen/spacing_anti">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -113,8 +113,11 @@
                             android:id="@+id/notificationsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
+                            app:srv_showDivider="true"
+                            app:srv_showLastDivider="false"
                             tools:itemCount="5"
                             tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
 
@@ -141,8 +144,11 @@
                             android:id="@+id/feedsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
+                            app:srv_showDivider="true"
+                            app:srv_showLastDivider="false"
                             tools:itemCount="5"
                             tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
 
@@ -169,8 +175,11 @@
                             android:id="@+id/issuesList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
+                            app:srv_showDivider="true"
+                            app:srv_showLastDivider="false"
                             tools:itemCount="5"
                             tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
 
@@ -197,8 +206,11 @@
                             android:id="@+id/pullRequestsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
+                            app:srv_showDivider="true"
+                            app:srv_showLastDivider="false"
                             tools:itemCount="5"
                             tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
 
