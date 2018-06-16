@@ -33,9 +33,9 @@
     <string name="no_readme_found">Aucun fichier readme trouvé</string>
     <string name="downloading">Téléchargement…</string>
     <string name="downloading_file">Fichier en cours de téléchargement…</string>
-    <string name="released">Released</string>
+    <string name="released">Communiqué</string>
     <string name="drafted">Rédigé</string>
-    <string name="releases">Releases</string>
+    <string name="releases">Communiqués</string>
     <string name="no_body">Personne</string>
     <string name="contributors">Contributeurs</string>
     <string name="contributions">Contributions</string>
@@ -173,7 +173,7 @@
     <string name="commented_on_issue">Commenter un ticket</string>
     <string name="member">Membre</string>
     <string name="pr_comment_review">Commentaire sur la demande de Pull</string>
-    <string name="pushed">Pushed to</string>
+    <string name="pushed">Push à</string>
     <string name="team_event">Équipe</string>
     <string name="deleted">Supprimé</string>
     <string name="unknown">Inconnu</string>
@@ -307,14 +307,14 @@
     <string name="most_commented">Les plus commentés</string>
     <string name="least_commented">Les moins commentés</string>
     <string name="recently_updated">Mise à jour récemment</string>
-    <string name="least_recent_updated">Least recently updated</string>
+    <string name="least_recent_updated">Récemment mis à jour</string>
     <string name="up_to_date">Vous avez la dernière version !</string>
     <string name="new_version">Une nouvelle version est disponible.</string>
     <string name="empty_search_error">Le champ de recherche ne peut pas être vide</string>
     <string name="long_press_repo_fab_hint">Presser longuement pour créer un ticket à la volée</string>
     <string name="commit_can_be_merged">Cette demande de Pull peut-être fusionnée</string>
-    <string name="reviewed">reviewed</string>
-    <string name="dismissed_review">dismissed their review</string>
+    <string name="reviewed">Révisé</string>
+    <string name="dismissed_review">Rejeté leur avis</string>
     <string name="approved_these_changes">Valider ces changements</string>
     <string name="no_reactions">Aucune réaction</string>
     <string name="reactions">Réactions</string>
@@ -459,5 +459,5 @@
     <string name="disable_loading_image_title">Désactiver image de chargement</string>
     <string name="disable_loading_image_summary">Désactiver le chargement des images en réseaux mobiles.</string>
     <string name="report_issue_warning">Ce ticket sera soumis au dépôt FastHub sur GitHub</string>
-    <string name="block">Block</string>
+    <string name="block">Bloque</string>
 </resources>
