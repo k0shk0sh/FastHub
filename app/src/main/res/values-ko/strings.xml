@@ -456,5 +456,6 @@
     <string name="restart_app_message">앱을 재시작 해주세요.</string>
     <string name="menu_label">메뉴</string>
     <string name="commit_file_required">변경된 파일 없음</string>
+    <string name="send_feedback">피드백 보내기</string>
 	
 </resources>
