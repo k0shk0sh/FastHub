@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    app:contentPaddingBottom="@dimen/spacing_normal"
+    app:contentPaddingLeft="@dimen/spacing_xs_large"
+    app:contentPaddingRight="@dimen/spacing_xs_large"
+    app:contentPaddingTop="@dimen/spacing_normal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/issueTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                tools:text="To some, a believer is a sex for loving."/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/issueDescription"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:fontFamily="@font/rubik"
+                tools:text="To some, a believer is a sex for loving."/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/commentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:drawableTop="@drawable/ic_comment_small"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textStyle="bold"
+            tools:text="100"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

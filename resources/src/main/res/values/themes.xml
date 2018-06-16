@@ -43,11 +43,11 @@
 
 
     <style name="Theme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="fontFamily">@font/roboto_mono</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="Theme.Dark.NoActionBar" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="fontFamily">@font/roboto_mono</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
 </resources>

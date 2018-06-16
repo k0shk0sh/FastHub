@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.apollographql.android'
+apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'io.fabric'
 apply plugin: 'com.novoda.build-properties'
 
@@ -42,8 +43,9 @@ android {
                 includeCompileClasspath = true
             }
         }
-        buildConfigField "String", "REST_URL", '"https://api.github.com/"'
-        buildConfigField "String", "IMGUR_URL", '"https://api.imgur.com/3/"'
+        buildConfigString "REST_URL", "https://api.github.com/"
+        buildConfigString "GRAPHQL_REST_URL", "https://api.github.com/graphql"
+        buildConfigString "IMGUR_URL", "https://api.imgur.com/3/"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
         buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
@@ -97,6 +99,13 @@ android {
         unitTests.returnDefaultValues = true
     }
 
+    configurations {
+        all*.exclude module: 'javax.annotation'
+    }
+}
+
+apollo {
+    useJavaBeansSemanticNaming = true
 }
 
 dependencies {

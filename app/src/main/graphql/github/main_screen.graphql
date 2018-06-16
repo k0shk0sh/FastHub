@@ -1,0 +1,66 @@
+query getRepos($login: String!) {
+  user(login: $login) {
+    repositories(first: 5, orderBy: {field: PUSHED_AT, direction: DESC}) {
+      nodes {
+        id
+        databaseId
+        name
+        nameWithOwner
+        isFork
+        forkCount
+        issues(first: 1) {
+          totalCount
+        }
+        forks(first: 1) {
+          totalCount
+        }
+        isPrivate
+        stargazers(first: 1) {
+          totalCount
+        }
+        watchers(first: 1) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+query getIssues($login: String!, $state: [IssueState!]) {
+  user(login: $login) {
+    issues(first: 5, orderBy: {field: CREATED_AT, direction: DESC}, states: $state) {
+      nodes {
+        id
+        databaseId
+        number
+        title
+        repository {
+          nameWithOwner
+        }
+        comments(first: 1) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+query getPullRequests($login: String!)  {
+  user(login: $login) {
+    pullRequests(first: 5, orderBy: {field: CREATED_AT, direction: DESC}) {
+      nodes {
+        id
+        databaseId
+        number
+        title
+        repository {
+          nameWithOwner
+        }
+        comments(first: 1) {
+          totalCount
+        }
+        state
+      }
+    }
+  }
+}

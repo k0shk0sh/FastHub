@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.github.di.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
+import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -16,7 +17,10 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class ViewModelModule {
     @Binds @IntoMap @ViewModelKey(LoginViewModel::class)
-    abstract fun bindLoginViewModel(mainViewModel: LoginViewModel): ViewModel
+    abstract fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(MainFragmentViewModel::class)
+    abstract fun bindMainFragmentViewModel(viewModel: MainFragmentViewModel): ViewModel
 
     @Binds abstract fun bindViewModelFactory(factoryFastHub: FastHubViewModelFactory): ViewModelProvider.Factory
 

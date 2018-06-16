@@ -52,9 +52,9 @@ class FastHubSharedPreference @Inject constructor(app: Application) {
     private fun putFloat(key: String, value: Float) = editor.putFloat(key, value).commit()
     private fun putString(key: String, value: String) = editor.putString(key, value).commit()
 
-    private fun String.toBooleanOrNull(): Boolean? = try {
-        java.lang.Boolean.parseBoolean(this)
-    } catch (e: Exception) {
-        null
+    private fun String.toBooleanOrNull(): Boolean? = when {
+        this.equals("true", true) -> true
+        this.equals("false", true) -> false
+        else -> null
     }
 }

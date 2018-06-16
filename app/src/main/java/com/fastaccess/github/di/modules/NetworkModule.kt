@@ -2,6 +2,7 @@ package com.fastaccess.github.di.modules
 
 import android.content.Context
 import android.net.Uri
+import com.apollographql.apollo.ApolloClient
 import com.fastaccess.data.repository.services.LoginService
 import com.fastaccess.data.repository.services.UserService
 import com.fastaccess.domain.HttpLoggingInterceptor
@@ -53,6 +54,11 @@ class NetworkModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GithubResponseConverter(gson))
             .client(okHttpClient)
+            .build()
+
+    @Singleton @Provides fun provideApollo(okHttpClient: OkHttpClient): ApolloClient = ApolloClient.builder()
+            .serverUrl(BuildConfig.GRAPHQL_REST_URL)
+            .okHttpClient(okHttpClient)
             .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)

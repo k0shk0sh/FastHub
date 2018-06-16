@@ -6,14 +6,17 @@ import androidx.annotation.LayoutRes
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
+import com.fastaccess.github.di.modules.AuthenticationInterceptor
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.materialize
+import com.fastaccess.github.utils.extensions.otpCode
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -22,6 +25,7 @@ import javax.inject.Inject
 abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     @Inject lateinit var preference: FastHubSharedPreference
+    @Inject lateinit var interceptor: AuthenticationInterceptor
 
     @LayoutRes abstract fun layoutRes(): Int
 
@@ -43,6 +47,9 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
         }
 
         if (isLoggedIn()) {
+            interceptor.token = preference.token
+            interceptor.otp = preference.otpCode
+            Timber.e(preference.token)
             onActivityCreatedWithUser(savedInstanceState)
         } else {
             LoginChooserActivity.startActivity(this)

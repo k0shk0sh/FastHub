@@ -20,6 +20,7 @@ ext {
     mockito = '2.8.9'
     mockitoKotlin = '1.5.0'
     assertJ = '3.8.0'
+    apollo = '0.5.0'
 
 
     kotlin = [
@@ -55,7 +56,10 @@ ext {
     extrasLibraries = [
             'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar',
             'com.github.daniel-stoneuk:material-about-library:2.1.0',
-            'com.scottyab:secure-preferences-lib:0.1.4'
+            'com.scottyab:secure-preferences-lib:0.1.4',
+            'com.jaychang:simplerecyclerview:2.0.4',
+            'com.jaychang:simplerecyclerview-kotlin-android-extensions:2.0.4'
+
     ]
 
     networking = [
@@ -66,7 +70,9 @@ ext {
             "com.squareup.retrofit2:converter-gson:$retrofit2",
             "com.google.code.gson:gson:$gson",
 //            "com.github.bumptech.glide:glide:$glide",
-            "com.jakewharton.timber:timber:$timber"
+            "com.jakewharton.timber:timber:$timber",
+            "com.apollographql.apollo:apollo-runtime:$apollo",
+            "com.apollographql.apollo:apollo-rx2-support:$apollo",
     ]
 
     rxJava = [

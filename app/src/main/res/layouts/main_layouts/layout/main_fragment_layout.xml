@@ -7,197 +7,207 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/appbar_center_title_layout"/>
+    <include layout="@layout/appbar_profile_title_layout"/>
 
-    <androidx.core.widget.NestedScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:paddingBottom="@dimen/fab_margin"
+        android:orientation="vertical"
         app:layout_behavior="@string/scroll_behaviour">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center_horizontal">
 
-            <HorizontalScrollView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:paddingBottom="@dimen/spacing_xs_large"
+                android:paddingTop="@dimen/spacing_xs_large">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pinned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_xs_large"
+                    android:text="@string/pinned"
+                    android:textAllCaps="false"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/starred"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:text="@string/starred"
+                    android:textAllCaps="false"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/repos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:text="@string/repos"
+                    android:textAllCaps="false"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/trending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:text="@string/trending"
+                    android:textAllCaps="false"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/gists"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_xs_large"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:text="@string/gists"
+                    android:textAllCaps="false"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fillViewport="true"
+                android:paddingBottom="@dimen/fab_margin">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/spacing_xs_large">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/pinned"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/notificationLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_micro"
-                        android:text="@string/pinned"
-                        android:textAllCaps="false"
-                        app:cornerRadius="@dimen/spacing_normal"/>
+                        android:orientation="vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/starred"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_micro"
-                        android:layout_marginStart="@dimen/spacing_micro"
-                        android:text="@string/starred"
-                        android:textAllCaps="false"
-                        app:cornerRadius="@dimen/spacing_normal"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/seeMoreNotifications"
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="?colorPrimary"
+                            android:drawableEnd="@drawable/ic_arrow_right"
+                            android:padding="@dimen/spacing_xs_large"
+                            android:text="@string/notifications"/>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/repos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_micro"
-                        android:layout_marginStart="@dimen/spacing_micro"
-                        android:text="@string/repos"
-                        android:textAllCaps="false"
-                        app:cornerRadius="@dimen/spacing_normal"/>
+                        <com.jaychang.srv.SimpleRecyclerView
+                            android:id="@+id/notificationsList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:srv_layoutMode="linearVertical"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/trending"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_micro"
-                        android:layout_marginStart="@dimen/spacing_micro"
-                        android:text="@string/trending"
-                        android:textAllCaps="false"
-                        app:cornerRadius="@dimen/spacing_normal"/>
+                    </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/gists"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/feedsLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_micro"
-                        android:layout_marginStart="@dimen/spacing_micro"
-                        android:text="@string/gists"
-                        android:textAllCaps="false"
-                        app:cornerRadius="@dimen/spacing_normal"/>
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/seeMoreFeeds"
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="?colorPrimary"
+                            android:drawableEnd="@drawable/ic_arrow_right"
+                            android:padding="@dimen/spacing_xs_large"
+                            android:text="@string/feeds"/>
+
+                        <com.jaychang.srv.SimpleRecyclerView
+                            android:id="@+id/feedsList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:srv_layoutMode="linearVertical"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/issuesLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/seeMoreIssues"
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="?colorPrimary"
+                            android:drawableEnd="@drawable/ic_arrow_right"
+                            android:padding="@dimen/spacing_xs_large"
+                            android:text="@string/issues"/>
+
+                        <com.jaychang.srv.SimpleRecyclerView
+                            android:id="@+id/issuesList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:srv_layoutMode="linearVertical"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pullRequestsLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/seeMorePullRequests"
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="?colorPrimary"
+                            android:drawableEnd="@drawable/ic_arrow_right"
+                            android:padding="@dimen/spacing_xs_large"
+                            android:text="@string/pull_requests"/>
+
+                        <com.jaychang.srv.SimpleRecyclerView
+                            android:id="@+id/pullRequestsList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:srv_layoutMode="linearVertical"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
-            </HorizontalScrollView>
-
-            <LinearLayout
-                android:id="@+id/notificationLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/seeMoreNotifications"
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="?colorPrimary"
-                    android:drawableEnd="@drawable/ic_arrow_right"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:text="@string/notifications"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/notificationsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/recycler_view_item"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/feedsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/seeMoreFeeds"
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="?colorPrimary"
-                    android:drawableEnd="@drawable/ic_arrow_right"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:text="@string/feeds"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/feedsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/recycler_view_item"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/issuesLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/seeMoreIssues"
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="?colorPrimary"
-                    android:drawableEnd="@drawable/ic_arrow_right"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:text="@string/issues"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/issuesList"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/recycler_view_item"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/pullRequestsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/seeMorePullRequests"
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="?colorPrimary"
-                    android:drawableEnd="@drawable/ic_arrow_right"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:text="@string/pull_requests"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pullRequestsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/recycler_view_item"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomBar"
@@ -212,10 +222,10 @@
         app:theme="?android:toolbarStyle"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/loginBtn"
+        android:id="@+id/searchFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_profile"
+        android:src="@drawable/ic_search"
         android:tint="@color/white"
         app:fabSize="normal"
         app:layout_anchor="@+id/bottomBar"
