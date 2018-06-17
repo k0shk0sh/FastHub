@@ -16,7 +16,6 @@ import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -49,7 +48,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
         if (isLoggedIn()) {
             interceptor.token = preference.token
             interceptor.otp = preference.otpCode
-            Timber.e(preference.token)
             onActivityCreatedWithUser(savedInstanceState)
         } else {
             LoginChooserActivity.startActivity(this)

@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.apollographql.android'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'io.fabric'
 apply plugin: 'com.novoda.build-properties'
@@ -102,10 +101,6 @@ android {
     configurations {
         all*.exclude module: 'javax.annotation'
     }
-}
-
-apollo {
-    useJavaBeansSemanticNaming = true
 }
 
 dependencies {

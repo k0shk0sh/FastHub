@@ -7,9 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.ui.modules.adapter.MainIssuesAdapter
-import com.fastaccess.github.ui.modules.adapter.MainPullRequestsAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.utils.extensions.observeNotNull
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
@@ -53,20 +52,14 @@ class MainFragment : BaseFragment() {
             swipeRefresh.isRefreshing = it == true
         })
 
-        viewModel.prNode.observe(this, Observer {
-            if (it == null) {
-                pullRequestsList.removeAllCells()
-            } else {
-                it.filterNotNull().forEach { node -> pullRequestsList.addCell(MainPullRequestsAdapter(node)) }
-            }
+        viewModel.issues.observeNotNull(this, {
+            issuesList.removeAllCells()
+            issuesList.addCells(it)
         })
 
-        viewModel.issuesNode.observe(this, Observer {
-            if (it == null) {
-                issuesList.removeAllCells()
-            } else {
-                it.filterNotNull().forEach { node -> issuesList.addCell(MainIssuesAdapter(node)) }
-            }
+        viewModel.prs.observeNotNull(this, {
+            pullRequestsList.removeAllCells()
+            pullRequestsList.addCells(it)
         })
 
         viewModel.error.observe(this, Observer {

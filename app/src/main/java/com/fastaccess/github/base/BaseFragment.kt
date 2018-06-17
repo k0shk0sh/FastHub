@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import dagger.android.support.DaggerFragment
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 /**
  * Created by Kosh on 13.05.18.
@@ -14,6 +16,7 @@ import dagger.android.support.DaggerFragment
 abstract class BaseFragment : DaggerFragment(), ActivityCallback {
 
     private var activityCallback: ActivityCallback? = null
+    private var disposal = CompositeDisposable()
 
     @LayoutRes abstract fun layoutRes(): Int
     abstract fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?)
@@ -47,11 +50,25 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
         }
     }
 
+    override fun onDestroyView() {
+        disposal.clear()
+        super.onDestroyView()
+    }
+
     override fun isLoggedIn(): Boolean = activityCallback?.isLoggedIn() ?: false
 
     override fun isEnterprise(): Boolean = activityCallback?.isEnterprise() ?: false
 
     override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
         activityCallback?.showSnackBar(root, resId, message, duration)
+    }
+
+    fun addDisposal(disposable: Disposable) {
+        disposal.add(disposable)
+    }
+
+    fun removeAndAddDisposal(disposable: Disposable) {
+        disposal.remove(disposable)
+        disposal.add(disposable)
     }
 }

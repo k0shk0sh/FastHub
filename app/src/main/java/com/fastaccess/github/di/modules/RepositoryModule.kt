@@ -1,7 +1,9 @@
 package com.fastaccess.github.di.modules
 
+import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.db.FastHubLoginDatabase
 import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
 import com.fastaccess.data.repository.UserRepositoryProvider
 import com.fastaccess.data.repository.services.LoginService
 import com.fastaccess.data.repository.services.UserService
@@ -22,5 +24,9 @@ class RepositoryModule {
     @Singleton @Provides fun provideUserRepository(userService: UserService,
                                                    gson: Gson): UserRepositoryProvider {
         return UserRepositoryProvider(userService, gson)
+    }
+
+    @Singleton @Provides fun provideMainIssuesPullsRepository(fastHubDatabase: FastHubDatabase): MainIssuesPullsRepositoryProvider {
+        return MainIssuesPullsRepositoryProvider(fastHubDatabase.getMainIssuesPullsDao())
     }
 }

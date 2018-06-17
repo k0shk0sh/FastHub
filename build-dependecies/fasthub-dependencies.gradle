@@ -96,6 +96,7 @@ ext {
             "androidx.room:room-rxjava2:$archComponents",
             "androidx.room:room-compiler:$archComponents",
             "androidx.core:core-ktx:$supportLibrary",
+            "com.snakydesign.livedataextensions:lives:1.0.1",
     ]
 
 

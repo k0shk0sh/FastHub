@@ -2,6 +2,7 @@ package com.fastaccess.github.di.modules
 
 import com.apollographql.apollo.ApolloClient
 import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
 import com.fastaccess.data.repository.UserRepositoryProvider
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
@@ -34,12 +35,14 @@ class UseCaseModule {
     @PerFragment @Provides fun provideUserUseCase(userRepository: UserRepositoryProvider): UserUseCase = UserUseCase(userRepository)
 
     @PerFragment @Provides fun provideIssuesMainScreenUseCase(loginRepository: LoginRepositoryProvider,
+                                                              mainIssuesPullsRepository: MainIssuesPullsRepositoryProvider,
                                                               apolloClient: ApolloClient): IssuesMainScreenUseCase {
-        return IssuesMainScreenUseCase(loginRepository, apolloClient)
+        return IssuesMainScreenUseCase(loginRepository, mainIssuesPullsRepository, apolloClient)
     }
 
     @PerFragment @Provides fun providePullRequestsMainScreenUseCase(loginRepository: LoginRepositoryProvider,
+                                                                    mainIssues: MainIssuesPullsRepositoryProvider,
                                                                     apolloClient: ApolloClient): PullRequestsMainScreenUseCase {
-        return PullRequestsMainScreenUseCase(loginRepository, apolloClient)
+        return PullRequestsMainScreenUseCase(loginRepository, mainIssues, apolloClient)
     }
 }
