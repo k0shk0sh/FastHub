@@ -117,9 +117,7 @@
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
                             app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"
-                            tools:itemCount="5"
-                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+                            app:srv_showLastDivider="false"/>
 
                     </LinearLayout>
 
@@ -148,9 +146,7 @@
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
                             app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"
-                            tools:itemCount="5"
-                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+                            app:srv_showLastDivider="false"/>
 
                     </LinearLayout>
 
@@ -179,9 +175,7 @@
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
                             app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"
-                            tools:itemCount="5"
-                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+                            app:srv_showLastDivider="false"/>
 
                     </LinearLayout>
 
@@ -210,9 +204,7 @@
                             android:nestedScrollingEnabled="false"
                             app:srv_layoutMode="linearVertical"
                             app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"
-                            tools:itemCount="5"
-                            tools:listitem="@layout/support_simple_spinner_dropdown_item"/>
+                            app:srv_showLastDivider="false"/>
 
                     </LinearLayout>
 
@@ -226,8 +218,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="?colorPrimary"
         app:fabAttached="true"
-        app:hideOnScroll="true"
         app:navigationContentDescription="@string/menu_label"
         app:navigationIcon="@drawable/ic_menu"
         app:popupTheme="?android:toolbarStyle"

@@ -17,11 +17,10 @@ import javax.inject.Inject
  * Created by Kosh on 12.05.18.
  */
 abstract class BaseViewModel : ViewModel() {
-    private val disposable = CompositeDisposable()
     @Inject lateinit var gson: Gson
-
     val error = MutableLiveData<FastHubErrors>()
     val progress = MutableLiveData<Boolean>()
+    private val disposable = CompositeDisposable()
 
     protected fun add(disposable: Disposable) = this.disposable.add(disposable)
 

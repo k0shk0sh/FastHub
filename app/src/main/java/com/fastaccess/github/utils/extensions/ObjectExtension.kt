@@ -1,8 +1,10 @@
 package com.fastaccess.github.utils.extensions
 
+import android.text.format.DateUtils
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import java.util.*
 
 /**
  * Created by Kosh on 19.05.18.
@@ -23,4 +25,9 @@ fun Boolean.isFalse(body: (() -> Unit)?): Boolean {
 
 fun <T> LiveData<T>.observeNotNull(owner: LifecycleOwner, observer: (t: T) -> Unit) {
     this.observe(owner, Observer { it?.let(observer) })
+}
+
+fun Date.timeAgo(): CharSequence {
+    val now = System.currentTimeMillis()
+    return DateUtils.getRelativeTimeSpanString(this.time, now, DateUtils.SECOND_IN_MILLIS)
 }

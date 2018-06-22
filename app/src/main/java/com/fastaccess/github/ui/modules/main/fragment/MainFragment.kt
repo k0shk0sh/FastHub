@@ -2,17 +2,15 @@ package com.fastaccess.github.ui.modules.main.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.utils.extensions.observeNotNull
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -31,43 +29,33 @@ class MainFragment : BaseFragment() {
     }
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        viewModel.load()
-
+        if (savedInstanceState == null) {
+            viewModel.load()
+        }
         swipeRefresh.setOnRefreshListener { viewModel.load() }
         toolbarTitle.setText(R.string.app_name)
-        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val offset = Math.abs(verticalOffset)
-            if (offset == appBarLayout.totalScrollRange) {
-                bottomBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-            } else {
-                bottomBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-            }
-        })
-
         listenToDataChanges()
     }
 
     private fun listenToDataChanges() {
-        viewModel.progress.observe(this, Observer {
+        viewModel.progress.observeNotNull(this, {
             swipeRefresh.isRefreshing = it == true
         })
-
+        viewModel.notifications.observeNotNull(this, {
+            Timber.e("${it.size}")
+            notificationsList.removeAllCells()
+            notificationsList.addCells(it)
+        })
         viewModel.issues.observeNotNull(this, {
             issuesList.removeAllCells()
             issuesList.addCells(it)
         })
-
         viewModel.prs.observeNotNull(this, {
             pullRequestsList.removeAllCells()
             pullRequestsList.addCells(it)
         })
-
-        viewModel.error.observe(this, Observer {
-            it?.let {
-                view?.let { view ->
-                    showSnackBar(view, resId = it.resId, message = it.message)
-                }
-            }
+        viewModel.error.observeNotNull(this, {
+            view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }
         })
     }
 

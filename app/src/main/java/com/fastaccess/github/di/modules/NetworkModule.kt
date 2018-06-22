@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.apollographql.apollo.ApolloClient
 import com.fastaccess.data.repository.services.LoginService
+import com.fastaccess.data.repository.services.NotificationService
 import com.fastaccess.data.repository.services.UserService
 import com.fastaccess.domain.HttpLoggingInterceptor
 import com.fastaccess.github.BuildConfig
@@ -64,6 +65,8 @@ class NetworkModule {
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)
 
     @Singleton @Provides fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
+
+    @Singleton @Provides fun provideNotificationService(retrofit: Retrofit): NotificationService = retrofit.create(NotificationService::class.java)
 
 }
 

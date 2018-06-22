@@ -9,7 +9,6 @@ import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import github.GetIssuesQuery
 import github.type.IssueState
 import io.reactivex.Observable
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -33,7 +32,7 @@ class IssuesMainScreenUseCase @Inject constructor(private val loginRepository: L
                                 value.forEach {
                                     val issue = MainIssuesPullsModel(it.id, it.databaseId, it.number, it.title, it.repository.nameWithOwner, it
                                             .comments.totalCount, "")
-                                    Timber.e("${mainIssues.insert(issue)}")
+                                    mainIssues.insert(issue)
                                 }
                             }
                 } ?: Observable.empty()

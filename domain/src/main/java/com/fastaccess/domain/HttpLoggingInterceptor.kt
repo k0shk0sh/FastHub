@@ -108,17 +108,6 @@ class HttpLoggingInterceptor @JvmOverloads constructor(private val logger: Logge
         }
     }
 
-    /** Change the level at which this interceptor logs.  */
-    fun setLevel(level: Level?): HttpLoggingInterceptor {
-        if (level == null) throw NullPointerException("level == null. Use Level.NONE instead.")
-        this.level = level
-        return this
-    }
-
-    fun getLevel(): Level {
-        return level
-    }
-
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val level = this.level

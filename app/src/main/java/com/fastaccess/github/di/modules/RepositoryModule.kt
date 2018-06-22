@@ -4,6 +4,7 @@ import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.db.FastHubLoginDatabase
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
+import com.fastaccess.data.repository.NotificationRepositoryProvider
 import com.fastaccess.data.repository.UserRepositoryProvider
 import com.fastaccess.data.repository.services.LoginService
 import com.fastaccess.data.repository.services.UserService
@@ -28,5 +29,9 @@ class RepositoryModule {
 
     @Singleton @Provides fun provideMainIssuesPullsRepository(fastHubDatabase: FastHubDatabase): MainIssuesPullsRepositoryProvider {
         return MainIssuesPullsRepositoryProvider(fastHubDatabase.getMainIssuesPullsDao())
+    }
+
+    @Singleton @Provides fun provideNotificationRepositoryProvider(fastHubDatabase: FastHubDatabase): NotificationRepositoryProvider {
+        return NotificationRepositoryProvider(fastHubDatabase.getNotifications())
     }
 }

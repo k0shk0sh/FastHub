@@ -3,13 +3,16 @@ package com.fastaccess.github.di.modules
 import com.apollographql.apollo.ApolloClient
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
+import com.fastaccess.data.repository.NotificationRepositoryProvider
 import com.fastaccess.data.repository.UserRepositoryProvider
+import com.fastaccess.data.repository.services.NotificationService
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase
 import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
+import com.fastaccess.github.usecase.notification.NotificationUseCase
 import com.fastaccess.github.usecase.user.UserUseCase
 import com.google.gson.Gson
 import dagger.Module
@@ -44,5 +47,11 @@ class UseCaseModule {
                                                                     mainIssues: MainIssuesPullsRepositoryProvider,
                                                                     apolloClient: ApolloClient): PullRequestsMainScreenUseCase {
         return PullRequestsMainScreenUseCase(loginRepository, mainIssues, apolloClient)
+    }
+
+    @PerFragment @Provides fun provideNotificationUseCase(notificationRepositoryProvider: NotificationRepositoryProvider,
+                                                          notificationService: NotificationService,
+                                                          gson: Gson): NotificationUseCase {
+        return NotificationUseCase(notificationRepositoryProvider, notificationService, gson)
     }
 }

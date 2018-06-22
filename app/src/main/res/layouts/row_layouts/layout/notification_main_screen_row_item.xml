@@ -15,6 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -25,7 +26,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/issueTitle"
+                android:id="@+id/notificationTitle"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,64 +38,35 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/issueDescription"
+                android:id="@+id/repoName"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="4dp"
                 android:maxLines="1"
-                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeMaxTextSize="16sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
-                app:fontFamily="@font/rubik"
                 tools:text="To some, a believer is a sex for loving."/>
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dateWithIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/commentCount"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="4dp"
-                android:drawableTop="@drawable/ic_comment_small"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:autoSizeMaxTextSize="14sp"
-                app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform"
-                tools:text="100"
-                tools:visibility="visible"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/state"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="@color/material_green_700"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:autoSizeMaxTextSize="14sp"
-                app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform"
-                tools:text="OPEN"
-                tools:visibility="visible"/>
-
-        </LinearLayout>
-
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:gravity="start|center"
+            android:maxLines="1"
+            android:textSize="12sp"
+            app:autoSizeMaxTextSize="12.5sp"
+            app:autoSizeTextType="uniform"
+            tools:drawableTop="@drawable/ic_issues_small"
+            tools:text="An hour ago"/>
     </LinearLayout>
+
 
 </com.google.android.material.card.MaterialCardView>
