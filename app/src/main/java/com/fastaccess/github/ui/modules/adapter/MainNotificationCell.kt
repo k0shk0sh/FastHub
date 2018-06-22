@@ -20,10 +20,10 @@ class MainNotificationCell(private val node: NotificationModel) : SimpleCell<Not
                 it.notificationTitle.text = subject.title ?: ""
                 subject.type?.let { type ->
                     when (type) {
-                        "PullRequest" -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_pull_requests_uncolored_small, 0, 0)
-                        "Issue" -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_issues_small, 0, 0)
-                        "Commit" -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_branch, 0, 0)
-                        else -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_info_outline_small, 0, 0)
+                        "PullRequest" -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_pull_requests_uncolored_small, 0)
+                        "Issue" -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_issues_small, 0)
+                        "Commit" -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_branch, 0)
+                        else -> it.dateWithIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_info_outline_small, 0)
                     }
                 }
             }

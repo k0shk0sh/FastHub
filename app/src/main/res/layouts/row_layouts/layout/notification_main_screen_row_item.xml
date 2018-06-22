@@ -16,56 +16,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/notificationTitle"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
+            tools:text="To some, a believer is a sex for loving."/>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/notificationTitle"
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                app:autoSizeMaxTextSize="18sp"
-                app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform"
-                tools:text="To some, a believer is a sex for loving."/>
-
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/repoName"
                 style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="4dp"
+                android:layout_weight="1"
                 android:maxLines="1"
                 app:autoSizeMaxTextSize="16sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 tools:text="To some, a believer is a sex for loving."/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dateWithIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:gravity="start|center"
+                android:maxLines="1"
+                android:textSize="12sp"
+                app:autoSizeMaxTextSize="12.5sp"
+                app:autoSizeTextType="uniform"
+                tools:drawableEnd="@drawable/ic_issues_small"
+                tools:text="An two hour ago"/>
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/dateWithIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="@dimen/spacing_xs_large"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:gravity="start|center"
-            android:maxLines="1"
-            android:textSize="12sp"
-            app:autoSizeMaxTextSize="12.5sp"
-            app:autoSizeTextType="uniform"
-            tools:drawableTop="@drawable/ic_issues_small"
-            tools:text="An hour ago"/>
     </LinearLayout>
 
 

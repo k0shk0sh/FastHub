@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit
  * a stable logging format, use your own interceptor.
  */
 class HttpLoggingInterceptor @JvmOverloads constructor(private val logger: Logger = Logger.DEFAULT,
-                                                       debug: Boolean = true) : Interceptor {
+                                                       debug: Boolean = BuildConfig.DEBUG) : Interceptor {
 
     @Volatile private var level = if (!debug) Level.NONE else Level.BODY
 
