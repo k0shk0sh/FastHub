@@ -43,7 +43,7 @@
   <string name="can_not_merge_pr">Ten PR nie może być teraz scalony.</string>
   <string name="cancel">Anuluj</string>
   <string name="cancel_reviews">Odrzuć recenzje</string>
-  <string name="card_added_by" formatted="false">Dodane przez %s %s</string>
+  <string name="card_added_by">Dodane przez %s %s</string>
   <string name="change_theme_warning">Jeśli motyw w pełni się nie załadował, spróbuj zabić proces aplikacji i uruchomić ją ponownie.</string>
   <string name="changelog">Dziennik zmian</string>
   <string name="changes">Zmiany</string>
@@ -60,7 +60,7 @@
   <string name="clear_search_keywords">Wyczyść historię wyszukiwania</string>
   <string name="click_file_option_hint">Poblierz plik lub udostępnij folder</string>
   <string name="click_here_to_download_release_hint">Pobierz wydania</string>
-  <string name="click_to_toggle_highlighting">"Włącz lub wyłącz kolorowanie składni. \nPozostałe ikony edytora plików Markdown kontrolują więcej opcji."</string>
+  <string name="click_to_toggle_highlighting">Włącz lub wyłącz kolorowanie składni. \nPozostałe ikony edytora plików Markdown kontrolują więcej opcji.</string>
   <string name="close">Zamknij</string>
   <string name="close_issue">Zamknij problem</string>
   <string name="closed">Zamknięte</string>
@@ -69,7 +69,7 @@
   <string name="colored_navbar_summary">Nie pozwalaj motywom zmieniać koloru paska nawigacji</string>
   <string name="colored_navbar_title">Przezroczysty pasek nawigacji</string>
   <string name="comment">Komentarz</string>
-  <string name="comment_hint">"Kliknij na komentarzu, żeby otagować jego autora lub edytować swój komentarz. \nKliknij i przytrzymaj na swoim komentarzu, żeby usunąć komentarz."</string>
+  <string name="comment_hint">Kliknij na komentarzu, żeby otagować jego autora lub edytować swój komentarz. \nKliknij i przytrzymaj na swoim komentarzu, żeby usunąć komentarz.</string>
   <string name="comment_is_too_far_to_paginate">Komentarz jest za długi, żeby podzielić go na strony</string>
   <string name="commented_on_commit">Skomentowano commit</string>
   <string name="commented_on_issue">Skomentuj problem</string>
@@ -137,9 +137,9 @@
   <string name="enable_signature_box_summary">Odblokuj pole wyboru, żeby móc załączyć podpis w edytorze tekstu</string>
   <string name="enable_signature_summary">Odblokuj podpis \"wysłano przez\"</string>
   <string name="english_please">Proszę pisać w języku angielskim.</string>
-  <string name="enterprise_login_warning">"Zaloguj się używając twojego loginu do konta GitHub, żeby uzyskać dostęp do wszystkiego co oferuje GitHub API, przeciwnie będzie cię wyrzucało za każdym razem jak spróbujesz uzyskać dostęp do czegokolwiek innego niż twój GitHub Enterprise, ponieważ token wysyłany do GitHub API pochodzi z twojego konta Enterprise."</string>
+  <string name="enterprise_login_warning">Zaloguj się używając twojego loginu do konta GitHub, żeby uzyskać dostęp do wszystkiego co oferuje GitHub API, przeciwnie będzie cię wyrzucało za każdym razem jak spróbujesz uzyskać dostęp do czegokolwiek innego niż twój GitHub Enterprise, ponieważ token wysyłany do GitHub API pochodzi z twojego konta Enterprise.</string>
   <string name="error">Błąd</string>
-  <string name="error_closing_issue">Bład podczas zamykania problemu, spróbuj ponownie.</string>
+  <string name="error_closing_issue">Błąd podczas zamykania problemu, spróbuj ponownie.</string>
   <string name="error_creating_issue">Błąd podczas tworzenia problemu</string>
   <string name="error_creating_milestone">Błąd podczas tworzenia kamienia milowego</string>
   <string name="error_deleting_comment">Błąd podczas usuwania komentarza</string>
@@ -151,7 +151,30 @@
   <string name="failed_login">Błąd logowania</string>
   <string name="failed_selecting_image">Nie udało się wczytać obrazka.</string>
   <string name="faq">FAQ</string>
-  <string name="fasthub_faq_description">"&lt;![CDATA[ &lt;h5&gt;• Dlaczego nie widzę moich &lt;i&gt;Prywatnych&lt;/i&gt; ani &lt;i&gt;Publicznych&lt;/i&gt; organizacji?&lt;/h5&gt; &lt;p&gt;Wejdź na https://github.com/settings/applications i wyszukaj FastHub, wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\". Możesz również zalogować się za pomocą &lt;b&gt;Tokena dostępu&lt;/b&gt; (&lt;i&gt;Access Token&lt;/i&gt;), co uprości cały proces.&lt;/p&gt;\n &lt;h5&gt;• Próbowałem się zalogować za pomocą Tokena (&lt;i&gt;Access Token&lt;/i&gt;) i jednorazowego hasła (&lt;i&gt;One-Time Password&lt;/i&gt;, OTP), ale bez powodzenia. Co jest nie tak?&lt;/h5&gt; &lt;p&gt;Nie możesz jednocześnie logować się za pomocą Tokena i jednorazowego hasła. Z uwagi na ograniczoną żywotność takich haseł, trzeba by powtarzać proces logowania co kilka sekund.&lt;/p&gt;\n &lt;h5&gt;• Dlaczego nie widzę stron Wiki moich Prywatnych repozytoriów ani repozytoriów Enterprise?&lt;/h5&gt; &lt;p&gt;Aplikacja nie jest w stanie pobrać tokena sesji wymaganego przez Prywatne repozytoria z uwagi na sposób w jaki FastHub pobiera z GitHub strony Wiki.&lt;/p&gt;\n &lt;h5&gt;• Zalogowałem się na moje konto Enterprise. Dlaczego nie mam dostępu do niczego innego poza moim GitHub Enterprise?&lt;/h5&gt; &lt;p&gt;Cóż, to logiczne, że nie masz dostępu do niczego poza twoim kontem Enterprise. FastHub próbuje uzyskać wszystkie możliwe zezwolenia, ale w większości sytuacji nie może zrobić nic poza tym, ponieważ twoje dane logowania są poza serwerem GitHub. Jednak w &lt;b&gt;niektórych&lt;/b&gt; przypadkach, twój token OAuth może rozwiązać sprawę.&lt;/p&gt;\n &lt;h5&gt;• Dlaczego mam problemy z edycją Problemów/Pull Requestów (PRów)?&lt;/h5&gt; &lt;p&gt;Jeśli nie możesz edytować Problemów/PRów w twoich publicznych repozytoriach Organizacji, zwróć się z prośbą do twojej Organizacji o przydzielenie dostępu dla FastHub. Możesz również zalogować się za pomocą Tokena (&lt;i&gt;Access Token&lt;/i&gt;).&lt;/p&gt;\n &lt;h5&gt;• Mam kłopoty! / Chciałbym zasugerować zmiany!&lt;/h5&gt; &lt;p&gt;Wejdź na https://github.com/k0shk0sh/FastHub/issues/new i zgłoś Problem, żeby poinformować o błędach i propozycjach nowych funkcjonalności. Zanim zgłosisz swój problem, zachęcam do użycia wyszukiwarki, żeby sprawdzić czy podobny problem nie został już stworzony. Każdy duplikat zgłoszenia zostanie oznaczony jako duplikat i takie zgłoszenie zostanie zamknięte.&lt;/p&gt; ]]&gt;"</string>
+  <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Dlaczego nie widzę moich <i>Prywatnych</i> ani <i>Publicznych</i> organizacji?</h5>
+        <p>Wejdź na https://github.com/settings/applications i wyszukaj FastHub, wejdź tam, przewiń do "Organization access" i kliknij przycisk "Grant".
+        Możesz również zalogować się za pomocą <b>Tokena dostępu</b> (<i>Access Token</i>), co uprości cały proces.</p>
+
+        <h5>• Próbowałem się zalogować za pomocą Tokena (<i>Access Token</i>) i jednorazowego hasła (<i>One-Time Password</i>, OTP), ale bez powodzenia. Co jest nie tak?</h5>
+        <p>Nie możesz jednocześnie logować się za pomocą Tokena i jednorazowego hasła. Z uwagi na ograniczoną żywotność takich haseł, trzeba by powtarzać proces logowania co kilka sekund.</p>
+
+        <h5>• Dlaczego nie widzę stron Wiki moich Prywatnych repozytoriów ani repozytoriów Enterprise?</h5>
+        <p>Aplikacja nie jest w stanie pobrać tokena sesji wymaganego przez Prywatne repozytoria z uwagi na sposób w jaki FastHub pobiera z GitHub strony Wiki.</p>
+
+        <h5>• Zalogowałem się na moje konto Enterprise. Dlaczego nie mam dostępu do niczego innego poza moim GitHub Enterprise?</h5>
+        <p>Cóż, to logiczne, że nie masz dostępu do niczego poza twoim kontem Enterprise. FastHub próbuje uzyskać wszystkie możliwe zezwolenia, ale w większości sytuacji nie może
+        zrobić nic poza tym, ponieważ twoje dane logowania są poza serwerem GitHub. Jednak w <b>niektórych</b> przypadkach, twój token OAuth może rozwiązać sprawę.</p>
+
+        <h5>• Dlaczego mam problemy z edycją Problemów/Pull Requestów (PRów)?</h5>
+        <p>Jeśli nie możesz edytować Problemów/PRów w twoich publicznych repozytoriach Organizacji, zwróć się z prośbą do twojej Organizacji o przydzielenie dostępu dla FastHub.
+        Możesz również zalogować się za pomocą Tokena (<i>Access Token</i>).</p>
+
+        <h5>• Mam kłopoty! / Chciałbym zasugerować zmiany!</h5>
+        <p>Wejdź na https://github.com/k0shk0sh/FastHub/issues/new i zgłoś Problem, żeby poinformować o błędach i propozycjach nowych funkcjonalności. Zanim zgłosisz swój problem, zachęcam
+        do użycia wyszukiwarki, żeby sprawdzić czy podobny problem nie został już stworzony. Każdy duplikat zgłoszenia zostanie oznaczony jako duplikat i takie zgłoszenie zostanie zamknięte.</p>
+    ]]></string>
   <string name="feed">Aktualności</string>
   <string name="feedback">Podziel się wrażeniami</string>
   <string name="feeds_fork_hint">Kliknij i przytrzymaj fork event, żeby otworzyć oryginalne lub sforkowane repo.</string>
@@ -197,7 +220,7 @@
   <string name="least_recent_updated">Dawno nieaktualizowane</string>
   <string name="link">Link</string>
   <string name="lock_issue">Zablokuj rozmowę</string>
-  <string name="lock_issue_details">"Blokada rozmowy oznacza, że:\n·Inni użytkownicy nie będą mogli komentować tego problemu.\n·Ty i inni współtwórcy mający dostęp do tego repozytorium nadal będziecie mogli dodawać komentarze, które inni zobaczą.\n·Zawsze możesz później odblokować rozmowy dla tego problemu.\n"</string>
+  <string name="lock_issue_details">Blokada rozmowy oznacza, że:\n·Inni użytkownicy nie będą mogli komentować tego problemu.\n·Ty i inni współtwórcy mający dostęp do tego repozytorium nadal będziecie mogli dodawać komentarze, które inni zobaczą.\n·Zawsze możesz później odblokować rozmowy dla tego problemu.\n</string>
   <string name="login">Login</string>
   <string name="login_using_your_default_browser">Zaloguj używając domyślnej przeglądarki internetowej (OAuth)</string>
   <string name="login_with_personal_token">Zaloguj się osobistym tokenem (Personal Token)</string>
@@ -244,7 +267,7 @@
   <string name="no_milestones">Brak kamieni milowych</string>
   <string name="no_notifications">Brak powiadomień</string>
   <string name="no_orgs">Brak organizacji</string>
-  <string name="no_orgs_description">"Jeśli jesteś przypisany do organizacji, ale ich tutaj nie widzisz wejdź na poniższą stronę.\n https://help.github.com/articles/about-third-party-application-restrictions\nPS: Do logowania możesz użyć tokena dostępu (Access token), który zezwoli FastHub wyświetlać twoje organizacje.\nMożesz również wejść na https://github.com/settings/applications i wyszukać FastHub, wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\"."</string>
+  <string name="no_orgs_description">Jeśli jesteś przypisany do organizacji, ale ich tutaj nie widzisz wejdź na poniższą stronę.\n https://help.github.com/articles/about-third-party-application-restrictions\nPS: Do logowania możesz użyć tokena dostępu (Access token), który zezwoli FastHub wyświetlać twoje organizacje.\nMożesz również wejść na https://github.com/settings/applications i wyszukać FastHub, wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\".</string>
   <string name="no_orgs_dialog_title">Nie możesz znaleźć swoich organizacji\?</string>
   <string name="no_projects">Brak projektów</string>
   <string name="no_pull_requests">Brak pull requestów</string>
@@ -411,7 +434,7 @@
   <string name="unfollow">Przestań obserwować</string>
   <string name="unknown">Nieznane</string>
   <string name="unlock_issue">Odblokuj rozmowę</string>
-  <string name="unlock_issue_details">"Odblokowanie rozmowy oznacza, że:\n·Każdy ponownie będzie mógł komentować ten problem.\n· Zawsze możesz później zablokować rozmowy dla tego problemu.\n"</string>
+  <string name="unlock_issue_details">Odblokowanie rozmowy oznacza, że:\n·Każdy ponownie będzie mógł komentować ten problem.\n· Zawsze możesz później zablokować rozmowy dla tego problemu.\n</string>
   <string name="unpin">Odepnij</string>
   <string name="unread">Nowe</string>
   <string name="unread_notification">Masz nieprzeczytane powiadomienia</string>
