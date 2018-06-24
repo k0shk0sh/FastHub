@@ -1,6 +1,9 @@
 package com.fastaccess.github.utils.extensions
 
+import android.content.Context
+import android.graphics.Color
 import androidx.fragment.app.Fragment
+import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 
 /**
@@ -36,3 +39,17 @@ fun BaseActivity.replace(containerId: Int,
             }
             .commitNow()
 }
+
+
+fun Context.getColorAttr(attr: Int): Int {
+    val theme = theme
+    val typedArray = theme.obtainStyledAttributes(intArrayOf(attr))
+    val color = typedArray.getColor(0, Color.LTGRAY)
+    typedArray.recycle()
+    return color
+}
+
+inline var Context.listDivider: Int
+    get() = getColorAttr(R.attr.dividerColor)
+    set(value) {}
+

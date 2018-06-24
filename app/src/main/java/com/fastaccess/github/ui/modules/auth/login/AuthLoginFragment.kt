@@ -27,12 +27,10 @@ import javax.inject.Inject
  * Created by Kosh on 18.05.18.
  */
 class AuthLoginFragment : BaseFragment() {
-
-
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: LoginViewModel
     private var callback: LoginChooserCallback? = null
+
+    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java) }
     private val isAccessToken by lazy { arguments?.getBoolean(BundleConstant.EXTRA) ?: false }
     private val isEnterpriseBundle by lazy { arguments?.getBoolean(BundleConstant.EXTRA_TWO) ?: false }
 
@@ -46,13 +44,8 @@ class AuthLoginFragment : BaseFragment() {
         super.onDetach()
     }
 
+    override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) = Unit
     override fun layoutRes(): Int = R.layout.login_form_layout
-    override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {}
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
-    }
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         isAccessToken.isTrue {

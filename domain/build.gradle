@@ -40,6 +40,7 @@ dependencies {
     def dependency = rootProject.ext
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':resources')
     implementation dependency.kotlin
     implementation dependency.networking
     implementation dependency.rxJava

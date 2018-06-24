@@ -10,6 +10,7 @@ import dagger.android.ContributesAndroidInjector
 /**
  * Created by Kosh on 19.05.18.
  */
+@Suppress("unused")
 @Module
 abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideLoginChooseFragment(): LoginChooserFragment

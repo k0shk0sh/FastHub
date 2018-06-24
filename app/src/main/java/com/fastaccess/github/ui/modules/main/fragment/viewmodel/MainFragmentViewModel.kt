@@ -1,11 +1,8 @@
 package com.fastaccess.github.ui.modules.main.fragment.viewmodel
 
-import androidx.lifecycle.Transformations
+import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.ui.modules.adapter.MainIssuesCell
-import com.fastaccess.github.ui.modules.adapter.MainNotificationCell
-import com.fastaccess.github.ui.modules.adapter.MainPullRequestsCell
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
@@ -18,11 +15,14 @@ import javax.inject.Inject
 class MainFragmentViewModel @Inject constructor(private val issuesMainScreenUseCase: IssuesMainScreenUseCase,
                                                 private val mainIssuesPullsRepo: MainIssuesPullsRepositoryProvider,
                                                 private val pullRequestsMainScreenUseCase: PullRequestsMainScreenUseCase,
-                                                private val notificationUseCase: NotificationUseCase) : BaseViewModel() {
+                                                private val notificationUseCase: NotificationUseCase,
+                                                private val loginRepositoryProvider: LoginRepositoryProvider) : BaseViewModel() {
 
-    val issues = Transformations.map(mainIssuesPullsRepo.getIssues(), { it.map { MainIssuesCell(it) } })
-    val prs = Transformations.map(mainIssuesPullsRepo.getPulls(), { it.map { MainPullRequestsCell(it) } })
-    val notifications = Transformations.map(notificationUseCase.getMainNotifications(), { it.map { MainNotificationCell(it) } })
+    private val me by lazy { loginRepositoryProvider.getLoginBlocking() }
+
+    val issues = mainIssuesPullsRepo.getIssues(me?.login ?: "")
+    val prs = mainIssuesPullsRepo.getPulls(me?.login ?: "")
+    val notifications = notificationUseCase.getMainNotifications(me?.login ?: "")
 
     fun load() {
         notificationUseCase.executeSafely(notificationUseCase.buildObservable()

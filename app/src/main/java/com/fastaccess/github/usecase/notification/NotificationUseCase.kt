@@ -1,12 +1,12 @@
 package com.fastaccess.github.usecase.notification
 
 import com.fastaccess.data.persistence.models.NotificationModel
+import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.NotificationRepositoryProvider
 import com.fastaccess.data.repository.services.NotificationService
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.google.gson.Gson
 import io.reactivex.Observable
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -16,16 +16,18 @@ import javax.inject.Inject
 
 class NotificationUseCase @Inject constructor(private val notificationRepositoryProvider: NotificationRepositoryProvider,
                                               private val notificationService: NotificationService,
+                                              private val loginRepositoryProvider: LoginRepositoryProvider,
                                               private val gson: Gson) : BaseObservableUseCase() {
     override fun buildObservable(): Observable<*> = notificationService.getMainNotifications()
             .map {
                 notificationRepositoryProvider.deleteAll()
+                val me = loginRepositoryProvider.getLoginBlocking()
                 it.items?.forEach {
                     val item = NotificationModel.convert(gson, it)
-                    Timber.e("$item")
+                    item.login = me?.login
                     notificationRepositoryProvider.insert(item)
                 }
             }
 
-    fun getMainNotifications() = notificationRepositoryProvider.getMainNotifications()
+    fun getMainNotifications(login: String) = notificationRepositoryProvider.getMainNotifications(login)
 }

@@ -93,35 +93,6 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/notificationLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/seeMoreNotifications"
-                            style="@style/TextAppearance.AppCompat.Subhead"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="?colorPrimary"
-                            android:drawableEnd="@drawable/ic_arrow_right"
-                            android:padding="@dimen/spacing_xs_large"
-                            android:text="@string/notifications"/>
-
-                        <com.jaychang.srv.SimpleRecyclerView
-                            android:id="@+id/notificationsList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="?actionBarSize"
-                            android:nestedScrollingEnabled="false"
-                            app:srv_layoutMode="linearVertical"
-                            app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/feedsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -138,15 +109,40 @@
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/feeds"/>
 
-                        <com.jaychang.srv.SimpleRecyclerView
+                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/feedsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
-                            app:srv_layoutMode="linearVertical"
-                            app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"/>
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/notificationLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/seeMoreNotifications"
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="?colorPrimary"
+                            android:drawableEnd="@drawable/ic_arrow_right"
+                            android:padding="@dimen/spacing_xs_large"
+                            android:text="@string/notifications"/>
+
+                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                            android:id="@+id/notificationsList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="?actionBarSize"
+                            android:nestedScrollingEnabled="false"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                     </LinearLayout>
 
@@ -167,15 +163,13 @@
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/issues"/>
 
-                        <com.jaychang.srv.SimpleRecyclerView
+                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/issuesList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
-                            app:srv_layoutMode="linearVertical"
-                            app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"/>
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                     </LinearLayout>
 
@@ -196,15 +190,13 @@
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/pull_requests"/>
 
-                        <com.jaychang.srv.SimpleRecyclerView
+                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/pullRequestsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
-                            app:srv_layoutMode="linearVertical"
-                            app:srv_showDivider="true"
-                            app:srv_showLastDivider="false"/>
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                     </LinearLayout>
 

@@ -15,7 +15,7 @@ ext {
     gson = '2.8.1'
     glide = '4.7.1'
     timber = '4.6.1'
-    chuck = '1.0.4'
+    chuck = '1.1.0'
     junit = '4.12'
     mockito = '2.8.9'
     mockitoKotlin = '1.5.0'

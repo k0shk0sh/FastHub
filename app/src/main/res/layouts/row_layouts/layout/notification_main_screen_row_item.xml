@@ -18,7 +18,6 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/notificationTitle"
             style="@style/TextAppearance.AppCompat.Subhead"

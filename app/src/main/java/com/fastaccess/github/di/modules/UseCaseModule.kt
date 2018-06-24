@@ -51,7 +51,8 @@ class UseCaseModule {
 
     @PerFragment @Provides fun provideNotificationUseCase(notificationRepositoryProvider: NotificationRepositoryProvider,
                                                           notificationService: NotificationService,
+                                                          loginRepository: LoginRepositoryProvider,
                                                           gson: Gson): NotificationUseCase {
-        return NotificationUseCase(notificationRepositoryProvider, notificationService, gson)
+        return NotificationUseCase(notificationRepositoryProvider, notificationService, loginRepository, gson)
     }
 }

@@ -29,9 +29,10 @@ class IssuesMainScreenUseCase @Inject constructor(private val loginRepository: L
                             .map { it.data()?.user?.issues?.nodes }
                             .map { value ->
                                 mainIssues.deleteAllIssues()
+                                val me = loginRepository.getLoginBlocking()
                                 value.forEach {
                                     val issue = MainIssuesPullsModel(it.id, it.databaseId, it.number, it.title, it.repository.nameWithOwner, it
-                                            .comments.totalCount, "")
+                                            .comments.totalCount, "", me?.login)
                                     mainIssues.insert(issue)
                                 }
                             }
