@@ -3,9 +3,9 @@ package com.fastaccess.github.di.modules
 import android.content.Context
 import android.net.Uri
 import com.apollographql.apollo.ApolloClient
-import com.fastaccess.data.repository.services.LoginService
-import com.fastaccess.data.repository.services.NotificationService
-import com.fastaccess.data.repository.services.UserService
+import com.fastaccess.domain.repository.services.LoginService
+import com.fastaccess.domain.repository.services.NotificationService
+import com.fastaccess.domain.repository.services.UserService
 import com.fastaccess.domain.HttpLoggingInterceptor
 import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.di.annotations.ForApplication

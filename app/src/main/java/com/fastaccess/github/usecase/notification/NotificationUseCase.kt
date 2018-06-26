@@ -3,7 +3,7 @@ package com.fastaccess.github.usecase.notification
 import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.NotificationRepositoryProvider
-import com.fastaccess.data.repository.services.NotificationService
+import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.google.gson.Gson
 import io.reactivex.Observable

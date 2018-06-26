@@ -1,8 +1,8 @@
 package com.fastaccess.data.repository
 
 import com.fastaccess.data.persistence.models.UserModel
-import com.fastaccess.data.repository.services.UserService
 import com.fastaccess.domain.repository.UserRemoteRepository
+import com.fastaccess.domain.repository.services.UserService
 import com.google.gson.Gson
 import io.reactivex.Observable
 import javax.inject.Inject

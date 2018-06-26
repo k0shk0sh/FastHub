@@ -3,8 +3,8 @@ package com.fastaccess.data.repository
 import androidx.lifecycle.LiveData
 import com.fastaccess.data.persistence.dao.LoginDao
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.data.repository.services.LoginService
 import com.fastaccess.domain.repository.LoginRemoteRepository
+import com.fastaccess.domain.repository.services.LoginService
 import com.fastaccess.domain.response.AccessTokenResponse
 import com.fastaccess.domain.response.AuthBodyModel
 import com.fastaccess.domain.response.UserResponse

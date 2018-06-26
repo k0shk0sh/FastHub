@@ -65,6 +65,7 @@ class AuthLoginFragment : BaseFragment() {
 
         bottomBar.setNavigationOnClickListener { callback?.popStack() }
         loginBtn.setOnClickListener {
+            if (progressBar.isVisible) return@setOnClickListener
             viewModel.login(usernameEditText.asString(),
                     passwordEditText.asString(),
                     twoFactorEditText.asString(),

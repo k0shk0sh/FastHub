@@ -1,4 +1,4 @@
-package com.fastaccess.data.repository.services
+package com.fastaccess.domain.repository.services
 
 import com.fastaccess.domain.response.AccessTokenResponse
 import com.fastaccess.domain.response.AuthBodyModel

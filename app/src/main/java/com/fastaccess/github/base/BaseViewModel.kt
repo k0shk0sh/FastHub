@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.github.R
 import com.google.gson.Gson
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.json.JSONObject
@@ -54,6 +55,12 @@ abstract class BaseViewModel : ViewModel() {
     protected fun hideProgress() {
         progress.postValue(false)
     }
+
+    protected fun <T> callApi(observable: Observable<T>): Observable<T> = observable
+            .doOnSubscribe { showProgress() }
+            .doOnNext { hideProgress() }
+            .doOnError { handleError(it) }
+            .doOnComplete { hideProgress() }
 
     override fun onCleared() {
         super.onCleared()

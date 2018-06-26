@@ -2,12 +2,9 @@ package com.fastaccess.github.di.modules
 
 import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.db.FastHubLoginDatabase
-import com.fastaccess.data.repository.LoginRepositoryProvider
-import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
-import com.fastaccess.data.repository.NotificationRepositoryProvider
-import com.fastaccess.data.repository.UserRepositoryProvider
-import com.fastaccess.data.repository.services.LoginService
-import com.fastaccess.data.repository.services.UserService
+import com.fastaccess.data.repository.*
+import com.fastaccess.domain.repository.services.LoginService
+import com.fastaccess.domain.repository.services.UserService
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -33,5 +30,10 @@ class RepositoryModule {
 
     @Singleton @Provides fun provideNotificationRepositoryProvider(fastHubDatabase: FastHubDatabase): NotificationRepositoryProvider {
         return NotificationRepositoryProvider(fastHubDatabase.getNotifications())
+    }
+
+    @Singleton @Provides fun provideFeedsRepositoryProvider(userService: UserService,
+                                                            loginRepositoryProvider: LoginRepositoryProvider): FeedsRepositoryProvider {
+        return FeedsRepositoryProvider(userService, loginRepositoryProvider)
     }
 }

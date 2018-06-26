@@ -47,6 +47,9 @@ class MainFragment : BaseFragment() {
         viewModel.progress.observeNotNull(this) {
             swipeRefresh.isRefreshing = it == true
         }
+        viewModel.feeds.observeNotNull(this) {
+            feedsLayout.isVisible = it.isNotEmpty()
+        }
         viewModel.notifications.observeNotNull(this) {
             notificationAdapter.submitList(it)
             notificationLayout.isVisible = it.isNotEmpty()

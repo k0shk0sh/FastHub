@@ -5,7 +5,7 @@ import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
 import com.fastaccess.data.repository.NotificationRepositoryProvider
 import com.fastaccess.data.repository.UserRepositoryProvider
-import com.fastaccess.data.repository.services.NotificationService
+import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase

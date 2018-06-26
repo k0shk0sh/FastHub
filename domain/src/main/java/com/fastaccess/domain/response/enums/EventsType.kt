@@ -2,7 +2,7 @@ package com.fastaccess.domain.response.enums
 
 import com.fastaccess.domain.R
 
-enum class EventsType constructor(val type: Int, val drawableRes: Int) {
+enum class EventsType constructor(val titleId: Int, val drawableRes: Int) {
     WatchEvent(R.string.starred, R.drawable.ic_star_filled),
     CreateEvent(R.string.created_repo, R.drawable.ic_repo),
     CommitCommentEvent(R.string.commented_on_commit, R.drawable.ic_comment),

@@ -53,9 +53,12 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
         }
     }
 
-    private fun loginWithAccessToken(password: String, twoFactorCode: String? = null, isEnterprise: Boolean? = false, enterpriseUrl: String? = null) {
+    private fun loginWithAccessToken(password: String,
+                                     twoFactorCode: String? = null,
+                                     isEnterprise: Boolean? = false,
+                                     enterpriseUrl: String? = null) {
         interceptor.token = password
-        loginWithAccessTokenUseCase.executeSafely(loginWithAccessTokenUseCase.buildObservable()
+        loginWithAccessTokenUseCase.executeSafely(callApi(loginWithAccessTokenUseCase.buildObservable()
                 .flatMap { user ->
                     user.isLoggedIn = true
                     user.otpCode = twoFactorCode
@@ -64,16 +67,15 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                     user.enterpriseUrl = enterpriseUrl
                     return@flatMap loginWithAccessTokenUseCase.insertUser(user)
                 }
-                .doOnSubscribe { showProgress() }
                 .doOnNext { loggedInUser.postValue(it) }
-                .doOnError { handleError(it) }
-                .doOnComplete { hideProgress() }
-        )
+        ))
     }
 
-    private fun loginBasic(twoFactorCode: String? = null, isEnterprise: Boolean? = false, enterpriseUrl: String? = null) {
+    private fun loginBasic(twoFactorCode: String? = null,
+                           isEnterprise: Boolean? = false,
+                           enterpriseUrl: String? = null) {
         loginUserCase.setAuthBody(twoFactorCode)
-        loginUserCase.executeSafely(loginUserCase.buildObservable()
+        loginUserCase.executeSafely(callApi(loginUserCase.buildObservable()
                 .flatMap({
                     interceptor.token = it.token ?: it.accessToken
                     return@flatMap loginWithAccessTokenUseCase.buildObservable()
@@ -85,13 +87,8 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                     user.enterpriseUrl = enterpriseUrl
                     return@flatMap user
                 })
-                .flatMap { loginWithAccessTokenUseCase.insertUser(it) }
-                .doOnSubscribe { showProgress() }
-                .doOnNext { loggedInUser.postValue(it) }
-                .doOnError { handleError(it) }
-                .doOnComplete { hideProgress() }
-        )
-
+                .flatMap { loginWithAccessTokenUseCase.insertUser(it) })
+                .doOnNext { loggedInUser.postValue(it) })
     }
 
     override fun onCleared() {
