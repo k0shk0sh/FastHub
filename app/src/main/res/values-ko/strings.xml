@@ -201,7 +201,7 @@
     <string name="customization">사용자 정의</string>
     <string name="recycler_view_animation_summary">목록 효과 활성화</string>
     <string name="recycler_view_animation_title">목록 효과</string>
-    <string name="back_button_summary">앱 종료 확인 창창를 비활성화합니다</string>
+    <string name="back_button_summary">앱 종료 확인 창를 비활성화합니다</string>
     <string name="back_button_title">앱 종료 확인 비활성화</string>
     <string name="restore">복원</string>
     <string name="backup">백업</string>
@@ -219,14 +219,14 @@
     <string name="fork_github">GitHub에서 Fork하기</string>
     <string name="send_email">이메일 보내기</string>
     <string name="question_concerning_fasthub">FastHub에 관한 질문</string>
-    <string name="feedback">피드백</string>
+    <string name="feedback">피드백 (오류 보고)</string>
     <string name="report_issue">오류 보고</string>
     <string name="report_issue_here">오류가 있습니까? 이곳에 입력해주세요.</string>
     <string name="about">앱 정보</string>
     <string name="notification_settings">알림</string>
     <string name="turn_off">끄기</string>
     <string name="unauthorized_user">인증되지 않은 사용자</string>
-    <string name="two_factors_otp_error">이중 인증이 필요합니다</string>
+    <string name="two_factors_otp_error">2단계 인증 (OTP)이 필요합니다</string>
     <string name="copy">URL 복사</string>
     <string name="success_copied">복사됨</string>
     <string name="commit_message">Commit 메시지</string>
@@ -235,7 +235,7 @@
     <string name="request_error">서버 요청 오류, 잠시 후 다시 시도하세요</string>
     <string name="marking_as_read">알림을 읽음으로 표시</string>
     <string name="forking_gist">Gist Fork하기</string>
-    <string name="login_using_your_default_browser">기본 브라우저로 로그인 (OAuth)</string>
+    <string name="login_using_your_default_browser">브라우저로 로그인 (OAuth)</string>
     <string name="or_character">또는</string>
     <string name="mark_notification_title">알림 읽음 비활성화</string>
     <string name="mark_notification_summary">알림을 클릭하면 읽음으로 표시 기능 사용을 비활성화합니다</string>
