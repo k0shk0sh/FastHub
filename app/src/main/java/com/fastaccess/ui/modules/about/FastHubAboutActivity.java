@@ -154,6 +154,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                         .setOnClickAction(() -> new LibsBuilder()
                                 .withActivityStyle(AppHelper.isNightMode(getResources()) ? Libs.ActivityStyle.DARK : Libs.ActivityStyle.LIGHT)
                                 .withAutoDetect(true)
+                                .withActivityTitle(this.getResources().getString(R.string.open_source_libs))
                                 .withAboutIconShown(true)
                                 .withAboutVersionShown(true)
                                 .start(this))
