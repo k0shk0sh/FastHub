@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
-        app:layout_scrollFlags="scroll|snapMargins|enterAlways"
+        app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="?android:toolbarStyle"
         app:theme="?android:toolbarStyle">
 

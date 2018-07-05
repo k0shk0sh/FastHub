@@ -34,9 +34,12 @@ data class PayloadResponse(@SerializedName("action") var action: String? = null,
                            @SerializedName("issue") var issue: IssueResponse? = null,
                            @SerializedName("pull_request") var pullRequest: IssueResponse? = null,
                            @SerializedName("release") var release: ReleaseResponse? = null,
-                           @SerializedName("commits") var commits: List<CommitResponse>? = null)
+                           @SerializedName("commits") var commits: List<CommitResponse>? = null,
+                           @SerializedName("commit_comment") var commitComment: CommentResponse? = null,
+                           @SerializedName("comment") var comment: CommentResponse? = null)
 
 data class IssueResponse(@SerializedName("id") var id: Long,
+                         @SerializedName("number") var number: Long? = null,
                          @SerializedName("title") var title: String? = null,
                          @SerializedName("body") var body: String? = null,
                          @SerializedName("url") var url: String? = null,
@@ -52,7 +55,8 @@ data class IssueResponse(@SerializedName("id") var id: Long,
                          @SerializedName("closedBy") var closedBy: UserResponse? = null,
                          @SerializedName("repository") var repo: RepositoryResponse? = null,
                          @SerializedName("wiki") var pages: List<WikiResponse>? = null,
-                         @SerializedName("team") var team: TeamResponse? = null)
+                         @SerializedName("team") var team: TeamResponse? = null,
+                         @SerializedName("merged") var isMerged: Boolean? = null)
 
 data class WikiResponse(@SerializedName("title") var title: String? = null,
                         @SerializedName("summery") var summery: String? = null,
@@ -106,3 +110,12 @@ data class RepositoryResponse(@SerializedName("id") var id: Int? = null,
                               @SerializedName("fork") var fork: Boolean? = null,
                               @SerializedName("url") var url: String? = null,
                               @SerializedName("html_url") var htmlUrl: String? = null)
+
+data class CommentResponse(@SerializedName("id") var id: Int? = null,
+                           @SerializedName("body") var body: String? = null,
+                           @SerializedName("commit_id") var commitId: String? = null,
+                           @SerializedName("path") var path: String? = null,
+                           @SerializedName("line") var line: Long? = null,
+                           @SerializedName("position") var position: Long? = null,
+                           @SerializedName("created_at") var createdAt: Date? = null,
+                           @SerializedName("updated_at") var UpdatedAt: Date? = null)

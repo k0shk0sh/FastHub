@@ -31,6 +31,7 @@ class MainFragmentViewModel @Inject constructor(private val issuesMainScreenUseC
 
     fun load() {
         feedsMainScreenUseCase.executeSafely(callApi(feedsMainScreenUseCase.buildObservable()
+                .doOnNext { feeds.postValue(it) }
                 .flatMap({
                     return@flatMap notificationUseCase.buildObservable()
                             .flatMap { issuesMainScreenUseCase.buildObservable() }
@@ -38,8 +39,7 @@ class MainFragmentViewModel @Inject constructor(private val issuesMainScreenUseC
                 }, { list, _ ->
                     return@flatMap list
                 }
-                ))
-                .doOnNext { feeds.postValue(it) })
+                )))
     }
 
     override fun onCleared() {

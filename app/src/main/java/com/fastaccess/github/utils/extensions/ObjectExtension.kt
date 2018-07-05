@@ -31,3 +31,7 @@ fun Date.timeAgo(): CharSequence {
     val now = System.currentTimeMillis()
     return DateUtils.getRelativeTimeSpanString(this.time, now, DateUtils.SECOND_IN_MILLIS)
 }
+
+fun String.replaceAllNewLines(prefix: String = " "): String {
+    return this.replace("\\r?\\n|\\r".toRegex(), prefix)
+}

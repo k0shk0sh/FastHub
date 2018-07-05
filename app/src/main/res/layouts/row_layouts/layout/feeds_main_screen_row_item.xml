@@ -32,7 +32,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -42,11 +42,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:maxLines="1"
+                android:ellipsize="end"
+                android:maxLines="2"
                 app:autoSizeMaxTextSize="16sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
-                tools:text="To some, a believer is a sex for loving."/>
+                tools:text="To some, a believer is a sex for loving. hahahahahahhahahahahahahaha"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/dateWithIcon"
@@ -60,7 +61,7 @@
                 android:textSize="12sp"
                 app:autoSizeMaxTextSize="12.5sp"
                 app:autoSizeTextType="uniform"
-                tools:drawableEnd="@drawable/ic_issues_small"
+                tools:drawableTop="@drawable/ic_issues_small"
                 tools:text="An two hour ago"/>
         </LinearLayout>
 

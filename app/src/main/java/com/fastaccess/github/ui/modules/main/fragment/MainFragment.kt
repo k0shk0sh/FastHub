@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.ui.adapter.FeedsAdapter
 import com.fastaccess.github.ui.adapter.MainIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.NotificationsAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
@@ -25,6 +26,7 @@ class MainFragment : BaseFragment() {
     private val issuesAdapter by lazy { MainIssuesPrsAdapter() }
     private val prsAdapter by lazy { MainIssuesPrsAdapter() }
     private val notificationAdapter by lazy { NotificationsAdapter() }
+    private val feedsAdapter by lazy { FeedsAdapter() }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
 
@@ -37,9 +39,11 @@ class MainFragment : BaseFragment() {
         notificationsList.addDivider()
         issuesList.addDivider()
         pullRequestsList.addDivider()
+        feedsList.addDivider()
         notificationsList.adapter = notificationAdapter
         issuesList.adapter = issuesAdapter
         pullRequestsList.adapter = prsAdapter
+        feedsList.adapter = feedsAdapter
         listenToDataChanges()
     }
 
@@ -49,6 +53,7 @@ class MainFragment : BaseFragment() {
         }
         viewModel.feeds.observeNotNull(this) {
             feedsLayout.isVisible = it.isNotEmpty()
+            feedsAdapter.submitList(it)
         }
         viewModel.notifications.observeNotNull(this) {
             notificationAdapter.submitList(it)
