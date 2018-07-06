@@ -38,7 +38,8 @@ data class PayloadResponse(@SerializedName("action") var action: String? = null,
                            @SerializedName("commit_comment") var commitComment: CommentResponse? = null,
                            @SerializedName("comment") var comment: CommentResponse? = null,
                            @SerializedName("gist") var gist: GistResponse? = null,
-                           @SerializedName("pages") var pages: List<WikiResponse>? = null)
+                           @SerializedName("pages") var pages: List<WikiResponse>? = null,
+                           @SerializedName("team") var team: TeamResponse? = null)
 
 data class IssueResponse(@SerializedName("id") var id: Long,
                          @SerializedName("number") var number: Long? = null,
@@ -56,7 +57,6 @@ data class IssueResponse(@SerializedName("id") var id: Long,
                          @SerializedName("assignee") var assignee: UserResponse? = null,
                          @SerializedName("closedBy") var closedBy: UserResponse? = null,
                          @SerializedName("repository") var repo: RepositoryResponse? = null,
-                         @SerializedName("team") var team: TeamResponse? = null,
                          @SerializedName("merged") var isMerged: Boolean? = null,
                          @SerializedName("labels") var labels: List<LabelResponse>? = null)
 

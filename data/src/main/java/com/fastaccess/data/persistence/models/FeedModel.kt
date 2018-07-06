@@ -39,7 +39,8 @@ data class PayloadModel(@SerializedName("action") var action: String? = null,
                         @SerializedName("commit_comment") var commitComment: CommentModel? = null,
                         @SerializedName("comment") var comment: CommentModel? = null,
                         @SerializedName("gist") var gist: GistModel? = null,
-                        @SerializedName("pages") var pages: List<WikiModel>? = null)
+                        @SerializedName("pages") var pages: List<WikiModel>? = null,
+                        @SerializedName("team") var team: TeamModel? = null)
 
 data class IssueModel(@SerializedName("id") var id: Long,
                       @SerializedName("number") var number: Long? = null,
@@ -57,7 +58,6 @@ data class IssueModel(@SerializedName("id") var id: Long,
                       @SerializedName("assignee") var assignee: UserModel? = null,
                       @SerializedName("closedBy") var closedBy: UserModel? = null,
                       @SerializedName("repository") var repo: RepositoryModel? = null,
-                      @SerializedName("team") var team: TeamModel? = null,
                       @SerializedName("merged") var isMerged: Boolean? = null,
                       @SerializedName("labels") var labels: List<LabelModel>? = null)
 

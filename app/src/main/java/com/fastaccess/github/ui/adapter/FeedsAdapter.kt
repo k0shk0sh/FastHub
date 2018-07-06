@@ -69,90 +69,91 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
         }
 
         private fun otherEvent(view: View, item: FeedModel) {
-
-        }
-
-        private fun projectEvent(view: View, item: FeedModel) {
-
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold(item.payload?.action)
+                    .space()
+                    .append(item.repo?.name)
         }
 
         private fun organizationEvent(view: View, item: FeedModel) {
-
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold(item.payload?.action?.replace("_", ""))
+                    .space()
+                    .append(item.payload?.invitation?.login)
+                    .space()
+                    .append(item.payload?.organization?.login)
         }
 
-        private fun projectColumnEvent(view: View, item: FeedModel) {
+        private fun projectEvent(view: View, item: FeedModel) = projectCardEvent(view, item, false)
+        private fun projectColumnEvent(view: View, item: FeedModel) = projectCardEvent(view, item, true)
 
-        }
-
-        private fun projectCardEvent(view: View, item: FeedModel) {
-
+        private fun projectCardEvent(view: View, item: FeedModel, isColumn: Boolean = false) {
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold(item.payload?.action)
+                    .space()
+                    .append(if (isColumn) "column" else "project")
+                    .space()
+                    .append(item.payload?.organization?.login)
         }
 
         private fun orgBlockEvent(view: View, item: FeedModel) {
-
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold(item.payload?.action)
+                    .space()
+                    .append(item.payload?.blockedUser?.login)
+                    .space()
+                    .append(item.payload?.organization?.login)
         }
 
         private fun forkApplyEvent(view: View, item: FeedModel) {
-
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold(item.payload?.head)
+                    .space()
+                    .append(item.payload?.before)
+                    .space()
+                    .append(item.repo?.name)
         }
 
         private fun releaseEvent(view: View, item: FeedModel) {
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold("released")
+                    .space()
+                    .append(item.payload?.release?.name)
+                    .space()
+                    .append(item.repo?.name)
 
         }
 
         private fun deleteEvent(view: View, item: FeedModel) {
-
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold("deleted")
+                    .space()
+                    .append(item.payload?.refType)
+                    .space()
+                    .bold("at ")
+                    .append(item.repo?.name)
         }
 
         private fun teamAddedEvent(view: View, item: FeedModel) {
+            view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
+                    .space()
+                    .bold("added")
+                    .space()
+                    .append(item.payload?.user?.login ?: item.repo?.name)
+                    .space()
+                    .bold("in ")
+                    .append(item.payload?.team?.name ?: item.payload?.team?.slug)
 
         }
 
         private fun pushEvent(view: View, item: FeedModel) {
-            /*
-            String ref = eventsModel.getPayload().getRef();
-        if (ref.startsWith("refs/heads/")) {
-            ref = ref.substring(11);
-        }
-        spannableBuilder.bold("pushed to")
-                .append(" ")
-                .append(ref)
-                .append(" ")
-                .bold("at")
-                .append(" ")
-                .append(eventsModel.getRepo().getName());
-        final List<GitCommitModel> commits = eventsModel.getPayload().getCommits();
-        int size = commits != null ? commits.size() : -1;
-        SpannableBuilder spanCommits = SpannableBuilder.builder();
-        if (size > 0) {
-            if (size != 1) spanCommits.append(String.valueOf(eventsModel.getPayload().getSize())).append(" new commits").append("\n");
-            else spanCommits.append("1 new commit").append("\n");
-            int max = 5;
-            int appended = 0;
-            for (GitCommitModel commit : commits) {
-                if (commit == null) continue;
-                String sha = commit.getSha();
-                if (TextUtils.isEmpty(sha)) continue;
-                sha = sha.length() > 7 ? sha.substring(0, 7) : sha;
-                spanCommits.url(sha).append(" ")
-                        .append(commit.getMessage() != null ? commit.getMessage().replaceAll("\\r?\\n|\\r", " ") : "")
-                        .append("\n");
-                appended++;
-                if (appended == max) break;
-            }
-        }
-        if (spanCommits.length() > 0) {
-            int last = spanCommits.length();
-            description.setMaxLines(5);
-            description.setText(spanCommits.delete(last - 1, last));
-            description.setVisibility(View.VISIBLE);
-        } else {
-            description.setText("");
-            description.setMaxLines(2);
-            description.setVisibility(View.GONE);
-        }
-             */
-
             val ref = if (item.payload?.ref?.startsWith("refs/heads/") == true) {
                 item.payload?.ref?.substring(11)
             } else {
@@ -198,9 +199,7 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
             }
         }
 
-        private fun repositoryEvent(view: View, item: FeedModel) {
-
-        }
+        private fun repositoryEvent(view: View, item: FeedModel) = publicEvent(view, item)
 
         private fun pullRequestReviewEvent(view: View, item: FeedModel) = pullRequestReviewCommentEvent(view, item)
 
@@ -355,7 +354,7 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
                     .space()
                     .bold(view.context.getString(item.type?.titleId ?: 0).toLowerCase())
                     .space()
-                    .append(item.repo?.fullName)
+                    .append(item.repo?.name)
         }
 
         private fun createEvent(view: View, item: FeedModel) {
