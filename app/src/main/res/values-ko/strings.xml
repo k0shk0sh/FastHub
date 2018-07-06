@@ -26,7 +26,7 @@
     <string name="follow">팔로우</string>
     <string name="unfollow">언팔로우</string>
     <string name="user">사용자</string>
-    <string name="details">세부</string>
+    <string name="details">세부정보</string>
     <string name="archive_file_detected_error">파일을 다운로드하여 해당 컨텐츠를 보세요</string>
     <string name="minimum_three_chars">최소 3글자</string>
     <string name="no_file_found">파일을 찾을 수 없습니다</string>
