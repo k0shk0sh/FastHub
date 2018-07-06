@@ -36,7 +36,9 @@ data class PayloadResponse(@SerializedName("action") var action: String? = null,
                            @SerializedName("release") var release: ReleaseResponse? = null,
                            @SerializedName("commits") var commits: List<CommitResponse>? = null,
                            @SerializedName("commit_comment") var commitComment: CommentResponse? = null,
-                           @SerializedName("comment") var comment: CommentResponse? = null)
+                           @SerializedName("comment") var comment: CommentResponse? = null,
+                           @SerializedName("gist") var gist: GistResponse? = null,
+                           @SerializedName("pages") var pages: List<WikiResponse>? = null)
 
 data class IssueResponse(@SerializedName("id") var id: Long,
                          @SerializedName("number") var number: Long? = null,
@@ -54,9 +56,9 @@ data class IssueResponse(@SerializedName("id") var id: Long,
                          @SerializedName("assignee") var assignee: UserResponse? = null,
                          @SerializedName("closedBy") var closedBy: UserResponse? = null,
                          @SerializedName("repository") var repo: RepositoryResponse? = null,
-                         @SerializedName("wiki") var pages: List<WikiResponse>? = null,
                          @SerializedName("team") var team: TeamResponse? = null,
-                         @SerializedName("merged") var isMerged: Boolean? = null)
+                         @SerializedName("merged") var isMerged: Boolean? = null,
+                         @SerializedName("labels") var labels: List<LabelResponse>? = null)
 
 data class WikiResponse(@SerializedName("title") var title: String? = null,
                         @SerializedName("summery") var summery: String? = null,
@@ -119,3 +121,15 @@ data class CommentResponse(@SerializedName("id") var id: Int? = null,
                            @SerializedName("position") var position: Long? = null,
                            @SerializedName("created_at") var createdAt: Date? = null,
                            @SerializedName("updated_at") var UpdatedAt: Date? = null)
+
+data class LabelResponse(@SerializedName("url") var url: String? = null,
+                         @SerializedName("color") var color: String? = null,
+                         @SerializedName("name") var name: String? = null)
+
+data class GistResponse(@SerializedName("id") var id: String? = null,
+                        @SerializedName("node_id") var nodeId: String? = null,
+                        @SerializedName("url") var url: String? = null,
+                        @SerializedName("html_url") var htmlUrl: String? = null,
+                        @SerializedName("public_x") var publicX: String? = null,
+                        @SerializedName("description") var description: String? = null,
+                        @SerializedName("truncated") var truncated: Boolean? = null)

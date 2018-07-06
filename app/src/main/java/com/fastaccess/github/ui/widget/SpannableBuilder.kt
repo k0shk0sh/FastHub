@@ -28,7 +28,7 @@ class SpannableBuilder private constructor() : SpannableStringBuilder() {
     }
 
     override fun append(text: CharSequence?): SpannableBuilder {
-        if (text != null) super.append(text)
+        if (text != null && text.isNotEmpty()) super.append(text)
         return this
     }
 
@@ -56,8 +56,12 @@ class SpannableBuilder private constructor() : SpannableStringBuilder() {
         return this
     }
 
-    fun bold(text: CharSequence): SpannableBuilder {
-        return if (!text.isEmpty()) append(text, StyleSpan(BOLD)) else this
+    fun bold(text: CharSequence? = null): SpannableBuilder {
+        return if (text != null && text.isNotEmpty()) {
+            append(text, StyleSpan(BOLD))
+        } else {
+            this
+        }
     }
 
     fun background(text: CharSequence, color: Int): SpannableBuilder {
@@ -99,6 +103,11 @@ class SpannableBuilder private constructor() : SpannableStringBuilder() {
 
     fun space(): SpannableBuilder {
         this.append(text = " ")
+        return this
+    }
+
+    fun newline(): SpannableBuilder {
+        this.append("\n")
         return this
     }
 

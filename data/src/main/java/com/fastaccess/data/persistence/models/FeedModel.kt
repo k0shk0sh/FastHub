@@ -33,10 +33,13 @@ data class PayloadModel(@SerializedName("action") var action: String? = null,
                         @SerializedName("invitation") var invitation: UserModel? = null,
                         @SerializedName("issue") var issue: IssueModel? = null,
                         @SerializedName("pull_request") var pullRequest: IssueModel? = null,
-                        @SerializedName("release") var release: ReleaseModel? = null,
+                        @SerializedName("`release`") var release: ReleaseModel? = null,
+                        @SerializedName("`download`") var download: ReleaseModel? = null,
                         @SerializedName("commits") var commits: List<CommitModel>? = null,
                         @SerializedName("commit_comment") var commitComment: CommentModel? = null,
-                        @SerializedName("comment") var comment: CommentModel? = null)
+                        @SerializedName("comment") var comment: CommentModel? = null,
+                        @SerializedName("gist") var gist: GistModel? = null,
+                        @SerializedName("pages") var pages: List<WikiModel>? = null)
 
 data class IssueModel(@SerializedName("id") var id: Long,
                       @SerializedName("number") var number: Long? = null,
@@ -54,9 +57,9 @@ data class IssueModel(@SerializedName("id") var id: Long,
                       @SerializedName("assignee") var assignee: UserModel? = null,
                       @SerializedName("closedBy") var closedBy: UserModel? = null,
                       @SerializedName("repository") var repo: RepositoryModel? = null,
-                      @SerializedName("wiki") var pages: List<WikiModel>? = null,
                       @SerializedName("team") var team: TeamModel? = null,
-                      @SerializedName("merged") var isMerged: Boolean? = null)
+                      @SerializedName("merged") var isMerged: Boolean? = null,
+                      @SerializedName("labels") var labels: List<LabelModel>? = null)
 
 data class WikiModel(@SerializedName("title") var title: String? = null,
                      @SerializedName("summery") var summery: String? = null,
@@ -119,3 +122,15 @@ data class CommentModel(@SerializedName("id") var id: Int? = null,
                         @SerializedName("position") var position: Long? = null,
                         @SerializedName("created_at") var createdAt: Date? = null,
                         @SerializedName("updated_at") var UpdatedAt: Date? = null)
+
+data class LabelModel(@SerializedName("url") var url: String? = null,
+                      @SerializedName("color") var color: String? = null,
+                      @SerializedName("name") var name: String? = null)
+
+data class GistModel(@SerializedName("id") var id: String? = null,
+                     @SerializedName("node_id") var nodeId: String? = null,
+                     @SerializedName("url") var url: String? = null,
+                     @SerializedName("html_url") var htmlUrl: String? = null,
+                     @SerializedName("public_x") var publicX: String? = null,
+                     @SerializedName("description") var description: String? = null,
+                     @SerializedName("truncated") var truncated: Boolean? = null)
