@@ -145,8 +145,8 @@
     <string name="no_url">URL을 찾을 수 없습니다</string>
     <string name="last_updated">마지막 업데이트</string>
     <string name="preview">미리보기</string>
-    <string name="view_code">구문 강조기</string>
-    <string name="click_to_toggle_highlighting">구문 강조기를 활성화/비활성화합니다.
+    <string name="view_code">구문 강조</string>
+    <string name="click_to_toggle_highlighting">구문 강조를 활성화/비활성화합니다.
         \n더 많은 설정을 보려면 Markdown 편집기 아이콘을 스크롤하세요.</string>
     <string name="creation_date">생성일</string>
     <string name="creation_date_hint">파일 생성 날짜</string>
@@ -388,7 +388,7 @@
     <string name="milestone_added">마일스톤 추가됨</string>
     <string name="feed">소식</string>
     <string name="premium_theme">프리미엄 테마</string>
-    <string name="choose_code_theme">문법 강조기 테마</string>
+    <string name="choose_code_theme">문법 강조 테마</string>
     <string name="enterprise_login_warning">GitHub API의 모든 항목에 액세스하려면 GitHub 계정에 로그인하십시오. 
         그렇지 않으면 GitHub API로 전송 된 토큰은 엔터프라이즈 계정에서 전송되기 때문에 Enterprise GitHub가 아닌 
         다른 항목에 액세스 할 때마다 강제 로그아웃 될 수 있습니다.</string>
