@@ -22,7 +22,6 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
     override fun areContentsTheSame(oldItem: FeedModel, newItem: FeedModel): Boolean = oldItem.id == newItem.id
 }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(parent)
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it) }
     }

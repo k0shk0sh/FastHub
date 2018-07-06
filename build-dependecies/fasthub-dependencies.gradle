@@ -21,6 +21,7 @@ ext {
     mockitoKotlin = '1.5.0'
     assertJ = '3.8.0'
     apollo = '0.5.0'
+    pandora = 'v1.0.1'
 
 
     kotlin = [
@@ -117,9 +118,11 @@ ext {
 
     developmentDependencies = [
             "com.readystatesoftware.chuck:library:$chuck",
+            "com.github.whataa:pandora:$pandora"
     ]
 
     releaseDevelopmentDependencies = [
-            "com.readystatesoftware.chuck:library-no-op:$chuck"
+            "com.readystatesoftware.chuck:library-no-op:$chuck",
+            "com.github.whataa:pandora-no-op:$pandora"
     ]
 }

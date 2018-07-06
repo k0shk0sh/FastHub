@@ -1,5 +1,7 @@
 package com.fastaccess.data.persistence.models
 
+import androidx.room.Embedded
+import androidx.room.Entity
 import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -8,14 +10,20 @@ import java.util.*
 /**
  * Created by Kosh on 23.06.18.
  */
+@Entity(tableName = FeedModel.TABLE_NAME)
 data class FeedModel(@SerializedName("id") var id: Long = 0L,
                      @SerializedName("type") var type: EventsType? = null,
                      @SerializedName("created_at") var createdAt: Date? = null,
                      @SerializedName("public") var isPublic: Boolean? = null,
-                     @SerializedName("actor") var actor: UserModel? = null,
-                     @SerializedName("repo") var repo: RepositoryModel? = null,
-                     @SerializedName("payload") var payload: PayloadModel? = null,
-                     @SerializedName("login") var login: String? = null)
+                     @SerializedName("actor") @Embedded(prefix = "actor_") var actor: UserModel? = null,
+                     @SerializedName("repo") @Embedded(prefix = "repo_") var repo: RepositoryModel? = null,
+                     @SerializedName("payload") @Embedded(prefix = "payload_") var payload: PayloadModel? = null,
+                     @SerializedName("login") var login: String? = null) {
+
+    companion object {
+        const val TABLE_NAME = "feed_table"
+    }
+}
 
 data class PayloadModel(@SerializedName("action") var action: String? = null,
                         @SerializedName("forkee") var forkee: RepositoryModel? = null,

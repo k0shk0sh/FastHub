@@ -210,7 +210,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="?colorPrimary"
+        app:backgroundTint="?card_background"
         app:fabAttached="true"
         app:navigationContentDescription="@string/menu_label"
         app:navigationIcon="@drawable/ic_menu"

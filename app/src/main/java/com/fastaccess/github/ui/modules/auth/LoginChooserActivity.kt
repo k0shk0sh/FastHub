@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.github.ui.modules.main.MainActivity
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.di.annotations.ForActivity
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
+import com.fastaccess.github.ui.modules.main.MainActivity
 import com.fastaccess.github.utils.extensions.*
 
 /**
@@ -71,6 +71,7 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
             preference.token = login.token
             preference.otpCode = login.otpCode
         }
+        preference.theme = 1
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
