@@ -132,7 +132,7 @@
     <string name="login">로그인</string>
     <string name="gist_description">Gist 설명</string>
     <string name="avatar_click_hint">사용자 아바타를 클릭하여 사용자의 프로필을 열 수 있습니다</string>
-    <string name="feeds_fork_hint">Fork 이벤트를 길게 클릭하여 원본 또는 분기된 저장소를 엽니 다</string>
+    <string name="feeds_fork_hint">Fork 이벤트를 길게 클릭하여 원본 또는 분기된 저장소를 엽니다</string>
     <string name="click_here_to_download_release_hint">Release 다운로드</string>
     <string name="options">설정</string>
     <string name="click_file_option_hint">파일 다운로드 또는 디렉토리 공유</string>
@@ -311,7 +311,7 @@
     <string name="new_version">새로운 버전이 있습니다</string>
     <string name="empty_search_error">검색 내용을 입력해주세요</string>
     <string name="long_press_repo_fab_hint">길게 누르면 Issue 티켓을 즉시 생성 할 수 있습니다</string>
-    <string name="commit_can_be_merged">이 Pull Request는 합병될 수 있습니다</string>
+    <string name="commit_can_be_merged">이 Pull Request는 병합될 수 있습니다</string>
     <string name="reviewed">검토됨</string>
     <string name="dismissed_review">검토 취소됨</string>
     <string name="approved_these_changes">변경 승인됨</string>
