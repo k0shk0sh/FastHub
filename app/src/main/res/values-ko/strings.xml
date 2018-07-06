@@ -356,7 +356,7 @@
     <string name="successfully_invited">초대됨</string>
     <string name="reply">답글</string>
     <string name="failed_selecting_image">이미지 불러오기에 실패했습니다</string>
-    <string name="want_to_merge">병합 희망</string>
+    <string name="want_to_merge">병합 요청</string>
     <string name="watchers">구독자</string>
     <string name="reviewers">검토자</string>
     <string name="no_reviewers">검토자 없음</string>
