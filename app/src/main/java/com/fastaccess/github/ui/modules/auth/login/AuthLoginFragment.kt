@@ -70,7 +70,7 @@ class AuthLoginFragment : BaseFragment() {
                     passwordEditText.asString(),
                     twoFactorEditText.asString(),
                     endpointEditText.asString(),
-                    if (isAccessToken) false else (accessTokenCheckbox.isVisible && !accessTokenCheckbox.isChecked))
+                    (isAccessToken || accessTokenCheckbox.isVisible && accessTokenCheckbox.isChecked))
         }
         observeData()
     }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
 import com.fastaccess.data.persistence.models.LoginModel
+import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.di.annotations.ForActivity
@@ -71,7 +72,7 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
             preference.token = login.token
             preference.otpCode = login.otpCode
         }
-        preference.theme = 1
+        if (BuildConfig.DEBUG) preference.theme = 1
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

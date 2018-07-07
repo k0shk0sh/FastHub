@@ -17,4 +17,6 @@ abstract class FeedDao : BaseDao<FeedModel>() {
     abstract fun getMainFeeds(login: String): LiveData<List<FeedModel>>
 
     @Query("DELETE FROM ${FeedModel.TABLE_NAME}") abstract fun deleteAll()
+
+    @Query("DELETE FROM ${FeedModel.TABLE_NAME} WHERE `savedDate` <= datetime('now', '-7 day')") abstract fun deleteOldFeeds()
 }

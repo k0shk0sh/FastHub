@@ -20,7 +20,8 @@ const val DATABASE_NAME = "FastHub-Room-DB"
 
 @Database(version = VERSION, entities = [UserModel::class, MainIssuesPullsModel::class,
     NotificationModel::class, FeedModel::class], exportSchema = false)
-@TypeConverters(DateConverter::class, EventTypesConverter::class)
+@TypeConverters(DateConverter::class, EventTypesConverter::class,
+        FeedPayloadConverter::class, FeedRepoConverter::class)
 abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getMainIssuesPullsDao(): MainIssuesPullsDao
     abstract fun getNotifications(): NotificationsDao

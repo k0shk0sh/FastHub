@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
               password: String? = null,
               twoFactorCode: String? = null,
               endPoint: String? = null,
-              isBasicAuth: Boolean = true) {
+              isAccessToken: Boolean = true) {
         validationLiveData.value = ValidationError(ValidationError.FieldType.TWO_FACTOR, !twoFactorCode.isNullOrBlank())
         validationLiveData.value = ValidationError(ValidationError.FieldType.URL, !endPoint.isNullOrBlank())
         validationLiveData.value = ValidationError(ValidationError.FieldType.PASSWORD, !password.isNullOrBlank())
@@ -40,7 +40,7 @@ class LoginViewModel @Inject constructor(private val loginUserCase: LoginUseCase
                 val authToken = Credentials.basic(userName, password)
                 interceptor.otp = twoFactorCode
                 interceptor.token = authToken
-                if (isBasicAuth) {
+                if (!isAccessToken) {
                     loginBasic(twoFactorCode)
                 } else {
                     loginWithAccessToken(password)

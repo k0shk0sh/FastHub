@@ -17,8 +17,8 @@ data class FeedModel(@SerializedName("id") @PrimaryKey var id: Long = 0L,
                      @SerializedName("created_at") var createdAt: Date? = null,
                      @SerializedName("public") var isPublic: Boolean? = null,
                      @SerializedName("actor") @Embedded(prefix = "actor_") var actor: UserModel? = null,
-                     @SerializedName("repo") @Embedded(prefix = "repo_") var repo: RepositoryModel? = null,
-                     @SerializedName("payload") @Embedded(prefix = "payload_") var payload: PayloadModel? = null,
+                     @SerializedName("repo") var repo: RepositoryModel? = null,
+                     @SerializedName("payload") var payload: PayloadModel? = null,
                      @SerializedName("login") var login: String? = null,
                      @SerializedName("saved_date") var savedDate: Date = Date()) {
 
