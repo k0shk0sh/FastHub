@@ -32,8 +32,10 @@ class RepositoryModule {
         return NotificationRepositoryProvider(fastHubDatabase.getNotifications())
     }
 
-    @Singleton @Provides fun provideFeedsRepositoryProvider(userService: UserService,
-                                                            loginRepositoryProvider: LoginRepositoryProvider): FeedsRepositoryProvider {
-        return FeedsRepositoryProvider(userService, loginRepositoryProvider)
+    @Singleton @Provides fun provideFeedsRepositoryProvider(fastHubDatabase: FastHubDatabase,
+                                                            userService: UserService,
+                                                            loginRepositoryProvider: LoginRepositoryProvider,
+                                                            gson: Gson): FeedsRepositoryProvider {
+        return FeedsRepositoryProvider(fastHubDatabase.getFeedsDao(), userService, loginRepositoryProvider, gson)
     }
 }
