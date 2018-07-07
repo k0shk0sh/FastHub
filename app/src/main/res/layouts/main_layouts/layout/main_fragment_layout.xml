@@ -205,17 +205,6 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:backgroundTint="?card_background"
-        app:fabAttached="true"
-        app:navigationContentDescription="@string/menu_label"
-        app:navigationIcon="@drawable/ic_menu"
-        app:popupTheme="?android:toolbarStyle"
-        app:theme="?android:toolbarStyle"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/searchFab"
@@ -223,8 +212,43 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_search"
         android:tint="@color/white"
-        app:fabSize="normal"
-        app:layout_anchor="@+id/bottomBar"
-        app:layout_anchorGravity="center"/>
+        app:fabSize="auto"
+        app:layout_anchor="@+id/bottomSheet"
+        app:layout_anchorGravity="top|center"/>
 
+
+    <LinearLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:windowBackground"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="?actionBarSize"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottomBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:backgroundTint="?card_background"
+                app:buttonGravity="bottom"
+                app:navigationContentDescription="@string/menu_label"
+                app:navigationIcon="@drawable/ic_menu"
+                app:popupTheme="?android:toolbarStyle"
+                app:theme="?android:toolbarStyle"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/keyline_2"
+                android:text="TODO()"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

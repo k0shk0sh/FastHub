@@ -12,6 +12,7 @@ import com.fastaccess.github.ui.adapter.MainIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.NotificationsAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.utils.extensions.observeNotNull
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 import javax.inject.Inject
@@ -45,6 +46,25 @@ class MainFragment : BaseFragment() {
         pullRequestsList.adapter = prsAdapter
         feedsList.adapter = feedsAdapter
         listenToDataChanges()
+        val behaviour = BottomSheetBehavior.from(bottomSheet).apply {
+            setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(p0: View, p1: Float) {
+                    if (p1 == 0.0F) {
+                        searchFab.show()
+                    } else {
+                        searchFab.hide()
+                    }
+                }
+
+                override fun onStateChanged(p0: View, p1: Int) {}
+            })
+        }
+        bottomBar.setNavigationOnClickListener {
+            behaviour.apply {
+                isHideable = false
+                state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
     }
 
     private fun listenToDataChanges() {

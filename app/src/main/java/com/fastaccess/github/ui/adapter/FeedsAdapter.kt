@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.feeds_main_screen_row_item.view.*
  */
 class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : DiffUtil.ItemCallback<FeedModel?>() {
     override fun areItemsTheSame(oldItem: FeedModel, newItem: FeedModel): Boolean = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: FeedModel, newItem: FeedModel): Boolean = oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: FeedModel, newItem: FeedModel): Boolean = oldItem.createdAt == newItem.createdAt
 }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(parent)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -205,10 +205,11 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
         private fun pullRequestReviewCommentEvent(view: View, item: FeedModel) {
             view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
                     .space()
-                    .bold("reviewed a pull request in")
+                    .bold(if (item.payload?.comment != null) "commented on a review in " else "reviewed a pull request in")
                     .space()
                     .append("${item.repo?.name}")
-                    .bold("#${item.payload?.issue?.number?.toString()}")
+                    .bold("#${item.payload?.pullRequest?.number}")
+            view.feedDescription.text = item.payload?.comment?.body ?: ""
         }
 
         private fun pullRequestEvent(view: View, item: FeedModel) {
