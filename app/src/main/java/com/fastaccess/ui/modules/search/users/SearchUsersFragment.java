@@ -77,13 +77,14 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         stateLayout.setEmptyText(R.string.no_search_results);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new UsersAdapter(getPresenter().getUsers());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (savedInstanceState != null) {
             if (!InputHelper.isEmpty(searchQuery) && getPresenter().getUsers().isEmpty() && !getPresenter().isApiCalled()) {

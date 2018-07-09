@@ -6,7 +6,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.dao.types.IssueState
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Logger
-import com.fastaccess.provider.rest.ApolloProdivder
+import com.fastaccess.provider.rest.ApolloProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity
 import github.OrgProjectsClosedQuery
@@ -70,7 +70,7 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
         currentPage = page
         Logger.e(login)
         val repoId = repoId
-        val apollo = ApolloProdivder.getApollo(isEnterprise)
+        val apollo = ApolloProvider.getApollo(isEnterprise)
         if (repoId != null && !repoId.isNullOrBlank()) {
             if (parameter == IssueState.open) {
                 val query = RepoProjectsOpenQuery.builder()

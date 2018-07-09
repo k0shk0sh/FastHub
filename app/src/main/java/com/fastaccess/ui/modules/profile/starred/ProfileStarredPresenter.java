@@ -23,7 +23,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
 
     @com.evernote.android.state.State int starredCount = -1;
     private ArrayList<Repo> repos = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

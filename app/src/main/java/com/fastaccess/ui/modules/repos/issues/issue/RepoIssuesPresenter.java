@@ -33,7 +33,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State IssueState issueState;
     @com.evernote.android.state.State boolean isLastUpdated;
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

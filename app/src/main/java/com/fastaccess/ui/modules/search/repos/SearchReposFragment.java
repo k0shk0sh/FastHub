@@ -81,13 +81,14 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
             stateLayout.hideProgress();
         }
         stateLayout.setEmptyText(R.string.no_search_results);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new ReposAdapter(getPresenter().getRepos(), true, true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (!InputHelper.isEmpty(searchQuery) && getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();

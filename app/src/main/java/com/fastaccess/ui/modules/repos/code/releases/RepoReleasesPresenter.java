@@ -24,7 +24,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
     private ArrayList<Release> releases = new ArrayList<>();
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State String repoId;
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

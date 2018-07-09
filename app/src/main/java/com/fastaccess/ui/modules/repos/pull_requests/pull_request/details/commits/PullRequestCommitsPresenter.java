@@ -25,7 +25,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State long number;
     private ArrayList<Commit> commits = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

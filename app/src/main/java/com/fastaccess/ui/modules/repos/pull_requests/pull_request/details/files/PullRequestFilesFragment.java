@@ -122,7 +122,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this, this);
         adapter.setListener(getPresenter());
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {

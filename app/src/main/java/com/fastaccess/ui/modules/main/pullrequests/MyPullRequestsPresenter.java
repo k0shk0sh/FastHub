@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.View> implements MyPullRequestsMvp.Presenter {
 
     private ArrayList<PullRequest> pullRequests = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State MyIssuesType issuesType;

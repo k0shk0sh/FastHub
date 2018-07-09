@@ -24,7 +24,7 @@ import io.reactivex.Observable;
  */
 
 public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.View> implements ReactionsDialogMvp.Presenter {
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<User> users = new ArrayList<>();

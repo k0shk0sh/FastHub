@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 class LabelsPresenter extends BasePresenter<LabelsMvp.View> implements LabelsMvp.Presenter {
 
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<LabelModel> labels = new ArrayList<>();

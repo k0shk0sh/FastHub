@@ -31,7 +31,7 @@ import io.reactivex.Observable;
 class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> implements CommitCommentsMvp.Presenter {
     private ArrayList<TimelineModel> comments = new ArrayList<>();
     private ReactionsProvider reactionsProvider;
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State String repoId;

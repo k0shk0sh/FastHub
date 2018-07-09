@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Presenter {
     private ArrayList<Gist> gistsModels = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

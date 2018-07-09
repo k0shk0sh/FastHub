@@ -143,7 +143,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             onSetHeader(TimelineModel.constructHeader(getIssue()));

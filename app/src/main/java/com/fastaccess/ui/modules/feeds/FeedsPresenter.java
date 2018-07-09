@@ -41,7 +41,7 @@ import io.reactivex.Observable;
 
 public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Presenter {
     private ArrayList<Event> eventsModels = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State String user;

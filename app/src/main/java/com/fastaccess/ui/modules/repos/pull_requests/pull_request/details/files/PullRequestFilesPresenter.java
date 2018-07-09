@@ -36,7 +36,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State long number;
     private ArrayList<CommitFileChanges> files = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

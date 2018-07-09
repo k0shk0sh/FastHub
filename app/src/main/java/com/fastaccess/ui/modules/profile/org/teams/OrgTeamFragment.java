@@ -66,7 +66,7 @@ public class OrgTeamFragment extends BaseFragment<OrgTeamMvp.View, OrgTeamPresen
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         adapter = new TeamsAdapter(getPresenter().getTeams());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

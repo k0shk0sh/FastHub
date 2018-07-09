@@ -25,7 +25,7 @@ import io.reactivex.Observable;
 public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implements RepoMiscMVp.Presenter {
 
     private ArrayList<User> users = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State String owner;

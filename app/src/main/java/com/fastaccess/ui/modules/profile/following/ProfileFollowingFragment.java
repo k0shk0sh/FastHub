@@ -66,7 +66,7 @@ public class ProfileFollowingFragment extends BaseFragment<ProfileFollowingMvp.V
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         adapter = new UsersAdapter(getPresenter().getFollowing());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 class SearchCodePresenter extends BasePresenter<SearchCodeMvp.View> implements SearchCodeMvp.Presenter {
 
     private ArrayList<SearchCodeModel> codes = new ArrayList<>();
-    private int page;
+    private int page = 1;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 

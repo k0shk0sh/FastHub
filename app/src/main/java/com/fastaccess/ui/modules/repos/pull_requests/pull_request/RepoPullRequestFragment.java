@@ -100,7 +100,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new PullRequestAdapter(getPresenter().getPullRequests(), true);
         adapter.setListener(getPresenter());
-        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage() - 1, getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
