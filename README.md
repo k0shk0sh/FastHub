@@ -1,4 +1,4 @@
-#### FastHub currently under huge refactoring, please make sure to submit issue only when needed. 
+#### FastHub is currently under a huge refactoring, please make sure to submit an issue only if necessary. 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
 [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
