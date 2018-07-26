@@ -54,7 +54,7 @@
     <string name="no_body">Содержимое отсутствует</string>
     <string name="contributors">Contributor`ы</string>
     <string name="contributions">Вклады за последний год</string>
-    <string name="by"></string>
+    <string name="by">от</string>
     <string name="english_please">Пожалуйста, при составлении тикета используйте английский язык.</string>
     <string name="close_issue">Закрыть Issue</string>
     <string name="re_open_issue">Открыть Issue</string>
@@ -464,4 +464,8 @@
     <string name="restart_app_message">Пожалуйста, перезапустите приложение</string>
     <string name="menu_label">Меню</string>
     <string name="commit_file_required">Нет изменений файла</string>
+    <string name="file">файл</string>
+    <string name="un_subscribe">отказаться от подписки</string>
+    <string name="expand">расширить</string>
+    <string name="send_feedback">Отправить отзыв</string>
 </resources>
