@@ -68,7 +68,8 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/username"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"                                android:layout_width="match_parent"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/spacing_normal"
                                 android:hint="@string/username">
@@ -78,6 +79,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="text"
+                                    style="@style/TextAppearance.MaterialComponents.Headline1"
                                     android:maxLines="1"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,7 +161,7 @@
                         android:layout_gravity="center"
                         android:padding="@dimen/spacing_s_large"
                         android:visibility="gone"
-                        tools:visibility="visible"/>
+                        tools:visibility="gone"/>
                 </FrameLayout>
             </androidx.core.widget.NestedScrollView>
 
@@ -173,21 +175,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:backgroundTint="?android:colorAccent"
-        app:fabAttached="true"
         app:fabCradleVerticalOffset="12dp"
         app:navigationIcon="@drawable/ic_back"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="@dimen/spacing_normal"
-            android:text="@string/login"
-            android:textColor="@color/white"/>
-    </com.google.android.material.bottomappbar.BottomAppBar>
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/loginBtn"

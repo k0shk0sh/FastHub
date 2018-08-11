@@ -45,26 +45,18 @@ class MainFragment : BaseFragment() {
         issuesList.adapter = issuesAdapter
         pullRequestsList.adapter = prsAdapter
         feedsList.adapter = feedsAdapter
-        listenToDataChanges()
-        val behaviour = BottomSheetBehavior.from(bottomSheet).apply {
-            setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(p0: View, p1: Float) {
-                    if (p1 == 0.0F) {
-                        searchFab.show()
-                    } else {
-                        searchFab.hide()
-                    }
-                }
-
-                override fun onStateChanged(p0: View, p1: Int) {}
-            })
+        bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
+        bottomBar.setOnMenuItemClickListener {
+            return@setOnMenuItemClickListener true
         }
+        val behaviour = BottomSheetBehavior.from(bottomSheet)
         bottomBar.setNavigationOnClickListener {
             behaviour.apply {
                 isHideable = false
                 state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
+        listenToDataChanges()
     }
 
     private fun listenToDataChanges() {
@@ -76,15 +68,18 @@ class MainFragment : BaseFragment() {
             feedsAdapter.submitList(it)
         }
         viewModel.notifications.observeNotNull(this) {
-            notificationAdapter.submitList(it)
             notificationLayout.isVisible = it.isNotEmpty()
+            notificationAdapter.submitList(it)
         }
         viewModel.issues.observeNotNull(this) {
+            issuesLayout.isVisible = it.isNotEmpty()
             issuesAdapter.submitList(it)
         }
         viewModel.prs.observeNotNull(this) {
+            pullRequestsLayout.isVisible = it.isNotEmpty()
             prsAdapter.submitList(it)
         }
+
         viewModel.error.observeNotNull(this) {
             view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }
         }

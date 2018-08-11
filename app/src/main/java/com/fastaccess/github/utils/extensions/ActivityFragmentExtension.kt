@@ -3,7 +3,6 @@ package com.fastaccess.github.utils.extensions
 import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.Fragment
-import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 
 /**
@@ -48,8 +47,4 @@ fun Context.getColorAttr(attr: Int): Int {
     typedArray.recycle()
     return color
 }
-
-inline var Context.listDivider: Int
-    get() = getColorAttr(R.attr.dividerColor)
-    set(value) {}
 

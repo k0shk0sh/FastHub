@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.widget.recyclerview.decoration.InsetDividerDecoration
-import com.fastaccess.github.utils.extensions.listDivider
+import com.fastaccess.github.utils.extensions.getColorAttr
 
 /**
  * Created by Kosh on 23.06.18.
@@ -23,14 +23,14 @@ class BaseRecyclerView constructor(context: Context,
         if (canAddDivider()) {
             val resources = resources
             addItemDecoration(InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
-                    resources.getDimensionPixelSize(R.dimen.keyline_2), context.listDivider))
+                    resources.getDimensionPixelSize(R.dimen.keyline_2), context.getColorAttr(R.attr.dividerColor)))
         }
     }
 
     fun addDivider() {
         if (canAddDivider()) {
             val resources = resources
-            addItemDecoration(InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0, context.listDivider))
+            addItemDecoration(InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0, context.getColorAttr(R.attr.dividerColor)))
         }
     }
 

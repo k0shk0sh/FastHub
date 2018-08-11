@@ -65,6 +65,7 @@ class AuthLoginFragment : BaseFragment() {
 
         bottomBar.setNavigationOnClickListener { callback?.popStack() }
         loginBtn.setOnClickListener {
+            it.isEnabled = false
             if (progressBar.isVisible) return@setOnClickListener
             viewModel.login(usernameEditText.asString(),
                     passwordEditText.asString(),
@@ -76,8 +77,8 @@ class AuthLoginFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        viewModel.validationLiveData.observe(this, Observer {
-            it?.let {
+        viewModel.validationLiveData.observe(this, Observer { validationError ->
+            validationError?.let {
                 val requiredField = getString(R.string.required_field)
                 when (it.fieldType) {
                     USERNAME -> username.error = if (it.isValid) null else requiredField
@@ -88,14 +89,15 @@ class AuthLoginFragment : BaseFragment() {
             }
         })
 
-        viewModel.progress.observe(this, Observer {
+        viewModel.progress.observe(this, Observer { isLoading ->
+            loginBtn.isEnabled = isLoading == false
             view?.let { TransitionManager.beginDelayedTransition(it as ViewGroup) }
-            loginForm.isVisible = it == false
-            progressBar.isVisible = it == true
+            loginForm.isVisible = isLoading == false
+            progressBar.isVisible = isLoading == true
         })
 
-        viewModel.error.observe(this, Observer {
-            it?.let {
+        viewModel.error.observe(this, Observer { errors ->
+            errors?.let {
                 if (it.errorType == FastHubErrors.ErrorType.TWO_FACTOR) {
                     twoFactor.isVisible = true
                 }
@@ -105,9 +107,9 @@ class AuthLoginFragment : BaseFragment() {
             }
         })
 
-        viewModel.loggedInUser.observe(this, Observer {
-            if (it != null) {
-                callback?.onUserLoggedIn(it)
+        viewModel.loggedInUser.observe(this, Observer { model ->
+            if (model != null) {
+                callback?.onUserLoggedIn(model)
             } else {
                 view?.let { showSnackBar(it, resId = R.string.failed_login) }
             }

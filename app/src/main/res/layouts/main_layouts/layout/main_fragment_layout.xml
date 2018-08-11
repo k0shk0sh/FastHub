@@ -3,7 +3,6 @@
     android:id="@+id/coordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -205,18 +204,6 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/searchFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_search"
-        android:tint="@color/white"
-        app:fabSize="auto"
-        app:layout_anchor="@+id/bottomSheet"
-        app:layout_anchorGravity="top|center"/>
-
-
     <LinearLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
@@ -234,6 +221,8 @@
                 android:id="@+id/bottomBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:elevation="@dimen/spacing_micro"
+                android:outlineProvider="background"
                 app:backgroundTint="?card_background"
                 app:buttonGravity="bottom"
                 app:navigationContentDescription="@string/menu_label"
