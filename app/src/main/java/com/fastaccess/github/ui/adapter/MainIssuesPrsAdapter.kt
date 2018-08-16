@@ -31,17 +31,15 @@ class MainIssuesPrsAdapter :
         @SuppressLint("SetTextI18n")
         override fun bind(item: MainIssuesPullsModel) {
             itemView.let {
-                if (item.state.isNullOrEmpty()) { // issue
-                    it.issueTitle.text = "${item.title}#${item.number}"
-                    it.issueDescription.text = item.repoName
-                    it.commentCount.isVisible = item.commentCounts != 0L
-                    it.commentCount.text = "${item.commentCounts ?: 0}"
-                } else { // PR
+                it.issueTitle.text = "${item.title}#${item.number}"
+                it.issueDescription.apply {
+                    text = item.repoName ?: ""
+                    isVisible = !item.repoName.isNullOrBlank()
+                }
+                it.commentCount.isVisible = item.commentCounts != 0L
+                it.commentCount.text = "${item.commentCounts ?: 0}"
+                if (!item.state.isNullOrEmpty()) { // PR
                     val context = it.context
-                    it.issueTitle.text = "${item.title}#${item.number}"
-                    it.issueDescription.text = item.repoName
-                    it.commentCount.isVisible = item.commentCounts != 0L
-                    it.commentCount.text = "${item.commentCounts ?: 0}"
                     it.state.isVisible = true
                     it.state.text = item.state?.toLowerCase()?.capitalize() ?: ""
                     it.state.setTextColor(when {
@@ -55,5 +53,4 @@ class MainIssuesPrsAdapter :
             }
         }
     }
-
 }

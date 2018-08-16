@@ -3,6 +3,7 @@ package com.fastaccess.github.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.fastaccess.data.persistence.models.FeedModel
@@ -32,6 +33,7 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
         override fun bind(item: FeedModel) {
             itemView.apply {
                 feedDescription.text = ""
+                feedDescription.isVisible = false
                 feedTitle.text = context.getString(item.type?.titleId ?: 0).toLowerCase()
                 when (item.type) {
                     EventsType.WatchEvent -> watchEvent(this, item)
@@ -193,6 +195,7 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
                         }
                 view.feedDescription.maxLines = 5
                 view.feedDescription.text = builder
+                view.feedDescription.isVisible = true
             } else {
                 view.feedDescription.maxLines = 2
             }
@@ -209,7 +212,10 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
                     .space()
                     .append("${item.repo?.name}")
                     .bold("#${item.payload?.pullRequest?.number}")
-            view.feedDescription.text = item.payload?.comment?.body ?: ""
+            view.feedDescription.apply {
+                text = item.payload?.comment?.body ?: ""
+                isVisible = !item.payload?.comment?.body.isNullOrEmpty()
+            }
         }
 
         private fun pullRequestEvent(view: View, item: FeedModel) {
@@ -228,6 +234,7 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
                     .bold("#${pullRequest?.number}")
             if ("opened" == action || "closed" == action) {
                 view.feedDescription.text = pullRequest?.title?.replaceAllNewLines() ?: ""
+                view.feedDescription.isVisible = !pullRequest?.title?.replaceAllNewLines().isNullOrEmpty()
             }
         }
 
@@ -268,6 +275,7 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
                     .space()
                     .bold("#${issue?.number}")
             view.feedDescription.text = issue?.title?.replaceAllNewLines() ?: ""
+            view.feedDescription.isVisible = !issue?.title?.replaceAllNewLines().isNullOrEmpty()
         }
 
         private fun issueCommentEvent(view: View, item: FeedModel) {
@@ -278,9 +286,8 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
                     .append("${item.repo?.name}")
                     .bold("#${item.payload?.issue?.number}")
 
-            item.payload?.comment?.body?.let {
-                view.feedDescription.text = it.replaceAllNewLines() ?: ""
-            }
+            view.feedDescription.text = item.payload?.comment?.body?.replaceAllNewLines() ?: ""
+            view.feedDescription.isVisible = !item.payload?.comment?.body?.replaceAllNewLines().isNullOrEmpty()
         }
 
         private fun gollumEvent(view: View, item: FeedModel) {
@@ -371,6 +378,7 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
                         .space()
                         .append(item.repo?.name)
                 view.feedDescription.text = it.description?.replaceAllNewLines() ?: ""
+                view.feedDescription.isVisible = !it.description?.replaceAllNewLines().isNullOrEmpty()
             }
         }
     }

@@ -22,11 +22,11 @@ class EventTypesConverter {
 }
 
 class FeedPayloadConverter {
-    @TypeConverter fun toDbValue(data: PayloadModel? = null): String? = data?.let { Gson().toJson(it) } ?: null
+    @TypeConverter fun toDbValue(data: PayloadModel? = null): String? = data?.let { Gson().toJson(it) }
     @TypeConverter fun fromDbToValue(data: String? = null): PayloadModel? = data?.let { Gson().fromJson(it, PayloadModel::class.java) }
 }
 
 class FeedRepoConverter {
-    @TypeConverter fun toDbValue(data: RepositoryModel? = null): String? = data?.let { Gson().toJson(it) } ?: null
+    @TypeConverter fun toDbValue(data: RepositoryModel? = null): String? = data?.let { Gson().toJson(it) }
     @TypeConverter fun fromDbToValue(data: String? = null): RepositoryModel? = data?.let { Gson().fromJson(it, RepositoryModel::class.java) }
 }
