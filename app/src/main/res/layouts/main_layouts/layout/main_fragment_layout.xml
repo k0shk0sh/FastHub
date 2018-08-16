@@ -206,9 +206,8 @@
     <LinearLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="?android:windowBackground"
-        android:minHeight="300dp"
         app:behavior_hideable="false"
         app:behavior_peekHeight="?actionBarSize"
         app:layout_behavior="@string/bottom_sheet_behavior">
@@ -228,13 +227,15 @@
                 app:popupTheme="?android:toolbarStyle"
                 app:theme="?android:toolbarStyle"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/mainNav"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/keyline_2"
-                android:text="TODO()"/>
-
+                android:layout_height="match_parent"
+                android:layout_marginTop="?actionBarSize"
+                app:itemBackground="@color/transparent"
+                app:itemIconTint="?colorAccent"
+                app:itemTextColor="?colorAccent"
+                app:menu="@menu/main_menu"/>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
