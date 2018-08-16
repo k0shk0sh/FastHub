@@ -19,7 +19,7 @@ class NotificationUseCase @Inject constructor(private val notificationRepository
                                               private val loginRepositoryProvider: LoginRepositoryProvider,
                                               private val gson: Gson) : BaseObservableUseCase() {
     override fun buildObservable(): Observable<*> = notificationService.getMainNotifications()
-            .map {
+            .map { it ->
                 notificationRepositoryProvider.deleteAll()
                 val me = loginRepositoryProvider.getLoginBlocking()
                 it.items?.forEach {
