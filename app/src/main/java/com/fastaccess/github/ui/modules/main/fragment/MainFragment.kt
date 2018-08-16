@@ -73,6 +73,10 @@ class MainFragment : BaseFragment() {
                 }
             }
         })
+        navigationView.setNavigationItemSelectedListener {
+            behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+            return@setNavigationItemSelectedListener true
+        }
         listenToDataChanges()
     }
 
