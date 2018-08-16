@@ -1,7 +1,9 @@
 package com.fastaccess.github.ui.modules.main.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -13,7 +15,7 @@ import com.fastaccess.github.ui.adapter.NotificationsAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.utils.extensions.observeNotNull
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.appbar_center_title_layout.*
+import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 import javax.inject.Inject
 
@@ -35,6 +37,7 @@ class MainFragment : BaseFragment() {
         if (savedInstanceState == null) {
             viewModel.load()
         }
+        profile.isVisible = false
         swipeRefresh.setOnRefreshListener { viewModel.load() }
         toolbarTitle.setText(R.string.app_name)
         notificationsList.addDivider()
@@ -52,10 +55,24 @@ class MainFragment : BaseFragment() {
         val behaviour = BottomSheetBehavior.from(bottomSheet)
         bottomBar.setNavigationOnClickListener {
             behaviour.apply {
-                isHideable = false
-                state = BottomSheetBehavior.STATE_EXPANDED
+                state = if (state == BottomSheetBehavior.STATE_EXPANDED) {
+                    BottomSheetBehavior.STATE_COLLAPSED
+                } else {
+                    BottomSheetBehavior.STATE_EXPANDED
+                }
             }
         }
+        behaviour.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(p0: View, p1: Float) = Unit
+
+            @SuppressLint("SwitchIntDef")
+            override fun onStateChanged(p0: View, state: Int) {
+                when (state) {
+                    BottomSheetBehavior.STATE_EXPANDED -> bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_arrow_drop_down)
+                    BottomSheetBehavior.STATE_COLLAPSED -> bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_menu)
+                }
+            }
+        })
         listenToDataChanges()
     }
 

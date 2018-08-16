@@ -8,7 +8,6 @@
 
     <include layout="@layout/appbar_profile_title_layout"/>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -207,8 +206,9 @@
     <LinearLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="?android:windowBackground"
+        android:minHeight="300dp"
         app:behavior_hideable="false"
         app:behavior_peekHeight="?actionBarSize"
         app:layout_behavior="@string/bottom_sheet_behavior">
@@ -222,8 +222,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="@dimen/spacing_micro"
-                android:outlineProvider="background"
-                app:backgroundTint="?card_background"
                 app:buttonGravity="bottom"
                 app:navigationContentDescription="@string/menu_label"
                 app:navigationIcon="@drawable/ic_menu"
