@@ -13,6 +13,8 @@ import com.fastaccess.github.ui.adapter.FeedsAdapter
 import com.fastaccess.github.ui.adapter.MainIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.NotificationsAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.ui.modules.profile.ProfileActivity
+import com.fastaccess.github.utils.extensions.me
 import com.fastaccess.github.utils.extensions.observeNotNull
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
@@ -50,6 +52,9 @@ class MainFragment : BaseFragment() {
         feedsList.adapter = feedsAdapter
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
         bottomBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.profile -> ProfileActivity.start(requireContext(), me())
+            }
             return@setOnMenuItemClickListener true
         }
         val behaviour = BottomSheetBehavior.from(bottomSheet)

@@ -28,7 +28,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     @LayoutRes abstract fun layoutRes(): Int
 
-    abstract fun onActivityCreated(savedInstanceState: Bundle?)
     abstract fun onActivityCreatedWithUser(savedInstanceState: Bundle?)
     override fun isLoggedIn() = !preference.token.isNullOrEmpty()
     override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(BundleConstant.IS_ENTERPRISE) ?: false
@@ -62,6 +61,8 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
                 .materialize()
                 .show()
     }
+
+    protected open fun onActivityCreated(savedInstanceState: Bundle?) = Unit
 }
 
 interface ActivityCallback {

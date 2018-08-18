@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="?android:toolbarStyle"
+        tools:background="?colorAccent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:expandedTitleGravity="bottom|center"
+            app:expandedTitleMarginBottom="100dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:theme="?android:toolbarStyle"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_back"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_overlapTop="120dp"
+        app:layout_behavior="@string/scroll_behaviour">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xs_large"
+                android:layout_marginTop="@dimen/spacing_xs_large">
+
+                <LinearLayout
+                    android:id="@+id/cardsHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_xs_large"
+                        android:layout_marginStart="@dimen/spacing_xs_large">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_xs_large"
+                            android:layout_marginEnd="@dimen/layout_margin"
+                            android:layout_marginStart="@dimen/layout_margin"
+                            android:layout_marginTop="45dp"
+                            android:foreground="?selectableItemBackground"
+                            android:translationZ="1dp"
+                            app:cardBackgroundColor="?card_background"
+                            app:contentPadding="@dimen/spacing_xs_large">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|center"
+                                android:layout_marginTop="@dimen/spacing_s_large"
+                                android:gravity="top|center"
+                                android:minHeight="150dp"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/username"
+                                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="K0shk0sh"
+                                    app:autoSizeMaxTextSize="24sp"
+                                    app:autoSizeStepGranularity="2sp"
+                                    app:autoSizeTextType="uniform"/>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_xs_large"
+                                    android:orientation="horizontal">
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/following"
+                                        style="@style/TextAppearance.AppCompat.Medium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/spacing_normal"
+                                        android:layout_weight="1"
+                                        android:background="?selectableItemBackground"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="Following (10000)"
+                                        app:autoSizeMaxTextSize="18sp"
+                                        app:autoSizeStepGranularity="2sp"
+                                        app:autoSizeTextType="uniform"/>
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/followers"
+                                        style="@style/TextAppearance.AppCompat.Medium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="?selectableItemBackground"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="Followers (1000))"
+                                        app:autoSizeMaxTextSize="18sp"
+                                        app:autoSizeStepGranularity="2sp"
+                                        app:autoSizeTextType="uniform"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_xs_large"
+                                    android:background="@drawable/top_border">
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/followBtn"
+                                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_marginEnd="@dimen/spacing_xs_large"
+                                        android:text="@string/follow"
+                                        app:icon="@drawable/ic_add"/>
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/blockBtn"
+                                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:text="@string/block"
+                                        android:visibility="visible"
+                                        app:icon="@drawable/ic_block"
+                                        tools:visibility="visible"/>
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/userImageView"
+                            android:layout_width="@dimen/header_icon_zie"
+                            android:layout_height="@dimen/header_icon_zie"
+                            android:layout_gravity="center|top"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/circle_shape"
+                            android:padding="16dp"
+                            android:src="@mipmap/ic_launcher"
+                            android:translationZ="2dp"/>
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="200dp">
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

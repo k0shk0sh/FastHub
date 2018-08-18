@@ -10,8 +10,6 @@ class MainActivity : BaseActivity() {
 
     override fun layoutRes(): Int = R.layout.activity_main
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {}
-
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             replace(R.id.container, MainFragment.newInstance(), MainFragment.TAG)

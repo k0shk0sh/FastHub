@@ -32,7 +32,7 @@ fun BaseActivity.replace(containerId: Int,
                          tag: String? = null,
                          callback: ((Fragment) -> Unit)? = null) {
     supportFragmentManager.beginTransaction()
-            .replace(containerId, fragment, tag)
+            .replace(containerId, fragment, tag ?: fragment.getSimpleName())
             .runOnCommit {
                 callback?.invoke(fragment)
             }
