@@ -21,6 +21,7 @@ abstract class BaseViewModel : ViewModel() {
     @Inject lateinit var gson: Gson
     val error = MutableLiveData<FastHubErrors>()
     val progress = MutableLiveData<Boolean>()
+    val logoutProcess = MutableLiveData<Boolean>()
     private val disposable = CompositeDisposable()
 
     protected fun add(disposable: Disposable) = this.disposable.add(disposable)

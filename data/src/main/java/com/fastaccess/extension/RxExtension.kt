@@ -1,5 +1,6 @@
 package com.fastaccess.extension
 
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,6 +12,11 @@ import io.reactivex.schedulers.Schedulers
 
 
 fun <T> Maybe<T>.toObservableDistinct(): Observable<T> = this.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .toObservable()
+        .distinctUntilChanged()
+
+fun <T> Flowable<T>.toObservableDistinct(): Observable<T> = this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .toObservable()
         .distinctUntilChanged()
