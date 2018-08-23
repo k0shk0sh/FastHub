@@ -69,8 +69,9 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         if (starredCount == -1) {
             observable = Observable.zip(RestProvider.getUserService(isEnterprise()).getStarred(parameter, page),
                     RestProvider.getUserService(isEnterprise()).getStarredCount(parameter), (repoPageable, count) -> {
-                        if (count != null) {
-                            starredCount = count.getLast();
+                        if (repoPageable != null
+                                && repoPageable.getItems() != null) {
+                            starredCount = repoPageable.getItems().size();
                         }
                         return repoPageable;
                     });
