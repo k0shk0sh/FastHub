@@ -21,29 +21,35 @@ import io.reactivex.Observable;
 
 class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> implements ProfileStarredMvp.Presenter {
 
-    @com.evernote.android.state.State int starredCount = -1;
+    @com.evernote.android.state.State
+    int starredCount = -1;
     private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 
-    @Override public int getCurrentPage() {
+    @Override
+    public int getCurrentPage() {
         return page;
     }
 
-    @Override public int getPreviousTotal() {
+    @Override
+    public int getPreviousTotal() {
         return previousTotal;
     }
 
-    @Override public void setCurrentPage(int page) {
+    @Override
+    public void setCurrentPage(int page) {
         this.page = page;
     }
 
-    @Override public void setPreviousTotal(int previousTotal) {
+    @Override
+    public void setPreviousTotal(int previousTotal) {
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onError(@NonNull Throwable throwable) {
+    @Override
+    public void onError(@NonNull Throwable throwable) {
         sendToView(view -> {
             if (view.getLoadMore().getParameter() != null) {
                 onWorkOffline(view.getLoadMore().getParameter());
@@ -52,7 +58,8 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         super.onError(throwable);
     }
 
-    @Override public boolean onCallApi(int page, @Nullable String parameter) {
+    @Override
+    public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -69,8 +76,9 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         if (starredCount == -1) {
             observable = Observable.zip(RestProvider.getUserService(isEnterprise()).getStarred(parameter, page),
                     RestProvider.getUserService(isEnterprise()).getStarredCount(parameter), (repoPageable, count) -> {
-                        if (count != null) {
-                            starredCount = count.getLast();
+                        if (repoPageable != null
+                                && repoPageable.getItems() != null) {
+                            starredCount = repoPageable.getItems().size();
                         }
                         return repoPageable;
                     });
@@ -90,11 +98,14 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         return true;
     }
 
-    @NonNull @Override public ArrayList<Repo> getRepos() {
+    @NonNull
+    @Override
+    public ArrayList<Repo> getRepos() {
         return repos;
     }
 
-    @Override public void onWorkOffline(@NonNull String login) {
+    @Override
+    public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
             manageDisposable(RxHelper.getObservable(Repo.getStarred(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> {
@@ -107,9 +118,12 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         }
     }
 
-    @Override public void onItemClick(int position, View v, Repo item) {
+    @Override
+    public void onItemClick(int position, View v, Repo item) {
         SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
-    @Override public void onItemLongClick(int position, View v, Repo item) {}
+    @Override
+    public void onItemLongClick(int position, View v, Repo item) {
+    }
 }
