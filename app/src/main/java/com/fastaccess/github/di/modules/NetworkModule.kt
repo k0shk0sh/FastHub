@@ -3,6 +3,8 @@ package com.fastaccess.github.di.modules
 import android.content.Context
 import android.net.Uri
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.response.CustomTypeAdapter
+import com.apollographql.apollo.response.CustomTypeValue
 import com.fastaccess.domain.HttpLoggingInterceptor
 import com.fastaccess.domain.repository.services.LoginService
 import com.fastaccess.domain.repository.services.NotificationService
@@ -15,15 +17,20 @@ import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
+import github.type.CustomType
 import okhttp3.*
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import tech.linjiang.pandora.Pandora
+import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
+import java.net.URI
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Singleton
 
 /**
@@ -62,6 +69,8 @@ class NetworkModule {
     @Singleton @Provides fun provideApollo(okHttpClient: OkHttpClient): ApolloClient = ApolloClient.builder()
             .serverUrl(BuildConfig.GRAPHQL_REST_URL)
             .okHttpClient(okHttpClient)
+            .addCustomTypeAdapter(CustomType.URI, UriApolloAdapter())
+            .addCustomTypeAdapter(CustomType.DATETIME, DateApolloAdapter())
             .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)
@@ -172,6 +181,25 @@ private class GithubResponseConverter(private val gson: Gson,
         @Throws(IOException::class)
         override fun convert(value: ResponseBody): String {
             return value.string()
+        }
+    }
+}
+
+private class UriApolloAdapter : CustomTypeAdapter<URI> {
+    override fun encode(value: URI): CustomTypeValue<String> = CustomTypeValue.GraphQLString(value.toString())
+    override fun decode(value: CustomTypeValue<*>): URI = URI.create(value.value.toString())
+}
+
+private class DateApolloAdapter : CustomTypeAdapter<Date> {
+    override fun encode(value: Date): CustomTypeValue<*> = CustomTypeValue.fromRawValue(value)
+    override fun decode(value: CustomTypeValue<*>): Date {
+        Timber.e("${value.value} ------ ${value::class.java}")
+        return try {
+            val date = value.value as String
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(date) // because Github API is the best of all. /shrug
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Date()
         }
     }
 }
