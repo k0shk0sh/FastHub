@@ -62,10 +62,10 @@ fun View.showHideFabAnimation(show: Boolean, listener: ((show: Boolean) -> Unit)
                 .scaleY(0f)
                 .alpha(0f)
                 .setDuration(150)
+                .setInterpolator(FAST_OUT_LINEAR_IN_INTERPOLATOR)
                 .withEndAction {
                     view.visibility = View.GONE
                     listener?.invoke(false)
                 }
-                .interpolator = FAST_OUT_LINEAR_IN_INTERPOLATOR
     }
 }

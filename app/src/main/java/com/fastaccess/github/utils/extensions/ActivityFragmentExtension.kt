@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 
 /**
@@ -59,3 +60,6 @@ fun FragmentActivity.clearDarkStatusBarIcons() {
     }
 }
 
+fun FragmentActivity.setStatusBarColor(colorAttr: Int = R.attr.colorAccent) {
+    window?.statusBarColor = getColorAttr(colorAttr)
+}

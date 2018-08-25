@@ -7,10 +7,7 @@ import androidx.core.view.isVisible
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.utils.BundleConstant
-import com.fastaccess.github.utils.extensions.clearDarkStatusBarIcons
-import com.fastaccess.github.utils.extensions.getColorAttr
-import com.fastaccess.github.utils.extensions.me
-import com.fastaccess.github.utils.extensions.showHideFabAnimation
+import com.fastaccess.github.utils.extensions.*
 import kotlinx.android.synthetic.main.profile_main_fragment_layout.*
 
 /**
@@ -29,12 +26,13 @@ class ProfileFragment : BaseFragment() {
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         activity?.let { activity ->
             activity.clearDarkStatusBarIcons()
-            activity.window?.statusBarColor = activity.getColorAttr(R.attr.colorAccent)
+            activity.setStatusBarColor()
         }
         Handler().postDelayed({
             swipeRefresh.isRefreshing = false
             userImageView.showHideFabAnimation(true)
         }, 5000)
+
         swipeRefresh.setOnRefreshListener {
             userImageView.showHideFabAnimation(false)
         }
