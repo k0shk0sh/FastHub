@@ -1,10 +1,16 @@
 package com.fastaccess.github.ui.modules.profile.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
+import androidx.core.view.isVisible
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.utils.BundleConstant
+import com.fastaccess.github.utils.extensions.clearDarkStatusBarIcons
+import com.fastaccess.github.utils.extensions.getColorAttr
+import com.fastaccess.github.utils.extensions.me
+import com.fastaccess.github.utils.extensions.showHideFabAnimation
 import kotlinx.android.synthetic.main.profile_main_fragment_layout.*
 
 /**
@@ -17,15 +23,28 @@ class ProfileFragment : BaseFragment() {
     override fun layoutRes(): Int = R.layout.profile_main_fragment_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        username.text = arguments?.getString(BundleConstant.EXTRA) ?: ""
-//        actionsHolder.isVisible = loginBundle != me()
+        username.text = loginBundle
+        actionsHolder.isVisible = loginBundle != me()
+        toolbar.navigationIcon?.setTint(requireContext().getColorAttr(android.R.attr.textColorPrimaryInverse))
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        activity?.let { activity ->
+            activity.clearDarkStatusBarIcons()
+            activity.window?.statusBarColor = activity.getColorAttr(R.attr.colorAccent)
+        }
+        Handler().postDelayed({
+            swipeRefresh.isRefreshing = false
+            userImageView.showHideFabAnimation(true)
+        }, 5000)
+        swipeRefresh.setOnRefreshListener {
+            userImageView.showHideFabAnimation(false)
+        }
     }
 
 
     companion object {
-        fun newInstance(loign: String) = ProfileFragment().apply {
+        fun newInstance(login: String) = ProfileFragment().apply {
             arguments = Bundle().apply {
-                putString(BundleConstant.EXTRA, loign)
+                putString(BundleConstant.EXTRA, login)
             }
         }
     }

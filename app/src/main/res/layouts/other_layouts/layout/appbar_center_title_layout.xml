@@ -17,7 +17,8 @@
         android:background="@color/transparent"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="?android:toolbarStyle"
-        app:theme="?android:toolbarStyle">
+        app:theme="?android:toolbarStyle"
+        tools:navigationIcon="@drawable/ic_back">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/toolbarTitle"

@@ -1,0 +1,34 @@
+query getProfile($login:String!) {
+  user(login: $login) {
+    login
+    avatarUrl
+    viewerCanFollow
+    viewerIsFollowing
+    isViewer
+    isDeveloperProgramMember
+    id
+    databaseId
+    createdAt
+    bio
+    company
+    email
+    name
+    websiteUrl
+    organizations(first:30){
+      nodes{
+        avatarUrl
+        email
+        location
+        login
+        name
+      }
+      totalCount
+    }
+    followers(last: 0) {
+      totalCount
+    }
+    following(last: 0) {
+      totalCount
+    }
+  }
+}

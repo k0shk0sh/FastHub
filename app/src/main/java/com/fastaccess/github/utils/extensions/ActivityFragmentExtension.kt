@@ -2,7 +2,10 @@ package com.fastaccess.github.utils.extensions
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
+import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.fastaccess.github.base.BaseActivity
 
 /**
@@ -46,5 +49,13 @@ fun Context.getColorAttr(attr: Int): Int {
     val color = typedArray.getColor(0, Color.LTGRAY)
     typedArray.recycle()
     return color
+}
+
+fun FragmentActivity.clearDarkStatusBarIcons() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        this.window?.decorView?.let { decoder ->
+            decoder.systemUiVisibility = decoder.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+        }
+    }
 }
 

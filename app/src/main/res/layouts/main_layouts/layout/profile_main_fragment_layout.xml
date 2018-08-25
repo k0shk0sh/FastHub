@@ -1,105 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?colorAccent"
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="?android:toolbarStyle">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:expandedTitleGravity="bottom|center"
-            app:expandedTitleMarginBottom="100dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/spacing_s_large"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_collapseMode="parallax">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/userImageView"
-                    android:layout_width="@dimen/header_icon_zie"
-                    android:layout_height="@dimen/header_icon_zie"
-                    android:layout_gravity="center|top"
-                    android:background="@drawable/circle_shape"
-                    android:padding="16dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:translationZ="2dp"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/username"
-                    style="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    app:autoSizeMaxTextSize="24sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    tools:text="K0shk0sh"/>
-
-            </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="?colorAccent"
+            android:theme="?android:toolbarStyle"
+            app:elevation="0dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:theme="?android:toolbarStyle"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_back"/>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/scroll_behaviour">
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_xs_large"
-                android:orientation="vertical">
+                android:background="@color/transparent"
+                android:navigationIcon="@drawable/ic_back"
+                app:navigationIcon="@drawable/ic_back"
+                app:popupTheme="?android:toolbarStyle"
+                app:theme="?android:toolbarStyle">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/toolbarTitle"
+                    style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_normal"
-                    android:layout_marginEnd="@dimen/layout_margin"
-                    android:layout_marginStart="@dimen/layout_margin"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:foreground="?selectableItemBackground"
-                    android:translationZ="1dp"
-                    app:cardBackgroundColor="?card_background"
-                    app:contentPaddingBottom="@dimen/spacing_normal"
-                    app:contentPaddingLeft="@dimen/spacing_xs_large"
-                    app:contentPaddingRight="@dimen/spacing_xs_large"
-                    app:contentPaddingTop="@dimen/spacing_normal">
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/profile"
+                    android:textColor="?android:textColorPrimaryInverse"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/abeezee"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/spacing_s_large"
+                android:layout_marginStart="@dimen/spacing_s_large">
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top|center"
-                        android:gravity="top|center"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/spacing_xlarge"
+                        android:background="@drawable/bottom_sheet_background"
+                        android:elevation="@dimen/spacing_normal"
+                        android:orientation="vertical"
+                        android:outlineProvider="background"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/username"
+                            style="@style/TextAppearance.MaterialComponents.Headline5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xlarge"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            app:autoSizeMaxTextSize="24sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform"
+                            tools:text="K0shk0sh"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -117,10 +104,10 @@
                                 android:background="?selectableItemBackground"
                                 android:gravity="center"
                                 android:maxLines="1"
-                                android:text="Following (10000)"
                                 app:autoSizeMaxTextSize="18sp"
                                 app:autoSizeStepGranularity="2sp"
-                                app:autoSizeTextType="uniform"/>
+                                app:autoSizeTextType="uniform"
+                                tools:text="Following (10000)"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/followers"
@@ -131,21 +118,11 @@
                                 android:background="?selectableItemBackground"
                                 android:gravity="center"
                                 android:maxLines="1"
-                                android:text="Followers (1000))"
                                 app:autoSizeMaxTextSize="18sp"
                                 app:autoSizeStepGranularity="2sp"
-                                app:autoSizeTextType="uniform"/>
+                                app:autoSizeTextType="uniform"
+                                tools:text="Followers (1000))"/>
                         </LinearLayout>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/description"
-                            style="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
-                            android:textStyle="normal"
-                            android:visibility="gone"
-                            tools:text="Per guest prepare half a kilo of orange juice with heated chili for dessert.Heaven knows when you trap with mind.Eheu.Eheu, orgia!Magnum devatio rare locuss cannabis est."/>
 
                         <LinearLayout
                             android:id="@+id/actionsHolder"
@@ -177,11 +154,60 @@
                                 tools:visibility="visible"/>
 
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/aboutSection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/TextAppearance.MaterialComponents.Body1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_info_outline_small"
+                                android:text="@string/about"
+                                android:textStyle="bold"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/description"
+                                style="@style/TextAppearance.MaterialComponents.Body2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!Try whisking the gold tequila cauliflowers with crusted ketchup and beer, iced.Cum silva persuadere, omnes cliniases imperium neuter, domesticus lacteaes.Ignigenas unda!"
+                                android:textStyle="normal"/>
+
+                        </LinearLayout>
+
                     </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                app:elevation="0dp">
 
-        </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/userImageView"
+                    android:layout_width="@dimen/header_icon_zie"
+                    android:layout_height="@dimen/header_icon_zie"
+                    android:layout_gravity="center|top"
+                    android:layout_marginBottom="@dimen/spacing_micro"
+                    android:layout_marginTop="@dimen/spacing_xs_large"
+                    android:background="@drawable/circle_shape"
+                    android:elevation="@dimen/spacing_micro"
+                    android:padding="16dp"
+                    android:src="@mipmap/ic_launcher"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
+            </com.google.android.material.appbar.AppBarLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+
+</LinearLayout>

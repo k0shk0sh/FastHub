@@ -20,8 +20,8 @@ class IssuesMainScreenUseCase @Inject constructor(private val loginRepository: L
     var state: IssueState = IssueState.OPEN
 
     override fun buildObservable(): Observable<*> = loginRepository.getLogin()
-            .flatMapObservable {
-                return@flatMapObservable it.login?.let {
+            .flatMapObservable { it ->
+                return@flatMapObservable it.login?.let { it ->
                     Rx2Apollo.from(apolloClient.query(GetIssuesQuery.builder()
                             .login(it)
                             .state(arrayListOf(state))
