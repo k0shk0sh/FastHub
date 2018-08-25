@@ -1,11 +1,11 @@
 ext {
-    kotlin = '1.2.51'
+    kotlin = '1.2.61'
     rxJava2 = '2.1.9'
     rxKotlin = '2.2.0'
     rxAndroid = '2.0.1'
     archComponents = '2.0.0-alpha1'
-    supportLibrary = '1.0.0-alpha1'
-    navigation = '1.0.0-alpha01'
+    supportLibrary = '1.0.0-rc01'
+    navigation = '1.0.0-alpha05'
     constraintLayout = '1.1.0'
     dagger2 = '2.16'
     butterKnife = '8.8.1'
@@ -13,7 +13,7 @@ ext {
     okHttp = '3.8.0'
     retrofit2 = '2.4.0'
     gson = '2.8.1'
-    glide = '4.7.1'
+    glide = '4.8.0'
     timber = '4.6.1'
     chuck = '1.1.0'
     junit = '4.12'
@@ -70,7 +70,7 @@ ext {
             "com.squareup.retrofit2:adapter-rxjava2:$retrofit2",
             "com.squareup.retrofit2:converter-gson:$retrofit2",
             "com.google.code.gson:gson:$gson",
-//            "com.github.bumptech.glide:glide:$glide",
+            "com.github.bumptech.glide:glide:$glide",
             "com.jakewharton.timber:timber:$timber",
             "com.apollographql.apollo:apollo-runtime:$apollo",
             "com.apollographql.apollo:apollo-rx2-support:$apollo",
@@ -104,7 +104,7 @@ ext {
     processing = [
             "com.google.dagger:dagger-android-processor:$dagger2",
             "com.google.dagger:dagger-compiler:$dagger2",
-//            "com.github.bumptech.glide:compiler:$glide",
+            "com.github.bumptech.glide:compiler:$glide",
             "androidx.room:room-runtime:$archComponents",
             "androidx.paging:paging-runtime:$archComponents"
     ]

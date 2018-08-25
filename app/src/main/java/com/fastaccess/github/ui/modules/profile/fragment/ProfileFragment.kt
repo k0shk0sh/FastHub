@@ -12,10 +12,13 @@ import kotlinx.android.synthetic.main.profile_main_fragment_layout.*
  */
 class ProfileFragment : BaseFragment() {
 
+    private val loginBundle: String by lazy { arguments?.getString(BundleConstant.EXTRA) ?: "" }
+
     override fun layoutRes(): Int = R.layout.profile_main_fragment_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         username.text = arguments?.getString(BundleConstant.EXTRA) ?: ""
+//        actionsHolder.isVisible = loginBundle != me()
     }
 
 
