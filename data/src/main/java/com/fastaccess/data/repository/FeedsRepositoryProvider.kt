@@ -45,7 +45,7 @@ class FeedsRepositoryProvider @Inject constructor(private val feedsDao: FeedDao,
                 userService.getReceivedEvents(it.login ?: "", page)
                         .map { gson.fromJson<List<FeedModel>>(gson.toJson(it.items), object : TypeToken<List<FeedModel>>() {}.type) }
             }, { user, list ->
-                feedsDao.deleteOldFeeds()
+                if (page <= 1) feedsDao.deleteAll()
                 list.forEach {
                     it.login = user.login
                     feedsDao.upsert(it)

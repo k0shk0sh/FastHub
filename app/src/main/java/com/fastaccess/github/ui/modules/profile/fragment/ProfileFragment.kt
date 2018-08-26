@@ -3,18 +3,17 @@ package com.fastaccess.github.ui.modules.profile.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.rx2.Rx2Apollo
-import com.fastaccess.domain.FastHubObserver
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.platform.glide.GlideApp
+import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
-import github.GetProfileQuery
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.profile_main_fragment_layout.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -22,7 +21,9 @@ import javax.inject.Inject
  */
 class ProfileFragment : BaseFragment() {
 
-    @Inject lateinit var apollo: ApolloClient
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
+
     private val loginBundle: String by lazy { arguments?.getString(BundleConstant.EXTRA) ?: "" }
 
     override fun layoutRes(): Int = R.layout.profile_main_fragment_layout
@@ -38,44 +39,49 @@ class ProfileFragment : BaseFragment() {
         }
         swipeRefresh.setOnRefreshListener {
             userImageView.showHideFabAnimation(false)
-            callApi()
+            viewModel.getUserFromRemote(loginBundle)
         }
-        swipeRefresh.isRefreshing = true
-        userImageView.showHideFabAnimation(false)
-        callApi()
+        viewModel.getUser(loginBundle).observeNotNull(this) {
+            Timber.e("$it")
+            initUI(it)
+        }
+
+        if (savedInstanceState == null) {
+            swipeRefresh.isRefreshing = true
+            userImageView.showHideFabAnimation(false)
+            viewModel.getUserFromRemote(loginBundle)
+        }
+
+        viewModel.progress.observeNotNull(this) {
+            swipeRefresh.isRefreshing = it == true
+        }
+        viewModel.error.observeNotNull(this) {
+            showSnackBar(view, resId = it.resId, message = it.message)
+        }
     }
 
-    private fun callApi() {
-        Rx2Apollo.from(apollo.query(GetProfileQuery(loginBundle)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter { !it.hasErrors() }
-                .map { it.data()?.user }
-                .doOnNext {
-                    userImageView.showHideFabAnimation(true)
-                    swipeRefresh.isRefreshing = false
-                    val user = it ?: return@doOnNext
-                    followBtn.isVisible = user.isViewerCanFollow == true
-                    blockBtn.isCursorVisible = user.isViewer == true
-                    description.isVisible = user.bio?.isNotEmpty() == true
-                    description.text = user.bio ?: ""
-                    email.isVisible = user.email.isNotEmpty()
-                    email.text = user.email
-                    company.isVisible = user.company?.isNotEmpty() == true
-                    company.text = user.company ?: ""
-                    joined.text = user.createdAt.timeAgo()
-                    joined.isVisible = true
-                    location.isVisible = user.location?.isNotEmpty() == true
-                    location.text = user.location ?: ""
-                    name.isVisible = user.name?.isNotEmpty() == true
-                    name.text = user.name ?: ""
-                    organizationHolder.isVisible = user.organizations.nodes?.isNotEmpty() == true
-                    GlideApp.with(this)
-                            .load(user.avatarUrl.toString())
-                            .circleCrop()
-                            .into(userImageView)
-                }
-                .subscribe(FastHubObserver())
+    private fun initUI(user: UserModel) {
+        userImageView.showHideFabAnimation(true)
+        swipeRefresh.isRefreshing = false
+        followBtn.isVisible = user.viewerCanFollow == true
+        blockBtn.isCursorVisible = user.isViewer == true
+        description.isVisible = user.bio?.isNotEmpty() == true
+        description.text = user.bio ?: ""
+        email.isVisible = user.email?.isNotEmpty() == true
+        email.text = user.email
+        company.isVisible = user.company?.isNotEmpty() == true
+        company.text = user.company ?: ""
+        joined.text = user.createdAt?.timeAgo() ?: ""
+        joined.isVisible = true
+        location.isVisible = user.location?.isNotEmpty() == true
+        location.text = user.location ?: ""
+        name.isVisible = user.name?.isNotEmpty() == true
+        name.text = user.name ?: ""
+        organizationHolder.isVisible = user.organizations?.nodes?.isNotEmpty() == true
+        GlideApp.with(this)
+                .load(user.avatarUrl.toString())
+                .circleCrop()
+                .into(userImageView)
     }
 
 

@@ -1,5 +1,6 @@
 package com.fastaccess.github.di.modules
 
+import com.apollographql.apollo.ApolloClient
 import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.db.FastHubLoginDatabase
 import com.fastaccess.data.repository.*
@@ -19,9 +20,10 @@ class RepositoryModule {
         return LoginRepositoryProvider(fastHubLoginDatabase.provideLoginDao(), loginService)
     }
 
-    @Singleton @Provides fun provideUserRepository(userService: UserService,
+    @Singleton @Provides fun provideUserRepository(fastHubDatabase: FastHubDatabase,
+                                                   apolloClient: ApolloClient,
                                                    gson: Gson): UserRepositoryProvider {
-        return UserRepositoryProvider(userService, gson)
+        return UserRepositoryProvider(fastHubDatabase.getUserDao(), apolloClient, gson)
     }
 
     @Singleton @Provides fun provideMainIssuesPullsRepository(fastHubDatabase: FastHubDatabase): MainIssuesPullsRepositoryProvider {

@@ -1,6 +1,7 @@
 package com.fastaccess.data.persistence.dao
 
 import androidx.room.*
+import timber.log.Timber
 
 
 /**
@@ -17,6 +18,7 @@ abstract class BaseDao<T> {
 
     @Transaction open fun upsert(obj: T) {
         val id = insert(obj)
+        Timber.e("upsert($id) if id == -1 then we are proceeding with update")
         if (id == -1L) {
             update(obj)
         }

@@ -24,7 +24,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import tech.linjiang.pandora.Pandora
-import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
@@ -193,7 +192,6 @@ private class UriApolloAdapter : CustomTypeAdapter<URI> {
 private class DateApolloAdapter : CustomTypeAdapter<Date> {
     override fun encode(value: Date): CustomTypeValue<*> = CustomTypeValue.fromRawValue(value)
     override fun decode(value: CustomTypeValue<*>): Date {
-        Timber.e("${value.value} ------ ${value::class.java}")
         return try {
             val date = value.value as String
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(date) // because Github API is the best of all. /shrug

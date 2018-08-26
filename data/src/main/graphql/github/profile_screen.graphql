@@ -15,6 +15,7 @@ query getProfile($login:String!) {
     name
     websiteUrl
     location
+    url
     organizations(first:30){
       nodes{
         avatarUrl

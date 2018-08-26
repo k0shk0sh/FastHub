@@ -8,29 +8,38 @@ import java.util.*
 
 @Entity(tableName = TABLE_NAME)
 data class UserModel(
-        @PrimaryKey @SerializedName("id") var id: Long,
+        @PrimaryKey @SerializedName("databaseId", alternate = ["id"]) var id: Long,
         @SerializedName("login") var login: String? = null,
-        @SerializedName("avatar_url") var avatarUrl: String? = null,
-        @SerializedName("gravatar_id") var gravatarId: String? = null,
+        @SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
         @SerializedName("url") var url: String? = null,
-        @SerializedName("html_url") var htmlUrl: String? = null,
-        @SerializedName("type") var type: String? = null,
-        @SerializedName("site_admin") var siteAdmin: Boolean? = null,
         @SerializedName("name") var name: String? = null,
         @SerializedName("company") var company: String? = null,
-        @SerializedName("blog") var blog: String? = null,
+        @SerializedName("blog", alternate = ["websiteUrl"]) var blog: String? = null,
         @SerializedName("location") var location: String? = null,
         @SerializedName("email") var email: String? = null,
-        @SerializedName("hireable") var hireable: Boolean? = null,
         @SerializedName("bio") var bio: String? = null,
-        @SerializedName("public_repos") var publicRepos: Int? = null,
-        @SerializedName("public_gists") var publicGists: Int? = null,
-        @SerializedName("followers") var followers: Int? = null,
-        @SerializedName("following") var following: Int? = null,
-        @SerializedName("created_at") var createdAt: Date? = null,
-        @SerializedName("updated_at") var updatedAt: Date? = null
+        @SerializedName("created_at", alternate = ["createdAt"]) var createdAt: Date? = null,
+        @SerializedName("updated_at") var updatedAt: Date? = null,
+        @SerializedName("viewerCanFollow") var viewerCanFollow: Boolean? = null,
+        @SerializedName("viewerIsFollowing") var viewerIsFollowing: Boolean? = null,
+        @SerializedName("isViewer") var isViewer: Boolean? = null,
+        @SerializedName("isDeveloperProgramMember") var isDeveloperProgramMember: Boolean? = null,
+        @SerializedName("followers") var followers: UserCountModel? = null,
+        @SerializedName("following") var following: UserCountModel? = null,
+        @SerializedName("organizations") var organizations: UserOrganizationModel? = null
 ) {
     companion object {
         const val TABLE_NAME = "user_table"
     }
 }
+
+data class UserCountModel(@SerializedName("totalCount") var totalCount: Int? = null)
+
+data class UserOrganizationModel(@SerializedName("totalCount") var totalCount: Int? = null,
+                                 @SerializedName("nodes") var nodes: List<UserOrganizationNodesModel>? = null)
+
+data class UserOrganizationNodesModel(@SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
+                                      @SerializedName("location") var location: String? = null,
+                                      @SerializedName("email") var email: String? = null,
+                                      @SerializedName("login") var login: String? = null,
+                                      @SerializedName("name") var name: String? = null)
