@@ -32,5 +32,26 @@ query getProfile($login:String!) {
     following(last: 0) {
       totalCount
     }
+    pinnedRepositories(first: 5) {
+      totalCount
+      nodes {
+        name
+        nameWithOwner
+        primaryLanguage {
+          name
+          color
+        }
+        stargazers(first: 0) {
+          totalCount
+        }
+        forkCount
+        issues(first: 0, states: OPEN) {
+          totalCount
+        }
+        pullRequests(first: 0, states: OPEN) {
+          totalCount
+        }
+      }
+    }
   }
 }

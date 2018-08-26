@@ -1,10 +1,7 @@
 package com.fastaccess.data.persistence.db
 
 import androidx.room.TypeConverter
-import com.fastaccess.data.persistence.models.PayloadModel
-import com.fastaccess.data.persistence.models.RepositoryModel
-import com.fastaccess.data.persistence.models.UserCountModel
-import com.fastaccess.data.persistence.models.UserOrganizationModel
+import com.fastaccess.data.persistence.models.*
 import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.Gson
 import java.util.*
@@ -43,5 +40,12 @@ class UserCountConverter {
 
 class UserOrganizationConverter {
     @TypeConverter fun toDbValue(data: UserOrganizationModel? = null): String? = data?.toJson()
-    @TypeConverter fun fromDbToValue(data: String? = null): UserOrganizationModel? = data?.let { Gson().fromJson(it, UserOrganizationModel::class.java) }
+    @TypeConverter fun fromDbToValue(
+            data: String? = null): UserOrganizationModel? = data?.let { Gson().fromJson(it, UserOrganizationModel::class.java) }
+}
+
+class UserPinnedReposModelConverter {
+    @TypeConverter fun toDbValue(data: UserPinnedReposModel? = null): String? = data?.toJson()
+    @TypeConverter fun fromDbToValue(
+            data: String? = null): UserPinnedReposModel? = data?.let { Gson().fromJson(it, UserPinnedReposModel::class.java) }
 }

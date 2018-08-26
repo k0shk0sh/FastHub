@@ -26,7 +26,8 @@ data class UserModel(
         @SerializedName("isDeveloperProgramMember") var isDeveloperProgramMember: Boolean? = null,
         @SerializedName("followers") var followers: UserCountModel? = null,
         @SerializedName("following") var following: UserCountModel? = null,
-        @SerializedName("organizations") var organizations: UserOrganizationModel? = null
+        @SerializedName("organizations") var organizations: UserOrganizationModel? = null,
+        @SerializedName("pinnedRepositories") var pinnedRepositories: UserPinnedReposModel? = null
 ) {
     companion object {
         const val TABLE_NAME = "user_table"
@@ -43,3 +44,17 @@ data class UserOrganizationNodesModel(@SerializedName(value = "avatar_url", alte
                                       @SerializedName("email") var email: String? = null,
                                       @SerializedName("login") var login: String? = null,
                                       @SerializedName("name") var name: String? = null)
+
+data class UserPinnedReposModel(@SerializedName("totalCount") var totalCount: Int? = null,
+                                @SerializedName("node") var pinnedRepositories: UserPinnedRepoNodesModel? = null)
+
+data class UserPinnedRepoNodesModel(@SerializedName("name") var name: String? = null,
+                                    @SerializedName("nameWithOwner") var nameWithOwner: String? = null,
+                                    @SerializedName("primaryLanguage") var primaryLanguage: UserPinnedRepoLanguageModel? = null,
+                                    @SerializedName("stargazers") var stargazers: UserCountModel? = null,
+                                    @SerializedName("issues") var issues: UserCountModel? = null,
+                                    @SerializedName("pullRequests") var pullRequests: UserCountModel? = null,
+                                    @SerializedName("forkCount") var forkCount: Long? = null)
+
+data class UserPinnedRepoLanguageModel(@SerializedName("name") var name: String? = null,
+                                       @SerializedName("color") var color: String? = null)

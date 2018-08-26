@@ -16,14 +16,15 @@ import com.fastaccess.data.persistence.models.UserModel
  * Created by Kosh on 11.05.18.
  */
 
-const val VERSION = 3
+const val VERSION = 4
 const val DATABASE_NAME = "FastHub-Room-DB"
 
 @Database(version = VERSION, entities = [UserModel::class, MainIssuesPullsModel::class,
     NotificationModel::class, FeedModel::class], exportSchema = false)
 @TypeConverters(DateConverter::class, EventTypesConverter::class,
         FeedPayloadConverter::class, FeedRepoConverter::class,
-        UserCountConverter::class, UserOrganizationConverter::class)
+        UserCountConverter::class, UserOrganizationConverter::class,
+        UserPinnedReposModelConverter::class)
 abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getMainIssuesPullsDao(): MainIssuesPullsDao
     abstract fun getNotifications(): NotificationsDao

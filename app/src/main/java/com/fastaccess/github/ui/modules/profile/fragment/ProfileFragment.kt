@@ -9,6 +9,7 @@ import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.platform.glide.GlideApp
+import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
@@ -77,7 +78,13 @@ class ProfileFragment : BaseFragment() {
         location.text = user.location ?: ""
         name.isVisible = user.name?.isNotEmpty() == true
         name.text = user.name ?: ""
-        organizationHolder.isVisible = user.organizations?.nodes?.isNotEmpty() == true
+        user.organizations?.nodes?.let { orgs ->
+            if (orgs.isNotEmpty()) {
+                organizationHolder.isVisible = true
+                organizationList.removeAllCells()
+                organizationList.addCells(orgs.map { ProfileOrganizationCell(it, GlideApp.with(this)) })
+            }
+        }
         GlideApp.with(this)
                 .load(user.avatarUrl.toString())
                 .circleCrop()
