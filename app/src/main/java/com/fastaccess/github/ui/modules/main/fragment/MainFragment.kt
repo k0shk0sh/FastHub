@@ -75,8 +75,14 @@ class MainFragment : BaseFragment() {
             @SuppressLint("SwitchIntDef")
             override fun onStateChanged(p0: View, state: Int) {
                 when (state) {
-                    BottomSheetBehavior.STATE_EXPANDED -> bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_arrow_drop_down)
-                    BottomSheetBehavior.STATE_COLLAPSED -> bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_menu)
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        shadow?.isVisible = false
+                        bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_arrow_drop_down)
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        shadow?.isVisible = true
+                        bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_menu)
+                    }
                 }
             }
         })

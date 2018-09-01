@@ -60,8 +60,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/spacing_s_large"
-                    android:layout_marginStart="@dimen/spacing_s_large"
                     android:layout_marginTop="@dimen/spacing_xlarge"
                     android:background="@drawable/bottom_sheet_background"
                     android:elevation="@dimen/spacing_normal"
