@@ -34,9 +34,9 @@ data class UserModel(
     }
 }
 
-data class UserCountModel(@SerializedName("totalCount") var totalCount: Int? = null)
+data class UserCountModel(@SerializedName("totalCount") var totalCount: Long? = null)
 
-data class UserOrganizationModel(@SerializedName("totalCount") var totalCount: Int? = null,
+data class UserOrganizationModel(@SerializedName("totalCount") var totalCount: Long? = null,
                                  @SerializedName("nodes") var nodes: List<UserOrganizationNodesModel>? = null)
 
 data class UserOrganizationNodesModel(@SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
@@ -45,8 +45,8 @@ data class UserOrganizationNodesModel(@SerializedName(value = "avatar_url", alte
                                       @SerializedName("login") var login: String? = null,
                                       @SerializedName("name") var name: String? = null)
 
-data class UserPinnedReposModel(@SerializedName("totalCount") var totalCount: Int? = null,
-                                @SerializedName("node") var pinnedRepositories: UserPinnedRepoNodesModel? = null)
+data class UserPinnedReposModel(@SerializedName("totalCount") var totalCount: Long? = null,
+                                @SerializedName("nodes") var pinnedRepositories: List<UserPinnedRepoNodesModel>? = null)
 
 data class UserPinnedRepoNodesModel(@SerializedName("name") var name: String? = null,
                                     @SerializedName("nameWithOwner") var nameWithOwner: String? = null,

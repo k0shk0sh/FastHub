@@ -45,9 +45,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/spacing_s_large"
-        android:layout_marginStart="@dimen/spacing_s_large">
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
@@ -62,14 +60,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/spacing_s_large"
+                    android:layout_marginStart="@dimen/spacing_s_large"
                     android:layout_marginTop="@dimen/spacing_xlarge"
                     android:background="@drawable/bottom_sheet_background"
                     android:elevation="@dimen/spacing_normal"
                     android:orientation="vertical"
                     android:outlineProvider="background"
-                    android:paddingBottom="@dimen/spacing_xlarge"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large">
+                    android:paddingBottom="@dimen/spacing_xlarge">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/username"
@@ -79,6 +77,8 @@
                         android:layout_marginTop="@dimen/spacing_xlarge"
                         android:gravity="center"
                         android:maxLines="1"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
                         app:autoSizeMaxTextSize="24sp"
                         app:autoSizeStepGranularity="2sp"
                         app:autoSizeTextType="uniform"
@@ -92,6 +92,8 @@
                         android:layout_marginTop="@dimen/spacing_micro"
                         android:gravity="center"
                         android:maxLines="1"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
                         android:visibility="visible"
                         app:autoSizeMaxTextSize="20sp"
                         app:autoSizeStepGranularity="2sp"
@@ -102,7 +104,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_normal"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/following"
@@ -140,7 +144,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/spacing_xs_large"
-                        android:background="@drawable/top_border">
+                        android:background="@drawable/top_border"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/followBtn"
@@ -170,7 +176,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_xs_large"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/TextAppearance.MaterialComponents.Body1"
@@ -205,6 +213,8 @@
                         android:gravity="center|start"
                         android:maxLines="1"
                         android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
                         android:paddingTop="@dimen/spacing_normal"
                         android:textStyle="normal"
                         android:visibility="gone"
@@ -226,6 +236,8 @@
                         android:gravity="center|start"
                         android:maxLines="1"
                         android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
                         android:paddingTop="@dimen/spacing_normal"
                         android:textStyle="normal"
                         android:visibility="gone"
@@ -248,6 +260,8 @@
                         android:gravity="center|start"
                         android:maxLines="1"
                         android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
                         android:paddingTop="@dimen/spacing_normal"
                         android:textStyle="normal"
                         android:visibility="gone"
@@ -269,6 +283,8 @@
                         android:gravity="center|start"
                         android:maxLines="1"
                         android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
                         android:paddingTop="@dimen/spacing_normal"
                         android:textStyle="normal"
                         android:visibility="gone"
@@ -295,6 +311,8 @@
                             android:drawablePadding="@dimen/spacing_normal"
                             android:drawableStart="@drawable/ic_group"
                             android:gravity="center|start"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
                             android:text="@string/organizations"
                             android:textStyle="bold"/>
 
@@ -303,6 +321,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
+                            android:paddingEnd="@dimen/spacing_normal"
+                            android:paddingStart="@dimen/spacing_normal"
                             app:srv_gridSpanCount="1"
                             app:srv_layoutMode="linearHorizontal"
                             app:srv_snappy="true"/>
@@ -325,6 +345,8 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/spacing_normal"
                             android:drawableStart="@drawable/ic_pin"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
                             android:text="@string/pinned"
                             android:textStyle="bold"/>
 
@@ -333,9 +355,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
-                            app:srv_gridSpanCount="1"
-                            app:srv_layoutMode="grid"
-                            app:srv_snappy="true"/>
+                            app:srv_layoutMode="linearVertical"/>
                     </LinearLayout>
                 </LinearLayout>
 

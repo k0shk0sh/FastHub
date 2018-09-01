@@ -15,10 +15,7 @@ import com.fastaccess.github.ui.adapter.MainIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.NotificationsAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.profile.ProfileActivity
-import com.fastaccess.github.utils.extensions.me
-import com.fastaccess.github.utils.extensions.observeNotNull
-import com.fastaccess.github.utils.extensions.otpCode
-import com.fastaccess.github.utils.extensions.token
+import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*

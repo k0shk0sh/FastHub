@@ -2,6 +2,7 @@
     <dimen name="layout_margin">16dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_xxs_large">12dp</dimen>
     <dimen name="spacing_xs_large">16dp</dimen>
     <dimen name="spacing_s_large">24dp</dimen>
     <dimen name="spacing_large">32dp</dimen>

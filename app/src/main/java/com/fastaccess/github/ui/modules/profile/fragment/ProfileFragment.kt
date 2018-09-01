@@ -10,11 +10,11 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
+import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
 import kotlinx.android.synthetic.main.profile_main_fragment_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -42,12 +42,10 @@ class ProfileFragment : BaseFragment() {
             userImageView.showHideFabAnimation(false)
             viewModel.getUserFromRemote(loginBundle)
         }
-        viewModel.getUser(loginBundle).observeNotNull(this) {
-            Timber.e("$it")
-            initUI(it)
-        }
 
-        if (savedInstanceState == null) {
+        viewModel.getUser(loginBundle).observeNotNull(this) { initUI(it) }
+
+        if (savedInstanceState == null || viewModel.getUser(loginBundle).value == null) {
             swipeRefresh.isRefreshing = true
             userImageView.showHideFabAnimation(false)
             viewModel.getUserFromRemote(loginBundle)
@@ -56,6 +54,7 @@ class ProfileFragment : BaseFragment() {
         viewModel.progress.observeNotNull(this) {
             swipeRefresh.isRefreshing = it == true
         }
+
         viewModel.error.observeNotNull(this) {
             showSnackBar(view, resId = it.resId, message = it.message)
         }
@@ -85,8 +84,17 @@ class ProfileFragment : BaseFragment() {
                 organizationList.addCells(orgs.map { ProfileOrganizationCell(it, GlideApp.with(this)) })
             }
         }
+        user.pinnedRepositories?.pinnedRepositories?.let { nodes ->
+            if (nodes.isNotEmpty()) {
+                pinnedHolder.isVisible = true
+                pinnedList.addDivider()
+                pinnedList.removeAllCells()
+                pinnedList.addCells(nodes.map { ProfilePinnedRepoCell(it) })
+            }
+        }
         GlideApp.with(this)
-                .load(user.avatarUrl.toString())
+                .load(user.avatarUrl)
+                .fallback(R.drawable.ic_profile)
                 .circleCrop()
                 .into(userImageView)
     }

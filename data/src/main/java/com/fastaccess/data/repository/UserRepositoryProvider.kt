@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.persistence.dao.UserDao
-import com.fastaccess.data.persistence.models.UserCountModel
-import com.fastaccess.data.persistence.models.UserModel
-import com.fastaccess.data.persistence.models.UserOrganizationModel
-import com.fastaccess.data.persistence.models.UserOrganizationNodesModel
+import com.fastaccess.data.persistence.models.*
 import com.google.gson.Gson
 import github.GetProfileQuery
 import io.reactivex.Observable
@@ -31,10 +28,16 @@ class UserRepositoryProvider @Inject constructor(private val userDao: UserDao,
                             ?: 0, queryUser.login, queryUser.avatarUrl.toString(), queryUser.url.toString(), queryUser.name, queryUser.company,
                             queryUser.websiteUrl.toString(), queryUser.location, queryUser.email, queryUser.bio, queryUser.createdAt,
                             queryUser.createdAt, queryUser.isViewerCanFollow, queryUser.isViewerIsFollowing, queryUser.isViewer,
-                            queryUser.isDeveloperProgramMember, UserCountModel(queryUser.followers.totalCount.toInt()),
-                            UserCountModel(queryUser.following.totalCount.toInt()),
-                            UserOrganizationModel(queryUser.organizations.totalCount.toInt(), queryUser.organizations.nodes?.map {
+                            queryUser.isDeveloperProgramMember, UserCountModel(queryUser.followers.totalCount),
+                            UserCountModel(queryUser.following.totalCount),
+                            UserOrganizationModel(queryUser.organizations.totalCount, queryUser.organizations.nodes?.map {
                                 UserOrganizationNodesModel(it.avatarUrl.toString(), it.location, it.email, it.login, it.name)
+                            }?.toList()), UserPinnedReposModel(queryUser.pinnedRepositories.totalCount,
+                            queryUser.pinnedRepositories.nodes?.map {
+                                UserPinnedRepoNodesModel(it.name, it.nameWithOwner,
+                                        UserPinnedRepoLanguageModel(it.primaryLanguage?.name, it.primaryLanguage?.color),
+                                        UserCountModel(it.stargazers.totalCount), UserCountModel(it.issues.totalCount),
+                                        UserCountModel(it.pullRequests.totalCount), it.forkCount)
                             }?.toList()))
                 }?.apply {
                     userDao.upsert(this)

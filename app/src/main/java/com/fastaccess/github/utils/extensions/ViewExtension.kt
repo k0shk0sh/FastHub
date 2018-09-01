@@ -6,7 +6,12 @@ import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fastaccess.github.R
+import com.fastaccess.github.ui.widget.recyclerview.decoration.InsetDividerDecoration
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -68,4 +73,31 @@ fun View.showHideFabAnimation(show: Boolean, listener: ((show: Boolean) -> Unit)
                     listener?.invoke(false)
                 }
     }
+}
+
+fun RecyclerView.addKeyLineDivider() {
+    if (canAddDivider()) {
+        val resources = resources
+        addItemDecoration(InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
+                resources.getDimensionPixelSize(R.dimen.keyline_2), context.getColorAttr(R.attr.dividerColor)))
+    }
+}
+
+fun RecyclerView.addDivider() {
+    if (canAddDivider()) {
+        val resources = resources
+        addItemDecoration(InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0, context.getColorAttr(R.attr.dividerColor)))
+    }
+}
+
+fun RecyclerView.canAddDivider(): Boolean {
+    if (layoutManager != null) {
+        val layoutManager = this.layoutManager
+        when (layoutManager) {
+            is GridLayoutManager -> return layoutManager.spanCount == 1
+            is LinearLayoutManager -> return true
+            is StaggeredGridLayoutManager -> return layoutManager.spanCount == 1
+        }
+    }
+    return false
 }

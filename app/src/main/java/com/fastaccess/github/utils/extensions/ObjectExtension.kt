@@ -44,3 +44,10 @@ fun RepositoryModel.itsFastHub() = "k0shk0sh/FastHub".equals(name, true) || "k0s
 
 fun Any.me() = "k0shk0sh"
 fun Any.fastHub() = "k0shk0sh/FastHub"
+
+fun Long.formatNumber(): String {
+    if (this < 999) return this.toString()
+    val count = this.toDouble()
+    val exp = (Math.log(count) / Math.log(1000.0)).toInt()
+    return String.format("%.1f%c", count / Math.pow(1000.0, exp.toDouble()), "kMGTPE"[exp - 1])
+}
