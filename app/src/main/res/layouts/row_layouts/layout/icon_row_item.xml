@@ -5,5 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/header_icon_zie"
     android:layout_height="@dimen/header_icon_zie"
-    android:layout_margin="@dimen/spacing_normal"
+    android:padding="@dimen/spacing_normal"
+    android:scaleType="centerInside"
     tools:src="@mipmap/ic_launcher"/>

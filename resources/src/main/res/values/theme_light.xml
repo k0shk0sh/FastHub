@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <color name="lightWindowBackground">#FAFAFA</color>
+    <color name="lightWindowBackground">#fff</color>
     <color name="lightDivider">#80949494</color>
     <color name="light_patch_addition_color">#CCFFCC</color>
     <color name="light_patch_deletion_color">#FFDDDD</color>
     <color name="light_patch_ref_color">#EEEEEE</color>
     <color name="light_accent">#2962FF</color>
-    <color name="light_primary">#F5F5F5</color>
-    <color name="light_primary_dark">#E0E0E0</color>
+    <color name="light_primary">#FAFAFA</color>
+    <color name="light_primary_dark">#FAFAFA</color>
 
     <style name="ThemeLight" parent="ThemeLight.Base"/>
 
@@ -41,6 +41,8 @@
         <item name="android:dialogTheme">@style/DialogThemeLight</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight</item>
         <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+        <item name="android:navigationBarColor">@color/lightWindowBackground</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
 
     <style name="DialogThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">

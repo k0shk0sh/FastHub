@@ -2,8 +2,11 @@ package com.fastaccess.github.utils.extensions
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.fastaccess.github.R
@@ -63,3 +66,5 @@ fun FragmentActivity.clearDarkStatusBarIcons() {
 fun FragmentActivity.setStatusBarColor(colorAttr: Int = R.attr.colorAccent) {
     window?.statusBarColor = getColorAttr(colorAttr)
 }
+
+fun Fragment.getDrawable(@DrawableRes drawableRes: Int): Drawable? = ContextCompat.getDrawable(requireContext(), drawableRes)

@@ -14,7 +14,8 @@ import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
-import kotlinx.android.synthetic.main.profile_main_fragment_layout.*
+import kotlinx.android.synthetic.main.appbar_center_title_layout.*
+import kotlinx.android.synthetic.main.profile_fragment_layout.*
 import javax.inject.Inject
 
 /**
@@ -27,19 +28,16 @@ class ProfileFragment : BaseFragment() {
 
     private val loginBundle: String by lazy { arguments?.getString(BundleConstant.EXTRA) ?: "" }
 
-    override fun layoutRes(): Int = R.layout.profile_main_fragment_layout
+    override fun layoutRes(): Int = R.layout.profile_fragment_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         username.text = loginBundle
+        toolbarTitle.text = getString(R.string.profile)
         actionsHolder.isVisible = loginBundle != me()
-        toolbar.navigationIcon?.setTint(requireContext().getColorAttr(android.R.attr.textColorPrimaryInverse))
+        toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-        activity?.let { activity ->
-            activity.clearDarkStatusBarIcons()
-            activity.setStatusBarColor()
-        }
+
         swipeRefresh.setOnRefreshListener {
-            userImageView.showHideFabAnimation(false)
             viewModel.getUserFromRemote(loginBundle)
         }
 
@@ -47,7 +45,6 @@ class ProfileFragment : BaseFragment() {
 
         if (savedInstanceState == null || viewModel.getUser(loginBundle).value == null) {
             swipeRefresh.isRefreshing = true
-            userImageView.showHideFabAnimation(false)
             viewModel.getUserFromRemote(loginBundle)
         }
 
@@ -61,7 +58,8 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun initUI(user: UserModel) {
-        userImageView.showHideFabAnimation(true)
+        following.text = "${getString(R.string.following)}: ${user.following?.totalCount ?: 0}"
+        followers.text = "${getString(R.string.followers)}: ${user.followers?.totalCount ?: 0}"
         swipeRefresh.isRefreshing = false
         followBtn.isVisible = user.viewerCanFollow == true
         blockBtn.isCursorVisible = user.isViewer == true

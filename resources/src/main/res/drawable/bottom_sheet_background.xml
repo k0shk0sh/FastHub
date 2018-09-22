@@ -6,6 +6,6 @@
         android:topLeftRadius="@dimen/spacing_xs_large"
         android:topRightRadius="@dimen/spacing_xs_large"/>
 
-    <solid android:color="?android:windowBackground"/>
+    <solid android:color="?card_background"/>
 
 </shape>

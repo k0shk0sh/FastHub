@@ -10,6 +10,7 @@ import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.domain.response.enums.EventsType
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.ui.modules.profile.ProfileActivity
 import com.fastaccess.github.ui.widget.SpannableBuilder
 import com.fastaccess.github.utils.extensions.replaceAllNewLines
 import com.fastaccess.github.utils.extensions.timeAgo
@@ -32,6 +33,9 @@ class FeedsAdapter : ListAdapter<FeedModel, FeedsAdapter.ViewHolder>(object : Di
 
         override fun bind(item: FeedModel) {
             itemView.apply {
+                setOnClickListener {
+                    ProfileActivity.start(context, item.actor?.login ?: "")
+                }
                 feedDescription.text = ""
                 feedDescription.isVisible = false
                 feedTitle.text = context.getString(item.type?.titleId ?: 0).toLowerCase()
