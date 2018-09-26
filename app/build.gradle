@@ -114,7 +114,7 @@ dependencies {
     implementation dependency.supportLibraries
     implementation dependency.extrasLibraries
     implementation dependency.networking
-    implementation dependency.rxJava
+    implementation dependency.extrasLibraries
     implementation dependency.dagger
     implementation dependency.archs
 

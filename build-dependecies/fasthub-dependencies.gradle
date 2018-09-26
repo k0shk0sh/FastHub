@@ -4,7 +4,7 @@ ext {
     rxKotlin = '2.2.0'
     rxAndroid = '2.0.1'
     archComponents = '2.0.0-alpha1'
-    supportLibrary = '1.0.0-rc01'
+    androidX = '1.0.0-rc01'
     navigation = '1.0.0-alpha05'
     constraintLayout = '1.1.0'
     dagger2 = '2.16'
@@ -22,6 +22,7 @@ ext {
     assertJ = '3.8.0'
     apollo = '1.0.0-alpha2'
     pandora = 'v1.0.1'
+    deepLinkDispatch = '3.1.1'
 
 
     kotlin = [
@@ -29,20 +30,20 @@ ext {
     ]
 
     supportLibraries = [
-            "androidx.appcompat:appcompat:$supportLibrary",
-            "androidx.coordinatorlayout:coordinatorlayout:$supportLibrary",
-            "com.google.android.material:material:$supportLibrary",
-            "androidx.drawerlayout:drawerlayout:$supportLibrary",
-            "androidx.recyclerview:recyclerview-selection:$supportLibrary",
-            "androidx.cardview:cardview:$supportLibrary",
-            "androidx.recyclerview:recyclerview:$supportLibrary",
-            "androidx.annotation:annotation:$supportLibrary",
-            "androidx.core:core:$supportLibrary",
-            "androidx.viewpager:viewpager:$supportLibrary",
-            "androidx.fragment:fragment:$supportLibrary",
-            "androidx.swiperefreshlayout:swiperefreshlayout:$supportLibrary",
-            "androidx.browser:browser:$supportLibrary",
-            "androidx.webkit:webkit:$supportLibrary",
+            "androidx.appcompat:appcompat:$androidX",
+            "androidx.coordinatorlayout:coordinatorlayout:$androidX",
+            "com.google.android.material:material:$androidX",
+            "androidx.drawerlayout:drawerlayout:$androidX",
+            "androidx.recyclerview:recyclerview-selection:$androidX",
+            "androidx.cardview:cardview:$androidX",
+            "androidx.recyclerview:recyclerview:$androidX",
+            "androidx.annotation:annotation:$androidX",
+            "androidx.core:core:$androidX",
+            "androidx.viewpager:viewpager:$androidX",
+            "androidx.fragment:fragment:$androidX",
+            "androidx.swiperefreshlayout:swiperefreshlayout:$androidX",
+            "androidx.browser:browser:$androidX",
+            "androidx.webkit:webkit:$androidX",
             "androidx.constraintlayout:constraintlayout:$constraintLayout",
             "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
             "android.arch.navigation:navigation-ui:$navigation",
@@ -50,8 +51,6 @@ ext {
             "android.arch.navigation:navigation-runtime-ktx:$navigation",
             "android.arch.navigation:navigation-fragment:$navigation",
             "android.arch.navigation:navigation-fragment-ktx:$navigation"
-
-
     ]
 
     extrasLibraries = [
@@ -59,8 +58,9 @@ ext {
             'com.github.daniel-stoneuk:material-about-library:2.1.0',
             'com.scottyab:secure-preferences-lib:0.1.4',
             'com.jaychang:simplerecyclerview:2.0.4',
-            'com.jaychang:simplerecyclerview-kotlin-android-extensions:2.0.4'
-
+            'com.jaychang:simplerecyclerview-kotlin-android-extensions:2.0.4',
+//            "com.airbnb:deeplinkdispatch:$deepLinkDispatch"
+            "com.github.airbnb.DeepLinkDispatch:deeplinkdispatch-base:master-SNAPSHOT"
     ]
 
     networking = [
@@ -85,7 +85,7 @@ ext {
     dagger = [
             "com.google.dagger:dagger:$dagger2",
             "com.google.dagger:dagger-android-support:$dagger2",
-            "org.glassfish:javax.annotation:$javaxAnnotation",
+            "org.glassfish:javax.annotation:$javaxAnnotation"
     ]
 
     archs = [
@@ -96,8 +96,8 @@ ext {
             "androidx.room:room-common:$archComponents",
             "androidx.room:room-rxjava2:$archComponents",
             "androidx.room:room-compiler:$archComponents",
-            "androidx.core:core-ktx:$supportLibrary",
-            "com.snakydesign.livedataextensions:lives:1.0.1",
+            "androidx.core:core-ktx:$androidX",
+            "com.snakydesign.livedataextensions:lives:1.0.1"
     ]
 
 
@@ -106,14 +106,16 @@ ext {
             "com.google.dagger:dagger-compiler:$dagger2",
             "com.github.bumptech.glide:compiler:$glide",
             "androidx.room:room-runtime:$archComponents",
-            "androidx.paging:paging-runtime:$archComponents"
+            "androidx.paging:paging-runtime:$archComponents",
+            "com.github.airbnb.DeepLinkDispatch:deeplinkdispatch-processor:master-SNAPSHOT",
+//            "com.airbnb:deeplinkdispatch-processor:$deepLinkDispatch"
     ]
 
     testing = [
             "junit:junit:$junit",
             "org.assertj:assertj-core:$assertJ",
             "org.mockito:mockito-core:$mockito",
-            "com.nhaarman:mockito-kotlin:$mockitoKotlin",
+            "com.nhaarman:mockito-kotlin:$mockitoKotlin"
     ]
 
     developmentDependencies = [
