@@ -438,16 +438,16 @@
         <h5>• Pourquoi les Wiki de mes répertoires privés et d\'entreprise ne sont pas visibles ?</h5>
         <p>Comme FastHub supprime les pages Wiki de GitHub, l\'application ne peut pas obtenir le jeton requis par les répertoires privés.</p>
 
-        <h5>• Je me suis connecté avec mon compte d\'entreprise. Pourquoi ne puis-je pas intéragir avec d\'autres entreprises que la mienne ?</h5>
-        <p>Et bien, logiquement, vous ne pouvez pas accéder à une autre entreprise que la votre. FastHub essaie d\'obtenir le plus d\'autorisations possibles, mais ne peux rien faire
+        <h5>• Je me suis connecté avec mon compte d\'entreprise. Pourquoi ne puis-je pas interagir avec d\'autres entreprises que la mienne ?</h5>
+        <p>Et bien, logiquement, vous ne pouvez pas accéder à une autre entreprise que la vôtre. FastHub essaie d\'obtenir le plus d\'autorisations possible, mais ne peut rien faire
         de plus dans la plupart des cas, depuis que votre indentité n\'est plus sur le GitHub. Mais dans <b>la plupart</b> des cas, votre compte GitHub et votre jeton OAuth font le travail.</p>
 
         <h5>• Pouquoi ai-je des problèmes en éditant des tickets ou demandes de Pull (PRs)?</h5>
         <p>Si vous ne pouvez pas éditer les tickets ou demandes de Pull, dans un répertoire d\'organisation publique, merci de contacter votre organisation pour donner l\'accès à FastHub. Autrement, vous pouvez vous connecter avec un jeton d\'accès.</p>
 
-        <h5>• J\'ai des problèmes ! / Je veux vous suggérer quelque-chose !</h5>
+        <h5>• J\'ai des problèmes ! / Je veux vous suggérer quelque chose !</h5>
         <p>Allez à https://github.com/k0shk0sh/FastHub/issues/new et créez un nouveau ticket pour chaque problème ou suggestion. Je vous encourage vraiment à
-        chercher des tickets similaires avant d\'en ouvrir un nouveau. Chaque ticket dubliqué sera labélisé en tant que dubliqué et fermé immédiatement.</p>
+        chercher des tickets similaires avant d\'en ouvrir un nouveau. Chaque ticket dupliqué sera labélisé en tant que dupliqué et fermé immédiatement.</p>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Commentaires ajoutés avec succès</string>
