@@ -47,7 +47,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.modules.profile.ProfileActivity"/>
+        <activity
+            android:name=".ui.modules.profile.ProfileActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity"/>
 
         <activity
             android:name=".ui.modules.routing.RoutingActivity"
@@ -58,6 +60,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
+                <data
+                    android:host="api.github.com"
+                    android:scheme="https"/>
+                <data
+                    android:host="api.github.com"
+                    android:scheme="http"/>
                 <data
                     android:host="github.com"
                     android:scheme="http"/>
@@ -76,6 +84,7 @@
                 <data
                     android:host="gist.githubusercontent.com"
                     android:scheme="https"/>
+
                 <data android:pathPattern=".*"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>

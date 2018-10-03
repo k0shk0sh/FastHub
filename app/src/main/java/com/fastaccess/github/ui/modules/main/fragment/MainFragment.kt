@@ -14,7 +14,6 @@ import com.fastaccess.github.ui.adapter.FeedsCell
 import com.fastaccess.github.ui.adapter.MainIssuesPrsCell
 import com.fastaccess.github.ui.adapter.NotificationsCell
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
-import com.fastaccess.github.ui.modules.profile.ProfileActivity
 import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
@@ -45,9 +44,9 @@ class MainFragment : BaseFragment() {
         pullRequestsList.addDivider()
         feedsList.addDivider()
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
-        bottomBar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.profile -> ProfileActivity.start(requireContext(), me())
+        bottomBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.url) }, ::print))
             }
             return@setOnMenuItemClickListener true
         }
@@ -94,7 +93,13 @@ class MainFragment : BaseFragment() {
         }
         viewModel.feeds.observeNotNull(this) { list ->
             feedsLayout.isVisible = list.isNotEmpty()
-            feedsList.addOrUpdateCells(list.asSequence().map { FeedsCell(it) }.toList())
+            feedsList.addOrUpdateCells(list.asSequence().map { feedModel ->
+                FeedsCell(feedModel).apply {
+                    setOnCellClickListener {
+                        route(it.actor?.url)
+                    }
+                }
+            }.toList())
         }
         viewModel.notifications.observeNotNull(this) { list ->
             notificationLayout.isVisible = list.isNotEmpty()
@@ -104,7 +109,7 @@ class MainFragment : BaseFragment() {
             issuesLayout.isVisible = list.isNotEmpty()
             issuesList.addOrUpdateCells(list.asSequence().map { MainIssuesPrsCell(it) }.toList())
         }
-        viewModel.prs.observeNotNull(this) {list ->
+        viewModel.prs.observeNotNull(this) { list ->
             pullRequestsLayout.isVisible = list.isNotEmpty()
             pullRequestsList.addOrUpdateCells(list.asSequence().map { MainIssuesPrsCell(it) }.toList())
         }

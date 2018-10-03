@@ -12,8 +12,11 @@ class RoutingActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DeepLinkDelegate(RoutingModuleLoader())
-                .dispatchFrom(this) // route
+        val delegate = DeepLinkDelegate(RoutingModuleLoader())
+                .dispatchFrom(this)
+        if (!delegate.isSuccessful) {
+            //TODO
+        }
     }
 
     override fun onStart() {

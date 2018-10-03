@@ -1,8 +1,10 @@
 package com.fastaccess.github.utils.extensions
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.view.View
 import androidx.annotation.DrawableRes
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
+import timber.log.Timber
 
 /**
  * Created by Kosh on 12.06.18.
@@ -68,3 +71,20 @@ fun FragmentActivity.setStatusBarColor(colorAttr: Int = R.attr.colorAccent) {
 }
 
 fun Fragment.getDrawable(@DrawableRes drawableRes: Int): Drawable? = ContextCompat.getDrawable(requireContext(), drawableRes)
+
+fun Fragment.route(url: String?) {
+    url?.let {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(it)
+        context?.startActivity(intent)
+    }
+}
+
+fun BaseActivity.route(url: String?) {
+    Timber.e(url)
+    url?.let {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(it)
+        startActivity(intent)
+    }
+}

@@ -1,6 +1,7 @@
 package com.fastaccess.github.ui.modules.main.fragment.viewmodel
 
 import com.fastaccess.data.repository.FeedsRepositoryProvider
+import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.main.FeedsMainScreenUseCase
@@ -18,6 +19,7 @@ class MainFragmentViewModel @Inject constructor(
         private val pullRequestsMainScreenUseCase: PullRequestsMainScreenUseCase,
         private val notificationUseCase: NotificationUseCase,
         private val feedsMainScreenUseCase: FeedsMainScreenUseCase,
+        loginProvider: LoginRepositoryProvider,
         feedsRepositoryProvider: FeedsRepositoryProvider,
         mainIssuesPullsRepo: MainIssuesPullsRepositoryProvider
 ) : BaseViewModel() {
@@ -26,6 +28,7 @@ class MainFragmentViewModel @Inject constructor(
     val prs = mainIssuesPullsRepo.getPulls()
     val notifications = notificationUseCase.getMainNotifications()
     val feeds = feedsRepositoryProvider.getMainFeedsAsLiveData()
+    val login = loginProvider.getLogin()
 
     fun load() {
         feedsMainScreenUseCase.executeSafely(callApi(
