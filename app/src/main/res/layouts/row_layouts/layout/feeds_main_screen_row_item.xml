@@ -31,6 +31,8 @@
                 android:layout_gravity="top"
                 android:layout_weight="1"
                 android:maxLines="2"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
                 app:autoSizeMaxTextSize="17sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
@@ -45,6 +47,8 @@
                 android:drawablePadding="@dimen/spacing_micro"
                 android:gravity="start|center"
                 android:maxLines="1"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
                 android:textSize="12sp"
                 tools:drawableTop="@drawable/ic_issues_small"
                 tools:text="An two hour ago"/>

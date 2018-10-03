@@ -26,8 +26,10 @@ class UseCaseModule {
 
     @PerFragment @Provides fun provideLoginUseCase(loginRemoteRepository: LoginRepositoryProvider): LoginUseCase = LoginUseCase(loginRemoteRepository)
 
-    @PerFragment @Provides fun provideLoginWithAccessTokenUseCase(loginRemoteRepository: LoginRepositoryProvider,
-                                                                  gson: Gson): LoginWithAccessTokenUseCase {
+    @PerFragment @Provides fun provideLoginWithAccessTokenUseCase(
+            loginRemoteRepository: LoginRepositoryProvider,
+            gson: Gson
+    ): LoginWithAccessTokenUseCase {
         return LoginWithAccessTokenUseCase(loginRemoteRepository, gson)
     }
 
@@ -37,22 +39,27 @@ class UseCaseModule {
 
     @PerFragment @Provides fun provideUserUseCase(userRepository: UserRepositoryProvider): UserUseCase = UserUseCase(userRepository)
 
-    @PerFragment @Provides fun provideIssuesMainScreenUseCase(loginRepository: LoginRepositoryProvider,
-                                                              mainIssuesPullsRepository: MainIssuesPullsRepositoryProvider,
-                                                              apolloClient: ApolloClient): IssuesMainScreenUseCase {
+    @PerFragment @Provides fun provideIssuesMainScreenUseCase(
+            loginRepository: LoginRepositoryProvider,
+            mainIssuesPullsRepository: MainIssuesPullsRepositoryProvider,
+            apolloClient: ApolloClient
+    ): IssuesMainScreenUseCase {
         return IssuesMainScreenUseCase(loginRepository, mainIssuesPullsRepository, apolloClient)
     }
 
-    @PerFragment @Provides fun providePullRequestsMainScreenUseCase(loginRepository: LoginRepositoryProvider,
-                                                                    mainIssues: MainIssuesPullsRepositoryProvider,
-                                                                    apolloClient: ApolloClient): PullRequestsMainScreenUseCase {
+    @PerFragment @Provides fun providePullRequestsMainScreenUseCase(
+            loginRepository: LoginRepositoryProvider,
+            mainIssues: MainIssuesPullsRepositoryProvider,
+            apolloClient: ApolloClient
+    ): PullRequestsMainScreenUseCase {
         return PullRequestsMainScreenUseCase(loginRepository, mainIssues, apolloClient)
     }
 
-    @PerFragment @Provides fun provideNotificationUseCase(notificationRepositoryProvider: NotificationRepositoryProvider,
-                                                          notificationService: NotificationService,
-                                                          loginRepository: LoginRepositoryProvider,
-                                                          gson: Gson): NotificationUseCase {
-        return NotificationUseCase(notificationRepositoryProvider, notificationService, loginRepository, gson)
+    @PerFragment @Provides fun provideNotificationUseCase(
+            notificationRepositoryProvider: NotificationRepositoryProvider,
+            notificationService: NotificationService,
+            gson: Gson
+    ): NotificationUseCase {
+        return NotificationUseCase(notificationRepositoryProvider, notificationService, gson)
     }
 }

@@ -1,7 +1,6 @@
 package com.fastaccess.github.ui.modules.main.fragment.viewmodel
 
 import com.fastaccess.data.repository.FeedsRepositoryProvider
-import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.main.FeedsMainScreenUseCase
@@ -14,20 +13,19 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 16.06.18.
  */
-class MainFragmentViewModel @Inject constructor(private val issuesMainScreenUseCase: IssuesMainScreenUseCase,
-                                                private val mainIssuesPullsRepo: MainIssuesPullsRepositoryProvider,
-                                                private val pullRequestsMainScreenUseCase: PullRequestsMainScreenUseCase,
-                                                private val notificationUseCase: NotificationUseCase,
-                                                private val feedsMainScreenUseCase: FeedsMainScreenUseCase,
-                                                private val loginRepositoryProvider: LoginRepositoryProvider,
-                                                private val feedsRepositoryProvider: FeedsRepositoryProvider) : BaseViewModel() {
+class MainFragmentViewModel @Inject constructor(
+        private val issuesMainScreenUseCase: IssuesMainScreenUseCase,
+        private val pullRequestsMainScreenUseCase: PullRequestsMainScreenUseCase,
+        private val notificationUseCase: NotificationUseCase,
+        private val feedsMainScreenUseCase: FeedsMainScreenUseCase,
+        feedsRepositoryProvider: FeedsRepositoryProvider,
+        mainIssuesPullsRepo: MainIssuesPullsRepositoryProvider
+) : BaseViewModel() {
 
-    private val me by lazy { loginRepositoryProvider.getLoginBlocking() }
-
-    val issues = mainIssuesPullsRepo.getIssues(me?.login ?: "")
-    val prs = mainIssuesPullsRepo.getPulls(me?.login ?: "")
-    val notifications = notificationUseCase.getMainNotifications(me?.login ?: "")
-    val feeds = feedsRepositoryProvider.getMainFeeds(me?.login ?: "")
+    val issues = mainIssuesPullsRepo.getIssues()
+    val prs = mainIssuesPullsRepo.getPulls()
+    val notifications = notificationUseCase.getMainNotifications()
+    val feeds = feedsRepositoryProvider.getMainFeedsAsLiveData()
 
     fun load() {
         feedsMainScreenUseCase.executeSafely(callApi(
@@ -46,14 +44,7 @@ class MainFragmentViewModel @Inject constructor(private val issuesMainScreenUseC
     }
 
     fun logout() {
-        add(loginRepositoryProvider.getLogin()
-                .subscribe({ it ->
-                    it?.let {
-                        loginRepositoryProvider.deleteLogin(it)
-                        logoutProcess.postValue(true)
-                    }
-                }, {
-                    handleError(it)
-                }))
+//        add(Observable.fromCallable { fastHubDatabase.clearAllTables() }
+//                .subscribe { logoutProcess.postValue(true) })
     }
 }

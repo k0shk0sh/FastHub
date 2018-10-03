@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.ui.adapter.FeedsAdapter
-import com.fastaccess.github.ui.adapter.MainIssuesPrsAdapter
-import com.fastaccess.github.ui.adapter.NotificationsAdapter
+import com.fastaccess.github.ui.adapter.FeedsCell
+import com.fastaccess.github.ui.adapter.MainIssuesPrsCell
+import com.fastaccess.github.ui.adapter.NotificationsCell
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.profile.ProfileActivity
 import com.fastaccess.github.utils.extensions.*
@@ -30,10 +30,6 @@ class MainFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var preference: FastHubSharedPreference
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainFragmentViewModel::class.java) }
-    private val issuesAdapter by lazy { MainIssuesPrsAdapter() }
-    private val prsAdapter by lazy { MainIssuesPrsAdapter() }
-    private val notificationAdapter by lazy { NotificationsAdapter() }
-    private val feedsAdapter by lazy { FeedsAdapter() }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
 
@@ -48,10 +44,6 @@ class MainFragment : BaseFragment() {
         issuesList.addDivider()
         pullRequestsList.addDivider()
         feedsList.addDivider()
-        notificationsList.adapter = notificationAdapter
-        issuesList.adapter = issuesAdapter
-        pullRequestsList.adapter = prsAdapter
-        feedsList.adapter = feedsAdapter
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
         bottomBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -100,21 +92,21 @@ class MainFragment : BaseFragment() {
         viewModel.progress.observeNotNull(this) {
             swipeRefresh.isRefreshing = it == true
         }
-        viewModel.feeds.observeNotNull(this) {
-            feedsLayout.isVisible = it.isNotEmpty()
-            feedsAdapter.submitList(it)
+        viewModel.feeds.observeNotNull(this) { list ->
+            feedsLayout.isVisible = list.isNotEmpty()
+            feedsList.addOrUpdateCells(list.asSequence().map { FeedsCell(it) }.toList())
         }
-        viewModel.notifications.observeNotNull(this) {
-            notificationLayout.isVisible = it.isNotEmpty()
-            notificationAdapter.submitList(it)
+        viewModel.notifications.observeNotNull(this) { list ->
+            notificationLayout.isVisible = list.isNotEmpty()
+            notificationsList.addOrUpdateCells(list.asSequence().map { NotificationsCell(it) }.toList())
         }
-        viewModel.issues.observeNotNull(this) {
-            issuesLayout.isVisible = it.isNotEmpty()
-            issuesAdapter.submitList(it)
+        viewModel.issues.observeNotNull(this) { list ->
+            issuesLayout.isVisible = list.isNotEmpty()
+            issuesList.addOrUpdateCells(list.asSequence().map { MainIssuesPrsCell(it) }.toList())
         }
-        viewModel.prs.observeNotNull(this) {
-            pullRequestsLayout.isVisible = it.isNotEmpty()
-            prsAdapter.submitList(it)
+        viewModel.prs.observeNotNull(this) {list ->
+            pullRequestsLayout.isVisible = list.isNotEmpty()
+            pullRequestsList.addOrUpdateCells(list.asSequence().map { MainIssuesPrsCell(it) }.toList())
         }
         viewModel.error.observeNotNull(this) {
             view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }

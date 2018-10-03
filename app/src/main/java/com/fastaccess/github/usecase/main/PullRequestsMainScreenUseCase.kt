@@ -14,26 +14,26 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 16.06.18.
  */
-class PullRequestsMainScreenUseCase @Inject constructor(private val loginRepository: LoginRepositoryProvider,
-                                                        private val mainIssues: MainIssuesPullsRepositoryProvider,
-                                                        private val apolloClient: ApolloClient) : BaseObservableUseCase() {
+class PullRequestsMainScreenUseCase @Inject constructor(
+        private val loginRepository: LoginRepositoryProvider,
+        private val mainIssues: MainIssuesPullsRepositoryProvider,
+        private val apolloClient: ApolloClient
+) : BaseObservableUseCase() {
     var state: IssueState = IssueState.OPEN
 
     override fun buildObservable(): Observable<*> = loginRepository.getLogin()
-            .flatMapObservable {
-                return@flatMapObservable it.login?.let {
+            .flatMapObservable { loginModel ->
+                return@flatMapObservable loginModel.login?.let { login ->
                     Rx2Apollo.from(apolloClient.query(GetPullRequestsQuery.builder()
-                            .login(it)
+                            .login(login)
                             .build()))
                             .map { it.data()?.user?.pullRequests?.nodes }
                             .map { value ->
                                 mainIssues.deleteAllPrs()
-                                val me = loginRepository.getLoginBlocking()
-                                value.forEach {
-                                    val issue = MainIssuesPullsModel(it.id, it.databaseId, it.number, it.title, it.repository.nameWithOwner, it
-                                            .comments.totalCount, it.state.name, me?.login)
-                                    mainIssues.insert(issue)
-                                }
+                                mainIssues.insert(value.asSequence().map {
+                                    MainIssuesPullsModel(it.id, it.databaseId, it.number, it.title,
+                                            it.repository.nameWithOwner, it.comments.totalCount, it.state.name)
+                                }.toList())
                             }
                 } ?: Observable.empty()
             }

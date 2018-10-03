@@ -1,5 +1,5 @@
 ext {
-    kotlin = '1.2.61'
+    kotlin = '1.2.71'
     rxJava2 = '2.1.9'
     rxKotlin = '2.2.0'
     rxAndroid = '2.0.1'

@@ -33,7 +33,10 @@
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_xs_large"
                     android:text="@string/pinned"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:textColor="?android:textColorPrimary"
+                    app:backgroundTint="?colorPrimary"
+                    app:cornerRadius="20dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/starred"
@@ -42,7 +45,10 @@
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/starred"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:textColor="?android:textColorPrimary"
+                    app:backgroundTint="?colorPrimary"
+                    app:cornerRadius="20dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/repos"
@@ -51,7 +57,10 @@
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/repos"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:textColor="?android:textColorPrimary"
+                    app:backgroundTint="?colorPrimary"
+                    app:cornerRadius="20dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/trending"
@@ -60,7 +69,10 @@
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/trending"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:textColor="?android:textColorPrimary"
+                    app:backgroundTint="?colorPrimary"
+                    app:cornerRadius="20dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/gists"
@@ -69,7 +81,10 @@
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/gists"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:textColor="?android:textColorPrimary"
+                    app:backgroundTint="?colorPrimary"
+                    app:cornerRadius="20dp"/>
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -108,13 +123,12 @@
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/feeds"/>
 
-                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        <com.jaychang.srv.SimpleRecyclerView
                             android:id="@+id/feedsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                            app:srv_layoutMode="linearVertical"/>
 
                     </LinearLayout>
 
@@ -135,13 +149,12 @@
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/notifications"/>
 
-                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        <com.jaychang.srv.SimpleRecyclerView
                             android:id="@+id/notificationsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                            app:srv_layoutMode="linearVertical"/>
 
                     </LinearLayout>
 
@@ -162,13 +175,12 @@
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/issues"/>
 
-                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        <com.jaychang.srv.SimpleRecyclerView
                             android:id="@+id/issuesList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                            app:srv_layoutMode="linearVertical"/>
 
                     </LinearLayout>
 
@@ -189,14 +201,12 @@
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/pull_requests"/>
 
-                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        <com.jaychang.srv.SimpleRecyclerView
                             android:id="@+id/pullRequestsList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minHeight="?actionBarSize"
                             android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
+                            app:srv_layoutMode="linearVertical"/>
                     </LinearLayout>
 
                 </LinearLayout>

@@ -9,9 +9,10 @@ import javax.inject.Inject
  * Created by Kosh on 17.06.18.
  */
 class MainIssuesPullsRepositoryProvider @Inject constructor(private val dao: MainIssuesPullsDao) : MainIssuesPullsRepository {
-    override fun getIssues(login: String): LiveData<List<MainIssuesPullsModel>> = dao.getIssues(login)
-    override fun getPulls(login: String): LiveData<List<MainIssuesPullsModel>> = dao.getPulls(login)
+    override fun getIssues(): LiveData<List<MainIssuesPullsModel>> = dao.getIssues()
+    override fun getPulls(): LiveData<List<MainIssuesPullsModel>> = dao.getPulls()
     override fun insert(model: MainIssuesPullsModel): Long = dao.insert(model)
+    override fun insert(model: List<MainIssuesPullsModel>) = dao.insert(model)
     override fun update(model: MainIssuesPullsModel): Int = dao.update(model)
     override fun delete(model: MainIssuesPullsModel) = dao.delete(model)
     override fun deleteAll() = dao.deleteAll()
@@ -20,9 +21,10 @@ class MainIssuesPullsRepositoryProvider @Inject constructor(private val dao: Mai
 }
 
 interface MainIssuesPullsRepository {
-    fun getIssues(login: String): LiveData<List<MainIssuesPullsModel>>
-    fun getPulls(login: String): LiveData<List<MainIssuesPullsModel>>
+    fun getIssues(): LiveData<List<MainIssuesPullsModel>>
+    fun getPulls(): LiveData<List<MainIssuesPullsModel>>
     fun insert(model: MainIssuesPullsModel): Long
+    fun insert(model: List<MainIssuesPullsModel>)
     fun update(model: MainIssuesPullsModel): Int
     fun delete(model: MainIssuesPullsModel)
     fun deleteAllIssues()

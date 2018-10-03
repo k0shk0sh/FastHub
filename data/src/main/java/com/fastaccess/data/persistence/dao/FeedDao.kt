@@ -10,13 +10,11 @@ import com.fastaccess.data.persistence.models.FeedModel
  */
 @Dao
 abstract class FeedDao : BaseDao<FeedModel>() {
-    @Query("SELECT * FROM ${FeedModel.TABLE_NAME} WHERE `login` = :login  ORDER BY `savedDate` ASC")
-    abstract fun getFeeds(login: String): LiveData<List<FeedModel>> // .distinctUntilChanged() in flowable seems broken /shrug
+    @Query("SELECT * FROM ${FeedModel.TABLE_NAME} ORDER BY `id` DESC")
+    abstract fun getFeeds(): LiveData<List<FeedModel>>
 
-    @Query("SELECT * FROM ${FeedModel.TABLE_NAME} WHERE `login` = :login ORDER BY `savedDate` ASC LIMIT 5")
-    abstract fun getMainFeeds(login: String): LiveData<List<FeedModel>>
+    @Query("SELECT * FROM ${FeedModel.TABLE_NAME} ORDER BY `id` DESC LIMIT 5")
+    abstract fun getMainFeeds(): LiveData<List<FeedModel>>
 
     @Query("DELETE FROM ${FeedModel.TABLE_NAME}") abstract fun deleteAll()
-
-    @Query("DELETE FROM ${FeedModel.TABLE_NAME} WHERE `savedDate` <= datetime('now', '-7 day')") abstract fun deleteOldFeeds()
 }

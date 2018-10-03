@@ -18,9 +18,7 @@ data class FeedModel(@SerializedName("id") @PrimaryKey var id: Long = 0L,
                      @SerializedName("public") var isPublic: Boolean? = null,
                      @SerializedName("actor") @Embedded(prefix = "actor_") var actor: UserModel? = null,
                      @SerializedName("repo") var repo: RepositoryModel? = null,
-                     @SerializedName("payload") var payload: PayloadModel? = null,
-                     @SerializedName("login") var login: String? = null,
-                     @SerializedName("saved_date") var savedDate: Date = Date()) {
+                     @SerializedName("payload") var payload: PayloadModel? = null) {
 
     companion object {
         const val TABLE_NAME = "feed_table"

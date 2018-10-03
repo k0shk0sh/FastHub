@@ -22,8 +22,7 @@ data class NotificationModel(@PrimaryKey @SerializedName("id") var id: String = 
                              @SerializedName("unread") var unread: Boolean? = null,
                              @SerializedName("updated_at") var updatedAt: Date? = null,
                              @SerializedName("last_read_at") var lastReadAt: Date? = null,
-                             @SerializedName("url") var url: String? = null,
-                             @SerializedName("login") var login: String? = null) {
+                             @SerializedName("url") var url: String? = null) {
     companion object {
         const val TABLE_NAME = "notification_table"
 
