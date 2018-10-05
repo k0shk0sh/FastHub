@@ -8,7 +8,6 @@
 
     <include layout="@layout/appbar_center_title_layout"/>
 
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
@@ -79,6 +78,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/following"
+                        style="@style/ChipStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -89,11 +89,11 @@
                         app:autoSizeMaxTextSize="18sp"
                         app:autoSizeStepGranularity="2sp"
                         app:autoSizeTextType="uniform"
-                        app:chipBackgroundColor="?colorPrimary"
                         tools:text="Following (10000)"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/followers"
+                        style="@style/ChipStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -103,7 +103,6 @@
                         app:autoSizeMaxTextSize="18sp"
                         app:autoSizeStepGranularity="2sp"
                         app:autoSizeTextType="uniform"
-                        app:chipBackgroundColor="?colorPrimary"
                         tools:text="Followers (1000)"/>
                 </LinearLayout>
 
@@ -122,7 +121,7 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
+                        android:layout_gravity="start|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:text="@string/follow"
                         app:icon="@drawable/ic_add"/>
@@ -132,7 +131,7 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
+                        android:layout_gravity="start|center"
                         android:text="@string/block"
                         android:textColor="@color/material_red_accent_700"
                         android:visibility="visible"
@@ -142,176 +141,193 @@
 
                 </LinearLayout>
 
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/description"
-                    style="@style/TextAppearance.MaterialComponents.Body2"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_micro"
-                    android:background="@drawable/bottom_border"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large"
-                    android:textStyle="normal"
-                    tools:text="Cook smooth squids in a wok with fish sauce for about an hour to enhance their tartness.Sunt tabeses promissio noster, grandis zeluses."/>
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPadding="@dimen/spacing_xs_large">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/company"
-                    style="@style/TextAppearance.MaterialComponents.Body2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:background="@drawable/bottom_border"
-                    android:drawablePadding="@dimen/spacing_micro"
-                    android:drawableStart="@drawable/ic_group"
-                    android:gravity="center|start"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large"
-                    android:paddingTop="@dimen/spacing_normal"
-                    android:textStyle="normal"
-                    android:visibility="gone"
-                    app:autoSizeMaxTextSize="14sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    tools:text="Company"
-                    tools:visibility="visible"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/location"
-                    style="@style/TextAppearance.MaterialComponents.Body2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:background="@drawable/bottom_border"
-                    android:drawablePadding="@dimen/spacing_micro"
-                    android:drawableStart="@drawable/ic_location"
-                    android:gravity="center|start"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large"
-                    android:paddingTop="@dimen/spacing_normal"
-                    android:textStyle="normal"
-                    android:visibility="gone"
-                    app:autoSizeMaxTextSize="14sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    tools:text="Dresden, Germany"
-                    tools:visibility="visible"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/description"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bottom_border"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:textStyle="normal"
+                            tools:text="Cook smooth squids in a wok with fish sauce for about an hour to enhance their tartness.Sunt tabeses promissio noster, grandis zeluses."/>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/email"
-                    style="@style/TextAppearance.MaterialComponents.Body2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:autoLink="email"
-                    android:background="@drawable/bottom_border"
-                    android:drawablePadding="@dimen/spacing_micro"
-                    android:drawableStart="@drawable/ic_group"
-                    android:gravity="center|start"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large"
-                    android:paddingTop="@dimen/spacing_normal"
-                    android:textStyle="normal"
-                    android:visibility="gone"
-                    app:autoSizeMaxTextSize="14sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    tools:text="example@gmail.com"
-                    tools:visibility="visible"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/joined"
-                    style="@style/TextAppearance.MaterialComponents.Body2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:background="@drawable/bottom_border"
-                    android:drawablePadding="@dimen/spacing_micro"
-                    android:drawableStart="@drawable/ic_time"
-                    android:gravity="center|start"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large"
-                    android:paddingTop="@dimen/spacing_normal"
-                    android:textStyle="normal"
-                    android:visibility="gone"
-                    app:autoSizeMaxTextSize="14sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    tools:text="Aug 5, 2011"
-                    tools:visibility="visible"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/company"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:background="@drawable/bottom_border"
+                            android:drawablePadding="@dimen/spacing_micro"
+                            android:drawableStart="@drawable/ic_group"
+                            android:gravity="center|start"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal"
+                            android:textStyle="normal"
+                            android:visibility="gone"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform"
+                            tools:text="Company"
+                            tools:visibility="visible"/>
 
-                <LinearLayout
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/location"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:background="@drawable/bottom_border"
+                            android:drawablePadding="@dimen/spacing_micro"
+                            android:drawableStart="@drawable/ic_location"
+                            android:gravity="center|start"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal"
+                            android:textStyle="normal"
+                            android:visibility="gone"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform"
+                            tools:text="Dresden, Germany"
+                            tools:visibility="visible"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/email"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:autoLink="email"
+                            android:background="@drawable/bottom_border"
+                            android:drawablePadding="@dimen/spacing_micro"
+                            android:drawableStart="@drawable/ic_group"
+                            android:gravity="center|start"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal"
+                            android:textStyle="normal"
+                            android:visibility="gone"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform"
+                            tools:text="example@gmail.com"
+                            tools:visibility="visible"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/joined"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:drawablePadding="@dimen/spacing_micro"
+                            android:drawableStart="@drawable/ic_time"
+                            android:gravity="center|start"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal"
+                            android:textStyle="normal"
+                            android:visibility="gone"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform"
+                            tools:text="Aug 5, 2011"
+                            tools:visibility="visible"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/organizationHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_xs_large"
-                    android:background="@drawable/bottom_border"
-                    android:orientation="vertical"
                     android:visibility="gone"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_xs_large"
                     tools:visibility="visible">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextAppearance.MaterialComponents.Body1"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/spacing_normal"
-                        android:drawableStart="@drawable/ic_group"
-                        android:gravity="center|start"
-                        android:paddingEnd="@dimen/spacing_xs_large"
-                        android:paddingStart="@dimen/spacing_xs_large"
-                        android:text="@string/organizations"
-                        android:textStyle="bold"/>
+                        android:orientation="vertical">
 
-                    <com.jaychang.srv.SimpleRecyclerView
-                        android:id="@+id/organizationList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_micro"
-                        android:paddingEnd="@dimen/spacing_normal"
-                        android:paddingStart="@dimen/spacing_normal"
-                        app:srv_gridSpanCount="1"
-                        app:srv_layoutMode="linearHorizontal"
-                        app:srv_snappy="true"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:drawableStart="@drawable/ic_group"
+                            android:gravity="center|start"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:text="@string/organizations"
+                            android:textStyle="bold"/>
 
-                </LinearLayout>
+                        <com.jaychang.srv.SimpleRecyclerView
+                            android:id="@+id/organizationList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:paddingEnd="@dimen/spacing_normal"
+                            android:paddingStart="@dimen/spacing_normal"
+                            app:srv_gridSpanCount="1"
+                            app:srv_layoutMode="linearHorizontal"
+                            app:srv_snappy="true"/>
 
-                <LinearLayout
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/pinnedHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_xs_large"
-                    android:background="@drawable/bottom_border"
-                    android:orientation="vertical"
                     android:visibility="gone"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_xs_large"
                     tools:visibility="visible">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextAppearance.MaterialComponents.Body1"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/spacing_normal"
-                        android:drawableStart="@drawable/ic_pin"
-                        android:paddingEnd="@dimen/spacing_xs_large"
-                        android:paddingStart="@dimen/spacing_xs_large"
-                        android:text="@string/pinned"
-                        android:textStyle="bold"/>
+                        android:orientation="vertical">
 
-                    <com.jaychang.srv.SimpleRecyclerView
-                        android:id="@+id/pinnedList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_micro"
-                        app:srv_layoutMode="linearVertical"/>
-                </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:drawableStart="@drawable/ic_pin"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:text="@string/pinned"
+                            android:textStyle="bold"/>
+
+                        <com.jaychang.srv.SimpleRecyclerView
+                            android:id="@+id/pinnedList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            app:srv_layoutMode="linearVertical"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

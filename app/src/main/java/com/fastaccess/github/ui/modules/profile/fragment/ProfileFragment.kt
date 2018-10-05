@@ -61,8 +61,12 @@ class ProfileFragment : BaseFragment() {
         following.text = "${getString(R.string.following)}: ${user.following?.totalCount ?: 0}"
         followers.text = "${getString(R.string.followers)}: ${user.followers?.totalCount ?: 0}"
         swipeRefresh.isRefreshing = false
-        followBtn.isVisible = user.viewerCanFollow == true
-        blockBtn.isCursorVisible = user.isViewer == true
+        followBtn.text = if (user.viewerIsFollowing == true) {
+            getString(R.string.unfollow)
+        } else {
+            getString(R.string.follow)
+        }
+        blockBtn.isVisible = false /*user.isViewer == true*/
         description.isVisible = user.bio?.isNotEmpty() == true
         description.text = user.bio ?: ""
         email.isVisible = user.email?.isNotEmpty() == true

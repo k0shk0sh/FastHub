@@ -26,65 +26,55 @@
                 android:paddingBottom="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/pinned"
+                    style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_xs_large"
                     android:text="@string/pinned"
-                    android:textAllCaps="false"
-                    android:textColor="?android:textColorPrimary"
-                    app:backgroundTint="?colorPrimary"
-                    app:cornerRadius="20dp"/>
+                    android:textAllCaps="false"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/starred"
+                    style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/starred"
-                    android:textAllCaps="false"
-                    android:textColor="?android:textColorPrimary"
-                    app:backgroundTint="?colorPrimary"
-                    app:cornerRadius="20dp"/>
+                    android:textAllCaps="false"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/repos"
+                    style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/repos"
-                    android:textAllCaps="false"
-                    android:textColor="?android:textColorPrimary"
-                    app:backgroundTint="?colorPrimary"
-                    app:cornerRadius="20dp"/>
+                    android:textAllCaps="false"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/trending"
+                    style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/trending"
-                    android:textAllCaps="false"
-                    android:textColor="?android:textColorPrimary"
-                    app:backgroundTint="?colorPrimary"
-                    app:cornerRadius="20dp"/>
+                    android:textAllCaps="false"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/gists"
+                    style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:layout_marginStart="@dimen/spacing_micro"
                     android:text="@string/gists"
-                    android:textAllCaps="false"
-                    android:textColor="?android:textColorPrimary"
-                    app:backgroundTint="?colorPrimary"
-                    app:cornerRadius="20dp"/>
+                    android:textAllCaps="false"/>
 
             </LinearLayout>
         </HorizontalScrollView>
