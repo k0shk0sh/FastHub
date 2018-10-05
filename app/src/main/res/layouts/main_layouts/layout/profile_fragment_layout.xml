@@ -229,6 +229,26 @@
                             tools:visibility="visible"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/developerProgram"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:drawablePadding="@dimen/spacing_micro"
+                            android:drawableStart="@drawable/ic_developer_programm"
+                            android:gravity="center|start"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal"
+                            android:text="@string/developer_program_member"
+                            android:textStyle="normal"
+                            android:visibility="gone"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform"
+                            tools:visibility="visible"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/joined"
                             style="@style/TextAppearance.MaterialComponents.Body2"
                             android:layout_width="match_parent"
@@ -332,5 +352,8 @@
 
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/profile_bottom_sheet"/>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

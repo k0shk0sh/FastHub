@@ -8,7 +8,6 @@ import com.fastaccess.data.persistence.models.*
 import com.google.gson.Gson
 import github.GetProfileQuery
 import io.reactivex.Observable
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -22,7 +21,6 @@ class UserRepositoryProvider @Inject constructor(private val userDao: UserDao,
     override fun getUserFromRemote(login: String): Observable<UserModel> = Rx2Apollo.from(apolloClient.query(GetProfileQuery(login)))
             .filter { !it.hasErrors() }
             .map { it ->
-                Timber.e(gson.toJson(it.data()?.user))
                 return@map it.data()?.user?.let { queryUser ->
                     UserModel(queryUser.databaseId
                             ?: 0, queryUser.login, queryUser.avatarUrl.toString(), queryUser.url.toString(), queryUser.name, queryUser.company,
@@ -30,10 +28,10 @@ class UserRepositoryProvider @Inject constructor(private val userDao: UserDao,
                             queryUser.createdAt, queryUser.isViewerCanFollow, queryUser.isViewerIsFollowing, queryUser.isViewer,
                             queryUser.isDeveloperProgramMember, UserCountModel(queryUser.followers.totalCount),
                             UserCountModel(queryUser.following.totalCount),
-                            UserOrganizationModel(queryUser.organizations.totalCount, queryUser.organizations.nodes?.map {
+                            UserOrganizationModel(queryUser.organizations.totalCount, queryUser.organizations.nodes?.asSequence()?.map {
                                 UserOrganizationNodesModel(it.avatarUrl.toString(), it.location, it.email, it.login, it.name)
                             }?.toList()), UserPinnedReposModel(queryUser.pinnedRepositories.totalCount,
-                            queryUser.pinnedRepositories.nodes?.map {
+                            queryUser.pinnedRepositories.nodes?.asSequence()?.map {
                                 UserPinnedRepoNodesModel(it.name, it.nameWithOwner,
                                         UserPinnedRepoLanguageModel(it.primaryLanguage?.name, it.primaryLanguage?.color),
                                         UserCountModel(it.stargazers.totalCount), UserCountModel(it.issues.totalCount),

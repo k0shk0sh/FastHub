@@ -598,4 +598,5 @@
     <string name="restart_app_message">Please restart the app</string>
     <string name="menu_label">Menu</string>
     <string name="commit_file_required">No file changes</string>
+    <string name="developer_program_member">Developer Program Member</string>
 </resources>

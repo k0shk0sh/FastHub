@@ -29,6 +29,11 @@ fun <T> LiveData<T>.observeNotNull(owner: LifecycleOwner, observer: (t: T) -> Un
     this.observe(owner, Observer { it?.let(observer) })
 }
 
+fun <T> LiveData<T>.observeNull(owner: LifecycleOwner, observer: (t: T?) -> Unit) {
+    this.observe(owner, Observer { observer.invoke(it) })
+}
+
+
 fun Date.timeAgo(): CharSequence {
     val now = System.currentTimeMillis()
     return DateUtils.getRelativeTimeSpanString(this.time, now, DateUtils.SECOND_IN_MILLIS)

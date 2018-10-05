@@ -1,5 +1,6 @@
 package com.fastaccess.github.ui.modules.profile.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -14,7 +15,10 @@ import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
+import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
 import javax.inject.Inject
 
@@ -41,11 +45,36 @@ class ProfileFragment : BaseFragment() {
             viewModel.getUserFromRemote(loginBundle)
         }
 
-        viewModel.getUser(loginBundle).observeNotNull(this) { initUI(it) }
+        observeChanges()
 
-        if (savedInstanceState == null || viewModel.getUser(loginBundle).value == null) {
-            swipeRefresh.isRefreshing = true
-            viewModel.getUserFromRemote(loginBundle)
+        val behaviour = BottomSheetBehavior.from(bottomSheet)
+        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(p0: TabLayout.Tab?) = expandBottomSheet()
+            override fun onTabUnselected(p0: TabLayout.Tab?) {}
+            override fun onTabSelected(p0: TabLayout.Tab?) = expandBottomSheet()
+
+            private fun expandBottomSheet() {
+                (behaviour.state != BottomSheetBehavior.STATE_EXPANDED).isTrue {
+                    behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
+        })
+
+        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
+        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
+        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
+        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
+        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
+
+    }
+
+    private fun observeChanges() {
+        viewModel.getUser(loginBundle).observeNull(this) { user ->
+            if (user == null) {
+                viewModel.getUserFromRemote(loginBundle)
+            } else {
+                initUI(user)
+            }
         }
 
         viewModel.progress.observeNotNull(this) {
@@ -53,10 +82,11 @@ class ProfileFragment : BaseFragment() {
         }
 
         viewModel.error.observeNotNull(this) {
-            showSnackBar(view, resId = it.resId, message = it.message)
+            view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initUI(user: UserModel) {
         following.text = "${getString(R.string.following)}: ${user.following?.totalCount ?: 0}"
         followers.text = "${getString(R.string.followers)}: ${user.followers?.totalCount ?: 0}"
@@ -79,6 +109,7 @@ class ProfileFragment : BaseFragment() {
         location.text = user.location ?: ""
         name.isVisible = user.name?.isNotEmpty() == true
         name.text = user.name ?: ""
+        developerProgram.isVisible = user.isDeveloperProgramMember == true
         user.organizations?.nodes?.let { orgs ->
             if (orgs.isNotEmpty()) {
                 organizationHolder.isVisible = true
@@ -100,7 +131,6 @@ class ProfileFragment : BaseFragment() {
                 .circleCrop()
                 .into(userImageView)
     }
-
 
     companion object {
         fun newInstance(login: String) = ProfileFragment().apply {
