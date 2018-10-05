@@ -1,4 +1,4 @@
-query getProfile($login:String!) {
+query getProfile($login: String!) {
   user(login: $login) {
     login
     avatarUrl
@@ -16,8 +16,8 @@ query getProfile($login:String!) {
     websiteUrl
     location
     url
-    organizations(first:30){
-      nodes{
+    organizations(first: 30) {
+      nodes {
         avatarUrl
         email
         location
@@ -45,6 +45,40 @@ query getProfile($login:String!) {
           totalCount
         }
         forkCount
+        issues(first: 0, states: OPEN) {
+          totalCount
+        }
+        pullRequests(first: 0, states: OPEN) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+query getProfileRepos($login: String!, $cursor: String) {
+  user(login: $login) {
+    repositories(first: 30, orderBy: {field: PUSHED_AT, direction: DESC}, after:$cursor) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      totalCount
+      totalDiskUsage
+      nodes {
+        name
+        updatedAt
+        diskUsage
+        forkCount
+        primaryLanguage {
+          name
+          color
+        }
+        stargazers(first: 0) {
+          totalCount
+        }
         issues(first: 0, states: OPEN) {
           totalCount
         }
