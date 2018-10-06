@@ -61,6 +61,10 @@
                 <action android:name="android.intent.action.VIEW"/>
 
                 <data
+                    android:host="fasthub"
+                    android:scheme="app"/>
+
+                <data
                     android:host="api.github.com"
                     android:scheme="https"/>
                 <data

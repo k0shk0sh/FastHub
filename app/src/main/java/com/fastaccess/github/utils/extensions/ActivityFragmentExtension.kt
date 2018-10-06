@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
-import timber.log.Timber
+import com.fastaccess.github.ui.modules.routing.RoutingActivity
 
 /**
  * Created by Kosh on 12.06.18.
@@ -73,15 +73,16 @@ fun FragmentActivity.setStatusBarColor(colorAttr: Int = R.attr.colorAccent) {
 fun Fragment.getDrawable(@DrawableRes drawableRes: Int): Drawable? = ContextCompat.getDrawable(requireContext(), drawableRes)
 
 fun Fragment.route(url: String?) {
-    url?.let {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(it)
-        context?.startActivity(intent)
+    url?.let { url ->
+        context?.let {
+            val intent = Intent(it, RoutingActivity::class.java)
+            intent.data = Uri.parse(url)
+            it.startActivity(intent)
+        }
     }
 }
 
-fun BaseActivity.route(url: String?) {
-    Timber.e(url)
+fun Context.route(url: String?) {
     url?.let {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(it)

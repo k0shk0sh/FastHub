@@ -44,13 +44,10 @@ fun String.replaceAllNewLines(prefix: String = " "): String {
 }
 
 fun UserModel.itsMe() = "k0shk0sh".equals(login, true)
-
 fun RepositoryModel.itsFastHub() = "k0shk0sh/FastHub".equals(name, true) || "k0shk0sh/FastHub".equals(fullName, true)
-
 fun me() = "k0shk0sh"
-fun myProfile() = "https://github.com/k0shk0sh"
+fun myProfile() = "app://fasthub/k0shk0sh"
 fun fastHub() = "k0shk0sh/FastHub"
-
 fun Long.formatNumber(): String {
     if (this < 999) return this.toString()
     val count = this.toDouble()

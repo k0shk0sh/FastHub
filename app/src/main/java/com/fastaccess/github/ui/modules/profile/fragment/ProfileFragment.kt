@@ -6,13 +6,16 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.platform.glide.GlideApp
+import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
 import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
+import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -59,13 +62,6 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         })
-
-        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
-        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
-        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
-        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
-        tabs.addTab(tabs.newTab().setText(R.string.feeds), false)
-
     }
 
     private fun observeChanges() {
@@ -130,6 +126,9 @@ class ProfileFragment : BaseFragment() {
                 .fallback(R.drawable.ic_profile)
                 .circleCrop()
                 .into(userImageView)
+
+        pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(ViewPagerModel(getString(R.string.repos), ProfileReposFragment())))
+        tabs.setupWithViewPager(pager)
     }
 
     companion object {

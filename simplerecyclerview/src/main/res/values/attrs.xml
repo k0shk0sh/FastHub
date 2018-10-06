@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SimpleRecyclerView">
+        <attr name="srv_layoutMode" format="enum">
+            <enum name="linearVertical" value="0" />
+            <enum name="linearHorizontal" value="1" />
+            <enum name="grid" value="2" />
+        </attr>
+        <attr name="srv_gridSpanCount" format="integer|reference" />
+        <attr name="srv_gridSpanSequence" format="string|reference" />
+        <attr name="srv_spacing" format="dimension|reference" />
+        <attr name="srv_verticalSpacing" format="dimension|reference" />
+        <attr name="srv_horizontalSpacing" format="dimension|reference" />
+        <attr name="srv_isSpacingIncludeEdge" format="boolean|reference" />
+        <attr name="srv_showDivider" format="boolean|reference" />
+        <attr name="srv_showLastDivider" format="boolean|reference" />
+        <attr name="srv_dividerOrientation" format="enum">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+            <enum name="both" value="2" />
+        </attr>
+        <attr name="srv_dividerColor" format="color|reference" />
+        <attr name="srv_dividerPaddingLeft" format="dimension|reference" />
+        <attr name="srv_dividerPaddingRight" format="dimension|reference" />
+        <attr name="srv_dividerPaddingTop" format="dimension|reference" />
+        <attr name="srv_dividerPaddingBottom" format="dimension|reference" />
+        <attr name="srv_emptyStateView" format="integer|reference" />
+        <attr name="srv_showEmptyStateView" format="boolean|reference" />
+        <attr name="srv_loadMoreView" format="integer|reference" />
+        <attr name="srv_snappy" format="boolean|reference" />
+        <attr name="srv_snap_alignment" format="enum">
+            <enum name="center" value="0" />
+            <enum name="start" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

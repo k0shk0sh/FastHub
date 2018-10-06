@@ -1,1 +1,1 @@
-include ':app', ':data', ':domain', ':resources', ':deeplinkdispatch'
+include ':app', ':data', ':domain', ':resources', ':simplerecyclerview'

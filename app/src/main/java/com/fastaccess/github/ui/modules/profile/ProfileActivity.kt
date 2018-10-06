@@ -8,6 +8,7 @@ import com.fastaccess.github.platform.deeplink.WebDeepLink
 import com.fastaccess.github.ui.modules.profile.fragment.ProfileFragment
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.replace
+import timber.log.Timber
 
 /**
  * Created by Kosh on 18.08.18.
@@ -19,6 +20,7 @@ class ProfileActivity : BaseActivity() {
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {
         if (savedInstanceState == null && intent != null) {
+            Timber.e("${intent.extras?.keySet()}")
             val login = intent?.extras?.getString("login")
             replace(R.id.container, ProfileFragment.newInstance(login ?: intent.getStringExtra(BundleConstant.EXTRA)))
         }

@@ -4,7 +4,7 @@ ext {
             versionCode      : 1,
             versionName      : "1.0.0",
             minSdkVersion    : 21,
-            targetSdkVersion : 27,
-            compileSdkVersion: 'android-P'
+            targetSdkVersion : 28,
+            compileSdkVersion: 28
     ]
 }
