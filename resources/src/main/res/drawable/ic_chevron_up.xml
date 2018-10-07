@@ -8,5 +8,5 @@
     <path
         android:fillColor="?icon_color"
         android:pathData="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
-        tools:fillColor="@color/white"/>
+        tools:fillColor="@color/black"/>
 </vector>

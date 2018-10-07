@@ -2,6 +2,7 @@ package com.fastaccess.data.persistence.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.fastaccess.data.model.CountModel
 import com.fastaccess.data.persistence.models.UserModel.Companion.TABLE_NAME
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -24,8 +25,8 @@ data class UserModel(
         @SerializedName("viewerIsFollowing") var viewerIsFollowing: Boolean? = null,
         @SerializedName("isViewer") var isViewer: Boolean? = null,
         @SerializedName("isDeveloperProgramMember") var isDeveloperProgramMember: Boolean? = null,
-        @SerializedName("followers") var followers: UserCountModel? = null,
-        @SerializedName("following") var following: UserCountModel? = null,
+        @SerializedName("followers") var followers: CountModel? = null,
+        @SerializedName("following") var following: CountModel? = null,
         @SerializedName("organizations") var organizations: UserOrganizationModel? = null,
         @SerializedName("pinnedRepositories") var pinnedRepositories: UserPinnedReposModel? = null
 ) {
@@ -33,8 +34,6 @@ data class UserModel(
         const val TABLE_NAME = "user_table"
     }
 }
-
-data class UserCountModel(@SerializedName("totalCount") var totalCount: Long? = null)
 
 data class UserOrganizationModel(@SerializedName("totalCount") var totalCount: Long? = null,
                                  @SerializedName("nodes") var nodes: List<UserOrganizationNodesModel>? = null)
@@ -51,9 +50,9 @@ data class UserPinnedReposModel(@SerializedName("totalCount") var totalCount: Lo
 data class UserPinnedRepoNodesModel(@SerializedName("name") var name: String? = null,
                                     @SerializedName("nameWithOwner") var nameWithOwner: String? = null,
                                     @SerializedName("primaryLanguage") var primaryLanguage: UserPinnedRepoLanguageModel? = null,
-                                    @SerializedName("stargazers") var stargazers: UserCountModel? = null,
-                                    @SerializedName("issues") var issues: UserCountModel? = null,
-                                    @SerializedName("pullRequests") var pullRequests: UserCountModel? = null,
+                                    @SerializedName("stargazers") var stargazers: CountModel? = null,
+                                    @SerializedName("issues") var issues: CountModel? = null,
+                                    @SerializedName("pullRequests") var pullRequests: CountModel? = null,
                                     @SerializedName("forkCount") var forkCount: Long? = null)
 
 data class UserPinnedRepoLanguageModel(@SerializedName("name") var name: String? = null,

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.ViewPagerModel
@@ -16,9 +17,10 @@ import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
 import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
+import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
@@ -32,6 +34,7 @@ class ProfileFragment : BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
+    private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
 
     private val loginBundle: String by lazy { arguments?.getString(BundleConstant.EXTRA) ?: "" }
 
@@ -43,23 +46,35 @@ class ProfileFragment : BaseFragment() {
         actionsHolder.isVisible = loginBundle != me()
         toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-
         swipeRefresh.setOnRefreshListener {
             viewModel.getUserFromRemote(loginBundle)
         }
 
         observeChanges()
 
-        val behaviour = BottomSheetBehavior.from(bottomSheet)
+
+        behaviour.setBottomSheetCallback({ newState ->
+            when (newState) {
+                AnchorSheetBehavior.STATE_EXPANDED -> toggleArrow.setState(ExpandIconView.MORE, true)
+                AnchorSheetBehavior.STATE_COLLAPSED -> toggleArrow.setState(ExpandIconView.LESS, true)
+                else -> toggleArrow.setFraction(0.5f, false)
+            }
+        })
+
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(p0: TabLayout.Tab?) = expandBottomSheet()
             override fun onTabUnselected(p0: TabLayout.Tab?) {}
             override fun onTabSelected(p0: TabLayout.Tab?) = expandBottomSheet()
 
             private fun expandBottomSheet() {
-                (behaviour.state != BottomSheetBehavior.STATE_EXPANDED).isTrue {
-                    behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+                (behaviour.state != AnchorSheetBehavior.STATE_ANCHOR).isTrue {
+                    behaviour.state = AnchorSheetBehavior.STATE_ANCHOR
                 }
+            }
+        })
+        scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
+            if (behaviour.state != AnchorSheetBehavior.STATE_COLLAPSED) {
+                behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
             }
         })
     }

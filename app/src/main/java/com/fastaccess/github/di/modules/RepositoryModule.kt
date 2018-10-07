@@ -16,14 +16,18 @@ import javax.inject.Singleton
  */
 @Module
 class RepositoryModule {
-    @Singleton @Provides fun provideLoginRepository(fastHubLoginDatabase: FastHubLoginDatabase, loginService: LoginService): LoginRepositoryProvider {
+    @Singleton @Provides fun provideLoginRepository(
+            fastHubLoginDatabase: FastHubLoginDatabase,
+            loginService: LoginService
+    ): LoginRepositoryProvider {
         return LoginRepositoryProvider(fastHubLoginDatabase.provideLoginDao(), loginService)
     }
 
-    @Singleton @Provides fun provideUserRepository(fastHubDatabase: FastHubDatabase,
-                                                   apolloClient: ApolloClient,
-                                                   gson: Gson): UserRepositoryProvider {
-        return UserRepositoryProvider(fastHubDatabase.getUserDao(), apolloClient, gson)
+    @Singleton @Provides fun provideUserRepository(
+            fastHubDatabase: FastHubDatabase,
+            apolloClient: ApolloClient
+    ): UserRepositoryProvider {
+        return UserRepositoryProvider(fastHubDatabase.getUserDao(), apolloClient)
     }
 
     @Singleton @Provides fun provideMainIssuesPullsRepository(fastHubDatabase: FastHubDatabase): MainIssuesPullsRepositoryProvider {

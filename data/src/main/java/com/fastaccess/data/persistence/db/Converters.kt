@@ -1,7 +1,11 @@
 package com.fastaccess.data.persistence.db
 
 import androidx.room.TypeConverter
-import com.fastaccess.data.persistence.models.*
+import com.fastaccess.data.model.CountModel
+import com.fastaccess.data.persistence.models.PayloadModel
+import com.fastaccess.data.persistence.models.RepositoryModel
+import com.fastaccess.data.persistence.models.UserOrganizationModel
+import com.fastaccess.data.persistence.models.UserPinnedReposModel
 import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.Gson
 import java.util.*
@@ -34,8 +38,8 @@ class FeedRepoConverter {
 }
 
 class UserCountConverter {
-    @TypeConverter fun toDbValue(data: UserCountModel? = null): String? = data?.toJson()
-    @TypeConverter fun fromDbToValue(data: String? = null): UserCountModel? = data?.let { Gson().fromJson(it, UserCountModel::class.java) }
+    @TypeConverter fun toDbValue(data: CountModel? = null): String? = data?.toJson()
+    @TypeConverter fun fromDbToValue(data: String? = null): CountModel? = data?.let { Gson().fromJson(it, CountModel::class.java) }
 }
 
 class UserOrganizationConverter {

@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     android:id="@+id/bottomSheet"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:windowBackground"
-    android:focusable="true"
+    android:background="@drawable/bottom_sheet_background"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="?actionBarSize"
-    app:layout_behavior="@string/bottom_sheet_behavior"
-    tools:showIn="@layout/profile_fragment_layout">
+    app:behavior_peekHeight="28dp"
+    app:layout_behavior="com.fastaccess.github.ui.widget.AnchorSheetBehavior">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <com.github.zagum.expandicon.ExpandIconView
+        android:id="@+id/toggleArrow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="?toolbarStyle"
-        app:liftOnScroll="true">
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:background="?colorPrimaryDark"
+        app:eiv_color="?icon_color"/>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:tabGravity="fill"
-            app:tabMode="scrollable"/>
-    </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/transparent"
+        app:tabBackground="@color/transparent"
+        app:tabGravity="fill"
+        app:tabMode="scrollable"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
@@ -34,4 +35,4 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/scroll_behaviour"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

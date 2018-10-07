@@ -60,7 +60,8 @@ ext {
             'com.jaychang:simplerecyclerview-kotlin-android-extensions:2.0.5',
 //            "com.airbnb:deeplinkdispatch:$deepLinkDispatch"
             "com.github.airbnb.DeepLinkDispatch:deeplinkdispatch-base:master-SNAPSHOT",
-            'com.airbnb.android:lottie:2.8.0'
+            'com.airbnb.android:lottie:2.8.0',
+            'com.github.zagum:Android-ExpandIcon:1.2.1'
     ]
 
     networking = [

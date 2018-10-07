@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fastaccess.github.R
+import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.ui.widget.recyclerview.decoration.InsetDividerDecoration
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -100,4 +102,34 @@ fun RecyclerView.canAddDivider(): Boolean {
         }
     }
     return false
+}
+
+fun <V : View?> AnchorSheetBehavior<V>.setBottomSheetCallback(
+        onStateChanged: ((newState: Int) -> Unit)? = null,
+        onSlide: ((slideOffset: Float) -> Unit)? = null
+) {
+    this.setAnchorSheetCallback(object : AnchorSheetBehavior.AnchorSheetCallback() {
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            onSlide?.invoke(slideOffset)
+        }
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            onStateChanged?.invoke(newState)
+        }
+    })
+}
+
+fun <V : View?> BottomSheetBehavior<V>.setBottomSheetCallback(
+        onStateChanged: ((newState: Int) -> Unit)? = null,
+        onSlide: ((slideOffset: Float) -> Unit)? = null
+) {
+    this.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            onSlide?.invoke(slideOffset)
+        }
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            onStateChanged?.invoke(newState)
+        }
+    })
 }
