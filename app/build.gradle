@@ -25,7 +25,7 @@ android {
         }
     }
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.2'
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
@@ -105,9 +105,6 @@ android {
     }
 }
 
-kapt {
-    generateStubs = true
-}
 
 repositories {
     maven { url "https://clojars.org/repo/" }
