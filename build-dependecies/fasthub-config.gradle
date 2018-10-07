@@ -7,4 +7,3 @@ ext {
             targetSdkVersion : 28,
             compileSdkVersion: 28
     ]
-}
