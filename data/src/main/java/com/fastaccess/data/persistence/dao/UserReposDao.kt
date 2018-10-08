@@ -13,8 +13,8 @@ abstract class UserReposDao : BaseDao<ProfileRepoModel>() {
     @Query("SELECT * FROM ${ProfileRepoModel.TABLE_NAME}")
     abstract fun getRepos(): LiveData<List<ProfileRepoModel>>
 
-    @Query("SELECT * FROM ${ProfileRepoModel.TABLE_NAME}")
-    abstract fun getUser(login: String): LiveData<ProfileRepoModel>
+    @Query("SELECT * FROM ${ProfileRepoModel.TABLE_NAME} WHERE `id` = :id")
+    abstract fun getRepo(id: Long): LiveData<ProfileRepoModel>
 
     @Query("DELETE FROM ${ProfileRepoModel.TABLE_NAME}") abstract fun deleteAll()
 }
