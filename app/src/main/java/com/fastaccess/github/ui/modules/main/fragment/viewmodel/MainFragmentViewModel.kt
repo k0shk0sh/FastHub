@@ -44,9 +44,10 @@ class MainFragmentViewModel @Inject constructor(
         notificationUseCase.dispose()
         issuesMainScreenUseCase.dispose()
         pullRequestsMainScreenUseCase.dispose()
+        feedsMainScreenUseCase.dispose()
     }
 
-    fun logout() {
+    fun logout() { //TODO
 //        add(Observable.fromCallable { fastHubDatabase.clearAllTables() }
 //                .subscribe { logoutProcess.postValue(true) })
     }

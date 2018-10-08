@@ -68,6 +68,8 @@ query getProfileRepos($login: String!, $cursor: String) {
       totalCount
       totalDiskUsage
       nodes {
+        id
+        databaseId
         name
         updatedAt
         diskUsage

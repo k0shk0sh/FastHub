@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.ViewPagerModel
@@ -21,6 +20,7 @@ import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
 import com.github.zagum.expandicon.ExpandIconView
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
@@ -35,6 +35,7 @@ class ProfileFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
+    private var firstLaunch = false
 
     private val loginBundle: String by lazy { arguments?.getString(BundleConstant.EXTRA) ?: "" }
 
@@ -72,7 +73,11 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         })
-        scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
+
+        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
+            if (p1 == 0) { // first launch
+                return@OnOffsetChangedListener
+            }
             if (behaviour.state != AnchorSheetBehavior.STATE_COLLAPSED) {
                 behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
             }
@@ -142,8 +147,10 @@ class ProfileFragment : BaseFragment() {
                 .circleCrop()
                 .into(userImageView)
 
-        pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(ViewPagerModel(getString(R.string.repos), ProfileReposFragment())))
-        tabs.setupWithViewPager(pager)
+        if (pager.adapter == null) {
+            pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(ViewPagerModel(getString(R.string.repos), ProfileReposFragment())))
+            tabs.setupWithViewPager(pager)
+        }
     }
 
     companion object {

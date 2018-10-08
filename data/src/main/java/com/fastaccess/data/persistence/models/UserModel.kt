@@ -3,6 +3,7 @@ package com.fastaccess.data.persistence.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.fastaccess.data.model.CountModel
+import com.fastaccess.data.model.RepoLanguageModel
 import com.fastaccess.data.persistence.models.UserModel.Companion.TABLE_NAME
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -49,11 +50,8 @@ data class UserPinnedReposModel(@SerializedName("totalCount") var totalCount: Lo
 
 data class UserPinnedRepoNodesModel(@SerializedName("name") var name: String? = null,
                                     @SerializedName("nameWithOwner") var nameWithOwner: String? = null,
-                                    @SerializedName("primaryLanguage") var primaryLanguage: UserPinnedRepoLanguageModel? = null,
+                                    @SerializedName("primaryLanguage") var primaryLanguage: RepoLanguageModel? = null,
                                     @SerializedName("stargazers") var stargazers: CountModel? = null,
                                     @SerializedName("issues") var issues: CountModel? = null,
                                     @SerializedName("pullRequests") var pullRequests: CountModel? = null,
                                     @SerializedName("forkCount") var forkCount: Long? = null)
-
-data class UserPinnedRepoLanguageModel(@SerializedName("name") var name: String? = null,
-                                       @SerializedName("color") var color: String? = null)
