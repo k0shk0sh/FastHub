@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.adapter.FeedsCell
 import com.fastaccess.github.ui.adapter.MainIssuesPrsCell
 import com.fastaccess.github.ui.adapter.NotificationsCell
@@ -31,6 +32,7 @@ class MainFragment : BaseFragment() {
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainFragmentViewModel::class.java) }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
+    override fun viewModel(): BaseViewModel? = viewModel
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
@@ -112,9 +114,6 @@ class MainFragment : BaseFragment() {
         viewModel.prs.observeNotNull(this) { list ->
             pullRequestsLayout.isVisible = list.isNotEmpty()
             pullRequestsList.addOrUpdateCells(list.asSequence().map { MainIssuesPrsCell(it) }.toList())
-        }
-        viewModel.error.observeNotNull(this) {
-            view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }
         }
         viewModel.logoutProcess.observeNotNull(this) {
             if (it) {

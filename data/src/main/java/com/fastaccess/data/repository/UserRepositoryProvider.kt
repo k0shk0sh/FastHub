@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.CountModel
+import com.fastaccess.data.model.RepoLanguageModel
 import com.fastaccess.data.persistence.dao.UserDao
 import com.fastaccess.data.persistence.models.*
 import github.GetProfileQuery
@@ -32,7 +33,7 @@ class UserRepositoryProvider @Inject constructor(private val userDao: UserDao,
                             }?.toList()), UserPinnedReposModel(queryUser.pinnedRepositories.totalCount,
                             queryUser.pinnedRepositories.nodes?.asSequence()?.map {
                                 UserPinnedRepoNodesModel(it.name, it.nameWithOwner,
-                                        UserPinnedRepoLanguageModel(it.primaryLanguage?.name, it.primaryLanguage?.color),
+                                        RepoLanguageModel(it.primaryLanguage?.name, it.primaryLanguage?.color),
                                         CountModel(it.stargazers.totalCount), CountModel(it.issues.totalCount),
                                         CountModel(it.pullRequests.totalCount), it.forkCount)
                             }?.toList()))

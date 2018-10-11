@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import kotlinx.android.synthetic.main.login_chooser_fragment_layout.*
 
@@ -25,6 +26,7 @@ class LoginChooserFragment : BaseFragment() {
         super.onDetach()
     }
 
+    override fun viewModel(): BaseViewModel? = null
     override fun layoutRes() = R.layout.login_chooser_fragment_layout
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {}
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {

@@ -15,6 +15,7 @@ import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.data.persistence.models.ValidationError.FieldType.*
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.asString
@@ -44,6 +45,7 @@ class AuthLoginFragment : BaseFragment() {
         super.onDetach()
     }
 
+    override fun viewModel(): BaseViewModel? = null
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) = Unit
     override fun layoutRes(): Int = R.layout.login_form_layout
 

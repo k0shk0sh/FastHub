@@ -1,5 +1,6 @@
 package com.fastaccess.data.persistence.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -20,8 +21,8 @@ data class ProfileReposModel(
         @Ignore @SerializedName("pageInfo") var pageInfo: PageInfoModel? = null
 ) {
     companion object {
-        fun newInstance(response: GetProfileReposQuery.Data): ProfileReposModel? {
-            return response.user?.repositories?.let { repos ->
+        fun newInstance(response: GetProfileReposQuery.Data?): ProfileReposModel? {
+            return response?.user?.repositories?.let { repos ->
                 ProfileReposModel(repos.totalCount, repos.totalDiskUsage, ProfileRepoModel.newInstances(repos.nodes),
                         PageInfoModel(repos.pageInfo.startCursor, repos.pageInfo.endCursor,
                                 repos.pageInfo.isHasNextPage, repos.pageInfo.isHasPreviousPage))
@@ -33,14 +34,14 @@ data class ProfileReposModel(
 @Entity(tableName = ProfileRepoModel.TABLE_NAME)
 data class ProfileRepoModel(
         @PrimaryKey @SerializedName("id") var id: String = "",
-        @PrimaryKey @SerializedName("databaseId") var databaseId: Long? = null,
+        @SerializedName("databaseId") var databaseId: Long? = null,
         @SerializedName("name") var name: String? = null,
         @SerializedName("updatedAt") var updatedAt: Date? = null,
         @SerializedName("diskUsage") var diskUsage: Long?,
-        @SerializedName("primaryLanguage") var primaryLanguage: RepoLanguageModel? = null,
-        @SerializedName("stargazers") var stargazers: CountModel? = null,
-        @SerializedName("issues") var issues: CountModel? = null,
-        @SerializedName("pullRequests") var pullRequests: CountModel? = null,
+        @SerializedName("primaryLanguage") @Embedded(prefix = "language_") var primaryLanguage: RepoLanguageModel? = null,
+        @SerializedName("stargazers") @Embedded(prefix = "stargazers_") var stargazers: CountModel? = null,
+        @SerializedName("issues") @Embedded(prefix = "issues_") var issues: CountModel? = null,
+        @SerializedName("pullRequests") @Embedded(prefix = "pullRequests_") var pullRequests: CountModel? = null,
         @SerializedName("forkCount") var forkCount: Long? = null
 ) {
     companion object {

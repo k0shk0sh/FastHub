@@ -10,6 +10,7 @@ import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
@@ -31,14 +32,12 @@ import javax.inject.Inject
  * Created by Kosh on 18.08.18.
  */
 class ProfileFragment : BaseFragment() {
-
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
-    private var firstLaunch = false
-
     private val loginBundle: String by lazy { arguments?.getString(BundleConstant.EXTRA) ?: "" }
 
+    override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +73,7 @@ class ProfileFragment : BaseFragment() {
             }
         })
 
-        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
+        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
             if (p1 == 0) { // first launch
                 return@OnOffsetChangedListener
             }
@@ -91,14 +90,6 @@ class ProfileFragment : BaseFragment() {
             } else {
                 initUI(user)
             }
-        }
-
-        viewModel.progress.observeNotNull(this) {
-            swipeRefresh.isRefreshing = it == true
-        }
-
-        viewModel.error.observeNotNull(this) {
-            view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }
         }
     }
 

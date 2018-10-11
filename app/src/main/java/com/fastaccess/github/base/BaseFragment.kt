@@ -6,6 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.fastaccess.github.R
+import com.fastaccess.github.utils.extensions.observeNotNull
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -21,6 +25,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
     @LayoutRes abstract fun layoutRes(): Int
     abstract fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?)
     protected open fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {}
+    abstract fun viewModel(): BaseViewModel?
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -47,6 +52,15 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
             onFragmentCreatedWithUser(view, savedInstanceState)
         } else {
             onFragmentCreated(view, savedInstanceState)
+        }
+
+        viewModel()?.progress?.observe(this, Observer {
+            val refresh = this@BaseFragment.view?.findViewById<SwipeRefreshLayout?>(R.id.swipeRefresh)
+            refresh?.isRefreshing = it == true
+        })
+
+        viewModel()?.error?.observeNotNull(this) {
+            this@BaseFragment.view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }
         }
     }
 

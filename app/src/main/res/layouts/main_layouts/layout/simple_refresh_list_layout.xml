@@ -6,13 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jaychang.srv.SimpleRecyclerView
+    <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srv_emptyStateView="@layout/empty_state_layout"
-        app:srv_loadMoreView="@layout/progress_layout"
-        app:srv_layoutMode="linearVertical"
-        app:srv_showEmptyStateView="true"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -38,10 +38,20 @@ class RepositoryModule {
         return NotificationRepositoryProvider(fastHubDatabase.getNotifications())
     }
 
-    @Singleton @Provides fun provideFeedsRepositoryProvider(fastHubDatabase: FastHubDatabase,
-                                                            userService: UserService,
-                                                            loginRepositoryProvider: LoginRepositoryProvider,
-                                                            gson: Gson): FeedsRepositoryProvider {
+    @Singleton @Provides fun provideFeedsRepositoryProvider(
+            fastHubDatabase: FastHubDatabase,
+            userService: UserService,
+            loginRepositoryProvider: LoginRepositoryProvider,
+            gson: Gson
+    ): FeedsRepositoryProvider {
         return FeedsRepositoryProvider(fastHubDatabase.getFeedsDao(), userService, loginRepositoryProvider, gson)
+    }
+
+    @Singleton @Provides fun provideUserReposRepositoryProvider(
+            fastHubDatabase: FastHubDatabase,
+            apolloClient: ApolloClient,
+            loginRepositoryProvider: LoginRepositoryProvider
+    ): UserReposRespositoryProvider {
+        return UserReposRespositoryProvider(fastHubDatabase.getUserRepoDao(), apolloClient, loginRepositoryProvider)
     }
 }
