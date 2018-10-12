@@ -51,7 +51,7 @@ class RepositoryModule {
             fastHubDatabase: FastHubDatabase,
             apolloClient: ApolloClient,
             loginRepositoryProvider: LoginRepositoryProvider
-    ): UserReposRespositoryProvider {
-        return UserReposRespositoryProvider(fastHubDatabase.getUserRepoDao(), apolloClient, loginRepositoryProvider)
+    ): UserReposRepositoryProvider {
+        return UserReposRepositoryProvider(fastHubDatabase.getUserRepoDao(), apolloClient, loginRepositoryProvider)
     }
 }

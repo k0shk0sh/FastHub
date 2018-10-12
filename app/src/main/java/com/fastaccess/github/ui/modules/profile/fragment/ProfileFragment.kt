@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.ViewPagerModel
@@ -18,7 +19,7 @@ import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
-import com.fastaccess.github.utils.BundleConstant
+import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.*
 import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.tabs.TabLayout
@@ -34,7 +35,7 @@ class ProfileFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
-    private val loginBundle: String by lazy { arguments?.getString(BundleConstant.EXTRA) ?: "" }
+    private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
@@ -51,7 +52,7 @@ class ProfileFragment : BaseFragment() {
 
         observeChanges()
 
-
+        behaviour.state = AnchorSheetBehavior.STATE_ANCHOR
         behaviour.setBottomSheetCallback({ newState ->
             when (newState) {
                 AnchorSheetBehavior.STATE_EXPANDED -> toggleArrow.setState(ExpandIconView.MORE, true)
@@ -66,11 +67,21 @@ class ProfileFragment : BaseFragment() {
             override fun onTabSelected(p0: TabLayout.Tab?) = expandBottomSheet()
 
             private fun expandBottomSheet() {
-                (behaviour.state != AnchorSheetBehavior.STATE_ANCHOR).isTrue {
-                    behaviour.state = AnchorSheetBehavior.STATE_ANCHOR
+                if (viewModel.isFirstLaunch) {
+                    viewModel.isFirstLaunch = false
+                    return
+                }
+                (behaviour.state != AnchorSheetBehavior.STATE_EXPANDED).isTrue {
+                    behaviour.state = AnchorSheetBehavior.STATE_EXPANDED
                 }
             }
         })
+
+        scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, _: Int, _: Int, _: Int ->
+            (behaviour.state != AnchorSheetBehavior.STATE_COLLAPSED).isTrue {
+                behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
+            }
+        }
     }
 
     private fun observeChanges() {
@@ -129,7 +140,9 @@ class ProfileFragment : BaseFragment() {
                 .into(userImageView)
 
         if (pager.adapter == null) {
-            pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(ViewPagerModel(getString(R.string.repos), ProfileReposFragment())))
+            pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
+                    ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle))
+            ))
             tabs.setupWithViewPager(pager)
         }
     }
@@ -137,7 +150,7 @@ class ProfileFragment : BaseFragment() {
     companion object {
         fun newInstance(login: String) = ProfileFragment().apply {
             arguments = Bundle().apply {
-                putString(BundleConstant.EXTRA, login)
+                putString(EXTRA, login)
             }
         }
     }

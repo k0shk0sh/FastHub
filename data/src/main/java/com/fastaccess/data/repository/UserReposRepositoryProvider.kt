@@ -15,20 +15,20 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 11.10.18.
  */
-class UserReposRespositoryProvider @Inject constructor(
+class UserReposRepositoryProvider @Inject constructor(
         private val reposDao: UserReposDao,
         private val apolloClient: ApolloClient,
         private val loginRepositoryProvider: LoginRepositoryProvider
 ) : UserReposRepository {
 
-    override fun getReposFromRemote(login: String, page: String): Observable<ProfileReposModel> {
+    override fun getReposFromRemote(login: String, page: String?): Observable<ProfileReposModel> {
         return Rx2Apollo.from(apolloClient.query(GetProfileReposQuery(login, Input.optional(page))))
                 .filter { !it.hasErrors() }
                 .map {
                     val data = ProfileReposModel.newInstance(it.data())
                     val currentUser = loginRepositoryProvider.getLoginBlocking()
                     if (login == currentUser?.login) {
-                        if (page.isEmpty()) reposDao.deleteAll()
+                        if (page.isNullOrBlank()) reposDao.deleteAll()
                         data?.repos?.let { repos -> reposDao.insert(repos) }
                     }
                     return@map data
@@ -43,7 +43,7 @@ class UserReposRespositoryProvider @Inject constructor(
 }
 
 interface UserReposRepository {
-    fun getReposFromRemote(login: String, page: String = ""): Observable<ProfileReposModel>
+    fun getReposFromRemote(login: String, page: String?): Observable<ProfileReposModel>
     fun getRepos(): DataSource.Factory<Int, ProfileRepoModel>
     fun getRepo(id: String): LiveData<ProfileRepoModel>
     fun deleteAll()

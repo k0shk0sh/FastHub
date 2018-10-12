@@ -49,7 +49,7 @@ ext {
             "android.arch.navigation:navigation-runtime:$navigation",
             "android.arch.navigation:navigation-runtime-ktx:$navigation",
             "android.arch.navigation:navigation-fragment:$navigation",
-            "android.arch.navigation:navigation-fragment-ktx:$navigation"
+            "android.arch.navigation:navigation-fragment-ktx:$navigation",
     ]
 
     extrasLibraries = [
@@ -96,6 +96,7 @@ ext {
             "androidx.room:room-common:$archComponents",
             "androidx.room:room-rxjava2:$archComponents",
             "androidx.room:room-compiler:$archComponents",
+            "androidx.paging:paging-runtime:$archComponents",
             "androidx.core:core-ktx:$androidX",
             "com.snakydesign.livedataextensions:lives:1.0.1"
     ]
@@ -106,7 +107,6 @@ ext {
             "com.google.dagger:dagger-compiler:$dagger2",
             "com.github.bumptech.glide:compiler:$glide",
             "androidx.room:room-runtime:$archComponents",
-            "androidx.paging:paging-runtime:$archComponents",
             "com.github.airbnb.DeepLinkDispatch:deeplinkdispatch-processor:master-SNAPSHOT",
 //            "com.airbnb:deeplinkdispatch-processor:$deepLinkDispatch"
     ]

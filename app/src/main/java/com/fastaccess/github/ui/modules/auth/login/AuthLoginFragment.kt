@@ -17,7 +17,8 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
-import com.fastaccess.github.utils.BundleConstant
+import com.fastaccess.github.utils.EXTRA
+import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.asString
 import com.fastaccess.github.utils.extensions.isTrue
 import kotlinx.android.synthetic.main.login_form_layout.*
@@ -32,8 +33,8 @@ class AuthLoginFragment : BaseFragment() {
     private var callback: LoginChooserCallback? = null
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java) }
-    private val isAccessToken by lazy { arguments?.getBoolean(BundleConstant.EXTRA) ?: false }
-    private val isEnterpriseBundle by lazy { arguments?.getBoolean(BundleConstant.EXTRA_TWO) ?: false }
+    private val isAccessToken by lazy { arguments?.getBoolean(EXTRA) ?: false }
+    private val isEnterpriseBundle by lazy { arguments?.getBoolean(EXTRA_TWO) ?: false }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -127,8 +128,8 @@ class AuthLoginFragment : BaseFragment() {
                     enterTransition = enter
                     exitTransition = exit
                     arguments = Bundle().apply {
-                        putBoolean(BundleConstant.EXTRA, accessToken)
-                        putBoolean(BundleConstant.EXTRA_TWO, isEnterprise)
+                        putBoolean(EXTRA, accessToken)
+                        putBoolean(EXTRA_TWO, isEnterprise)
                     }
                 }
     }

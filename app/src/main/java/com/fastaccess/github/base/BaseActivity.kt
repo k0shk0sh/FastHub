@@ -8,7 +8,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.di.modules.AuthenticationInterceptor
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
-import com.fastaccess.github.utils.BundleConstant
+import com.fastaccess.github.utils.IS_ENTERPRISE
 import com.fastaccess.github.utils.extensions.materialize
 import com.fastaccess.github.utils.extensions.otpCode
 import com.fastaccess.github.utils.extensions.theme
@@ -30,7 +30,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
 
     abstract fun onActivityCreatedWithUser(savedInstanceState: Bundle?)
     override fun isLoggedIn() = !preference.token.isNullOrEmpty()
-    override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(BundleConstant.IS_ENTERPRISE) ?: false
+    override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(IS_ENTERPRISE) ?: false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this) // for the sake of theme engine

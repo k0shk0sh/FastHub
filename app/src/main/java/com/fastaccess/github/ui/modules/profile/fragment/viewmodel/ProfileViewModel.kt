@@ -10,6 +10,8 @@ import javax.inject.Inject
  */
 class ProfileViewModel @Inject constructor(private val userUseCase: UserUseCase) : BaseViewModel() {
 
+    var isFirstLaunch = true
+
     fun getUser(login: String) = userUseCase.getUser(login)
 
     fun getUserFromRemote(login: String) {
