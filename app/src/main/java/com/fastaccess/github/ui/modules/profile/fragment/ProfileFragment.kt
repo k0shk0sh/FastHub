@@ -11,6 +11,7 @@ import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
@@ -31,7 +32,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 18.08.18.
  */
-class ProfileFragment : BaseFragment() {
+class ProfileFragment : BasePagerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
@@ -39,7 +40,6 @@ class ProfileFragment : BaseFragment() {
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
-
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         username.text = loginBundle
         toolbarTitle.text = getString(R.string.profile)
@@ -83,6 +83,8 @@ class ProfileFragment : BaseFragment() {
             }
         }
     }
+
+    override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
 
     private fun observeChanges() {
         viewModel.getUser(loginBundle).observeNull(this) { user ->

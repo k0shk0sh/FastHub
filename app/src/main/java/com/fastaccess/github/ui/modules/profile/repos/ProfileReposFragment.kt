@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BasePagerFragment
+import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.adapter.ProfileReposAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
@@ -20,7 +20,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 06.10.18.
  */
-class ProfileReposFragment : BasePagerFragment() {
+class ProfileReposFragment : BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileReposViewModel::class.java) }
@@ -54,8 +54,6 @@ class ProfileReposFragment : BasePagerFragment() {
             adapter.submitList(it)
         }
     }
-
-    override fun onPageSelected(page: Int) = recyclerView.scrollToPosition(0)
 
     companion object {
         fun newInstance(login: String) = ProfileReposFragment().apply {

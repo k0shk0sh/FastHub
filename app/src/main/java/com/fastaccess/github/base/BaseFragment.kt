@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fastaccess.github.R
 import com.fastaccess.github.utils.extensions.observeNotNull
@@ -75,6 +76,10 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
 
     override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
         activityCallback?.showSnackBar(root, resId, message, duration)
+    }
+
+    open fun onScrollToTop() {
+        view?.findViewById<RecyclerView?>(R.id.recyclerView)?.scrollToPosition(0)
     }
 
     fun addDisposal(disposable: Disposable) {
