@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
  * type; with a left inset.
  * this class adopted from Plaid
  */
-class InsetDividerDecoration constructor(private val height: Int,
-                                         private val inset: Int,
-                                         dividerColor: Int,
-                                         private val toDivide: Class<*>? = null) : RecyclerView.ItemDecoration() {
+class InsetDividerDecoration constructor(
+        private val height: Int,
+        private val inset: Int,
+        dividerColor: Int,
+        private val toDivide: Class<*>? = null
+) : RecyclerView.ItemDecoration() {
 
     private val paint = Paint()
 

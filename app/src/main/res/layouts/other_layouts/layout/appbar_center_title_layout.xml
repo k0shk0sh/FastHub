@@ -8,7 +8,8 @@
     android:layout_height="wrap_content"
     android:background="?android:windowBackground"
     android:theme="?android:toolbarStyle"
-    app:elevation="0dp">
+    app:elevation="0dp"
+    app:layout_behavior="com.fastaccess.github.ui.widget.AppBarBottomSheetBehaviour">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

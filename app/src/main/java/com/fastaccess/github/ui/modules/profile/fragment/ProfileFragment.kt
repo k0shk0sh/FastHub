@@ -21,7 +21,6 @@ import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.utils.BundleConstant
 import com.fastaccess.github.utils.extensions.*
 import com.github.zagum.expandicon.ExpandIconView
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
@@ -70,15 +69,6 @@ class ProfileFragment : BaseFragment() {
                 (behaviour.state != AnchorSheetBehavior.STATE_ANCHOR).isTrue {
                     behaviour.state = AnchorSheetBehavior.STATE_ANCHOR
                 }
-            }
-        })
-
-        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
-            if (p1 == 0) { // first launch
-                return@OnOffsetChangedListener
-            }
-            if (behaviour.state != AnchorSheetBehavior.STATE_COLLAPSED) {
-                behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
             }
         })
     }

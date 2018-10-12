@@ -8,6 +8,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
+import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 
@@ -23,7 +24,8 @@ class ProfileReposFragment : BasePagerFragment() {
     override fun layoutRes(): Int = R.layout.simple_refresh_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-
+        recyclerView.setEmptyView(emptyLayout)
+        fastScroller.attachRecyclerView(recyclerView)
     }
 
     override fun onPageSelected(page: Int) {
