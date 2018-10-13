@@ -9,6 +9,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.adapter.ProfileStarredReposAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
+import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.starred.viewmodel.ProfileStarredReposViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.addDivider
@@ -24,6 +25,7 @@ class ProfileStarredReposFragment : BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileStarredReposViewModel::class.java) }
+    private val parentViewModel by lazy { parentFragment?.let { ViewModelProviders.of(it, viewModelFactory).get(ProfileViewModel::class.java) } }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
     private val adapter by lazy { ProfileStarredReposAdapter() }
 
@@ -55,7 +57,6 @@ class ProfileStarredReposFragment : BaseFragment() {
         }
 
         viewModel.counter.observeNotNull(this) {
-            val parentViewModel = (parentFragment as? BaseFragment)?.viewModel()
             parentViewModel?.tabCounterLiveData?.postValue(Pair(this::class.java.simpleName, it))
         }
     }

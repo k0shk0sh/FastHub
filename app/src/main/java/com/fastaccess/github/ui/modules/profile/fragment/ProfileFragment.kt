@@ -110,7 +110,7 @@ class ProfileFragment : BasePagerFragment() {
             tab?.text = SpannableBuilder.builder()
                     .append(model?.text ?: "", LabelSpan(Color.TRANSPARENT))
                     .space()
-                    .append(" ${it.second} ", LabelSpan(requireContext().getColorAttr(R.attr.colorAccent), 10f))
+                    .append(" ${it.second} ", LabelSpan(requireContext().getColorAttr(R.attr.colorAccent)))
         }
     }
 
