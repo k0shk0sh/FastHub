@@ -45,7 +45,7 @@ class LabelSpan private constructor(private val color: Int, private val dims: Sp
         txtPaint.bgColor = color
     }
 
-    constructor(color: Int) : this(color, object : SpanDimensions {
+    constructor(color: Int, roundedCoroner: Float = 5f) : this(color, object : SpanDimensions {
         override val padding: Int
             get() = 6
 
@@ -60,7 +60,7 @@ class LabelSpan private constructor(private val color: Int, private val dims: Sp
             get() = 1000
 
         override val roundedCornerRadius: Float
-            get() = 5f
+            get() = roundedCoroner
 
         override val marginTop: Int
             get() = 8

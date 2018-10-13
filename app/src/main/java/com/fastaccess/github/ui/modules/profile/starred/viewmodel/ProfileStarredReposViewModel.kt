@@ -41,6 +41,7 @@ class ProfileStarredReposViewModel @Inject constructor(
         add(callApi(reposProvider.getStarredReposFromRemote(login, if (hasNext()) pageInfo?.endCursor else null))
                 .subscribe({
                     this.pageInfo = it.pageInfo
+                    postCounter(it.totalCount)
                 }, { it.printStackTrace() }))
     }
 

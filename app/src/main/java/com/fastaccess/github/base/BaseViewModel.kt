@@ -22,6 +22,8 @@ abstract class BaseViewModel : ViewModel() {
     val error = MutableLiveData<FastHubErrors>()
     val progress = MutableLiveData<Boolean>()
     val logoutProcess = MutableLiveData<Boolean>()
+    val counter = MutableLiveData<Long>()
+    val tabCounterLiveData = MutableLiveData<Pair<String, Long>>()
     private val disposable = CompositeDisposable()
 
     protected fun add(disposable: Disposable) = this.disposable.add(disposable)
@@ -55,6 +57,12 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun hideProgress() {
         progress.postValue(false)
+    }
+
+    protected fun postCounter(count: Long) {
+        if (counter.value == null) {
+            counter.postValue(count)
+        }
     }
 
     protected fun <T> callApi(observable: Observable<T>): Observable<T> = observable

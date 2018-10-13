@@ -53,6 +53,11 @@ class ProfileStarredReposFragment : BaseFragment() {
             adapter.currentState = CurrentState.DONE
             adapter.submitList(it)
         }
+
+        viewModel.counter.observeNotNull(this) {
+            val parentViewModel = (parentFragment as? BaseFragment)?.viewModel()
+            parentViewModel?.tabCounterLiveData?.postValue(Pair(this::class.java.simpleName, it))
+        }
     }
 
     companion object {

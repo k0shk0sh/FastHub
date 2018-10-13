@@ -41,6 +41,7 @@ class ProfileReposViewModel @Inject constructor(
         add(callApi(reposProvider.getReposFromRemote(login, if (hasNext()) pageInfo?.endCursor else null))
                 .subscribe({
                     this.pageInfo = it.pageInfo
+                    postCounter(it.totalCount)
                 }, { it.printStackTrace() }))
     }
 

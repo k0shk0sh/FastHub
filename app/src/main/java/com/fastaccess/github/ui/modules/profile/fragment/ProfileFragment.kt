@@ -1,6 +1,7 @@
 package com.fastaccess.github.ui.modules.profile.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -21,6 +22,8 @@ import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewMo
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
+import com.fastaccess.github.ui.widget.SpannableBuilder
+import com.fastaccess.github.ui.widget.spans.LabelSpan
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.*
 import com.github.zagum.expandicon.ExpandIconView
@@ -28,6 +31,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -94,6 +98,19 @@ class ProfileFragment : BasePagerFragment() {
             } else {
                 initUI(user)
             }
+        }
+        viewModel.tabCounterLiveData.observeNotNull(this) {
+            Timber.e("$it")
+            val adapter: PagerAdapter = pager.adapter as? PagerAdapter ?: return@observeNotNull
+            val index = adapter.getIndex(it.first)
+            Timber.e("index = $index")
+            if (index == -1) return@observeNotNull
+            val model = adapter.getModel(index)
+            val tab = tabs.getTabAt(index)
+            tab?.text = SpannableBuilder.builder()
+                    .append(model?.text ?: "", LabelSpan(Color.TRANSPARENT))
+                    .space()
+                    .append(" ${it.second} ", LabelSpan(requireContext().getColorAttr(R.attr.colorAccent), 10f))
         }
     }
 

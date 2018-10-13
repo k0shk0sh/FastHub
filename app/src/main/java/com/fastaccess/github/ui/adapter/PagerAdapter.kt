@@ -14,4 +14,6 @@ class PagerAdapter(
     override fun getItem(position: Int) = list[position].fragment
     override fun getCount() = list.size
     override fun getPageTitle(position: Int) = list[position].text
+    fun getModel(position: Int) = list.getOrNull(position)
+    fun getIndex(name: String) = list.indexOfFirst { it.fragment::class.java.simpleName == name }
 }
