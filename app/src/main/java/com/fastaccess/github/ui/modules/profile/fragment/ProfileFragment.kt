@@ -19,6 +19,7 @@ import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
 import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
+import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.*
@@ -142,8 +143,10 @@ class ProfileFragment : BasePagerFragment() {
                 .into(userImageView)
 
         if (pager.adapter == null) {
+            pager.offscreenPageLimit = 5
             pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
-                    ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle))
+                    ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle)),
+                    ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle))
             ))
             tabs.setupWithViewPager(pager)
         }

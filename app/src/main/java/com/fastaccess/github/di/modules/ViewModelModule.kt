@@ -8,6 +8,7 @@ import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.repos.viewmodel.ProfileReposViewModel
+import com.fastaccess.github.ui.modules.profile.starred.viewmodel.ProfileStarredReposViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -29,6 +30,9 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(ProfileReposViewModel::class)
     abstract fun bindProfileReposViewModel(viewModel: ProfileReposViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(ProfileStarredReposViewModel::class)
+    abstract fun bindProfileStarredReposViewModel(viewModel: ProfileStarredReposViewModel): ViewModel
 
     @Binds abstract fun bindViewModelFactory(factoryFastHub: FastHubViewModelFactory): ViewModelProvider.Factory
 

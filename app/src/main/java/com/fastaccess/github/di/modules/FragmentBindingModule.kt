@@ -6,6 +6,7 @@ import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
 import com.fastaccess.github.ui.modules.profile.fragment.ProfileFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
+import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -20,4 +21,5 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideMainFragment(): MainFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideProfileFragment(): ProfileFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideProfileReposFragment(): ProfileReposFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideProfileStarredeReposFragment(): ProfileStarredReposFragment
 }

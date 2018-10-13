@@ -94,3 +94,42 @@ query getProfileRepos($login: String!, $cursor: String) {
     }
   }
 }
+
+query getProfileStarredRepos($login: String!, $cursor: String) {
+  user(login: $login) {
+    starredRepositories(first: 30, orderBy: {field: STARRED_AT, direction: DESC}, after:$cursor) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      totalCount
+      nodes {
+        id
+        databaseId
+        name
+        nameWithOwner
+        updatedAt
+        diskUsage
+        forkCount
+        isFork
+        isPrivate
+        viewerHasStarred
+        primaryLanguage {
+          name
+          color
+        }
+        stargazers(first: 0) {
+          totalCount
+        }
+        issues(first: 0, states: OPEN) {
+          totalCount
+        }
+        pullRequests(first: 0, states: OPEN) {
+          totalCount
+        }
+      }
+    }
+  }
+}

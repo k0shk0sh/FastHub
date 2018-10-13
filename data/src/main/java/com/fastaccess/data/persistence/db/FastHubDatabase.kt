@@ -10,11 +10,12 @@ import com.fastaccess.data.persistence.models.*
  * Created by Kosh on 11.05.18.
  */
 
-const val VERSION = 9
+const val VERSION = 10
 const val DATABASE_NAME = "FastHub-Room-DB"
 
 @Database(version = VERSION, entities = [UserModel::class, MainIssuesPullsModel::class,
-    NotificationModel::class, FeedModel::class, ProfileRepoModel::class], exportSchema = false)
+    NotificationModel::class, FeedModel::class, ProfileRepoModel::class,
+    ProfileStarredRepoModel::class], exportSchema = false)
 @TypeConverters(DateConverter::class, EventTypesConverter::class,
         FeedPayloadConverter::class, FeedRepoConverter::class,
         UserCountConverter::class, UserOrganizationConverter::class,
@@ -25,4 +26,5 @@ abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getFeedsDao(): FeedDao
     abstract fun getUserDao(): UserDao
     abstract fun getUserRepoDao(): UserReposDao
+    abstract fun getUserStarredRepoDao(): UserStarredReposDao
 }

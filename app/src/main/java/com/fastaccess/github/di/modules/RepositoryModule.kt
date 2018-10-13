@@ -49,9 +49,15 @@ class RepositoryModule {
 
     @Singleton @Provides fun provideUserReposRepositoryProvider(
             fastHubDatabase: FastHubDatabase,
-            apolloClient: ApolloClient,
-            loginRepositoryProvider: LoginRepositoryProvider
+            apolloClient: ApolloClient
     ): UserReposRepositoryProvider {
         return UserReposRepositoryProvider(fastHubDatabase.getUserRepoDao(), apolloClient)
+    }
+
+    @Singleton @Provides fun provideUserStarredReposRepositoryProvider(
+            fastHubDatabase: FastHubDatabase,
+            apolloClient: ApolloClient
+    ): UserStarredReposRepositoryProvider {
+        return UserStarredReposRepositoryProvider(fastHubDatabase.getUserStarredRepoDao(), apolloClient)
     }
 }

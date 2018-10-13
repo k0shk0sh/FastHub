@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@color/transparent"
-                app:tabGravity="fill"
+                app:tabGravity="center"
                 app:tabMode="scrollable"
                 app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"/>
 
@@ -52,6 +52,7 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true"
         app:layout_behavior="@string/scroll_behaviour"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
