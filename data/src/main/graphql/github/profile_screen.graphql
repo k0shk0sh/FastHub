@@ -74,6 +74,9 @@ query getProfileRepos($login: String!, $cursor: String) {
         updatedAt
         diskUsage
         forkCount
+        isFork
+        isPrivate
+        viewerHasStarred
         primaryLanguage {
           name
           color

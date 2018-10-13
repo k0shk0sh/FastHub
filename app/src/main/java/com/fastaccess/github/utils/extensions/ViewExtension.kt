@@ -1,8 +1,10 @@
 package com.fastaccess.github.utils.extensions
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
@@ -132,4 +134,10 @@ fun <V : View?> BottomSheetBehavior<V>.setBottomSheetCallback(
             onStateChanged?.invoke(newState)
         }
     })
+}
+
+
+@ColorInt fun Int.generateTextColor(): Int {
+    val a = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255
+    return if (a < 0.5) Color.BLACK else Color.WHITE
 }

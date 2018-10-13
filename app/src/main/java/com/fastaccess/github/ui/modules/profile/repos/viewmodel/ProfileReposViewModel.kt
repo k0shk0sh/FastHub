@@ -20,13 +20,14 @@ class ProfileReposViewModel @Inject constructor(
     private var pageInfo: PageInfoModel? = null
     val loadMoreLiveData = MutableLiveData<Boolean>()
 
-    val repos: LiveData<PagedList<ProfileRepoModel>> by lazy {
-        val dataSourceFactory = reposProvider.getRepos()
+
+    fun repos(login: String): LiveData<PagedList<ProfileRepoModel>> {
+        val dataSourceFactory = reposProvider.getRepos(login)
         val config = PagedList.Config.Builder()
                 .setPrefetchDistance(15)
                 .setPageSize(30)
                 .build()
-        LivePagedListBuilder(dataSourceFactory, config)
+        return LivePagedListBuilder(dataSourceFactory, config)
                 .setBoundaryCallback(ProfileRepoBoundary(loadMoreLiveData))
                 .build()
     }

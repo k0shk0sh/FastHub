@@ -14,7 +14,6 @@ ext {
     gson = '2.8.5'
     glide = '4.8.0'
     timber = '4.7.1'
-    chuck = '1.1.0'
     junit = '4.12'
     mockito = '2.8.9'
     mockitoKotlin = '1.5.0'
@@ -119,12 +118,10 @@ ext {
     ]
 
     developmentDependencies = [
-            "com.readystatesoftware.chuck:library:$chuck",
             "com.github.whataa:pandora:$pandora"
     ]
 
     releaseDevelopmentDependencies = [
-            "com.readystatesoftware.chuck:library-no-op:$chuck",
             "com.github.whataa:pandora-no-op:$pandora"
     ]
 }

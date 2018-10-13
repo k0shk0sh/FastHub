@@ -14,7 +14,6 @@ import com.fastaccess.github.di.annotations.ForApplication
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import github.type.CustomType
@@ -53,7 +52,6 @@ class NetworkModule {
             .addInterceptor(ContentTypeInterceptor())
             .addInterceptor(auth)
             .addInterceptor(PaginationInterceptor())
-            .addInterceptor(ChuckInterceptor(context).showNotification(true))
             .addInterceptor(Pandora.get().interceptor)
             .addInterceptor(HttpLoggingInterceptor(debug = BuildConfig.DEBUG))
             .build()

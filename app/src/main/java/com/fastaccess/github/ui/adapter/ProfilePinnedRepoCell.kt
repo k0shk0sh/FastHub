@@ -3,6 +3,8 @@ package com.fastaccess.github.ui.adapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.view.View
+import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.UserPinnedRepoNodesModel
 import com.fastaccess.github.R
 import com.fastaccess.github.utils.extensions.formatNumber
@@ -23,6 +25,7 @@ class ProfilePinnedRepoCell(private val node: UserPinnedRepoNodesModel) : Simple
             forks.text = node.forkCount?.formatNumber() ?: "0"
             issues.text = node.issues?.totalCount?.formatNumber() ?: "0"
             pulls.text = node.pullRequests?.totalCount?.formatNumber() ?: "0"
+            language.isVisible = !node.primaryLanguage?.name.isNullOrEmpty()
             language.text = node.primaryLanguage?.name ?: ""
             if (!node.primaryLanguage?.color.isNullOrBlank()) {
                 language.chipIconTint = ColorStateList.valueOf(Color.parseColor(node.primaryLanguage?.color)) ?: null

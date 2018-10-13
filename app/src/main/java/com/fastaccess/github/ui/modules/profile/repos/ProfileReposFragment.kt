@@ -49,7 +49,7 @@ class ProfileReposFragment : BaseFragment() {
             adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE
         }
 
-        viewModel.repos.observeNotNull(this) {
+        viewModel.repos(loginBundle).observeNotNull(this) {
             adapter.currentState = CurrentState.DONE
             adapter.submitList(it)
         }

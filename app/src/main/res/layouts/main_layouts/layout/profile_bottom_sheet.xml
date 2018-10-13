@@ -15,6 +15,8 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:windowBackground"
+        android:theme="?android:toolbarStyle"
         app:liftOnScroll="true">
 
         <com.github.zagum.expandicon.ExpandIconView
@@ -28,13 +30,17 @@
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:background="?android:windowBackground"
             app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp">
+            app:contentInsetStart="0dp"
+            app:popupTheme="?android:toolbarStyle"
+            app:theme="?android:toolbarStyle">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
+                android:background="@color/transparent"
                 app:tabGravity="fill"
                 app:tabMode="scrollable"
                 app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"/>

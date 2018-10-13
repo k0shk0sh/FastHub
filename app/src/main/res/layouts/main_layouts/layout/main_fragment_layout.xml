@@ -108,7 +108,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="?colorPrimary"
+                            android:background="?colorPrimaryDark"
                             android:drawableEnd="@drawable/ic_arrow_right"
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/feeds"/>
@@ -134,7 +134,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="?colorPrimary"
+                            android:background="?colorPrimaryDark"
                             android:drawableEnd="@drawable/ic_arrow_right"
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/notifications"/>
@@ -160,7 +160,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="?colorPrimary"
+                            android:background="?colorPrimaryDark"
                             android:drawableEnd="@drawable/ic_arrow_right"
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/issues"/>
@@ -186,7 +186,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="?colorPrimary"
+                            android:background="?colorPrimaryDark"
                             android:drawableEnd="@drawable/ic_arrow_right"
                             android:padding="@dimen/spacing_xs_large"
                             android:text="@string/pull_requests"/>

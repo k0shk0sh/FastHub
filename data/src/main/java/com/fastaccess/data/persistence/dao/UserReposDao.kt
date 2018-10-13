@@ -11,11 +11,12 @@ import com.fastaccess.data.persistence.models.ProfileRepoModel
  */
 @Dao
 abstract class UserReposDao : BaseDao<ProfileRepoModel>() {
-    @Query("SELECT * FROM ${ProfileRepoModel.TABLE_NAME}")
-    abstract fun getRepos(): DataSource.Factory<Int, ProfileRepoModel>
+    @Query("SELECT * FROM ${ProfileRepoModel.TABLE_NAME} WHERE `login` = :login")
+    abstract fun getRepos(login: String): DataSource.Factory<Int, ProfileRepoModel>
 
     @Query("SELECT * FROM ${ProfileRepoModel.TABLE_NAME} WHERE `id` = :id")
     abstract fun getRepo(id: String): LiveData<ProfileRepoModel>
 
     @Query("DELETE FROM ${ProfileRepoModel.TABLE_NAME}") abstract fun deleteAll()
+    @Query("DELETE FROM ${ProfileRepoModel.TABLE_NAME} WHERE `login` = :login") abstract fun deleteAll(login: String)
 }

@@ -21,9 +21,9 @@ data class ProfileReposModel(
         @Ignore @SerializedName("pageInfo") var pageInfo: PageInfoModel? = null
 ) {
     companion object {
-        fun newInstance(response: GetProfileReposQuery.Data?): ProfileReposModel? {
+        fun newInstance(response: GetProfileReposQuery.Data?, login: String): ProfileReposModel? {
             return response?.user?.repositories?.let { repos ->
-                ProfileReposModel(repos.totalCount, repos.totalDiskUsage, ProfileRepoModel.newInstances(repos.nodes),
+                ProfileReposModel(repos.totalCount, repos.totalDiskUsage, ProfileRepoModel.newInstances(repos.nodes, login),
                         PageInfoModel(repos.pageInfo.startCursor, repos.pageInfo.endCursor,
                                 repos.pageInfo.isHasNextPage, repos.pageInfo.isHasPreviousPage))
             }
@@ -42,17 +42,22 @@ data class ProfileRepoModel(
         @SerializedName("stargazers") @Embedded(prefix = "stargazers_") var stargazers: CountModel? = null,
         @SerializedName("issues") @Embedded(prefix = "issues_") var issues: CountModel? = null,
         @SerializedName("pullRequests") @Embedded(prefix = "pullRequests_") var pullRequests: CountModel? = null,
-        @SerializedName("forkCount") var forkCount: Long? = null
-) {
+        @SerializedName("forkCount") var forkCount: Long? = null,
+        @SerializedName("isFork") var isFork: Boolean? = null,
+        @SerializedName("isPrivate") var isPrivate: Boolean? = null,
+        @SerializedName("viewerHasStarred") var viewerHasStarred: Boolean? = null,
+        @SerializedName("login") var login: String? = null
+        ) {
     companion object {
         const val TABLE_NAME = "profile_repo_table"
 
-        internal fun newInstances(list: List<GetProfileReposQuery.Node>?): List<ProfileRepoModel> {
+        internal fun newInstances(list: List<GetProfileReposQuery.Node>?, login: String): List<ProfileRepoModel> {
             return list?.asSequence()?.map { data ->
                 ProfileRepoModel(data.id, data.databaseId, data.name, data.updatedAt, data.diskUsage,
                         RepoLanguageModel(data.primaryLanguage?.name, data.primaryLanguage?.color),
                         CountModel(data.stargazers.totalCount), CountModel(data.issues.totalCount),
-                        CountModel(data.pullRequests.totalCount), data.forkCount)
+                        CountModel(data.pullRequests.totalCount), data.forkCount, data.isFork,
+                        data.isPrivate, data.isViewerHasStarred, login)
             }?.toList() ?: arrayListOf()
         }
     }

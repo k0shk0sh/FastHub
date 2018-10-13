@@ -58,6 +58,8 @@ fun Context.getColorAttr(attr: Int): Int {
     return color
 }
 
+fun Context.getColorCompat(id: Int): Int = ContextCompat.getColor(this, id)
+
 fun FragmentActivity.clearDarkStatusBarIcons() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         this.window?.decorView?.let { decoder ->
