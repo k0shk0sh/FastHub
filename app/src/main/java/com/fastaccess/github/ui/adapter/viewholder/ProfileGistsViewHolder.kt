@@ -17,7 +17,7 @@ class ProfileGistsViewHolder(parent: ViewGroup) : BaseViewHolder<ProfileGistMode
 
     override fun bind(item: ProfileGistModel) {
         itemView.apply {
-            title.text = item.description ?: context.getString(R.string.no_data)
+            title.text = if (item.description.isNullOrEmpty()) context.getString(R.string.no_data) else item.description
             starCount.text = item.stargazers?.totalCount?.formatNumber() ?: "0"
             commentCount.text = item.comments?.totalCount?.formatNumber() ?: "0"
             if (item.isPublic == true) {
