@@ -427,4 +427,6 @@
     <string name="too_large_changes">Muitas diferenças para exibir. Por favor, veja-os via navegador</string>
     <string name="no_orgs_dialog_title">Não encontra suas Organizações\?</string>
     <string name="can_not_merge_pr">Este PR não pode ser merged agora.</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

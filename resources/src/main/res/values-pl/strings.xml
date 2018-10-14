@@ -463,4 +463,6 @@
     <string name="disable_loading_image_summary">Nie wczytuj obrazków przy włączonej transmisji danych</string>
     <string name="report_issue_warning">Problem zostnie zgłoszony do repozytorium FastHub w serwisie GitHub</string>
     <string name="block">Zablokuj</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

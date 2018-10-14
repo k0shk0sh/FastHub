@@ -377,4 +377,6 @@
     <string name="no_user_found">لا يوجد مستخدمون</string>
     <string name="no_trending">لا يوجد شائع</string>
     <string name="filter">مرشح</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

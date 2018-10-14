@@ -497,4 +497,6 @@
     <string name="user_unblocked">Usuario desbloqueado</string>
     <string name="clear_image_cache">Borrar caché de imágenes</string>
     <string name="restart_app_message">Por favor, reinicia la aplicación</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

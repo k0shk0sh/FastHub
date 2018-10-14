@@ -413,4 +413,6 @@
     <string name="sound_chooser_title">Избор на звук за известия</string>
     <string name="disable_auto_gif_summary">Изключване на автомтично пускане на GIF анимации</string>
     <string name="disable_auto_gif_title">Изключване на GIF анимации</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

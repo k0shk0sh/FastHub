@@ -381,4 +381,6 @@
     <string name="no_user_found">Pengguna tidak ditemukan</string>
     <string name="no_trending">Tidak ada tren</string>
     <string name="filter">Filter</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

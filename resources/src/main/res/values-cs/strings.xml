@@ -388,4 +388,6 @@
     <string name="reviewer_added">Posuzovatel byl úspěšně přidán</string>
     <string name="milestone_added">Milník byl úspěšně přidán</string>
     <string name="feed">Novinky</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

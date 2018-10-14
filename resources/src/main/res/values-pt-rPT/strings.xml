@@ -438,4 +438,6 @@
   <string name="disable_loading_image_summary">Desactivar o carregamento de imagens em dados móveis</string>
   <string name="report_issue_warning">Este incidente vai ser submetido para o repositório do FastHub no Github</string>
   <string name="block">Bloquear</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

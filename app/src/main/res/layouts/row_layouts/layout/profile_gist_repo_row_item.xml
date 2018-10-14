@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:maxLines="1"
+            android:maxLines="2"
             tools:text="Paradise of anger will authoratively praise"/>
 
         <com.google.android.material.chip.ChipGroup

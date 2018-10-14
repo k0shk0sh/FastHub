@@ -32,7 +32,6 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -101,10 +100,8 @@ class ProfileFragment : BasePagerFragment() {
             }
         }
         viewModel.tabCounterLiveData.observeNotNull(this) {
-            Timber.e("$it")
             val adapter: PagerAdapter = pager.adapter as? PagerAdapter ?: return@observeNotNull
             val index = adapter.getIndex(it.first)
-            Timber.e("index = $index")
             if (index == -1) return@observeNotNull
             val model = adapter.getModel(index)
             val tab = tabs.getTabAt(index)

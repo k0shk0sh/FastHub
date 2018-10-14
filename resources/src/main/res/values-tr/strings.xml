@@ -426,4 +426,6 @@
     <string name="comments_added_successfully">Yorumlar başarıyla eklendi</string>
     <string name="clear_search_keywords">Arama Geçmişini Temizle</string>
     <string name="restore_purchases">Satın Alımları Eski Haline Getir</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

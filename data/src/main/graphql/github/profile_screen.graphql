@@ -136,7 +136,7 @@ query getProfileStarredRepos($login: String!, $cursor: String) {
 
 query getProfileGists($login: String!, $cursor: String) {
   user(login: $login) {
-    gists(first: 30, orderBy: {field: UPDATED_AT, direction: DESC}, after: $cursor) {
+    gists(first: 30, privacy: ALL, orderBy: {field: UPDATED_AT, direction: DESC}, after: $cursor) {
       totalCount
       pageInfo {
         startCursor

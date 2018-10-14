@@ -463,4 +463,6 @@
     <string name="user_unblocked">このユーザーのブロックを外しました。</string>
     <string name="clear_image_cache">画像のキャッシュを削除する</string>
     <string name="restart_app_message">アプリを再起動してください。</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

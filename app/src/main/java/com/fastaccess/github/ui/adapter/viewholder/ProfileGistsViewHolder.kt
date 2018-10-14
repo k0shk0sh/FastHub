@@ -2,7 +2,6 @@ package com.fastaccess.github.ui.adapter.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.ProfileGistModel
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
@@ -18,11 +17,16 @@ class ProfileGistsViewHolder(parent: ViewGroup) : BaseViewHolder<ProfileGistMode
 
     override fun bind(item: ProfileGistModel) {
         itemView.apply {
-            title.text = item.description ?: ""
-            title.isVisible = !item.description.isNullOrEmpty()
+            title.text = item.description ?: context.getString(R.string.no_data)
             starCount.text = item.stargazers?.totalCount?.formatNumber() ?: "0"
             commentCount.text = item.comments?.totalCount?.formatNumber() ?: "0"
-            isPublic.setChipIconResource(if (item.isPublic == true) R.drawable.ic_brower else R.drawable.ic_incognito)
+            if (item.isPublic == true) {
+                isPublic.text = context.getString(R.string.public_label)
+                isPublic.setChipIconResource(R.drawable.ic_brower)
+            } else {
+                isPublic.text = context.getString(R.string.private_label)
+                isPublic.setChipIconResource(R.drawable.ic_incognito)
+            }
         }
     }
 }

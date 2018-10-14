@@ -459,4 +459,6 @@
     <string name="disable_loading_image_summary">Disable loading image while on data plan</string>
     <string name="report_issue_warning">Ce ticket sera soumis au dépôt FastHub sur GitHub</string>
     <string name="block">Block</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

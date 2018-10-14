@@ -483,4 +483,6 @@ APP
     <string name="unblock">取消阻擋</string>
     <string name="user_blocked">已阻擋此使用者</string>
     <string name="user_unblocked">已取消阻擋此使用者</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

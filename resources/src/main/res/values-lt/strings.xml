@@ -370,4 +370,6 @@
     <string name="not_really_working">„GitHub“ neleidžia rūšiuoti pagal jaustukus dėl techninių limitacijų.</string>
     <string name="scroll_up">Slinkite aukštyn</string>
     <string name="scroll_down">Slinkite žemyn</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

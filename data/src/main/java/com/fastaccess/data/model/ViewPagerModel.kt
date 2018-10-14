@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
  * Created by Kosh on 05.10.18.
  */
 data class ViewPagerModel(
-        val text: String = "",
+        var text: CharSequence = "",
         val fragment: Fragment,
-        val icon: Int? = null
+        var icon: Int? = null
 )

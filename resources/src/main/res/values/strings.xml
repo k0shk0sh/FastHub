@@ -599,4 +599,6 @@
     <string name="menu_label">Menu</string>
     <string name="commit_file_required">No file changes</string>
     <string name="developer_program_member">Developer Program Member</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

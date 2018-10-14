@@ -505,4 +505,6 @@ CaptainTF @ Github 提议：
     <string name="user_unblocked">已取消阻止该用户</string>
     <string name="clear_image_cache">清除图片缓存</string>
     <string name="restart_app_message">请重启应用</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>

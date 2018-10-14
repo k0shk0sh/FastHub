@@ -60,9 +60,7 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected fun postCounter(count: Long) {
-        if (counter.value == null) {
-            counter.postValue(count)
-        }
+        counter.postValue(count)
     }
 
     protected fun <T> callApi(observable: Observable<T>): Observable<T> = observable

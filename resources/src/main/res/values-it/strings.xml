@@ -474,4 +474,6 @@
     <string name="user_unblocked">Utente sbloccato</string>
     <string name="clear_image_cache">Pulisci Cache Immagini</string>
     <string name="restart_app_message">Perfavore riavviare l\' app</string>
+    <string name="public_label">public</string>
+    <string name="private_label">private</string>
 </resources>
