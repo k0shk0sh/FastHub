@@ -46,7 +46,7 @@ data class PayloadModel(@SerializedName("action") var action: String? = null,
                         @SerializedName("commits") var commits: List<CommitModel>? = null,
                         @SerializedName("commit_comment") var commitComment: CommentModel? = null,
                         @SerializedName("comment") var comment: CommentModel? = null,
-                        @SerializedName("gist") var gist: GistModel? = null,
+                        @SerializedName("gist") var gist: FeedGistModel? = null,
                         @SerializedName("pages") var pages: List<WikiModel>? = null,
                         @SerializedName("team") var team: TeamModel? = null)
 
@@ -135,7 +135,7 @@ data class LabelModel(@SerializedName("url") var url: String? = null,
                       @SerializedName("color") var color: String? = null,
                       @SerializedName("name") var name: String? = null)
 
-data class GistModel(@SerializedName("id") var id: String? = null,
+data class FeedGistModel(@SerializedName("id") var id: String? = null,
                      @SerializedName("node_id") var nodeId: String? = null,
                      @SerializedName("url") var url: String? = null,
                      @SerializedName("html_url") var htmlUrl: String? = null,

@@ -60,4 +60,11 @@ class RepositoryModule {
     ): UserStarredReposRepositoryProvider {
         return UserStarredReposRepositoryProvider(fastHubDatabase.getUserStarredRepoDao(), apolloClient)
     }
+
+    @Singleton @Provides fun provideUserGistsRepositoryProvider(
+            fastHubDatabase: FastHubDatabase,
+            apolloClient: ApolloClient
+    ): UserGistsRepositoryProvider {
+        return UserGistsRepositoryProvider(fastHubDatabase.getGistsDao(), apolloClient)
+    }
 }

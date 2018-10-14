@@ -133,3 +133,34 @@ query getProfileStarredRepos($login: String!, $cursor: String) {
     }
   }
 }
+
+query getProfileGists($login: String!, $cursor: String) {
+  user(login: $login) {
+    gists(first: 30, orderBy: {field: UPDATED_AT, direction: DESC}, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        id
+        viewerHasStarred
+        updatedAt
+        isPublic
+        name
+        description
+        owner {
+          login
+        }
+        stargazers(first: 0) {
+          totalCount
+        }
+        comments(first: 0) {
+          totalCount
+        }
+      }
+    }
+  }
+}

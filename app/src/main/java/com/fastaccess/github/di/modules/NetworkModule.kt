@@ -1,6 +1,5 @@
 package com.fastaccess.github.di.modules
 
-import android.content.Context
 import android.net.Uri
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.response.CustomTypeAdapter
@@ -10,7 +9,6 @@ import com.fastaccess.domain.repository.services.LoginService
 import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.domain.repository.services.UserService
 import com.fastaccess.github.BuildConfig
-import com.fastaccess.github.di.annotations.ForApplication
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -47,7 +45,7 @@ class NetworkModule {
 
     @Singleton @Provides fun provideInterceptor() = AuthenticationInterceptor()
 
-    @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor, @ForApplication context: Context): OkHttpClient = OkHttpClient
+    @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor): OkHttpClient = OkHttpClient
             .Builder()
             .addInterceptor(ContentTypeInterceptor())
             .addInterceptor(auth)
