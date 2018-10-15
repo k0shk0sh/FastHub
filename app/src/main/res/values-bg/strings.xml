@@ -413,7 +413,6 @@
     <string name="sound_chooser_title">Избор на звук за известия</string>
     <string name="disable_auto_gif_summary">Изключване на автомтично пускане на GIF анимации</string>
     <string name="disable_auto_gif_title">Изключване на GIF анимации</string>
-    <!-- new -->
     <string name="request_changes">изисквай промени</string>
     <string name="google_play_service_error">Google Play Services не са достъпни</string>
     <string name="edit_gist">Редактиране на Gist</string>
@@ -443,26 +442,26 @@
         <h5>• Защо не се показват Wiki страниците на Private и Enterprise хранилищата?</h5>
         <p>Тъй като FastHub скрапва Wiki страниците от GitHub, приложението не може да получи token за сесия, изискван за достъп до Private хранилища.</p>
 
-        <h5>• Вписах се в Enterprise акаунта си. Защо не мога да взаимодействам с нищо друго, освен моят Enterprise GitHub?</h5>
+        <h5>• Вписах се в Enterprise акаунта си. Защо не мога да взаимодействам с нищо друго, освен моята Enterprise GitHub среда?</h5>
         <p>Всъщност, логически е заложено да не се достъпва нищо друго, освен Enterprise средата. FastHub се опитва да изисква колкото се може повече permissions, но в повечето случаи не може да направи нищо повече от това, тъй като удостоверяващата информация се съхранява на GitHub сървъра. Но, в <b>някои</b> случаи използването на OAuth token към GitHub акаунта може да свърши работа.</p>
 
         <h5>• Защо има проблеми при редактиране на Issues или Pull Requests (PRs)?</h5>
-        <p>Ако не можеш да редактираш Issues или PRs в хранилище от Public организация, моля свържи се с организацията, за да даде подходящия достъп на FastHub. Другият вариант е да опиташ да се впишеш с Access Token.</p>
+        <p>Ако не можеш да редактираш Issues или PRs в хранилище от Public организация, моля свържи се с организацията, за да настрои подходящ достъп на FastHub. Другият вариант е да опиташ да се впишеш с Access Token.</p>
 
         <h5>• Имам проблеми! / Искам да предложа някои неща!</h5>
-        <p>Отиди на https://github.com/k0shk0sh/FastHub/issues/new и отвори ново issue за бъгова или feature requests. Бих посъветвал обаче първо да
-        потърсиш дали няма подобни, вече отворени, issues по темата. Всеки дублиран ticket, бива маркиран и затворен веднага.</p>
+        <p>Отиди на https://github.com/k0shk0sh/FastHub/issues/new и отвори ново issue за бъгова или feature requests. Но първо един съвет - потърси
+        дали няма подобни, вече отворени, issues по темата. Всеки дублиран ticket, бива маркиран и затворен веднага.</p>
 
         <h5>• Как мога да получа ПРОМО код?</h5>
         <p>Промо програмата вече не съществува.</p>
     ]]></string>
     <string name="faq">ЧЗВ</string>
-    <string name="comments_added_successfully">Кометарите са добавени успешно</string>
+    <string name="comments_added_successfully">Коментарите са добавени успешно</string>
     <string name="clear_search_keywords">Изчистване на история на търсенето</string>
     <string name="restore_purchases">Възстановяване на покупки</string>
     <string name="include_forks">Включване на Forks</string>
     <string name="comment_is_too_far_to_paginate">Коментарът е твърде далеч, за да бъде странициран.</string>
-    <string name="search_results_warning">Твърди много отговори \nПоказване на макс., който API-то позволява</string>
+    <string name="search_results_warning">Твърде много отговори \nПоказване на максимума, който API-то позволява</string>
     <string name="disable_loading_image_title">Изкл. на изображение при зареждане</string>
     <string name="disable_loading_image_summary">Изкл. на изображение при зареждане, докато си на платен мобилен план</string>
     <string name="report_issue_warning">Това issue ще бъде изпратено в хранилището на FastHub в GitHub</string>
@@ -471,7 +470,7 @@
     <string name="user_blocked">Потребител блокиран</string>
     <string name="user_unblocked">Потребител отблокиран</string>
     <string name="clear_image_cache">Изчистване на кеш от Изображения</string>
-    <string name="restart_app_message">Моля рестарирай приложението</string>
+    <string name="restart_app_message">Моля рестартирай приложението</string>
     <string name="menu_label">Меню</string>
     <string name="commit_file_required">Няма файлови промени</string>
     <string name="send_feedback">Обратна връзка</string>
