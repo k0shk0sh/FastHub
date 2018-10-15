@@ -67,4 +67,11 @@ class RepositoryModule {
     ): UserGistsRepositoryProvider {
         return UserGistsRepositoryProvider(fastHubDatabase.getGistsDao(), apolloClient)
     }
+
+    @Singleton @Provides fun provideUserFollowersFollowingRepositoryProvider(
+            fastHubDatabase: FastHubDatabase,
+            apolloClient: ApolloClient
+    ): UserFollowersFollowingRepositoryProvider {
+        return UserFollowersFollowingRepositoryProvider(fastHubDatabase.getFollowingFollowerDao(), apolloClient)
+    }
 }

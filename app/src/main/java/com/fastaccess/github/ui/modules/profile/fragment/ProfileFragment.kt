@@ -18,6 +18,7 @@ import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
 import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
+import com.fastaccess.github.ui.modules.profile.followersandfollowings.ProfileFollowersFragment
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
@@ -162,7 +163,9 @@ class ProfileFragment : BasePagerFragment() {
             pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
                     ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle)),
                     ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle)),
-                    ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle))
+                    ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle)),
+                    ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true)),
+                    ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false))
             ))
             tabs.setupWithViewPager(pager)
         }

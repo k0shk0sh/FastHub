@@ -164,3 +164,49 @@ query getProfileGists($login: String!, $cursor: String) {
     }
   }
 }
+
+query getProfileFollowers($login: String!, $cursor: String) {
+  user(login: $login) {
+    followers(first: 30, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        ...FollowingFollowersUser
+      }
+    }
+  }
+}
+
+query getProfileFollowing($login: String!, $cursor: String) {
+  user(login: $login) {
+    following(first: 30, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        ...FollowingFollowersUser
+      }
+    }
+  }
+}
+
+fragment FollowingFollowersUser on User {
+    id
+    name
+    login
+    avatarUrl(size: 150)
+    location
+    bio
+    viewerCanFollow
+    viewerIsFollowing
+    url
+}

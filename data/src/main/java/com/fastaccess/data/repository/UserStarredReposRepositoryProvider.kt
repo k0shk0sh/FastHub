@@ -29,7 +29,6 @@ class UserStarredReposRepositoryProvider @Inject constructor(
                     data?.repos?.let { repos -> reposDao.insert(repos) }
                     return@map data
                 }
-
     }
 
     override fun getStarredRepos(login: String): DataSource.Factory<Int, ProfileStarredRepoModel> = reposDao.getStarredRepos(login)

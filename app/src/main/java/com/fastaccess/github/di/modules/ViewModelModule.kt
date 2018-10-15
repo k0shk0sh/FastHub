@@ -6,6 +6,7 @@ import com.fastaccess.github.di.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsViewModel
 import com.fastaccess.github.ui.modules.profile.repos.viewmodel.ProfileReposViewModel
@@ -37,6 +38,9 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(ProfileGistsViewModel::class)
     abstract fun bindProfileGistsViewModel(viewModel: ProfileGistsViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(FollowersFollowingViewModel::class)
+    abstract fun bindFollowersFollowingViewModel(viewModel: FollowersFollowingViewModel): ViewModel
 
     @Binds abstract fun bindViewModelFactory(factoryFastHub: FastHubViewModelFactory): ViewModelProvider.Factory
 

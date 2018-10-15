@@ -75,19 +75,13 @@ fun FragmentActivity.setStatusBarColor(colorAttr: Int = R.attr.colorAccent) {
 fun Fragment.getDrawable(@DrawableRes drawableRes: Int): Drawable? = ContextCompat.getDrawable(requireContext(), drawableRes)
 
 fun Fragment.route(url: String?) {
-    url?.let { url ->
-        context?.let {
-            val intent = Intent(it, RoutingActivity::class.java)
-            intent.data = Uri.parse(url)
-            it.startActivity(intent)
-        }
-    }
+    context?.route(url)
 }
 
 fun Context.route(url: String?) {
     url?.let {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(it)
+        val intent = Intent(this, RoutingActivity::class.java)
+        intent.data = Uri.parse(url)
         startActivity(intent)
     }
 }

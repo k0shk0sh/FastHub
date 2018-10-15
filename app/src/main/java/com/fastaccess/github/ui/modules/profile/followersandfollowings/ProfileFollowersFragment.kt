@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.profile.starred
+package com.fastaccess.github.ui.modules.profile.followersandfollowings
 
 import android.os.Bundle
 import android.view.View
@@ -7,62 +7,68 @@ import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.ui.adapter.ProfileStarredReposAdapter
+import com.fastaccess.github.ui.adapter.ProfileFollowingFollowersAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
-import com.fastaccess.github.ui.modules.profile.starred.viewmodel.ProfileStarredReposViewModel
+import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.github.utils.extensions.addKeyLineDivider
 import com.fastaccess.github.utils.extensions.observeNotNull
+import com.fastaccess.github.utils.extensions.route
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 
 /**
- * Created by Kosh on 13.10.18.
+ * Created by Kosh on 15.10.18.
  */
-class ProfileStarredReposFragment : BaseFragment() {
+class ProfileFollowersFragment : BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileStarredReposViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FollowersFollowingViewModel::class.java) }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
-    private val adapter by lazy { ProfileStarredReposAdapter() }
+    private val isFollowers: Boolean by lazy { arguments?.getBoolean(EXTRA_TWO) ?: false }
+    private val adapter by lazy { ProfileFollowingFollowersAdapter { url -> route(url) } }
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.simple_refresh_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         recyclerView.adapter = adapter
-        recyclerView.addDivider()
+        recyclerView.addKeyLineDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadStarredRepos(loginBundle, true)
-        swipeRefresh.setOnRefreshListener { viewModel.loadStarredRepos(loginBundle, true) }
+        if (savedInstanceState == null) viewModel.loadUsers(loginBundle, isFollowers, true)
+        swipeRefresh.setOnRefreshListener { viewModel.loadUsers(loginBundle, isFollowers, true) }
         listenToChanges()
     }
 
     private fun listenToChanges() {
         viewModel.loadMoreLiveData.observeNotNull(this) {
-            viewModel.loadStarredRepos(loginBundle)
+            viewModel.loadUsers(loginBundle, isFollowers)
         }
 
         viewModel.progress.observeNotNull(this) {
             adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE
         }
 
-        viewModel.starredRepos(loginBundle).observeNotNull(this) {
+        viewModel.getUsers(loginBundle, isFollowers).observeNotNull(this) {
             adapter.currentState = CurrentState.DONE
             adapter.submitList(it)
         }
 
         viewModel.counter.observeNotNull(this) {
-            (parentFragment as? BaseFragment)?.viewModel()?.tabCounterLiveData?.postValue(Pair(getString(R.string.starred), it))
+            (parentFragment as? BaseFragment)?.viewModel()?.tabCounterLiveData?.postValue(
+                    Pair(getString(if (isFollowers) R.string.followers else R.string.following),
+                            it))
         }
     }
 
     companion object {
-        fun newInstance(login: String) = ProfileStarredReposFragment().apply {
+        fun newInstance(login: String, isFollowers: Boolean) = ProfileFollowersFragment().apply {
             arguments = Bundle().apply {
                 putString(EXTRA, login)
+                putBoolean(EXTRA_TWO, isFollowers)
             }
         }
     }

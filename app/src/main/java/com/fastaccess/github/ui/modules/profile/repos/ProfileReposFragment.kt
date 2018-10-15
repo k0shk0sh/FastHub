@@ -55,7 +55,7 @@ class ProfileReposFragment : BaseFragment() {
         }
 
         viewModel.counter.observeNotNull(this) {
-            (parentFragment as? BaseFragment)?.viewModel()?.tabCounterLiveData?.postValue(Pair(this::class.java.simpleName, it))
+            (parentFragment as? BaseFragment)?.viewModel()?.tabCounterLiveData?.postValue(Pair(getString(R.string.repos), it))
         }
     }
 
