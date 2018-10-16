@@ -1,13 +1,13 @@
 package com.fastaccess.github.ui.modules.profile.fragment
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.github.R
@@ -24,15 +24,15 @@ import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
-import com.fastaccess.github.ui.widget.SpannableBuilder
-import com.fastaccess.github.ui.widget.spans.LabelSpan
 import com.fastaccess.github.utils.EXTRA
+import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.*
 import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -43,6 +43,7 @@ class ProfileFragment : BasePagerFragment() {
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
+    private val tabBundle: String? by lazy { arguments?.getString(EXTRA_TWO) }
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
@@ -100,17 +101,6 @@ class ProfileFragment : BasePagerFragment() {
                 initUI(user)
             }
         }
-        viewModel.tabCounterLiveData.observeNotNull(this) {
-            val adapter: PagerAdapter = pager.adapter as? PagerAdapter ?: return@observeNotNull
-            val index = adapter.getIndex(it.first)
-            if (index == -1) return@observeNotNull
-            val model = adapter.getModel(index)
-            val tab = tabs.getTabAt(index)
-            tab?.text = SpannableBuilder.builder()
-                    .append(model?.text ?: "", LabelSpan(Color.TRANSPARENT))
-                    .space()
-                    .append(" ${it.second} ", LabelSpan(requireContext().getColorAttr(R.attr.colorAccent)))
-        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -160,21 +150,29 @@ class ProfileFragment : BasePagerFragment() {
 
         if (pager.adapter == null) {
             pager.offscreenPageLimit = 5
-            pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
-                    ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle)),
-                    ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle)),
-                    ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle)),
-                    ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true)),
-                    ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false))
+            val adapter = PagerAdapter(childFragmentManager, arrayListOf(
+                    ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle), FragmentType.REPOS),
+                    ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle), FragmentType.STARRED),
+                    ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle), FragmentType.GISTS),
+                    ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true), FragmentType.FOLLOWERS),
+                    ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
             ))
+            pager.adapter = adapter
             tabs.setupWithViewPager(pager)
+            val type = FragmentType.getTypeSafely(tabBundle ?: "")
+            type?.let {
+                val index = adapter.getIndex(it)
+                if (index == -1) return
+                pager.currentItem = index
+            }
         }
     }
 
     companion object {
-        fun newInstance(login: String) = ProfileFragment().apply {
+        fun newInstance(login: String, tab: String? = null) = ProfileFragment().apply {
             arguments = Bundle().apply {
                 putString(EXTRA, login)
+                putString(EXTRA_TWO, tab)
             }
         }
     }

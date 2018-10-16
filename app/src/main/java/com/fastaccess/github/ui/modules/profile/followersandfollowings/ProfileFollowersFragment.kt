@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -58,9 +59,7 @@ class ProfileFollowersFragment : BaseFragment() {
         }
 
         viewModel.counter.observeNotNull(this) {
-            (parentFragment as? BaseFragment)?.viewModel()?.tabCounterLiveData?.postValue(
-                    Pair(getString(if (isFollowers) R.string.followers else R.string.following),
-                            it))
+            postCount(if (isFollowers) FragmentType.FOLLOWERS else FragmentType.FOLLOWINGS, it)
         }
     }
 

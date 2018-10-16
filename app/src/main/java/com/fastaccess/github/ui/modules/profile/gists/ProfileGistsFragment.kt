@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -55,7 +56,7 @@ class ProfileGistsFragment : BaseFragment() {
         }
 
         viewModel.counter.observeNotNull(this) {
-            (parentFragment as? BaseFragment)?.viewModel()?.tabCounterLiveData?.postValue(Pair(getString(R.string.gists), it))
+            postCount(FragmentType.GISTS, it)
         }
     }
 

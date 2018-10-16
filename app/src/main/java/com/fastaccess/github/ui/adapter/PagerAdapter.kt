@@ -2,6 +2,7 @@ package com.fastaccess.github.ui.adapter
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 
 /**
@@ -15,5 +16,5 @@ class PagerAdapter(
     override fun getCount() = list.size
     override fun getPageTitle(position: Int) = list[position].text
     fun getModel(position: Int) = list.getOrNull(position)
-    fun getIndex(name: String) = list.indexOfFirst { name == it.text.toString() }
+    fun getIndex(type: FragmentType) = list.indexOfFirst { it.fragmentType == type }
 }

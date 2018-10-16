@@ -11,16 +11,20 @@ import com.fastaccess.github.utils.extensions.replace
 /**
  * Created by Kosh on 18.08.18.
  */
-@WebDeepLink("/{login}", "/users/{login}")
-@AppDeepLink("/{login}")
+@WebDeepLink("/{login}", "/{login}/{page}", "/users/{login}", "/users/{login}/{page}")
+@AppDeepLink("/{login}", "/{login}/{page}", "/users/{login}", "/users/{login}/{page}")
 class ProfileActivity : BaseActivity() {
     override fun layoutRes(): Int = R.layout.activity_main
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {
         if (savedInstanceState == null && intent != null) {
-            intent?.extras?.getString("login")?.let {
-                replace(R.id.container, ProfileFragment.newInstance(it))
-            } ?: finish()
+            val login = intent?.extras?.getString("login")
+            val tab = intent?.extras?.getString("tab") ?: intent?.extras?.getString("page")
+            if (login == null) {
+                finish()
+                return
+            }
+            replace(R.id.container, ProfileFragment.newInstance(login, tab))
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.fastaccess.github.base
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +10,27 @@ import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager
+import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
+import com.fastaccess.github.base.callback.UpdateTabCount
+import com.fastaccess.github.ui.adapter.PagerAdapter
+import com.fastaccess.github.ui.widget.SpannableBuilder
+import com.fastaccess.github.ui.widget.spans.LabelSpan
+import com.fastaccess.github.utils.extensions.getColorAttr
 import com.fastaccess.github.utils.extensions.observeNotNull
+import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import timber.log.Timber
 
 /**
  * Created by Kosh on 13.05.18.
  */
-abstract class BaseFragment : DaggerFragment(), ActivityCallback {
+abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount {
 
+    protected var updateCountCallback: UpdateTabCount? = null
     private var activityCallback: ActivityCallback? = null
     private var disposal = CompositeDisposable()
 
@@ -31,10 +42,16 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         activityCallback = context as? ActivityCallback
+        when {
+            parentFragment is UpdateTabCount -> updateCountCallback = parentFragment as UpdateTabCount
+            context is UpdateTabCount -> updateCountCallback = context
+            else -> Timber.e("Nothings listens to UpdateTabCount")
+        }
     }
 
     override fun onDetach() {
         activityCallback = null
+        updateCountCallback = null
         super.onDetach()
     }
 
@@ -76,6 +93,25 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback {
 
     override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
         activityCallback?.showSnackBar(root, resId, message, duration)
+    }
+
+    override fun updateCount(type: FragmentType, count: Long) {
+        val pager = view?.findViewById<ViewPager?>(R.id.pager) ?: return
+        val tabs = view?.findViewById<TabLayout?>(R.id.tabs) ?: return
+        val adapter = pager.adapter as? PagerAdapter ?: return
+        val index = adapter.getIndex(type)
+        if (index == -1) return
+        val model = adapter.getModel(index)
+        tabs.getTabAt(index)?.let {
+            it.text = SpannableBuilder.builder()
+                    .append(model?.text ?: "", LabelSpan(Color.TRANSPARENT))
+                    .space()
+                    .append(" $count ", LabelSpan(requireContext().getColorAttr(R.attr.colorAccent)))
+        }
+    }
+
+    protected fun postCount(type: FragmentType, count: Long) {
+        updateCountCallback?.updateCount(type, count)
     }
 
     open fun onScrollToTop() {

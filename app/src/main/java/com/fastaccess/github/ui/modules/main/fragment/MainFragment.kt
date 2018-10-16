@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -48,7 +49,7 @@ class MainFragment : BaseFragment() {
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.url) }, ::print))
+                R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print))
             }
             return@setOnMenuItemClickListener true
         }
@@ -87,6 +88,22 @@ class MainFragment : BaseFragment() {
             return@setNavigationItemSelectedListener true
         }
         listenToDataChanges()
+        initClicks()
+    }
+
+    private fun initClicks() {
+        starred.setOnClickListener { view ->
+            addDisposal(viewModel.login
+                    .subscribe({ route("${it?.htmlUrl}/${FragmentType.STARRED.tabName}") }, ::print))
+        }
+        repos.setOnClickListener { view ->
+            addDisposal(viewModel.login
+                    .subscribe({ route("${it?.htmlUrl}/${FragmentType.REPOS.tabName}") }, ::print))
+        }
+        gists.setOnClickListener { view ->
+            addDisposal(viewModel.login
+                    .subscribe({ route("${it?.htmlUrl}/${FragmentType.GISTS.tabName}") }, ::print))
+        }
     }
 
     private fun listenToDataChanges() {
