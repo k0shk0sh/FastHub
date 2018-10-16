@@ -86,9 +86,17 @@ object Libs {
             "com.android.support.test:runner:" + Versions.com_android_support_test_runner
 
     /**
+     * [gradle website](https://developer.android.com/studio) */
+    const val com_android_tools_build_gradle: String =
+            "com.android.tools.build:gradle:" + Versions.com_android_tools_build_gradle
+
+    /**
      * [firebase-database website](https://github.com/b3er/RxFirebase2) */
+    const val com_github_b3er_rxfirebase_firebase_database: String =
+            "com.github.b3er.rxfirebase:firebase-database:" + Versions.com_github_b3er_rxfirebase_firebase_database
+
     const val com_google_firebase_firebase_database: String =
-            "com.github.b3er.rxfirebase:firebase-database:" + Versions.com_google_firebase_firebase_database
+            "com.google.firebase:firebase-database:" + Versions.com_google_firebase_firebase_database
 
     /**
      * [commonmark website](https://github.com/atlassian/commonmark-java) */
@@ -183,10 +191,8 @@ object Libs {
      * [HtmlSpanner website](http://maven.apache.org) */
     const val htmlspanner: String = "com.github.nightwhistler:HtmlSpanner:" + Versions.htmlspanner
 
-    /**
-     * [gradle website](https://developer.android.com/studio) */
     const val io_fabric_tools_gradle: String =
-            "com.android.tools.build:gradle:" + Versions.io_fabric_tools_gradle
+            "io.fabric.tools:gradle:" + Versions.io_fabric_tools_gradle
 
     const val jacoco_android: String =
             "com.dicedmelon.gradle:jacoco-android:" + Versions.jacoco_android

@@ -7,161 +7,174 @@ import kotlin.String
  *   `$ ./gradlew syncLibs`
  * to update this file */
 object Versions {
-    const val aapt2: String = "3.2.0-alpha08-4635615" // available: milestone=3.3.0-alpha13-5013011
+    const val aapt2: String =
+            "3.2.0-alpha08-4635615" // available milestone: "3.3.0-alpha13-5013011" 
 
-    const val aboutlibraries: String = "5.9.7" // available: milestone=6.2.0
+    const val aboutlibraries: String = "5.9.7" // available milestone: "6.2.0" 
 
-    const val adapter_rxjava2: String = "2.3.0" // available: milestone=2.4.0
+    const val adapter_rxjava2: String = "2.3.0" // available milestone: "2.4.0" 
 
-    const val android_device_names: String = "1.1.5" // available: milestone=1.1.7
+    const val android_device_names: String = "1.1.5" // available milestone: "1.1.7" 
 
-    const val android_state: String = "1.2.0" // available: milestone=1.4.1
+    const val android_state: String = "1.2.0" // available milestone: "1.4.1" 
 
-    const val android_state_processor: String = "1.2.0" // available: milestone=1.4.1
+    const val android_state_processor: String = "1.2.0" // available milestone: "1.4.1" 
 
-    const val apollo_runtime: String = "0.4.1" // available: milestone=1.0.0-alpha2
+    const val apollo_runtime: String = "0.4.1" // available milestone: "1.0.0-alpha2" 
 
-    const val apollo_rx2_support: String = "0.4.1" // available: milestone=1.0.0-alpha2
+    const val apollo_rx2_support: String = "0.4.1" // available milestone: "1.0.0-alpha2" 
 
-    const val appcompat_v7: String = "27.1.0" // available: milestone=28.0.0
+    const val appcompat_v7: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val assertj_core: String = "2.5.0" // available: milestone=3.11.1
+    const val assertj_core: String = "2.5.0" // available milestone: "3.11.1" 
 
     const val bottom_navigation: String = "2.0.2" // exceed the version found: 1.0.5
 
-    const val butterknife: String = "8.5.1" // available: milestone=9.0.0-rc1
+    const val butterknife: String = "8.5.1" // available milestone: "9.0.0-rc1" 
 
-    const val butterknife_compiler: String = "8.5.1" // available: milestone=9.0.0-rc1
+    const val butterknife_compiler: String = "8.5.1" // available milestone: "9.0.0-rc1" 
 
-    const val cardview_v7: String = "27.1.0" // available: milestone=28.0.0
+    const val cardview_v7: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val colorpicker_library: String = "1.1.4" // available: milestone=1.1.9
+    const val colorpicker_library: String = "1.1.4" // available milestone: "1.1.9" 
 
-    const val com_android_support_test_rules: String = "1.0.1" // available: milestone=1.0.2
+    const val com_android_support_test_rules: String = "1.0.1" // available milestone: "1.0.2" 
 
-    const val com_android_support_test_runner: String = "1.0.1" // available: milestone=1.0.2
+    const val com_android_support_test_runner: String = "1.0.1" // available milestone: "1.0.2" 
 
-    const val com_google_firebase_firebase_database: String = "11.2.0" // up-to-date
+    const val com_android_tools_build_gradle: String =
+            "3.2.0-alpha08" // available milestone: "3.3.0-alpha13" 
 
-    const val commonmark: String = "0.10.0" // available: milestone=0.11.0
+    const val com_github_b3er_rxfirebase_firebase_database: String = "11.2.0" // up-to-date
 
-    const val commonmark_ext_autolink: String = "0.10.0" // available: milestone=0.11.0
+    const val com_google_firebase_firebase_database: String =
+            "12.0.0" // available milestone: "16.0.3" 
 
-    const val commonmark_ext_gfm_strikethrough: String = "0.10.0" // available: milestone=0.11.0
+    const val commonmark: String = "0.10.0" // available milestone: "0.11.0" 
 
-    const val commonmark_ext_gfm_tables: String = "0.10.0" // available: milestone=0.11.0
+    const val commonmark_ext_autolink: String = "0.10.0" // available milestone: "0.11.0" 
 
-    const val commonmark_ext_ins: String = "0.10.0" // available: milestone=0.11.0
+    const val commonmark_ext_gfm_strikethrough: String = "0.10.0" // available milestone: "0.11.0" 
 
-    const val commonmark_ext_yaml_front_matter: String = "0.10.0" // available: milestone=0.11.0
+    const val commonmark_ext_gfm_tables: String = "0.10.0" // available milestone: "0.11.0" 
 
-    const val converter_gson: String = "2.3.0" // available: milestone=2.4.0
+    const val commonmark_ext_ins: String = "0.10.0" // available milestone: "0.11.0" 
 
-    const val crashlytics: String = "2.9.0" // available: milestone=2.9.5
+    const val commonmark_ext_yaml_front_matter: String = "0.10.0" // available milestone: "0.11.0" 
 
-    const val customtabs: String = "27.1.0" // available: milestone=28.0.0
+    const val converter_gson: String = "2.3.0" // available milestone: "2.4.0" 
 
-    const val design: String = "27.1.0" // available: milestone=28.0.0
+    const val crashlytics: String = "2.9.0" // available milestone: "2.9.5" 
 
-    const val espresso_core: String = "2.2.2" // available: milestone=3.0.2
+    const val customtabs: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val espresso_intents: String = "2.2.2" // available: milestone=3.0.2
+    const val design: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val firebase_core: String = "12.0.0" // available: milestone=16.0.4
+    const val espresso_core: String = "2.2.2" // available milestone: "3.0.2" 
+
+    const val espresso_intents: String = "2.2.2" // available milestone: "3.0.2" 
+
+    const val firebase_core: String = "12.0.0" // available milestone: "16.0.4" 
 
     const val firebase_database_kotlin: String = "11.2.0" // up-to-date
 
-    const val firebase_jobdispatcher: String = "0.8.2" // available: milestone=0.8.5
+    const val firebase_jobdispatcher: String = "0.8.2" // available milestone: "0.8.5" 
 
-    const val firebase_messaging: String = "12.0.0" // available: milestone=17.3.3
+    const val firebase_messaging: String = "12.0.0" // available milestone: "17.3.3" 
 
-    const val glide: String = "3.7.0" // available: milestone=4.8.0
+    const val glide: String = "3.7.0" // available milestone: "4.8.0" 
 
-    const val google_services: String = "3.2.0" // available: milestone=4.1.0
+    const val google_services: String = "3.2.0" // available milestone: "4.1.0" 
 
-    const val gradle_build_properties_plugin: String = "0.3" // available: milestone=0.4.1
+    const val gradle_build_properties_plugin: String = "0.3" // available milestone: "0.4.1" 
 
     const val gradle_plugin: String = "0.4.1" // up-to-date
 
-    const val htmlcleaner: String = "2.2" // available: milestone=2.22
+    const val htmlcleaner: String = "2.2" // available milestone: "2.22" 
 
     const val htmlspanner: String = "0.4" // up-to-date
 
-    const val io_fabric_tools_gradle: String = "3.2.0-alpha08" // available: milestone=3.3.0-alpha13
+    const val io_fabric_tools_gradle: String = "1.24.1" // available milestone: "1.26.1" 
 
-    const val jacoco_android: String = "0.1.2" // available: milestone=0.1.3
+    const val jacoco_android: String = "0.1.2" // available milestone: "0.1.3" 
 
     const val jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin: String =
-            "0.2.3" // available: milestone=0.2.4
+            "0.2.4" // up-to-date
 
-    const val jsoup: String = "1.10.3" // available: milestone=1.11.3
+    const val jsoup: String = "1.10.3" // available milestone: "1.11.3" 
 
     const val junit: String = "4.12" // up-to-date
 
     const val keyboardvisibilityevent: String = "2.1.0" // up-to-date
 
-    const val kotlin_annotation_processing_gradle: String = "1.2.10" // available: milestone=1.2.71
+    const val kotlin_annotation_processing_gradle: String =
+            "1.2.10" // available milestone: "1.2.71" 
 
-    const val kotlin_gradle_plugin: String = "1.2.10" // available: milestone=1.2.71
+    const val kotlin_gradle_plugin: String = "1.2.10" // available milestone: "1.2.71" 
 
-    const val kotlin_stdlib_jdk7: String = "1.2.10" // available: milestone=1.2.71
+    const val kotlin_stdlib_jdk7: String = "1.2.10" // available milestone: "1.2.71" 
 
-    const val lint_gradle: String = "26.2.0-alpha08" // available: milestone=26.3.0-alpha13
+    const val lint_gradle: String = "26.2.0-alpha08" // available milestone: "26.3.0-alpha13" 
 
-    const val logging_interceptor: String = "3.10.0" // available: milestone=3.11.0
+    const val logging_interceptor: String = "3.10.0" // available milestone: "3.11.0" 
 
-    const val lombok: String = "1.16.20" // available: milestone=1.18.2
+    const val lombok: String = "1.16.20" // available milestone: "1.18.2" 
 
-    const val lottie: String = "2.2.5" // available: milestone=2.8.0
+    const val lottie: String = "2.2.5" // available milestone: "2.8.0" 
 
-    const val material_about_library: String = "2.1.0" // available: milestone=2.3.0
+    const val material_about_library: String = "2.1.0" // available milestone: "2.3.0" 
 
-    const val mockito_core: String = "1.10.19" // available: milestone=2.23.0
+    const val mockito_core: String = "1.10.19" // available milestone: "2.23.0" 
 
-    const val org_jacoco_agent: String = "0.7.9" // available: milestone=0.8.2
+    const val org_jacoco_agent: String = "0.7.9" // available milestone: "0.8.2" 
 
-    const val org_jacoco_ant: String = "0.7.9" // available: milestone=0.8.2
+    const val org_jacoco_ant: String = "0.7.9" // available milestone: "0.8.2" 
 
-    const val palette_v7: String = "27.1.0" // available: milestone=28.0.0
+    const val palette_v7: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val play_services_base: String = "12.0.0" // available: milestone=16.0.1
+    const val play_services_base: String = "12.0.0" // available milestone: "16.0.1" 
 
-    const val preference_v14: String = "27.1.0" // available: milestone=28.0.0
+    const val preference_v14: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val recyclerview_v7: String = "27.1.0" // available: milestone=28.0.0
+    const val recyclerview_v7: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val requery: String = "1.3.2" // available: milestone=1.5.1
+    const val requery: String = "1.3.2" // available milestone: "1.5.1" 
 
-    const val requery_android: String = "1.3.2" // available: milestone=1.5.1
+    const val requery_android: String = "1.3.2" // available milestone: "1.5.1" 
 
-    const val requery_processor: String = "1.3.2" // available: milestone=1.5.1
+    const val requery_processor: String = "1.3.2" // available milestone: "1.5.1" 
 
     const val retaineddatetimepickers: String = "1.0.2" // up-to-date
 
-    const val retrofit: String = "2.3.0" // available: milestone=2.4.0
+    const val retrofit: String = "2.3.0" // available milestone: "2.4.0" 
 
-    const val rxandroid: String = "2.0.2" // available: milestone=2.1.0
+    const val rxandroid: String = "2.0.2" // available milestone: "2.1.0" 
 
     const val rxbillingservice: String = "0.0.3" // up-to-date
 
-    const val rxjava: String = "2.1.10" // available: milestone=2.2.2
+    const val rxjava: String = "2.1.10" // available milestone: "2.2.2" 
 
-    const val shapedimageview: String = "0.8.3" // available: milestone=0.8.5
+    const val shapedimageview: String = "0.8.3" // available milestone: "0.8.5" 
 
-    const val shortbread: String = "1.0.1" // available: milestone=1.0.2
+    const val shortbread: String = "1.0.1" // available milestone: "1.0.2" 
 
-    const val shortbread_compiler: String = "1.0.1" // available: milestone=1.0.2
+    const val shortbread_compiler: String = "1.0.1" // available milestone: "1.0.2" 
 
-    const val stream: String = "1.1.9" // available: milestone=1.2.1
+    const val stream: String = "1.1.9" // available milestone: "1.2.1" 
 
-    const val support_annotations: String = "27.1.0" // available: milestone=28.0.0
+    const val support_annotations: String = "27.1.0" // available milestone: "28.0.0" 
 
-    const val thirtyinch: String = "0.8.0" // available: milestone=0.9.0
+    const val thirtyinch: String = "0.8.0" // available milestone: "0.9.0" 
 
-    const val thirtyinch_rx2: String = "0.8.0" // available: milestone=0.9.0
+    const val thirtyinch_rx2: String = "0.8.0" // available milestone: "0.9.0" 
 
-    const val toasty: String = "1.1.3" // available: milestone=1.3.0
+    const val toasty: String = "1.1.3" // available milestone: "1.3.0" 
 
+    /**
+     *
+     *   To update Gradle, edit the wrapper file at path:
+     *      ./gradle/wrapper/gradle-wrapper.properties
+     */
     object Gradle {
         const val runningVersion: String = "4.5"
 

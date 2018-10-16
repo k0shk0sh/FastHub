@@ -160,7 +160,7 @@ dependencies {
     implementation(Libs.com_google_firebase_firebase_database)
     implementation(Libs.play_services_base)
     implementation(Libs.firebase_database_kotlin, { transitive = false })
-    implementation(Libs.com_google_firebase_firebase_database) { transitive = false }
+    implementation(Libs.com_github_b3er_rxfirebase_firebase_database) { transitive = false }
     implementation(Libs.crashlytics + "@aar", { transitive = true })
     implementation(Libs.rxbillingservice)
     implementation(Libs.kotlin_stdlib_jdk7)
