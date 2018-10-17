@@ -20,7 +20,7 @@ enum class FragmentType(val tabName: String? = null) {
     companion object {
         fun getTypeSafely(tabName: String): FragmentType? = try {
             if (tabName.isEmpty()) FragmentType.FEEDS
-            valueOf(tabName)
+            values().firstOrNull { it.tabName == tabName }
         } catch (e: Exception) {
             e.printStackTrace()
             null

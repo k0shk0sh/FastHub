@@ -23,7 +23,6 @@ import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import timber.log.Timber
 
 /**
  * Created by Kosh on 13.05.18.
@@ -42,10 +41,10 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         activityCallback = context as? ActivityCallback
-        when {
-            parentFragment is UpdateTabCount -> updateCountCallback = parentFragment as UpdateTabCount
-            context is UpdateTabCount -> updateCountCallback = context
-            else -> Timber.e("Nothings listens to UpdateTabCount")
+        updateCountCallback = when {
+            parentFragment is UpdateTabCount -> parentFragment as UpdateTabCount
+            context is UpdateTabCount -> context
+            else -> null
         }
     }
 

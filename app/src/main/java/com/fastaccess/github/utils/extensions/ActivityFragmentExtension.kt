@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.ui.modules.routing.RoutingActivity
+import timber.log.Timber
 
 /**
  * Created by Kosh on 12.06.18.
@@ -80,6 +81,7 @@ fun Fragment.route(url: String?) {
 
 fun Context.route(url: String?) {
     url?.let {
+        Timber.e("routing to: $url")
         val intent = Intent(this, RoutingActivity::class.java)
         intent.data = Uri.parse(url)
         startActivity(intent)

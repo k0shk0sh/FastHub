@@ -2,6 +2,7 @@ package com.fastaccess.data.persistence.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.persistence.models.LoginModel.Companion.TABLE_NAME
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -35,6 +36,13 @@ data class LoginModel(
         @SerializedName("otpCode") var otpCode: String? = null,
         @SerializedName("enterpriseUrl") var enterpriseUrl: String? = null
 ) {
+
+    fun toRepos() = "$htmlUrl?tab=${FragmentType.REPOS.tabName}"
+    fun toStarred() = "$htmlUrl?tab=${FragmentType.STARRED.tabName}"
+    fun toGists() = "$htmlUrl?tab=${FragmentType.GISTS.tabName}"
+    fun toFollowers() = "$htmlUrl?tab=${FragmentType.FOLLOWERS.tabName}"
+    fun toFollowing() = "$htmlUrl?tab=${FragmentType.FOLLOWINGS.tabName}"
+
     companion object {
         const val TABLE_NAME = "login_table"
     }

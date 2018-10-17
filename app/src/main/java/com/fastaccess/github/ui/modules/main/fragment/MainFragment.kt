@@ -94,15 +94,15 @@ class MainFragment : BaseFragment() {
     private fun initClicks() {
         starred.setOnClickListener { view ->
             addDisposal(viewModel.login
-                    .subscribe({ route("${it?.htmlUrl}/${FragmentType.STARRED.tabName}") }, ::print))
+                    .subscribe({ route(it?.toStarred()) }, ::print))
         }
         repos.setOnClickListener { view ->
             addDisposal(viewModel.login
-                    .subscribe({ route("${it?.htmlUrl}/${FragmentType.REPOS.tabName}") }, ::print))
+                    .subscribe({ route(it?.toRepos()) }, ::print))
         }
         gists.setOnClickListener { view ->
             addDisposal(viewModel.login
-                    .subscribe({ route("${it?.htmlUrl}/${FragmentType.GISTS.tabName}") }, ::print))
+                    .subscribe({ route(it?.toGists()) }, ::print))
         }
     }
 
