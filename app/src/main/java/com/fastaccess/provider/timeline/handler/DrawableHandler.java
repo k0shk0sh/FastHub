@@ -38,15 +38,14 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             if (!PrefGetter.isAutoImageDisabled()) {
                 builder.append("￼");
                 if (isNull()) return;
+                builder.append("\n");
                 DrawableGetter imageGetter = new DrawableGetter(textView, width);
                 builder.setSpan(new ImageSpan(imageGetter.getDrawable(src)), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
                 builder.setSpan(new CenterSpan(), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
-                appendNewLine(builder);
+                builder.append("\n");
             } else {
-                builder.append(SpannableBuilder.builder().clickable("Image", v -> {
-                    SchemeParser.launchUri(v.getContext(), src);
-                }));
-                appendNewLine(builder);
+                builder.append(SpannableBuilder.builder().clickable("Image", v -> SchemeParser.launchUri(v.getContext(), src)));
+                builder.append("\n");
             }
         }
     }

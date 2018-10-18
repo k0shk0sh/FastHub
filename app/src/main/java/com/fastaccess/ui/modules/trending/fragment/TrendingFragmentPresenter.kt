@@ -3,7 +3,6 @@ package com.fastaccess.ui.modules.trending.fragment
 import android.view.View
 import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.helper.InputHelper
-import com.fastaccess.helper.Logger
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.rest.jsoup.JsoupProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -40,7 +39,12 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
         disposel = RxHelper.getObservable(JsoupProvider.getTrendingService().getTrending(
                 (if (!InputHelper.isEmpty(lang)) lang.replace(" ".toRegex(), "-") else "").toLowerCase(), since))
                 .flatMap { s -> RxHelper.getObservable(getTrendingObservable(s)) }
-                .doOnSubscribe { sendToView { it.showProgress(0) } }
+                .doOnSubscribe {
+                    sendToView {
+                        it.showProgress(0)
+                        it.clearAdapter()
+                    }
+                }
                 .subscribe({ response -> sendToView { view -> view.onNotifyAdapter(response) } },
                         { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) })
         manageDisposable(disposel)
@@ -68,7 +72,6 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
                             if (language.isNullOrBlank()) {
                                 language = it.select(".f6 span[itemprop=programmingLanguage]").text()
                             }
-                            Logger.e(title, description, stars, forks, todayStars, language)
                             s.onNext(TrendingModel(title, description, language, stars, forks, todayStars))
                         }
                     }

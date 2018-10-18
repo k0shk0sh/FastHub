@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -71,6 +72,10 @@ public class AvatarLayout extends FrameLayout {
     }
 
     public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg, boolean isEnterprise) {
+        setUrl(url, login, isOrg, isEnterprise, false);
+    }
+
+    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg, boolean isEnterprise, boolean reload) {
         this.login = login;
         this.isOrg = isOrg;
         this.isEnterprise = isEnterprise;
@@ -85,6 +90,7 @@ public class AvatarLayout extends FrameLayout {
                 .load(url)
                 .fallback(ContextCompat.getDrawable(getContext(), R.drawable.ic_fasthub_mascot))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .signature(new StringSignature(reload ? String.valueOf(System.currentTimeMillis()) : "0"))
                 .dontAnimate()
                 .into(avatar);
     }

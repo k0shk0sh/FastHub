@@ -29,7 +29,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     @State var lang: String = ""
     @State var since: String = ""
 
-    override fun providePresenter(): TrendingFragmentPresenter =  TrendingFragmentPresenter()
+    override fun providePresenter(): TrendingFragmentPresenter = TrendingFragmentPresenter()
 
     override fun fragmentLayout(): Int = R.layout.small_grid_refresh_list
 
@@ -81,6 +81,10 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     }
 
     private fun onCallApi() {
-        if (true) presenter.onCallApi(lang, since)
+        presenter.onCallApi(lang, since)
+    }
+
+    override fun clearAdapter() {
+        adapter.clear()
     }
 }

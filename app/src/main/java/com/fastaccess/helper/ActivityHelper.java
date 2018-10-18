@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.ui.modules.main.drawer.AccountDrawerFragment;
+import com.fastaccess.ui.modules.main.drawer.MainDrawerFragment;
 import com.fastaccess.ui.modules.parser.LinksParserActivity;
 
 import java.util.ArrayList;
@@ -175,7 +177,8 @@ public class ActivityHelper {
         List<Fragment> fragments = manager.getFragments();
         if (fragments != null && !fragments.isEmpty()) {
             for (Fragment fragment : fragments) {
-                if (fragment != null && fragment.isVisible()) {
+                if (fragment != null && fragment.isVisible() &&
+                        !(fragment instanceof MainDrawerFragment || fragment instanceof AccountDrawerFragment)) {
                     return fragment;
                 }
             }

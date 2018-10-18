@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fastaccess.App;
@@ -95,8 +96,8 @@ public class RestProvider {
         Uri uri = Uri.parse(url);
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        if (isEnterprise) {
-            String authToken = PrefGetter.getEnterpriseToken();
+        String authToken = isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken();
+        if (!TextUtils.isEmpty(authToken)) {
             request.addRequestHeader("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
         }
         File direct = new File(Environment.getExternalStorageDirectory() + File.separator + context.getString(R.string.app_name));

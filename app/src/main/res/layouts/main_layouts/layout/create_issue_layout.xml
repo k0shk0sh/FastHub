@@ -62,10 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_xs_large"
                 app:cardBackgroundColor="?card_background"
-                app:contentPaddingBottom="@dimen/spacing_normal"
-                app:contentPaddingLeft="@dimen/spacing_xs_large"
-                app:contentPaddingRight="@dimen/spacing_xs_large"
-                app:contentPaddingTop="@dimen/spacing_normal">
+                app:contentPadding="@dimen/spacing_xs_large">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -114,10 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xs_large"
                         app:cardBackgroundColor="?card_background"
-                        app:contentPaddingBottom="@dimen/spacing_normal"
-                        app:contentPaddingLeft="@dimen/spacing_xs_large"
-                        app:contentPaddingRight="@dimen/spacing_xs_large"
-                        app:contentPaddingTop="@dimen/spacing_normal">
+                        app:contentPadding="@dimen/spacing_xs_large">
 
 
                         <com.fastaccess.ui.widgets.FontTextView
@@ -152,10 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xs_large"
                         app:cardBackgroundColor="?card_background"
-                        app:contentPaddingBottom="@dimen/spacing_normal"
-                        app:contentPaddingLeft="@dimen/spacing_xs_large"
-                        app:contentPaddingRight="@dimen/spacing_xs_large"
-                        app:contentPaddingTop="@dimen/spacing_normal">
+                        app:contentPadding="@dimen/spacing_xs_large">
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/labels"
@@ -188,10 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xs_large"
                         app:cardBackgroundColor="?card_background"
-                        app:contentPaddingBottom="@dimen/spacing_normal"
-                        app:contentPaddingLeft="@dimen/spacing_xs_large"
-                        app:contentPaddingRight="@dimen/spacing_xs_large"
-                        app:contentPaddingTop="@dimen/spacing_normal">
+                        app:contentPadding="@dimen/spacing_xs_large">
 
                         <LinearLayout
                             android:layout_width="match_parent"

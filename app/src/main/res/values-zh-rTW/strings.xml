@@ -20,7 +20,8 @@ Readme
 APP
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">載入中，請稍後</string>
     <string name="action">動作</string>
     <string name="settings">設定</string>
@@ -38,14 +39,14 @@ APP
     <string name="profile">個人檔案</string>
     <string name="error">錯誤</string>
     <string name="press_again_to_exit">再點一次以離開</string>
-    <string name="opened">開啟中</string>
+    <string name="opened">已開啟</string>
     <string name="closed">已關閉</string>
     <string name="repo_chooser">選擇 Repo</string>
-    <string name="followers">跟隨者</string>
-    <string name="following">跟隨中</string>
+    <string name="followers">追蹤者</string>
+    <string name="following">追蹤中</string>
     <string name="overview">概要</string>
-    <string name="follow">跟隨</string>
-    <string name="unfollow">取消跟隨</string>
+    <string name="follow">追蹤</string>
+    <string name="unfollow">取消追蹤</string>
     <string name="user">使用者</string>
     <string name="details">詳情</string>
     <string name="archive_file_detected_error">檢測到檔案，請下載以檢視</string>
@@ -61,6 +62,7 @@ APP
     <string name="contributors">貢獻者</string>
     <string name="contributions">貢獻</string>
     <string name="by">由</string>
+    <string name="english_please">請用英文來提交你的請求</string>
     <string name="close_issue">關閉 Issue</string>
     <string name="re_open_issue">重新開啟 Issue</string>
     <string name="re_open">重新開啟</string>
@@ -117,7 +119,7 @@ APP
     <string name="create_public_gist">公開 Gist</string>
     <string name="submit_as">提交為</string>
     <string name="delete_gist">刪除</string>
-    <string name="error_deleting_gist">刪除gist時發生錯誤</string>
+    <string name="error_deleting_gist">刪除 Gist 時發生錯誤</string>
     <string name="no_files">沒有檔案</string>
     <string name="required_field">必填</string>
     <string name="successfully_submitted">提交成功</string>
@@ -135,6 +137,7 @@ APP
     <string name="notifications">通知</string>
     <string name="unread_notification">您有未讀通知</string>
     <string name="open">開啟</string>
+    <string name="open_new_window">在新視窗中開啟</string>
     <string name="notification_type">通知種類</string>
     <string name="labels">標籤</string>
     <string name="no_labels">沒有標籤</string>
@@ -151,7 +154,7 @@ APP
     <string name="login">登入</string>
     <string name="gist_description">Gist 簡介</string>
     <string name="avatar_click_hint">點擊頭像以打開個人資料</string>
-    <string name="feeds_fork_hint">長按 Fork 來打開來源或 Forked 的 Repo</string>
+    <string name="feeds_fork_hint">長按 Fork 來打開來源或已 Fork 的 Repo</string>
     <string name="click_here_to_download_release_hint">下載</string>
     <string name="options">選項</string>
     <string name="click_file_option_hint">下載檔案或分享目錄</string>
@@ -177,18 +180,18 @@ APP
     <string name="all">全部</string>
     <string name="delete_repo">刪除 Repo</string>
     <string name="delete_repo_warning">刪除 Repo 後不能復原</string>
-    <string name="thirty_minutes">30分鐘</string>
-    <string name="twenty_minutes">20分鐘</string>
-    <string name="ten_minutes">10分鐘</string>
-    <string name="five_minutes">5分鐘</string>
-    <string name="one_minute">1分鐘</string>
-    <string name="one_hour">1小時</string>
-    <string name="two_hour">2小時</string>
-    <string name="three_hour">3小時</string>
+    <string name="thirty_minutes">30 分鐘</string>
+    <string name="twenty_minutes">20 分鐘</string>
+    <string name="ten_minutes">10 分鐘</string>
+    <string name="five_minutes">5 分鐘</string>
+    <string name="one_minute">1 分鐘</string>
+    <string name="one_hour">1 小時</string>
+    <string name="two_hour">2 小時</string>
+    <string name="three_hour">3 小時</string>
     <string name="created_repo">已新增</string>
     <string name="committed">已提交</string>
     <string name="downloaded">已下載</string>
-    <string name="followed">已跟隨</string>
+    <string name="followed">已追蹤</string>
     <string name="commented_on_issue">評論 Issue</string>
     <string name="member">成員</string>
     <string name="pr_comment_review">Pull Request 評論</string>
@@ -214,7 +217,7 @@ APP
     <string name="this_value">這個</string>
     <string name="commits_reflected">Commit 已被切換到選擇的分支</string>
     <string name="general_settings">一般</string>
-    <string name="background_job_summary">更改檢查通知頻率</string>
+    <string name="background_job_summary">更改通知的檢查頻率</string>
     <string name="background_job_title">檢查通知間隔</string>
     <string name="every">每個</string>
     <string name="behavior">行為</string>
@@ -225,7 +228,7 @@ APP
     <string name="back_button_title">按返回直接退出 APP</string>
     <string name="restore">還原</string>
     <string name="backup">備份</string>
-    <string name="backed_up">成功備份!</string>
+    <string name="backed_up">成功備份！</string>
     <string name="select_backup">選擇備份以還原</string>
     <string name="permission_failed">沒有權限</string>
     <string name="backup_summary">最後更新: %s</string>
@@ -247,7 +250,6 @@ APP
     <string name="turn_off">關閉</string>
     <string name="unauthorized_user">未驗證的使用者</string>
     <string name="two_factors_otp_error">必須兩步驟驗證</string>
-    <string name="no_issue">沒有 Issue</string>
     <string name="copy">複製</string>
     <string name="success_copied">已複製</string>
     <string name="commit_message">Commit 訊息</string>
@@ -256,7 +258,7 @@ APP
     <string name="request_error">連接伺服器失敗，請重試</string>
     <string name="marking_as_read">標記通知為已讀</string>
     <string name="forking_gist">Forking gist</string>
-    <string name="login_using_your_default_browser">使用預設瀏覽器登入(OAuth)</string>
+    <string name="login_using_your_default_browser">使用預設瀏覽器登入 (OAuth)</string>
     <string name="or_character">或</string>
     <string name="mark_notification_title">關閉通知狀態</string>
     <string name="mark_notification_summary">關閉在點擊通知時標記為已讀</string>
@@ -271,25 +273,22 @@ APP
     <string name="pin">釘選</string>
     <string name="pinned">已釘選</string>
     <string name="unpin">取消釘選</string>
-    <string name="empty_pinned_repos">沒有已釘選的 Repo</string>
+    <string name="empty_pinned_repos">尚無釘選的 Repo，釘選後即會出現在此處。\n註：越常存取的 Repo 會列在越上方。</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="no_feeds">沒有動態</string>
     <string name="no_gists">沒有 Gist</string>
     <string name="no_comments">沒有評論</string>
     <string name="no_notifications">沒有通知</string>
-    <string name="no_followers">沒有跟隨者</string>
-    <string name="no_followings">沒有跟隨中</string>
+    <string name="no_followers">沒有追蹤者</string>
+    <string name="no_followings">沒有追蹤中</string>
     <string name="no_repos">沒有 Repo</string>
     <string name="no_starred_repos">沒有已收藏的 Repo</string>
     <string name="no_commits">沒有 Commit</string>
     <string name="no_contributors">沒有貢獻者</string>
-    <string name="no_releases">沒有releases</string>
-    <string name="no_closed_issues">沒有關閉的 Issue</string>
-    <string name="no_opened_issues">沒有開啟的 Issue</string>
+    <string name="no_releases">沒有 Releases</string>
     <string name="no_events">沒有事件</string>
-    <string name="no_open_pull_requests">沒有開啟的 Pull Request</string>
-    <string name="no_closed_pull_request">沒有關閉的 Pull Request</string>
+    <string name="no_pull_requests">沒有 Pull Requests</string>
     <string name="no_search_results">沒有搜尋結果</string>
     <string name="read_write_permission_explanation">請同意權限請求以讓 FastHub 能夠儲存檔案</string>
     <string name="public_gists">公開 Gist</string>
@@ -302,7 +301,7 @@ APP
     <string name="home_long_click_hint">長按以從任何地方前往主畫面</string>
     <string name="created">已開啟</string>
     <string name="assigned">已分配</string>
-    <string name="mentioned">提到我</string>
+    <string name="mentioned">被提到</string>
     <string name="name">名字</string>
     <string name="color">顏色</string>
     <string name="create_label">新增標籤</string>
@@ -314,6 +313,7 @@ APP
     <string name="no_members">沒有成員</string>
     <string name="no_teams">沒有小組</string>
     <string name="no_orgs">沒有組織</string>
+    <string name="no_orgs_dialog_title">找不到您的組織嗎？</string>
     <string name="mark_as_read">標記為已讀</string>
     <string name="animations">動畫</string>
     <string name="dialog_animation_summary">啟用彈出動畫</string>
@@ -343,14 +343,14 @@ APP
     <string name="wrap_content">摺疊內容</string>
     <string name="wrap_code_summary">在程式碼檢視器中預設摺疊程式碼</string>
     <string name="wrap_code_title">摺疊程式碼</string>
-    <string name="open_source_libs">開源 Libraries</string>
-    <string name="enable_notification_sound_summary">開啟收到通知音效</string>
+    <string name="open_source_libs">開源函式庫</string>
+    <string name="enable_notification_sound_summary">開啟通知音效</string>
     <string name="enable_notification_sound_title">開啟通知音效</string>
     <string name="enable_notification_title">開啟通知</string>
     <string name="login_with_personal_token">用個人 Token 來登入</string>
     <string name="personal_token">個人 Token</string>
     <string name="basic_login">透過基本驗證登入</string>
-    <string name="no_orgs_description">如果你是某個組織的成員卻找不到組織，請點擊下面的連結。\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: 你可以用Access Token登入，這會授權FastHub查看組織列表的權限。</string>
+    <string name="no_orgs_description">如果你是成員卻找不到你的組織，請點擊下面的連結。\nhttps://help.github.com/articles/about-third-party-application-restrictions\n註：你可以用 Access Token 登入，這會授權 FastHub 查看組織列表的權限。</string>
     <string name="insert">插入</string>
     <string name="select">選擇</string>
     <string name="select_picture">選擇圖片</string>
@@ -384,16 +384,11 @@ APP
     <string name="no_reviewers">沒有審核者</string>
     <string name="sent_from_fasthub">從我的 %1$s，使用 %2$s%3$s 發送。</string>
     <string name="enable_signature">開啟簽名</string>
-    <string name="enable_signature_summary">開啟傳送通過簽名</string>
+    <string name="enable_signature_summary">在傳送時加入簽名</string>
     <string name="enable_signature_box">開啟簽名欄</string>
     <string name="enable_signature_box_summary">選擇複選框以在編輯器中切換簽名</string>
     <string name="tags">標籤</string>
     <string name="add_comment">新增</string>
-    <string name="banners">介紹橫幅</string>
-    <string name="banners_info">透過 FastHub 2.5.0, 您可以在個人資料頁面快速的表達您的橫幅。\n\n任何使用 FastHub 的人都能看到，而且您也能看到他人的! 如果您想要自己創建橫幅
-        ，讓他的解析度為 1280x384 或等比例，否則可能會被裁減。\n\n您可以在任何時候更改橫幅, 透過創建一個 gist 叫做「header.fst」包含著圖片的直接連結。\n\n或是也可以用內建的圖片選擇器。
-    </string>
-    <string name="edit_banner">選擇橫幅</string>
     <string name="image_error">載入圖片錯誤，請重試。</string>
     <string name="trending">趨勢</string>
     <string name="not_really_working">因為 GitHub 的限制，無法使用表情符號來排序。</string>
@@ -416,21 +411,20 @@ APP
     <string name="feed">動態</string>
     <string name="premium_theme">付費主題</string>
     <string name="choose_code_theme">選擇程式碼配色</string>
+    <string name="enterprise_login_warning">請登入你的個人 GitHub 帳號以存取所有 GitHub API 功能，否則每次存取不是你的組織的 GitHub 時就會因 GitHub API Token 來自你的組織而被踢。</string>
     <string name="add_account">新增帳戶</string>
     <string name="choose_account">選擇帳戶</string>
+    <string name="not_match">不匹配</string>
     <string name="warning">警告</string>
     <string name="owner">擁有者</string>
+    <string name="original_poster">原發布者</string>
+    <string name="cancel_reviews">取消 Reviews</string>
     <string name="colored_navbar_summary">取消導覽列在主題中的顏色</string>
     <string name="colored_navbar_title">取消導覽列的顏色</string>
     <string name="sound_chooser_summary">選擇自訂通知提示聲</string>
     <string name="sound_chooser_title">選擇通知提示聲</string>
     <string name="disable_auto_gif_summary">停用 GIF 自動播放</string>
     <string name="disable_auto_gif_title">停用 GIF 自動播放</string>
-    <string name="english_please">請用英文來提交你的請求</string>
-    <string name="enterprise_login_warning">請登入到 GitHub 帳號以使用所有的 api 功能。否則透過企業帳號向 GitHub api 發送 token 將會被拒絕。</string>
-    <string name="not_match">不匹配</string>
-    <string name="original_poster">原發布者</string>
-    <string name="cancel_reviews">取消 Reviews</string>
     <string name="request_changes">請求更改</string>
     <string name="google_play_service_error">Google Play 服務不可用</string>
     <string name="edit_gist">編輯 Gist</string>
@@ -439,17 +433,15 @@ APP
     <string name="copy_sha">複製 SHA-1</string>
     <string name="view_as_code">以程式碼檢視</string>
     <string name="app_animation_title">停用 App 內部動畫</string>
-    <string name="app_animation_summary">在每個地方停用 App 內部動畫</string>
-    <string name="can_not_merge_pr">這個 PR 目前沒辦法被 merge</string>
+    <string name="app_animation_summary">停用所有 App 內的動畫</string>
+    <string name="can_not_merge_pr">這個 PR 目前沒辦法被 Merge</string>
     <string name="projects">專案</string>
     <string name="no_projects">沒有專案</string>
     <string name="no_cards">沒有卡</string>
     <string name="card_added_by">由 %s 新增</string>
-    <string name="no_orgs_dialog_title">找不到您的組織嗎?</string>
-    <string name="open_new_window">在新視窗中開啟</string>
     <string name="too_large_changes">差異太多無法顯示。請於瀏覽器檢視它們</string>
     <string name="project">專案</string>
-    <string name="faq">FAQ</string>
+    <string name="please_read">請閱讀！</string>
     <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• 為何我無法看到我的 <b>組織</b> 的 <i>私人</i> / <i>公開</i> 的東西?</h5>
@@ -469,26 +461,31 @@ APP
 
         <h5>• 我在編輯 Issues/PRs 遇到困難?</h5>
         <p>如果你正在編輯一個公開組職的 Repo ，請聯絡你的組織以取得權限給 FastHub 或是使用 Access Token 來登入!</p>
-
-        <h5>• 我被禁止使用 FastHub 了，為什麼?</h5>
-        <p>很簡單，因為想要某些功能而給了 FastHub 低評價卻從來不更新你的評價。
-        所以為何你要繼續使用呢?</p>
 		
         <h5>• 我有困難/我想要有新功能!!</h5>
         <p>前往 https://github.com/k0shk0sh/FastHub/issues/new 並創建一個 bug/feature requests 的 issue。
 		我非常鼓勵你在發布某些東西前先搜尋有沒有重複的，否則會被馬上關閉。</p>
 
-        <i><font color="red">給 FastHub 開發者們的訊息</font></i>\n
-
-        <h3>開發者們你好,</h3>\n
-        <p style="text-align:justify;">
-            你應該知道 <b>FastHub</b> 是一個成長很快開源的 App &amp; 是因為許多來自社群的幫助以及你們。
-			\n因為想要回報 issue 或是 request 而在 Play商店 給 <b>FastHub</b> 低評價將會被忽略。
-			\n作為一個開發者我想我們應該知道開發一個像是 <b>FastHub</b> 要付出多大的努力。
-			\n有些人不知道要在 FastHub 的 Repo 回報而是在 Play商店 給低評價並且認為這會強制開發者(我) 去實作及修復他們想要的東西，而他們會更新評價。
-			\n但是這並沒有發生過，他們不是不修改評價就是要求其他功能<i>(如此典型)</i>。
-			\n請於 FastHub repo 回報 Issue & Features，打開側欄功能表並點擊"回報 Issue"，這將會被直接發布在 FastHub repo (我能夠幫助和協助你的地方)。
-        </p>
+        <h5>• 我要怎麼取得 PROMO CODE?</h5>
+        <p>這個方案已不再存在。</p>
     ]]></string>
-    <string name="please_read">請閱讀!</string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">評論新增成功</string>
+    <string name="clear_search_keywords">清空搜尋紀錄</string>
+    <string name="restore_purchases">回復購買紀錄</string>
+    <string name="include_forks">包括 Forks</string>
+    <string name="comment_is_too_far_to_paginate">這個評論難以分頁</string>
+    <string name="search_results_warning">回應數量超過 API 的上限</string>
+    <string name="disable_loading_image_title">禁止載入圖片</string>
+    <string name="disable_loading_image_summary">在使用行動網路時禁止載入圖片</string>
+    <string name="report_issue_warning">這個 issue 會被傳送到 GitHub 上的 FastHub\'s repo</string>
+    <string name="block">阻擋</string>
+    <string name="unblock">取消阻擋</string>
+    <string name="user_blocked">已阻擋此使用者</string>
+    <string name="user_unblocked">已取消阻擋此使用者</string>
+    <string name="clear_image_cache">清除影像快取</string>
+   <string name="restart_app_message">請重啟 APP</string>
+   <string name="menu_label">清單</string>
+   <string name="commit_file_required">檔案沒有變更</string>
+   <string name="send_feedback">傳送用戶回饋</string>
 </resources>

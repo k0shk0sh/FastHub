@@ -9,11 +9,13 @@ public class CommitRequestModel {
     private String message;
     private String content;
     private String sha;
+    private String branch;
 
-    public CommitRequestModel(String message, String content, String sha) {
+    public CommitRequestModel(String message, String content, String sha, String branch) {
         this.message = message;
         this.content = content;
         this.sha = sha;
+        this.branch = branch;
     }
 
     public String getSha() {
@@ -38,5 +40,13 @@ public class CommitRequestModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 }

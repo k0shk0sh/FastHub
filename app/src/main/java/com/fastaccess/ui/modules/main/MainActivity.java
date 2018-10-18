@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
+
+import static com.fastaccess.helper.AppHelper.getFragmentByTag;
 
 public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
@@ -144,6 +147,29 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     @Override public void onUserIsBlackListed() {
         Toast.makeText(App.getInstance(), "You are blacklisted, please contact the dev", Toast.LENGTH_LONG).show();
         finish();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (index == 0) {
+            FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
+            if (homeView != null) {
+                homeView.onScrollTop(index);
+            }
+        } else if (index == 1) {
+            MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag
+                    (fragmentManager, MyIssuesPagerFragment.TAG);
+            if (issuesView != null) {
+                issuesView.onScrollTop(index);
+            }
+        } else if (index == 2) {
+            MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag
+                    (fragmentManager, MyPullsPagerFragment.TAG);
+            if (pullRequestView != null) {
+                pullRequestView.onScrollTop(0);
+            }
+        }
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_app_shortcut_issues, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")

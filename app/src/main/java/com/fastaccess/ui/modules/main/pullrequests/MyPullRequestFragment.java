@@ -156,7 +156,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
         if (savedInstanceState == null || (getPresenter().getPullRequests().isEmpty() && !getPresenter().isApiCalled())) {
             onRefresh();
         }
-        stateLayout.setEmptyText(getString(R.string.no) + " " + getString(R.string.pull_requests));
+        stateLayout.setEmptyText(getString((R.string.no_pull_requests)));
         fastScroller.attachRecyclerView(recycler);
     }
 

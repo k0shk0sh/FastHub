@@ -13,13 +13,25 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
 4. 错误提示信息除特殊情况外统一为 "xxxx时发生错误"
 5. 统一将 account 译为 "帐号" 而非 "账号" "帐户" 等.
 6. "登录"不是"登陆"; "请稍候"不是"请稍后"; "请稍后再试" 不是 "请稍候再试".
-7. 如果觉得此规范有什么问题, 欢迎改进或重写 0w0 只要所有文本的风格大体遵守同一个规范就好.
+7. 若觉得此规范有什么问题, 欢迎改进或重写 0w0 只要所有文本的风格大体遵守同一个规范就好.
    这套规范的主要目的是保持风格统一, 避免出现一个 APP 多种文本的混乱情况.
 -->
 
-<!-- 原文版本 (Original strings): 2017/09/24 -->
-<resources>
-    <string name="in_progress">加载中, 请稍候...</string>
+<!-- 
+Commit @ 2018-3-14
+CaptainTF @ Github 提议：
+0. “没有”替换为“无”. 即精简文本.
+1. 使用敬语. 即“您”.
+2. 使用全角省略号, 即···而非....
+3. “APP” 替换为 “应用”.
+4. 请勿直译, 部分术语可在有道词典等平台获取已有专业翻译.
+   同时也请符合中文语序.
+-->
+
+<!-- 原文版本 (Original strings): 2018/03/14 -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+    <string name="in_progress">加载中, 请稍候···</string>
     <string name="action">动作</string>
     <string name="settings">设置</string>
     <string name="discard">丢弃</string>
@@ -28,16 +40,16 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="no_data">无可用数据</string>
     <string name="search">搜索</string>
     <string name="please_login">请登录以使用 FastHub</string>
-    <string name="sign_in_to_github">登录你的 GitHub 账户来使用 FastHub</string>
+    <string name="sign_in_to_github">登录您的 GitHub 账户来使用 FastHub</string>
     <string name="failed_login">无法登录</string>
     <string name="sign_in">登录</string>
     <string name="share">分享</string>
     <string name="reload">重新加载</string>
-    <string name="profile">个人资料</string>
+    <string name="profile">资料</string>
     <string name="error">错误</string>
     <string name="press_again_to_exit">再按一次退出</string>
-    <string name="opened">打开的</string>
-    <string name="closed">已关闭</string>
+    <string name="opened">开放的</string>
+    <string name="closed">关闭的</string>
     <string name="repo_chooser">选择仓库</string>
     <string name="followers">关注者</string>
     <string name="following">关注中</string>
@@ -50,12 +62,12 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="minimum_three_chars">最少字数 (3)</string>
     <string name="no_file_found">未找到文件</string>
     <string name="no_readme_found">没有 Readme</string>
-    <string name="downloading">下载中...</string>
-    <string name="downloading_file">下载文件中...</string>
+    <string name="downloading">下载中…</string>
+    <string name="downloading_file">下载文件中…</string>
     <string name="released">发布于</string>
     <string name="drafted">草稿</string>
     <string name="releases">发布</string>
-    <string name="no_body">没有内容</string>
+    <string name="no_body">无内容</string>
     <string name="contributors">贡献者</string>
     <string name="contributions">贡献</string>
     <string name="by">由</string>
@@ -76,6 +88,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     </string>
     <string name="lock_issue">锁定</string>
     <string name="unlock_issue">解锁</string>
+
     <string name="error_closing_issue">关闭 Issue 时发生错误, 请稍后再试.</string>
     <string name="error_re_opening_issue">重新打开 Issue 时发生错误, 请稍后再试.</string>
     <string name="success_closed">Issue 已关闭</string>
@@ -139,7 +152,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="create_issue">创建 Issue</string>
     <string name="error_highlighting_editor">请取消选择以继续编辑.</string>
     <string name="notifications">通知</string>
-    <string name="unread_notification">你有未读的通知</string>
+    <string name="unread_notification">您有未读的通知</string>
     <string name="open">打开</string>
     <string name="open_new_window">在新窗口中打开</string>
     <string name="notification_type">通知类型</string>
@@ -151,7 +164,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="thank_you_for_feedback">感谢您的反馈!</string>
     <string name="current_version">当前版本</string>
     <string name="version">版本</string>
-    <string name="support_development_enable_ads">支持开发, 启用广告</string>
+    <string name="support_development_enable_ads">支持开发并启用广告</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="twoFactor">两步验证</string>
@@ -162,10 +175,10 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="click_here_to_download_release_hint">下载</string>
     <string name="options">选项</string>
     <string name="click_file_option_hint">下载或分享</string>
-    <string name="comment_hint">点按评论以标记其作者或编辑你的评论.\n长按你的评论以删除.</string>
-    <string name="star_hint">Star/取消 Star 此仓库</string>
+    <string name="comment_hint">点按评论以标记其作者或编辑您的评论.\n长按您的评论以删除.</string>
+    <string name="star_hint">Star /取消 Star 此仓库</string>
     <string name="watch">Watch</string>
-    <string name="watch_hint">Watch/取消 Watch 此仓库</string>
+    <string name="watch_hint">Watch /取消 Watch 此仓库</string>
     <string name="pin_repo_hint">加入书签以从导航栏快速访问.</string>
     <string name="dismiss_all">忽略全部</string>
     <string name="no_url">找不到网址</string>
@@ -245,14 +258,13 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="send_email">发送电子邮件</string>
     <string name="question_concerning_fasthub">关于 FastHub 的问题</string>
     <string name="feedback">反馈</string>
-    <string name="report_issue">问题反馈</string>
+    <string name="report_issue">反馈</string>
     <string name="report_issue_here">遇到问题? 在此反馈</string>
     <string name="about">关于</string>
     <string name="notification_settings">通知</string>
     <string name="turn_off">关闭</string>
     <string name="unauthorized_user">未登录</string>
     <string name="two_factors_otp_error">需要两步验证</string>
-    <string name="no_issue">没有 Issue</string>
     <string name="copy">复制</string>
     <string name="success_copied">已复制</string>
     <string name="commit_message">提交说明</string>
@@ -272,11 +284,11 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="website">网站</string>
     <string name="support_development">支持开发</string>
     <string name="success_purchase_message">非常感谢!</string>
-    <string name="change_theme_warning">如果主题没有正常显示, 请手动重启此应用.</string>
+    <string name="change_theme_warning">若主题没有正常显示, 请手动重启此应用.</string>
     <string name="pin">书签</string>
     <string name="pinned">书签</string>
     <string name="unpin">删除书签</string>
-    <string name="empty_pinned_repos">没有书签. \n注: 书签按访问频率降序排列.</string>
+    <string name="empty_pinned_repos">无书签. \n注: 书签按访问频率降序排列.</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="no_feeds">没有动态</string>
@@ -290,11 +302,8 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="no_commits">没有 Commit</string>
     <string name="no_contributors">没有贡献者</string>
     <string name="no_releases">没有 Releases</string>
-    <string name="no_closed_issues">没有关闭的 Issue</string>
-    <string name="no_opened_issues">没有打开的 Issue</string>
     <string name="no_events">没有事件</string>
-    <string name="no_open_pull_requests">没有打开的 Pull Request</string>
-    <string name="no_closed_pull_request">没有关闭的 Pull Request</string>
+    <string name="no_pull_requests">没有 Pull Request</string>
     <string name="no_search_results">没有搜索结果</string>
     <string name="read_write_permission_explanation">请接受权限请求, 允许 FastHub 在设备上储存文件</string>
     <string name="public_gists">公共 Gist</string>
@@ -319,7 +328,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="no_members">没有成员</string>
     <string name="no_teams">没有团队</string>
     <string name="no_orgs">没有加入组织</string>
-    <string name="no_orgs_dialog_title">找不到你所属的组织?</string>
+    <string name="no_orgs_dialog_title">找不到您所属的组织?</string>
     <string name="mark_as_read">标记为已读</string>
     <string name="animations">动画</string>
     <string name="dialog_animation_summary">启用弹出动画</string>
@@ -343,7 +352,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="commit_can_be_merged">该 Pull Request 可以被合并</string>
     <string name="reviewed">已审核</string>
     <string name="dismissed_review">驳回</string>
-    <string name="approved_these_changes">认同这些更改</string>
+    <string name="approved_these_changes">通过更改</string>
     <string name="no_reactions">没有反馈</string>
     <string name="reactions">反馈</string>
     <string name="wrap_content">自动换行</string>
@@ -357,7 +366,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">使用 Basic Auth 登录</string>
     <string name="no_orgs_description">
-        如果你实际是某个组织的成员, 但在此没有显示, 请访问下面的链接:\n
+        若您实际是某个组织的成员, 但在此没有显示, 请访问下面的链接:\n
         https://help.github.com/articles/about-oauth-app-access-restrictions\n
         注: 您可以使用 Access token 登录, 这将授予 FastHub 查看您的组织列表的权限.
     </string>
@@ -384,7 +393,7 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="paths_only">路径</string>
     <string name="review_requests">审核请求</string>
     <string name="join_slack">加入 Slack</string>
-    <string name="join_slack_message">你想加入 FastHub Slack 群组吗?</string>
+    <string name="join_slack_message">您想加入 FastHub Slack 群组吗?</string>
     <string name="successfully_invited">已邀请</string>
     <string name="reply">回复</string>
     <string name="failed_selecting_image">无法加载图像.</string>
@@ -399,21 +408,15 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="enable_signature_box_summary">在编辑器下选择每次是否签名</string>
     <string name="tags">标签</string>
     <string name="add_comment">添加评论</string>
-    <string name="banners">简介横幅</string>
-    <string name="banners_info">
-        从 FastHub 2.5.0 开始, 您可以在个人页面使用横幅来更好的展示自己. \n\n
-        任何使用 FastHub 应用的人都会看到您的横幅, 您也可以看到其他人的横幅!
-        如果您想为自己创建一个横幅, 确保其分辨率为 1280x384 或其他等比例大小, 否则显示时可能会被裁剪.\n\n
-        您可以按照以下步骤随意设置或更改您的横幅: 创建一个描述为 "header.fst", 内容为横幅图片的直链链接的 Gist.\n\n
-        或还可以更简单, 直接使用内置的图片选择器!
-    </string>
-    <string name="edit_banner">选择横幅</string>
     <string name="image_error">加载图片时出错, 请重试.</string>
     <string name="trending">趋势</string>
     <string name="not_really_working">由于 GitHub 的限制, 无法正常按 Emoji 排序</string>
     <string name="scroll_up">向上滑动</string>
     <string name="scroll_down">向下滑动</string>
     <string name="participated">已加入</string>
+    <string name="todo_checked">Todo 已勾选</string>
+    <string name="todo_unchecked">Todo 已反选</string>
+    <string name="divider">分界线</string>
     <string name="no_user_found">找不到用户</string>
     <string name="no_trending">没有趋势</string>
     <string name="reset">重置</string>
@@ -428,9 +431,9 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="premium_theme">付费主题</string>
     <string name="choose_code_theme">选择代码高亮主题</string>
     <string name="enterprise_login_warning">
-        请登录你的 Github 帐号以使用 Github API 提供的功能,
-        否则你将只能使用 Enterprise Github 的功能,
-        因为 Github API 使用的 Token 是来自于你的 Enterprise 帐号的.
+    	由于 Github API 使用您 Enterprise 帐号的 Token.
+        所以请登录您的 Github 帐号以使用 Github API 提供的功能,
+        否则您将仅限于使用 Enterprise Github 的功能.
     </string>
     <string name="add_account">添加帐号</string>
     <string name="choose_account">选择帐号</string>
@@ -452,8 +455,8 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="expand">展开</string>
     <string name="copy_sha">复制 SHA-1</string>
     <string name="view_as_code">作为代码查看</string>
-    <string name="app_animation_title">禁用 APP 内动画</string>
-    <string name="app_animation_summary">关闭所有 APP 内动画.</string>
+    <string name="app_animation_title">禁用应用内动画</string>
+    <string name="app_animation_summary">关闭所有应用内动画.</string>
     <string name="can_not_merge_pr">此 Pull Request 目前无法合并.</string>
     <string name="projects">项目</string>
     <string name="no_projects">无项目</string>
@@ -462,4 +465,44 @@ https://github.com/k0shk0sh/FastHub/blob/master/.github/CONTRIBUTING.md#contribu
     <string name="too_large_changes">更改内容过多. 请在浏览器中查看.</string>
     <string name="project">项目</string>
     <string name="faq">常见问题</string>
+    <string name="please_read">请阅读!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• 为何无法看见我的 <i>Private</i> 或者我的 <i>Public</i> <b>Organizations</b>?</h5>
+        <p>打开 https://github.com/settings/applications 并找到 FastHub, 向下滚动到 "Organization access" 并点击 "Grant" 按钮.
+        或者, 您可以使用 <b>Access Token</b> 登陆, 这样会更简便.</p>
+
+        <h5>• 我尝试使用 Access Token 和 a One-Time Password (OTP) 却不能登录, 为何?</h5>
+        <p>您无法使用 Access Token 和 OTP 一起登录. 由于这类密码生命周期有限, 您需要每隔几秒进行一次登陆操作.</p>
+
+        <h5>• 为何我的 Private 和 Enterprise Repositories\' Wikis 没有显示?</h5>
+        <p>这是因为FastHub 将 GitHub\'s Wiki 页面分开, 因此应用无法获取 Private Repositories 的任何 session token.</p>
+
+        <h5>• 我已经登录到了我的 Enterprise account. 为何除了我的 Enterprise GitHub 不能进行其他操作?</h5>
+        <p>是的, 从逻辑上讲, 您不能访问除了您的 Enterprise 外的任何操作. 虽然 FastHub 尝试要求尽可能多的权限, 但在大多数情况下不能这么做, 因为您的凭据不在 GitHub\'s 服务器上. 但是在 <b>某些</b> 情况下您的 GitHub 帐号 OAuth token 却可以.</p>
+
+        <h5>• 为何我在编辑 Issues/Pull Requests (PRs) 时遇到问题?</h5>
+        <p>若您无法编辑 Public Organization\'s repository 的 Issues/PRs, 请联系您的 Organization 为 FastHub 授予权限. 或者您可以使用 Access Token 登录.</p>
+
+        <h5>• 我有一些问题! / 我想向您提议!</h5>
+        <p>前往 https://github.com/k0shk0sh/FastHub/issues/new 为 Bug 和新功能请求创建 Issue. 但我希望您能在这之前查询一下类似的 Issue, 然后再打开一个新的. 任何重复的 Ticket 就将会标记为重复并被立即关闭.</p>
+
+        <h5>• 我怎么才能获取到促销码?</h5>
+        <p>此计划已被取消.</p>
+    ]]></string>
+    <string name="comments_added_successfully">成功添加评论</string>
+    <string name="clear_search_keywords">清除搜索历史</string>
+    <string name="restore_purchases">恢复购买</string>
+    <string name="include_forks"> 包括 Forks</string>
+    <string name="comment_is_too_far_to_paginate">此 Comment 难以分页</string>
+    <string name="search_results_warning">响应过多 \n超过 API 上限</string>
+    <string name="disable_loading_image_title">禁止加载图像</string>
+    <string name="disable_loading_image_summary">禁止在数据网络下加载图像</string>
+    <string name="report_issue_warning">此 Issue 将提交到 GitHub 中 FastHub 的 Repository 里</string>
+    <string name="block">阻止</string>
+    <string name="unblock">取消阻止</string>
+    <string name="user_blocked">已阻止该用户</string>
+    <string name="user_unblocked">已取消阻止该用户</string>
+    <string name="clear_image_cache">清除图片缓存</string>
+    <string name="restart_app_message">请重启应用</string>
 </resources>

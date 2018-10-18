@@ -2,7 +2,6 @@ package com.fastaccess.ui.modules.trending
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -22,6 +21,7 @@ import butterknife.OnTextChanged
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.*
+import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
@@ -46,7 +46,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     @State var selectedTitle: String = "All Language"
 
-    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) fun onTextChange(s: Editable) {
+    @OnTextChanged(value = [R.id.searchEditText], callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) fun onTextChange(s: Editable) {
         val text = s.toString()
         if (text.isEmpty()) {
             AnimHelper.animateVisibility(clear, false)
@@ -135,6 +135,11 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
                 drawerLayout.openDrawer(Gravity.END)
                 true
             }
+            R.id.share -> {
+                ActivityHelper.shareUrl(this, "${LinkParserHelper.PROTOCOL_HTTPS}://${LinkParserHelper.HOST_DEFAULT}" +
+                        "/trending/$selectedTitle")
+                return true
+            }
             android.R.id.home -> {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
@@ -217,7 +222,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         val drawable = GradientDrawable()
         drawable.shape = GradientDrawable.OVAL
         drawable.setSize(24, 24)
-        drawable.setColor(if (color == 0) Color.LTGRAY else color)
+        drawable.setColor(color)
         return drawable
     }
 

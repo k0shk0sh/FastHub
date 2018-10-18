@@ -96,7 +96,7 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void hideProgress() {
-        callback.hideProgress();
+        if (callback != null) callback.hideProgress();
     }
 
     @Override public void showMessage(@StringRes int titleRes, @StringRes int msgRes) {

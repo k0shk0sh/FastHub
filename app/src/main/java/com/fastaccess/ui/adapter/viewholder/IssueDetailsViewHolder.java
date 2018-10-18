@@ -220,7 +220,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
             owner.setVisibility(View.VISIBLE);
             owner.setText(R.string.owner);
         } else {
-            owner.setText(null);
+            owner.setText("");
             owner.setVisibility(View.GONE);
         }
         if (reactionsModel != null) {

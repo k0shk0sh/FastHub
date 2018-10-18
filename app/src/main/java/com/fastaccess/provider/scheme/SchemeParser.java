@@ -21,6 +21,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
@@ -147,8 +148,10 @@ public class SchemeParser {
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
-                Optional<Intent> intentOptional = returnNonNull(trending, projects, userIntent, repoIssues, repoPulls,
-                        pullRequestIntent, commit, commits, createIssueIntent, issueIntent, releasesIntent, repoIntent,
+                Intent label = getLabel(context, data);
+                Intent search = getSearchIntent(context, data);
+                Optional<Intent> intentOptional = returnNonNull(trending, projects, search, userIntent, repoIssues, repoPulls,
+                        pullRequestIntent, label, commit, commits, createIssueIntent, issueIntent, releasesIntent, repoIntent,
                         repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
@@ -265,9 +268,20 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        Logger.e(commentId);
         return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn,
                 LinkParserHelper.isEnterprise(uri.toString()), commentId == null ? 0 : commentId);
+    }
+
+    @Nullable private static Intent getLabel(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.size() < 3) return null;
+        String owner = segments.get(0);
+        String repoName = segments.get(1);
+        String lastPath = segments.get(2);
+        if ("labels".equalsIgnoreCase(lastPath)) {
+            return FilterIssuesActivity.getIntent(context, owner, repoName, "label:\"" + segments.get(3) + "\"");
+        }
+        return null;
     }
 
     @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {
@@ -280,12 +294,16 @@ public class SchemeParser {
         }
         if (segments.size() == 3) {
             String lastPath = uri.getLastPathSegment();
-            if ("network".equalsIgnoreCase(lastPath)) {
+            if ("milestones".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 4);
+            } else if ("network".equalsIgnoreCase(lastPath)) {
                 return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 3);
             } else if ("stargazers".equalsIgnoreCase(lastPath)) {
                 return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 2);
             } else if ("watchers".equalsIgnoreCase(lastPath)) {
                 return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 1);
+            } else if ("labels".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 5);
             } else {
                 return null;
             }
@@ -422,7 +440,8 @@ public class SchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
-        if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(uri.toString()))) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+        if (InputHelper.isEmpty(extension) || TextUtils.isDigitsOnly(extension)) {
             Uri urlBuilder = LinkParserHelper.getBlobBuilder(uri);
             return RepoFilesActivity.getIntent(context, urlBuilder.toString());
         }
@@ -444,6 +463,11 @@ public class SchemeParser {
         if (segments != null && segments.size() == 3 && uri.getLastPathSegment().equalsIgnoreCase("issues")) {
             String owner = segments.get(0);
             String repo = segments.get(1);
+            Uri encoded = Uri.parse(uri.toString().replace("utf8=%E2%9C%93&amp;", ""));
+            if (encoded.getQueryParameter("q") != null) {
+                String query = encoded.getQueryParameter("q");
+                return FilterIssuesActivity.getIntent(context, owner, repo, query);
+            }
             return RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES);
         }
         return null;
@@ -454,6 +478,11 @@ public class SchemeParser {
         if (segments != null && segments.size() == 3 && uri.getLastPathSegment().equalsIgnoreCase("pulls")) {
             String owner = segments.get(0);
             String repo = segments.get(1);
+            Uri encoded = Uri.parse(uri.toString().replace("utf8=%E2%9C%93&amp;", ""));
+            if (encoded.getQueryParameter("q") != null) {
+                String query = encoded.getQueryParameter("q");
+                return FilterIssuesActivity.getIntent(context, owner, repo, query);
+            }
             return RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST);
         }
         return null;
@@ -530,6 +559,19 @@ public class SchemeParser {
     @Nullable private static Intent getGistFile(@NonNull Context context, @NonNull Uri uri) {
         if (HOST_GISTS_RAW.equalsIgnoreCase(uri.getHost())) {
             return CodeViewerActivity.createIntent(context, uri.toString(), uri.toString());
+        }
+        return null;
+    }
+
+    @Nullable private static Intent getSearchIntent(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.size() > 1) return null;
+        String search = segments.get(0);
+        if ("search".equalsIgnoreCase(search)) {
+            Uri encoded = Uri.parse(uri.toString().replace("utf8=%E2%9C%93&amp;", ""));
+            String query = encoded.getQueryParameter("q");
+            Logger.e(encoded, query);
+            return SearchActivity.getIntent(context, query);
         }
         return null;
     }

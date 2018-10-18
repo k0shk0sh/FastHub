@@ -45,6 +45,8 @@ class ThemeCodeActivity : BaseActivity<ThemeCodeMvp.View, ThemeCodePresenter>(),
     override fun onInitAdapter(list: List<String>) {
         val adapter = SpinnerAdapter<String>(this, list)
         spinner.adapter = adapter
+        val themePosition = list.indexOf(PrefGetter.getCodeTheme())
+        if (themePosition >= 0) spinner.setSelection(themePosition)
     }
 
     @OnItemSelected(R.id.themesList) fun onItemSelect() {

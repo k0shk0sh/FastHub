@@ -132,5 +132,7 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
         }
     }
 
-    @Override public void onMenuItemReselect(@IdRes int id, int position, boolean fromUser) {}
+    @Override public void onMenuItemReselect(@IdRes int id, int position, boolean fromUser) {
+        sendToView(view -> view.onScrollTop(position));
+    }
 }

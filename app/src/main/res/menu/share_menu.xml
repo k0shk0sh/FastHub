@@ -3,6 +3,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/block"
+        android:icon="@drawable/ic_lock"
+        android:title="@string/block"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"

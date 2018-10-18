@@ -112,6 +112,9 @@ public class TimelineProvider {
                             .bold(issueEventModel.getMilestone().getTitle())
                             .append(" ")
                             .append("milestone");
+                } else if (event == IssueEventType.deployed) {
+                    spannableBuilder.append(" ")
+                            .bold("deployed");
                 } else {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
                 }

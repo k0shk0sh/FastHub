@@ -27,7 +27,7 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
     var emojiCallback: EmojiMvp.EmojiCallback? = null
 
 
-    @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    @OnTextChanged(value = [(R.id.editText)], callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     fun onTextChange(text: Editable) {
         adapter.filter.filter(text)
     }
