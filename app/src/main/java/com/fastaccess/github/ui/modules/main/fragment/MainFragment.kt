@@ -7,8 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.transition.TransitionManager
-import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -17,6 +15,7 @@ import com.fastaccess.github.ui.adapter.FeedsCell
 import com.fastaccess.github.ui.adapter.MainIssuesPrsCell
 import com.fastaccess.github.ui.adapter.NotificationsCell
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.utils.FEEDS_LINK
 import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
@@ -104,6 +103,9 @@ class MainFragment : BaseFragment() {
         gists.setOnClickListener { view ->
             addDisposal(viewModel.login
                     .subscribe({ route(it?.toGists()) }, ::print))
+        }
+        seeMoreFeeds.setOnClickListener {
+            route(FEEDS_LINK)
         }
     }
 

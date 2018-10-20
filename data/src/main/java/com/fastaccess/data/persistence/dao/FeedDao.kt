@@ -17,6 +17,9 @@ abstract class FeedDao : BaseDao<FeedModel>() {
     @Query("SELECT * FROM ${FeedModel.TABLE_NAME}  WHERE `login` is NULL ORDER BY `id` DESC LIMIT 5")
     abstract fun getMainFeeds(): LiveData<List<FeedModel>>
 
+    @Query("SELECT * FROM ${FeedModel.TABLE_NAME}  WHERE `login` is NULL ORDER BY `id` DESC")
+    abstract fun getReceivedEventAsLiveData(): DataSource.Factory<Int, FeedModel>
+
     @Query("DELETE FROM ${FeedModel.TABLE_NAME}  WHERE `login` = :login") abstract fun deleteAll(login: String)
 
     @Query("DELETE FROM ${FeedModel.TABLE_NAME}  WHERE `login` is NULL") abstract fun deleteAll()

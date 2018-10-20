@@ -1,15 +1,13 @@
 package com.fastaccess.github.di.modules
 
 import com.apollographql.apollo.ApolloClient
-import com.fastaccess.data.repository.LoginRepositoryProvider
-import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
-import com.fastaccess.data.repository.NotificationRepositoryProvider
-import com.fastaccess.data.repository.UserRepositoryProvider
+import com.fastaccess.data.repository.*
 import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase
 import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
+import com.fastaccess.github.usecase.feed.FeedsUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
@@ -62,4 +60,6 @@ class UseCaseModule {
     ): NotificationUseCase {
         return NotificationUseCase(notificationRepositoryProvider, notificationService, gson)
     }
+
+    @PerFragment @Provides fun provideFeedsUseCase(provider: FeedsRepositoryProvider): FeedsUseCase = FeedsUseCase(provider)
 }

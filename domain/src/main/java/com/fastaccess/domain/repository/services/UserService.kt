@@ -18,7 +18,7 @@ interface UserService {
     @GET("users/{username}/received_events?per_page=5")
     fun getMainScreenReceivedEvents(@Path("username") userName: String): Observable<PageableResponse<FeedResponse>>
 
-    @GET("users/{username}/received_events")
+    @GET("users/{username}/received_events?per_page=30")
     fun getReceivedEvents(@Path("username") userName: String, @Query("page") page: Int): Observable<PageableResponse<FeedResponse>>
 
     @GET("users/{username}/events")

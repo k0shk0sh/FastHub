@@ -1,5 +1,7 @@
 package com.fastaccess.github.utils
 
+import com.fastaccess.github.BuildConfig
+
 /**
  * Created by Kosh on 12 Nov 2016, 3:55 PM
  */
@@ -32,3 +34,9 @@ const val EDIT_COMMIT_COMMENT_EXTRA = "edit_commit_comment_extra"
 const val NEW_COMMIT_COMMENT_EXTRA = "new_commit_comment_extra"
 const val NEW_REVIEW_COMMENT_EXTRA = "new_review_comment_extra"
 const val EDIT_REVIEW_COMMENT_EXTRA = "edit_review_comment_extra"
+
+
+// DEEP LINKS
+
+const val FEEDS_LINK = "${BuildConfig.REST_URL}me/events"
+const val NOTIFICATION_LINK = "${BuildConfig.REST_URL}me/notifications"

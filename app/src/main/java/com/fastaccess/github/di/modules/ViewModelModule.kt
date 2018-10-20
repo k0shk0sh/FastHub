@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.github.di.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
+import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.profile.feeds.viewmodel.ProfileFeedsViewModel
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
@@ -48,4 +49,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(ProfileFeedsViewModel::class)
     abstract fun bindProfileFeedsViewModel(viewModel: ProfileFeedsViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(FeedsViewModel::class)
+    abstract fun bindFeedsViewModel(viewModel: FeedsViewModel): ViewModel
 }

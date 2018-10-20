@@ -29,14 +29,12 @@ class FeedsRepositoryProvider @Inject constructor(
     override fun getMainFeeds(): Observable<*> = loginRepositoryProvider.getLogin()
             .filter { !it.login.isNullOrEmpty() }
             .toObservable()
-            .flatMap({ it ->
-                userService.getMainScreenReceivedEvents(it.login ?: "")
-                        .map { gson.fromJson<List<FeedModel>>(gson.toJson(it.items), object : TypeToken<List<FeedModel>>() {}.type) }
-            }, { _, list ->
+            .flatMap { userService.getMainScreenReceivedEvents(it.login ?: "") }
+            .map { response ->
+                val list = gson.fromJson<List<FeedModel>>(gson.toJson(response.items), object : TypeToken<List<FeedModel>>() {}.type)
                 feedsDao.deleteAll()
-                feedsDao.insert(list)
-                return@flatMap true // we don't care about the return statement
-            })
+                list?.let { feedsDao.insert(it) }
+            }
 
     override fun getFeeds(login: String, page: Int): Observable<PageableResponse<FeedResponse>> = userService.getUserEvents(login, page)
             .map { response ->
@@ -49,12 +47,27 @@ class FeedsRepositoryProvider @Inject constructor(
                 feedsDao.insert(newList)
                 return@map response
             }
+
+    override fun getReceivedEvents(page: Int): Observable<PageableResponse<FeedResponse>> = loginRepositoryProvider.getLogin()
+            .filter { !it.login.isNullOrEmpty() }
+            .toObservable()
+            .flatMap { userService.getReceivedEvents(it.login ?: "", page) }
+            .map { response ->
+                val list = gson.fromJson<List<FeedModel>>(gson.toJson(response.items), object : TypeToken<List<FeedModel>>() {}.type)
+                if (page <= 1) feedsDao.deleteAll()
+                list?.let { feedsDao.insert(it) }
+                return@map response
+            }
+
+    override fun getReceivedEventAsLiveData(): DataSource.Factory<Int, FeedModel> = feedsDao.getReceivedEventAsLiveData()
 }
 
 interface FeedsRepository {
     fun getMainFeeds(): Observable<*>
-    fun getFeeds(login: String, page: Int): Observable<*>
+    fun getFeeds(login: String, page: Int): Observable<PageableResponse<FeedResponse>>
     fun getFeeds(login: String): DataSource.Factory<Int, FeedModel>
     fun getMainFeedsAsLiveData(): LiveData<List<FeedModel>>
+    fun getReceivedEvents(page: Int): Observable<PageableResponse<FeedResponse>>
+    fun getReceivedEventAsLiveData(): DataSource.Factory<Int, FeedModel>
     fun deleteAll()
 }
