@@ -18,6 +18,7 @@ import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
 import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
+import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.ProfileFollowersFragment
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
@@ -32,7 +33,6 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -42,14 +42,24 @@ class ProfileFragment : BasePagerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
+    private val adapter by lazy {
+        PagerAdapter(childFragmentManager, arrayListOf(
+                ViewPagerModel(getString(R.string.feeds), ProfileFeedFragment.newInstance(loginBundle), FragmentType.FEEDS),
+                ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle), FragmentType.REPOS),
+                ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle), FragmentType.STARRED),
+                ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle), FragmentType.GISTS),
+                ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true), FragmentType.FOLLOWERS),
+                ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
+        ))
+    }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
     private val tabBundle: String? by lazy { arguments?.getString(EXTRA_TWO) }
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        username.text = loginBundle
         toolbarTitle.text = getString(R.string.profile)
+        username.text = loginBundle
         actionsHolder.isVisible = loginBundle != me()
         toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
@@ -83,12 +93,13 @@ class ProfileFragment : BasePagerFragment() {
                 }
             }
         })
-
         scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, _: Int, _: Int, _: Int ->
             (behaviour.state != AnchorSheetBehavior.STATE_COLLAPSED).isTrue {
                 behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
             }
         }
+        followers.setOnClickListener { if (pager.adapter != null) selectTab(FragmentType.FOLLOWERS) }
+        following.setOnClickListener { if (pager.adapter != null) selectTab(FragmentType.FOLLOWINGS) }
     }
 
     override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
@@ -150,21 +161,18 @@ class ProfileFragment : BasePagerFragment() {
 
         if (pager.adapter == null) {
             pager.offscreenPageLimit = 5
-            val adapter = PagerAdapter(childFragmentManager, arrayListOf(
-                    ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle), FragmentType.REPOS),
-                    ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle), FragmentType.STARRED),
-                    ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle), FragmentType.GISTS),
-                    ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true), FragmentType.FOLLOWERS),
-                    ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
-            ))
             pager.adapter = adapter
             tabs.setupWithViewPager(pager)
             val type = FragmentType.getTypeSafely(tabBundle ?: "")
-            type?.let {
-                val index = adapter.getIndex(it)
-                if (index == -1) return
-                pager.currentItem = index
-            }
+            selectTab(type)
+        }
+    }
+
+    private fun selectTab(type: FragmentType?) {
+        type?.let {
+            val index = adapter.getIndex(it)
+            if (index == -1) return
+            pager.currentItem = index
         }
     }
 

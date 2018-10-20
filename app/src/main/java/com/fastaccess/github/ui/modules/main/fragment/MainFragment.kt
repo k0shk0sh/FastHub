@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.transition.TransitionManager
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R

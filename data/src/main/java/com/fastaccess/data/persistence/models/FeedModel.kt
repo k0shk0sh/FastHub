@@ -18,7 +18,8 @@ data class FeedModel(@SerializedName("id") @PrimaryKey var id: Long = 0L,
                      @SerializedName("public") var isPublic: Boolean? = null,
                      @SerializedName("actor") @Embedded(prefix = "actor_") var actor: UserModel? = null,
                      @SerializedName("repo") var repo: RepositoryModel? = null,
-                     @SerializedName("payload") var payload: PayloadModel? = null) {
+                     @SerializedName("payload") var payload: PayloadModel? = null,
+                     @SerializedName("login") var login: String? = null) {
 
     companion object {
         const val TABLE_NAME = "feed_table"
@@ -136,9 +137,9 @@ data class LabelModel(@SerializedName("url") var url: String? = null,
                       @SerializedName("name") var name: String? = null)
 
 data class FeedGistModel(@SerializedName("id") var id: String? = null,
-                     @SerializedName("node_id") var nodeId: String? = null,
-                     @SerializedName("url") var url: String? = null,
-                     @SerializedName("html_url") var htmlUrl: String? = null,
-                     @SerializedName("public_x") var publicX: String? = null,
-                     @SerializedName("description") var description: String? = null,
-                     @SerializedName("truncated") var truncated: Boolean? = null)
+                         @SerializedName("node_id") var nodeId: String? = null,
+                         @SerializedName("url") var url: String? = null,
+                         @SerializedName("html_url") var htmlUrl: String? = null,
+                         @SerializedName("public_x") var publicX: String? = null,
+                         @SerializedName("description") var description: String? = null,
+                         @SerializedName("truncated") var truncated: Boolean? = null)

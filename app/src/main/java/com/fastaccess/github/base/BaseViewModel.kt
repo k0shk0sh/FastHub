@@ -6,8 +6,10 @@ import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.github.R
 import com.google.gson.Gson
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -63,6 +65,8 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected fun <T> callApi(observable: Observable<T>): Observable<T> = observable
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { showProgress() }
             .doOnNext { hideProgress() }
             .doOnError { handleError(it) }

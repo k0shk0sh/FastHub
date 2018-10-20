@@ -4,6 +4,7 @@ import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
+import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.ProfileFollowersFragment
 import com.fastaccess.github.ui.modules.profile.fragment.ProfileFragment
 import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
@@ -26,4 +27,5 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideProfileStarredeReposFragment(): ProfileStarredReposFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideProfileGistsFragment(): ProfileGistsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideProfileFollowersFragment(): ProfileFollowersFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideProfileFeedsFragment(): ProfileFeedFragment
 }

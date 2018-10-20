@@ -1,9 +1,12 @@
 package com.fastaccess.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.fastaccess.data.persistence.dao.FeedDao
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.domain.repository.services.UserService
+import com.fastaccess.domain.response.FeedResponse
+import com.fastaccess.domain.response.PageableResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
@@ -19,7 +22,7 @@ class FeedsRepositoryProvider @Inject constructor(
         private val gson: Gson
 ) : FeedsRepository {
 
-    override fun getFeeds(): LiveData<List<FeedModel>> = feedsDao.getFeeds()
+    override fun getFeeds(login: String): DataSource.Factory<Int, FeedModel> = feedsDao.getFeeds(login)
     override fun getMainFeedsAsLiveData(): LiveData<List<FeedModel>> = feedsDao.getMainFeeds()
     override fun deleteAll() = feedsDao.deleteAll()
 
@@ -35,24 +38,23 @@ class FeedsRepositoryProvider @Inject constructor(
                 return@flatMap true // we don't care about the return statement
             })
 
-    override fun getFeeds(page: Int): Observable<*> = loginRepositoryProvider.getLogin()
-            .filter { !it.login.isNullOrEmpty() }
-            .toObservable()
-            .flatMap({ it ->
-                userService.getReceivedEvents(it.login ?: "", page)
-                        .map { gson.fromJson<List<FeedModel>>(gson.toJson(it.items), object : TypeToken<List<FeedModel>>() {}.type) }
-            }, { _, list ->
-                if (page <= 1) feedsDao.deleteAll()
-                feedsDao.insert(list)
-                return@flatMap true // we don't care about the return statement
-            })
-
+    override fun getFeeds(login: String, page: Int): Observable<PageableResponse<FeedResponse>> = userService.getUserEvents(login, page)
+            .map { response ->
+                val list = gson.fromJson<List<FeedModel>>(gson.toJson(response.items), object : TypeToken<List<FeedModel>>() {}.type)
+                if (page <= 1) feedsDao.deleteAll(login)
+                val newList = list.asSequence().map { feeds ->
+                    feeds.login = login
+                    feeds
+                }.toList()
+                feedsDao.insert(newList)
+                return@map response
+            }
 }
 
 interface FeedsRepository {
     fun getMainFeeds(): Observable<*>
-    fun getFeeds(page: Int): Observable<*>
-    fun getFeeds(): LiveData<List<FeedModel>>
+    fun getFeeds(login: String, page: Int): Observable<*>
+    fun getFeeds(login: String): DataSource.Factory<Int, FeedModel>
     fun getMainFeedsAsLiveData(): LiveData<List<FeedModel>>
     fun deleteAll()
 }

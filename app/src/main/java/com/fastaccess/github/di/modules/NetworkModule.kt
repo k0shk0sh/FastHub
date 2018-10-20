@@ -7,6 +7,7 @@ import com.apollographql.apollo.response.CustomTypeValue
 import com.fastaccess.domain.HttpLoggingInterceptor
 import com.fastaccess.domain.repository.services.LoginService
 import com.fastaccess.domain.repository.services.NotificationService
+import com.fastaccess.domain.repository.services.OrganizationService
 import com.fastaccess.domain.repository.services.UserService
 import com.fastaccess.github.BuildConfig
 import com.google.gson.FieldNamingPolicy
@@ -69,10 +70,9 @@ class NetworkModule {
             .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)
-
     @Singleton @Provides fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
-
     @Singleton @Provides fun provideNotificationService(retrofit: Retrofit): NotificationService = retrofit.create(NotificationService::class.java)
+    @Singleton @Provides fun provideOrganizationService(retrofit: Retrofit): OrganizationService = retrofit.create(OrganizationService::class.java)
 
 }
 

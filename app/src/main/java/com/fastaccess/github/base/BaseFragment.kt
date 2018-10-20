@@ -10,6 +10,7 @@ import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
@@ -33,7 +34,9 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     private var activityCallback: ActivityCallback? = null
     private var disposal = CompositeDisposable()
 
-    @LayoutRes abstract fun layoutRes(): Int
+    @LayoutRes
+    abstract fun layoutRes(): Int
+
     abstract fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?)
     protected open fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {}
     abstract fun viewModel(): BaseViewModel?
@@ -111,6 +114,10 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
 
     protected fun postCount(type: FragmentType, count: Long) {
         updateCountCallback?.updateCount(type, count)
+    }
+
+    protected fun startTransactionDelay(view: View?) {
+        view?.let { TransitionManager.beginDelayedTransition(it as ViewGroup) }
     }
 
     open fun onScrollToTop() {

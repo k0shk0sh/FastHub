@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+
 /**
  * Created by Kosh on 03.06.18.
  */
@@ -19,4 +20,8 @@ interface UserService {
 
     @GET("users/{username}/received_events")
     fun getReceivedEvents(@Path("username") userName: String, @Query("page") page: Int): Observable<PageableResponse<FeedResponse>>
+
+    @GET("users/{username}/events")
+    fun getUserEvents(@Path("username") userName: String, @Query("page") page: Int): Observable<PageableResponse<FeedResponse>>
+
 }

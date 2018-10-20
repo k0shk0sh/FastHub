@@ -6,6 +6,7 @@ import com.fastaccess.github.di.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.ui.modules.profile.feeds.viewmodel.ProfileFeedsViewModel
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsViewModel
@@ -21,6 +22,9 @@ import dagger.multibindings.IntoMap
 @Suppress("unused")
 @Module
 abstract class ViewModelModule {
+
+    @Binds abstract fun bindViewModelFactory(factoryFastHub: FastHubViewModelFactory): ViewModelProvider.Factory
+
     @Binds @IntoMap @ViewModelKey(LoginViewModel::class)
     abstract fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
 
@@ -42,6 +46,6 @@ abstract class ViewModelModule {
     @Binds @IntoMap @ViewModelKey(FollowersFollowingViewModel::class)
     abstract fun bindFollowersFollowingViewModel(viewModel: FollowersFollowingViewModel): ViewModel
 
-    @Binds abstract fun bindViewModelFactory(factoryFastHub: FastHubViewModelFactory): ViewModelProvider.Factory
-
+    @Binds @IntoMap @ViewModelKey(ProfileFeedsViewModel::class)
+    abstract fun bindProfileFeedsViewModel(viewModel: ProfileFeedsViewModel): ViewModel
 }
