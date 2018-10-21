@@ -8,6 +8,7 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.ProfileRepoModel
 import com.fastaccess.data.repository.UserReposRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import javax.inject.Inject
 
 /**
@@ -18,8 +19,6 @@ class ProfileReposViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
-    val loadMoreLiveData = MutableLiveData<Boolean>()
-
 
     fun repos(login: String): LiveData<PagedList<ProfileRepoModel>> {
         val dataSourceFactory = reposProvider.getRepos(login)
@@ -28,7 +27,7 @@ class ProfileReposViewModel @Inject constructor(
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(ProfileRepoBoundary(loadMoreLiveData))
+                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
                 .build()
     }
 
@@ -46,11 +45,4 @@ class ProfileReposViewModel @Inject constructor(
     }
 
     fun hasNext() = pageInfo?.hasNextPage == true
-}
-
-class ProfileRepoBoundary(private val loadMoreLiveData: MutableLiveData<Boolean>) : PagedList.BoundaryCallback<ProfileRepoModel>() {
-    override fun onItemAtEndLoaded(itemAtEnd: ProfileRepoModel) {
-        super.onItemAtEndLoaded(itemAtEnd)
-        loadMoreLiveData.postValue(true)
-    }
 }

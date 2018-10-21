@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.feed
+package com.fastaccess.github.ui.modules.notifications
 
 import android.os.Bundle
 import com.fastaccess.github.R
@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 /**
  * Created by Kosh on 20.10.18.
  */
-@AppDeepLink("/me/events")
-class FeedsActivity : BaseActivity() {
+@AppDeepLink("/me/notifications")
+class NotificationsActivity : BaseActivity() {
     override fun layoutRes(): Int = R.layout.toolbar_activity_layout
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {

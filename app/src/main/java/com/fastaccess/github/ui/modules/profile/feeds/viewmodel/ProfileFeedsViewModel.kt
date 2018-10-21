@@ -1,12 +1,12 @@
 package com.fastaccess.github.ui.modules.profile.feeds.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.data.repository.FeedsRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import com.fastaccess.github.usecase.user.UserFeedsUseCase
 import javax.inject.Inject
 
@@ -20,7 +20,6 @@ class ProfileFeedsViewModel @Inject constructor(
 
     private var currentPage = 0
     private var isLastPage = false
-    val loadMoreLiveData = MutableLiveData<Boolean>()
 
 
     fun feeds(login: String): LiveData<PagedList<FeedModel>> {
@@ -30,7 +29,7 @@ class ProfileFeedsViewModel @Inject constructor(
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(ProfileFeedsBoundary(loadMoreLiveData))
+                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
                 .build()
     }
 
@@ -50,11 +49,4 @@ class ProfileFeedsViewModel @Inject constructor(
     }
 
     fun hasNext() = isLastPage
-}
-
-class ProfileFeedsBoundary(private val loadMoreLiveData: MutableLiveData<Boolean>) : PagedList.BoundaryCallback<FeedModel>() {
-    override fun onItemAtEndLoaded(itemAtEnd: FeedModel) {
-        super.onItemAtEndLoaded(itemAtEnd)
-        loadMoreLiveData.postValue(true)
-    }
 }

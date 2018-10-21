@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -16,6 +17,7 @@ import com.fastaccess.github.ui.adapter.MainIssuesPrsCell
 import com.fastaccess.github.ui.adapter.NotificationsCell
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.utils.FEEDS_LINK
+import com.fastaccess.github.utils.NOTIFICATION_LINK
 import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
@@ -31,6 +33,7 @@ class MainFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var preference: FastHubSharedPreference
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainFragmentViewModel::class.java) }
+    private val behaviour by lazy { BottomSheetBehavior.from(bottomSheet) }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -53,16 +56,7 @@ class MainFragment : BaseFragment() {
             }
             return@setOnMenuItemClickListener true
         }
-        val behaviour = BottomSheetBehavior.from(bottomSheet)
-        bottomBar.setNavigationOnClickListener {
-            behaviour.apply {
-                state = if (state == BottomSheetBehavior.STATE_EXPANDED) {
-                    BottomSheetBehavior.STATE_COLLAPSED
-                } else {
-                    BottomSheetBehavior.STATE_EXPANDED
-                }
-            }
-        }
+
         behaviour.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(p0: View, p1: Float) = Unit
 
@@ -80,6 +74,11 @@ class MainFragment : BaseFragment() {
                 }
             }
         })
+        listenToDataChanges()
+        initClicks()
+    }
+
+    private fun initClicks() {
         navigationView.setNavigationItemSelectedListener {
             behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
             when (it.itemId) {
@@ -87,26 +86,35 @@ class MainFragment : BaseFragment() {
             }
             return@setNavigationItemSelectedListener true
         }
-        listenToDataChanges()
-        initClicks()
-    }
-
-    private fun initClicks() {
+        bottomBar.setNavigationOnClickListener {
+            behaviour.apply {
+                state = if (state == BottomSheetBehavior.STATE_EXPANDED) {
+                    BottomSheetBehavior.STATE_COLLAPSED
+                } else {
+                    BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
+        }
         starred.setOnClickListener { view ->
-            addDisposal(viewModel.login
-                    .subscribe({ route(it?.toStarred()) }, ::print))
+            onUserRetrieved { route(it?.toStarred()) }
         }
         repos.setOnClickListener { view ->
-            addDisposal(viewModel.login
-                    .subscribe({ route(it?.toRepos()) }, ::print))
+            onUserRetrieved { route(it?.toRepos()) }
         }
         gists.setOnClickListener { view ->
-            addDisposal(viewModel.login
-                    .subscribe({ route(it?.toGists()) }, ::print))
+            onUserRetrieved { route(it?.toGists()) }
         }
         seeMoreFeeds.setOnClickListener {
             route(FEEDS_LINK)
         }
+        seeMoreNotifications.setOnClickListener {
+            route(NOTIFICATION_LINK)
+        }
+    }
+
+    private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {
+        addDisposal(viewModel.login
+                .subscribe({ action(it) }, ::print))
     }
 
     private fun listenToDataChanges() {

@@ -1,13 +1,13 @@
 package com.fastaccess.github.ui.modules.profile.starred.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.ProfileStarredRepoModel
 import com.fastaccess.data.repository.UserStarredReposRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import javax.inject.Inject
 
 /**
@@ -18,8 +18,6 @@ class ProfileStarredReposViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
-    val loadMoreLiveData = MutableLiveData<Boolean>()
-
 
     fun starredRepos(login: String): LiveData<PagedList<ProfileStarredRepoModel>> {
         val dataSourceFactory = reposProvider.getStarredRepos(login)
@@ -28,7 +26,7 @@ class ProfileStarredReposViewModel @Inject constructor(
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(ProfileStarredRepoBoundary(loadMoreLiveData))
+                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
                 .build()
     }
 
@@ -46,11 +44,4 @@ class ProfileStarredReposViewModel @Inject constructor(
     }
 
     fun hasNext() = pageInfo?.hasNextPage == true
-}
-
-class ProfileStarredRepoBoundary(private val loadMoreLiveData: MutableLiveData<Boolean>) : PagedList.BoundaryCallback<ProfileStarredRepoModel>() {
-    override fun onItemAtEndLoaded(itemAtEnd: ProfileStarredRepoModel) {
-        super.onItemAtEndLoaded(itemAtEnd)
-        loadMoreLiveData.postValue(true)
-    }
 }

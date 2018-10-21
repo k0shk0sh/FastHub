@@ -8,6 +8,7 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.FollowingFollowerModel
 import com.fastaccess.data.repository.UserFollowersFollowingRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import javax.inject.Inject
 
 /**
@@ -18,8 +19,6 @@ class FollowersFollowingViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
-    val loadMoreLiveData = MutableLiveData<Boolean>()
-
 
     fun getUsers(login: String, isFollowers: Boolean): LiveData<PagedList<FollowingFollowerModel>> {
         val dataSourceFactory = provider.getFollowersOrFollowing(login, isFollowers)
@@ -28,7 +27,7 @@ class FollowersFollowingViewModel @Inject constructor(
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(ProfileFollowersFollowingsRepoBoundary(loadMoreLiveData))
+                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
                 .build()
     }
 
@@ -52,13 +51,4 @@ class FollowersFollowingViewModel @Inject constructor(
     }
 
     fun hasNext() = pageInfo?.hasNextPage == true
-}
-
-class ProfileFollowersFollowingsRepoBoundary(
-        private val loadMoreLiveData: MutableLiveData<Boolean>
-) : PagedList.BoundaryCallback<FollowingFollowerModel>() {
-    override fun onItemAtEndLoaded(itemAtEnd: FollowingFollowerModel) {
-        super.onItemAtEndLoaded(itemAtEnd)
-        loadMoreLiveData.postValue(true)
-    }
 }

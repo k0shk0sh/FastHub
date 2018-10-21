@@ -25,6 +25,7 @@ abstract class BaseViewModel : ViewModel() {
     val progress = MutableLiveData<Boolean>()
     val logoutProcess = MutableLiveData<Boolean>()
     val counter = MutableLiveData<Long>()
+    val loadMoreLiveData = MutableLiveData<Boolean>()
     private val disposable = CompositeDisposable()
 
     protected fun add(disposable: Disposable) = this.disposable.add(disposable)

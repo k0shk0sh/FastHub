@@ -102,9 +102,14 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.modules.feed.FeedsActivity"
             android:label="@string/feeds"/>
+
+        <activity
+            android:name=".ui.modules.notifications.NotificationsActivity"
+            android:label="@string/notifications"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

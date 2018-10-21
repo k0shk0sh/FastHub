@@ -1,13 +1,13 @@
 package com.fastaccess.github.ui.modules.profile.gists.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.ProfileGistModel
 import com.fastaccess.data.repository.UserGistsRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import javax.inject.Inject
 
 /**
@@ -18,8 +18,6 @@ class ProfileGistsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
-    val loadMoreLiveData = MutableLiveData<Boolean>()
-
 
     fun getGists(login: String): LiveData<PagedList<ProfileGistModel>> {
         val dataSourceFactory = reposProvider.getGists(login)
@@ -28,7 +26,7 @@ class ProfileGistsViewModel @Inject constructor(
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(ProfileGistsBoundary(loadMoreLiveData))
+                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
                 .build()
     }
 
@@ -46,11 +44,4 @@ class ProfileGistsViewModel @Inject constructor(
     }
 
     fun hasNext() = pageInfo?.hasNextPage == true
-}
-
-class ProfileGistsBoundary(private val loadMoreLiveData: MutableLiveData<Boolean>) : PagedList.BoundaryCallback<ProfileGistModel>() {
-    override fun onItemAtEndLoaded(itemAtEnd: ProfileGistModel) {
-        super.onItemAtEndLoaded(itemAtEnd)
-        loadMoreLiveData.postValue(true)
-    }
 }
