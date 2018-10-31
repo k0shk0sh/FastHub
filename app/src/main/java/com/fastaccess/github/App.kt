@@ -1,5 +1,6 @@
 package com.fastaccess.github
 
+import com.evernote.android.state.StateSaver
 import com.fastaccess.github.di.components.AppComponent
 import com.fastaccess.github.platform.fabric.FabricProvider
 import com.fastaccess.github.platform.timber.FabricTree
@@ -24,6 +25,7 @@ class App : DaggerApplication() {
 
     private fun initConfigs() {
         FabricProvider.initFabric(this)
+        StateSaver.setEnabledForAllActivitiesAndSupportFragments(this, true)
         if (BuildConfig.DEBUG) {
             Pandora.init(this).enableShakeOpen()
             Timber.plant(FastHubTree())

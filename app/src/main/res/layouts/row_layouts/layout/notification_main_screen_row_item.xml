@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?selectableItemBackground"
-    app:cardBackgroundColor="?card_background"
-    app:contentPaddingBottom="@dimen/spacing_normal"
-    app:contentPaddingLeft="@dimen/spacing_xs_large"
-    app:contentPaddingRight="@dimen/spacing_xs_large"
-    app:contentPaddingTop="@dimen/spacing_normal">
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,6 +64,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
-</com.google.android.material.card.MaterialCardView>
+</FrameLayout>

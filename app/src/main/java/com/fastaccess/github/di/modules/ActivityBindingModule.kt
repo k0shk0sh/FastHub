@@ -2,10 +2,9 @@ package com.fastaccess.github.di.modules
 
 import com.fastaccess.github.di.scopes.PerActivity
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
-import com.fastaccess.github.ui.modules.feed.FeedsActivity
 import com.fastaccess.github.ui.modules.main.MainActivity
-import com.fastaccess.github.ui.modules.notifications.NotificationsActivity
 import com.fastaccess.github.ui.modules.profile.ProfileActivity
+import com.fastaccess.github.ui.multipurpose.MultiPurposeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -17,6 +16,5 @@ abstract class ActivityBindingModule {
     @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun mainActivity(): MainActivity
     @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun loginChooser(): LoginChooserActivity
     @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun profileActivity(): ProfileActivity
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun feedsActivity(): FeedsActivity
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun notificationsActivity(): NotificationsActivity
+    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun multiPurposeActivity(): MultiPurposeActivity
 }

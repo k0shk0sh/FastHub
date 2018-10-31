@@ -14,7 +14,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            app:layoutManager="@string/llm"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.fastaccess.github.ui.widget.recyclerview.RecyclerViewFastScroller

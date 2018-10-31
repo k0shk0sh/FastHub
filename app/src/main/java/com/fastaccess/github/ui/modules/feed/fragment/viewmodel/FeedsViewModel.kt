@@ -25,7 +25,7 @@ class FeedsViewModel @Inject constructor(
     fun feeds(): LiveData<PagedList<FeedModel>> {
         val dataSourceFactory = provider.getReceivedEventAsLiveData()
         val config = PagedList.Config.Builder()
-                .setPrefetchDistance(15)
+                .setPrefetchDistance(25)
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)

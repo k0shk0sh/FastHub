@@ -22,7 +22,7 @@ class ProfileGistsViewModel @Inject constructor(
     fun getGists(login: String): LiveData<PagedList<ProfileGistModel>> {
         val dataSourceFactory = reposProvider.getGists(login)
         val config = PagedList.Config.Builder()
-                .setPrefetchDistance(15)
+                .setPrefetchDistance(25)
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)

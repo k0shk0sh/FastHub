@@ -23,7 +23,7 @@ class ProfileReposViewModel @Inject constructor(
     fun repos(login: String): LiveData<PagedList<ProfileRepoModel>> {
         val dataSourceFactory = reposProvider.getRepos(login)
         val config = PagedList.Config.Builder()
-                .setPrefetchDistance(15)
+                .setPrefetchDistance(25)
                 .setPageSize(30)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)

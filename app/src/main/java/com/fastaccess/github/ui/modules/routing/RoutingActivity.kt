@@ -15,7 +15,7 @@ class RoutingActivity : Activity() {
         super.onCreate(savedInstanceState)
         val delegate = DeepLinkDelegate(RoutingModuleLoader())
                 .dispatchFrom(this)
-        Timber.e("${delegate.uriString()} ----- ${delegate.error()}")
+        Timber.e("${delegate.isSuccessful} ---- ${delegate.uriString()} ----- ${delegate.error()}")
         if (!delegate.isSuccessful) {
             //TODO FIXME
         }

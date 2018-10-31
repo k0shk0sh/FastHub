@@ -5,6 +5,7 @@ import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
+import com.fastaccess.github.ui.modules.notifications.fragment.unread.UnreadNotificationsFragment
 import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.ProfileFollowersFragment
 import com.fastaccess.github.ui.modules.profile.fragment.ProfileFragment
@@ -30,4 +31,5 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideProfileFollowersFragment(): ProfileFollowersFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideProfileFeedsFragment(): ProfileFeedFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideFeedsFragment(): FeedsFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideUnreadNotificationsFragment(): UnreadNotificationsFragment
 }

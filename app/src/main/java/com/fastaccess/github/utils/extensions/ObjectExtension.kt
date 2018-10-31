@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.fastaccess.data.persistence.models.RepositoryModel
 import com.fastaccess.data.persistence.models.UserModel
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -32,7 +33,6 @@ fun <T> LiveData<T>.observeNotNull(owner: LifecycleOwner, observer: (t: T) -> Un
 fun <T> LiveData<T>.observeNull(owner: LifecycleOwner, observer: (t: T?) -> Unit) {
     this.observe(owner, Observer { observer.invoke(it) })
 }
-
 
 fun Date.timeAgo(): CharSequence {
     val now = System.currentTimeMillis()
@@ -62,4 +62,15 @@ inline fun runSafely(execute: () -> Unit, noinline onErrorCallback: (() -> Unit)
         e.printStackTrace()
         onErrorCallback?.invoke()
     }
+}
+
+fun getDateByDays(days: Int): String {
+    val cal = Calendar.getInstance()
+    val s = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+    cal.add(Calendar.DAY_OF_YEAR, days)
+    return s.format(Date(cal.timeInMillis))
+}
+
+fun getLastWeekDate(): String {
+    return getDateByDays(-7)
 }

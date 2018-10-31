@@ -30,7 +30,7 @@ import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.*
 import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.appbar_center_title_layout.*
+import kotlinx.android.synthetic.main.appbar_center_title_layout_bottomsheet.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
 import javax.inject.Inject

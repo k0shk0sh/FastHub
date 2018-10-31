@@ -103,13 +103,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.modules.feed.FeedsActivity"
-            android:label="@string/feeds"/>
-
-        <activity
-            android:name=".ui.modules.notifications.NotificationsActivity"
-            android:label="@string/notifications"/>
+        <activity android:name=".ui.multipurpose.MultiPurposeActivity"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

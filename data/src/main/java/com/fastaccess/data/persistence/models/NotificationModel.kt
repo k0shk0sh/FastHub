@@ -17,7 +17,7 @@ import java.util.*
 @Entity(tableName = TABLE_NAME)
 data class NotificationModel(@PrimaryKey @SerializedName("id") var id: String = "",
                              @Embedded(prefix = "repo_") @SerializedName("repository") var repository: NotificationRepository? = null,
-                             @Embedded(prefix = "subject") @SerializedName("subject") var subject: NotificationSubject? = null,
+                             @Embedded(prefix = "subject_") @SerializedName("subject") var subject: NotificationSubject? = null,
                              @SerializedName("reason") var reason: String? = null,
                              @SerializedName("unread") var unread: Boolean? = null,
                              @SerializedName("updated_at") var updatedAt: Date? = null,

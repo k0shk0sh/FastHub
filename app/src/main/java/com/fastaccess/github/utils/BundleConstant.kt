@@ -1,5 +1,7 @@
 package com.fastaccess.github.utils
 
+import com.fastaccess.data.model.ActivityType
+
 /**
  * Created by Kosh on 12 Nov 2016, 3:55 PM
  */
@@ -37,5 +39,5 @@ const val EDIT_REVIEW_COMMENT_EXTRA = "edit_review_comment_extra"
 // DEEP LINKS
 
 const val IN_APP_LINK = "app://fasthub"
-const val FEEDS_LINK = "$IN_APP_LINK/me/events"
-const val NOTIFICATION_LINK = "$IN_APP_LINK/me/notifications"
+val FEEDS_LINK = "$IN_APP_LINK/me/${ActivityType.FEEDS.name}"
+val NOTIFICATION_LINK = "$IN_APP_LINK/me/${ActivityType.NOTIFICATION.name}"
