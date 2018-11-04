@@ -7,7 +7,6 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.ProfileGistModel
 import com.fastaccess.data.repository.UserGistsRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import javax.inject.Inject
 
 /**
@@ -26,7 +25,6 @@ class ProfileGistsViewModel @Inject constructor(
                 .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
                 .build()
     }
 

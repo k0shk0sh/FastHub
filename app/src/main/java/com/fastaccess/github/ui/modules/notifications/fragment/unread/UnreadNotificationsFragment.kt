@@ -35,15 +35,14 @@ class UnreadNotificationsFragment : BaseFragment() {
         fastScroller.attachRecyclerView(recyclerView)
         if (savedInstanceState == null) viewModel.loadNotifications(true)
         swipeRefresh.setOnRefreshListener {
+            recyclerView.resetScrollState()
             viewModel.loadNotifications(true)
         }
+        recyclerView.addOnLoadMore { viewModel.loadNotifications() }
         listenToChanges()
     }
 
     private fun listenToChanges() {
-        viewModel.loadMoreLiveData.observeNotNull(this) {
-            viewModel.loadNotifications()
-        }
 
         viewModel.progress.observeNotNull(this) {
             adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE

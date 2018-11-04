@@ -37,15 +37,15 @@ class ProfileGistsFragment : BaseFragment() {
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
         if (savedInstanceState == null) viewModel.loadGists(loginBundle, true)
-        swipeRefresh.setOnRefreshListener { viewModel.loadGists(loginBundle, true) }
+        swipeRefresh.setOnRefreshListener {
+            recyclerView.resetScrollState()
+            viewModel.loadGists(loginBundle, true)
+        }
+        recyclerView.addOnLoadMore { viewModel.loadGists(loginBundle) }
         listenToChanges()
     }
 
     private fun listenToChanges() {
-        viewModel.loadMoreLiveData.observeNotNull(this) {
-            viewModel.loadGists(loginBundle)
-        }
-
         viewModel.progress.observeNotNull(this) {
             adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE
         }

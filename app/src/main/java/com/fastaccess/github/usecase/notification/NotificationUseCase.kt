@@ -37,16 +37,14 @@ class NotificationUseCase @Inject constructor(
             }
         }
         return observable.map { it ->
-            notificationRepositoryProvider.deleteAll(all == false)
-            if (page == null || page <= 1) {
-                notificationRepositoryProvider.deleteAll(all == false)
-            }
             it.items?.let { items ->
                 if (all == true) {
-                    val list = items.asSequence().filter { it.unread == true }.toList()
+                    notificationRepositoryProvider.deleteAll(false)
+                    val list = items.asSequence().filter { it.unread == false }.toList()
                     notificationRepositoryProvider.insert(NotificationModel.convert(gson, list))
                     return@map it
                 }
+                if (page ?: 0 <= 1) notificationRepositoryProvider.deleteAll(true)
                 notificationRepositoryProvider.insert(NotificationModel.convert(gson, items))
             }
             return@map it

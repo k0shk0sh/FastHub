@@ -39,16 +39,14 @@ class FeedsFragment : BaseFragment() {
         fastScroller.attachRecyclerView(recyclerView)
         if (savedInstanceState == null) viewModel.loadFeeds(true)
         swipeRefresh.setOnRefreshListener {
+            recyclerView.resetScrollState()
             viewModel.loadFeeds(true)
         }
+        recyclerView.addOnLoadMore { viewModel.loadFeeds() }
         listenToChanges()
     }
 
     private fun listenToChanges() {
-        viewModel.loadMoreLiveData.observeNotNull(this) {
-            viewModel.loadFeeds()
-        }
-
         viewModel.progress.observeNotNull(this) {
             adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE
         }
@@ -67,3 +65,4 @@ class FeedsFragment : BaseFragment() {
         fun newInstance() = FeedsFragment()
     }
 }
+

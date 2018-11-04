@@ -40,15 +40,15 @@ class ProfileFollowersFragment : BaseFragment() {
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
         if (savedInstanceState == null) viewModel.loadUsers(loginBundle, isFollowers, true)
-        swipeRefresh.setOnRefreshListener { viewModel.loadUsers(loginBundle, isFollowers, true) }
+        swipeRefresh.setOnRefreshListener {
+            recyclerView.resetScrollState()
+            viewModel.loadUsers(loginBundle, isFollowers, true)
+        }
+        recyclerView.addOnLoadMore { viewModel.loadUsers(loginBundle, isFollowers) }
         listenToChanges()
     }
 
     private fun listenToChanges() {
-        viewModel.loadMoreLiveData.observeNotNull(this) {
-            viewModel.loadUsers(loginBundle, isFollowers)
-        }
-
         viewModel.progress.observeNotNull(this) {
             adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE
         }

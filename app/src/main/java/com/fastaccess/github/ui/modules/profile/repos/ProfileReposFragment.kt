@@ -37,15 +37,15 @@ class ProfileReposFragment : BaseFragment() {
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
         if (savedInstanceState == null) viewModel.loadRepos(loginBundle, true)
-        swipeRefresh.setOnRefreshListener { viewModel.loadRepos(loginBundle, true) }
+        swipeRefresh.setOnRefreshListener {
+            recyclerView.resetScrollState()
+            viewModel.loadRepos(loginBundle, true)
+        }
+        recyclerView.addOnLoadMore { viewModel.loadRepos(loginBundle) }
         listenToChanges()
     }
 
     private fun listenToChanges() {
-        viewModel.loadMoreLiveData.observeNotNull(this) {
-            viewModel.loadRepos(loginBundle)
-        }
-
         viewModel.progress.observeNotNull(this) {
             adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE
         }

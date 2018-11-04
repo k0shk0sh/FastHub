@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.fastaccess.github.utils.extensions.runSafely
+import timber.log.Timber
+
 
 /**
  * Created by Kosh on 23.06.18.
@@ -17,6 +20,12 @@ class BaseRecyclerView constructor(context: Context,
 
     private var emptyView: View? = null
     private var parentView: View? = null
+    private var onLoadMore: (() -> Unit)? = null
+
+    private val onScrollMore = EndlessRecyclerViewScrollListener {
+        Timber.e("$it")
+        if (it >= 30) onLoadMore?.invoke()
+    }
 
     private val observer = object : RecyclerView.AdapterDataObserver() {
         override fun onChanged() {
@@ -43,11 +52,38 @@ class BaseRecyclerView constructor(context: Context,
         }
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        runSafely({
+            removeOnScrollListener(onScrollMore)
+        })
+    }
+
+    fun setEmptyView(emptyView: View, parentView: View? = null) {
+        this.emptyView = emptyView
+        this.parentView = parentView
+        showEmptyView()
+    }
+
+    fun addOnLoadMore(onLoadMore: (() -> Unit)? = null) {
+        this.onLoadMore = onLoadMore
+        if (onLoadMore == null) {
+            removeOnScrollListener(onScrollMore)
+        } else {
+            addOnScrollListener(onScrollMore)
+        }
+    }
+
+    fun resetScrollState() {
+        onScrollMore.resetState()
+    }
+
     private fun showEmptyView() {
         val adapter = adapter
         if (adapter != null) {
             if (emptyView != null) {
                 if (adapter.itemCount == 0) {
+                    onScrollMore.resetState()
                     showParentOrSelf(false)
                 } else {
                     showParentOrSelf(true)
@@ -64,11 +100,5 @@ class BaseRecyclerView constructor(context: Context,
         parentView?.isVisible = parentView != null
         isVisible = true
         emptyView?.isVisible = !showRecyclerView
-    }
-
-    fun setEmptyView(emptyView: View, parentView: View? = null) {
-        this.emptyView = emptyView
-        this.parentView = parentView
-        showEmptyView()
     }
 }

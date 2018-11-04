@@ -35,13 +35,11 @@ class AllNotificationsFragment : BaseFragment() {
         swipeRefresh.setOnRefreshListener {
             viewModel.loadNotifications()
         }
+        recyclerView.addOnLoadMore { viewModel.loadNotifications() }
         listenToChanges()
     }
 
     private fun listenToChanges() {
-        viewModel.loadMoreLiveData.observeNotNull(this) {
-            viewModel.loadNotifications()
-        }
 
         viewModel.data.observeNotNull(this) {
             adapter.submitList(it)

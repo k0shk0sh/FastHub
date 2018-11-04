@@ -7,7 +7,6 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.ProfileStarredRepoModel
 import com.fastaccess.data.repository.UserStarredReposRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import javax.inject.Inject
 
 /**
@@ -26,7 +25,6 @@ class ProfileStarredReposViewModel @Inject constructor(
                 .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
                 .build()
     }
 

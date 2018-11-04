@@ -6,7 +6,6 @@ import androidx.paging.PagedList
 import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.data.repository.NotificationRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.platform.paging.LoadMoreBoundary
 import com.fastaccess.github.usecase.notification.NotificationUseCase
 import javax.inject.Inject
 
@@ -14,8 +13,8 @@ import javax.inject.Inject
  * Created by Kosh on 31.10.18.
  */
 class UnreadNotificationsViewModel @Inject constructor(
-        private val provider: NotificationRepositoryProvider,
-        private val usecase: NotificationUseCase
+    private val provider: NotificationRepositoryProvider,
+    private val usecase: NotificationUseCase
 ) : BaseViewModel() {
 
     private var currentPage = 0
@@ -24,12 +23,11 @@ class UnreadNotificationsViewModel @Inject constructor(
     fun notifications(): LiveData<PagedList<NotificationModel>> {
         val dataSourceFactory = provider.getNotifications(true)
         val config = PagedList.Config.Builder()
-                .setPrefetchDistance(com.fastaccess.github.utils.PRE_FETCH_SIZE)
-                .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
-                .build()
+            .setPrefetchDistance(com.fastaccess.github.utils.PRE_FETCH_SIZE)
+            .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
+            .build()
         return LivePagedListBuilder(dataSourceFactory, config)
-                .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))
-                .build()
+            .build()
     }
 
     fun loadNotifications(reload: Boolean = false) {
@@ -41,9 +39,9 @@ class UnreadNotificationsViewModel @Inject constructor(
         if (!reload && isLastPage) return
         usecase.page = currentPage
         add(callApi(usecase.buildObservable())
-                .subscribe({
-                    isLastPage = it.last == currentPage
-                }, ::println))
+            .subscribe({
+                isLastPage = it.last == currentPage
+            }, ::println))
     }
 
     fun hasNext() = isLastPage
