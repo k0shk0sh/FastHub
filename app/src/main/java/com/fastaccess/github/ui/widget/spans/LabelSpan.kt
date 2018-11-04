@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import com.fastaccess.github.utils.extensions.generateTextColor
 import java.util.*
 
-
 /**
  * adopted class from Android source code & modified to fit FastHub need.
  */

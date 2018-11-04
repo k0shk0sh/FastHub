@@ -13,6 +13,7 @@ import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.observeNotNull
+import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -27,9 +28,11 @@ class FeedsFragment : BaseFragment() {
     private val adapter by lazy { ProfileFeedsAdapter() }
 
     override fun viewModel(): BaseViewModel? = viewModel
-    override fun layoutRes(): Int = R.layout.simple_refresh_list_layout
+    override fun layoutRes(): Int = R.layout.toolbar_fragment_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
+        toolbarTitle.text = getString(R.string.feeds)
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         recyclerView.adapter = adapter
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)

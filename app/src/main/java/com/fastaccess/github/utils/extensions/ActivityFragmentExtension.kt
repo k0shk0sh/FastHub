@@ -51,7 +51,6 @@ fun BaseActivity.replace(containerId: Int,
             .commitNow()
 }
 
-
 fun Context.getColorAttr(attr: Int): Int {
     val theme = theme
     val typedArray = theme.obtainStyledAttributes(intArrayOf(attr))

@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.multipurpose
+package com.fastaccess.github.ui.modules.multipurpose
 
 import android.os.Bundle
 import com.evernote.android.state.State
@@ -7,11 +7,9 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.platform.deeplink.AppDeepLink
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
-import com.fastaccess.github.ui.modules.notifications.fragment.unread.UnreadNotificationsFragment
+import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
 import com.fastaccess.github.utils.extensions.fromDeepLink
 import com.fastaccess.github.utils.extensions.replace
-import kotlinx.android.synthetic.main.appbar_center_title_layout.*
-import timber.log.Timber
 
 /**
  * Created by Kosh on 20.10.18.
@@ -21,7 +19,7 @@ class MultiPurposeActivity : BaseActivity() {
 
     @State var activityType: ActivityType? = null
 
-    override fun layoutRes(): Int = R.layout.toolbar_activity_layout
+    override fun layoutRes(): Int = R.layout.fragment_activity_layout
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
@@ -33,9 +31,9 @@ class MultiPurposeActivity : BaseActivity() {
             activityType?.let { activityType ->
                 when (activityType) {
                     ActivityType.FEEDS -> replace(R.id.container, FeedsFragment.newInstance())
-                    ActivityType.NOTIFICATION -> replace(R.id.container, UnreadNotificationsFragment.newInstance())
+                    ActivityType.NOTIFICATION -> replace(R.id.container, NotificationPagerFragment.newInstance())
                 }
-            } ?: kotlin.run {
+            } ?: run {
                 finish()
                 return@run
             }
@@ -45,7 +43,5 @@ class MultiPurposeActivity : BaseActivity() {
             finish()
             return
         }
-        toolbarTitle.text = getString(activityType.activityTitle)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 }

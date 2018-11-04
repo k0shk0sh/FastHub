@@ -103,7 +103,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.multipurpose.MultiPurposeActivity"/>
+        <activity android:name="com.fastaccess.github.ui.modules.multipurpose.MultiPurposeActivity"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

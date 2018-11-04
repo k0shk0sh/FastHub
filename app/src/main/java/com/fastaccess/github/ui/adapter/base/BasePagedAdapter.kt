@@ -18,7 +18,6 @@ abstract class BasePagedAdapter<M>(
             notifyItemChanged(itemCount)
         }
 
-
     abstract fun contentViewHolder(parent: ViewGroup): BaseViewHolder<M>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<M> {

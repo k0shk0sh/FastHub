@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-
 /**
  * Created by Kosh on 31.10.18.
  */

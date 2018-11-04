@@ -22,8 +22,8 @@ class ProfileStarredReposViewModel @Inject constructor(
     fun starredRepos(login: String): LiveData<PagedList<ProfileStarredRepoModel>> {
         val dataSourceFactory = reposProvider.getStarredRepos(login)
         val config = PagedList.Config.Builder()
-                .setPrefetchDistance(25)
-                .setPageSize(30)
+                .setPrefetchDistance(com.fastaccess.github.utils.PRE_FETCH_SIZE)
+                .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
                 .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))

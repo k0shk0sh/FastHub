@@ -24,7 +24,6 @@ import com.fastaccess.github.utils.extensions.isTrue
 import kotlinx.android.synthetic.main.login_form_layout.*
 import javax.inject.Inject
 
-
 /**
  * Created by Kosh on 18.05.18.
  */

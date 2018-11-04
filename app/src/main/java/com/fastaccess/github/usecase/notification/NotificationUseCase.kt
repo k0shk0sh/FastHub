@@ -15,7 +15,6 @@ import javax.inject.Inject
  * Created by Kosh on 22.06.18.
  */
 
-
 class NotificationUseCase @Inject constructor(
         private val notificationRepositoryProvider: NotificationRepositoryProvider,
         private val notificationService: NotificationService,

@@ -1,7 +1,6 @@
 package com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.model.PageInfoModel
@@ -23,8 +22,8 @@ class FollowersFollowingViewModel @Inject constructor(
     fun getUsers(login: String, isFollowers: Boolean): LiveData<PagedList<FollowingFollowerModel>> {
         val dataSourceFactory = provider.getFollowersOrFollowing(login, isFollowers)
         val config = PagedList.Config.Builder()
-                .setPrefetchDistance(25)
-                .setPageSize(30)
+                .setPrefetchDistance(com.fastaccess.github.utils.PRE_FETCH_SIZE)
+                .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
                 .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))

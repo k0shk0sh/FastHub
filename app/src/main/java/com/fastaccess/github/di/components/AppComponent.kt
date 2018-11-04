@@ -2,7 +2,6 @@ package com.fastaccess.github.di.components
 
 import android.app.Application
 import com.fastaccess.github.App
-import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.di.modules.*
 import dagger.BindsInstance
 import dagger.Component

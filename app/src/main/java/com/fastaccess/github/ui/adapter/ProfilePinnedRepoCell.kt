@@ -3,7 +3,6 @@ package com.fastaccess.github.ui.adapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.view.View
 import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.UserPinnedRepoNodesModel
 import com.fastaccess.github.R

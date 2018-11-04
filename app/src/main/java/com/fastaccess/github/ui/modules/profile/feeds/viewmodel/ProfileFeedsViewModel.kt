@@ -21,12 +21,11 @@ class ProfileFeedsViewModel @Inject constructor(
     private var currentPage = 0
     private var isLastPage = false
 
-
     fun feeds(login: String): LiveData<PagedList<FeedModel>> {
         val dataSourceFactory = provider.getFeeds(login)
         val config = PagedList.Config.Builder()
-                .setPrefetchDistance(25)
-                .setPageSize(30)
+                .setPrefetchDistance(com.fastaccess.github.utils.PRE_FETCH_SIZE)
+                .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
                 .build()
         return LivePagedListBuilder(dataSourceFactory, config)
                 .setBoundaryCallback(LoadMoreBoundary(loadMoreLiveData))

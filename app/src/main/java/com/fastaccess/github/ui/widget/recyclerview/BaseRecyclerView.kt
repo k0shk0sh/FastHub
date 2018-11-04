@@ -18,7 +18,6 @@ class BaseRecyclerView constructor(context: Context,
     private var emptyView: View? = null
     private var parentView: View? = null
 
-
     private val observer = object : RecyclerView.AdapterDataObserver() {
         override fun onChanged() {
             showEmptyView()

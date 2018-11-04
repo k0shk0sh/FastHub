@@ -34,7 +34,8 @@ const val EDIT_COMMIT_COMMENT_EXTRA = "edit_commit_comment_extra"
 const val NEW_COMMIT_COMMENT_EXTRA = "new_commit_comment_extra"
 const val NEW_REVIEW_COMMENT_EXTRA = "new_review_comment_extra"
 const val EDIT_REVIEW_COMMENT_EXTRA = "edit_review_comment_extra"
-
+const val PAGE_SIZE = 30
+const val PRE_FETCH_SIZE = 30
 
 // DEEP LINKS
 

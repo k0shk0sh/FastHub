@@ -10,7 +10,6 @@ import dagger.android.support.DaggerApplication
 import tech.linjiang.pandora.Pandora
 import timber.log.Timber
 
-
 /**
  * Created by Kosh on 12.05.18.
  */

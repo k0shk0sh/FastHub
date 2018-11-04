@@ -9,6 +9,7 @@ buildscript {
         google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0-alpha02'
@@ -16,8 +17,9 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.26.1'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha07'
-        classpath 'com.google.gms:google-services:4.0.0'
+        classpath 'com.google.gms:google-services:4.1.0'
         classpath 'com.apollographql.apollo:apollo-gradle-plugin:0.5.0'
+        classpath 'gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:2.3.0'
     }
 }
 
@@ -31,4 +33,8 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+subprojects {
+    apply plugin: "org.jlleitschuh.gradle.ktlint"
 }

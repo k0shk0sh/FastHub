@@ -4,7 +4,7 @@ import com.fastaccess.github.di.scopes.PerActivity
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.main.MainActivity
 import com.fastaccess.github.ui.modules.profile.ProfileActivity
-import com.fastaccess.github.ui.multipurpose.MultiPurposeActivity
+import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -14,7 +14,6 @@ import com.jaychang.srv.kae.SimpleCell
 import com.jaychang.srv.kae.SimpleViewHolder
 import kotlinx.android.synthetic.main.feeds_main_screen_row_item.view.*
 
-
 /**
  * Created by Kosh on 26.06.18.
  */

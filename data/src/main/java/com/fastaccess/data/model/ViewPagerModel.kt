@@ -1,7 +1,6 @@
 package com.fastaccess.data.model
 
 import androidx.fragment.app.Fragment
-import com.fastaccess.data.R
 
 /**
  * Created by Kosh on 05.10.18.
@@ -16,11 +15,11 @@ data class ViewPagerModel(
 enum class FragmentType(val tabName: String? = null) {
     FEEDS(""), REPOS("repositories"), STARRED("stars"),
     GISTS("gists"), FOLLOWERS("followers"),
-    FOLLOWINGS("following");
+    FOLLOWINGS("following"), UNREAD_NOTIFICATIONS("unread_notification"),
+    ALL_NOTIFICATIONS("all_notification");
 
     companion object {
         fun getTypeSafely(tabName: String): FragmentType? = try {
-            if (tabName.isEmpty()) FragmentType.FEEDS
             values().firstOrNull { it.tabName == tabName }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -29,8 +28,8 @@ enum class FragmentType(val tabName: String? = null) {
     }
 }
 
-enum class ActivityType(val activityTitle: Int) {
-    FEEDS(R.string.feeds), NOTIFICATION(R.string.notifications);
+enum class ActivityType {
+    FEEDS, NOTIFICATION;
 
     companion object {
         fun getTypeSafely(activity: String?): ActivityType? = try {

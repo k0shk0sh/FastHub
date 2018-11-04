@@ -6,7 +6,6 @@ import com.fastaccess.data.persistence.models.ProfileGistModel
 import com.fastaccess.github.ui.adapter.base.BasePagedAdapter
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.ProfileGistsViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.ReposStarredProfileViewHolder
 
 /**
  * Created by Kosh on 12.10.18.
