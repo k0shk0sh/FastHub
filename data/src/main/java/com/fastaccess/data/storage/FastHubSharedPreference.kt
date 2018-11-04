@@ -16,7 +16,7 @@ class FastHubSharedPreference @Inject constructor(app: Application) {
     } else {
         SecurePreferences(app, BuildConfig.APPLICATION_ID, "fasthub_preference_file")
     }
-    
+
     private val editor = preference.edit()
 
     fun <T> set(key: String, value: T? = null) {

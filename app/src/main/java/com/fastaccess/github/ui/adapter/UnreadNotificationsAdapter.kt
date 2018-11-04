@@ -10,7 +10,7 @@ import com.fastaccess.github.ui.adapter.viewholder.NotificationsViewHolder
 /**
  * Created by Kosh on 12.10.18.
  */
-class NotificationsAdapter : BasePagedAdapter<NotificationModel>(DIFF_CALLBACK) {
+class UnreadNotificationsAdapter : BasePagedAdapter<NotificationModel>(DIFF_CALLBACK) {
 
     override fun contentViewHolder(parent: ViewGroup): BaseViewHolder<NotificationModel> = NotificationsViewHolder(parent)
 

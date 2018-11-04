@@ -3,7 +3,6 @@ package com.fastaccess.data.persistence.dao
 import androidx.room.*
 import timber.log.Timber
 
-
 /**
  * Created by Kosh on 07.07.18.
  */

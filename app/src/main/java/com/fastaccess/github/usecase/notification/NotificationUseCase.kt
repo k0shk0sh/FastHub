@@ -16,13 +16,13 @@ import javax.inject.Inject
  */
 
 class NotificationUseCase @Inject constructor(
-        private val notificationRepositoryProvider: NotificationRepositoryProvider,
-        private val notificationService: NotificationService,
-        private val gson: Gson
+    private val notificationRepositoryProvider: NotificationRepositoryProvider,
+    private val notificationService: NotificationService,
+    private val gson: Gson
 ) : BaseObservableUseCase() {
 
     var page: Int? = null
-    val all: Boolean? = null
+    var all: Boolean? = null
 
     override fun buildObservable(): Observable<PageableResponse<NotificationResponse>> {
         val page = page
@@ -42,6 +42,11 @@ class NotificationUseCase @Inject constructor(
                 notificationRepositoryProvider.deleteAll(all == false)
             }
             it.items?.let { items ->
+                if (all == true) {
+                    val list = items.asSequence().filter { it.unread == true }.toList()
+                    notificationRepositoryProvider.insert(NotificationModel.convert(gson, list))
+                    return@map it
+                }
                 notificationRepositoryProvider.insert(NotificationModel.convert(gson, items))
             }
             return@map it

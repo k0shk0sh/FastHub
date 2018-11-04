@@ -1,6 +1,5 @@
 package com.fastaccess.data.persistence.models
 
-
 /**
  * Created by Kosh on 03.06.18.
  */

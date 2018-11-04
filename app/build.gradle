@@ -16,6 +16,15 @@ buildProperties {
     }
 }
 
+ktlint {
+    version = "0.28.0"
+    debug = true
+    verbose = true
+    android = true
+    reporter = "checkstyle"
+    ignoreFailures = true
+}
+
 android {
     signingConfigs {
         signing {

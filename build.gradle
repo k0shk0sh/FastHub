@@ -1,6 +1,10 @@
 apply from: 'build-dependecies/fasthub-dependencies.gradle'
 apply from: 'build-dependecies/fasthub-config.gradle'
 
+configurations {
+    ktlint
+}
+
 buildscript {
     ext {
         kotlin = '1.3.0'

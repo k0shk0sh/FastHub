@@ -10,7 +10,6 @@ import io.reactivex.schedulers.Schedulers
  * Created by Kosh on 16.08.18.
  */
 
-
 fun <T> Maybe<T>.toObservableDistinct(): Observable<T> = this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .toObservable()

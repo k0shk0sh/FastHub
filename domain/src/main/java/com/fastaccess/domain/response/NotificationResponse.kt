@@ -3,7 +3,6 @@ package com.fastaccess.domain.response
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-
 /**
  * Created by Kosh on 19.06.18.
  */

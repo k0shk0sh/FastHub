@@ -22,7 +22,6 @@ import com.google.android.material.snackbar.Snackbar
  * Created by Kosh on 03.06.18.
  */
 
-
 private val FAST_OUT_LINEAR_IN_INTERPOLATOR = FastOutLinearInInterpolator()
 private val LINEAR_OUT_SLOW_IN_INTERPOLATOR = LinearOutSlowInInterpolator()
 
@@ -135,7 +134,6 @@ fun <V : View?> BottomSheetBehavior<V>.setBottomSheetCallback(
         }
     })
 }
-
 
 @ColorInt fun Int.generateTextColor(): Int {
     val a = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255

@@ -14,7 +14,6 @@ import java.util.*
  * Created by Kosh on 11.05.18.
  */
 
-
 private fun Any.toJson() = Gson().toJson(this)
 
 class DateConverter {

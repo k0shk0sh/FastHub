@@ -10,6 +10,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.adapter.PagerAdapter
+import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.UnreadNotificationsFragment
 import com.fastaccess.github.utils.EXTRA
 import kotlinx.android.synthetic.main.appbar_tabs_center_title_layout.*
@@ -27,7 +28,7 @@ class NotificationPagerFragment : BasePagerFragment() {
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
                 ViewPagerModel(getString(R.string.unread), UnreadNotificationsFragment.newInstance(), FragmentType.UNREAD_NOTIFICATIONS),
-                ViewPagerModel(getString(R.string.unread), UnreadNotificationsFragment.newInstance(), FragmentType.ALL_NOTIFICATIONS)
+                ViewPagerModel(getString(R.string.all), AllNotificationsFragment.newInstance(), FragmentType.ALL_NOTIFICATIONS)
         ))
         tabs.setupWithViewPager(pager)
         if (savedInstanceState == null) {

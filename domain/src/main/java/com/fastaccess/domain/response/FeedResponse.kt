@@ -4,7 +4,6 @@ import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-
 /**
  * Created by Kosh on 23.06.18.
  */

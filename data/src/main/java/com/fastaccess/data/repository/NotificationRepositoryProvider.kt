@@ -2,8 +2,10 @@ package com.fastaccess.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
+import com.fastaccess.data.model.GroupedNotificationsModel
 import com.fastaccess.data.persistence.dao.NotificationsDao
 import com.fastaccess.data.persistence.models.NotificationModel
+import com.snakydesign.livedataextensions.map
 import javax.inject.Inject
 
 /**
@@ -11,6 +13,17 @@ import javax.inject.Inject
  */
 class NotificationRepositoryProvider @Inject constructor(private val dao: NotificationsDao) : NotificationRepository {
     override fun getNotifications(unread: Boolean): DataSource.Factory<Int, NotificationModel> = dao.getNotifications(unread)
+    override fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>> = dao.getAllNotifications(false)
+        .map { list ->
+            list.groupBy { it.repository }
+                .flatMap { entry ->
+                    val notifications = arrayListOf<GroupedNotificationsModel>()
+                    notifications.add(GroupedNotificationsModel(GroupedNotificationsModel.HEADER, entry.key))
+                    notifications.addAll(entry.value.map { GroupedNotificationsModel(GroupedNotificationsModel.CONTENT, notification = it) })
+                    return@flatMap notifications
+                }
+        }
+
     override fun getMainNotifications(): LiveData<List<NotificationModel>> = dao.getMainNotifications()
     override fun insert(model: NotificationModel): Long = dao.insert(model)
     override fun insert(model: List<NotificationModel>) = dao.insert(model)
@@ -21,6 +34,7 @@ class NotificationRepositoryProvider @Inject constructor(private val dao: Notifi
 
 interface NotificationRepository {
     fun getNotifications(unread: Boolean): DataSource.Factory<Int, NotificationModel>
+    fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>>
     fun getMainNotifications(): LiveData<List<NotificationModel>>
     fun insert(model: NotificationModel): Long
     fun insert(model: List<NotificationModel>)
