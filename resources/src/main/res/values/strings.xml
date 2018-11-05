@@ -601,4 +601,5 @@
     <string name="developer_program_member">Developer Program Member</string>
     <string name="public_label">public</string>
     <string name="private_label">private</string>
+    <string name="read">Read</string>
 </resources>

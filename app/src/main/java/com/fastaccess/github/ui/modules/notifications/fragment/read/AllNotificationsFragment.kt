@@ -32,10 +32,7 @@ class AllNotificationsFragment : BaseFragment() {
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
         if (savedInstanceState == null) viewModel.loadNotifications()
-        swipeRefresh.setOnRefreshListener {
-            viewModel.loadNotifications()
-        }
-        recyclerView.addOnLoadMore { viewModel.loadNotifications() }
+        swipeRefresh.setOnRefreshListener { viewModel.loadNotifications() }
         listenToChanges()
     }
 

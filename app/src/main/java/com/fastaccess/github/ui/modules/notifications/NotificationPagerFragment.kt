@@ -28,7 +28,7 @@ class NotificationPagerFragment : BasePagerFragment() {
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
                 ViewPagerModel(getString(R.string.unread), UnreadNotificationsFragment.newInstance(), FragmentType.UNREAD_NOTIFICATIONS),
-                ViewPagerModel(getString(R.string.all), AllNotificationsFragment.newInstance(), FragmentType.ALL_NOTIFICATIONS)
+                ViewPagerModel(getString(R.string.read), AllNotificationsFragment.newInstance(), FragmentType.ALL_NOTIFICATIONS)
         ))
         tabs.setupWithViewPager(pager)
         if (savedInstanceState == null) {
