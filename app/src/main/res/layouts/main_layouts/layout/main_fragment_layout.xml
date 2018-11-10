@@ -26,6 +26,16 @@
                 android:paddingBottom="@dimen/spacing_xs_large">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/orgs"
+                    style="@style/ChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_xs_large"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:text="@string/organizations"
+                    android:textAllCaps="false" />
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/pinned"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"

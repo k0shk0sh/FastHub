@@ -24,8 +24,7 @@ class NotificationPagerFragment : BasePagerFragment() {
     override fun layoutRes(): Int = R.layout.toolbar_fragment_pager_layout
     override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        toolbarTitle.text = getString(R.string.notifications)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        setupToolbar(R.string.notifications)
         pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
                 ViewPagerModel(getString(R.string.unread), UnreadNotificationsFragment.newInstance(), FragmentType.UNREAD_NOTIFICATIONS),
                 ViewPagerModel(getString(R.string.read), AllNotificationsFragment.newInstance(), FragmentType.ALL_NOTIFICATIONS)

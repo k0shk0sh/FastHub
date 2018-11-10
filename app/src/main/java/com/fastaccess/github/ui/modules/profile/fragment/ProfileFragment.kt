@@ -58,11 +58,10 @@ class ProfileFragment : BasePagerFragment() {
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        toolbarTitle.text = getString(R.string.profile)
+        setupToolbar(R.string.profile)
         username.text = loginBundle
         actionsHolder.isVisible = loginBundle != me()
         toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         swipeRefresh.setOnRefreshListener {
             viewModel.getUserFromRemote(loginBundle)
         }

@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -106,9 +108,9 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         val model = adapter.getModel(index)
         tabs.getTabAt(index)?.let {
             it.text = SpannableBuilder.builder()
-                    .append(model?.text ?: "", LabelSpan(Color.TRANSPARENT))
-                    .space()
-                    .append(" $count ", LabelSpan(requireContext().getColorAttr(R.attr.colorAccent)))
+                .append(model?.text ?: "", LabelSpan(Color.TRANSPARENT))
+                .space()
+                .append(" $count ", LabelSpan(requireContext().getColorAttr(R.attr.colorAccent)))
         }
     }
 
@@ -131,5 +133,18 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     fun removeAndAddDisposal(disposable: Disposable) {
         disposal.remove(disposable)
         disposal.add(disposable)
+    }
+
+    fun setupToolbar(resId: Int, menuId: Int? = null) {
+        view?.findViewById<Toolbar?>(R.id.toolbar)?.apply {
+            val titleText = findViewById<TextView?>(R.id.toolbarTitle)
+            if (titleText != null) {
+                titleText.setText(resId)
+            } else {
+                setTitle(resId)
+            }
+            setNavigationOnClickListener { activity?.onBackPressed() }
+            menuId?.let { inflateMenu(it) }
+        }
     }
 }
