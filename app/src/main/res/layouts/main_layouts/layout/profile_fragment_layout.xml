@@ -115,6 +115,7 @@
                     android:layout_marginBottom="@dimen/spacing_xs_large"
                     android:background="@drawable/top_border"
                     android:paddingEnd="@dimen/spacing_xs_large"
+                    android:visibility="gone"
                     android:paddingStart="@dimen/spacing_xs_large">
 
                     <com.google.android.material.button.MaterialButton

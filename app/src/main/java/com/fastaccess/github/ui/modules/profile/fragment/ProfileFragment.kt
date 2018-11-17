@@ -44,12 +44,12 @@ class ProfileFragment : BasePagerFragment() {
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
     private val adapter by lazy {
         PagerAdapter(childFragmentManager, arrayListOf(
-                ViewPagerModel(getString(R.string.feeds), ProfileFeedFragment.newInstance(loginBundle), FragmentType.FEEDS),
-                ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle), FragmentType.REPOS),
-                ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle), FragmentType.STARRED),
-                ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle), FragmentType.GISTS),
-                ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true), FragmentType.FOLLOWERS),
-                ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
+            ViewPagerModel(getString(R.string.feeds), ProfileFeedFragment.newInstance(loginBundle), FragmentType.FEEDS),
+            ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle), FragmentType.REPOS),
+            ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle), FragmentType.STARRED),
+            ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle), FragmentType.GISTS),
+            ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true), FragmentType.FOLLOWERS),
+            ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
         ))
     }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
@@ -60,7 +60,6 @@ class ProfileFragment : BasePagerFragment() {
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.profile)
         username.text = loginBundle
-        actionsHolder.isVisible = loginBundle != me()
         toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
         swipeRefresh.setOnRefreshListener {
             viewModel.getUserFromRemote(loginBundle)
@@ -111,10 +110,20 @@ class ProfileFragment : BasePagerFragment() {
                 initUI(user)
             }
         }
+
+        viewModel.blockingState.observeNotNull(this) {
+            blockBtn.isEnabled = true
+            blockBtn.text = if (it) getString(R.string.unblock) else getString(R.string.block)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun initUI(user: UserModel) {
+        val isNoMe = loginBundle != user.login
+        blockBtn.isVisible = isNoMe
+        blockBtn.isEnabled = false
+        actionsHolder.isVisible = isNoMe
+        if (!isNoMe) viewModel.checkBlockingState(loginBundle)
         following.text = "${getString(R.string.following)}: ${user.following?.totalCount ?: 0}"
         followers.text = "${getString(R.string.followers)}: ${user.followers?.totalCount ?: 0}"
         swipeRefresh.isRefreshing = false
@@ -144,6 +153,7 @@ class ProfileFragment : BasePagerFragment() {
                 organizationList.addCells(orgs.map { ProfileOrganizationCell(it, GlideApp.with(this)) })
             }
         }
+        blockBtn.setOnClickListener { viewModel.blockUnblockUser(loginBundle) }
         user.pinnedRepositories?.pinnedRepositories?.let { nodes ->
             if (nodes.isNotEmpty()) {
                 pinnedHolder.isVisible = true
@@ -153,10 +163,10 @@ class ProfileFragment : BasePagerFragment() {
             }
         }
         GlideApp.with(this)
-                .load(user.avatarUrl)
-                .fallback(R.drawable.ic_profile)
-                .circleCrop()
-                .into(userImageView)
+            .load(user.avatarUrl)
+            .fallback(R.drawable.ic_profile)
+            .circleCrop()
+            .into(userImageView)
 
         if (pager.adapter == null) {
             pager.offscreenPageLimit = 5

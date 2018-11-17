@@ -11,6 +11,8 @@ import com.fastaccess.github.usecase.feed.FeedsUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
+import com.fastaccess.github.usecase.user.BlockUnblockUserUseCase
+import com.fastaccess.github.usecase.user.IsUserBlockedUseCase
 import com.fastaccess.github.usecase.user.UserUseCase
 import com.google.gson.Gson
 import dagger.Module
@@ -25,8 +27,8 @@ class UseCaseModule {
     @PerFragment @Provides fun provideLoginUseCase(loginRemoteRepository: LoginRepositoryProvider): LoginUseCase = LoginUseCase(loginRemoteRepository)
 
     @PerFragment @Provides fun provideLoginWithAccessTokenUseCase(
-            loginRemoteRepository: LoginRepositoryProvider,
-            gson: Gson
+        loginRemoteRepository: LoginRepositoryProvider,
+        gson: Gson
     ): LoginWithAccessTokenUseCase {
         return LoginWithAccessTokenUseCase(loginRemoteRepository, gson)
     }
@@ -38,28 +40,39 @@ class UseCaseModule {
     @PerFragment @Provides fun provideUserUseCase(userRepository: UserRepositoryProvider): UserUseCase = UserUseCase(userRepository)
 
     @PerFragment @Provides fun provideIssuesMainScreenUseCase(
-            loginRepository: LoginRepositoryProvider,
-            mainIssuesPullsRepository: MainIssuesPullsRepositoryProvider,
-            apolloClient: ApolloClient
+        loginRepository: LoginRepositoryProvider,
+        mainIssuesPullsRepository: MainIssuesPullsRepositoryProvider,
+        apolloClient: ApolloClient
     ): IssuesMainScreenUseCase {
         return IssuesMainScreenUseCase(loginRepository, mainIssuesPullsRepository, apolloClient)
     }
 
     @PerFragment @Provides fun providePullRequestsMainScreenUseCase(
-            loginRepository: LoginRepositoryProvider,
-            mainIssues: MainIssuesPullsRepositoryProvider,
-            apolloClient: ApolloClient
+        loginRepository: LoginRepositoryProvider,
+        mainIssues: MainIssuesPullsRepositoryProvider,
+        apolloClient: ApolloClient
     ): PullRequestsMainScreenUseCase {
         return PullRequestsMainScreenUseCase(loginRepository, mainIssues, apolloClient)
     }
 
     @PerFragment @Provides fun provideNotificationUseCase(
-            notificationRepositoryProvider: NotificationRepositoryProvider,
-            notificationService: NotificationService,
-            gson: Gson
+        notificationRepositoryProvider: NotificationRepositoryProvider,
+        notificationService: NotificationService,
+        gson: Gson
     ): NotificationUseCase {
         return NotificationUseCase(notificationRepositoryProvider, notificationService, gson)
     }
 
     @PerFragment @Provides fun provideFeedsUseCase(provider: FeedsRepositoryProvider): FeedsUseCase = FeedsUseCase(provider)
+
+
+    @PerFragment @Provides fun provideBlockUnblockUserUseCase(userRepository: UserRepositoryProvider): BlockUnblockUserUseCase {
+        return BlockUnblockUserUseCase(userRepository)
+    }
+
+    @PerFragment @Provides fun provideIsUserBlockedUseCase(userRepository: UserRepositoryProvider): IsUserBlockedUseCase {
+        return IsUserBlockedUseCase(userRepository)
+    }
+
+
 }
