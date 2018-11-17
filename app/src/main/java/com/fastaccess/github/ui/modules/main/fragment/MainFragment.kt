@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.MainScreenModel
+import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
@@ -14,11 +16,14 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.utils.FEEDS_LINK
+import com.fastaccess.github.utils.NOTIFICATION_LINK
 import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -30,7 +35,20 @@ class MainFragment : BaseFragment() {
     @Inject lateinit var preference: FastHubSharedPreference
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainFragmentViewModel::class.java) }
     private val behaviour by lazy { BottomSheetBehavior.from(bottomSheet) }
-    private val adapter by lazy { MainScreenAdapter() }
+    private val adapter by lazy {
+        MainScreenAdapter { model: MainScreenModel ->
+            when (model.mainScreenModelRowType) {
+                MainScreenModelRowType.FEED_TITLE -> route(FEEDS_LINK)
+                MainScreenModelRowType.FEED -> Timber.e("${model.feed}")
+                MainScreenModelRowType.NOTIFICATION_TITLE -> route(NOTIFICATION_LINK)
+                MainScreenModelRowType.NOTIFICATION -> Timber.e("${model.notificationModel}")
+                MainScreenModelRowType.ISSUES_TITLE -> Timber.e("${model.mainScreenModelRowType}")
+                MainScreenModelRowType.ISSUES -> Timber.e("${model.issuesPullsModel}")
+                MainScreenModelRowType.PRS_TITLE -> Timber.e("${model.mainScreenModelRowType}")
+                MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
+            }
+        }
+    }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -99,12 +117,6 @@ class MainFragment : BaseFragment() {
         gists.setOnClickListener { view ->
             onUserRetrieved { route(it?.toGists()) }
         }
-//        seeMoreFeeds.setOnClickListener {
-//            route(FEEDS_LINK)
-//        }
-//        seeMoreNotifications.setOnClickListener {
-//            route(NOTIFICATION_LINK)
-//        }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {

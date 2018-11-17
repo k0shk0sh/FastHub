@@ -115,8 +115,8 @@
                     android:layout_marginBottom="@dimen/spacing_xs_large"
                     android:background="@drawable/top_border"
                     android:paddingEnd="@dimen/spacing_xs_large"
-                    android:visibility="gone"
-                    android:paddingStart="@dimen/spacing_xs_large">
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    android:visibility="gone">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/followBtn"
@@ -302,13 +302,11 @@
 
                         <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/organizationList"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
                             android:paddingEnd="@dimen/spacing_normal"
                             android:paddingStart="@dimen/spacing_normal"
-                            app:spanCount="4"
                             app:layoutManager="@string/glm"/>
 
                     </LinearLayout>
@@ -344,8 +342,7 @@
 
                         <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/pinnedList"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
                             android:paddingEnd="@dimen/spacing_normal"

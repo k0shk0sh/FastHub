@@ -16,6 +16,8 @@ import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
+import com.fastaccess.github.ui.adapter.ProfileOrgsAdapter
+import com.fastaccess.github.ui.adapter.ProfilePinnedReposAdapter
 import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.ProfileFollowersFragment
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
@@ -23,6 +25,7 @@ import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
+import com.fastaccess.github.ui.widget.recyclerview.lm.SafeGridLayoutManager
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.*
@@ -50,6 +53,8 @@ class ProfileFragment : BasePagerFragment() {
             ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
         ))
     }
+    private val pinnedReposAdapter by lazy { ProfilePinnedReposAdapter(arrayListOf()) }
+    private val orgsAdapter by lazy { ProfileOrgsAdapter(arrayListOf()) }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
     private val tabBundle: String? by lazy { arguments?.getString(EXTRA_TWO) }
 
@@ -60,8 +65,14 @@ class ProfileFragment : BasePagerFragment() {
         username.text = loginBundle
         toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
         swipeRefresh.setOnRefreshListener {
+
             viewModel.getUserFromRemote(loginBundle)
         }
+
+        (organizationList.layoutManager as SafeGridLayoutManager).setIconSize(resources.getDimensionPixelSize(R.dimen.header_icon_zie))
+        organizationList.adapter = orgsAdapter
+        pinnedList.adapter = pinnedReposAdapter
+        pinnedList.addDivider()
 
         observeChanges()
 
@@ -144,22 +155,15 @@ class ProfileFragment : BasePagerFragment() {
         name.isVisible = user.name?.isNotEmpty() == true
         name.text = user.name ?: ""
         developerProgram.isVisible = user.isDeveloperProgramMember == true
-//        user.organizations?.nodes?.let { orgs ->
-//            if (orgs.isNotEmpty()) {
-//                organizationHolder.isVisible = true
-//                organizationList.removeAllCells()
-//                organizationList.addCells(orgs.map { ProfileOrganizationCell(it, GlideApp.with(this)) })
-//            }
-//        }
+        user.organizations?.nodes?.let { orgs ->
+            organizationHolder.isVisible = orgs.isNotEmpty()
+            orgsAdapter.insertNew(orgs)
+        }
+        user.pinnedRepositories?.pinnedRepositories?.let { nodes ->
+            pinnedHolder.isVisible = nodes.isNotEmpty()
+            pinnedReposAdapter.insertNew(nodes)
+        }
         blockBtn.setOnClickListener { viewModel.blockUnblockUser(loginBundle) }
-//        user.pinnedRepositories?.pinnedRepositories?.let { nodes ->
-//            if (nodes.isNotEmpty()) {
-//                pinnedHolder.isVisible = true
-//                pinnedList.addDivider()
-//                pinnedList.removeAllCells()
-//                pinnedList.addCells(nodes.map { ProfilePinnedRepoCell(it) })
-//            }
-//        }
         GlideApp.with(this)
             .load(user.avatarUrl)
             .fallback(R.drawable.ic_profile)
