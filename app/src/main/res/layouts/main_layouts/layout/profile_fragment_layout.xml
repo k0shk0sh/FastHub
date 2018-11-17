@@ -300,16 +300,16 @@
                             android:text="@string/organizations"
                             android:textStyle="bold"/>
 
-                        <com.jaychang.srv.SimpleRecyclerView
+                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/organizationList"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
                             android:paddingEnd="@dimen/spacing_normal"
                             android:paddingStart="@dimen/spacing_normal"
-                            app:srv_gridSpanCount="1"
-                            app:srv_layoutMode="linearHorizontal"
-                            app:srv_snappy="true"/>
+                            app:spanCount="4"
+                            app:layoutManager="@string/glm"/>
 
                     </LinearLayout>
 
@@ -342,12 +342,15 @@
                             android:text="@string/pinned"
                             android:textStyle="bold"/>
 
-                        <com.jaychang.srv.SimpleRecyclerView
+                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/pinnedList"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
-                            app:srv_layoutMode="linearVertical"/>
+                            android:paddingEnd="@dimen/spacing_normal"
+                            android:paddingStart="@dimen/spacing_normal"
+                            app:layoutManager="@string/llm"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>

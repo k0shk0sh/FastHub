@@ -56,8 +56,8 @@ ext {
             'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar',
             'com.github.daniel-stoneuk:material-about-library:2.1.0',
             'com.scottyab:secure-preferences-lib:0.1.4',
-            'com.jaychang:simplerecyclerview:2.0.5',
-            'com.jaychang:simplerecyclerview-kotlin-android-extensions:2.0.5',
+//            'com.jaychang:simplerecyclerview:2.0.5',
+//            'com.jaychang:simplerecyclerview-kotlin-android-extensions:2.0.5',
 //            "com.airbnb:deeplinkdispatch:$deepLinkDispatch"
             "com.github.airbnb.DeepLinkDispatch:deeplinkdispatch-base:master-SNAPSHOT",
             'com.airbnb.android:lottie:2.8.0',

@@ -16,8 +16,6 @@ import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
-import com.fastaccess.github.ui.adapter.ProfileOrganizationCell
-import com.fastaccess.github.ui.adapter.ProfilePinnedRepoCell
 import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.ProfileFollowersFragment
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
@@ -146,22 +144,22 @@ class ProfileFragment : BasePagerFragment() {
         name.isVisible = user.name?.isNotEmpty() == true
         name.text = user.name ?: ""
         developerProgram.isVisible = user.isDeveloperProgramMember == true
-        user.organizations?.nodes?.let { orgs ->
-            if (orgs.isNotEmpty()) {
-                organizationHolder.isVisible = true
-                organizationList.removeAllCells()
-                organizationList.addCells(orgs.map { ProfileOrganizationCell(it, GlideApp.with(this)) })
-            }
-        }
+//        user.organizations?.nodes?.let { orgs ->
+//            if (orgs.isNotEmpty()) {
+//                organizationHolder.isVisible = true
+//                organizationList.removeAllCells()
+//                organizationList.addCells(orgs.map { ProfileOrganizationCell(it, GlideApp.with(this)) })
+//            }
+//        }
         blockBtn.setOnClickListener { viewModel.blockUnblockUser(loginBundle) }
-        user.pinnedRepositories?.pinnedRepositories?.let { nodes ->
-            if (nodes.isNotEmpty()) {
-                pinnedHolder.isVisible = true
-                pinnedList.addDivider()
-                pinnedList.removeAllCells()
-                pinnedList.addCells(nodes.map { ProfilePinnedRepoCell(it) })
-            }
-        }
+//        user.pinnedRepositories?.pinnedRepositories?.let { nodes ->
+//            if (nodes.isNotEmpty()) {
+//                pinnedHolder.isVisible = true
+//                pinnedList.addDivider()
+//                pinnedList.removeAllCells()
+//                pinnedList.addCells(nodes.map { ProfilePinnedRepoCell(it) })
+//            }
+//        }
         GlideApp.with(this)
             .load(user.avatarUrl)
             .fallback(R.drawable.ic_profile)

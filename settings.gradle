@@ -1,1 +1,1 @@
-include ':app', ':data', ':domain', ':resources', ':simplerecyclerview'
+include ':app', ':data', ':domain', ':resources'

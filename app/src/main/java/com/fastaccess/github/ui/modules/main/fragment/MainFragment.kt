@@ -12,12 +12,8 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.ui.adapter.FeedsCell
-import com.fastaccess.github.ui.adapter.MainIssuesPrsCell
-import com.fastaccess.github.ui.adapter.NotificationsCell
+import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
-import com.fastaccess.github.utils.FEEDS_LINK
-import com.fastaccess.github.utils.NOTIFICATION_LINK
 import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
@@ -34,6 +30,7 @@ class MainFragment : BaseFragment() {
     @Inject lateinit var preference: FastHubSharedPreference
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainFragmentViewModel::class.java) }
     private val behaviour by lazy { BottomSheetBehavior.from(bottomSheet) }
+    private val adapter by lazy { MainScreenAdapter() }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -45,10 +42,8 @@ class MainFragment : BaseFragment() {
         profile.isVisible = false
         swipeRefresh.setOnRefreshListener { viewModel.load() }
         toolbarTitle.setText(R.string.app_name)
-        notificationsList.addDivider()
-        issuesList.addDivider()
-        pullRequestsList.addDivider()
-        feedsList.addDivider()
+        recyclerView.addDivider()
+        recyclerView.adapter = adapter
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -104,44 +99,25 @@ class MainFragment : BaseFragment() {
         gists.setOnClickListener { view ->
             onUserRetrieved { route(it?.toGists()) }
         }
-        seeMoreFeeds.setOnClickListener {
-            route(FEEDS_LINK)
-        }
-        seeMoreNotifications.setOnClickListener {
-            route(NOTIFICATION_LINK)
-        }
+//        seeMoreFeeds.setOnClickListener {
+//            route(FEEDS_LINK)
+//        }
+//        seeMoreNotifications.setOnClickListener {
+//            route(NOTIFICATION_LINK)
+//        }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {
         addDisposal(viewModel.login
-                .subscribe({ action(it) }, ::print))
+            .subscribe({ action(it) }, ::print))
     }
 
     private fun listenToDataChanges() {
         viewModel.progress.observeNotNull(this) {
             swipeRefresh.isRefreshing = it == true
         }
-        viewModel.feeds.observeNotNull(this) { list ->
-            feedsLayout.isVisible = list.isNotEmpty()
-            feedsList.addOrUpdateCells(list.asSequence().map { feedModel ->
-                FeedsCell(feedModel).apply {
-                    setOnCellClickListener {
-                        route(it.actor?.url)
-                    }
-                }
-            }.toList())
-        }
-        viewModel.notifications.observeNotNull(this) { list ->
-            notificationLayout.isVisible = list.isNotEmpty()
-            notificationsList.addOrUpdateCells(list.asSequence().map { NotificationsCell(it) }.toList())
-        }
-        viewModel.issues.observeNotNull(this) { list ->
-            issuesLayout.isVisible = list.isNotEmpty()
-            issuesList.addOrUpdateCells(list.asSequence().map { MainIssuesPrsCell(it) }.toList())
-        }
-        viewModel.prs.observeNotNull(this) { list ->
-            pullRequestsLayout.isVisible = list.isNotEmpty()
-            pullRequestsList.addOrUpdateCells(list.asSequence().map { MainIssuesPrsCell(it) }.toList())
+        viewModel.list.observeNotNull(this) {
+            adapter.submitList(it)
         }
         viewModel.logoutProcess.observeNotNull(this) {
             if (it) {
