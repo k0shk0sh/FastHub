@@ -65,12 +65,14 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected fun <T> callApi(observable: Observable<T>): Observable<T> = observable
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { showProgress() }
-            .doOnNext { hideProgress() }
-            .doOnError { handleError(it) }
-            .doOnComplete { hideProgress() }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe { showProgress() }
+        .doOnNext { hideProgress() }
+        .doOnError { handleError(it) }
+        .doOnComplete { hideProgress() }
+
+    protected fun <T> justSubscribe(observable: Observable<T>) = add(callApi(observable).subscribe({}, { it.printStackTrace() }))
 
     override fun onCleared() {
         super.onCleared()

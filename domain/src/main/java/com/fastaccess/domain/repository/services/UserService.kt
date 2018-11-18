@@ -23,16 +23,22 @@ interface UserService {
     @GET("users/{username}/events")
     fun getUserEvents(@Path("username") userName: String, @Query("page") page: Int): Observable<PageableResponse<FeedResponse>>
 
+    @PUT("user/following/{username}")
+    fun followUser(@Path("username") username: String): Observable<Response<Boolean>>
+
+    @DELETE("user/following/{username}")
+    fun unfollowUser(@Path("username") username: String): Observable<Response<Boolean>>
+
     @GET("user/blocks/{username}")
     @Headers("Accept: application/vnd.github.giant-sentry-fist-preview+json")
-    fun isUserBlocked(@Path("username")username: String): Observable<Response<Boolean>>
+    fun isUserBlocked(@Path("username") username: String): Observable<Response<Boolean>>
 
     @PUT("user/blocks/{username}")
     @Headers("Accept: application/vnd.github.giant-sentry-fist-preview+json")
-    fun blockUser(@Path("username")  username: String): Observable<Response<Boolean>>
+    fun blockUser(@Path("username") username: String): Observable<Response<Boolean>>
 
     @DELETE("user/blocks/{username}")
     @Headers("Accept: application/vnd.github.giant-sentry-fist-preview+json")
-    fun unBlockUser(@Path("username")username: String): Observable<Response<Boolean>>
+    fun unBlockUser(@Path("username") username: String): Observable<Response<Boolean>>
 
 }

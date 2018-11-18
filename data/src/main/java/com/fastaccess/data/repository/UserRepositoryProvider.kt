@@ -46,20 +46,31 @@ class UserRepositoryProvider @Inject constructor(private val userDao: UserDao,
         }
 
     override fun getUsers(): LiveData<List<UserModel>> = userDao.getUsers()
+    override fun getUserBlocking(login: String): UserModel? = userDao.getUserBlocking(login)
     override fun getUser(login: String): LiveData<UserModel> = userDao.getUser(login)
     override fun deleteAll() = userDao.deleteAll()
+    override fun updateUser(userModel: UserModel) = userDao.update(userModel)
+    override fun isUserBlock(login: String): Observable<Response<Boolean>> = userService.isUserBlocked(login)
+
     override fun blockUnblockUser(login: String, block: Boolean): Observable<Response<Boolean>> = when (block) {
         true -> userService.blockUser(login)
         else -> userService.unBlockUser(login)
     }
-    override fun isUserBlock(login: String): Observable<Response<Boolean>> = userService.isUserBlocked(login)
+
+    override fun followUnfollowUser(login: String, follow: Boolean): Observable<Response<Boolean>> = when (follow) {
+        true -> userService.followUser(login)
+        else -> userService.unfollowUser(login)
+    }
 }
 
 interface UserRepository {
     fun getUsers(): LiveData<List<UserModel>>
     fun getUser(login: String): LiveData<UserModel>
+    fun getUserBlocking(login: String): UserModel?
     fun getUserFromRemote(login: String): Observable<UserModel>
     fun deleteAll()
     fun isUserBlock(login: String): Observable<Response<Boolean>>
     fun blockUnblockUser(login: String, block: Boolean): Observable<Response<Boolean>>
+    fun followUnfollowUser(login: String, follow: Boolean): Observable<Response<Boolean>>
+    fun updateUser(userModel: UserModel)
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.fastaccess.extension.uiThread
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.user.BlockUnblockUserUseCase
+import com.fastaccess.github.usecase.user.FollowUnfollowUserUseCase
 import com.fastaccess.github.usecase.user.IsUserBlockedUseCase
 import com.fastaccess.github.usecase.user.UserUseCase
 import javax.inject.Inject
@@ -14,7 +15,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userUseCase: UserUseCase,
     private val unblockUserUseCase: BlockUnblockUserUseCase,
-    private val blockedUseCase: IsUserBlockedUseCase
+    private val blockedUseCase: IsUserBlockedUseCase,
+    private val followUnfollowUserUseCase: FollowUnfollowUserUseCase
 ) : BaseViewModel() {
 
     var isFirstLaunch = true
@@ -45,6 +47,12 @@ class ProfileViewModel @Inject constructor(
         unblockUserUseCase.block = isBlocked.value == false
         add(callApi(unblockUserUseCase.buildObservable())
             .subscribe({ isBlocked.postValue(it) }, { it.printStackTrace() }))
+    }
+
+    fun followUnfollowUser(login: String, viewerIsFollowing: Boolean?) {
+        followUnfollowUserUseCase.login = login
+        followUnfollowUserUseCase.follow = viewerIsFollowing == false
+        justSubscribe(followUnfollowUserUseCase.buildObservable())
     }
 
     override fun onCleared() {

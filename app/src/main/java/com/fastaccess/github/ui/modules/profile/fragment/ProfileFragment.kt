@@ -141,11 +141,8 @@ class ProfileFragment : BasePagerFragment() {
         following.text = "${getString(R.string.following)}: ${user.following?.totalCount ?: 0}"
         followers.text = "${getString(R.string.followers)}: ${user.followers?.totalCount ?: 0}"
         swipeRefresh.isRefreshing = false
-        followBtn.text = if (user.viewerIsFollowing == true) {
-            getString(R.string.unfollow)
-        } else {
-            getString(R.string.follow)
-        }
+        followBtn.setText(if (user.viewerIsFollowing == true) R.string.unfollow else R.string.follow)
+        followBtn.setOnClickListener { viewModel.followUnfollowUser(loginBundle, user.viewerIsFollowing) }
         description.isVisible = user.bio?.isNotEmpty() == true
         description.text = user.bio ?: ""
         email.isVisible = user.email?.isNotEmpty() == true
