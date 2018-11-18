@@ -10,6 +10,7 @@ import com.fastaccess.domain.response.AuthBodyModel
 import com.fastaccess.domain.response.UserResponse
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 /**
@@ -42,4 +43,8 @@ interface LoginLocalRepository {
     fun update(login: LoginModel): Int
     fun deleteLogin(login: LoginModel)
     fun logoutAll()
+}
+
+fun LoginRepositoryProvider.isMe(login: String, action: (isMe: Boolean) -> Unit): Disposable {
+   return getLogin().subscribe({ action.invoke(login == it?.login) }, { action.invoke(false) })
 }

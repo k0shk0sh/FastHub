@@ -14,6 +14,12 @@ class BlockUnblockUserUseCase @Inject constructor(private val userRepository: Us
 
     override fun buildObservable(): Observable<Boolean> = login?.let { login ->
         userRepository.blockUnblockUser(login, block)
-            .map { it.isSuccessful && it.code() == 200 }
+            .map {
+                val isSuccess = it.isSuccessful && it.code() == 204
+                if (isSuccess) {
+                    return@map block
+                }
+                return@map isSuccess
+            }
     } ?: Observable.empty()
 }

@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
+import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.isMe
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
@@ -41,6 +43,8 @@ import javax.inject.Inject
  */
 class ProfileFragment : BasePagerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var loginRepositoryProvider: LoginRepositoryProvider
+
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
     private val adapter by lazy {
@@ -120,7 +124,7 @@ class ProfileFragment : BasePagerFragment() {
             }
         }
 
-        viewModel.blockingState.observeNotNull(this) {
+        viewModel.isBlocked.observeNotNull(this) {
             blockBtn.isEnabled = true
             blockBtn.text = if (it) getString(R.string.unblock) else getString(R.string.block)
         }
@@ -128,11 +132,12 @@ class ProfileFragment : BasePagerFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initUI(user: UserModel) {
-        val isNoMe = loginBundle != user.login
-        blockBtn.isVisible = isNoMe
-        blockBtn.isEnabled = false
-        actionsHolder.isVisible = isNoMe
-        if (!isNoMe) viewModel.checkBlockingState(loginBundle)
+        addDisposal(loginRepositoryProvider.isMe(loginBundle) { isMe ->
+            actionsHolder.isVisible = !isMe
+            blockBtn.isVisible = !isMe
+            blockBtn.isEnabled = false
+            if (!isMe) viewModel.checkBlockingState(loginBundle)
+        })
         following.text = "${getString(R.string.following)}: ${user.following?.totalCount ?: 0}"
         followers.text = "${getString(R.string.followers)}: ${user.followers?.totalCount ?: 0}"
         swipeRefresh.isRefreshing = false
@@ -141,7 +146,6 @@ class ProfileFragment : BasePagerFragment() {
         } else {
             getString(R.string.follow)
         }
-        blockBtn.isVisible = false /*user.isViewer == true*/
         description.isVisible = user.bio?.isNotEmpty() == true
         description.text = user.bio ?: ""
         email.isVisible = user.email?.isNotEmpty() == true

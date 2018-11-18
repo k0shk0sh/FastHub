@@ -31,7 +31,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun disposeAll() = disposable.clear()
 
-    protected fun handleError(throwable: Throwable) {
+    private fun handleError(throwable: Throwable) {
         hideProgress()
         if (throwable is HttpException) {
             val response = throwable.response()

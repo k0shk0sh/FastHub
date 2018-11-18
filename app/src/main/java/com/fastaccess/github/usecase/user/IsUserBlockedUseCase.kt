@@ -13,6 +13,6 @@ class IsUserBlockedUseCase @Inject constructor(private val userRepository: UserR
 
     override fun buildObservable(): Observable<Boolean> = login?.let { login ->
         userRepository.isUserBlock(login)
-            .map { it.isSuccessful && it.code() == 200 }
+            .map { it.isSuccessful && it.code() == 204 }
     } ?: Observable.empty()
 }

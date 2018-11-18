@@ -35,20 +35,7 @@ class MainFragment : BaseFragment() {
     @Inject lateinit var preference: FastHubSharedPreference
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainFragmentViewModel::class.java) }
     private val behaviour by lazy { BottomSheetBehavior.from(bottomSheet) }
-    private val adapter by lazy {
-        MainScreenAdapter { model: MainScreenModel ->
-            when (model.mainScreenModelRowType) {
-                MainScreenModelRowType.FEED_TITLE -> route(FEEDS_LINK)
-                MainScreenModelRowType.FEED -> Timber.e("${model.feed}")
-                MainScreenModelRowType.NOTIFICATION_TITLE -> route(NOTIFICATION_LINK)
-                MainScreenModelRowType.NOTIFICATION -> Timber.e("${model.notificationModel}")
-                MainScreenModelRowType.ISSUES_TITLE -> Timber.e("${model.mainScreenModelRowType}")
-                MainScreenModelRowType.ISSUES -> Timber.e("${model.issuesPullsModel}")
-                MainScreenModelRowType.PRS_TITLE -> Timber.e("${model.mainScreenModelRowType}")
-                MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
-            }
-        }
-    }
+    private val adapter by lazy { MainScreenAdapter(onClickListener()) }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -139,6 +126,22 @@ class MainFragment : BaseFragment() {
             }
         }
     }
+
+    private fun onClickListener(): (MainScreenModel) -> Unit {
+        return { model: MainScreenModel ->
+            when (model.mainScreenModelRowType) {
+                MainScreenModelRowType.FEED_TITLE -> route(FEEDS_LINK)
+                MainScreenModelRowType.FEED -> route(model.feed?.actor?.url)
+                MainScreenModelRowType.NOTIFICATION_TITLE -> route(NOTIFICATION_LINK)
+                MainScreenModelRowType.NOTIFICATION -> Timber.e("${model.notificationModel}")
+                MainScreenModelRowType.ISSUES_TITLE -> Timber.e("${model.mainScreenModelRowType}")
+                MainScreenModelRowType.ISSUES -> Timber.e("${model.issuesPullsModel}")
+                MainScreenModelRowType.PRS_TITLE -> Timber.e("${model.mainScreenModelRowType}")
+                MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
+            }
+        }
+    }
+
 
     companion object {
         const val TAG = "MainFragment"
