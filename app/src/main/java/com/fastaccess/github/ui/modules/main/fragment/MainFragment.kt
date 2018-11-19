@@ -115,7 +115,7 @@ class MainFragment : BaseFragment() {
         viewModel.progress.observeNotNull(this) {
             swipeRefresh.isRefreshing = it == true
         }
-        viewModel.list.observeNotNull(this) {
+        viewModel.getList().observeNotNull(this) {
             adapter.submitList(it)
         }
         viewModel.logoutProcess.observeNotNull(this) {

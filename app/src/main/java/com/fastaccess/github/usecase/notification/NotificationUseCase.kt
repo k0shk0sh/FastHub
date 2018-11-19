@@ -50,6 +50,4 @@ class NotificationUseCase @Inject constructor(
             return@map it
         }
     }
-
-    fun getMainNotifications() = notificationRepositoryProvider.getMainNotifications()
 }
