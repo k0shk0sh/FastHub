@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">로딩 중, 잠시만 기다려주세요</string>
     <string name="action">행동</string>
     <string name="settings">설정</string>
@@ -457,5 +456,5 @@
     <string name="menu_label">메뉴</string>
     <string name="commit_file_required">변경된 파일 없음</string>
     <string name="send_feedback">피드백 보내기</string>
-	
+
 </resources>

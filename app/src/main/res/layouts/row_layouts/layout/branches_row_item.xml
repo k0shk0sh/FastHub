@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
     android:minHeight="?listPreferredItemHeightSmall"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal"
     tools:ignore="RtlSymmetry">
 
 
@@ -18,9 +17,9 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/avatar_margin_end"
         android:layout_marginStart="@dimen/avatar_margin"
-        tools:src="@drawable/ic_label"/>
+        android:layout_marginEnd="@dimen/avatar_margin_end"
+        tools:src="@drawable/ic_label" />
 
     <com.fastaccess.ui.widgets.FontTextView
         android:id="@android:id/text1"
@@ -31,6 +30,6 @@
         android:ellipsize="end"
         android:maxLines="3"
         android:textColor="?android:textColorPrimary"
-        tools:text="Yes, there is shangri-la, it disappears with manifestation."/>
+        tools:text="Yes, there is shangri-la, it disappears with manifestation." />
 
 </LinearLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -13,33 +12,33 @@
             <item
                 android:id="@+id/edit"
                 android:icon="@drawable/ic_edit"
-                android:title="@string/edit"/>
+                android:title="@string/edit" />
 
             <item
                 android:id="@+id/lockIssue"
                 android:icon="@drawable/ic_lock"
                 android:title="@string/lock_issue"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
 
             <item
                 android:id="@+id/closeIssue"
                 android:icon="@drawable/ic_issues"
                 android:title="@string/close_issue"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
 
             <item
                 android:id="@+id/labels"
                 android:icon="@drawable/ic_label"
-                android:title="@string/labels"/>
+                android:title="@string/labels" />
             <item
                 android:id="@+id/milestone"
                 android:icon="@drawable/ic_milestone"
-                android:title="@string/milestone"/>
+                android:title="@string/milestone" />
 
             <item
                 android:id="@+id/assignees"
                 android:icon="@drawable/ic_profile"
-                android:title="@string/assignees"/>
+                android:title="@string/assignees" />
         </menu>
     </item>
 
@@ -52,13 +51,13 @@
             <item
                 android:id="@+id/subscribe"
                 android:icon="@drawable/ic_subscribe"
-                android:title="@string/subscribe"/>
+                android:title="@string/subscribe" />
 
             <item
                 android:id="@+id/mute"
                 android:icon="@drawable/ic_unsubscribe"
                 android:title="@string/un_subscribe"
-                app:showAsAction="never"/>
+                app:showAsAction="never" />
         </menu>
     </item>
 
@@ -66,18 +65,18 @@
         android:id="@+id/pinUnpin"
         android:icon="@drawable/ic_pin"
         android:title="@string/pin"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/browser"
         android:icon="@drawable/ic_brower"
         android:title="@string/open_in_browser"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>

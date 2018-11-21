@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:color="?colorAccent" android:state_selected="true"/>
-    <item android:color="?colorAccent" android:state_pressed="true"/>
-    <item android:color="?colorAccent" android:state_checked="true"/>
-    <item android:color="?android:textColorSecondary"/>
+    <item android:color="?colorAccent" android:state_selected="true" />
+    <item android:color="?colorAccent" android:state_pressed="true" />
+    <item android:color="?colorAccent" android:state_checked="true" />
+    <item android:color="?android:textColorSecondary" />
 
 </selector>

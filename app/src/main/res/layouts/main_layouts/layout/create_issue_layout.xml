@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar_elevation_dark"/>
+    <include layout="@layout/appbar_elevation_dark" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -51,7 +50,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/title"
-                            android:inputType="textMultiLine|textCapSentences"/>
+                            android:inputType="textMultiLine|textCapSentences" />
 
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -77,8 +76,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_xs_large"
                         android:hint="@string/description"
-                        android:paddingBottom="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_xs_large"/>
+                        android:paddingTop="@dimen/spacing_xs_large"
+                        android:paddingBottom="@dimen/spacing_xs_large" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -102,9 +101,9 @@
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:drawableEnd="@drawable/ic_add"
-                        android:paddingBottom="@dimen/spacing_normal"
                         android:paddingTop="@dimen/spacing_normal"
-                        android:text="@string/assignee"/>
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:text="@string/assignee" />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
@@ -119,7 +118,7 @@
                             style="@style/TextAppearance.AppCompat.Medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:text="Username"/>
+                            tools:text="Username" />
 
                     </android.support.v7.widget.CardView>
 
@@ -137,9 +136,9 @@
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:drawableEnd="@drawable/ic_add"
-                        android:paddingBottom="@dimen/spacing_normal"
                         android:paddingTop="@dimen/spacing_normal"
-                        android:text="@string/labels"/>
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:text="@string/labels" />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
@@ -153,7 +152,7 @@
                             style="@style/TextAppearance.AppCompat.Medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:text="Label 1"/>
+                            tools:text="Label 1" />
                     </android.support.v7.widget.CardView>
 
                 </LinearLayout>
@@ -170,9 +169,9 @@
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:drawableEnd="@drawable/ic_add"
-                        android:paddingBottom="@dimen/spacing_normal"
                         android:paddingTop="@dimen/spacing_normal"
-                        android:text="@string/milestone"/>
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:text="@string/milestone" />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
@@ -191,17 +190,17 @@
                                 style="@style/TextAppearance.AppCompat.Medium"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                tools:text="Label 1"/>
+                                tools:text="Label 1" />
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 android:id="@+id/milestoneDescription"
                                 style="@style/TextAppearance.AppCompat.Subhead"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingBottom="@dimen/spacing_normal"
                                 android:paddingTop="@dimen/spacing_normal"
+                                android:paddingBottom="@dimen/spacing_normal"
                                 android:visibility="gone"
-                                tools:text="Label 1"/>
+                                tools:text="Label 1" />
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
 
@@ -219,8 +218,8 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_send"
-        android:tint="@color/white"/>
+        android:tint="@color/white" />
 
-    <include layout="@layout/add_banner_layout"/>
+    <include layout="@layout/add_banner_layout" />
 
 </LinearLayout>

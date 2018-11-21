@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">Načítám, vyčkejte prosím…</string>
     <string name="action">Akce</string>
     <string name="settings">Nastavení</string>

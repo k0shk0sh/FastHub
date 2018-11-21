@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -36,7 +35,7 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColorHint="?android:textColorSecondary"/>
+                    android:textColorHint="?android:textColorSecondary" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/searchOptions"
@@ -44,7 +43,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:entries="@array/files_search_options"/>
+                    android:entries="@array/files_search_options" />
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/clear"
@@ -55,7 +54,7 @@
                     android:contentDescription="@string/clear"
                     android:padding="@dimen/spacing_micro"
                     android:src="@drawable/ic_clear"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/search"
@@ -65,7 +64,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/search"
                     android:padding="@dimen/spacing_micro"
-                    android:src="@drawable/ic_search"/>
+                    android:src="@drawable/ic_search" />
             </LinearLayout>
 
 
@@ -78,5 +77,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/scroll_behavior"
-        tools:layout="@layout/vertical_refresh_list"/>
+        tools:layout="@layout/vertical_refresh_list" />
 </android.support.design.widget.CoordinatorLayout>

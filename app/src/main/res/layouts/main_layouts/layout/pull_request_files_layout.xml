@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,10 +23,10 @@
             android:layout_gravity="center|end"
             android:layout_marginEnd="@dimen/spacing_xs_large"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawablePadding="@dimen/spacing_micro"
             android:drawableTop="@drawable/ic_file_multi"
+            android:drawablePadding="@dimen/spacing_micro"
             android:gravity="center"
-            tools:text="100"/>
+            tools:text="100" />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/addition"
@@ -37,11 +36,11 @@
             android:layout_gravity="center|end"
             android:layout_marginEnd="@dimen/spacing_xs_large"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawablePadding="@dimen/spacing_micro"
             android:drawableTop="@drawable/ic_add"
+            android:drawablePadding="@dimen/spacing_micro"
             android:gravity="center"
             android:scaleType="centerCrop"
-            tools:text="100"/>
+            tools:text="100" />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/deletion"
@@ -50,10 +49,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawablePadding="@dimen/spacing_micro"
             android:drawableTop="@drawable/ic_clear"
+            android:drawablePadding="@dimen/spacing_micro"
             android:gravity="center"
-            tools:text="100"/>
+            tools:text="100" />
     </LinearLayout>
 
     <FrameLayout
@@ -76,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="@string/staggered_layout_manager"
-                    app:spanCount="@integer/micro_spans"/>
+                    app:spanCount="@integer/micro_spans" />
 
             </com.fastaccess.ui.widgets.AppbarRefreshLayout>
 
@@ -84,13 +83,13 @@
                 android:id="@+id/fastScroller"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignTop="@+id/refresh"
                 android:layout_alignBottom="@+id/refresh"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/refresh"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
-        <include layout="@layout/state_layout"/>
+        <include layout="@layout/state_layout" />
 
     </FrameLayout>
 </LinearLayout>

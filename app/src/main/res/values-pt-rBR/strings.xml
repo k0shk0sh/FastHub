@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!--Please DO NOT translate github terms, such as Pull Request, Issues, Commits & etc.-->
     <string name="in_progress">Carregando, por favor aguarde…</string>
     <string name="action">Ação</string>

@@ -10,7 +10,7 @@
     <color name="light_primary_dark">#E0E0E0</color>
     <color name="light_accent">#2962FF</color>
 
-    <style name="ThemeLight" parent="ThemeLight.Base"/>
+    <style name="ThemeLight" parent="ThemeLight.Base" />
 
     <style name="ThemeLight.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="card_background">@color/cardview_light_background</item>

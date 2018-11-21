@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/layoutHolder"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutHolder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/window_background"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar_elevation_dark"/>
+    <include layout="@layout/appbar_elevation_dark" />
 
 
     <android.support.design.widget.CoordinatorLayout
@@ -35,8 +34,8 @@
                     android:id="@+id/commitHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_micro"
                     android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_micro"
                     app:cardBackgroundColor="?card_background"
                     app:contentPaddingBottom="@dimen/spacing_normal"
                     app:contentPaddingLeft="@dimen/spacing_xs_large"
@@ -54,7 +53,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/commit_message"
                             android:inputType="textMultiLine|textCapSentences"
-                            android:maxLines="3"/>
+                            android:maxLines="3" />
 
                     </android.support.design.widget.TextInputLayout>
                 </android.support.v7.widget.CardView>
@@ -63,8 +62,8 @@
                     android:id="@+id/fileNameHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_micro"
                     android:layout_marginTop="@dimen/spacing_micro"
+                    android:layout_marginBottom="@dimen/spacing_micro"
                     app:cardBackgroundColor="?card_background"
                     app:cardElevation="0dp"
                     app:contentPaddingBottom="@dimen/spacing_normal"
@@ -83,7 +82,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/file_name_hint"
                             android:inputType="text"
-                            android:maxLines="1"/>
+                            android:maxLines="1" />
 
                     </android.support.design.widget.TextInputLayout>
                 </android.support.v7.widget.CardView>
@@ -104,7 +103,7 @@
                 android:background="?card_background"
                 android:elevation="2dp"
                 android:orientation="horizontal"
-                android:outlineProvider="background"/>
+                android:outlineProvider="background" />
 
             <ScrollView
                 android:id="@+id/parentView"
@@ -132,7 +131,7 @@
                         android:padding="@dimen/spacing_xs_large"
                         android:scrollbars="vertical"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        tools:ignore="ScrollViewSize"/>
+                        tools:ignore="ScrollViewSize" />
 
                 </LinearLayout>
 

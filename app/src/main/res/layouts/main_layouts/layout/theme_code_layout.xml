@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dialog"
-                tools:entries="@array/files_search_options"/>
+                tools:entries="@array/files_search_options" />
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -42,7 +41,7 @@
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:webview_background="?android:windowBackground"/>
+            app:webview_background="?android:windowBackground" />
 
         <ProgressBar
             android:id="@+id/readmeLoader"
@@ -51,10 +50,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:indeterminate="false"
-            android:paddingEnd="@dimen/spacing_xs_large"
             android:paddingStart="@dimen/spacing_xs_large"
+            android:paddingEnd="@dimen/spacing_xs_large"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -64,6 +63,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_done"
-        android:tint="@color/white"/>
+        android:tint="@color/white" />
 
 </android.support.design.widget.CoordinatorLayout>

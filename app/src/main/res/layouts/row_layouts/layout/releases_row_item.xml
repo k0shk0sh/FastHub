@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.ForegroundRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
     android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
+    android:paddingBottom="@dimen/spacing_normal"
     app:paddingEnd="@dimen/spacing_xs_large"
     tools:ignore="RtlSymmetry">
 
@@ -40,7 +39,7 @@
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:textColor="?android:textColorPrimary"
-                    tools:text="1.2.0"/>
+                    tools:text="1.2.0" />
 
 
                 <com.fastaccess.ui.widgets.FontTextView
@@ -51,7 +50,7 @@
                     android:layout_gravity="center"
                     android:textColor="?android:attr/textColorSecondary"
                     tools:text="1000"
-                    tools:visibility="gone"/>
+                    tools:visibility="gone" />
             </LinearLayout>
 
             <com.fastaccess.ui.widgets.ForegroundImageView
@@ -63,7 +62,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_micro"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_download"/>
+                android:src="@drawable/ic_download" />
         </LinearLayout>
     </LinearLayout>
 

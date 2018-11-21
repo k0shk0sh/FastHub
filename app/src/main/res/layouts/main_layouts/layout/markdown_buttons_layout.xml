@@ -26,7 +26,7 @@
                 android:contentDescription="@string/header_one"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_header_one"/>
+                android:src="@drawable/ic_header_one" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/headerTwo"
@@ -36,7 +36,7 @@
                 android:contentDescription="@string/header_two"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_header_two"/>
+                android:src="@drawable/ic_header_two" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/headerThree"
@@ -46,7 +46,7 @@
                 android:contentDescription="@string/header_three"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_header_three"/>
+                android:src="@drawable/ic_header_three" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/bold"
@@ -56,7 +56,7 @@
                 android:contentDescription="@string/bold"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_format_bold"/>
+                android:src="@drawable/ic_format_bold" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/italic"
@@ -66,7 +66,7 @@
                 android:contentDescription="@string/italic"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_format_italic"/>
+                android:src="@drawable/ic_format_italic" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/strikethrough"
@@ -76,7 +76,7 @@
                 android:contentDescription="@string/strike_through"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_format_strikethrough"/>
+                android:src="@drawable/ic_format_strikethrough" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/bullet"
@@ -86,7 +86,7 @@
                 android:contentDescription="@string/bullet"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_format_list_bulleted"/>
+                android:src="@drawable/ic_format_list_bulleted" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/numbered"
@@ -96,7 +96,7 @@
                 android:contentDescription="@string/numbered_list"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_list_numbers"/>
+                android:src="@drawable/ic_list_numbers" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/checkbox"
@@ -106,7 +106,7 @@
                 android:contentDescription="@string/todo_checked"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_checkbox"/>
+                android:src="@drawable/ic_checkbox" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/unCheckbox"
@@ -116,7 +116,7 @@
                 android:contentDescription="@string/todo_unchecked"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_checkbox_empty"/>
+                android:src="@drawable/ic_checkbox_empty" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/header"
@@ -126,7 +126,7 @@
                 android:contentDescription="@string/divider"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_minus"/>
+                android:src="@drawable/ic_minus" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/inlineCode"
@@ -136,7 +136,7 @@
                 android:contentDescription="@string/code"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_inline_code"/>
+                android:src="@drawable/ic_inline_code" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/code"
@@ -145,7 +145,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/code"
                 android:padding="@dimen/spacing_normal"
-                android:src="@drawable/ic_code"/>
+                android:src="@drawable/ic_code" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/quote"
@@ -155,7 +155,7 @@
                 android:contentDescription="@string/quote"
                 android:padding="@dimen/spacing_normal"
 
-                android:src="@drawable/ic_format_quote"/>
+                android:src="@drawable/ic_format_quote" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/link"
@@ -165,7 +165,7 @@
                 android:contentDescription="@string/link"
                 android:padding="@dimen/spacing_micro"
 
-                android:src="@drawable/ic_insert_link"/>
+                android:src="@drawable/ic_insert_link" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/image"
@@ -174,7 +174,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/image"
                 android:padding="@dimen/spacing_normal"
-                android:src="@drawable/ic_image"/>
+                android:src="@drawable/ic_image" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/signature"
@@ -183,7 +183,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/app_name"
                 android:padding="@dimen/spacing_normal"
-                android:src="@drawable/ic_fasthub_mascot"/>
+                android:src="@drawable/ic_fasthub_mascot" />
         </LinearLayout>
 
     </HorizontalScrollView>
@@ -191,7 +191,7 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="?dividerColor"/>
+        android:background="?dividerColor" />
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/addEmoji"
@@ -201,7 +201,7 @@
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/reactions"
         android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_add_emoji"/>
+        android:src="@drawable/ic_add_emoji" />
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/view"
@@ -211,5 +211,5 @@
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/preview"
         android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_eye"/>
+        android:src="@drawable/ic_eye" />
 </merge>

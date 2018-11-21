@@ -10,7 +10,7 @@
     <color name="bluishWindowBackground">@color/bluish_background</color>
     <color name="bluishDivider">#802A456B</color>
 
-    <style name="ThemeBluish" parent="ThemeBluish.Base"/>
+    <style name="ThemeBluish" parent="ThemeBluish.Base" />
 
     <style name="ThemeBluish.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="card_background">#182A44</item>

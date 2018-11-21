@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">Загрузка, подождите…</string>
     <string name="action">Действия</string>
     <string name="settings">Настройки</string>

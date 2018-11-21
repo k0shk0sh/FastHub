@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    android:id="@+id/prReviewHolder"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/prReviewHolder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/fab_margin"
-    android:layout_marginEnd="@dimen/fab_spacing"
     android:layout_marginStart="@dimen/fab_margin"
     android:layout_marginTop="@dimen/fab_margin"
+    android:layout_marginEnd="@dimen/fab_spacing"
+    android:layout_marginBottom="@dimen/fab_margin"
     android:focusable="true"
     android:visibility="gone"
     app:cardBackgroundColor="?colorAccent"
@@ -32,10 +31,10 @@
             android:background="@drawable/circle_shape"
             android:backgroundTint="?colorPrimary"
             android:gravity="center"
-            android:minHeight="24dp"
             android:minWidth="24dp"
+            android:minHeight="24dp"
             android:padding="@dimen/spacing_micro"
-            tools:text="1"/>
+            tools:text="1" />
 
         <com.fastaccess.ui.widgets.FontTextView
             style="@style/TextAppearance.AppCompat.Small"
@@ -45,7 +44,7 @@
             android:layout_marginStart="@dimen/spacing_normal"
             android:layout_weight="1"
             android:text="@string/pull_request_reviews"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/cancelReview"
@@ -55,7 +54,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_clear"
-            android:tint="@color/white"/>
+            android:tint="@color/white" />
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/submitReviews"
@@ -65,7 +64,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_send"
-            android:tint="@color/white"/>
+            android:tint="@color/white" />
 
 
     </LinearLayout>

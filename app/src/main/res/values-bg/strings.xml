@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">Зареждане, моля изчакай…</string>
     <string name="action">Действие</string>
     <string name="settings">Настройки</string>
@@ -399,7 +398,7 @@
     <string name="enterprise_login_warning">Моля впиши се с GitHub профила си, за да достъпиш цялото GitHub API. В противен случай
         ще бъдеш изхвърлян/а всеки път, когато се опиташ да достъпиш каквото да било извън Enterprise GitHub профила си. Това е така, защото 
         използваният token за достъп всъщност идва от Enterprise профила ти.
-    </string>        
+    </string>
     <string name="add_account">Добави профил</string>
     <string name="choose_account">Избери профил</string>
     <string name="not_match">Няма съвпадение</string>

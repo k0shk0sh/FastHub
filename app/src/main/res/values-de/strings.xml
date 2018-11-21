@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">Wird geladen …</string>
     <string name="action">Aktionen</string>
     <string name="settings">Einstellungen</string>
@@ -213,7 +212,7 @@
     <string name="notification_settings">Benachrichtigung</string>
     <string name="turn_off">Ausschalten</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
-    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor-Passwort wird benötigt</string>							   
+    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor-Passwort wird benötigt</string>
     <string name="copy">Kopieren</string>
     <string name="success_copied">Kopiert</string>
     <string name="commit_message">Commitnachricht</string>
@@ -252,10 +251,10 @@
     <string name="no_contributors">Keine Mitwirkenden</string>
     <string name="no_releases">Keine Releases</string>
     <string name="no_closed_issues">Keine geschlossenen Issues</string>
-    <string name="no_opened_issues">Keine geöffneten Issues</string>								   
+    <string name="no_opened_issues">Keine geöffneten Issues</string>
     <string name="no_events">Keine Ereignisse</string>
     <string name="no_pull_requests">Keine Pull Requests</string>
-    <string name="no_closed_pull_request">Keine geschlossenen Pull Requests</string>																				
+    <string name="no_closed_pull_request">Keine geschlossenen Pull Requests</string>
     <string name="no_search_results">Keine Suchergebnisse</string>
     <string name="read_write_permission_explanation">Bitte erlaube FastHub Zugriff auf die SD-Karte, um Dateien abzuspeichern.</string>
     <string name="public_gists">Öffentliche Gists</string>

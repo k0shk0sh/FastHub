@@ -6,27 +6,27 @@
             android:id="@+id/navToRepo"
             android:icon="@drawable/ic_repo"
             android:title="@string/repo"
-            android:visible="false"/>
+            android:visible="false" />
         <item
             android:id="@+id/mainView"
             android:icon="@drawable/ic_home"
             android:title="@string/home"
-            android:visible="true"/>
+            android:visible="true" />
     </group>
 
     <group android:id="@+id/profile_group">
         <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_person"
-            android:title="@string/profile"/>
+            android:title="@string/profile" />
         <item
             android:id="@+id/orgs"
             android:icon="@drawable/ic_group"
-            android:title="@string/organizations"/>
+            android:title="@string/organizations" />
         <item
             android:id="@+id/notifications"
             android:icon="@drawable/ic_ring"
-            android:title="@string/notifications"/>
+            android:title="@string/notifications" />
     </group>
 
 
@@ -36,16 +36,16 @@
         <item
             android:id="@+id/pinnedMenu"
             android:icon="@drawable/ic_pin_filled"
-            android:title="@string/pinned"/>
+            android:title="@string/pinned" />
 
         <item
             android:id="@+id/trending"
             android:icon="@drawable/ic_trending"
-            android:title="@string/trending"/>
+            android:title="@string/trending" />
         <item
             android:id="@+id/gists"
             android:icon="@drawable/ic_code"
-            android:title="@string/gists"/>
+            android:title="@string/gists" />
     </group>
 
     <group
@@ -54,25 +54,25 @@
         <item
             android:id="@+id/reportBug"
             android:icon="@drawable/ic_feedback"
-            android:title="@string/send_feedback"/>
+            android:title="@string/send_feedback" />
         <item
             android:id="@+id/faq"
             android:icon="@drawable/ic_info"
-            android:title="@string/faq"/>
+            android:title="@string/faq" />
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
-            android:title="@string/settings"/>
+            android:title="@string/settings" />
 
         <item
             android:id="@+id/restorePurchase"
             android:icon="@drawable/ic_money"
-            android:title="@string/restore_purchases"/>
+            android:title="@string/restore_purchases" />
 
         <item
             android:id="@+id/about"
             android:icon="@drawable/ic_info"
-            android:title="@string/about"/>
+            android:title="@string/about" />
     </group>
 
 </menu>

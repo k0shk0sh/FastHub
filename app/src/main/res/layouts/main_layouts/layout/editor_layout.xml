@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?card_background"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar_elevation_dark"/>
+    <include layout="@layout/appbar_elevation_dark" />
 
     <ScrollView
         android:id="@+id/parentView"
@@ -38,12 +37,12 @@
                     android:maxLines="3"
                     android:padding="@dimen/spacing_xs_large"
                     android:textIsSelectable="true"
-                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis sagittis purus. Cras pulvinar urna ut velit accumsan consectetur. Aenean mauris purus, rutrum eget luctus sit amet, efficitur vel mauris. Sed pulvinar nisl non ligula lacinia ultricies. Etiam quis purus sem. Morbi rutrum tristique ex sed commodo. Pellentesque volutpat laoreet urna et vestibulum. Vivamus id justo sed felis cursus venenatis id vitae felis. Praesent at condimentum erat. Vivamus vel est a dolor tincidunt porta. Mauris ut nisl tortor."/>
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis sagittis purus. Cras pulvinar urna ut velit accumsan consectetur. Aenean mauris purus, rutrum eget luctus sit amet, efficitur vel mauris. Sed pulvinar nisl non ligula lacinia ultricies. Etiam quis purus sem. Morbi rutrum tristique ex sed commodo. Pellentesque volutpat laoreet urna et vestibulum. Vivamus id justo sed felis cursus venenatis id vitae felis. Praesent at condimentum erat. Vivamus vel est a dolor tincidunt porta. Mauris ut nisl tortor." />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?dividerColor"/>
+                    android:background="?dividerColor" />
             </LinearLayout>
 
             <com.fastaccess.ui.widgets.markdown.MarkdownEditText
@@ -57,7 +56,7 @@
                 android:minLines="5"
                 android:padding="@dimen/spacing_xs_large"
                 android:scrollbars="vertical"
-                tools:ignore="ScrollViewSize"/>
+                tools:ignore="ScrollViewSize" />
 
         </LinearLayout>
 
@@ -68,24 +67,24 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?dividerColor"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/autocomplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@drawable/toolbar_shadow_up"/>
+        android:background="@drawable/toolbar_shadow_up" />
 
     <com.fastaccess.ui.widgets.markdown.MarkDownLayout
         android:id="@+id/markDownLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
-    <include layout="@layout/add_banner_layout"/>
+    <include layout="@layout/add_banner_layout" />
 </LinearLayout>

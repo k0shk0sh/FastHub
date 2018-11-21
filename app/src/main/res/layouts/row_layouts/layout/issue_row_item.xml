@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.ForegroundRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -26,10 +25,10 @@
                 android:id="@+id/avatarLayout"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/issue_state"
@@ -38,7 +37,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:visibility="gone"
-                tools:src="@drawable/ic_issue_closed_small"/>
+                tools:src="@drawable/ic_issue_closed_small" />
         </FrameLayout>
 
         <LinearLayout
@@ -55,7 +54,7 @@
                 android:maxLines="2"
                 android:textColor="?android:textColorPrimary"
                 android:textStyle="bold"
-                tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+                tools:text="When one acquires music and afterlife, one is able to capture heaven." />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +70,7 @@
                     android:layout_weight="1"
                     android:textColor="?android:attr/textColorSecondary"
                     app:drawableColor="?android:attr/textColorSecondary"
-                    tools:text="1000"/>
+                    tools:text="1000" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/commentsNo"
@@ -80,12 +79,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/spacing_normal"
-                    android:drawablePadding="@dimen/spacing_normal"
                     android:drawableStart="@drawable/ic_comment_small"
+                    android:drawablePadding="@dimen/spacing_normal"
                     android:gravity="center|start"
                     android:textColor="?android:attr/textColorSecondary"
                     app:drawableColor="?android:attr/textColorSecondary"
-                    tools:text="1000"/>
+                    tools:text="1000" />
             </LinearLayout>
 
         </LinearLayout>

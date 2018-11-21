@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,7 +23,7 @@
                 android:background="?colorPrimary"
                 android:theme="?android:toolbarStyle"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="?android:toolbarStyle"/>
+                app:popupTheme="?android:toolbarStyle" />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
@@ -34,14 +32,14 @@
                 android:background="?colorPrimary"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="?colorAccent"
-                app:tabTextColor="?android:textColorTertiary"/>
+                app:tabTextColor="?android:textColorTertiary" />
         </android.support.design.widget.AppBarLayout>
 
         <com.fastaccess.ui.widgets.ViewPagerView
             android:id="@+id/notificationContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/scroll_behavior"/>
+            app:layout_behavior="@string/scroll_behavior" />
         <!--<fragment-->
         <!--android:id="@+id/notificationFragment"-->
         <!--android:nacom.fastaccess.ui.modules.notification.AllNotificationsFragmententment"-->
@@ -52,6 +50,6 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <include layout="@layout/nav_menu_layout"/>
+    <include layout="@layout/nav_menu_layout" />
 
 </android.support.v4.widget.DrawerLayout>

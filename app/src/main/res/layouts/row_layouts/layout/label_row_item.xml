@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal">
+    android:paddingTop="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/colorImage"
             android:layout_width="@dimen/icon_size"
-            android:layout_height="30dp"/>
+            android:layout_height="30dp" />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/name"
@@ -33,7 +32,7 @@
             android:maxLines="3"
             android:textColor="?android:textColorPrimary"
             android:transitionName="@string/title_transition"
-            tools:text="Bug Fixes."/>
+            tools:text="Bug Fixes." />
 
     </LinearLayout>
 </FrameLayout>

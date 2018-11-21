@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">Chargement, veuillez patienter…</string>
     <string name="action">Action</string>
     <string name="settings">Paramètres</string>
@@ -332,7 +331,7 @@
         veuillez suivre le lien ci-dessous.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Vous pouvez
         utiliser le token Access pour vous connecter, ce qui permettra à FastHub d'accéder à la liste de vos organisations\nVous pouvez
         aussi ouvrir https://github.com/settings/applications et chercher FastHub. Ouvrez le puis faites défiler jusqu\'à Accès aux organisations
-        et cliquez sur le bouton Accorder.</string> 
+        et cliquez sur le bouton Accorder.</string>
     <string name="insert">Insérer</string>
     <string name="select">Sélectionner</string>
     <string name="select_picture">Sélectionner une image</string>

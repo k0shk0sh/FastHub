@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,19 +27,19 @@
             android:maxLines="2"
             android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
-            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+            tools:text="When one acquires music and afterlife, one is able to capture heaven." />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/description"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
             android:layout_marginTop="@dimen/spacing_micro"
+            android:layout_marginBottom="@dimen/spacing_micro"
             android:ellipsize="marquee"
             android:maxLines="4"
             android:textColor="?android:textColorSecondary"
-            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+            tools:text="When one acquires music and afterlife, one is able to capture heaven." />
 
         <com.fastaccess.ui.widgets.AutoLinearLayout
             android:layout_width="match_parent"
@@ -57,12 +56,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
                 android:drawableStart="@drawable/ic_star_small"
+                android:drawablePadding="@dimen/spacing_micro"
                 android:gravity="start|center"
                 android:textColor="?android:attr/textColorSecondary"
                 app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="10000"/>
+                tools:text="10000" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/forks"
@@ -71,12 +70,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
                 android:drawableStart="@drawable/ic_fork_small"
+                android:drawablePadding="@dimen/spacing_micro"
                 android:gravity="start|center"
                 android:textColor="?android:attr/textColorSecondary"
                 app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="50000"/>
+                tools:text="50000" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/todayStars"
@@ -84,12 +83,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawablePadding="@dimen/spacing_micro"
                 android:drawableStart="@drawable/ic_star_small"
+                android:drawablePadding="@dimen/spacing_micro"
                 android:gravity="start|center"
                 android:textColor="?android:attr/textColorSecondary"
                 app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="50 minutes ago"/>
+                tools:text="50 minutes ago" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/language"
@@ -98,13 +97,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_micro"
                 android:drawableStart="@drawable/ic_language_small"
+                android:drawablePadding="@dimen/spacing_micro"
                 android:gravity="start|center"
                 android:textColor="?android:attr/textColorSecondary"
                 android:visibility="gone"
                 app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="10000"/>
+                tools:text="10000" />
 
         </com.fastaccess.ui.widgets.AutoLinearLayout>
     </LinearLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,15 +21,15 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large">
+                android:paddingTop="@dimen/spacing_xs_large"
+                android:paddingBottom="@dimen/spacing_xs_large">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="@dimen/spacing_xs_large"
-                    android:src="@drawable/ic_logout"/>
+                    android:src="@drawable/ic_logout" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     style="@style/TextAppearance.AppCompat.Subhead"
@@ -39,7 +38,7 @@
                     android:layout_gravity="start|center"
                     android:paddingStart="@dimen/keyline_1"
                     android:text="@string/logout"
-                    android:textColor="@color/search_tab_highlighter"/>
+                    android:textColor="@color/search_tab_highlighter" />
             </FrameLayout>
         </LinearLayout>
 
@@ -54,15 +53,15 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large">
+                android:paddingTop="@dimen/spacing_xs_large"
+                android:paddingBottom="@dimen/spacing_xs_large">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="@dimen/spacing_xs_large"
-                    android:src="@drawable/ic_add"/>
+                    android:src="@drawable/ic_add" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     style="@style/TextAppearance.AppCompat.Subhead"
@@ -71,7 +70,7 @@
                     android:layout_gravity="start|center"
                     android:paddingStart="@dimen/keyline_1"
                     android:text="@string/add_account"
-                    android:textColor="@color/search_tab_highlighter"/>
+                    android:textColor="@color/search_tab_highlighter" />
             </FrameLayout>
         </LinearLayout>
 
@@ -86,15 +85,15 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large">
+                android:paddingTop="@dimen/spacing_xs_large"
+                android:paddingBottom="@dimen/spacing_xs_large">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="@dimen/spacing_xs_large"
-                    android:src="@drawable/ic_repo"/>
+                    android:src="@drawable/ic_repo" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     style="@style/TextAppearance.AppCompat.Subhead"
@@ -103,7 +102,7 @@
                     android:layout_gravity="start|center"
                     android:paddingStart="@dimen/keyline_1"
                     android:text="@string/repos"
-                    android:textColor="@color/search_tab_highlighter"/>
+                    android:textColor="@color/search_tab_highlighter" />
             </FrameLayout>
         </LinearLayout>
 
@@ -118,15 +117,15 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large">
+                android:paddingTop="@dimen/spacing_xs_large"
+                android:paddingBottom="@dimen/spacing_xs_large">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="@dimen/spacing_xs_large"
-                    android:src="@drawable/ic_star_filled"/>
+                    android:src="@drawable/ic_star_filled" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     style="@style/TextAppearance.AppCompat.Subhead"
@@ -135,7 +134,7 @@
                     android:layout_gravity="start|center"
                     android:paddingStart="@dimen/keyline_1"
                     android:text="@string/starred"
-                    android:textColor="@color/search_tab_highlighter"/>
+                    android:textColor="@color/search_tab_highlighter" />
             </FrameLayout>
         </LinearLayout>
 
@@ -155,25 +154,25 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large">
+                android:paddingTop="@dimen/spacing_xs_large"
+                android:paddingBottom="@dimen/spacing_xs_large">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="@dimen/spacing_xs_large"
-                    android:src="@drawable/ic_profile"/>
+                    android:src="@drawable/ic_profile" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
-                    android:paddingEnd="@dimen/keyline_1"
                     android:paddingStart="@dimen/keyline_1"
+                    android:paddingEnd="@dimen/keyline_1"
                     android:text="@string/choose_account"
-                    android:textColor="@color/search_tab_highlighter"/>
+                    android:textColor="@color/search_tab_highlighter" />
             </FrameLayout>
 
             <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
@@ -182,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="@string/linear_layout_manager"
-                tools:visibility="gone"/>
+                tools:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -196,25 +195,25 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large">
+                android:paddingTop="@dimen/spacing_xs_large"
+                android:paddingBottom="@dimen/spacing_xs_large">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="@dimen/spacing_xs_large"
-                    android:src="@drawable/ic_pin"/>
+                    android:src="@drawable/ic_pin" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
-                    android:paddingEnd="@dimen/keyline_1"
                     android:paddingStart="@dimen/keyline_1"
+                    android:paddingEnd="@dimen/keyline_1"
                     android:text="@string/pinned"
-                    android:textColor="@color/search_tab_highlighter"/>
+                    android:textColor="@color/search_tab_highlighter" />
 
             </FrameLayout>
 
@@ -224,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="@string/linear_layout_manager"
-                tools:visibility="gone"/>
+                tools:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -1,7 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
-<!-- PREVIOUSLY UN-TRANSLATED TERMS, NOW TRANSLATED ACCORDING TO ISSUE #1329  -->
-<string name="pro_features_list" translatable="false"><![CDATA[Obten las características PRO de FastHub, incluyen:\n
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- PREVIOUSLY UN-TRANSLATED TERMS, NOW TRANSLATED ACCORDING TO ISSUE #1329  -->
+    <string name="pro_features_list" translatable="false"><![CDATA[Obten las características PRO de FastHub, incluyen:\n
         • Todos los Temas PRO\n
         • Revisión de PRs y comentarios en línea (PRs y Commits)\n
         • Commit desde FastHub (Editar, Crear y borrar archivos)\n
@@ -19,7 +18,7 @@
     <string name="purchase" translatable="false">Comprar</string>
     <string name="get_all" translatable="false">Comprar todo (7.00USD)</string>
     <string name="fasthub_premium_features" translatable="false">Características Premium FastHub</string>
-    
+
     <string name="purchase_all" formatted="false" translatable="false">Comprar todo por %price%</string>
     <string name="unlock" translatable="false">Desbloquear</string>
     <string name="unlock_everything" translatable="false">Desbloquear todo</string>
@@ -144,7 +143,7 @@
     <string name="notifications">Notificaciones</string>
     <string name="unread_notification">Tienes notificaciones sin leer</string>
     <string name="open">Abrir</string>
-	<string name="open_new_window">Abrir en nueva ventana</string>
+    <string name="open_new_window">Abrir en nueva ventana</string>
     <string name="notification_type">Tipo de notificaciones</string>
     <string name="labels">Etiquetas</string>
     <string name="no_labels">Sin etiquetas</string>

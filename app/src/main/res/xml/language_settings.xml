@@ -5,9 +5,9 @@
         android:defaultValue="en"
         android:entries="@array/languages_array"
         android:entryValues="@array/languages_array_values"
-        android:key="app_language"
         android:icon="@drawable/ic_language"
+        android:key="app_language"
         android:summary="@string/choose_language_summary"
-        android:title="@string/choose_language_title"/>
+        android:title="@string/choose_language_title" />
 
 </PreferenceScreen>

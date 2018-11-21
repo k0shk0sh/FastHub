@@ -7,7 +7,7 @@
     <color name="midnight_patch_deletion_color">@color/material_red_900</color>
     <color name="midnight_patch_ref_color">@color/material_blue_grey_500</color>
 
-    <style name="ThemeMidnight" parent="ThemeMidnight.Base"/>
+    <style name="ThemeMidnight" parent="ThemeMidnight.Base" />
 
     <style name="ThemeMidnight.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="card_background">#171F27</item>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/spacing_large"
-        tools:src="@drawable/ic_slack"/>
+        tools:src="@drawable/ic_slack" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -28,7 +27,7 @@
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Setting"/>
+            tools:text="Setting" />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/iconItemSummary"
@@ -36,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.7"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
 
     </LinearLayout>
 

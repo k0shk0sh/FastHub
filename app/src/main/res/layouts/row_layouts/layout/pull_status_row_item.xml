@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_normal"
-    android:layout_marginEnd="@dimen/spacing_xs_large"
     android:layout_marginStart="@dimen/spacing_xs_large"
     android:layout_marginTop="@dimen/spacing_normal"
+    android:layout_marginEnd="@dimen/spacing_xs_large"
+    android:layout_marginBottom="@dimen/spacing_normal"
     android:background="?card_background"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/spacing_micro"
-    android:paddingTop="@dimen/spacing_normal">
+    android:paddingTop="@dimen/spacing_normal"
+    android:paddingBottom="@dimen/spacing_micro">
 
 
     <LinearLayout
@@ -25,10 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/avatar_margin"
-            android:minHeight="24dp"
             android:minWidth="24dp"
+            android:minHeight="24dp"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_issue_opened"/>
+            tools:src="@drawable/ic_issue_opened" />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/status"
@@ -38,7 +37,7 @@
             android:layout_gravity="center"
             android:paddingStart="@dimen/spacing_xs_large"
             android:paddingEnd="@dimen/spacing_xs_large"
-            tools:text="Hello World"/>
+            tools:text="Hello World" />
 
     </LinearLayout>
 
@@ -48,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:paddingEnd="@dimen/spacing_normal"
         android:paddingStart="@dimen/spacing_xs_large"
-        tools:text="Hello World"/>
+        android:paddingEnd="@dimen/spacing_normal"
+        tools:text="Hello World" />
 </LinearLayout>

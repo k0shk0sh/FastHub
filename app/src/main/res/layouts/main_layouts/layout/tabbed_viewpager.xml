@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/parentLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -19,11 +18,11 @@
         app:tabGravity="center"
         app:tabSelectedTextColor="?colorAccent"
         app:tabTextColor="?android:textColorTertiary"
-        tools:ignore="RtlSymmetry"/>
+        tools:ignore="RtlSymmetry" />
 
     <com.fastaccess.ui.widgets.ViewPagerView
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

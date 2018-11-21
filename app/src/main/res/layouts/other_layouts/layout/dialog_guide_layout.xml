@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -33,7 +31,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/back"
                     android:padding="@dimen/spacing_micro"
-                    android:src="@drawable/ic_clear"/>
+                    android:src="@drawable/ic_clear" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/title"
@@ -46,7 +44,7 @@
                     android:gravity="start|center"
                     android:maxLines="3"
                     android:textColor="?android:textColorPrimary"
-                    tools:text="Remember: shreded ramen tastes best when flattened in a sauté pan enameled with rum."/>
+                    tools:text="Remember: shreded ramen tastes best when flattened in a sauté pan enameled with rum." />
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -60,10 +58,10 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/spacing_xs_large"
             android:paddingStart="@dimen/spacing_xs_large"
-            android:paddingTop="@dimen/spacing_normal"/>
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:paddingBottom="@dimen/spacing_normal" />
     </LinearLayout>
 
 </LinearLayout>

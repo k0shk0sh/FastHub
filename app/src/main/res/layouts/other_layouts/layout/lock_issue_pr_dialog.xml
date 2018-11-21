@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/messageLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?card_background"
@@ -28,14 +26,14 @@
                 android:padding="@dimen/spacing_xs_large"
                 android:text="@string/lock_issue"
                 android:textColor="?android:textColorPrimary"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/lockReason"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:entries="@array/lock_reasons"/>
+                android:entries="@array/lock_reasons" />
         </LinearLayout>
 
 
@@ -55,10 +53,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
-                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:text="@string/lock_issue_details"
-                    android:textColor="?android:attr/textColorSecondary"/>
+                    android:textColor="?android:attr/textColorSecondary" />
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
@@ -68,8 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="end"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_normal">
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal">
 
             <com.fastaccess.ui.widgets.FontButton
                 android:id="@+id/cancel"
@@ -79,7 +77,7 @@
                 android:layout_gravity="end"
                 android:text="@string/cancel"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/material_pink_700"/>
+                android:textColor="@color/material_pink_700" />
 
             <com.fastaccess.ui.widgets.FontButton
                 android:id="@+id/ok"
@@ -89,7 +87,7 @@
                 android:layout_gravity="end"
                 android:text="@string/ok"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="?colorAccent"/>
+                android:textColor="?colorAccent" />
 
         </LinearLayout>
     </LinearLayout>

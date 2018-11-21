@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.ForegroundRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -22,10 +21,10 @@
             android:id="@+id/avatarLayout"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +40,7 @@
                 android:maxLines="3"
                 android:textColor="?android:textColorPrimary"
                 android:textStyle="bold"
-                tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+                tools:text="When one acquires music and afterlife, one is able to capture heaven." />
 
             <com.fastaccess.ui.widgets.AutoLinearLayout
                 android:layout_width="match_parent"
@@ -58,12 +57,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/spacing_micro"
-                    android:drawablePadding="@dimen/spacing_micro"
                     android:drawableStart="@drawable/ic_star_small"
+                    android:drawablePadding="@dimen/spacing_micro"
                     android:gravity="start|center"
                     android:textColor="?android:attr/textColorSecondary"
                     app:drawableColor="?android:attr/textColorSecondary"
-                    tools:text="10000"/>
+                    tools:text="10000" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/forks"
@@ -72,12 +71,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/spacing_micro"
-                    android:drawablePadding="@dimen/spacing_micro"
                     android:drawableStart="@drawable/ic_fork_small"
+                    android:drawablePadding="@dimen/spacing_micro"
                     android:gravity="start|center"
                     android:textColor="?android:attr/textColorSecondary"
                     app:drawableColor="?android:attr/textColorSecondary"
-                    tools:text="50000"/>
+                    tools:text="50000" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/date"
@@ -86,12 +85,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/spacing_micro"
-                    android:drawablePadding="@dimen/spacing_micro"
                     android:drawableStart="@drawable/ic_time_small"
+                    android:drawablePadding="@dimen/spacing_micro"
                     android:gravity="start|center"
                     android:textColor="?android:attr/textColorSecondary"
                     app:drawableColor="?android:attr/textColorSecondary"
-                    tools:text="50 minutes ago"/>
+                    tools:text="50 minutes ago" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/size"
@@ -100,13 +99,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/spacing_micro"
-                    android:drawablePadding="@dimen/spacing_micro"
                     android:drawableStart="@drawable/ic_storage_small"
+                    android:drawablePadding="@dimen/spacing_micro"
                     android:gravity="start|center"
                     android:textColor="?android:attr/textColorSecondary"
                     app:drawableColor="?android:attr/textColorSecondary"
                     tools:text="100 MB"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/language"
@@ -118,7 +117,7 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:visibility="gone"
                     tools:text="TypeScript"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
 
             </com.fastaccess.ui.widgets.AutoLinearLayout>

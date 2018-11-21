@@ -1,8 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources>
     <!-- DO NOT COPY!  -->
 
-    <string name="app_name" translatable="false">FastHub</string>
     <string name="app_name_full" translatable="false">FastHub for Android</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
     <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
@@ -88,7 +86,7 @@
     <string name="endpoint_hint" translatable="false">example.com</string>
     <string name="no_branches" translatable="false">No Branches or Tags</string>
     <string name="pro_features" translatable="false">PRO Features</string>
-    <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
+    <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which include:\n
         • All PRO Themes\n
         • PR Reviews & On-line code comments (PRs & Commits)\n
         • Commit from FastHub (Edit, Create & Delete files)\n

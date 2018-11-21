@@ -385,5 +385,5 @@
     <string name="divider">فاصل</string>
     <string name="no_user_found">لا يوجد مستخدمون</string>
     <string name="no_trending">لا يوجد شائع</string>
-    <string name="filter">مرشح</string> 
+    <string name="filter">مرشح</string>
 </resources>

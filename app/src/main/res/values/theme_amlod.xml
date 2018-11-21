@@ -4,7 +4,7 @@
     <color name="amlodWindowBackground">#000</color>
     <color name="amlodDivider">#80949494</color>
 
-    <style name="ThemeAmlod" parent="ThemeAmlod.Base"/>
+    <style name="ThemeAmlod" parent="ThemeAmlod.Base" />
 
     <style name="ThemeAmlod.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="card_background">#050910</item>

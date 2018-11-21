@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,10 +26,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"
                 android:paddingStart="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:paddingBottom="@dimen/spacing_normal"
                 app:layout_collapseMode="parallax">
 
                 <com.fastaccess.ui.widgets.FontTextView
@@ -41,9 +40,9 @@
                     android:layout_gravity="center"
                     android:ellipsize="marquee"
                     android:maxLines="3"
-                    android:paddingBottom="@dimen/spacing_normal"
                     android:paddingTop="@dimen/spacing_normal"
-                    tools:text="One must need the visitor in order to study the lord of great awareness."/>
+                    android:paddingBottom="@dimen/spacing_normal"
+                    tools:text="One must need the visitor in order to study the lord of great awareness." />
 
                 <LinearLayout
                     android:id="@+id/editColumnHolder"
@@ -58,17 +57,17 @@
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackgroundBorderless"
                         android:padding="@dimen/spacing_micro"
-                        android:src="@drawable/ic_edit"/>
+                        android:src="@drawable/ic_edit" />
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/addCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:background="?selectableItemBackgroundBorderless"
                         android:padding="@dimen/spacing_micro"
-                        android:src="@drawable/ic_add"/>
+                        android:src="@drawable/ic_add" />
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/deleteColumn"
@@ -76,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackgroundBorderless"
                         android:padding="@dimen/spacing_micro"
-                        android:src="@drawable/ic_trash"/>
+                        android:src="@drawable/ic_trash" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -89,6 +88,6 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/scroll_behavior">
 
-        <include layout="@layout/micro_grid_refresh_list"/>
+        <include layout="@layout/micro_grid_refresh_list" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

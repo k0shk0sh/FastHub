@@ -4,12 +4,12 @@
     <item
         android:id="@+id/opened"
         android:icon="@drawable/ic_issue_opened"
-        android:title="@string/opened"/>
+        android:title="@string/opened" />
 
     <item
         android:id="@+id/closed"
         android:icon="@drawable/ic_issue_closed"
-        android:title="@string/closed"/>
+        android:title="@string/closed" />
 
 
 </menu>

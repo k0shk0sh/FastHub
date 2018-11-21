@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_micro"
-    android:layout_marginEnd="@dimen/grid_spacing"
     android:layout_marginStart="@dimen/grid_spacing"
     android:layout_marginTop="@dimen/grid_spacing"
+    android:layout_marginEnd="@dimen/grid_spacing"
+    android:layout_marginBottom="@dimen/spacing_micro"
     android:foreground="?android:selectableItemBackground"
     app:cardBackgroundColor="?card_background"
     app:cardCornerRadius="@dimen/grid_spacing"
@@ -34,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                tools:text="To some, a teacher is a freedom for traping.\nBrush the chickpeas with canned cinnamon, corn syrup, lime, and black cardamon making sure to cover all of it."/>
+                tools:text="To some, a teacher is a freedom for traping.\nBrush the chickpeas with canned cinnamon, corn syrup, lime, and black cardamon making sure to cover all of it." />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/editCard"
@@ -43,7 +42,7 @@
                 android:layout_gravity="top"
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_micro"
-                android:src="@drawable/ic_overflow"/>
+                android:src="@drawable/ic_overflow" />
 
         </LinearLayout>
 
@@ -55,7 +54,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/spacing_micro"
             android:paddingEnd="@dimen/spacing_xs_large"
-            tools:text="To some, a teacher is a freedom for traping."/>
+            tools:text="To some, a teacher is a freedom for traping." />
 
 
     </LinearLayout>

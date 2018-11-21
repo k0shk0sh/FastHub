@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,9 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_normal"
         android:layout_marginStart="@dimen/spacing_xs_large"
         android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:orientation="vertical">
 
         <LinearLayout
@@ -31,7 +30,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textColor="?android:textColorPrimary"
-                tools:text="When one acquires"/>
+                tools:text="When one acquires" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/toggle"
@@ -39,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_micro"
-                android:src="@drawable/ic_arrow_drop_down"/>
+                android:src="@drawable/ic_arrow_drop_down" />
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/open"
@@ -48,7 +47,7 @@
                 android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_micro"
-                android:src="@drawable/ic_overflow"/>
+                android:src="@drawable/ic_overflow" />
 
         </LinearLayout>
 
@@ -64,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layoutManager="@string/linear_layout_manager"/>
+                app:layoutManager="@string/linear_layout_manager" />
 
             <com.fastaccess.ui.widgets.AutoLinearLayout
                 android:layout_width="match_parent"
@@ -82,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:gravity="center"
-                    tools:text="Changes\n100"/>
+                    tools:text="Changes\n100" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/addition"
@@ -91,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:gravity="center"
-                    tools:text="Addition\n100"/>
+                    tools:text="Addition\n100" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/deletion"
@@ -100,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:gravity="center"
-                    tools:text="Deletion\n100"/>
+                    tools:text="Deletion\n100" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/status"
@@ -109,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:gravity="center"
-                    tools:text="Status\nModified"/>
+                    tools:text="Status\nModified" />
 
             </com.fastaccess.ui.widgets.AutoLinearLayout>
         </LinearLayout>

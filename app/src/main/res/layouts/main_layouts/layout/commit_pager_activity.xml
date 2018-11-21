@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -20,15 +19,14 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="?android:toolbarStyle">
 
-                <include layout="@layout/title_header_layout"/>
+                <include layout="@layout/title_header_layout" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -54,10 +52,10 @@
                             android:layout_gravity="center|end"
                             android:layout_marginEnd="@dimen/spacing_xs_large"
                             android:background="?selectableItemBackgroundBorderless"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableTop="@drawable/ic_file_multi"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center"
-                            tools:text="100"/>
+                            tools:text="100" />
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/addition"
@@ -67,11 +65,11 @@
                             android:layout_gravity="center|end"
                             android:layout_marginEnd="@dimen/spacing_xs_large"
                             android:background="?selectableItemBackgroundBorderless"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableTop="@drawable/ic_add"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center"
                             android:scaleType="centerCrop"
-                            tools:text="100"/>
+                            tools:text="100" />
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/deletion"
@@ -80,10 +78,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|end"
                             android:background="?selectableItemBackgroundBorderless"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableTop="@drawable/ic_clear"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center"
-                            tools:text="100"/>
+                            tools:text="100" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 
@@ -93,23 +91,23 @@
                     android:layout_height="wrap_content"
                     android:background="?colorPrimary"
                     app:tabSelectedTextColor="?colorAccent"
-                    app:tabTextColor="?android:textColorTertiary"/>
+                    app:tabTextColor="?android:textColorTertiary" />
             </android.support.design.widget.AppBarLayout>
 
             <com.fastaccess.ui.widgets.ViewPagerView
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/scroll_behavior"/>
+                app:layout_behavior="@string/scroll_behavior" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/prReviewHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginEnd="@dimen/fab_spacing"
                 android:layout_marginStart="@dimen/fab_margin"
                 android:layout_marginTop="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_spacing"
+                android:layout_marginBottom="@dimen/fab_margin"
                 android:focusable="true"
                 android:visibility="gone"
                 app:cardBackgroundColor="?colorAccent"
@@ -132,10 +130,10 @@
                         android:background="@drawable/circle_shape"
                         android:backgroundTint="?colorPrimary"
                         android:gravity="center"
-                        android:minHeight="24dp"
                         android:minWidth="24dp"
+                        android:minHeight="24dp"
                         android:padding="@dimen/spacing_micro"
-                        tools:text="1"/>
+                        tools:text="1" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         style="@style/TextAppearance.AppCompat.Small"
@@ -144,7 +142,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/spacing_normal"
                         android:layout_weight="1"
-                        android:text="@string/pull_request_reviews"/>
+                        android:text="@string/pull_request_reviews" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/submitReviews"
@@ -155,7 +153,7 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:padding="@dimen/spacing_normal"
                         android:text="@string/submit"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                 </LinearLayout>
 
@@ -169,7 +167,7 @@
                 android:layout_margin="@dimen/fab_margin"
                 android:src="@drawable/ic_comment"
                 android:tint="@color/white"
-                app:fabSize="auto"/>
+                app:fabSize="auto" />
 
         </android.support.design.widget.CoordinatorLayout>
 
@@ -178,9 +176,9 @@
             android:name="com.fastaccess.ui.modules.editor.comment.CommentEditorFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/comment_box_layout"/>
+            tools:layout="@layout/comment_box_layout" />
     </LinearLayout>
 
-    <include layout="@layout/nav_menu_layout"/>
+    <include layout="@layout/nav_menu_layout" />
 
 </android.support.v4.widget.DrawerLayout>

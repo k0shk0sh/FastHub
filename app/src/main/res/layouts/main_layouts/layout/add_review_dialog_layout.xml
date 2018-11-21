@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar_elevation_dark"/>
+    <include layout="@layout/appbar_elevation_dark" />
 
     <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/reviewMethod"
@@ -13,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_xs_large"
-        android:entries="@array/review_methods"/>
+        android:entries="@array/review_methods" />
 
     <FrameLayout
         android:id="@+id/commentContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

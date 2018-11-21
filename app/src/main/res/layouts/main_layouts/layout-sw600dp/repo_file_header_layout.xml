@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_micro"
-    android:paddingEnd="@dimen/spacing_micro"
     android:paddingTop="@dimen/spacing_micro"
+    android:paddingEnd="@dimen/spacing_micro"
+    android:paddingBottom="@dimen/spacing_micro"
     tools:ignore="RtlSymmetry"
     tools:showIn="@layout/repo_file_layout">
 
@@ -23,11 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
             android:contentDescription="@string/switch_branch"
             android:padding="@dimen/spacing_micro"
-            android:src="@drawable/ic_branch"/>
+            android:src="@drawable/ic_branch" />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/branches"
@@ -38,10 +37,10 @@
             android:drawableEnd="@drawable/ic_arrow_drop_down"
             android:gravity="start|center"
             android:maxLines="1"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/spacing_micro"
             android:paddingTop="@dimen/spacing_normal"
-            tools:text="Escargot combines greatly with minced sausages."/>
+            android:paddingEnd="@dimen/spacing_micro"
+            android:paddingBottom="@dimen/spacing_normal"
+            tools:text="Escargot combines greatly with minced sausages." />
 
     </LinearLayout>
 
@@ -60,13 +59,13 @@
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/home"
             android:padding="@dimen/spacing_micro"
-            android:src="@drawable/ic_home"/>
+            android:src="@drawable/ic_home" />
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_arrow_right"/>
+            android:src="@drawable/ic_arrow_right" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
@@ -78,7 +77,7 @@
             android:orientation="horizontal"
             app:layoutManager="@string/linear_layout_manager"
             tools:ignore="NestedWeights"
-            tools:listitem="@layout/file_path_row_item"/>
+            tools:listitem="@layout/file_path_row_item" />
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/downloadRepoFiles"
@@ -89,7 +88,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/download"
             android:padding="@dimen/spacing_micro"
-            android:src="@drawable/ic_download"/>
+            android:src="@drawable/ic_download" />
 
 
         <com.fastaccess.ui.widgets.ForegroundImageView
@@ -102,7 +101,7 @@
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_add"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/searchRepoFiles"
@@ -112,7 +111,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/search"
             android:padding="@dimen/spacing_micro"
-            android:src="@drawable/ic_search"/>
+            android:src="@drawable/ic_search" />
     </LinearLayout>
 
 </LinearLayout>

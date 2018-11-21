@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="premium_theme">Aukšt. kokyb. tema</string>
     <string name="in_progress">Prašome palaukti…</string>
     <string name="action">Veiksmas</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="@string/grid_layout_manager"
-                app:spanCount="@integer/small_spans"/>
+                app:spanCount="@integer/small_spans" />
 
         </com.fastaccess.ui.widgets.AppbarRefreshLayout>
 
@@ -30,14 +29,14 @@
             android:id="@+id/fastScroller"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignTop="@+id/refresh"
             android:layout_alignBottom="@+id/refresh"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/refresh"
             android:layout_centerHorizontal="true"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
     </RelativeLayout>
 
-    <include layout="@layout/state_layout"/>
+    <include layout="@layout/state_layout" />
 
 </FrameLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -12,13 +11,13 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:button="@color/transparent"
-        android:drawablePadding="12dp"
         android:drawableStart="?android:attr/listChoiceIndicatorMultiple"
-        android:paddingBottom="@dimen/spacing_xs_large"
-        android:paddingEnd="@dimen/spacing_xs_large"
+        android:drawablePadding="12dp"
         android:paddingStart="@dimen/spacing_normal"
         android:paddingTop="@dimen/spacing_xs_large"
-        android:text="@string/last_updated"/>
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingBottom="@dimen/spacing_xs_large"
+        android:text="@string/last_updated" />
 
     <com.fastaccess.ui.widgets.FontTextView
         android:id="@+id/search"
@@ -26,10 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:drawablePadding="@dimen/spacing_xs_large"
         android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="@dimen/spacing_xs_large"
         android:padding="@dimen/spacing_xs_large"
-        android:text="@string/search"/>
+        android:text="@string/search" />
 
     <com.fastaccess.ui.widgets.FontTextView
         android:id="@+id/add"
@@ -37,9 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:drawablePadding="@dimen/spacing_xs_large"
         android:drawableStart="@drawable/ic_add"
+        android:drawablePadding="@dimen/spacing_xs_large"
         android:padding="@dimen/spacing_xs_large"
-        android:text="@string/add"/>
+        android:text="@string/add" />
 
 </LinearLayout>

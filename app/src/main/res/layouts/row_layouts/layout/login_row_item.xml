@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.ForegroundRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -22,8 +21,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_s_large"
-            android:layout_marginStart="@dimen/avatar_margin"/>
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:layout_marginEnd="@dimen/spacing_s_large" />
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/title"
@@ -34,7 +33,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/search_tab_highlighter"
-            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+            tools:text="When one acquires music and afterlife, one is able to capture heaven." />
 
     </LinearLayout>
 

@@ -7,11 +7,11 @@
         <shape android:shape="rectangle">
             <padding
                 android:left="@dimen/spacing_normal"
-                android:right="@dimen/spacing_normal"/>
+                android:right="@dimen/spacing_normal" />
             <stroke
                 android:width="0.5dp"
-                android:color="?dividerColor"/>
-            <solid android:color="@color/transparent"/>
+                android:color="?dividerColor" />
+            <solid android:color="@color/transparent" />
         </shape>
     </item>
 </layer-list>

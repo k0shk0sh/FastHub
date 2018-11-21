@@ -29,8 +29,7 @@ CaptainTF @ Github 提议：
 -->
 
 <!-- 原文版本 (Original strings): 2018/03/14 -->
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">加载中, 请稍候···</string>
     <string name="action">动作</string>
     <string name="settings">设置</string>

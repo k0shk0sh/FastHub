@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu"
         android:icon="@drawable/ic_filter"
         android:title="@string/filter"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
 </menu>

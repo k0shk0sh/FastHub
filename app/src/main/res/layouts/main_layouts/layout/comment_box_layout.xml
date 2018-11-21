@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/commentBox"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/commentBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?colorPrimary"
@@ -23,8 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:minHeight="24dp"
-            android:paddingBottom="@dimen/spacing_micro"
-            android:paddingTop="@dimen/spacing_micro"/>
+            android:paddingTop="@dimen/spacing_micro"
+            android:paddingBottom="@dimen/spacing_micro" />
 
         <ImageButton
             android:id="@+id/fullScreenComment"
@@ -35,7 +34,7 @@
             android:contentDescription="@string/expand"
             android:foreground="?selectableItemBackgroundBorderless"
             android:padding="@dimen/spacing_micro"
-            android:src="@drawable/ic_fullscreen"/>
+            android:src="@drawable/ic_fullscreen" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,11 +50,11 @@
             android:background="?colorPrimaryDark"
             android:contentDescription="@string/expand"
             android:foreground="?selectableItemBackgroundBorderless"
-            android:paddingEnd="@dimen/spacing_normal"
             android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
             android:rotation="180"
             android:src="@drawable/arrow_toggle_drawable"
-            android:tint="?colorAccent"/>
+            android:tint="?colorAccent" />
 
         <com.fastaccess.ui.widgets.markdown.MarkdownEditText
             android:id="@+id/commentText"
@@ -66,9 +65,9 @@
             android:hint="@string/comment"
             android:inputType="textMultiLine|textCapSentences"
             android:maxLines="5"
-            android:paddingEnd="@dimen/spacing_normal"
             android:paddingStart="@dimen/spacing_normal"
-            android:scrollbars="vertical"/>
+            android:paddingEnd="@dimen/spacing_normal"
+            android:scrollbars="vertical" />
 
         <ImageButton
             android:id="@+id/sendComment"
@@ -77,9 +76,9 @@
             android:background="?colorPrimaryDark"
             android:contentDescription="@string/comment"
             android:foreground="?selectableItemBackgroundBorderless"
-            android:paddingEnd="@dimen/spacing_normal"
             android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
             android:src="@drawable/ic_send"
-            android:tint="?colorAccent"/>
+            android:tint="?colorAccent" />
     </LinearLayout>
 </LinearLayout>

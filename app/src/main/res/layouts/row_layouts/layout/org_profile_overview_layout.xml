@@ -1,5 +1,4 @@
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,7 +39,7 @@
                         android:layout_width="@dimen/keyline_1"
                         android:layout_height="@dimen/keyline_1"
                         android:layout_gravity="top|center"
-                        android:transitionName="@string/icon_transition"/>
+                        android:transitionName="@string/icon_transition" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/username"
@@ -51,7 +50,7 @@
                         android:layout_marginStart="@dimen/spacing_xs_large"
                         android:textStyle="bold"
                         android:transitionName="@string/title_transition"
-                        tools:text="Cum classis nocere"/>
+                        tools:text="Cum classis nocere" />
 
                 </LinearLayout>
 
@@ -61,10 +60,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/spacing_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
+                    android:layout_marginBottom="@dimen/spacing_normal"
                     android:autoLink="all"
-                    tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
+                    tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper." />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/location"
@@ -72,13 +71,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="map"
-                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_location"
+                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:gravity="center|start"
-                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:visibility="gone"
-                    tools:text="Cum classis nocere"/>
+                    tools:text="Cum classis nocere" />
 
 
                 <com.fastaccess.ui.widgets.FontTextView
@@ -88,13 +87,13 @@
                     android:layout_height="wrap_content"
                     android:autoLink="email"
                     android:background="@drawable/top_border"
-                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:gravity="center|start"
-                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:visibility="gone"
-                    tools:text="Cum classis nocere"/>
+                    tools:text="Cum classis nocere" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/link"
@@ -103,13 +102,13 @@
                     android:layout_height="wrap_content"
                     android:autoLink="web"
                     android:background="@drawable/top_border"
-                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_insert_link"
+                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:gravity="center|start"
-                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:visibility="gone"
-                    tools:text="Cum classis nocere"/>
+                    tools:text="Cum classis nocere" />
 
 
                 <com.fastaccess.ui.widgets.FontTextView
@@ -118,13 +117,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/top_border"
-                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_time"
+                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:gravity="center|start"
-                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:visibility="gone"
-                    tools:text="Cum classis nocere"/>
+                    tools:text="Cum classis nocere" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/projects"
@@ -132,15 +131,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/top_border"
-                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_project"
+                    android:drawablePadding="@dimen/spacing_xs_large"
                     android:gravity="center|start"
-                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:paddingTop="@dimen/spacing_xs_large"
+                    android:paddingBottom="@dimen/spacing_xs_large"
                     android:text="@string/projects"
                     android:textColor="?colorAccent"
                     android:visibility="gone"
-                    app:drawableColor="?colorAccent"/>
+                    app:drawableColor="?colorAccent" />
 
             </LinearLayout>
 
@@ -156,7 +155,7 @@
             <ProgressBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
         </LinearLayout>
 
     </FrameLayout>

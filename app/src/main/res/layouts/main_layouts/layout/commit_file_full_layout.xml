@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/appbar_elevation_dark"/>
+    <include layout="@layout/appbar_elevation_dark" />
 
 
     <LinearLayout
@@ -33,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:gravity="center"
-                tools:text="Changes\n100"/>
+                tools:text="Changes\n100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/addition"
@@ -42,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:gravity="center"
-                tools:text="Addition\n100"/>
+                tools:text="Addition\n100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/deletion"
@@ -51,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:gravity="center"
-                tools:text="Deletion\n100"/>
+                tools:text="Deletion\n100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/status"
@@ -60,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:gravity="center"
-                tools:text="Status\nModified"/>
+                tools:text="Status\nModified" />
 
         </com.fastaccess.ui.widgets.AutoLinearLayout>
 
@@ -72,7 +71,7 @@
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </android.support.v4.widget.NestedScrollView>
 

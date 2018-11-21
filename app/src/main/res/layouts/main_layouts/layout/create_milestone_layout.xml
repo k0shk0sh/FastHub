@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,7 +7,7 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/spacing_xs_large">
 
-    <include layout="@layout/appbar_elevation_dark"/>
+    <include layout="@layout/appbar_elevation_dark" />
 
 
     <LinearLayout
@@ -44,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/title"
                         android:inputType="textCapSentences"
-                        android:maxLines="1"/>
+                        android:maxLines="1" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -60,7 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="@string/due_on"/>
+                        android:hint="@string/due_on" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -90,7 +89,7 @@
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/description"/>
+                        android:hint="@string/description" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>

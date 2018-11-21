@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="?colorAccent"
-        tools:text="k0shk0sh/FastHub"/>
+        tools:text="k0shk0sh/FastHub" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/markAsRead"
@@ -25,6 +24,6 @@
         android:contentDescription="@string/mark_all_as_read"
         android:src="@drawable/ic_clear_all"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </RelativeLayout>

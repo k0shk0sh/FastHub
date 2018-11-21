@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:visibility="visible">
 
@@ -22,7 +21,7 @@
             android:gravity="center"
             android:padding="@dimen/spacing_xs_large"
             android:text="@string/no_data"
-            android:textColor="?colorAccent"/>
+            android:textColor="?colorAccent" />
 
         <com.fastaccess.ui.widgets.FontButton
             android:id="@+id/reload"
@@ -33,7 +32,7 @@
             android:gravity="center"
             android:text="@string/reload"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/carrot"/>
+            android:textColor="@color/carrot" />
 
     </LinearLayout>
 </merge>

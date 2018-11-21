@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    android:id="@+id/parentView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -48,7 +47,7 @@
                             android:layout_height="@dimen/keyline_1"
                             android:layout_gravity="top"
                             android:layout_marginEnd="@dimen/avatar_margin_end"
-                            android:transitionName="@string/icon_transition"/>
+                            android:transitionName="@string/icon_transition" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -63,7 +62,7 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:transitionName="@string/title_transition"
-                                tools:text="Cum classis nocere"/>
+                                tools:text="Cum classis nocere" />
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 android:id="@+id/username"
@@ -72,7 +71,7 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:transitionName="@string/title_transition"
-                                tools:text="Cum classis nocere"/>
+                                tools:text="Cum classis nocere" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -83,11 +82,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autoLink="all"
-                        android:paddingBottom="@dimen/spacing_normal"
                         android:paddingTop="@dimen/spacing_normal"
-                        tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
+                        android:paddingBottom="@dimen/spacing_normal"
+                        tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper." />
 
-                    <include layout="@layout/profile_follow_action_layout"/>
+                    <include layout="@layout/profile_follow_action_layout" />
 
 
                     <LinearLayout
@@ -101,12 +100,12 @@
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_group"
+                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:gravity="center|start"
-                            android:paddingBottom="@dimen/spacing_xs_large"
                             android:paddingTop="@dimen/spacing_xs_large"
-                            tools:text="Cum classis nocere"/>
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            tools:text="Cum classis nocere" />
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/location"
@@ -114,12 +113,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/top_border"
-                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_location"
+                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:gravity="center|start"
-                            android:paddingBottom="@dimen/spacing_xs_large"
                             android:paddingTop="@dimen/spacing_xs_large"
-                            tools:text="Cum classis nocere"/>
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            tools:text="Cum classis nocere" />
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/email"
@@ -128,12 +127,12 @@
                             android:layout_height="wrap_content"
                             android:autoLink="email"
                             android:background="@drawable/top_border"
-                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_email"
+                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:gravity="center|start"
-                            android:paddingBottom="@dimen/spacing_xs_large"
                             android:paddingTop="@dimen/spacing_xs_large"
-                            tools:text="Cum classis nocere"/>
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            tools:text="Cum classis nocere" />
 
 
                         <com.fastaccess.ui.widgets.FontTextView
@@ -143,12 +142,12 @@
                             android:layout_height="wrap_content"
                             android:autoLink="web"
                             android:background="@drawable/top_border"
-                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_insert_link"
+                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:gravity="center|start"
-                            android:paddingBottom="@dimen/spacing_xs_large"
                             android:paddingTop="@dimen/spacing_xs_large"
-                            tools:text="Cum classis nocere"/>
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            tools:text="Cum classis nocere" />
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/joined"
@@ -156,12 +155,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/top_border"
-                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_time"
+                            android:drawablePadding="@dimen/spacing_xs_large"
                             android:gravity="center|start"
-                            android:paddingBottom="@dimen/spacing_xs_large"
                             android:paddingTop="@dimen/spacing_xs_large"
-                            tools:text="Cum classis nocere"/>
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            tools:text="Cum classis nocere" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -171,14 +170,14 @@
                 android:id="@+id/organizationsCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:paddingLeft="@dimen/spacing_xs_large"
                 android:paddingRight="@dimen/spacing_xs_large"
                 android:text="@string/organizations"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/orgsCard"
@@ -201,7 +200,7 @@
                     android:orientation="vertical"
                     app:layoutManager="@string/grid_layout_manager"
                     app:spanCount="3"
-                    tools:listitem="@layout/profile_org_row_item"/>
+                    tools:listitem="@layout/profile_org_row_item" />
 
             </android.support.v7.widget.CardView>
 
@@ -209,14 +208,14 @@
                 android:id="@+id/pinnedReposTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:paddingLeft="@dimen/spacing_xs_large"
                 android:paddingRight="@dimen/spacing_xs_large"
                 android:text="@string/pinned"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/pinnedReposCard"
@@ -238,7 +237,7 @@
                     android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
                     app:layoutManager="@string/grid_layout_manager"
-                    app:spanCount="@integer/small_spans"/>
+                    app:spanCount="@integer/small_spans" />
 
             </android.support.v7.widget.CardView>
 
@@ -246,14 +245,14 @@
                 android:id="@+id/contributionsCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:paddingLeft="@dimen/spacing_xs_large"
                 android:paddingRight="@dimen/spacing_xs_large"
                 android:text="@string/contributions"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/contributionCard"
@@ -278,7 +277,7 @@
                     app:baseEmptyColor="@color/material_grey_400"
                     app:displayMonth="true"
                     app:lastWeeks="53"
-                    app:textColor="?android:textColorPrimary"/>
+                    app:textColor="?android:textColorPrimary" />
 
             </android.support.v7.widget.CardView>
 
@@ -294,7 +293,7 @@
             <ProgressBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
         </LinearLayout>
 
     </FrameLayout>

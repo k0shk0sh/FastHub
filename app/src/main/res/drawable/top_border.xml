@@ -5,12 +5,11 @@
         android:left="-2dp"
         android:right="-2dp">
         <shape android:shape="rectangle">
-            <padding
-                android:top="@dimen/spacing_normal"/>
+            <padding android:top="@dimen/spacing_normal" />
             <stroke
                 android:width="0.5dp"
-                android:color="?dividerColor"/>
-            <solid android:color="@color/transparent"/>
+                android:color="?dividerColor" />
+            <solid android:color="@color/transparent" />
         </shape>
     </item>
 </layer-list>

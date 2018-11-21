@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingEnd="@dimen/spacing_normal"
-                android:paddingStart="@dimen/spacing_normal">
+                android:paddingStart="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/spacing_normal">
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/cancel"
@@ -36,7 +35,7 @@
                     android:contentDescription="@string/back"
                     android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_clear"/>
+                    android:src="@drawable/ic_clear" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/title"
@@ -47,7 +46,7 @@
                     android:padding="@dimen/spacing_xs_large"
                     android:textColor="?android:textColorPrimary"
                     android:textStyle="bold"
-                    tools:text="How jolly. You loot like a mast."/>
+                    tools:text="How jolly. You loot like a mast." />
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/add"
@@ -60,7 +59,7 @@
                     android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_add"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/ok"
@@ -71,7 +70,7 @@
                     android:contentDescription="@string/submit"
                     android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_done"/>
+                    android:src="@drawable/ic_done" />
 
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
@@ -94,7 +93,7 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="@string/linear_layout_manager"/>
+                    app:layoutManager="@string/linear_layout_manager" />
 
             </com.fastaccess.ui.widgets.AppbarRefreshLayout>
 
@@ -102,13 +101,13 @@
                 android:id="@+id/fastScroller"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignTop="@+id/refresh"
                 android:layout_alignBottom="@+id/refresh"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/refresh"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
-        <include layout="@layout/state_layout"/>
+        <include layout="@layout/state_layout" />
     </FrameLayout>
 
 </LinearLayout>

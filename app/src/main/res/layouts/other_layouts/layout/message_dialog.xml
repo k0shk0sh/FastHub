@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/messageLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/messageLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?card_background"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
             android:padding="@dimen/spacing_xs_large"
             android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
-            tools:text="How jolly. You loot like a mast."/>
+            tools:text="How jolly. You loot like a mast." />
 
 
         <android.support.v4.widget.NestedScrollView
@@ -39,9 +38,9 @@
                     android:id="@+id/prettifyWebView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:webview_background="?card_background"
                     android:minHeight="200dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    app:webview_background="?card_background" />
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/message"
@@ -49,10 +48,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
-                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:textColor="?android:attr/textColorSecondary"
-                    tools:text="Hello World"/>
+                    tools:text="Hello World" />
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
@@ -62,8 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="end"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_normal">
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal">
 
             <com.fastaccess.ui.widgets.FontButton
                 android:id="@+id/cancel"
@@ -73,7 +72,7 @@
                 android:layout_gravity="end"
                 android:text="@string/cancel"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/material_pink_700"/>
+                android:textColor="@color/material_pink_700" />
 
             <com.fastaccess.ui.widgets.FontButton
                 android:id="@+id/ok"
@@ -83,7 +82,7 @@
                 android:layout_gravity="end"
                 android:text="@string/ok"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="?colorAccent"/>
+                android:textColor="?colorAccent" />
 
         </LinearLayout>
     </LinearLayout>
@@ -94,5 +93,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end|center"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 </FrameLayout>
