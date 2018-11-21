@@ -1528,7 +1528,7 @@
     ]
   },
   {
-    "emoji": "🙇‍♀️",
+    "emoji": "🙇♀️",
     "description": "woman bowing deeply",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -1541,7 +1541,7 @@
     ]
   },
   {
-    "emoji": "🙇‍♂️",
+    "emoji": "🙇♂️",
     "description": "man bowing deeply",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -10705,9 +10705,8 @@
       "regional_indicator_symbol_z"
     ]
   },
-
   {
-    "emoji": "👨‍👩‍👦",
+    "emoji": "👨👩👦",
     "description": "family (man, woman, boy)",
     "aliases": [
       "family_man_woman_boy"
@@ -10720,7 +10719,7 @@
     ]
   },
   {
-    "emoji": "👨‍👩‍👧",
+    "emoji": "👨👩👧",
     "description": "family (man, woman, girl)",
     "aliases": [
       "family_man_woman_girl"
@@ -10733,7 +10732,7 @@
     ]
   },
   {
-    "emoji": "👨‍👩‍👦‍👦",
+    "emoji": "👨👩👦👦",
     "description": "family (man, woman, boy, boy)",
     "aliases": [
       "family_man_woman_boy_boy"
@@ -10746,7 +10745,7 @@
     ]
   },
   {
-    "emoji": "👨‍👩‍👧‍👧",
+    "emoji": "👨👩👧👧",
     "description": "family (man, woman, girl, girl)",
     "aliases": [
       "family_man_woman_girl_girl"
@@ -10759,7 +10758,7 @@
     ]
   },
   {
-    "emoji": "👩‍👩‍👦",
+    "emoji": "👩👩👦",
     "description": "family (woman, woman, boy)",
     "aliases": [
       "family_woman_woman_boy"
@@ -10771,7 +10770,7 @@
     ]
   },
   {
-    "emoji": "👩‍👩‍👧",
+    "emoji": "👩👩👧",
     "description": "family (woman, woman, girl)",
     "aliases": [
       "family_woman_woman_girl"
@@ -10783,7 +10782,7 @@
     ]
   },
   {
-    "emoji": "👩‍👩‍👧‍👦",
+    "emoji": "👩👩👧👦",
     "description": "family (woman, woman, girl, boy)",
     "aliases": [
       "family_woman_woman_girl_boy"
@@ -10796,7 +10795,7 @@
     ]
   },
   {
-    "emoji": "👩‍👩‍👦‍👦",
+    "emoji": "👩👩👦👦",
     "description": "family (woman, woman, boy, boy)",
     "aliases": [
       "family_woman_woman_boy_boy"
@@ -10808,7 +10807,7 @@
     ]
   },
   {
-    "emoji": "👩‍👩‍👧‍👧",
+    "emoji": "👩👩👧👧",
     "description": "family (woman, woman, girl, girl)",
     "aliases": [
       "family_woman_woman_girl_girl"
@@ -10820,7 +10819,7 @@
     ]
   },
   {
-    "emoji": "👨‍👨‍👦",
+    "emoji": "👨👨👦",
     "description": "family (man, man, boy)",
     "aliases": [
       "family_man_man_boy"
@@ -10832,7 +10831,7 @@
     ]
   },
   {
-    "emoji": "👨‍👨‍👧",
+    "emoji": "👨👨👧",
     "description": "family (man, man, girl)",
     "aliases": [
       "family_man_man_girl"
@@ -10844,7 +10843,7 @@
     ]
   },
   {
-    "emoji": "👨‍👨‍👧‍👦",
+    "emoji": "👨👨👧👦",
     "description": "family (man, man, girl, boy)",
     "aliases": [
       "family_man_man_girl_boy"
@@ -10857,7 +10856,7 @@
     ]
   },
   {
-    "emoji": "👨‍👨‍👦‍👦",
+    "emoji": "👨👨👦👦",
     "description": "family (man, man, boy, boy)",
     "aliases": [
       "family_man_man_boy_boy"
@@ -10869,7 +10868,7 @@
     ]
   },
   {
-    "emoji": "👨‍👨‍👧‍👧",
+    "emoji": "👨👨👧👧",
     "description": "family (man, man, girl, girl)",
     "aliases": [
       "family_man_man_girl_girl"
@@ -10881,7 +10880,7 @@
     ]
   },
   {
-    "emoji": "👩‍❤‍👩",
+    "emoji": "👩❤👩",
     "description": "couple with heart (woman, woman)",
     "aliases": [
       "couple_with_heart_woman_woman"
@@ -10893,7 +10892,7 @@
     ]
   },
   {
-    "emoji": "👨‍❤‍👨",
+    "emoji": "👨❤👨",
     "description": "couple with heart (man, man)",
     "aliases": [
       "couple_with_heart_man_man"
@@ -10905,7 +10904,7 @@
     ]
   },
   {
-    "emoji": "👩‍❤️‍💋‍👩",
+    "emoji": "👩❤️💋👩",
     "description": "kiss (woman, woman)",
     "aliases": [
       "couplekiss_woman_woman"
@@ -10917,7 +10916,7 @@
     ]
   },
   {
-    "emoji": "‍👨❤️💋‍👨",
+    "emoji": "👨❤️💋👨",
     "description": "kiss (man, man)",
     "aliases": [
       "couplekiss_man_man"
@@ -11999,7 +11998,7 @@
     "tags": []
   },
   {
-    "emoji": "🏌‍♀️",
+    "emoji": "🏌♀️",
     "description": "woman golfing",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -12728,7 +12727,7 @@
     "tags": []
   },
   {
-    "emoji": "👁‍🗨",
+    "emoji": "👁🗨",
     "description": "eye in speech bubble",
     "supports_fitzpatrick": false,
     "aliases": [
@@ -13318,7 +13317,7 @@
     "tags": []
   },
   {
-    "emoji": "🤸‍♂️",
+    "emoji": "🤸♂️",
     "description": "man doing cartwheel",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13328,7 +13327,7 @@
     "tags": []
   },
   {
-    "emoji": "🤸‍♀️",
+    "emoji": "🤸♀️",
     "description": "woman doing cartwheel",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13347,7 +13346,7 @@
     "tags": []
   },
   {
-    "emoji": "🤼‍♂️",
+    "emoji": "🤼♂️",
     "description": "man wrestlers",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13357,7 +13356,7 @@
     "tags": []
   },
   {
-    "emoji": "🤼‍♀️",
+    "emoji": "🤼♀️",
     "description": "woman wrestlers",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13376,7 +13375,7 @@
     "tags": []
   },
   {
-    "emoji": "🤽‍♂️",
+    "emoji": "🤽♂️",
     "description": "man water polo",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13386,7 +13385,7 @@
     "tags": []
   },
   {
-    "emoji": "🤽‍♀️",
+    "emoji": "🤽♀️",
     "description": "woman water polo",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13405,7 +13404,7 @@
     "tags": []
   },
   {
-    "emoji": "🤾‍♂️",
+    "emoji": "🤾♂️",
     "description": "man handball",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13415,7 +13414,7 @@
     "tags": []
   },
   {
-    "emoji": "🤾‍♀️",
+    "emoji": "🤾♀️",
     "description": "woman handball",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13452,7 +13451,7 @@
     "tags": []
   },
   {
-    "emoji": "🤹‍♂️",
+    "emoji": "🤹♂️",
     "description": "man juggling",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13462,7 +13461,7 @@
     "tags": []
   },
   {
-    "emoji": "🤹‍♀️",
+    "emoji": "🤹♀️",
     "description": "woman juggling",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13491,7 +13490,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍⚕️",
+    "emoji": "👨⚕️",
     "description": "man health worker",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13501,7 +13500,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍⚕️",
+    "emoji": "👩⚕️",
     "description": "woman health worker",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13511,7 +13510,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🎓",
+    "emoji": "👨🎓",
     "description": "man student",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13521,7 +13520,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🎓",
+    "emoji": "👩🎓",
     "description": "woman student",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13531,7 +13530,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🏫",
+    "emoji": "👨🏫",
     "description": "man teacher",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13541,7 +13540,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🏫",
+    "emoji": "👩🏫",
     "description": "woman teacher",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13551,7 +13550,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🌾",
+    "emoji": "👨🌾",
     "description": "man farmer",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13561,7 +13560,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🌾",
+    "emoji": "👩🌾",
     "description": "woman famer",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13571,7 +13570,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🍳",
+    "emoji": "👨🍳",
     "description": "man cook",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13581,7 +13580,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🍳",
+    "emoji": "👩🍳",
     "description": "woman cook",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13591,7 +13590,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🔧",
+    "emoji": "👨🔧",
     "description": "man mechanic",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13601,7 +13600,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🔧",
+    "emoji": "👩🔧",
     "description": "woman mechanic",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13611,7 +13610,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🏭",
+    "emoji": "👨🏭",
     "description": "man factory worker",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13621,7 +13620,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🏭",
+    "emoji": "👩🏭",
     "description": "woman factory worker",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13631,7 +13630,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍💼",
+    "emoji": "👨💼",
     "description": "man office worker",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13641,7 +13640,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍💼",
+    "emoji": "👩💼",
     "description": "woman office worker",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13651,7 +13650,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🔬",
+    "emoji": "👨🔬",
     "description": "man scientist",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13661,7 +13660,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🔬",
+    "emoji": "👩🔬",
     "description": "woman scientist",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13671,7 +13670,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍💻",
+    "emoji": "👨💻",
     "description": "man technologist",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13681,7 +13680,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍💻",
+    "emoji": "👩💻",
     "description": "woman technologist",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13691,7 +13690,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🎤",
+    "emoji": "👨🎤",
     "description": "man singer",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13701,7 +13700,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🎤",
+    "emoji": "👩🎤",
     "description": "woman singer",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13711,7 +13710,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🎨",
+    "emoji": "👨🎨",
     "description": "man artist",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13721,7 +13720,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🎨",
+    "emoji": "👩🎨",
     "description": "woman artist",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13731,7 +13730,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍✈️",
+    "emoji": "👨✈️",
     "description": "man pilot",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13741,7 +13740,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍✈️",
+    "emoji": "👩✈️",
     "description": "woman pilot",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13751,7 +13750,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🚀",
+    "emoji": "👨🚀",
     "description": "man astronaut",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13761,7 +13760,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🚀",
+    "emoji": "👩🚀",
     "description": "woman astronaut",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13771,7 +13770,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍🚒",
+    "emoji": "👨🚒",
     "description": "man firefighter",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13781,7 +13780,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍🚒",
+    "emoji": "👩🚒",
     "description": "woman firefighter",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13791,7 +13790,7 @@
     "tags": []
   },
   {
-    "emoji": "🤦‍♀️",
+    "emoji": "🤦♀️",
     "description": "woman facepalm",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13801,7 +13800,7 @@
     "tags": []
   },
   {
-    "emoji": "🤷‍♂️",
+    "emoji": "🤷♂️",
     "description": "man shrug",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13811,7 +13810,7 @@
     "tags": []
   },
   {
-    "emoji": "🤷‍♀️",
+    "emoji": "🤷♀️",
     "description": "woman shrug",
     "supports_fitzpatrick": true,
     "aliases": [
@@ -13831,7 +13830,7 @@
     "tags": []
   },
   {
-    "emoji": "👨‍⚖️",
+    "emoji": "👨⚖️",
     "description": "man judge",
     "supports_fitzpatrick": false,
     "aliases": [
@@ -13841,7 +13840,7 @@
     "tags": []
   },
   {
-    "emoji": "👩‍⚖️",
+    "emoji": "👩⚖️",
     "description": "woman judge",
     "supports_fitzpatrick": false,
     "aliases": [
