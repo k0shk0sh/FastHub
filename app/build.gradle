@@ -16,30 +16,30 @@ buildProperties {
 }
 
 android {
-    signingConfigs {
-        signing {
-            keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
-            keyPassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
-            storeFile file('fastaccess-public')
-            storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
-        }
-    }
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 467
         versionName "4.6.7"
-        buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
-        buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
-        buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
-        buildConfigString "IMGUR_SECRET", (buildProperties.secrets['imgur_secret'] | buildProperties.notThere['imgur_secret']).string
+
+        buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id']
+                | buildProperties.notThere['github_client_id']).string
+        buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret']
+                | buildProperties.notThere['github_secret']).string
+        buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id']
+                | buildProperties.notThere['imgur_client_id']).string
+        buildConfigString "IMGUR_SECRET", (buildProperties.secrets['imgur_secret']
+                | buildProperties.notThere['imgur_secret']).string
         buildConfigField "String", "REST_URL", '"https://api.github.com/"'
         buildConfigField "String", "IMGUR_URL", '"https://api.imgur.com/3/"'
+
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath true
@@ -51,8 +51,9 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            signingConfig signingConfigs.signing
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.signing
+            resValue "string", "app_name", "FastHub"
         }
         debug {
             if (!rootProject.file('gradle.properties').exists()) {
@@ -61,20 +62,7 @@ android {
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             ext.alwaysUpdateBuildId = false
-        }
-
-    }
-
-    sourceSets {
-        main {
-            res.srcDirs = [
-                    "src/main/res/",
-                    "src/main/res/layouts/main_layouts",
-                    "src/main/res/layouts/row_layouts",
-                    "src/main/res/layouts/other_layouts",
-                    "src/main/res/translations",
-                    "src/main/res"
-            ]
+            resValue "string", "app_name", "FastHub Debug"
         }
     }
 
@@ -82,11 +70,25 @@ android {
         abortOnError false
         htmlReport true
         xmlReport true
-        disable 'InvalidPackage'
+        disable 'InvalidPackage', 'MissingTranslation'
     }
+
     compileOptions {
+        encoding = 'UTF-8'
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        signing {
+            keyAlias((buildProperties.secrets['android_key_alias']
+                    | buildProperties.notThere['android_key_alias']).string)
+            keyPassword((buildProperties.secrets['android_store_password']
+                    | buildProperties.notThere['android_store_password']).string)
+            storeFile file('fastaccess-public')
+            storePassword((buildProperties.secrets['android_store_password']
+                    | buildProperties.notThere['android_store_password']).string)
+        }
     }
 
     configurations {
@@ -103,89 +105,112 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
 }
 
 kapt {
     generateStubs = true
 }
 
-repositories {
-    maven { url "https://clojars.org/repo/" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://jitpack.io" }
-    maven { url 'https://maven.fabric.io/public' }
+ext {
+    supportLib = '28.0.0'
+    gms = '12.0.1' //15.0.0
+    butterKnife = '8.8.1' //9.0.0-rc1
+    state = '1.4.1'
+    lombok = '1.18.2'
+    requery = '1.3.2' //1.5.1
+    commonmark = '0.11.0' //0.12.1
+    glide = '3.8.0' //4.8.0
+    thirtyinch = '0.9.0'
+    retrofit = '2.4.0'
+    junit = '4.12'
+    mockito = '1.10.19' //2.23.0
+    assertj = '2.5.0' //2.9.1, 3.0.0, 3.11.1
+    espresso = '3.0.2'
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:appcompat-v7:${supportVersion}"
-    implementation "com.android.support:design:${supportVersion}"
-    implementation "com.android.support:cardview-v7:${supportVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportVersion}"
-    implementation "com.android.support:preference-v14:${supportVersion}"
-    implementation "com.android.support:customtabs:${supportVersion}"
-    implementation "com.android.support:palette-v7:${supportVersion}"
-    implementation "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
-    implementation "net.grandcentrix.thirtyinch:thirtyinch-rx2:${thirtyinchVersion}"
+    implementation "com.android.support:design:${supportLib}"
+    implementation "com.android.support:support-v4:${supportLib}"
+    implementation "com.android.support:appcompat-v7:${supportLib}"
+    implementation "com.android.support:cardview-v7:${supportLib}"
+    implementation "com.android.support:palette-v7:${supportLib}"
+    implementation "com.android.support:recyclerview-v7:${supportLib}"
+    implementation "com.android.support:preference-v14:${supportLib}"
+    implementation "com.android.support:customtabs:${supportLib}"
+    implementation "com.android.support:support-media-compat:${supportLib}"
+
+    implementation "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinch}"
+    implementation "net.grandcentrix.thirtyinch:thirtyinch-rx2:${thirtyinch}"
+
     implementation "com.squareup.retrofit2:retrofit:${retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
-    implementation "com.github.bumptech.glide:glide:${glideVersion}"
-    implementation 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
-    implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
+
+    implementation 'com.zzhoujay.markdown:markdown:1.0.5'
+    implementation "com.github.bumptech.glide:glide:${glide}"
+    implementation 'cn.gavinliu.android.lib:ShapedImageView:0.8.5'
+    implementation "com.jakewharton:butterknife:${butterKnife}"
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation 'com.annimon:stream:1.1.9'
-    implementation 'com.github.GrenderG:Toasty:1.1.3'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+    implementation 'com.annimon:stream:1.2.1'
+    implementation 'com.github.GrenderG:Toasty:1.3.0'
     implementation 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
-    implementation 'com.github.daniel-stoneuk:material-about-library:2.1.0'
+    implementation 'com.github.daniel-stoneuk:material-about-library:2.1.0' //2.4.2
     implementation "io.requery:requery:${requery}"
     implementation "io.requery:requery-android:${requery}"
-    implementation('com.mikepenz:aboutlibraries:5.9.7@aar') { transitive = true }
+    implementation('com.mikepenz:aboutlibraries:5.9.8@aar') { transitive = true } //6.2.0
     implementation 'com.github.nightwhistler:HtmlSpanner:0.4'
-    implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
-    implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
+    implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2.1' //2.22
+    implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
+
     implementation "com.atlassian.commonmark:commonmark:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
+
     implementation "com.google.firebase:firebase-core:${gms}"
     implementation "com.google.firebase:firebase-messaging:${gms}"
     implementation "com.google.firebase:firebase-database:${gms}"
     implementation "com.google.android.gms:play-services-base:${gms}"
-    implementation('com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0') { transitive = false }
-    implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0') { transitive = false }
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') { transitive = true }
-    implementation "com.github.miguelbcr:RxBillingService:0.0.3"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlin_version}"
-    implementation 'org.jsoup:jsoup:1.10.3'
-    implementation "com.evernote:android-state:${state_version}"
-    implementation "petrov.kristiyan:colorpicker-library:1.1.4"
-    implementation 'com.apollographql.apollo:apollo-rx2-support:0.4.1'
-    implementation 'com.jaredrummler:android-device-names:1.1.5'
+
+    implementation('com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0', {
+        transitive = false
+    })
+    implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0', { transitive = false })
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar', { transitive = true })
+    implementation 'com.github.miguelbcr:RxBillingService:0.0.3'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation 'org.jsoup:jsoup:1.11.3'
+    implementation "com.evernote:android-state:${state}"
+    implementation 'petrov.kristiyan:colorpicker-library:1.1.8' //1.1.10
+    implementation 'com.apollographql.apollo:apollo-rx2-support:0.5.0' //1.0.0-alpha3
+    implementation 'com.jaredrummler:android-device-names:1.1.8'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
-    implementation 'com.airbnb.android:lottie:2.2.5'
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    kapt "org.projectlombok:lombok:${lombokVersion}"
-    kapt "com.evernote:android-state-processor:${state_version}"
-    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
-    kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
+    implementation 'com.airbnb.android:lottie:2.2.5' //2.8.0
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    compileOnly "org.projectlombok:lombok:${lombok}"
+    kapt "org.projectlombok:lombok:${lombok}"
+    kapt "com.evernote:android-state-processor:${state}"
+    kapt "com.jakewharton:butterknife-compiler:${butterKnife}"
+    kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.2'
     kapt "io.requery:requery-processor:${requery}"
-//    testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
-    testImplementation "junit:junit:${junitVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
-    testImplementation "org.assertj:assertj-core:${assertjVersion}"
-    androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
-    androidTestImplementation "org.mockito:mockito-core:${mockitoVersion}"
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test:rules:1.0.1'
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${espresseVersion}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
+
+//    testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:${thirtyinch}"
+    testImplementation "junit:junit:${junit}"
+    testImplementation "org.mockito:mockito-core:${mockito}"
+    testImplementation "org.assertj:assertj-core:${assertj}"
+    androidTestImplementation "com.android.support:support-annotations:${supportLib}"
+    androidTestImplementation "org.mockito:mockito-core:${mockito}"
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${espresso}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresso}"
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -59,7 +59,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
-  - PRs reviews (reply, react with emojies, delete & edit comment)
+  - PRs reviews (reply, react with emojis, delete & edit comment)
   - PRs request review changes/approve & comment.
   - PRs statuses
 - **Commits and Gists**
@@ -102,7 +102,7 @@ _Ads currently not available._
 - [**Lombok**](https://projectlombok.org/) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs
 - [**Glide**](https://github.com/bumptech/glide) for loading images
-- [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
+- [**Commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
@@ -113,7 +113,7 @@ _Ads currently not available._
 ## Contribution
 
 You love FastHub? You want new features or bug fixes?  
-Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
+You can **contribute** to the project either by [creating a PR](https://github.com/k0shk0sh/FastHub/compare) or [submitting an issue](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
 Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
 ## Language Contributors

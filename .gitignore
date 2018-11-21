@@ -1,12 +1,10 @@
 *.iml
 .gradle
-/local.properties
+local.properties
 .DS_Store
-/build
-/gradle.properties
-/.idea/
+build/
+.idea/
 /app/google-services.json
-/app/build/
 /app/src/main/res/values/secrets.xml
 /app/fastaccess-key
 /changelog_generator

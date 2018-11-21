@@ -22,7 +22,8 @@ public class TestHelper {
 
     public static Matcher<View> textInputLayoutHasHint(final String expectedErrorText) {
         return new TypeSafeMatcher<View>() {
-            @Override public boolean matchesSafely(View view) {
+            @Override
+            public boolean matchesSafely(View view) {
                 if (!(view instanceof TextInputLayout)) {
                     return false;
                 }
@@ -30,13 +31,16 @@ public class TestHelper {
                 return error != null && expectedErrorText.equals(error.toString());
             }
 
-            @Override public void describeTo(Description description) {}
+            @Override
+            public void describeTo(Description description) {
+            }
         };
     }
 
     public static Matcher<View> textInputLayoutHasError(final String expectedErrorText) {
         return new TypeSafeMatcher<View>() {
-            @Override public boolean matchesSafely(View view) {
+            @Override
+            public boolean matchesSafely(View view) {
                 if (!(view instanceof TextInputLayout)) {
                     return false;
                 }
@@ -44,32 +48,40 @@ public class TestHelper {
                 return error != null && expectedErrorText.equals(error.toString());
             }
 
-            @Override public void describeTo(Description description) {}
+            @Override
+            public void describeTo(Description description) {
+            }
         };
     }
 
     public static Matcher<View> bottomNavSelection(@IntRange(from = 0, to = 3) final int position) {
         return new TypeSafeMatcher<View>() {
-            @Override public boolean matchesSafely(View view) {
+            @Override
+            public boolean matchesSafely(View view) {
                 return view instanceof BottomNavigation && position == ((BottomNavigation) view).getSelectedIndex();
             }
 
-            @Override public void describeTo(Description description) {}
+            @Override
+            public void describeTo(Description description) {
+            }
         };
     }
 
     public static ViewAction bottomNavAction(@IntRange(from = 0, to = 3) final int index) {
         return new ViewAction() {
 
-            @Override public Matcher<View> getConstraints() {
+            @Override
+            public Matcher<View> getConstraints() {
                 return isAssignableFrom(BottomNavigation.class);
             }
 
-            @Override public String getDescription() {
+            @Override
+            public String getDescription() {
                 return "BottomNavigation";
             }
 
-            @Override public void perform(UiController uiController, View view) {
+            @Override
+            public void perform(UiController uiController, View view) {
                 ((BottomNavigation) view).setSelectedIndex(index, false);
             }
         };

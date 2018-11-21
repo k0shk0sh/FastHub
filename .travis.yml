@@ -1,14 +1,16 @@
 language: android
 
+jdk: oraclejdk8
+
+sudo: required
+
 android:
    components:
    - tools
    - platform-tools
    - tools # Upgrade again after upgrading platform-tools.
-
-jdk: oraclejdk8
-
-sudo: required
+   - build-tools-28.0.3
+   - android-28
 
 before_install:
   # Skip build if the commit message contains [skip travis] or [travis skip]
