@@ -14,7 +14,7 @@ import javax.inject.Inject
 class NotificationRepositoryProvider @Inject constructor(private val dao: NotificationsDao) : NotificationRepository {
     override fun getNotifications(unread: Boolean): DataSource.Factory<Int, NotificationModel> = dao.getNotifications(unread)
     override fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>> = dao.getAllNotifications(false)
-        .map({ list ->
+        .map({ list: List<NotificationModel> ->
             list.groupBy { it.repository }
                 .flatMap { entry ->
                     val notifications = arrayListOf<GroupedNotificationsModel>()
