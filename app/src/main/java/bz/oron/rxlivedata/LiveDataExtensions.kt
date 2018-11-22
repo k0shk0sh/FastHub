@@ -10,13 +10,13 @@ import androidx.lifecycle.Transformations
 
 
 @MainThread
-fun <X,Y> LiveData<X>.map(func: (X) -> Y): LiveData<Y> {
-    return Transformations.map(this, func)
+fun <X, Y> LiveData<X>.map(func: (X) -> Y): LiveData<Y> {
+    return Transformations.map(this) { func(it) }
 }
 
 @MainThread
-fun <X,Y> LiveData<X>.switchMap(func: (X) -> LiveData<Y>): LiveData<Y> {
-    return Transformations.switchMap(this, func)
+fun <X, Y> LiveData<X>.switchMap(func: (X) -> LiveData<Y>): LiveData<Y> {
+    return Transformations.switchMap(this) { func(it) }
 }
 
 @MainThread
@@ -142,7 +142,7 @@ fun <X> List<LiveData<X>>.merge(): LiveData<X> {
 }
 
 @MainThread
-fun <X,Y> LiveData<X>.withLatestFrom(source: LiveData<Y>): LiveData<Y> {
+fun <X, Y> LiveData<X>.withLatestFrom(source: LiveData<Y>): LiveData<Y> {
     val result = MediatorLiveData<Y>()
     var sourceResult: Y? = null
 
@@ -156,11 +156,11 @@ fun <X,Y> LiveData<X>.withLatestFrom(source: LiveData<Y>): LiveData<Y> {
         }
     }
 
-    return  result
+    return result
 }
 
 @MainThread
-fun <X,Y,Z> LiveData<X>.withLatestFrom(source: LiveData<Y>, resultSelector: (Pair<X,Y>) -> Z): LiveData<Z> {
+fun <X, Y, Z> LiveData<X>.withLatestFrom(source: LiveData<Y>, resultSelector: (Pair<X, Y>) -> Z): LiveData<Z> {
     val result = MediatorLiveData<Z>()
     var sourceResult: Y? = null
 
@@ -174,7 +174,7 @@ fun <X,Y,Z> LiveData<X>.withLatestFrom(source: LiveData<Y>, resultSelector: (Pai
         }
     }
 
-    return  result
+    return result
 }
 
 @MainThread
