@@ -6,7 +6,7 @@ ext {
     androidX = '1.0.0'
     navigation = '1.0.0-alpha05'
     constraintLayout = '1.1.0'
-    dagger2 = '2.16'
+    dagger2 = '2.19'
     butterKnife = '8.8.1'
     javaxAnnotation = '10.0-b28'
     okHttp = '3.11.0'

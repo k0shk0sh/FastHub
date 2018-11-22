@@ -32,6 +32,7 @@ fun String.replaceAllNewLines(prefix: String = " "): String {
 fun me() = "k0shk0sh"
 fun myProfile() = "app://fasthub/k0shk0sh"
 fun fastHub() = "k0shk0sh/FastHub"
+
 fun Long.formatNumber(): String {
     if (this < 999) return this.toString()
     val count = this.toDouble()
