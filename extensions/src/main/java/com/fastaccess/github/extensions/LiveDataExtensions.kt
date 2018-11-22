@@ -1,12 +1,10 @@
-package bz.oron.rxlivedata
+package com.fastaccess.github.extensions
 
 
 // https://github.com/oronbz/rxlivedata
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 
 
 @MainThread
@@ -17,6 +15,14 @@ fun <X, Y> LiveData<X>.map(func: (X) -> Y): LiveData<Y> {
 @MainThread
 fun <X, Y> LiveData<X>.switchMap(func: (X) -> LiveData<Y>): LiveData<Y> {
     return Transformations.switchMap(this) { func(it) }
+}
+
+fun <T> LiveData<T>.observeNotNull(owner: LifecycleOwner, observer: (t: T) -> Unit) {
+    this.observe(owner, Observer { it?.let(observer) })
+}
+
+fun <T> LiveData<T>.observeNull(owner: LifecycleOwner, observer: (t: T?) -> Unit) {
+    this.observe(owner, Observer { observer.invoke(it) })
 }
 
 @MainThread

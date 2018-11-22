@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.fastaccess.data.persistence.models.ProfileGistModel
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.utils.extensions.formatNumber
+import com.fastaccess.github.extensions.formatNumber
 import kotlinx.android.synthetic.main.profile_gist_repo_row_item.view.*
 
 /**

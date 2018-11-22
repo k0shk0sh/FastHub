@@ -1,8 +1,8 @@
 package com.fastaccess.github.ui.modules.main.fragment.viewmodel
 
 import androidx.lifecycle.LiveData
-import bz.oron.rxlivedata.map
-import bz.oron.rxlivedata.switchMap
+import com.fastaccess.github.extensions.map
+import com.fastaccess.github.extensions.switchMap
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.FeedModel

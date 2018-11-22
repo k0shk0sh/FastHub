@@ -9,8 +9,8 @@ import com.fastaccess.domain.response.enums.EventsType
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.widget.SpannableBuilder
-import com.fastaccess.github.utils.extensions.replaceAllNewLines
-import com.fastaccess.github.utils.extensions.timeAgo
+import com.fastaccess.github.extensions.replaceAllNewLines
+import com.fastaccess.github.extensions.timeAgo
 import kotlinx.android.synthetic.main.feeds_main_screen_row_item.view.*
 
 /**

@@ -20,7 +20,7 @@ import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.asString
-import com.fastaccess.github.utils.extensions.isTrue
+import com.fastaccess.github.extensions.isTrue
 import kotlinx.android.synthetic.main.login_form_layout.*
 import javax.inject.Inject
 

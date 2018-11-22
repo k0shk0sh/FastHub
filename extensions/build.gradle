@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.apollographql.android'
 
 
 android {
@@ -36,13 +35,6 @@ android {
     }
 }
 
-apollo {
-    customTypeMapping = [
-            "URI" : "java.net.URI",
-            "DateTime": "java.util.Date"
-    ]
-    useJavaBeansSemanticNaming = true
-}
 
 dependencies {
     def dependency = rootProject.ext
@@ -51,7 +43,6 @@ dependencies {
 
     implementation project(':domain')
     implementation project(':resources')
-    implementation project(':extensions')
     implementation dependency.kotlin
     implementation dependency.networking
     implementation dependency.extrasLibraries

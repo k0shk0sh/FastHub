@@ -12,10 +12,14 @@ import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.isMe
+import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.observeNull
 import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrgsAdapter

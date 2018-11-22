@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.fastaccess.github.utils.extensions.runSafely
+import com.fastaccess.github.extensions.runSafely
 import timber.log.Timber
 
 

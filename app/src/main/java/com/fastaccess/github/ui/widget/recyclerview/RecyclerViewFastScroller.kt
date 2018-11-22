@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fastaccess.github.R
-import com.fastaccess.github.utils.extensions.runSafely
+import com.fastaccess.github.extensions.runSafely
 import com.google.android.material.appbar.AppBarLayout
 
 open class RecyclerViewFastScroller : FrameLayout {

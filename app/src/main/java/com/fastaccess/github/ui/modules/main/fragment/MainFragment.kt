@@ -14,11 +14,15 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.utils.FEEDS_LINK
 import com.fastaccess.github.utils.NOTIFICATION_LINK
-import com.fastaccess.github.utils.extensions.*
+import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.extensions.otpCode
+import com.fastaccess.github.utils.extensions.route
+import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*

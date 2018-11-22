@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import com.airbnb.deeplinkdispatch.DeepLink
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.extensions.getSimpleName
 import com.fastaccess.github.ui.modules.routing.RoutingActivity
 import timber.log.Timber
 

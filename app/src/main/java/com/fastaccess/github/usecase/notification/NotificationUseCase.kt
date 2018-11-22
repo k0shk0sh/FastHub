@@ -6,7 +6,7 @@ import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.domain.response.NotificationResponse
 import com.fastaccess.domain.response.PageableResponse
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
-import com.fastaccess.github.utils.extensions.getLastWeekDate
+import com.fastaccess.github.extensions.getLastWeekDate
 import com.google.gson.Gson
 import io.reactivex.Observable
 import javax.inject.Inject

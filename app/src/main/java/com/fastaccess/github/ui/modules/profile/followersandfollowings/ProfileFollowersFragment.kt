@@ -14,7 +14,7 @@ import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addKeyLineDivider
-import com.fastaccess.github.utils.extensions.observeNotNull
+import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.utils.extensions.route
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*

@@ -11,7 +11,7 @@ import com.fastaccess.github.ui.adapter.UnreadNotificationsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.viewmodel.UnreadNotificationsViewModel
 import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.observeNotNull
+import com.fastaccess.github.extensions.observeNotNull
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject

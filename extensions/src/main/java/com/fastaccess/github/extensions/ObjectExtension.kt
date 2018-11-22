@@ -1,11 +1,6 @@
-package com.fastaccess.github.utils.extensions
+package com.fastaccess.github.extensions
 
 import android.text.format.DateUtils
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import com.fastaccess.data.persistence.models.RepositoryModel
-import com.fastaccess.data.persistence.models.UserModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,14 +20,6 @@ fun Boolean.isFalse(body: (() -> Unit)?): Boolean {
     return this
 }
 
-fun <T> LiveData<T>.observeNotNull(owner: LifecycleOwner, observer: (t: T) -> Unit) {
-    this.observe(owner, Observer { it?.let(observer) })
-}
-
-fun <T> LiveData<T>.observeNull(owner: LifecycleOwner, observer: (t: T?) -> Unit) {
-    this.observe(owner, Observer { observer.invoke(it) })
-}
-
 fun Date.timeAgo(): CharSequence {
     val now = System.currentTimeMillis()
     return DateUtils.getRelativeTimeSpanString(this.time, now, DateUtils.SECOND_IN_MILLIS)
@@ -42,8 +29,6 @@ fun String.replaceAllNewLines(prefix: String = " "): String {
     return this.replace("\\r?\\n|\\r".toRegex(), prefix)
 }
 
-fun UserModel.itsMe() = "k0shk0sh".equals(login, true)
-fun RepositoryModel.itsFastHub() = "k0shk0sh/FastHub".equals(name, true) || "k0shk0sh/FastHub".equals(fullName, true)
 fun me() = "k0shk0sh"
 fun myProfile() = "app://fasthub/k0shk0sh"
 fun fastHub() = "k0shk0sh/FastHub"

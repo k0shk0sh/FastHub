@@ -120,6 +120,7 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
     implementation project(':resources')
+    implementation project(':extensions')
     implementation dependency.kotlin
     implementation dependency.supportLibraries
     implementation dependency.extrasLibraries
