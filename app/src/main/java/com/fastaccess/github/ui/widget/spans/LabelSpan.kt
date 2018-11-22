@@ -109,22 +109,20 @@ class LabelSpan private constructor(private val color: Int, private val dims: Sp
 
     override fun draw(canvas: Canvas, text: CharSequence, start: Int, end: Int,
                       x: Float, top: Int, y: Int, bottom: Int, paint: Paint) {
-        var text = text
-        var start = start
-        var end = end
-        var top = top
-        var y = y
-        var bottom = bottom
+        var textVal = text
+        var startVal = start
+        var endVal = end
+        var yVal = y
         val padding = dims.padding
         val paddingW = padding + dims.paddingExtraWidth
         val maxWidth = dims.maxWidth
-        setupFontMetrics(text, start, end, fontMetrics, paint)
-        val bgWidth = measureWidth(txtPaint, text, start, end, false)
+        setupFontMetrics(textVal, startVal, endVal, fontMetrics, paint)
+        val bgWidth = measureWidth(txtPaint, textVal, startVal, endVal, false)
         fontMetrics.top = Math.min(fontMetrics.top, fontMetrics.ascent - padding)
         fontMetrics.bottom = Math.max(fontMetrics.bottom, padding)
-        top = y + fontMetrics.top - fontMetrics.bottom
-        bottom = y
-        y = bottom - fontMetrics.bottom
+        val topVal = yVal + fontMetrics.top - fontMetrics.bottom
+        val bottomVal = yVal
+        yVal = bottomVal - fontMetrics.bottom
         val isRtl = dims.isRtl
         val paddingAfter = dims.paddingAfter
         if (txtPaint.bgColor != 0) {
@@ -138,22 +136,22 @@ class LabelSpan private constructor(private val color: Int, private val dims: Sp
                 x
             }
             val right = left + bgWidth
-            val rect = RectF(left, top.toFloat(), right, bottom.toFloat())
+            val rect = RectF(left, topVal.toFloat(), right, bottomVal.toFloat())
             val radius = dims.roundedCornerRadius
             canvas.drawRoundRect(rect, radius, radius, txtPaint)
             txtPaint.color = prevColor
             txtPaint.style = prevStyle
         }
         if (bgWidth == maxWidth) {
-            text = TextUtils.ellipsize(text.subSequence(start, end).toString(), txtPaint, (bgWidth - 2 * paddingW).toFloat(), TextUtils.TruncateAt.MIDDLE)
-            start = 0
-            end = text.length
+            textVal = TextUtils.ellipsize(textVal.subSequence(startVal, endVal).toString(), txtPaint, (bgWidth - 2 * paddingW).toFloat(), TextUtils.TruncateAt.MIDDLE)
+            startVal = 0
+            endVal = textVal.length
         }
         var textX = x + paddingW
         if (isRtl) {
             textX += paddingAfter.toFloat()
         }
         if (color != Color.TRANSPARENT) txtPaint.color = txtPaint.color.generateTextColor()
-        canvas.drawText(text, start, end, textX, y.toFloat(), txtPaint)
+        canvas.drawText(textVal, startVal, endVal, textX, yVal.toFloat(), txtPaint)
     }
 }
