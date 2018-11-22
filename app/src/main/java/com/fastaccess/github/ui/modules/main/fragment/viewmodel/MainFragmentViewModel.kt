@@ -1,6 +1,8 @@
 package com.fastaccess.github.ui.modules.main.fragment.viewmodel
 
 import androidx.lifecycle.LiveData
+import bz.oron.rxlivedata.map
+import bz.oron.rxlivedata.switchMap
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.repository.FeedsRepositoryProvider
@@ -12,8 +14,6 @@ import com.fastaccess.github.usecase.main.FeedsMainScreenUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
-import com.snakydesign.livedataextensions.map
-import com.snakydesign.livedataextensions.switchMap
 import javax.inject.Inject
 
 @Suppress("HasPlatformType")

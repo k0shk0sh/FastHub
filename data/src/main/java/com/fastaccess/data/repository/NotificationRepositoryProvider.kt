@@ -2,10 +2,10 @@ package com.fastaccess.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
+import bz.oron.rxlivedata.map
 import com.fastaccess.data.model.GroupedNotificationsModel
 import com.fastaccess.data.persistence.dao.NotificationsDao
 import com.fastaccess.data.persistence.models.NotificationModel
-import com.snakydesign.livedataextensions.map
 import javax.inject.Inject
 
 /**
