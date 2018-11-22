@@ -1,8 +1,8 @@
 package com.fastaccess.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
-import bz.oron.rxlivedata.map
 import com.fastaccess.data.model.GroupedNotificationsModel
 import com.fastaccess.data.persistence.dao.NotificationsDao
 import com.fastaccess.data.persistence.models.NotificationModel
@@ -13,8 +13,8 @@ import javax.inject.Inject
  */
 class NotificationRepositoryProvider @Inject constructor(private val dao: NotificationsDao) : NotificationRepository {
     override fun getNotifications(unread: Boolean): DataSource.Factory<Int, NotificationModel> = dao.getNotifications(unread)
-    override fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>> = dao.getAllNotifications(false)
-        .map(groupNotifications())
+    override fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>> = Transformations.map(dao.getAllNotifications(false),
+        groupNotifications())
 
     override fun getMainNotifications(): LiveData<List<NotificationModel>> = dao.getMainNotifications()
     override fun insert(model: NotificationModel): Long = dao.insert(model)
