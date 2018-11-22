@@ -3,7 +3,6 @@
 /local.properties
 .DS_Store
 /build
-/gradle.properties
 /.idea/
 /app/google-services.json
 /app/build/
