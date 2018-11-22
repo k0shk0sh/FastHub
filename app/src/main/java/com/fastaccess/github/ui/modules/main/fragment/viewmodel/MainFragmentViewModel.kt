@@ -62,6 +62,9 @@ class MainFragmentViewModel @Inject constructor(
         feedsMainScreenUseCase.dispose()
     }
 
+    /**
+     * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
+     */
     private fun mapPulls(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
             mainIssuesPullsRepo.getPulls().map { prs ->
@@ -72,6 +75,9 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
+     */
     private fun mapIssues(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
             mainIssuesPullsRepo.getIssues().map { issues ->
@@ -82,6 +88,9 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
+     */
     private fun mapNotifications(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
             notificationRepositoryProvider.getMainNotifications().map { notifications ->
@@ -92,6 +101,9 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
+     */
     private fun mapFeed(): (List<FeedModel>) -> ArrayList<MainScreenModel> {
         return { feeds ->
             val list = arrayListOf<MainScreenModel>()
