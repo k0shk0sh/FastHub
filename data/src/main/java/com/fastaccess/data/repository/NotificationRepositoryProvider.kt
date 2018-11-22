@@ -14,15 +14,7 @@ import javax.inject.Inject
 class NotificationRepositoryProvider @Inject constructor(private val dao: NotificationsDao) : NotificationRepository {
     override fun getNotifications(unread: Boolean): DataSource.Factory<Int, NotificationModel> = dao.getNotifications(unread)
     override fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>> = dao.getAllNotifications(false)
-        .map({ list: List<NotificationModel> ->
-            list.groupBy { it.repository }
-                .flatMap { entry ->
-                    val notifications = arrayListOf<GroupedNotificationsModel>()
-                    notifications.add(GroupedNotificationsModel(GroupedNotificationsModel.HEADER, entry.key))
-                    notifications.addAll(entry.value.map { GroupedNotificationsModel(GroupedNotificationsModel.CONTENT, notification = it) })
-                    return@flatMap notifications
-                }
-        })
+        .map(groupNotifications())
 
     override fun getMainNotifications(): LiveData<List<NotificationModel>> = dao.getMainNotifications()
     override fun insert(model: NotificationModel): Long = dao.insert(model)
@@ -30,6 +22,21 @@ class NotificationRepositoryProvider @Inject constructor(private val dao: Notifi
     override fun update(model: NotificationModel): Int = dao.update(model)
     override fun delete(model: NotificationModel) = dao.delete(model)
     override fun deleteAll(unread: Boolean) = dao.deleteAll(unread)
+
+    /**
+     * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
+     */
+    private fun groupNotifications(): (List<NotificationModel>) -> List<GroupedNotificationsModel> {
+        return { list: List<NotificationModel> ->
+            list.groupBy { it.repository }
+                .flatMap { entry ->
+                    val notifications = arrayListOf<GroupedNotificationsModel>()
+                    notifications.add(GroupedNotificationsModel(GroupedNotificationsModel.HEADER, entry.key))
+                    notifications.addAll(entry.value.map { GroupedNotificationsModel(GroupedNotificationsModel.CONTENT, notification = it) })
+                    return@flatMap notifications
+                }
+        }
+    }
 }
 
 interface NotificationRepository {
