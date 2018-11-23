@@ -43,6 +43,7 @@ ext {
             "androidx.swiperefreshlayout:swiperefreshlayout:$androidX",
             "androidx.browser:browser:$androidX",
             "androidx.webkit:webkit:$androidX",
+            "androidx.browser:browser:$androidX",
             "androidx.constraintlayout:constraintlayout:$constraintLayout",
             "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
             "android.arch.navigation:navigation-ui:$navigation",

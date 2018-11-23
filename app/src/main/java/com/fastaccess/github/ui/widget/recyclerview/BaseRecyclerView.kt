@@ -23,7 +23,6 @@ class BaseRecyclerView constructor(context: Context,
     private var onLoadMore: (() -> Unit)? = null
 
     private val onScrollMore = EndlessRecyclerViewScrollListener {
-        Timber.e("$it")
         if (it >= 30) onLoadMore?.invoke()
     }
 

@@ -5,6 +5,8 @@ import com.fastaccess.domain.response.AccessTokenResponse
 import com.fastaccess.domain.response.AuthBodyModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.github.BuildConfig
+import com.fastaccess.github.utils.REDIRECT_URL
+import com.fastaccess.github.utils.SCOPE_LIST
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -20,8 +22,8 @@ class LoginUseCase @Inject constructor(private val loginRemoteRepository: LoginR
         this.authBodyModel = AuthBodyModel().apply {
             clientId = BuildConfig.GITHUB_CLIENT_ID
             clientSecret = BuildConfig.GITHUB_SECRET
-            redirectUri = "fasthub://login"
-            scopes = listOf("user", "repo", "gist", "notifications", "read:org")
+            redirectUri = REDIRECT_URL
+            scopes = SCOPE_LIST.split(",")
             state = BuildConfig.APPLICATION_ID
             note = BuildConfig.APPLICATION_ID
             noteUrl = "fasthub://login"

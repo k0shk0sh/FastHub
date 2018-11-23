@@ -39,6 +39,8 @@ const val PRE_FETCH_SIZE = 30
 
 // DEEP LINKS
 
+const val REDIRECT_URL = "fasthub://login"
+const val SCOPE_LIST = "user,repo,gist,notifications,read:org"
 const val IN_APP_LINK = "app://fasthub"
 val FEEDS_LINK = "$IN_APP_LINK/me/${ActivityType.FEEDS.name}"
 val NOTIFICATION_LINK = "$IN_APP_LINK/me/${ActivityType.NOTIFICATION.name}"

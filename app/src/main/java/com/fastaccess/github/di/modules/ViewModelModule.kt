@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.github.di.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
+import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
@@ -60,4 +61,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(AllNotificationsViewModel::class)
     abstract fun bindAllNotificationsViewModel(viewModel: AllNotificationsViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(LoginChooserViewModel::class)
+    abstract fun bindLoginChooserViewModel(viewMdel: LoginChooserViewModel): ViewModel
 }

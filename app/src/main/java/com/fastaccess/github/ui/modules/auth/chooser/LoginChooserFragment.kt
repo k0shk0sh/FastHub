@@ -33,6 +33,7 @@ class LoginChooserFragment : BaseFragment() {
         basicAuth.setOnClickListener { callback?.navToBasicAuth(loginCard) }
         accessToken.setOnClickListener { callback?.navToAccessToken(loginCard) }
         enterprise.setOnClickListener { callback?.navToEnterprise(loginCard) }
+        browserLogin.setOnClickListener { callback?.loginWithBrowser() }
     }
 
     companion object {

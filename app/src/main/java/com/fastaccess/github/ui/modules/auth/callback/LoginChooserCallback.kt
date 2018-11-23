@@ -13,4 +13,5 @@ interface LoginChooserCallback {
     fun navToEnterprise(view: View)
     fun popStack()
     fun onUserLoggedIn(login: LoginModel)
+    fun loginWithBrowser()
 }
