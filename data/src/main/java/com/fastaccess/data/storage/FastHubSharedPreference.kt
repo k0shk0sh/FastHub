@@ -42,11 +42,11 @@ class FastHubSharedPreference @Inject constructor(app: Application) {
         } ?: clearValue(key)
     }
 
-    fun getString(key: String, default: String? = null): String? = preference.getString(key, default)
-    fun getInt(key: String, default: Int = 0): Int = preference.getInt(key, default)
-    fun getFloat(key: String, default: Float = 0f): Float = preference.getFloat(key, default)
-    fun getLong(key: String, default: Long = 0L): Long = preference.getLong(key, default)
-    fun getBoolean(key: String, default: Boolean = false): Boolean = preference.getBoolean(key, default)
+    fun getString(key: String, default: String? = null): String? = kotlin.runCatching { preference.getString(key, default) }.getOrDefault(default)
+    fun getInt(key: String, default: Int = 0): Int = kotlin.runCatching { preference.getInt(key, default) }.getOrDefault(default)
+    fun getFloat(key: String, default: Float = 0f): Float = kotlin.runCatching { preference.getFloat(key, default) }.getOrDefault(default)
+    fun getLong(key: String, default: Long = 0L): Long = kotlin.runCatching { preference.getLong(key, default) }.getOrDefault(default)
+    fun getBoolean(key: String, default: Boolean = false): Boolean = kotlin.runCatching { preference.getBoolean(key, default) }.getOrDefault(default)
 
     fun getAll() = preference.all
     fun clearValue(key: String) = editor.remove(key).apply()
