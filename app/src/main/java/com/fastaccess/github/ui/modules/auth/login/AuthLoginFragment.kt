@@ -4,23 +4,22 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.Slide
-import androidx.transition.TransitionManager
 import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.data.persistence.models.ValidationError.FieldType.*
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.asString
-import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.utils.extensions.beginDelayedTransition
 import kotlinx.android.synthetic.main.login_form_layout.*
 import javax.inject.Inject
 
@@ -93,7 +92,7 @@ class AuthLoginFragment : BaseFragment() {
 
         viewModel.progress.observe(this, Observer { isLoading ->
             loginBtn.isEnabled = isLoading == false
-            view?.let { TransitionManager.beginDelayedTransition(it as ViewGroup) }
+            view?.beginDelayedTransition()
             loginForm.isVisible = isLoading == false
             progressBar.isVisible = isLoading == true
         })

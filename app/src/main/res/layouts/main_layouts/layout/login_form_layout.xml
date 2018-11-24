@@ -159,8 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/spacing_s_large"
-                        android:visibility="gone"
-                        tools:visibility="gone"/>
+                        android:visibility="gone"/>
                 </FrameLayout>
             </androidx.core.widget.NestedScrollView>
 

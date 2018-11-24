@@ -1,8 +1,6 @@
 package com.fastaccess.github.ui.modules.main.fragment.viewmodel
 
 import androidx.lifecycle.LiveData
-import com.fastaccess.github.extensions.map
-import com.fastaccess.github.extensions.switchMap
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.FeedModel
@@ -11,6 +9,8 @@ import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
 import com.fastaccess.data.repository.NotificationRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.map
+import com.fastaccess.github.extensions.switchMap
 import com.fastaccess.github.usecase.main.FeedsMainScreenUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
@@ -26,19 +26,21 @@ class MainFragmentViewModel @Inject constructor(
     private val pullRequestsMainScreenUseCase: PullRequestsMainScreenUseCase,
     private val notificationUseCase: NotificationUseCase,
     private val feedsMainScreenUseCase: FeedsMainScreenUseCase,
-    private val loginProvider: LoginRepositoryProvider,
     private val feedsRepositoryProvider: FeedsRepositoryProvider,
     private val mainIssuesPullsRepo: MainIssuesPullsRepositoryProvider,
-    private val notificationRepositoryProvider: NotificationRepositoryProvider
+    private val notificationRepositoryProvider: NotificationRepositoryProvider,
+    loginProvider: LoginRepositoryProvider
 ) : BaseViewModel() {
 
     val login = loginProvider.getLogin()
 
-    fun getList(): LiveData<ArrayList<MainScreenModel>> = feedsRepositoryProvider.getMainFeedsAsLiveData()
-        .map(mapFeed())
-        .switchMap(mapNotifications())
-        .switchMap(mapIssues())
-        .switchMap(mapPulls())
+    val list: LiveData<ArrayList<MainScreenModel>> by lazy {
+        feedsRepositoryProvider.getMainFeedsAsLiveData()
+            .map(mapFeed())
+            .switchMap(mapNotifications())
+            .switchMap(mapIssues())
+            .switchMap(mapPulls())
+    }
 
     fun load() {
         feedsMainScreenUseCase.executeSafely(callApi(
@@ -68,6 +70,7 @@ class MainFragmentViewModel @Inject constructor(
     private fun mapPulls(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
             mainIssuesPullsRepo.getPulls().map { prs ->
+                if (prs.isEmpty()) return@map list
                 list.add(MainScreenModel(MainScreenModelRowType.PRS_TITLE))
                 list.addAll(prs.asSequence().map { MainScreenModel(MainScreenModelRowType.PRS, issuesPullsModel = it) }.toList())
                 return@map list
@@ -81,6 +84,7 @@ class MainFragmentViewModel @Inject constructor(
     private fun mapIssues(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
             mainIssuesPullsRepo.getIssues().map { issues ->
+                if (issues.isEmpty()) return@map list
                 list.add(MainScreenModel(MainScreenModelRowType.ISSUES_TITLE))
                 list.addAll(issues.asSequence().map { MainScreenModel(MainScreenModelRowType.ISSUES, issuesPullsModel = it) }.toList())
                 return@map list
@@ -94,6 +98,7 @@ class MainFragmentViewModel @Inject constructor(
     private fun mapNotifications(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
             notificationRepositoryProvider.getMainNotifications().map { notifications ->
+                if (notifications.isEmpty()) return@map list
                 list.add(MainScreenModel(MainScreenModelRowType.NOTIFICATION_TITLE))
                 list.addAll(notifications.asSequence().map { MainScreenModel(MainScreenModelRowType.NOTIFICATION, notificationModel = it) }.toList())
                 return@map list
@@ -107,8 +112,10 @@ class MainFragmentViewModel @Inject constructor(
     private fun mapFeed(): (List<FeedModel>) -> ArrayList<MainScreenModel> {
         return { feeds ->
             val list = arrayListOf<MainScreenModel>()
-            list.add(MainScreenModel(MainScreenModelRowType.FEED_TITLE))
-            list.addAll(feeds.asSequence().map { MainScreenModel(MainScreenModelRowType.FEED, feed = it) }.toList())
+            if (feeds.isNotEmpty()) {
+                list.add(MainScreenModel(MainScreenModelRowType.FEED_TITLE))
+                list.addAll(feeds.asSequence().map { MainScreenModel(MainScreenModelRowType.FEED, feed = it) }.toList())
+            }
             list
         }
     }

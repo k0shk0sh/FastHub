@@ -12,14 +12,14 @@ import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.isMe
-import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.observeNull
+import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrgsAdapter
@@ -34,7 +34,9 @@ import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.ui.widget.recyclerview.lm.SafeGridLayoutManager
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.*
+import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.extensions.getDrawable
+import com.fastaccess.github.utils.extensions.setBottomSheetCallback
 import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout_bottomsheet.*
@@ -92,6 +94,15 @@ class ProfileFragment : BasePagerFragment() {
                 else -> toggleArrow.setFraction(0.5f, false)
             }
         })
+
+
+        toggleArrow.setOnClickListener {
+            if (behaviour.state != AnchorSheetBehavior.STATE_EXPANDED) {
+                behaviour.state = AnchorSheetBehavior.STATE_EXPANDED
+            } else {
+                behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
+            }
+        }
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(p0: TabLayout.Tab?) = expandBottomSheet()

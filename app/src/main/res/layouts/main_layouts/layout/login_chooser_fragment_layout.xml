@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -16,156 +17,170 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
+                android:id="@+id/loginCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:id="@+id/loginCard"
                 android:layout_marginBottom="@dimen/spacing_s_large"
                 android:layout_marginEnd="@dimen/spacing_s_large"
                 android:layout_marginStart="@dimen/spacing_s_large"
                 android:layout_marginTop="@dimen/spacing_xs_large"
-                android:minHeight="350dp"
                 android:minWidth="250dp"
                 android:transitionName="login_card"
                 app:cardElevation="@dimen/spacing_normal">
 
-                <LinearLayout
-                    android:id="@+id/loginForm"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
+                        android:id="@+id/buttonsLayout"
                         android:layout_width="match_parent"
+                        tools:visibility="gone"
                         android:layout_height="wrap_content"
-                        android:background="?colorAccent"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/spacing_xs_large"
-                        android:paddingEnd="@dimen/spacing_xs_large"
-                        android:paddingStart="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_xs_large">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/mainCard"
-                            style="@style/TextAppearance.AppCompat.Title.Inverse"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/spacing_xs_large"
-                            android:text="@string/sign_in_to_github"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/TextAppearance.AppCompat.Medium"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/choose_your_login_type"
-                            android:textColor="@color/material_blue_accent_100"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/spacing_normal"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingEnd="@dimen/spacing_xs_large"
-                        android:paddingStart="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_normal">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/basicAuth"
-                            style="@style/TextAppearance.AppCompat.Title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="?selectableItemBackground"
-                            android:gravity="center"
-                            android:padding="@dimen/spacing_xs_large"
-                            android:text="@string/basic_authentication"
-                            android:textColor="@color/material_green_700"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/TextAppearance.AppCompat.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottom_border"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/spacing_normal"
-                            android:paddingEnd="@dimen/spacing_large"
-                            android:paddingStart="@dimen/spacing_large"
-                            android:text="@string/or_character"/>
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:background="?colorAccent"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/accessToken"
-                                style="@style/TextAppearance.AppCompat.Medium"
-                                android:layout_width="0dp"
+                                android:id="@+id/mainCard"
+                                style="@style/TextAppearance.AppCompat.Title.Inverse"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?selectableItemBackground"
+                                android:layout_gravity="center"
                                 android:gravity="center"
                                 android:paddingBottom="@dimen/spacing_xs_large"
-                                android:paddingTop="@dimen/spacing_xs_large"
-                                android:text="@string/access_token"
-                                android:textColor="@color/material_pink_700"/>
-
-                            <View
-                                android:layout_width="0.5dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="@dimen/spacing_normal"
-                                android:layout_marginTop="@dimen/spacing_normal"
-                                android:background="@drawable/left_border"/>
+                                android:text="@string/sign_in_to_github"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/enterprise"
                                 style="@style/TextAppearance.AppCompat.Medium"
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?selectableItemBackground"
                                 android:gravity="center"
-                                android:paddingBottom="@dimen/spacing_xs_large"
-                                android:paddingTop="@dimen/spacing_xs_large"
-                                android:text="@string/enterprise"
-                                android:textColor="@color/material_purple_700"/>
+                                android:text="@string/choose_your_login_type"
+                                android:textColor="@color/material_blue_accent_100"/>
                         </LinearLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/TextAppearance.AppCompat.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottom_border"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/spacing_normal"
-                            android:paddingEnd="@dimen/spacing_large"
-                            android:paddingStart="@dimen/spacing_large"
-                            android:text="@string/or_character"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/TextAppearance.AppCompat.Small"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/spacing_normal"
                             android:gravity="center"
-                            android:text="@string/login_using_your_default_browser"/>
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_normal">
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/browserLogin"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:text="@string/open_in_browser"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/basicAuth"
+                                style="@style/TextAppearance.AppCompat.Title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?selectableItemBackground"
+                                android:gravity="center"
+                                android:padding="@dimen/spacing_xs_large"
+                                android:text="@string/basic_authentication"
+                                android:textColor="@color/material_green_700"/>
 
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bottom_border"
+                                android:gravity="center"
+                                android:paddingBottom="@dimen/spacing_normal"
+                                android:paddingEnd="@dimen/spacing_large"
+                                android:paddingStart="@dimen/spacing_large"
+                                android:text="@string/or_character"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/accessToken"
+                                    style="@style/TextAppearance.AppCompat.Medium"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="?selectableItemBackground"
+                                    android:gravity="center"
+                                    android:paddingBottom="@dimen/spacing_xs_large"
+                                    android:paddingTop="@dimen/spacing_xs_large"
+                                    android:text="@string/access_token"
+                                    android:textColor="@color/material_pink_700"/>
+
+                                <View
+                                    android:layout_width="0.5dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/spacing_normal"
+                                    android:layout_marginTop="@dimen/spacing_normal"
+                                    android:background="@drawable/left_border"/>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/enterprise"
+                                    style="@style/TextAppearance.AppCompat.Medium"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="?selectableItemBackground"
+                                    android:gravity="center"
+                                    android:paddingBottom="@dimen/spacing_xs_large"
+                                    android:paddingTop="@dimen/spacing_xs_large"
+                                    android:text="@string/enterprise"
+                                    android:textColor="@color/material_purple_700"/>
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bottom_border"
+                                android:gravity="center"
+                                android:paddingBottom="@dimen/spacing_normal"
+                                android:paddingEnd="@dimen/spacing_large"
+                                android:paddingStart="@dimen/spacing_large"
+                                android:text="@string/or_character"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_xs_large"
+                                android:gravity="center"
+                                android:text="@string/login_using_your_default_browser"/>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/browserLogin"
+                                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:text="@string/open_in_browser"/>
+
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:visibility="visible"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/spacing_s_large"
+                        android:visibility="gone"/>
+                </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

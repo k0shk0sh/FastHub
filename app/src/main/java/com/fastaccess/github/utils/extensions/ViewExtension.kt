@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.transition.TransitionManager
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.ui.widget.recyclerview.decoration.InsetDividerDecoration
@@ -139,3 +140,5 @@ fun <V : View?> BottomSheetBehavior<V>.setBottomSheetCallback(
     val a = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255
     return if (a < 0.5) Color.BLACK else Color.WHITE
 }
+
+fun View.beginDelayedTransition() = TransitionManager.beginDelayedTransition(this as ViewGroup)
