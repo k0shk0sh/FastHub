@@ -101,6 +101,7 @@ ext {
             "androidx.room:room-compiler:$archComponents",
             "androidx.paging:paging-runtime:$archComponents",
             "androidx.core:core-ktx:$androidX",
+            "androidx.fragment:fragment-ktx:$androidX"
     ]
 
 

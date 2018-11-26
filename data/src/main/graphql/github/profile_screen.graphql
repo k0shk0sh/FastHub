@@ -56,6 +56,52 @@ query getProfile($login: String!) {
   }
 }
 
+
+query getProfileOrgs($login: String!, $cursor: String) {
+  user(login: $login) {
+    organizations(first: 30, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        avatarUrl
+        email
+        location
+        login
+        name
+        url
+        description
+        id
+        databaseId
+        isVerified
+        viewerIsAMember
+        viewerCanCreateTeams
+        viewerCanCreateRepositories
+        viewerCanCreateProjects
+        viewerCanAdminister
+        teams(first: 0) {
+          totalCount
+        }
+        projects(first: 0) {
+          totalCount
+        }
+        members(first: 0) {
+          totalCount
+        }
+        repositories(first: 0) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+
+
 query getProfileRepos($login: String!, $cursor: String) {
   user(login: $login) {
     repositories(first: 30, orderBy: {field: PUSHED_AT, direction: DESC}, after:$cursor) {

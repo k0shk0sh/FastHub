@@ -16,11 +16,11 @@ const val DATABASE_NAME = "FastHub-Room-DB"
 @Database(version = VERSION, entities = [UserModel::class, MainIssuesPullsModel::class,
     NotificationModel::class, FeedModel::class, ProfileRepoModel::class,
     ProfileStarredRepoModel::class, ProfileGistModel::class,
-    FollowingFollowerModel::class], exportSchema = false)
+    FollowingFollowerModel::class, OrganizationModel::class], exportSchema = false)
 @TypeConverters(DateConverter::class, EventTypesConverter::class,
-        FeedPayloadConverter::class, FeedRepoConverter::class,
-        UserCountConverter::class, UserOrganizationConverter::class,
-        UserPinnedReposModelConverter::class)
+    FeedPayloadConverter::class, FeedRepoConverter::class,
+    UserCountConverter::class, UserOrganizationConverter::class,
+    UserPinnedReposModelConverter::class)
 abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getMainIssuesPullsDao(): MainIssuesPullsDao
     abstract fun getNotifications(): NotificationsDao
@@ -30,4 +30,5 @@ abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getUserStarredRepoDao(): UserStarredReposDao
     abstract fun getGistsDao(): UserGistsDao
     abstract fun getFollowingFollowerDao(): UserFollowersFollowingsDao
+    abstract fun getOrganizationDao(): OrgsDao
 }

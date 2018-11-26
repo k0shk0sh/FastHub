@@ -17,6 +17,7 @@ import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.FEEDS_LINK
 import com.fastaccess.github.utils.NOTIFICATION_LINK
 import com.fastaccess.github.utils.extensions.addDivider
@@ -99,15 +100,10 @@ class MainFragment : BaseFragment() {
                 }
             }
         }
-        starred.setOnClickListener { view ->
-            onUserRetrieved { route(it?.toStarred()) }
-        }
-        repos.setOnClickListener { view ->
-            onUserRetrieved { route(it?.toRepos()) }
-        }
-        gists.setOnClickListener { view ->
-            onUserRetrieved { route(it?.toGists()) }
-        }
+        starred.setOnClickListener { view -> onUserRetrieved { route(it?.toStarred()) } }
+        repos.setOnClickListener { view -> onUserRetrieved { route(it?.toRepos()) } }
+        gists.setOnClickListener { view -> onUserRetrieved { route(it?.toGists()) } }
+        orgs.setOnClickListener { _ -> MultiPurposeBottomSheetDialog.show(childFragmentManager) }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {

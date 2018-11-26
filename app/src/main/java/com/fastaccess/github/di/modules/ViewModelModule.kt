@@ -14,6 +14,7 @@ import com.fastaccess.github.ui.modules.profile.feeds.viewmodel.ProfileFeedsView
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
 import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsViewModel
+import com.fastaccess.github.ui.modules.profile.orgs.userorgs.viewmodel.UserOrgsViewModel
 import com.fastaccess.github.ui.modules.profile.repos.viewmodel.ProfileReposViewModel
 import com.fastaccess.github.ui.modules.profile.starred.viewmodel.ProfileStarredReposViewModel
 import dagger.Binds
@@ -64,4 +65,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(LoginChooserViewModel::class)
     abstract fun bindLoginChooserViewModel(viewMdel: LoginChooserViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(UserOrgsViewModel::class)
+    abstract fun bindUserOrgsViewModel(viewMdel: UserOrgsViewModel): ViewModel
 }

@@ -17,16 +17,16 @@ import javax.inject.Singleton
 @Module
 class RepositoryModule {
     @Singleton @Provides fun provideLoginRepository(
-            fastHubLoginDatabase: FastHubLoginDatabase,
-            loginService: LoginService
+        fastHubLoginDatabase: FastHubLoginDatabase,
+        loginService: LoginService
     ): LoginRepositoryProvider {
         return LoginRepositoryProvider(fastHubLoginDatabase.provideLoginDao(), loginService)
     }
 
     @Singleton @Provides fun provideUserRepository(
-            fastHubDatabase: FastHubDatabase,
-            apolloClient: ApolloClient,
-            userService: UserService
+        fastHubDatabase: FastHubDatabase,
+        apolloClient: ApolloClient,
+        userService: UserService
     ): UserRepositoryProvider {
         return UserRepositoryProvider(fastHubDatabase.getUserDao(), apolloClient, userService)
     }
@@ -40,39 +40,47 @@ class RepositoryModule {
     }
 
     @Singleton @Provides fun provideFeedsRepositoryProvider(
-            fastHubDatabase: FastHubDatabase,
-            userService: UserService,
-            loginRepositoryProvider: LoginRepositoryProvider,
-            gson: Gson
+        fastHubDatabase: FastHubDatabase,
+        userService: UserService,
+        loginRepositoryProvider: LoginRepositoryProvider,
+        gson: Gson
     ): FeedsRepositoryProvider {
         return FeedsRepositoryProvider(fastHubDatabase.getFeedsDao(), userService, loginRepositoryProvider, gson)
     }
 
     @Singleton @Provides fun provideUserReposRepositoryProvider(
-            fastHubDatabase: FastHubDatabase,
-            apolloClient: ApolloClient
+        fastHubDatabase: FastHubDatabase,
+        apolloClient: ApolloClient
     ): UserReposRepositoryProvider {
         return UserReposRepositoryProvider(fastHubDatabase.getUserRepoDao(), apolloClient)
     }
 
     @Singleton @Provides fun provideUserStarredReposRepositoryProvider(
-            fastHubDatabase: FastHubDatabase,
-            apolloClient: ApolloClient
+        fastHubDatabase: FastHubDatabase,
+        apolloClient: ApolloClient
     ): UserStarredReposRepositoryProvider {
         return UserStarredReposRepositoryProvider(fastHubDatabase.getUserStarredRepoDao(), apolloClient)
     }
 
     @Singleton @Provides fun provideUserGistsRepositoryProvider(
-            fastHubDatabase: FastHubDatabase,
-            apolloClient: ApolloClient
+        fastHubDatabase: FastHubDatabase,
+        apolloClient: ApolloClient
     ): UserGistsRepositoryProvider {
         return UserGistsRepositoryProvider(fastHubDatabase.getGistsDao(), apolloClient)
     }
 
     @Singleton @Provides fun provideUserFollowersFollowingRepositoryProvider(
-            fastHubDatabase: FastHubDatabase,
-            apolloClient: ApolloClient
+        fastHubDatabase: FastHubDatabase,
+        apolloClient: ApolloClient
     ): UserFollowersFollowingRepositoryProvider {
         return UserFollowersFollowingRepositoryProvider(fastHubDatabase.getFollowingFollowerDao(), apolloClient)
+    }
+
+    @Singleton @Provides fun provideOrgRepositoryProvider(
+        fastHubDatabase: FastHubDatabase,
+        apolloClient: ApolloClient,
+        loginRepositoryProvider: LoginRepositoryProvider
+    ): OrgRepositoryProvider {
+        return OrgRepositoryProvider(fastHubDatabase.getOrganizationDao(), apolloClient, loginRepositoryProvider)
     }
 }

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.github.extensions.runSafely
-import timber.log.Timber
 
 
 /**
@@ -22,9 +21,7 @@ class BaseRecyclerView constructor(context: Context,
     private var parentView: View? = null
     private var onLoadMore: (() -> Unit)? = null
 
-    private val onScrollMore = EndlessRecyclerViewScrollListener {
-        if (it >= 30) onLoadMore?.invoke()
-    }
+    private val onScrollMore = EndlessRecyclerViewScrollListener { if (it >= 20) onLoadMore?.invoke() }
 
     private val observer = object : RecyclerView.AdapterDataObserver() {
         override fun onChanged() {
