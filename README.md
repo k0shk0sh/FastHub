@@ -1,5 +1,5 @@
 #### FastHub is currently under a huge refactoring, please make sure to submit an issue only if necessary. 
-##### Any Pull requests that are not directed to fasthub/fasthub-v5 branch they will be ignored. You could follow up on development on this branch: [fasthub/fasthub-v5](https://github.com/k0shk0sh/FastHub/tree/fasthub/fasthub-v5)
+##### Any Pull requests that are not directed to fasthub/fasthub-v5 branch will be ignored. You could follow the development on this branch: [fasthub/fasthub-v5](https://github.com/k0shk0sh/FastHub/tree/fasthub/fasthub-v5)
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
 [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
