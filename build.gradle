@@ -1,5 +1,5 @@
-apply from: 'build-dependecies/fasthub-dependencies.gradle'
-apply from: 'build-dependecies/fasthub-config.gradle'
+apply from: 'build-dependencies/fasthub-dependencies.gradle'
+apply from: 'build-dependencies/fasthub-config.gradle'
 
 configurations {
     ktlint

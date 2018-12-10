@@ -9,4 +9,4 @@
 /resources/src/main/res/values/secrets.xml
 /app/fastaccess-key
 /changelog_generator
-build-dependecies/secret_keys.properties
+build-dependencies/secret_keys.properties

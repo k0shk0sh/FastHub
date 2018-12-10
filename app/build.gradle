@@ -9,10 +9,10 @@ apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 buildProperties {
     notThere {
-        file rootProject.file('build-dependecies/debug_keys.properties')
+        file rootProject.file('build-dependencies/debug_keys.properties')
     }
     secrets {
-        file rootProject.file('build-dependecies/secret_keys.properties')
+        file rootProject.file('build-dependencies/secret_keys.properties')
     }
 }
 
