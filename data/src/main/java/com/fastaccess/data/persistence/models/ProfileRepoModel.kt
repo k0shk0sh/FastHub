@@ -15,8 +15,8 @@ import java.util.*
  * Created by Kosh on 08.10.18.
  */
 data class ProfileReposModel(
-    @SerializedName("totalCount") var totalCount: Long = 0,
-    @SerializedName("totalDiskUsage") var totalDiskUsage: Long = 0,
+    @SerializedName("totalCount") var totalCount: Int = 0,
+    @SerializedName("totalDiskUsage") var totalDiskUsage: Int = 0,
     @SerializedName("repos") var repos: List<ProfileRepoModel>? = null,
     @Ignore @SerializedName("pageInfo") var pageInfo: PageInfoModel? = null
 ) {
@@ -34,15 +34,15 @@ data class ProfileReposModel(
 @Entity(tableName = ProfileRepoModel.TABLE_NAME)
 data class ProfileRepoModel(
     @PrimaryKey @SerializedName("id") var id: String = "",
-    @SerializedName("databaseId") var databaseId: Long? = null,
+    @SerializedName("databaseId") var databaseId: Int?? = null,
     @SerializedName("name") var name: String? = null,
     @SerializedName("updatedAt") var updatedAt: Date? = null,
-    @SerializedName("diskUsage") var diskUsage: Long?,
+    @SerializedName("diskUsage") var diskUsage: Int? = null,
     @SerializedName("primaryLanguage") @Embedded(prefix = "language_") var primaryLanguage: RepoLanguageModel? = null,
     @SerializedName("stargazers") @Embedded(prefix = "stargazers_") var stargazers: CountModel? = null,
     @SerializedName("issues") @Embedded(prefix = "issues_") var issues: CountModel? = null,
     @SerializedName("pullRequests") @Embedded(prefix = "pullRequests_") var pullRequests: CountModel? = null,
-    @SerializedName("forkCount") var forkCount: Long? = null,
+    @SerializedName("forkCount") var forkCount: Int? = null,
     @SerializedName("isFork") var isFork: Boolean? = null,
     @SerializedName("isPrivate") var isPrivate: Boolean? = null,
     @SerializedName("viewerHasStarred") var viewerHasStarred: Boolean? = null,

@@ -99,7 +99,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         activityCallback?.showSnackBar(root, resId, message, duration)
     }
 
-    override fun updateCount(type: FragmentType, count: Long) {
+    override fun updateCount(type: FragmentType, count: Int) {
         val pager = view?.findViewById<ViewPager?>(R.id.pager) ?: return
         val tabs = view?.findViewById<TabLayout?>(R.id.tabs) ?: return
         val adapter = pager.adapter as? PagerAdapter ?: return
@@ -114,7 +114,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         }
     }
 
-    protected fun postCount(type: FragmentType, count: Long) {
+    protected fun postCount(type: FragmentType, count: Int) {
         updateCountCallback?.updateCount(type, count)
     }
 

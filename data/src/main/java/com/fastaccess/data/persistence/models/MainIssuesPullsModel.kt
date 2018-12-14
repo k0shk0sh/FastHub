@@ -10,11 +10,11 @@ import com.google.gson.annotations.SerializedName
  */
 @Entity(tableName = TABLE_NAME)
 data class MainIssuesPullsModel(@PrimaryKey @SerializedName("id") var id: String = "",
-                                @SerializedName("databaseId") var databaseId: Long? = null,
-                                @SerializedName("number") var number: Long? = null,
+                                @SerializedName("databaseId") var databaseId: Int?? = null,
+                                @SerializedName("number") var number: Int? = null,
                                 @SerializedName("title") var title: String? = null,
                                 @SerializedName("repoName") var repoName: String? = null,
-                                @SerializedName("commentsCount") var commentCounts: Long? = null,
+                                @SerializedName("commentsCount") var commentCounts: Int? = null,
                                 @SerializedName("state") var state: String? = null) {
     companion object {
         const val TABLE_NAME = "main_screen_issues"

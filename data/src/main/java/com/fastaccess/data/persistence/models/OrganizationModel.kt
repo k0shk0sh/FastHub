@@ -15,7 +15,7 @@ import github.GetProfileOrgsQuery
 
 
 data class OrgsModel(
-    @SerializedName("totalCount") var totalCount: Long = 0,
+    @SerializedName("totalCount") var totalCount: Int = 0,
     @SerializedName("orgs") var orgs: List<OrganizationModel>? = null,
     @Ignore @SerializedName("pageInfo") var pageInfo: PageInfoModel? = null
 ) {
@@ -33,7 +33,7 @@ data class OrgsModel(
 @Entity(tableName = OrganizationModel.TABLE_NAME)
 data class OrganizationModel(
     @PrimaryKey @SerializedName("id") var id: String,
-    @SerializedName("databaseId") var databaseId: Long? = null,
+    @SerializedName("databaseId") var databaseId: Int?? = null,
     @SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
     @SerializedName("location") var location: String? = null,
     @SerializedName("email") var email: String? = null,

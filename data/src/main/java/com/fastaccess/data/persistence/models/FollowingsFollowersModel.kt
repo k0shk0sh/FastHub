@@ -14,7 +14,7 @@ import github.fragment.FollowingFollowersUser
  */
 
 data class FollowingsFollowersModel(
-        @SerializedName("totalCount") var totalCount: Long = 0,
+        @SerializedName("totalCount") var totalCount: Int = 0,
         @SerializedName("users") var users: List<FollowingFollowerModel>? = null,
         @Ignore @SerializedName("pageInfo") var pageInfo: PageInfoModel? = null
 ) {

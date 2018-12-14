@@ -40,6 +40,14 @@ fun Long.formatNumber(): String {
     return String.format("%.1f%c", count / Math.pow(1000.0, exp.toDouble()), "kMGTPE"[exp - 1])
 }
 
+fun Int.formatNumber(): String {
+    if (this < 999) return this.toString()
+    val count = this.toDouble()
+    val exp = (Math.log(count) / Math.log(1000.0)).toInt()
+    return String.format("%.1f%c", count / Math.pow(1000.0, exp.toDouble()), "kMGTPE"[exp - 1])
+}
+
+
 inline fun runSafely(execute: () -> Unit, noinline onErrorCallback: (() -> Unit)? = null) {
     try {
         execute.invoke()

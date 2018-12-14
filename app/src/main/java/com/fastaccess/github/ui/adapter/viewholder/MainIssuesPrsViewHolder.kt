@@ -23,7 +23,7 @@ class MainIssuesPrsViewHolder(viewGroup: ViewGroup) : BaseViewHolder<MainIssuesP
                 text = item.repoName ?: ""
                 isVisible = !item.repoName.isNullOrBlank()
             }
-            it.commentCount.isVisible = item.commentCounts != 0L
+            it.commentCount.isVisible = item.commentCounts != 0
             it.commentCount.text = "${item.commentCounts ?: 0}"
             if (!item.state.isNullOrEmpty()) { // PR
                 it.state.isVisible = true

@@ -10,7 +10,7 @@ import java.util.*
 
 @Entity(tableName = TABLE_NAME)
 data class UserModel(
-        @PrimaryKey @SerializedName("databaseId", alternate = ["id"]) var id: Long,
+        @PrimaryKey @SerializedName("databaseId", alternate = ["id"]) var id: Int,
         @SerializedName("login") var login: String? = null,
         @SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
         @SerializedName("url") var url: String? = null,
@@ -36,7 +36,7 @@ data class UserModel(
     }
 }
 
-data class UserOrganizationModel(@SerializedName("totalCount") var totalCount: Long? = null,
+data class UserOrganizationModel(@SerializedName("totalCount") var totalCount: Int? = null,
                                  @SerializedName("nodes") var nodes: List<UserOrganizationNodesModel>? = null)
 
 data class UserOrganizationNodesModel(@SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
@@ -45,7 +45,7 @@ data class UserOrganizationNodesModel(@SerializedName(value = "avatar_url", alte
                                       @SerializedName("login") var login: String? = null,
                                       @SerializedName("name") var name: String? = null)
 
-data class UserPinnedReposModel(@SerializedName("totalCount") var totalCount: Long? = null,
+data class UserPinnedReposModel(@SerializedName("totalCount") var totalCount: Int? = null,
                                 @SerializedName("nodes") var pinnedRepositories: List<UserPinnedRepoNodesModel>? = null)
 
 data class UserPinnedRepoNodesModel(@SerializedName("name") var name: String? = null,
@@ -54,4 +54,4 @@ data class UserPinnedRepoNodesModel(@SerializedName("name") var name: String? = 
                                     @SerializedName("stargazers") var stargazers: CountModel? = null,
                                     @SerializedName("issues") var issues: CountModel? = null,
                                     @SerializedName("pullRequests") var pullRequests: CountModel? = null,
-                                    @SerializedName("forkCount") var forkCount: Long? = null)
+                                    @SerializedName("forkCount") var forkCount: Int? = null)

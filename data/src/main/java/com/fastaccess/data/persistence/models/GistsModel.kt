@@ -12,7 +12,7 @@ import github.GetProfileGistsQuery
 import java.util.*
 
 data class GistsModel(
-        @SerializedName("totalCount") var totalCount: Long = 0,
+        @SerializedName("totalCount") var totalCount: Int = 0,
         @SerializedName("gists") var gists: List<ProfileGistModel>? = null,
         @Ignore @SerializedName("pageInfo") var pageInfo: PageInfoModel? = null
 ) {
