@@ -240,7 +240,7 @@
     <string name="submit_issue">Submit Issue</string>
     <string name="error_creating_issue">Error creating issue</string>
     <string name="create_issue">Create Issue</string>
-    <string name="error_highlighting_editor">Please un-select highlighting to continue editing.</string>
+    <string name="error_highlighting_editor">Please deselect highlighting to continue editing.</string>
     <string name="notifications">Notifications</string>
     <string name="unread_notification">You have unread notifications</string>
     <string name="open">Open</string>
@@ -426,7 +426,7 @@
     <string name="no_members">No members</string>
     <string name="no_teams">No teams</string>
     <string name="no_orgs">No Organizations</string>
-    <string name="no_orgs_dialog_title">Can\'t find your Organisations\?</string>
+    <string name="no_orgs_dialog_title">Can\'t find your Organizations\?</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="animations">Animations</string>
     <string name="dialog_animation_summary">Enable popups animations</string>
@@ -463,10 +463,10 @@
     <string name="login_with_personal_token">Login with a personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
-    <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
+    <string name="no_orgs_description">If you are associated to an organization but you can\'t see them here, please follow the link
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
         grant FastHub access to list your organizations.\nYou could also open up https://github.com/settings/applications and look for
-        FastHub, open it then scroll to Organization access and click on Grant Button.</string>
+        FastHub, open it then scroll to "Organization Access" and click on "Grant" Button.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
@@ -506,17 +506,17 @@
     <string name="tags">Tags</string>
     <string name="add_comment">Add comment</string>
     <string name="banners">Introducing Banners</string>
-    <string name="banners_info">With FastHub 2.5.0, you can now better express yourself with banners
-        for your profile page.\n\nAnyone using the FastHub app, will see your header, and you\'ll
-        begin seeing other peoples headers as well! If you\'d like to create a banner for yourself,
-        make it 1280x384 or divisible, otherwise, it may get cropped.\n\nYou can add or change your
-        banner at any time, by creating a gist described "header.fst" with a file containing a
+    <string name="banners_info">With FastHub 2.5.0, you can now express yourself more with banners
+        for your profile page.\n\nAnyone using the FastHub app can see your header, and you\'ll
+        begin seeing other people's headers as well! If you\'d like to create a banner for yourself,
+        make it 1280x384 or divisible, otherwise it may get cropped.\n\nYou can add or change your
+        banner at any time by creating a gist described "header.fst" with a file containing a
         direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
     </string>
     <string name="edit_banner">CHOOSE BANNER</string>
     <string name="image_error">Error loading image, please try again.</string>
     <string name="trending">Trending</string>
-    <string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
+    <string name="not_really_working">Sort by emojis does not really work due to GitHub limitations</string>
     <string name="scroll_up">Scroll Up</string>
     <string name="scroll_down">Scroll down</string>
     <string name="participated">Participated</string>
@@ -541,7 +541,7 @@
         GitHub API is coming from your Enterprise Account.</string>
     <string name="add_account">Add Account</string>
     <string name="choose_account">Choose Account</string>
-    <string name="not_match">Not match</string>
+    <string name="not_match">No match</string>
     <string name="warning">Warning</string>
     <string name="owner">Owner</string>
     <string name="original_poster">Original Poster</string>
@@ -566,17 +566,17 @@
     <string name="no_projects">No Projects</string>
     <string name="no_cards">No Cards</string>
     <string name="card_added_by">Added by %s %s</string>
-    <string name="too_large_changes">Too many differences to display. Please, view them via browser</string>
+    <string name="too_large_changes">Too many differences to display. Please view them via a browser</string>
     <string name="project">Project</string>
     <string name="please_read">PLEASE READ!</string>
     <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• Why can\'t I see either my <i>Private</i> or my <i>Public</i> <b>Organizations</b>?</h5>
         <p>Open up https://github.com/settings/applications and look for FastHub, open it up, scroll down to "Organization access" and click on the "Grant" button.
-        Alternatively you can sign in using <b>Access Token</b> which will ease the process.</p>
+        Alternatively, you can sign in using <b>Access Token</b> which will ease the process.</p>
 
         <h5>• I have tried signing in with an Access Token and a One-Time Password (OTP) without any luck. What\'s wrong?</h5>
-        <p>You can\'t sign in using Access Token and OTP all together. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
+        <p>You can\'t sign in using Access Token and OTP altogether. Due to the limited lifetime of such passwords you\'ll have to repeat a sign in procedure every few seconds.</p>
 
         <h5>• Why aren\'t my Private and Enterprise Repositories\' Wikis showing up?</h5>
         <p>As FastHub scraps GitHub\'s Wiki pages, the application is unable to obtain any session token which is required by Private Repositories.</p>
@@ -586,23 +586,23 @@
         in most cases, since your credentials are not on GitHub\'s server. But in <b>some</b> cases your GitHub account OAuth token will do the trick.</p>
 
         <h5>• Why am I having problems editing Issues/Pull Requests (PRs)?</h5>
-        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your Organization to grant access to FastHub. Alternatively you can sign in with an Access Token.</p>
+        <p>If you are unable to edit Issues/PRs in a Public Organization\'s repository, please contact your organization to grant access to FastHub. Alternatively, you can sign in with an Access Token.</p>
 
         <h5>• I\'m having problems! / I want to suggest you some things!</h5>
         <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create a new issue for any bugs and feature requests. I really do encourage you to
-        search for similar issues before opening a new one. Any duplicated ticket will be labeled as duplicated and closed immediately.</p>
+        search for similar issues before opening a new one. Any duplicated ticket will be labeled as "Duplicated" and closed immediately.</p>
 
         <h5>• How can I get a PROMO CODE?</h5>
-        <p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided me via E-mail:</p>
+        <p>If you are a student, you\'ll have to prove it to me. The documents listed below should be provided to me privately through e-mail:</p>
         <ul>
         <li>Your GitHub username;</li>
         <li>Your student card and your identity card/passport (that shows your name and face to compare them!);</li>
         <li>Your education start and graduation dates.</li>
         </ul>
-        <p>If you aren\'t a student and you can\'t afford purchasing PRO, you\'ll need to:</p>
+        <p>If you aren\'t a student or you can\'t afford to purchase PRO, you\'ll need to:</p>
         <ul>
         <li>Your GitHub username;</li>
-        <li>Write an article about FastHub in any social media, such as Medium;</li>
+        <li>Write an article about FastHub on any social media platform, such as Medium;</li>
         <li>Prove your authorship.</li>
         </ul>
     ]]></string>
