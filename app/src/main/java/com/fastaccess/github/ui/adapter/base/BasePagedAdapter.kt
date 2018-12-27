@@ -9,12 +9,13 @@ import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
  * Created by Kosh on 12.10.18.
  */
 abstract class BasePagedAdapter<M>(
-        diffCallback: DiffUtil.ItemCallback<M?>
+    diffCallback: DiffUtil.ItemCallback<M?>
 ) : PagedListAdapter<M, BaseViewHolder<M>>(diffCallback) {
 
     var currentState = CurrentState.LOADING
         set(value) {
             field = value
+            if (itemCount < 10) return // do not add progress if we are in first page!
             notifyItemChanged(itemCount)
         }
 

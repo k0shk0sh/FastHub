@@ -28,13 +28,15 @@
                 android:paddingBottom="?actionBarSize"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.fastaccess.github.ui.widget.AvatarImageView
                     android:id="@+id/userImageView"
                     android:layout_width="@dimen/header_icon_zie"
                     android:layout_height="@dimen/header_icon_zie"
                     android:layout_gravity="center|top"
                     android:background="@color/transparent"
-                    android:src="@mipmap/ic_launcher"
+                    android:layout_marginTop="@dimen/spacing_micro"
+                    android:layout_marginBottom="@dimen/spacing_micro"
+                    tools:src="@mipmap/ic_launcher"
                     android:translationZ="9dp"/>
 
                 <androidx.appcompat.widget.AppCompatTextView

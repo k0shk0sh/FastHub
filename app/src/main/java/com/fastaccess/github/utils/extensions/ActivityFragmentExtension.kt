@@ -62,6 +62,8 @@ fun Context.getColorAttr(attr: Int): Int {
 
 fun Context.getColorCompat(id: Int): Int = ContextCompat.getColor(this, id)
 
+fun Context.getDrawableCompat(id: Int): Drawable? = ContextCompat.getDrawable(this, id)
+
 fun FragmentActivity.clearDarkStatusBarIcons() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         this.window?.decorView?.let { decoder ->

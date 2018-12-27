@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.fastaccess.data.persistence.models.UserOrganizationNodesModel
 import com.fastaccess.github.R
-import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import kotlinx.android.synthetic.main.icon_row_item.view.*
 
@@ -15,10 +14,7 @@ class ProfileOrgsViewHolder(parent: ViewGroup) : BaseViewHolder<UserOrganization
     .inflate(R.layout.icon_row_item, parent, false)) {
 
     override fun bind(item: UserOrganizationNodesModel) {
-        GlideApp.with(itemView.imageIcon)
-            .load(item.avatarUrl)
-            .circleCrop()
-            .into(itemView.imageIcon)
+        itemView.imageIcon.loadAvatar(item.avatarUrl)
     }
 
 }

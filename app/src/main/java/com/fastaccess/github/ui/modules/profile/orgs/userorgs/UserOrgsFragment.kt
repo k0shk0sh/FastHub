@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.ui.adapter.ProfileGistsAdapter
+import com.fastaccess.github.ui.adapter.OrganizationsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.viewmodel.UserOrgsViewModel
 import com.fastaccess.github.utils.extensions.addDivider
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -23,12 +23,17 @@ import javax.inject.Inject
 class UserOrgsFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(UserOrgsViewModel::class.java) }
-    private val adapter by lazy { ProfileGistsAdapter() }
+    private val adapter by lazy {
+        OrganizationsAdapter { url ->
+            Timber.e(url)
+        }
+    }
 
     override fun viewModel(): BaseViewModel? = viewModel
-    override fun layoutRes(): Int = R.layout.simple_refresh_list_layout
+    override fun layoutRes(): Int = R.layout.toolbar_fragment_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
+        setupToolbar(R.string.organizations)
         recyclerView.adapter = adapter
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
@@ -49,11 +54,7 @@ class UserOrgsFragment : BaseFragment() {
 
         viewModel.getOrgs().observeNotNull(this) {
             adapter.currentState = CurrentState.DONE
-//            adapter.submitList(it)
-        }
-
-        viewModel.counter.observeNotNull(this) {
-            postCount(FragmentType.GISTS, it)
+            adapter.submitList(it)
         }
     }
 

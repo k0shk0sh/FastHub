@@ -20,7 +20,6 @@ import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.observeNull
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.platform.glide.GlideApp
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrgsAdapter
 import com.fastaccess.github.ui.adapter.ProfilePinnedReposAdapter
@@ -180,11 +179,7 @@ class ProfileFragment : BasePagerFragment() {
             pinnedReposAdapter.insertNew(nodes)
         }
         blockBtn.setOnClickListener { viewModel.blockUnblockUser(loginBundle) }
-        GlideApp.with(this)
-            .load(user.avatarUrl)
-            .fallback(R.drawable.ic_profile)
-            .circleCrop()
-            .into(userImageView)
+        userImageView.loadAvatar(user.avatarUrl)
 
         if (pager.adapter == null) {
             pager.offscreenPageLimit = 5

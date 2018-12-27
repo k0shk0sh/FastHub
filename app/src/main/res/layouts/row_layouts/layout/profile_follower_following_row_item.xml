@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.fastaccess.github.ui.widget.AvatarImageView
             android:id="@+id/userIcon"
             android:layout_width="@dimen/large_icon_zie"
             android:layout_height="@dimen/large_icon_zie"

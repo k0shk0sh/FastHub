@@ -7,7 +7,7 @@ import androidx.fragment.app.transaction
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseBottomSheetDialogFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
+import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
 
 /**
  * Created by Kosh on 2018-11-25.
@@ -19,7 +19,7 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             childFragmentManager.transaction {
-                replace(R.id.container, NotificationPagerFragment.newInstance())
+                replace(R.id.container, UserOrgsFragment.newInstance())
             }
         }
     }

@@ -15,9 +15,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.fastaccess.data.model.FragmentType
-import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.R
 import com.fastaccess.github.base.callback.UpdateTabCount
+import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.widget.SpannableBuilder
 import com.fastaccess.github.ui.widget.spans.LabelSpan
@@ -143,7 +143,13 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
             } else {
                 setTitle(resId)
             }
-            setNavigationOnClickListener { activity?.onBackPressed() }
+            setNavigationOnClickListener {
+                if(parentFragment is BaseBottomSheetDialogFragment){
+                    (parentFragment as BaseBottomSheetDialogFragment).dismiss()
+                    return@setNavigationOnClickListener
+                }
+                activity?.onBackPressed()
+            }
             menuId?.let { inflateMenu(it) }
         }
     }
