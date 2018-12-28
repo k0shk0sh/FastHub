@@ -30,7 +30,7 @@ class UserOrgsFragment : BaseFragment() {
     }
 
     override fun viewModel(): BaseViewModel? = viewModel
-    override fun layoutRes(): Int = R.layout.toolbar_fragment_list_layout
+    override fun layoutRes(): Int = R.layout.rounded_toolbar_fragment_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.organizations)

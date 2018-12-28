@@ -19,7 +19,7 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             childFragmentManager.transaction {
-                replace(R.id.container, UserOrgsFragment.newInstance())
+                replace(R.id.container, UserOrgsFragment.newInstance(), "UserOrgsFragment")
             }
         }
     }

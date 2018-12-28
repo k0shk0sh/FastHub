@@ -51,7 +51,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/members"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleDisabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -61,14 +61,13 @@
                     app:chipIcon="@drawable/ic_group"
                     app:chipIconSize="@dimen/spacing_xs_large"
                     app:chipStartPadding="0dp"
-                    app:rippleColor="@color/transparent"
                     app:textEndPadding="0dp"
                     app:textStartPadding="@dimen/spacing_micro"
                     tools:text="12000"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/projects"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleDisabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -78,14 +77,13 @@
                     app:chipIcon="@drawable/ic_project"
                     app:chipIconSize="@dimen/spacing_xs_large"
                     app:chipStartPadding="0dp"
-                    app:rippleColor="@color/transparent"
                     app:textEndPadding="0dp"
                     app:textStartPadding="@dimen/spacing_micro"
                     tools:text="12000"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/repos"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleDisabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -95,7 +93,6 @@
                     app:chipIcon="@drawable/ic_repo"
                     app:chipIconSize="@dimen/spacing_xs_large"
                     app:chipStartPadding="0dp"
-                    app:rippleColor="@color/transparent"
                     app:textEndPadding="0dp"
                     app:textStartPadding="@dimen/spacing_micro"
                     tools:text="12000"/>
@@ -103,7 +100,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/teams"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleDisabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -113,7 +110,6 @@
                     app:chipIcon="@drawable/ic_profile"
                     app:chipIconSize="@dimen/spacing_xs_large"
                     app:chipStartPadding="0dp"
-                    app:rippleColor="@color/transparent"
                     app:textEndPadding="0dp"
                     app:textStartPadding="@dimen/spacing_micro"
                     tools:text="12000"/>

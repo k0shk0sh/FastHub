@@ -8,9 +8,16 @@
         <item name="behavior_peekHeight">220dp</item>
     </style>
 
+    <style name="ChipStyleDisabled">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="chipBackgroundColor">?colorPrimary</item>
+        <item name="android:enabled">false</item>
+    </style>
+
     <style name="ChipStyle">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?colorPrimary</item>
     </style>
+
 
 </resources>

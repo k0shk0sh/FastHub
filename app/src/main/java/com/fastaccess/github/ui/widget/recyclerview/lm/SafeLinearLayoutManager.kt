@@ -17,6 +17,7 @@ class SafeLinearLayoutManager : LinearLayoutManager {
         try {
             super.onLayoutChildren(recycler, state)
         } catch (ignored: Exception) {
+            ignored.printStackTrace()
         }
     }
 
@@ -24,6 +25,7 @@ class SafeLinearLayoutManager : LinearLayoutManager {
         try {
             super.onMeasure(recycler, state, widthSpec, heightSpec)
         } catch (ignored: Exception) {
+            ignored.printStackTrace()
         }
     }
 }
