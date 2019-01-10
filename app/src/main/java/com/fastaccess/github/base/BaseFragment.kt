@@ -126,6 +126,8 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         view?.findViewById<RecyclerView?>(R.id.recyclerView)?.scrollToPosition(0)
     }
 
+    open fun onBackPressed(): Boolean = true
+
     fun addDisposal(disposable: Disposable) {
         disposal.add(disposable)
     }
@@ -144,7 +146,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
                 setTitle(resId)
             }
             setNavigationOnClickListener {
-                if(parentFragment is BaseBottomSheetDialogFragment){
+                if (parentFragment is BaseBottomSheetDialogFragment) {
                     (parentFragment as BaseBottomSheetDialogFragment).dismiss()
                     return@setNavigationOnClickListener
                 }

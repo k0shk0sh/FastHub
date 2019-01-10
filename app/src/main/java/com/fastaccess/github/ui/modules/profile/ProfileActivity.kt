@@ -3,6 +3,7 @@ package com.fastaccess.github.ui.modules.profile
 import android.os.Bundle
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.platform.deeplink.WebDeepLink
 import com.fastaccess.github.ui.modules.profile.fragment.ProfileFragment
 import com.fastaccess.github.utils.extensions.replace
@@ -22,7 +23,13 @@ class ProfileActivity : BaseActivity() {
                 finish()
                 return
             }
-            replace(R.id.container, ProfileFragment.newInstance(login, tab))
+            replace(R.id.container, ProfileFragment.newInstance(login, tab), ProfileFragment.TAG)
+        }
+    }
+
+    override fun onBackPressed() {
+        (supportFragmentManager?.findFragmentByTag(ProfileFragment.TAG) as? ProfileFragment)?.onBackPressed()?.isTrue {
+            super.onBackPressed()
         }
     }
 }

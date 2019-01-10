@@ -65,10 +65,16 @@ class ProfileFragment : BasePagerFragment() {
     private val pinnedReposAdapter by lazy { ProfilePinnedReposAdapter(arrayListOf()) }
     private val orgsAdapter by lazy { ProfileOrgsAdapter(arrayListOf()) }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
-    private val tabBundle: String? by lazy { arguments?.getString(EXTRA_TWO) }
+    private val tabBundle: String? by lazy {
+        val tabPosition = arguments?.getString(EXTRA_TWO)
+        arguments?.remove(EXTRA_TWO) // get this only once and then remove it from the bundle.
+        return@lazy tabPosition
+    }
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
+    override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
+
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.profile)
         username.text = loginBundle
@@ -127,7 +133,14 @@ class ProfileFragment : BasePagerFragment() {
         following.setOnClickListener { if (pager.adapter != null) selectTab(FragmentType.FOLLOWINGS) }
     }
 
-    override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
+    override fun onBackPressed(): Boolean {
+        return if (behaviour.state == AnchorSheetBehavior.STATE_COLLAPSED) {
+            true
+        } else {
+            behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
+            false
+        }
+    }
 
     private fun observeChanges() {
         viewModel.getUser(loginBundle).observeNull(this) { user ->
@@ -199,6 +212,8 @@ class ProfileFragment : BasePagerFragment() {
     }
 
     companion object {
+        const val TAG = "ProfileFragment"
+
         fun newInstance(login: String, tab: String? = null) = ProfileFragment().apply {
             arguments = Bundle().apply {
                 putString(EXTRA, login)
