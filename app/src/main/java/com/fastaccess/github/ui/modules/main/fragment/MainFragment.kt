@@ -103,7 +103,9 @@ class MainFragment : BaseFragment() {
         starred.setOnClickListener { view -> onUserRetrieved { route(it?.toStarred()) } }
         repos.setOnClickListener { view -> onUserRetrieved { route(it?.toRepos()) } }
         gists.setOnClickListener { view -> onUserRetrieved { route(it?.toGists()) } }
-        orgs.setOnClickListener { _ -> MultiPurposeBottomSheetDialog.show(childFragmentManager) }
+        orgs.setOnClickListener { _ ->
+            MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS)
+        }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {
