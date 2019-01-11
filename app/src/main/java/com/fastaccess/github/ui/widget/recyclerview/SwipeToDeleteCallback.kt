@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 class SwipeToDeleteCallback(
     private val callback: (viewHolder: RecyclerView.ViewHolder, direction: Int) -> Unit
@@ -41,6 +42,7 @@ class SwipeToDeleteCallback(
         val delegate = viewHolder as? AllowSwipeToDeleteDelegate
             ?: return super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
+        Timber.e("$dX")
         val itemView = viewHolder.itemView
         val itemHeight = itemView.bottom - itemView.top
         val isCanceled = dX == 0f && !isCurrentlyActive
@@ -51,7 +53,7 @@ class SwipeToDeleteCallback(
             return
         }
 
-        if (dX > 0f) {
+        if (dX > 0f) { // swipe right
             delegate.drawableStart?.let {
                 background.color = delegate.drawableStartBackground
                 background.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
@@ -63,12 +65,11 @@ class SwipeToDeleteCallback(
                 val iconRight = iconLeft + it.intrinsicWidth
                 val iconBottom = iconTop + it.intrinsicHeight
 
-                // Draw the delete icon
                 it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                 it.draw(canvas)
 
             }
-        } else {
+        } else { // swipe left
             delegate.drawableEnd?.let { firstAction ->
                 background.color = delegate.drawableEndBackground
                 background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)

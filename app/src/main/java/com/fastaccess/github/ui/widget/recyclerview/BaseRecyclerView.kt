@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.fastaccess.github.extensions.runSafely
 
 
 /**
@@ -50,9 +49,9 @@ class BaseRecyclerView constructor(context: Context,
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        runSafely({
+        runCatching {
             removeOnScrollListener(onScrollMore)
-        })
+        }
     }
 
     fun setEmptyView(emptyView: View, parentView: View? = null) {

@@ -47,16 +47,6 @@ fun Int.formatNumber(): String {
     return String.format("%.1f%c", count / Math.pow(1000.0, exp.toDouble()), "kMGTPE"[exp - 1])
 }
 
-
-inline fun runSafely(execute: () -> Unit, noinline onErrorCallback: (() -> Unit)? = null) {
-    try {
-        execute.invoke()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        onErrorCallback?.invoke()
-    }
-}
-
 fun getDateByDays(days: Int): String {
     val cal = Calendar.getInstance()
     val s = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)

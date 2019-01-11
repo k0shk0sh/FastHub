@@ -39,6 +39,8 @@ abstract class BasePagedAdapter<M>(
         return super.getItemCount() + if (hasFooter()) 1 else 0
     }
 
+    fun getValue(position: Int) = getItem(position)
+
     private fun hasFooter(): Boolean {
         return super.getItemCount() != 0 && (currentState == CurrentState.LOADING || currentState == CurrentState.ERROR)
     }

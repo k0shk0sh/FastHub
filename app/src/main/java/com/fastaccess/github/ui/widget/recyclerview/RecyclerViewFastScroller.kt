@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fastaccess.github.R
-import com.fastaccess.github.extensions.runSafely
 import com.google.android.material.appbar.AppBarLayout
 
 open class RecyclerViewFastScroller : FrameLayout {
@@ -25,7 +24,6 @@ open class RecyclerViewFastScroller : FrameLayout {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var appBarLayout: AppBarLayout? = null
     private var toggled: Boolean = false
-    private var registeredObserver = false
 
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -103,11 +101,9 @@ open class RecyclerViewFastScroller : FrameLayout {
     }
 
     private fun safelyUnregisterObserver() {
-        runSafely({
-            if (registeredObserver) {
-                recyclerView?.adapter?.unregisterAdapterDataObserver(observer)
-            }
-        })
+        kotlin.runCatching {
+            recyclerView?.adapter?.unregisterAdapterDataObserver(observer)
+        }
     }
 
     private fun init() {
@@ -141,9 +137,8 @@ open class RecyclerViewFastScroller : FrameLayout {
             this.recyclerView = recyclerView
             this.layoutManager = recyclerView.layoutManager
             this.recyclerView?.addOnScrollListener(onScrollListener)
-            if (recyclerView.adapter != null && !registeredObserver) {
-                recyclerView.adapter?.registerAdapterDataObserver(observer)
-                registeredObserver = true
+            if (recyclerView.adapter != null) {
+                runCatching { recyclerView.adapter?.registerAdapterDataObserver(observer) }
             }
             hideShow()
             initScrollHeight()

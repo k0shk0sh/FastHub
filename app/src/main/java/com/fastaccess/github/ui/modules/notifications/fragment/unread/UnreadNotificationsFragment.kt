@@ -45,7 +45,8 @@ class UnreadNotificationsFragment : BaseFragment() {
         listenToChanges()
 
         val swiper = SwipeToDeleteCallback { viewHolder, direction ->
-            Timber.e("$direction")
+            Timber.e("${adapter.getValue(viewHolder.adapterPosition)}")
+            adapter.notifyItemRemoved(viewHolder.adapterPosition)
         }
 
         val itemTouchHelper = ItemTouchHelper(swiper)
