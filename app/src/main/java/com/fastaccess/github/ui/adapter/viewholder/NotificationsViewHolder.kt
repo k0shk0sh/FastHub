@@ -1,11 +1,15 @@
 package com.fastaccess.github.ui.adapter.viewholder
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.github.R
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.extensions.timeAgo
+import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
+import com.fastaccess.github.utils.extensions.getColorCompat
+import com.fastaccess.github.utils.extensions.getDrawableCompat
 import kotlinx.android.synthetic.main.notification_main_screen_row_item.view.*
 
 /**
@@ -13,7 +17,20 @@ import kotlinx.android.synthetic.main.notification_main_screen_row_item.view.*
  */
 
 class NotificationsViewHolder(parent: ViewGroup) : BaseViewHolder<NotificationModel>(LayoutInflater.from(parent.context)
-        .inflate(R.layout.notification_main_screen_row_item, parent, false)) {
+    .inflate(R.layout.notification_main_screen_row_item, parent, false)), SwipeToDeleteCallback.AllowSwipeToDelete {
+
+    override val drawableStart: Drawable?
+        get() = itemView.context.getDrawableCompat(R.drawable.ic_unsubscribe)
+
+    override val drawableStartBackground: Int
+        get() = itemView.context.getColorCompat(R.color.material_amber_700)
+
+    override val drawableEnd: Drawable?
+        get() = itemView.context.getDrawableCompat(R.drawable.ic_unsubscribe)
+
+    override val drawableEndBackground: Int
+        get() = itemView.context.getColorCompat(R.color.material_red_700)
+
     override fun bind(item: NotificationModel) {
         itemView.apply {
             item.subject?.let { subject ->

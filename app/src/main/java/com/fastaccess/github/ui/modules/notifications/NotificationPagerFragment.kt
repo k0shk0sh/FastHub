@@ -25,9 +25,10 @@ class NotificationPagerFragment : BasePagerFragment() {
     override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.notifications)
+        pager.isEnabled = false
         pager.adapter = PagerAdapter(childFragmentManager, arrayListOf(
-                ViewPagerModel(getString(R.string.unread), UnreadNotificationsFragment.newInstance(), FragmentType.UNREAD_NOTIFICATIONS),
-                ViewPagerModel(getString(R.string.read), AllNotificationsFragment.newInstance(), FragmentType.ALL_NOTIFICATIONS)
+            ViewPagerModel(getString(R.string.unread), UnreadNotificationsFragment.newInstance(), FragmentType.UNREAD_NOTIFICATIONS),
+            ViewPagerModel(getString(R.string.read), AllNotificationsFragment.newInstance(), FragmentType.ALL_NOTIFICATIONS)
         ))
         tabs.setupWithViewPager(pager)
         if (savedInstanceState == null) {
