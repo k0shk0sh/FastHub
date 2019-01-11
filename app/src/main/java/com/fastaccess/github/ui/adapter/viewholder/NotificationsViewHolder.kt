@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.notification_main_screen_row_item.view.*
  */
 
 class NotificationsViewHolder(parent: ViewGroup) : BaseViewHolder<NotificationModel>(LayoutInflater.from(parent.context)
-    .inflate(R.layout.notification_main_screen_row_item, parent, false)), SwipeToDeleteCallback.AllowSwipeToDelete {
+    .inflate(R.layout.notification_main_screen_row_item, parent, false)), SwipeToDeleteCallback.AllowSwipeToDeleteDelegate {
 
     override val drawableStart: Drawable?
         get() = itemView.context.getDrawableCompat(R.drawable.ic_unsubscribe)
@@ -26,7 +26,7 @@ class NotificationsViewHolder(parent: ViewGroup) : BaseViewHolder<NotificationMo
         get() = itemView.context.getColorCompat(R.color.material_amber_700)
 
     override val drawableEnd: Drawable?
-        get() = itemView.context.getDrawableCompat(R.drawable.ic_unsubscribe)
+        get() = itemView.context.getDrawableCompat(R.drawable.ic_done)
 
     override val drawableEndBackground: Int
         get() = itemView.context.getColorCompat(R.color.material_red_700)

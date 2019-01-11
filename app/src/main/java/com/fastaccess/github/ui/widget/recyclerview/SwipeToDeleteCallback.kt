@@ -18,7 +18,16 @@ class SwipeToDeleteCallback(
 
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        if (viewHolder !is AllowSwipeToDelete) return 0 // if the viewholder doesn't impl AllowSwipeToDelete then lets stop.
+        if (viewHolder !is AllowSwipeToDeleteDelegate) return 0 // if the viewholder doesn't impl AllowSwipeToDeleteDelegate then lets stop.
+        val delegate = viewHolder as AllowSwipeToDeleteDelegate
+        when {
+            delegate.drawableEnd == null && delegate.drawableStart == null -> return 0
+            delegate.drawableEnd != null && delegate.drawableStart != null -> {
+                setDefaultSwipeDirs(ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+            }
+            delegate.drawableStart != null -> setDefaultSwipeDirs(ItemTouchHelper.RIGHT)
+            delegate.drawableEnd != null -> setDefaultSwipeDirs(ItemTouchHelper.LEFT)
+        }
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 
@@ -29,7 +38,7 @@ class SwipeToDeleteCallback(
     override fun onChildDraw(canvas: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                              dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
 
-        val delegate = viewHolder as? AllowSwipeToDelete
+        val delegate = viewHolder as? AllowSwipeToDeleteDelegate
             ?: return super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
         val itemView = viewHolder.itemView
@@ -87,7 +96,7 @@ class SwipeToDeleteCallback(
     }
 
 
-    interface AllowSwipeToDelete {
+    interface AllowSwipeToDeleteDelegate {
         val drawableStart: Drawable?
         val drawableStartBackground: Int
         val drawableEnd: Drawable?
