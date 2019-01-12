@@ -44,5 +44,9 @@ class UnreadNotificationsViewModel @Inject constructor(
             }, ::println))
     }
 
+    fun markAsRead(id: String) {
+        provider.markAsRead(id)
+    }
+
     fun hasNext() = isLastPage
 }

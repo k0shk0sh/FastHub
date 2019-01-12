@@ -1,5 +1,7 @@
 package com.fastaccess.github
 
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.evernote.android.state.StateSaver
 import com.fastaccess.github.di.components.AppComponent
 import com.fastaccess.github.platform.fabric.FabricProvider
@@ -14,7 +16,9 @@ import timber.log.Timber
  */
 class App : DaggerApplication() {
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> = AppComponent.getComponent(this)
+    private val appComponent by lazy { AppComponent.getComponent(this) }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> = appComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -22,6 +26,9 @@ class App : DaggerApplication() {
     }
 
     private fun initConfigs() {
+        WorkManager.initialize(this, Configuration.Builder()
+            .setWorkerFactory(appComponent.daggerWorkerFactory())
+            .build())
         FabricProvider.initFabric(this)
         StateSaver.setEnabledForAllActivitiesAndSupportFragments(this, true)
         if (BuildConfig.DEBUG) {

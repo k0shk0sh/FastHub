@@ -105,6 +105,12 @@
 
         <activity android:name="com.fastaccess.github.ui.modules.multipurpose.MultiPurposeActivity"/>
 
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            android:exported="false"
+            tools:node="remove"/>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification"/>

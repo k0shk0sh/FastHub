@@ -9,6 +9,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.works.MarkAsReadNotificationWorker
 import com.fastaccess.github.ui.adapter.UnreadNotificationsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.viewmodel.UnreadNotificationsViewModel
@@ -16,7 +17,6 @@ import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
 import com.fastaccess.github.utils.extensions.addDivider
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -25,6 +25,7 @@ import javax.inject.Inject
 class UnreadNotificationsFragment : BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(UnreadNotificationsViewModel::class.java) }
     private val adapter by lazy { UnreadNotificationsAdapter() }
 
@@ -44,12 +45,16 @@ class UnreadNotificationsFragment : BaseFragment() {
         recyclerView.addOnLoadMore { viewModel.loadNotifications() }
         listenToChanges()
 
-        val swiper = SwipeToDeleteCallback { viewHolder, direction ->
-            Timber.e("${adapter.getValue(viewHolder.adapterPosition)}")
-            adapter.notifyItemRemoved(viewHolder.adapterPosition)
+        val swipeCallback = SwipeToDeleteCallback { viewHolder, direction ->
+            adapter.getValue(viewHolder.adapterPosition)?.let {
+                if (it.unread == true) {
+                    MarkAsReadNotificationWorker.enqueue(it.id)
+                    viewModel.markAsRead(it.id)
+                }
+            }
         }
 
-        val itemTouchHelper = ItemTouchHelper(swiper)
+        val itemTouchHelper = ItemTouchHelper(swipeCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 

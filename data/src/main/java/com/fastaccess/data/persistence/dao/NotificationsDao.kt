@@ -18,6 +18,9 @@ import com.fastaccess.data.persistence.models.NotificationModel
     @Query("SELECT * FROM ${NotificationModel.TABLE_NAME} ORDER BY `updatedAt` DESC LIMIT 5")
     fun getMainNotifications(): LiveData<List<NotificationModel>>
 
+    @Query("UPDATE ${NotificationModel.TABLE_NAME} SET `unread` = 0 WHERE `id` = :id")
+    fun markAsRead(id: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE) fun insert(model: NotificationModel): Long
     @Insert(onConflict = OnConflictStrategy.REPLACE) fun insert(model: List<NotificationModel>)
     @Update(onConflict = OnConflictStrategy.REPLACE) fun update(model: NotificationModel): Int

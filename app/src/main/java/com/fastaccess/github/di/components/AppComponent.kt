@@ -3,6 +3,7 @@ package com.fastaccess.github.di.components
 import android.app.Application
 import com.fastaccess.github.App
 import com.fastaccess.github.di.modules.*
+import com.fastaccess.github.platform.workmanager.DaggerWorkerFactory
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -41,6 +42,10 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
 
         fun build(): AppComponent
     }
+
+    fun daggerWorkerFactory(): DaggerWorkerFactory
+
+    fun workerSubComponentBuilder(): WorkerSubComponent.Builder
 
     fun inject(app: App)
 

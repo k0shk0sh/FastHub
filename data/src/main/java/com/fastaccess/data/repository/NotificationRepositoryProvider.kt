@@ -21,6 +21,7 @@ class NotificationRepositoryProvider @Inject constructor(private val dao: Notifi
     override fun update(model: NotificationModel): Int = dao.update(model)
     override fun delete(model: NotificationModel) = dao.delete(model)
     override fun deleteAll(unread: Boolean) = dao.deleteAll(unread)
+    override fun markAsRead(id: String) = dao.markAsRead(id)
 
     /**
      * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
@@ -47,4 +48,5 @@ interface NotificationRepository {
     fun update(model: NotificationModel): Int
     fun delete(model: NotificationModel)
     fun deleteAll(unread: Boolean)
+    fun markAsRead(id: String)
 }

@@ -6,6 +6,7 @@ apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'io.fabric'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: "org.jlleitschuh.gradle.ktlint"
+apply plugin: "com.github.ben-manes.versions"
 
 buildProperties {
     notThere {
@@ -129,6 +130,13 @@ dependencies {
     implementation dependency.extrasLibraries
     implementation dependency.dagger
     implementation dependency.archs
+
+    implementation("android.arch.work:work-runtime:$workManager") { // fix dups
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    implementation("android.arch.work:work-rxjava2:$workManager") {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') { transitive = true }
 

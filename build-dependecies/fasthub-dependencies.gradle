@@ -5,8 +5,9 @@ ext {
     archComponents = '2.0.0'
     androidX = '1.0.0'
     navigation = '1.0.0-alpha05'
+    workManager = '1.0.0-beta01'
     constraintLayout = '1.1.0'
-    dagger2 = '2.19'
+    dagger2 = '2.20'
     butterKnife = '8.8.1'
     javaxAnnotation = '10.0-b28'
     okHttp = '3.11.0'
@@ -38,7 +39,6 @@ ext {
             "androidx.recyclerview:recyclerview:$androidX",
             "androidx.annotation:annotation:$androidX",
             "androidx.core:core:$androidX",
-            "androidx.viewpager:viewpager:$androidX",
             "androidx.fragment:fragment:$androidX",
             "androidx.swiperefreshlayout:swiperefreshlayout:$androidX",
             "androidx.browser:browser:$androidX",
@@ -118,7 +118,8 @@ ext {
             "junit:junit:$junit",
             "org.assertj:assertj-core:$assertJ",
             "org.mockito:mockito-core:$mockito",
-            "com.nhaarman:mockito-kotlin:$mockitoKotlin"
+            "com.nhaarman:mockito-kotlin:$mockitoKotlin",
+//            "android.arch.work:work-testing:$workManager"
     ]
 
     developmentDependencies = [
