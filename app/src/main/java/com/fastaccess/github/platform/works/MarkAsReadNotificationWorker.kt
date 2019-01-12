@@ -21,7 +21,7 @@ class MarkAsReadNotificationWorker @Inject constructor(
     override fun createWork(): Single<Result> {
         val id = workerParams.inputData.getString(EXTRA)
         val ids = workerParams.inputData.getStringArray(EXTRA_TWO)
-        if (id.isNullOrEmpty() || ids.isNullOrEmpty()) {
+        if (id.isNullOrEmpty() && ids.isNullOrEmpty()) {
             return Single.just(Result.failure())
         }
 
@@ -45,11 +45,19 @@ class MarkAsReadNotificationWorker @Inject constructor(
     }
 
     companion object {
-        fun enqueue(id: String) {
+        fun enqueue(id: String? = null, ids: Array<String>? = null) {
             val workManager = WorkManager.getInstance()
-            workManager.enqueueUniqueWork(id, ExistingWorkPolicy.KEEP, OneTimeWorkRequest.Builder(MarkAsReadNotificationWorker::class.java)
+            workManager.enqueueUniqueWork(id ?: ids?.hashCode()?.toString() ?: "MarkAsReadNotificationWorker",
+                ExistingWorkPolicy.KEEP, OneTimeWorkRequest.Builder(MarkAsReadNotificationWorker::class.java)
                 .setInputData(Data.Builder()
-                    .putString(EXTRA, id)
+                    .apply {
+                        if (!id.isNullOrEmpty()) {
+                            putString(EXTRA, id)
+                        }
+                        if (!ids.isNullOrEmpty()) {
+                            putStringArray(EXTRA_TWO, ids)
+                        }
+                    }
                     .build())
                 .build())
         }

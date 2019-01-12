@@ -5,7 +5,9 @@ import androidx.paging.DataSource
 import com.fastaccess.data.model.GroupedNotificationsModel
 import com.fastaccess.data.persistence.dao.NotificationsDao
 import com.fastaccess.data.persistence.models.NotificationModel
+import com.fastaccess.extension.uiThread
 import com.fastaccess.github.extensions.map
+import io.reactivex.Completable
 import javax.inject.Inject
 
 /**
@@ -21,7 +23,8 @@ class NotificationRepositoryProvider @Inject constructor(private val dao: Notifi
     override fun update(model: NotificationModel): Int = dao.update(model)
     override fun delete(model: NotificationModel) = dao.delete(model)
     override fun deleteAll(unread: Boolean) = dao.deleteAll(unread)
-    override fun markAsRead(id: String) = dao.markAsRead(id)
+    override fun markAsRead(id: String): Completable = Completable.fromCallable { dao.markAsRead(id) }.uiThread()
+    override fun markAllAsRead(): Completable = Completable.fromCallable { dao.markAllAsRead() }.uiThread()
 
     /**
      * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
@@ -48,5 +51,6 @@ interface NotificationRepository {
     fun update(model: NotificationModel): Int
     fun delete(model: NotificationModel)
     fun deleteAll(unread: Boolean)
-    fun markAsRead(id: String)
+    fun markAsRead(id: String): Completable
+    fun markAllAsRead(): Completable
 }

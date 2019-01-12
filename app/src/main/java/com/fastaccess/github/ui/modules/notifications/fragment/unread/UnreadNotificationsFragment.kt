@@ -58,6 +58,11 @@ class UnreadNotificationsFragment : BaseFragment() {
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
+
+    fun markAllAsRead() {
+        viewModel.markAllAsRead()
+    }
+
     private fun listenToChanges() {
 
         viewModel.progress.observeNotNull(this) {

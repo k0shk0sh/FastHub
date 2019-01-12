@@ -1,5 +1,6 @@
 package com.fastaccess.extension
 
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -30,3 +31,6 @@ fun <T> Observable<T>.uiThread() = this.subscribeOn(Schedulers.io())
 fun <T> Observable<T>.uiThreadDistinct() = this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .distinctUntilChanged()
+
+fun Completable.uiThread() = this.subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())

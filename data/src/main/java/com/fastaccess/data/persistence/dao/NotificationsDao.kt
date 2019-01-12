@@ -21,6 +21,9 @@ import com.fastaccess.data.persistence.models.NotificationModel
     @Query("UPDATE ${NotificationModel.TABLE_NAME} SET `unread` = 0 WHERE `id` = :id")
     fun markAsRead(id: String)
 
+    @Query("UPDATE ${NotificationModel.TABLE_NAME} SET `unread` = 0 WHERE `unread` = 1")
+    fun markAllAsRead()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE) fun insert(model: NotificationModel): Long
     @Insert(onConflict = OnConflictStrategy.REPLACE) fun insert(model: List<NotificationModel>)
     @Update(onConflict = OnConflictStrategy.REPLACE) fun update(model: NotificationModel): Int
