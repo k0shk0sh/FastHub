@@ -8,6 +8,7 @@ import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.extension.uiThread
 import com.fastaccess.github.extensions.map
 import io.reactivex.Completable
+import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -25,6 +26,8 @@ class NotificationRepositoryProvider @Inject constructor(private val dao: Notifi
     override fun deleteAll(unread: Boolean) = dao.deleteAll(unread)
     override fun markAsRead(id: String): Completable = Completable.fromCallable { dao.markAsRead(id) }.uiThread()
     override fun markAllAsRead(): Completable = Completable.fromCallable { dao.markAllAsRead() }.uiThread()
+    override fun getAllNotificationsAsSingle(unread: Boolean): Single<List<NotificationModel>> = Single.just(dao.getAllNotificationsBlocking(unread))
+        .uiThread()
 
     /**
      * Fixes Cannot infer a type for this parameter. Please specify it explicitly. 🤷‍🤷‍🤷‍🤷‍🤷‍🤷‍
@@ -53,4 +56,5 @@ interface NotificationRepository {
     fun deleteAll(unread: Boolean)
     fun markAsRead(id: String): Completable
     fun markAllAsRead(): Completable
+    fun getAllNotificationsAsSingle(unread: Boolean): Single<List<NotificationModel>>
 }

@@ -24,7 +24,6 @@ class MarkAsReadNotificationWorker @Inject constructor(
         if (id.isNullOrEmpty() && ids.isNullOrEmpty()) {
             return Single.just(Result.failure())
         }
-
         return if (!id.isNullOrEmpty()) markSingleAsRead(id) else if (!ids.isNullOrEmpty()) markMultiAsRead(ids) else Single.just(Result.failure())
     }
 
@@ -40,8 +39,16 @@ class MarkAsReadNotificationWorker @Inject constructor(
     }
 
     private fun markMultiAsRead(ids: Array<String>): Single<Result> {
-        return Single.just(ids)
-            .flatMap { markMultiAsRead(it) }
+        return Single.fromPublisher { subscriber ->
+            provider.markAllAsRead()
+            kotlin.runCatching {
+                ids.forEach {
+                    notificationService.markAsRead(it).blockingSingle()
+                }
+            }
+            subscriber.onNext(Result.success()) // always succeed
+            subscriber.onComplete()
+        }
     }
 
     companion object {

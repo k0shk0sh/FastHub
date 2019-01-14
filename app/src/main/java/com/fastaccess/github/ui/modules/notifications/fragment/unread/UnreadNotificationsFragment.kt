@@ -60,7 +60,15 @@ class UnreadNotificationsFragment : BaseFragment() {
 
 
     fun markAllAsRead() {
-        viewModel.markAllAsRead()
+        addDisposal(viewModel.getAllUnreadNotifications()
+            .subscribe({ list ->
+                list?.map { it.id }?.toTypedArray()?.let {
+                    MarkAsReadNotificationWorker.enqueue(ids = it)
+                }
+                viewModel.markAllAsRead()
+            }, {
+                it.printStackTrace()
+            }))
     }
 
     private fun listenToChanges() {

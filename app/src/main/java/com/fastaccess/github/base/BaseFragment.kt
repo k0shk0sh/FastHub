@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -137,7 +138,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         disposal.add(disposable)
     }
 
-    fun setupToolbar(resId: Int, menuId: Int? = null) {
+    fun setupToolbar(resId: Int, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
         view?.findViewById<Toolbar?>(R.id.toolbar)?.apply {
             val titleText = findViewById<TextView?>(R.id.toolbarTitle)
             if (titleText != null) {
@@ -152,7 +153,15 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
                 }
                 activity?.onBackPressed()
             }
-            menuId?.let { inflateMenu(it) }
+            menuId?.let { menuResId ->
+                inflateMenu(menuResId)
+                onMenuItemClick?.let { onClick ->
+                    setOnMenuItemClickListener {
+                        onClick.invoke(it)
+                        return@setOnMenuItemClickListener true
+                    }
+                }
+            }
         }
     }
 }

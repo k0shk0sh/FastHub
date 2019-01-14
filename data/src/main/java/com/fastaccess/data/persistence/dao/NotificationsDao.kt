@@ -15,6 +15,9 @@ import com.fastaccess.data.persistence.models.NotificationModel
     @Query("SELECT * FROM ${NotificationModel.TABLE_NAME} WHERE `unread` = :unread ORDER BY `updatedAt` DESC")
     fun getAllNotifications(unread: Boolean): LiveData<List<NotificationModel>>
 
+    @Query("SELECT * FROM ${NotificationModel.TABLE_NAME} WHERE `unread` = :unread ORDER BY `updatedAt` DESC")
+    fun getAllNotificationsBlocking(unread: Boolean): List<NotificationModel>
+
     @Query("SELECT * FROM ${NotificationModel.TABLE_NAME} ORDER BY `updatedAt` DESC LIMIT 5")
     fun getMainNotifications(): LiveData<List<NotificationModel>>
 
