@@ -62,7 +62,8 @@ class UnreadNotificationsFragment : BaseFragment() {
     fun markAllAsRead() {
         addDisposal(viewModel.getAllUnreadNotifications()
             .subscribe({ list ->
-                list?.map { it.id }?.toTypedArray()?.let {
+                if (list.isNullOrEmpty()) return@subscribe
+                list.map { it.id }.toTypedArray().let {
                     MarkAsReadNotificationWorker.enqueue(ids = it)
                 }
                 viewModel.markAllAsRead()
