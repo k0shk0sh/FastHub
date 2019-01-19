@@ -19,6 +19,8 @@ import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.FEEDS_LINK
+import com.fastaccess.github.utils.FILTER_ISSUE_LINK
+import com.fastaccess.github.utils.FILTER_PR_LINK
 import com.fastaccess.github.utils.NOTIFICATION_LINK
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.otpCode
@@ -100,9 +102,9 @@ class MainFragment : BaseFragment() {
                 }
             }
         }
-        starred.setOnClickListener { view -> onUserRetrieved { route(it?.toStarred()) } }
-        repos.setOnClickListener { view -> onUserRetrieved { route(it?.toRepos()) } }
-        gists.setOnClickListener { view -> onUserRetrieved { route(it?.toGists()) } }
+        starred.setOnClickListener { _ -> onUserRetrieved { route(it?.toStarred()) } }
+        repos.setOnClickListener { _ -> onUserRetrieved { route(it?.toRepos()) } }
+        gists.setOnClickListener { _ -> onUserRetrieved { route(it?.toGists()) } }
         orgs.setOnClickListener { _ ->
             MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS)
         }
@@ -136,9 +138,9 @@ class MainFragment : BaseFragment() {
                 MainScreenModelRowType.FEED -> route(model.feed?.actor?.url)
                 MainScreenModelRowType.NOTIFICATION_TITLE -> route(NOTIFICATION_LINK)
                 MainScreenModelRowType.NOTIFICATION -> Timber.e("${model.notificationModel}")
-                MainScreenModelRowType.ISSUES_TITLE -> Timber.e("${model.mainScreenModelRowType}")
+                MainScreenModelRowType.ISSUES_TITLE -> route(FILTER_ISSUE_LINK)
                 MainScreenModelRowType.ISSUES -> Timber.e("${model.issuesPullsModel}")
-                MainScreenModelRowType.PRS_TITLE -> Timber.e("${model.mainScreenModelRowType}")
+                MainScreenModelRowType.PRS_TITLE -> route(FILTER_PR_LINK)
                 MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
             }
         }

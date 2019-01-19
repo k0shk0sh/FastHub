@@ -5,14 +5,14 @@ import androidx.recyclerview.widget.DiffUtil
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.github.ui.adapter.base.BasePagedAdapter
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.ProfileFeedsViewHolderr
+import com.fastaccess.github.ui.adapter.viewholder.FeedsViewHolder
 
 /**
  * Created by Kosh on 12.10.18.
  */
 class ProfileFeedsAdapter : BasePagedAdapter<FeedModel>(DIFF_CALLBACK) {
 
-    override fun contentViewHolder(parent: ViewGroup): BaseViewHolder<FeedModel> = ProfileFeedsViewHolderr(parent)
+    override fun contentViewHolder(parent: ViewGroup): BaseViewHolder<FeedModel> = FeedsViewHolder(parent)
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FeedModel?>() {

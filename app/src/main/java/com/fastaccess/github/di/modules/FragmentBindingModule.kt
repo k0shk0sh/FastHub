@@ -4,6 +4,8 @@ import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
+import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
+import com.fastaccess.github.ui.modules.issuesprs.fragment.FilterIssuePullRequestsFragment
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
@@ -40,4 +42,6 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideAllNotificationsFragment(): AllNotificationsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideMultiPurposeBottomSheetDialog(): MultiPurposeBottomSheetDialog
     @PerFragment @ContributesAndroidInjector abstract fun provideUserOrgsFragment(): UserOrgsFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuePullRequestsFragment(): FilterIssuePullRequestsFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuesPrsBottomSheet(): FilterIssuesPrsBottomSheet
 }

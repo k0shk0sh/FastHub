@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/transparent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
 
-    <include layout="@layout/appbar_center_title_layout_bottomsheet"/>
+    <include layout="@layout/appbar_center_title_layout"/>
 
     <include
         layout="@layout/simple_refresh_list_layout"

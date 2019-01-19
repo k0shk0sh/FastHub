@@ -23,6 +23,7 @@ ext {
     apollo = '1.0.1-SNAPSHOT'
     pandora = 'v1.2.2'
     deepLinkDispatch = '3.1.1'
+    markwonVersion = "2.0.1"
 
 
     kotlin = [
@@ -63,6 +64,7 @@ ext {
             'com.airbnb.android:lottie:2.8.0',
             'com.github.zagum:Android-ExpandIcon:1.2.1',
             "com.evernote:android-state:$androidState",
+            "ru.noties:markwon:$markwonVersion"
     ]
 
     networking = [

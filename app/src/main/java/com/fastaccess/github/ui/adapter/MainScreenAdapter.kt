@@ -10,7 +10,7 @@ import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.adapter.viewholder.MainIssuesPrsViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.NotificationsViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.ProfileFeedsViewHolderr
+import com.fastaccess.github.ui.adapter.viewholder.FeedsViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.TitleSectionViewHolder
 
 /**
@@ -22,7 +22,7 @@ class MainScreenAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            MainScreenModelRowType.FEED.rowType -> ProfileFeedsViewHolderr(parent).apply { setOnClick(this) }
+            MainScreenModelRowType.FEED.rowType -> FeedsViewHolder(parent).apply { setOnClick(this) }
             MainScreenModelRowType.NOTIFICATION.rowType -> NotificationsViewHolder(parent).apply { setOnClick(this) }
             MainScreenModelRowType.ISSUES.rowType -> MainIssuesPrsViewHolder(parent).apply { setOnClick(this) }
             MainScreenModelRowType.PRS.rowType -> MainIssuesPrsViewHolder(parent).apply { setOnClick(this) }
@@ -42,7 +42,7 @@ class MainScreenAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position) ?: return
         when (holder) {
-            is ProfileFeedsViewHolderr -> item.feed?.let { holder.bind(it) }
+            is FeedsViewHolder -> item.feed?.let { holder.bind(it) }
             is NotificationsViewHolder -> item.notificationModel?.let { holder.bind(it) }
             is MainIssuesPrsViewHolder -> item.issuesPullsModel?.let { holder.bind(it) }
             is TitleSectionViewHolder -> {

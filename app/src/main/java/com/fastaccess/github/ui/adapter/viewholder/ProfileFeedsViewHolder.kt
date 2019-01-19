@@ -7,16 +7,17 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.domain.response.enums.EventsType
 import com.fastaccess.github.R
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.ui.widget.SpannableBuilder
 import com.fastaccess.github.extensions.replaceAllNewLines
 import com.fastaccess.github.extensions.timeAgo
+import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.ui.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.feeds_main_screen_row_item.view.*
+import ru.noties.markwon.Markwon
 
 /**
  * Created by Kosh on 20.10.18.
  */
-class ProfileFeedsViewHolderr(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInflater.from(parent.context)
+class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInflater.from(parent.context)
         .inflate(R.layout.feeds_main_screen_row_item, parent, false)) {
 
     override fun bind(item: FeedModel) {
@@ -276,7 +277,7 @@ class ProfileFeedsViewHolderr(parent: ViewGroup) : BaseViewHolder<FeedModel>(Lay
                 .append("${item.repo?.name}")
                 .bold("#${item.payload?.issue?.number}")
 
-        view.feedDescription.text = item.payload?.comment?.body?.replaceAllNewLines() ?: ""
+        view.feedDescription.text = Markwon.markdown(view.context, item.payload?.comment?.body?.replaceAllNewLines() ?: "")
         view.feedDescription.isVisible = !item.payload?.comment?.body?.replaceAllNewLines().isNullOrEmpty()
     }
 
@@ -367,7 +368,7 @@ class ProfileFeedsViewHolderr(parent: ViewGroup) : BaseViewHolder<FeedModel>(Lay
                     .append("at")
                     .space()
                     .append(item.repo?.name)
-            view.feedDescription.text = it.description?.replaceAllNewLines() ?: ""
+            view.feedDescription.text = Markwon.markdown(view.context, it.description?.replaceAllNewLines() ?: "" ?: "")
             view.feedDescription.isVisible = !it.description?.replaceAllNewLines().isNullOrEmpty()
         }
     }

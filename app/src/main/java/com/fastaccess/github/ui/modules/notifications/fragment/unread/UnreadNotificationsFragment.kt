@@ -58,7 +58,6 @@ class UnreadNotificationsFragment : BaseFragment() {
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-
     fun markAllAsRead() {
         addDisposal(viewModel.getAllUnreadNotifications()
             .subscribe({ list ->

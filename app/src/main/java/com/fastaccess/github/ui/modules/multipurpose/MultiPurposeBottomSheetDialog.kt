@@ -8,6 +8,7 @@ import androidx.fragment.app.transaction
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseBottomSheetDialogFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
 import com.fastaccess.github.utils.EXTRA
 
@@ -24,7 +25,9 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
             childFragmentManager.transaction {
                 when (type) {
                     BottomSheetFragmentType.ORGANIZATIONS -> replace(R.id.container, UserOrgsFragment.newInstance(), "UserOrgsFragment")
-                    null -> dismiss()
+                    BottomSheetFragmentType.FILTER_ISSUES, BottomSheetFragmentType.FILTER_PRS ->
+                        replace(R.id.container, FilterIssuesPrsBottomSheet.newInstance(), "FilterIssuesPrsBottomSheet")
+                    else -> dismiss()
                 }
             }
         }
@@ -43,6 +46,6 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
     }
 
     enum class BottomSheetFragmentType {
-        ORGANIZATIONS
+        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS
     }
 }

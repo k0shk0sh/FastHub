@@ -14,10 +14,10 @@
         <item name="android:enabled">false</item>
     </style>
 
-    <style name="ChipStyle">
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?colorPrimary</item>
+        <item name="chipIconSize">@dimen/spacing_xs_large</item>
     </style>
-
 
 </resources>
