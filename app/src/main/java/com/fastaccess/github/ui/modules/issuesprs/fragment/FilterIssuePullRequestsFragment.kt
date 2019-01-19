@@ -2,15 +2,19 @@ package com.fastaccess.github.ui.modules.issuesprs.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.ActivityType
 import com.fastaccess.data.model.FragmentType
+import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.ProfileFeedsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
+import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel.FilterIssuePullRequestsViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.EXTRA
@@ -23,8 +27,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 20.10.18.
  */
-class FilterIssuePullRequestsFragment : BaseFragment() {
-
+class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomSheet.FilterIssuesPrsCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterIssuePullRequestsViewModel::class.java) }
     private val adapter by lazy { ProfileFeedsAdapter() }
@@ -49,10 +52,15 @@ class FilterIssuePullRequestsFragment : BaseFragment() {
         }
         recyclerView.addOnLoadMore { viewModel.loadFeeds() }
         filter.setOnClickListener {
+            val item = viewModel.filterModel.copy() // mutability!
             MultiPurposeBottomSheetDialog.show(childFragmentManager,
-                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_ISSUES)
+                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_ISSUES, item)
         }
         listenToChanges()
+    }
+
+    override fun onFilterApplied(model: FilterIssuesPrsModel) {
+        viewModel.filter(model)
     }
 
     private fun listenToChanges() {
@@ -71,7 +79,12 @@ class FilterIssuePullRequestsFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance() = FilterIssuePullRequestsFragment()
+        fun newInstance(activityType: ActivityType) = FilterIssuePullRequestsFragment().apply {
+            arguments = bundleOf(EXTRA to when (activityType) {
+                ActivityType.FILTER_PR -> FragmentType.FILTER_PRS
+                else -> FragmentType.FILTER_ISSUES
+            })
+        }
     }
 }
 

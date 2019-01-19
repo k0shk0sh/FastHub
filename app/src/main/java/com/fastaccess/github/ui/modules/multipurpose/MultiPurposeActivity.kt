@@ -33,7 +33,8 @@ class MultiPurposeActivity : BaseActivity() {
                 when (activityType) {
                     ActivityType.FEEDS -> replace(R.id.container, FeedsFragment.newInstance())
                     ActivityType.NOTIFICATION -> replace(R.id.container, NotificationPagerFragment.newInstance())
-                    ActivityType.FILTER_ISSUE, ActivityType.FILTER_PR -> replace(R.id.container, FilterIssuePullRequestsFragment.newInstance())
+                    ActivityType.FILTER_ISSUE, ActivityType.FILTER_PR -> replace(R.id.container,
+                        FilterIssuePullRequestsFragment.newInstance(activityType))
                 }
             } ?: run {
                 finish()

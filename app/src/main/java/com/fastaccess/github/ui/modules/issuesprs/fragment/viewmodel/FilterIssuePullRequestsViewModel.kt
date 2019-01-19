@@ -3,6 +3,7 @@ package com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.data.repository.FeedsRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
@@ -19,6 +20,7 @@ class FilterIssuePullRequestsViewModel @Inject constructor(
 
     private var currentPage = 0
     private var isLastPage = false
+    var filterModel = FilterIssuesPrsModel()
 
     fun feeds(): LiveData<PagedList<FeedModel>> {
         val dataSourceFactory = provider.getReceivedEventAsLiveData()
@@ -42,6 +44,11 @@ class FilterIssuePullRequestsViewModel @Inject constructor(
             .subscribe({
                 isLastPage = it.last == currentPage
             }, ::println))
+    }
+
+    fun filter(model: FilterIssuesPrsModel) {
+        if (model == filterModel) return
+        this.filterModel = model
     }
 
     fun hasNext() = isLastPage
