@@ -60,6 +60,8 @@ class MainFragment : BaseFragment() {
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print))
+                R.id.notifications -> route(NOTIFICATION_LINK)
+                R.id.search -> Timber.e("search")
             }
             return@setOnMenuItemClickListener true
         }
@@ -83,6 +85,15 @@ class MainFragment : BaseFragment() {
         })
         listenToDataChanges()
         initClicks()
+    }
+
+    override fun onBackPressed(): Boolean {
+        return if (behaviour.state == BottomSheetBehavior.STATE_COLLAPSED) {
+            true
+        } else {
+            behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+            false
+        }
     }
 
     private fun initClicks() {

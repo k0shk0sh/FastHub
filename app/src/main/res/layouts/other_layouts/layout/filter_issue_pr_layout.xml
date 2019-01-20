@@ -42,28 +42,28 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/created"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/created"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/assigned"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/assigned"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/mentioned"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/mentioned"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/reviewRequest"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/review_requests"
@@ -91,14 +91,14 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/open"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/open"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/closed"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/closed"/>
@@ -126,21 +126,21 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/bothVisibility"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/both_label"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/publicRepos"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/public_label"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/privateRepos"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/private_label"/>
@@ -157,7 +157,7 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/sort"
-                style="@style/ChipStyle"
+                style="@style/ChipStyleCheckable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_normal"
@@ -169,42 +169,42 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/newest"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/newest"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/oldest"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/oldest"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/mostCommented"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/most_commented"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/leastCommented"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/least_commented"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/recentlyUpdated"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/recently_updated"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/leastRecentlyUpdated"
-                    style="@style/ChipStyle"
+                    style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/least_recent_updated"/>
@@ -218,9 +218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
-                android:layout_marginStart="@dimen/spacing_xs_large"
-                android:layout_marginTop="@dimen/spacing_xs_large"
+                android:layout_margin="@dimen/spacing_xs_large"
                 android:text="@string/submit"
                 app:icon="@drawable/ic_done"/>
         </LinearLayout>
