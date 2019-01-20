@@ -2,12 +2,14 @@ ext {
     rxJava2 = '2.1.9'
     rxKotlin = '2.2.0'
     rxAndroid = '2.0.1'
-    archComponents = '2.0.0'
+    room = "2.1.0-alpha03"
+    paging = "2.1.0-rc01"
     androidX = '1.0.0'
+    lifecycle = "2.0.0"
     navigation = '1.0.0-alpha05'
-    workManager = '1.0.0-beta01'
+    workManager = '1.0.0-beta02'
     constraintLayout = '1.1.0'
-    dagger2 = '2.20'
+    dagger2 = '2.21'
     butterKnife = '8.8.1'
     javaxAnnotation = '10.0-b28'
     okHttp = '3.11.0'
@@ -16,8 +18,8 @@ ext {
     glide = '4.8.0'
     timber = '4.7.1'
     androidState = '1.4.1'
-    junit = '4.12'
-    mockito = '2.8.9'
+    junit = '4.13-beta-1'
+    mockito = '2.23.4'
     mockitoKotlin = '1.5.0'
     assertJ = '3.11.1'
     apollo = '1.0.1-SNAPSHOT'
@@ -57,14 +59,12 @@ ext {
     extrasLibraries = [
             'com.github.daniel-stoneuk:material-about-library:2.1.0',
             'com.scottyab:secure-preferences-lib:0.1.4',
-//            'com.jaychang:simplerecyclerview:2.0.5',
-//            'com.jaychang:simplerecyclerview-kotlin-android-extensions:2.0.5',
 //            "com.airbnb:deeplinkdispatch:$deepLinkDispatch"
             "com.github.airbnb.DeepLinkDispatch:deeplinkdispatch-base:master-SNAPSHOT",
             'com.airbnb.android:lottie:2.8.0',
             'com.github.zagum:Android-ExpandIcon:1.2.1',
             "com.evernote:android-state:$androidState",
-            "ru.noties:markwon:$markwonVersion"
+            "ru.noties:markwon:$markwonVersion",
     ]
 
     networking = [
@@ -83,6 +83,7 @@ ext {
     rxJava = [
             "io.reactivex.rxjava2:rxjava:$rxJava2",
             "io.reactivex.rxjava2:rxkotlin:$rxKotlin",
+            "io.reactivex.rxjava2:rxkotlin:$rxKotlin",
             "io.reactivex.rxjava2:rxandroid:$rxAndroid"
     ]
 
@@ -93,16 +94,20 @@ ext {
     ]
 
     archs = [
-            "androidx.lifecycle:lifecycle-extensions:$archComponents",
-            "androidx.lifecycle:lifecycle-livedata:$archComponents",
-            "androidx.lifecycle:lifecycle-reactivestreams:$archComponents",
-            "androidx.paging:paging-common:$archComponents",
-            "androidx.room:room-common:$archComponents",
-            "androidx.room:room-rxjava2:$archComponents",
-            "androidx.room:room-compiler:$archComponents",
-            "androidx.paging:paging-runtime:$archComponents",
-            "androidx.core:core-ktx:$androidX",
-            "androidx.fragment:fragment-ktx:$androidX"
+            "androidx.lifecycle:lifecycle-extensions:$lifecycle",
+            "androidx.lifecycle:lifecycle-livedata:$lifecycle",
+            "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle",
+            "androidx.paging:paging-common:$paging",
+            "androidx.paging:paging-runtime:$paging",
+            "androidx.room:room-common:$room",
+            "androidx.room:room-rxjava2:$room",
+            "androidx.room:room-compiler:$room",
+            "androidx.core:core-ktx:1.1.0-alpha03",
+            "androidx.fragment:fragment-ktx:1.1.0-alpha03",
+            "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0",
+            "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.0.0",
+            "android.arch.work:work-runtime:$workManager",
+            "android.arch.work:work-rxjava2:$workManager"
     ]
 
 
@@ -110,7 +115,7 @@ ext {
             "com.google.dagger:dagger-android-processor:$dagger2",
             "com.google.dagger:dagger-compiler:$dagger2",
             "com.github.bumptech.glide:compiler:$glide",
-            "androidx.room:room-runtime:$archComponents",
+            "androidx.room:room-runtime:$room",
             "com.github.airbnb.DeepLinkDispatch:deeplinkdispatch-processor:master-SNAPSHOT",
             "com.evernote:android-state-processor:$androidState",
 //            "com.airbnb:deeplinkdispatch-processor:$deepLinkDispatch"

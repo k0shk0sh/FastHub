@@ -21,7 +21,7 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
     private val model by lazy { (arguments?.getParcelable(EXTRA) as? FilterIssuesPrsModel) ?: FilterIssuesPrsModel() }
     private var callback: FilterIssuesPrsCallback? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = when {
             context is FilterIssuesPrsCallback -> context

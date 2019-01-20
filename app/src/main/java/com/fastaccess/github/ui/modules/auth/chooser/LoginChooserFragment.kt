@@ -25,7 +25,7 @@ class LoginChooserFragment : BaseFragment() {
     private val viewModel by lazy { ViewModelProviders.of(requireActivity(), viewModelFactory).get(LoginChooserViewModel::class.java) }
     private var callback: LoginChooserCallback? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = context as LoginChooserCallback
     }

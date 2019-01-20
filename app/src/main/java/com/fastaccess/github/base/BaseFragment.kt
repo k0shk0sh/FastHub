@@ -44,7 +44,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     protected open fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {}
     abstract fun viewModel(): BaseViewModel?
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         activityCallback = context as? ActivityCallback
         updateCountCallback = when {

@@ -25,7 +25,7 @@ class FilterSearchBottomSheet : BaseFragment() {
     private val model by lazy { (arguments?.getParcelable(EXTRA) as? FilterSearchModel) ?: FilterSearchModel() }
     private var callback: FilterSearchCallback? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = when {
             context is FilterSearchCallback -> context

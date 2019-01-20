@@ -14,7 +14,7 @@
         <item name="android:enabled">false</item>
     </style>
 
-    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+    <style name="ChipStyle">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?colorPrimary</item>
     </style>

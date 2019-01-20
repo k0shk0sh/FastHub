@@ -195,6 +195,7 @@
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
+                    app:singleSelection="true"
                     tools:ignore="HardcodedText">
 
                     <com.google.android.material.chip.Chip

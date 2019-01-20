@@ -34,7 +34,7 @@
             app:cardCornerRadius="15dp"
             app:contentPadding="@dimen/spacing_normal">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -45,6 +45,7 @@
                     android:id="@+id/searchEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:autofillHints="@string/search"
                     android:background="@color/transparent"
                     android:drawablePadding="@dimen/spacing_normal"
@@ -52,9 +53,20 @@
                     android:drawableTint="?colorPrimary"
                     android:gravity="start|center"
                     android:hint="@string/search"
+                    android:imeActionLabel="@string/search"
                     android:imeOptions="actionSearch"
+                    android:maxLines="1"
                     tools:targetApi="o"/>
-            </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_clear"
+                    android:visibility="invisible"/>
+            </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

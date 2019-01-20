@@ -2,6 +2,8 @@ package com.fastaccess.github.ui.modules.search.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -19,6 +21,15 @@ class SearchFragment : BaseFragment() {
         filter.setOnClickListener {
             MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_SEARCH,
                 null/*TODO*/)
+        }
+
+        clear.setOnClickListener { searchEditText.setText("") }
+
+        searchEditText.doAfterTextChanged { text ->
+            val show = !text.isNullOrEmpty()
+            if (show != clear.isVisible) { // prevent multiple hide/show
+                clear.isVisible = show
+            }
         }
     }
 

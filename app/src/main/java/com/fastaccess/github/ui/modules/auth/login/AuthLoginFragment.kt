@@ -34,7 +34,7 @@ class AuthLoginFragment : BaseFragment() {
     private val isAccessToken by lazy { arguments?.getBoolean(EXTRA) ?: false }
     private val isEnterpriseBundle by lazy { arguments?.getBoolean(EXTRA_TWO) ?: false }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = context as LoginChooserCallback
     }
