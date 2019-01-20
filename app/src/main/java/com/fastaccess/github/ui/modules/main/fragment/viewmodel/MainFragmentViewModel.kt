@@ -69,7 +69,7 @@ class MainFragmentViewModel @Inject constructor(
      */
     private fun mapPulls(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
-            myIssuesPullsRepo.getPulls().map { prs ->
+            myIssuesPullsRepo.getMainScreenPulls().map { prs ->
                 if (prs.isEmpty()) return@map list
                 list.add(MainScreenModel(MainScreenModelRowType.PRS_TITLE))
                 list.addAll(prs.asSequence().map { MainScreenModel(MainScreenModelRowType.PRS, issuesPullsModel = it) }.toList())
@@ -83,7 +83,7 @@ class MainFragmentViewModel @Inject constructor(
      */
     private fun mapIssues(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
-            myIssuesPullsRepo.getIssues().map { issues ->
+            myIssuesPullsRepo.getMainScreenIssues().map { issues ->
                 if (issues.isEmpty()) return@map list
                 list.add(MainScreenModel(MainScreenModelRowType.ISSUES_TITLE))
                 list.addAll(issues.asSequence().map { MainScreenModel(MainScreenModelRowType.ISSUES, issuesPullsModel = it) }.toList())

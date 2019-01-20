@@ -8,6 +8,8 @@ import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase
 import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
 import com.fastaccess.github.usecase.feed.FeedsUseCase
+import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
+import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
@@ -74,5 +76,18 @@ class UseCaseModule {
         return IsUserBlockedUseCase(userRepository)
     }
 
+    @PerFragment @Provides fun provideFilterIssuesUseCase(
+        loginRepository: LoginRepositoryProvider,
+        apolloClient: ApolloClient
+    ): FilterIssuesUseCase {
+        return FilterIssuesUseCase(loginRepository, apolloClient)
+    }
+
+    @PerFragment @Provides fun provideFilterPullRequestsUseCase(
+        loginRepository: LoginRepositoryProvider,
+        apolloClient: ApolloClient
+    ): FilterPullRequestsUseCase {
+        return FilterPullRequestsUseCase(loginRepository, apolloClient)
+    }
 
 }

@@ -10,10 +10,10 @@ import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 @Dao interface MyIssuesPullsDao {
 
     @Query("SELECT * FROM ${MyIssuesPullsModel.TABLE_NAME} WHERE `state` = '' LIMIT 5")
-    fun getIssues(): LiveData<List<MyIssuesPullsModel>>
+    fun getMainScreenIssues(): LiveData<List<MyIssuesPullsModel>>
 
     @Query("SELECT * FROM ${MyIssuesPullsModel.TABLE_NAME} WHERE `state` != '' LIMIT 5")
-    fun getPulls(): LiveData<List<MyIssuesPullsModel>>
+    fun getMainScreenPulls(): LiveData<List<MyIssuesPullsModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(model: MyIssuesPullsModel): Long

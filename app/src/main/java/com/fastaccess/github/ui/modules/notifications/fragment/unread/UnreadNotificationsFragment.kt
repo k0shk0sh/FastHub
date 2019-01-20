@@ -45,7 +45,7 @@ class UnreadNotificationsFragment : BaseFragment() {
         recyclerView.addOnLoadMore { viewModel.loadNotifications() }
         listenToChanges()
 
-        val swipeCallback = SwipeToDeleteCallback { viewHolder, direction ->
+        val swipeCallback = SwipeToDeleteCallback { viewHolder, _ ->
             adapter.getValue(viewHolder.adapterPosition)?.let {
                 if (it.unread == true) {
                     MarkAsReadNotificationWorker.enqueue(it.id)

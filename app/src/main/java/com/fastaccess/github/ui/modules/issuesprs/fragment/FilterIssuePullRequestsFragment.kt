@@ -12,8 +12,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.ui.adapter.ProfileFeedsAdapter
-import com.fastaccess.github.ui.adapter.base.CurrentState
+import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel.FilterIssuePullRequestsViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
@@ -30,7 +29,7 @@ import javax.inject.Inject
 class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomSheet.FilterIssuesPrsCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterIssuePullRequestsViewModel::class.java) }
-    private val adapter by lazy { ProfileFeedsAdapter() }
+    private val adapter by lazy { MyIssuesPrsAdapter() }
     private val fragmentType by lazy { arguments?.getSerializable(EXTRA) as? FragmentType }
 
     override fun viewModel(): BaseViewModel? = viewModel
@@ -41,16 +40,18 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
             FragmentType.FILTER_PRS -> R.string.pull_requests
             else -> R.string.issues
         })
+
+        viewModel.isPr = fragmentType == FragmentType.FILTER_PRS
         recyclerView.adapter = adapter
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadFeeds(true)
+        if (savedInstanceState == null) viewModel.loadData(true)
         swipeRefresh.setOnRefreshListener {
             recyclerView.resetScrollState()
-            viewModel.loadFeeds(true)
+            viewModel.loadData(true)
         }
-        recyclerView.addOnLoadMore { viewModel.loadFeeds() }
+        recyclerView.addOnLoadMore { viewModel.loadData() }
         filter.setOnClickListener {
             val item = viewModel.filterModel.copy() // mutability!
             MultiPurposeBottomSheetDialog.show(childFragmentManager,
@@ -64,17 +65,9 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
     }
 
     private fun listenToChanges() {
-        viewModel.progress.observeNotNull(this) {
-            adapter.currentState = if (it) CurrentState.LOADING else CurrentState.DONE
-        }
-
-        viewModel.feeds().observeNotNull(this) {
-            adapter.currentState = CurrentState.DONE
+        viewModel.data.observeNotNull(this) {
             adapter.submitList(it)
-        }
-
-        viewModel.counter.observeNotNull(this) {
-            postCount(FragmentType.FEEDS, it)
+            adapter.notifyDataSetChanged()
         }
     }
 

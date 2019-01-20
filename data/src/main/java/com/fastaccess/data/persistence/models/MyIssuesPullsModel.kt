@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
  */
 @Entity(tableName = TABLE_NAME)
 data class MyIssuesPullsModel(@PrimaryKey @SerializedName("id") var id: String = "",
-                              @SerializedName("databaseId") var databaseId: Int?? = null,
+                              @SerializedName("databaseId") var databaseId: Int? = null,
                               @SerializedName("number") var number: Int? = null,
                               @SerializedName("title") var title: String? = null,
                               @SerializedName("repoName") var repoName: String? = null,
