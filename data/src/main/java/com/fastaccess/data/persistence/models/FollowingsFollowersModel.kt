@@ -7,7 +7,7 @@ import com.fastaccess.data.model.PageInfoModel
 import com.google.gson.annotations.SerializedName
 import github.GetProfileFollowersQuery
 import github.GetProfileFollowingQuery
-import github.fragment.FollowingFollowersUser
+import github.fragment.ShortUserRowItem
 
 /**
  * Created by Kosh on 15.10.18.
@@ -58,17 +58,17 @@ data class FollowingFollowerModel(
 
         internal fun newFollowersInstance(list: List<GetProfileFollowersQuery.Node>?, login: String): List<FollowingFollowerModel> {
             return list?.asSequence()?.map { data ->
-                createUserInstance(data.fragments.followingFollowersUser, login, true)
+                createUserInstance(data.fragments.shortUserRowItem, login, true)
             }?.toList() ?: arrayListOf()
         }
 
         internal fun newFollowingInstance(list: List<GetProfileFollowingQuery.Node>?, login: String): List<FollowingFollowerModel> {
             return list?.asSequence()?.map { data ->
-                createUserInstance(data.fragments.followingFollowersUser, login, false)
+                createUserInstance(data.fragments.shortUserRowItem, login, false)
             }?.toList() ?: arrayListOf()
         }
 
-        private fun createUserInstance(user: FollowingFollowersUser, login: String, isFollowers: Boolean) =
+        private fun createUserInstance(user: ShortUserRowItem, login: String, isFollowers: Boolean) =
                 FollowingFollowerModel(user.login, user.url.toString(), user.name, user.location, user.bio,
                         user.avatarUrl.toString(), user.isViewerCanFollow, user.isViewerIsFollowing, login, isFollowers)
     }

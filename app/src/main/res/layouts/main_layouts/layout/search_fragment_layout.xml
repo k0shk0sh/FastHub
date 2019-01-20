@@ -55,7 +55,7 @@
                     android:hint="@string/search"
                     android:imeActionLabel="@string/search"
                     android:imeOptions="actionSearch"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     tools:targetApi="o"/>
 
                 <androidx.appcompat.widget.AppCompatImageButton

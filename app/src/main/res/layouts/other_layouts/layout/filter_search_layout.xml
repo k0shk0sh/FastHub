@@ -200,56 +200,56 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/kotlin"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Kotlin"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/java"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Java"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/swift"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Swift"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/javeScript"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="JavaScript"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/php"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="PHP"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/goLang"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="GO"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cPlusPlus"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="C++"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/python"
-                        style="@style/ChipStyle"
+                        style="@style/ChipStyleChoiceNoDrawable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Python"/>

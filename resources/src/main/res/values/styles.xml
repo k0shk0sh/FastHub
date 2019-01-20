@@ -19,6 +19,11 @@
         <item name="chipBackgroundColor">?colorPrimary</item>
     </style>
 
+    <style name="ChipStyleChoiceNoDrawable" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="chipBackgroundColor">?colorPrimary</item>
+    </style>
+
     <style name="ChipStyleCheckable" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?colorPrimary</item>

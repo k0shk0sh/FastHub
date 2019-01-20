@@ -22,44 +22,50 @@ class FilterPullRequestsUseCase @Inject constructor(
 
     var cursor: Input<String?> = Input.absent()
     var filterModel = FilterIssuesPrsModel()
+    var keyword: String? = null
 
-    override fun buildObservable(): Observable<Pair<PageInfoModel, List<MyIssuesPullsModel>>> = loginRepository.getLogin()
-        .flatMapObservable { user ->
-            return@flatMapObservable user.login?.let { login ->
-                Rx2Apollo.from(apolloClient.query(SearchPullRequestsQuery(constructQuery(filterModel, login), cursor)))
-                    .map { it.data()?.search }
-                    .map { search ->
-                        val list = search.nodes?.asSequence()?.mapNotNull { it.fragments.shortPullRequestRowItem }
-                            ?.map {
-                                MyIssuesPullsModel(it.id, it.databaseId, it.number, it.title,
-                                    it.repository.nameWithOwner, it.comments.totalCount, it.state.name)
-                            }
-                            ?.toList() ?: arrayListOf()
-                        val pageInfo = PageInfoModel(search.pageInfo.startCursor, search.pageInfo.endCursor,
-                            search.pageInfo.isHasNextPage, search.pageInfo.isHasPreviousPage)
-                        return@map Pair(pageInfo, list)
-                    }
-            } ?: Observable.empty<Pair<PageInfoModel, List<MyIssuesPullsModel>>>()
+    override fun buildObservable(): Observable<Pair<PageInfoModel, List<MyIssuesPullsModel>>> {
+        val query = keyword
+        return if (query.isNullOrEmpty()) {
+            loginRepository.getLogin()
+                .flatMapObservable { user ->
+                    return@flatMapObservable user.login?.let { login ->
+                        searchObservable(login = login)
+                    } ?: Observable.empty<Pair<PageInfoModel, List<MyIssuesPullsModel>>>()
+                }
+        } else {
+            searchObservable(query = query)
         }
+    }
+
+    private fun searchObservable(login: String? = null, query: String? = null): Observable<Pair<PageInfoModel, List<MyIssuesPullsModel>>> {
+        return Rx2Apollo.from(apolloClient.query(SearchPullRequestsQuery(constructQuery(filterModel, login, query), cursor)))
+            .map { it.data()?.search }
+            .map { search ->
+                val list = search.nodes?.asSequence()?.mapNotNull { it.fragments.shortPullRequestRowItem }
+                    ?.map {
+                        MyIssuesPullsModel(it.id, it.databaseId, it.number, it.title,
+                            it.repository.nameWithOwner, it.comments.totalCount, it.state.name)
+                    }
+                    ?.toList() ?: arrayListOf()
+                val pageInfo = PageInfoModel(search.pageInfo.startCursor, search.pageInfo.endCursor,
+                    search.pageInfo.isHasNextPage, search.pageInfo.isHasPreviousPage)
+                return@map Pair(pageInfo, list)
+            }
+    }
 
     /**
      * Example: is:open is:pr author:k0shk0sh archived:false sort:created-desc
      */
-    private fun constructQuery(model: FilterIssuesPrsModel, login: String): String {
+    private fun constructQuery(model: FilterIssuesPrsModel, login: String? = null, query: String? = null): String {
         return StringBuilder()
+            .append(if (query.isNullOrEmpty()) "" else "$query ")
             .append("is:${when (model.searchType) {
                 FilterIssuesPrsModel.SearchType.OPEN -> "open"
                 FilterIssuesPrsModel.SearchType.CLOSED -> "closed"
             }}")
             .append(" ")
             .append("is:pr")
-            .append(" ")
-            .append("${when (model.searchBy) {
-                FilterIssuesPrsModel.SearchBy.ASSIGNED -> "assignee"
-                FilterIssuesPrsModel.SearchBy.MENTIONED -> "mentions"
-                FilterIssuesPrsModel.SearchBy.REVIEW_REQUESTS -> "review-requested"
-                else -> "author"
-            }}:$login")
             .append(" ")
             .append("archived:false")
             .append(" ")
@@ -73,6 +79,14 @@ class FilterPullRequestsUseCase @Inject constructor(
             }}")
             .append(" ")
             .apply {
+                if (!login.isNullOrEmpty()) {
+                    append("${when (model.searchBy) {
+                        FilterIssuesPrsModel.SearchBy.ASSIGNED -> "assignee"
+                        FilterIssuesPrsModel.SearchBy.MENTIONED -> "mentions"
+                        FilterIssuesPrsModel.SearchBy.REVIEW_REQUESTS -> "review-requested"
+                        else -> "author"
+                    }}:$login").append(" ")
+                }
                 if (model.searchVisibility != FilterIssuesPrsModel.SearchVisibility.BOTH) {
                     append("is:${when (model.searchVisibility) {
                         FilterIssuesPrsModel.SearchVisibility.PUBLIC -> "public"

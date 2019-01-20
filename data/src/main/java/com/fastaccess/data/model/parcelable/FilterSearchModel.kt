@@ -7,6 +7,7 @@ import android.os.Parcelable
  * Created by Kosh on 20.01.19.
  */
 data class FilterSearchModel(
+    var searchQuery: String = "",
     var searchBy: SearchBy = SearchBy.REPOS,
     var filterByRepo: FilterByRepo = FilterByRepo(),
     var filterIssuesPrsModel: FilterIssuesPrsModel = FilterIssuesPrsModel(),
@@ -14,6 +15,7 @@ data class FilterSearchModel(
 
 ) : Parcelable {
     constructor(source: Parcel) : this(
+        source.readString() ?: "",
         SearchBy.values()[source.readInt()],
         source.readParcelable<FilterByRepo>(FilterByRepo::class.java.classLoader) ?: FilterByRepo(),
         source.readParcelable<FilterIssuesPrsModel>(FilterIssuesPrsModel::class.java.classLoader) ?: FilterIssuesPrsModel(),
@@ -23,6 +25,7 @@ data class FilterSearchModel(
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(searchQuery)
         writeInt(searchBy.ordinal)
         writeParcelable(filterByRepo, 0)
         writeParcelable(filterIssuesPrsModel, 0)

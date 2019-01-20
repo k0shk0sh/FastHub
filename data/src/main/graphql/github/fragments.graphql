@@ -1,0 +1,61 @@
+fragment ShortRepoRowItem on Repository {
+    id
+    databaseId
+    name
+    nameWithOwner
+    isFork
+    forkCount
+    issues(first: 1) {
+      totalCount
+    }
+    forks(first: 1) {
+      totalCount
+    }
+    isPrivate
+    stargazers(first: 1) {
+      totalCount
+    }
+    watchers(first: 1) {
+      totalCount
+    }
+}
+
+fragment ShortIssueRowItem on Issue {
+    id
+    databaseId
+    number
+    title
+    repository {
+      nameWithOwner
+    }
+    comments(first: 1) {
+      totalCount
+    }
+}
+
+fragment ShortPullRequestRowItem on PullRequest {
+    id
+    databaseId
+    number
+    title
+    repository {
+      nameWithOwner
+    }
+    comments(first: 1) {
+      totalCount
+    }
+    state
+}
+
+
+fragment ShortUserRowItem on User {
+    id
+    name
+    login
+    avatarUrl(size: 150)
+    location
+    bio
+    viewerCanFollow
+    viewerIsFollowing
+    url
+}

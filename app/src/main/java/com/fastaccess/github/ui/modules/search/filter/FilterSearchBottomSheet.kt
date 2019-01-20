@@ -44,10 +44,10 @@ class FilterSearchBottomSheet : BaseFragment() {
     override fun viewModel(): BaseViewModel? = null
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.filter)
-        assignCheckListener()
         if (savedInstanceState == null) {
             initState()
         }
+        assignCheckListener()
         submit.setOnClickListener {
             callback?.onFilterApplied(model)
             (parentFragment as? BaseBottomSheetDialogFragment)?.dismiss()
@@ -57,8 +57,14 @@ class FilterSearchBottomSheet : BaseFragment() {
     private fun initState() {
         when (model.searchBy) {
             FilterSearchModel.SearchBy.REPOS -> initRepoCheckState()
-            FilterSearchModel.SearchBy.ISSUES -> initIssuePrCheckState()
-            FilterSearchModel.SearchBy.PRS -> initIssuePrCheckState()
+            FilterSearchModel.SearchBy.ISSUES -> {
+                searchType.check(R.id.issues)
+                initIssuePrCheckState()
+            }
+            FilterSearchModel.SearchBy.PRS -> {
+                searchType.check(R.id.prs)
+                initIssuePrCheckState()
+            }
             FilterSearchModel.SearchBy.USERS -> searchType.check(R.id.users)
         }
     }
@@ -69,17 +75,21 @@ class FilterSearchBottomSheet : BaseFragment() {
                 R.id.repos -> {
                     filterIssuesPr.isVisible = false
                     filterRepos.isVisible = true
+                    model.searchBy = FilterSearchModel.SearchBy.REPOS
                 }
                 R.id.prs, R.id.issues -> {
                     filterIssuesPr.isVisible = true
                     reviewRequest.isVisible = false
+                    model.searchBy = FilterSearchModel.SearchBy.ISSUES
                     (id == R.id.prs).isTrue {
+                        model.searchBy = FilterSearchModel.SearchBy.PRS
                         model.filterIssuesPrsModel.isPr = true
                         reviewRequest.isVisible = true
                     }
                     filterRepos.isVisible = false
                 }
                 R.id.users -> {
+                    model.searchBy = FilterSearchModel.SearchBy.USERS
                     filterIssuesPr.isVisible = false
                     filterRepos.isVisible = false
                 }
@@ -97,6 +107,7 @@ class FilterSearchBottomSheet : BaseFragment() {
     }
 
     private fun initRepoCheckState() {
+        searchType.check(R.id.repos)
         model.filterByRepo.let { model ->
             searchIn.check(when (model.filterByRepoIn) {
                 FilterByRepo.FilterByRepoIn.ALL -> R.id.all

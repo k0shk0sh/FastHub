@@ -18,6 +18,7 @@ import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsView
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.viewmodel.UserOrgsViewModel
 import com.fastaccess.github.ui.modules.profile.repos.viewmodel.ProfileReposViewModel
 import com.fastaccess.github.ui.modules.profile.starred.viewmodel.ProfileStarredReposViewModel
+import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -65,11 +66,14 @@ abstract class ViewModelModule {
     abstract fun bindAllNotificationsViewModel(viewModel: AllNotificationsViewModel): ViewModel
 
     @Binds @IntoMap @ViewModelKey(LoginChooserViewModel::class)
-    abstract fun bindLoginChooserViewModel(viewMdel: LoginChooserViewModel): ViewModel
+    abstract fun bindLoginChooserViewModel(viewModel: LoginChooserViewModel): ViewModel
 
     @Binds @IntoMap @ViewModelKey(UserOrgsViewModel::class)
-    abstract fun bindUserOrgsViewModel(viewMdel: UserOrgsViewModel): ViewModel
+    abstract fun bindUserOrgsViewModel(viewModel: UserOrgsViewModel): ViewModel
 
     @Binds @IntoMap @ViewModelKey(FilterIssuePullRequestsViewModel::class)
-    abstract fun bindFilterIssuePullRequestsViewModel(viewMdel: FilterIssuePullRequestsViewModel): ViewModel
+    abstract fun bindFilterIssuePullRequestsViewModel(viewModel: FilterIssuePullRequestsViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(FilterSearchViewModel::class)
+    abstract fun bindFilterSearchViewModel(viewModel: FilterSearchViewModel): ViewModel
 }

@@ -222,7 +222,7 @@ query getProfileFollowers($login: String!, $cursor: String) {
         hasPreviousPage
       }
       nodes {
-        ...FollowingFollowersUser
+        ...ShortUserRowItem
       }
     }
   }
@@ -239,20 +239,8 @@ query getProfileFollowing($login: String!, $cursor: String) {
         hasPreviousPage
       }
       nodes {
-        ...FollowingFollowersUser
+        ...ShortUserRowItem
       }
     }
   }
-}
-
-fragment FollowingFollowersUser on User {
-    id
-    name
-    login
-    avatarUrl(size: 150)
-    location
-    bio
-    viewerCanFollow
-    viewerIsFollowing
-    url
 }
