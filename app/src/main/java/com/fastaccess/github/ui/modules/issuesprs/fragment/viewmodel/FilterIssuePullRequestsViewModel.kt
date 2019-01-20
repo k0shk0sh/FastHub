@@ -62,7 +62,7 @@ class FilterIssuePullRequestsViewModel @Inject constructor(
     private fun onRequestFinished(pair: Pair<PageInfoModel, List<MyIssuesPullsModel>>) {
         this.pageInfo = pair.first
         this.list.addAll(pair.second)
-        this.data.postValue(list)
+        this.data.postValue(ArrayList(list))
     }
 
     fun filter(model: FilterIssuesPrsModel) {

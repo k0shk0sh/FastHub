@@ -67,7 +67,6 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
     private fun listenToChanges() {
         viewModel.data.observeNotNull(this) {
             adapter.submitList(it)
-            adapter.notifyDataSetChanged()
         }
     }
 
