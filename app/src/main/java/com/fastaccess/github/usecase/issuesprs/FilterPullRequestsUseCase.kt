@@ -43,7 +43,7 @@ class FilterPullRequestsUseCase @Inject constructor(
         }
 
     /**
-     * Example: is:open is:issue author:k0shk0sh archived:false sort:created-desc
+     * Example: is:open is:pr author:k0shk0sh archived:false sort:created-desc
      */
     private fun constructQuery(model: FilterIssuesPrsModel, login: String): String {
         return StringBuilder()

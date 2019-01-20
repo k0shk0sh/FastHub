@@ -605,4 +605,6 @@
     <string name="archived">Archived</string>
     <string name="visibility">Visibility</string>
     <string name="both_label">Both</string>
+    <string name="search_in">Search in</string>
+    <string name="limit_by">Limit by</string>
 </resources>

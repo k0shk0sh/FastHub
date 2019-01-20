@@ -29,7 +29,7 @@ enum class FragmentType(val tabName: String? = null) {
 }
 
 enum class ActivityType {
-    FEEDS, NOTIFICATION, FILTER_ISSUE, FILTER_PR;
+    FEEDS, NOTIFICATION, FILTER_ISSUE, FILTER_PR, SEARCH;
 
     companion object {
         fun getTypeSafely(activity: String?): ActivityType? = try {

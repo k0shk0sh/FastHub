@@ -18,6 +18,8 @@ import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
+import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
+import com.fastaccess.github.ui.modules.search.fragment.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -44,4 +46,6 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideUserOrgsFragment(): UserOrgsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuePullRequestsFragment(): FilterIssuePullRequestsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuesPrsBottomSheet(): FilterIssuesPrsBottomSheet
+    @PerFragment @ContributesAndroidInjector abstract fun provideSearchFragment(): SearchFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideFilterSearchBottomSheet(): FilterSearchBottomSheet
 }

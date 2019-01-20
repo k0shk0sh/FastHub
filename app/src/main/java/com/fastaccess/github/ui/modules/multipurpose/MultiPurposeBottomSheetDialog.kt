@@ -7,11 +7,13 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.transaction
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
+import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseBottomSheetDialogFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
+import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 
@@ -31,7 +33,8 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
                     BottomSheetFragmentType.FILTER_ISSUES, BottomSheetFragmentType.FILTER_PRS ->
                         replace(R.id.container, FilterIssuesPrsBottomSheet
                             .newInstance(arguments?.getParcelable(EXTRA_TWO) ?: FilterIssuesPrsModel()), "FilterIssuesPrsBottomSheet")
-                    else -> dismiss()
+                    BottomSheetFragmentType.FILTER_SEARCH -> replace(R.id.container, FilterSearchBottomSheet
+                        .newInstance(arguments?.getParcelable(EXTRA_TWO) ?: FilterSearchModel()), "FilterSearchBottomSheet")
                 }
             }
         }
@@ -52,6 +55,6 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
     }
 
     enum class BottomSheetFragmentType {
-        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS
+        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS, FILTER_SEARCH
     }
 }

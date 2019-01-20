@@ -18,10 +18,7 @@ import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import com.fastaccess.github.utils.FEEDS_LINK
-import com.fastaccess.github.utils.FILTER_ISSUE_LINK
-import com.fastaccess.github.utils.FILTER_PR_LINK
-import com.fastaccess.github.utils.NOTIFICATION_LINK
+import com.fastaccess.github.utils.*
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.otpCode
 import com.fastaccess.github.utils.extensions.route
@@ -61,7 +58,7 @@ class MainFragment : BaseFragment() {
             when (item.itemId) {
                 R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print))
                 R.id.notifications -> route(NOTIFICATION_LINK)
-                R.id.search -> Timber.e("search")
+                R.id.search -> route(SEARCH_LINK)
             }
             return@setOnMenuItemClickListener true
         }

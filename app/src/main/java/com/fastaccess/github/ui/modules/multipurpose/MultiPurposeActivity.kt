@@ -9,6 +9,7 @@ import com.fastaccess.github.platform.deeplink.AppDeepLink
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
 import com.fastaccess.github.ui.modules.issuesprs.fragment.FilterIssuePullRequestsFragment
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
+import com.fastaccess.github.ui.modules.search.fragment.SearchFragment
 import com.fastaccess.github.utils.extensions.fromDeepLink
 import com.fastaccess.github.utils.extensions.replace
 
@@ -35,6 +36,7 @@ class MultiPurposeActivity : BaseActivity() {
                     ActivityType.NOTIFICATION -> replace(R.id.container, NotificationPagerFragment.newInstance())
                     ActivityType.FILTER_ISSUE, ActivityType.FILTER_PR -> replace(R.id.container,
                         FilterIssuePullRequestsFragment.newInstance(activityType))
+                    ActivityType.SEARCH -> replace(R.id.container, SearchFragment.newInstance())
                 }
             } ?: run {
                 finish()
