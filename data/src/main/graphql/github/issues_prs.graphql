@@ -1,0 +1,47 @@
+query getIssues($login: String!, $state: [IssueState!], $count: Int!) {
+  user(login: $login) {
+    issues(first: $count, orderBy: {field: CREATED_AT, direction: DESC}, states: $state) {
+      nodes {
+        ...ShortIssueRowItem
+      }
+    }
+  }
+}
+
+query getPullRequests($login: String!, $count: Int!)  {
+  user(login: $login) {
+    pullRequests(first: $count, orderBy: {field: CREATED_AT, direction: DESC}) {
+      nodes {
+       ...ShortPullRequestRowItem
+      }
+    }
+  }
+}
+
+
+fragment ShortIssueRowItem on Issue {
+    id
+    databaseId
+    number
+    title
+    repository {
+      nameWithOwner
+    }
+    comments(first: 1) {
+      totalCount
+    }
+}
+
+fragment ShortPullRequestRowItem on PullRequest {
+    id
+    databaseId
+    number
+    title
+    repository {
+      nameWithOwner
+    }
+    comments(first: 1) {
+      totalCount
+    }
+    state
+}

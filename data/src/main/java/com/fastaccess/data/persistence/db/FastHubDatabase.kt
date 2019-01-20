@@ -13,7 +13,7 @@ import com.fastaccess.data.persistence.models.*
 const val VERSION = 17
 const val DATABASE_NAME = "FastHub-Room-DB"
 
-@Database(version = VERSION, entities = [UserModel::class, MainIssuesPullsModel::class,
+@Database(version = VERSION, entities = [UserModel::class, MyIssuesPullsModel::class,
     NotificationModel::class, FeedModel::class, ProfileRepoModel::class,
     ProfileStarredRepoModel::class, ProfileGistModel::class,
     FollowingFollowerModel::class, OrganizationModel::class], exportSchema = false)
@@ -22,7 +22,7 @@ const val DATABASE_NAME = "FastHub-Room-DB"
     UserCountConverter::class, UserOrganizationConverter::class,
     UserPinnedReposModelConverter::class)
 abstract class FastHubDatabase : RoomDatabase() {
-    abstract fun getMainIssuesPullsDao(): MainIssuesPullsDao
+    abstract fun getMainIssuesPullsDao(): MyIssuesPullsDao
     abstract fun getNotifications(): NotificationsDao
     abstract fun getFeedsDao(): FeedDao
     abstract fun getUserDao(): UserDao

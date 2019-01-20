@@ -41,18 +41,18 @@ class UseCaseModule {
 
     @PerFragment @Provides fun provideIssuesMainScreenUseCase(
         loginRepository: LoginRepositoryProvider,
-        mainIssuesPullsRepository: MainIssuesPullsRepositoryProvider,
+        myIssuesPullsRepository: MyIssuesPullsRepositoryProvider,
         apolloClient: ApolloClient
     ): IssuesMainScreenUseCase {
-        return IssuesMainScreenUseCase(loginRepository, mainIssuesPullsRepository, apolloClient)
+        return IssuesMainScreenUseCase(loginRepository, myIssuesPullsRepository, apolloClient)
     }
 
     @PerFragment @Provides fun providePullRequestsMainScreenUseCase(
         loginRepository: LoginRepositoryProvider,
-        mainIssues: MainIssuesPullsRepositoryProvider,
+        myIssues: MyIssuesPullsRepositoryProvider,
         apolloClient: ApolloClient
     ): PullRequestsMainScreenUseCase {
-        return PullRequestsMainScreenUseCase(loginRepository, mainIssues, apolloClient)
+        return PullRequestsMainScreenUseCase(loginRepository, myIssues, apolloClient)
     }
 
     @PerFragment @Provides fun provideNotificationUseCase(

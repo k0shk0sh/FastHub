@@ -1,14 +1,14 @@
 package com.fastaccess.data.model
 
 import com.fastaccess.data.persistence.models.FeedModel
-import com.fastaccess.data.persistence.models.MainIssuesPullsModel
+import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.persistence.models.NotificationModel
 
 data class MainScreenModel(
     var mainScreenModelRowType: MainScreenModelRowType? = null,
     var feed: FeedModel? = null,
     var notificationModel: NotificationModel? = null,
-    var issuesPullsModel: MainIssuesPullsModel? = null
+    var issuesPullsModel: MyIssuesPullsModel? = null
 )
 
 enum class MainScreenModelRowType(val rowType: Int) {

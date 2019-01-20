@@ -6,7 +6,7 @@ import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.data.repository.FeedsRepositoryProvider
 import com.fastaccess.data.repository.LoginRepositoryProvider
-import com.fastaccess.data.repository.MainIssuesPullsRepositoryProvider
+import com.fastaccess.data.repository.MyIssuesPullsRepositoryProvider
 import com.fastaccess.data.repository.NotificationRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.map
@@ -27,7 +27,7 @@ class MainFragmentViewModel @Inject constructor(
     private val notificationUseCase: NotificationUseCase,
     private val feedsMainScreenUseCase: FeedsMainScreenUseCase,
     private val feedsRepositoryProvider: FeedsRepositoryProvider,
-    private val mainIssuesPullsRepo: MainIssuesPullsRepositoryProvider,
+    private val myIssuesPullsRepo: MyIssuesPullsRepositoryProvider,
     private val notificationRepositoryProvider: NotificationRepositoryProvider,
     loginProvider: LoginRepositoryProvider
 ) : BaseViewModel() {
@@ -69,7 +69,7 @@ class MainFragmentViewModel @Inject constructor(
      */
     private fun mapPulls(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
-            mainIssuesPullsRepo.getPulls().map { prs ->
+            myIssuesPullsRepo.getPulls().map { prs ->
                 if (prs.isEmpty()) return@map list
                 list.add(MainScreenModel(MainScreenModelRowType.PRS_TITLE))
                 list.addAll(prs.asSequence().map { MainScreenModel(MainScreenModelRowType.PRS, issuesPullsModel = it) }.toList())
@@ -83,7 +83,7 @@ class MainFragmentViewModel @Inject constructor(
      */
     private fun mapIssues(): (ArrayList<MainScreenModel>) -> LiveData<ArrayList<MainScreenModel>> {
         return { list ->
-            mainIssuesPullsRepo.getIssues().map { issues ->
+            myIssuesPullsRepo.getIssues().map { issues ->
                 if (issues.isEmpty()) return@map list
                 list.add(MainScreenModel(MainScreenModelRowType.ISSUES_TITLE))
                 list.addAll(issues.asSequence().map { MainScreenModel(MainScreenModelRowType.ISSUES, issuesPullsModel = it) }.toList())

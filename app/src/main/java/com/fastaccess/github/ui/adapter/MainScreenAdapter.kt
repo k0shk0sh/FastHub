@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.github.R
-import com.fastaccess.github.ui.adapter.viewholder.MainIssuesPrsViewHolder
+import com.fastaccess.github.ui.adapter.viewholder.MyIssuesPrsViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.NotificationsViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.FeedsViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.TitleSectionViewHolder
@@ -24,8 +24,8 @@ class MainScreenAdapter(
         return when (viewType) {
             MainScreenModelRowType.FEED.rowType -> FeedsViewHolder(parent).apply { setOnClick(this) }
             MainScreenModelRowType.NOTIFICATION.rowType -> NotificationsViewHolder(parent).apply { setOnClick(this) }
-            MainScreenModelRowType.ISSUES.rowType -> MainIssuesPrsViewHolder(parent).apply { setOnClick(this) }
-            MainScreenModelRowType.PRS.rowType -> MainIssuesPrsViewHolder(parent).apply { setOnClick(this) }
+            MainScreenModelRowType.ISSUES.rowType -> MyIssuesPrsViewHolder(parent).apply { setOnClick(this) }
+            MainScreenModelRowType.PRS.rowType -> MyIssuesPrsViewHolder(parent).apply { setOnClick(this) }
             else -> TitleSectionViewHolder(parent).apply { setOnClick(this) }
         }
     }
@@ -44,7 +44,7 @@ class MainScreenAdapter(
         when (holder) {
             is FeedsViewHolder -> item.feed?.let { holder.bind(it) }
             is NotificationsViewHolder -> item.notificationModel?.let { holder.bind(it) }
-            is MainIssuesPrsViewHolder -> item.issuesPullsModel?.let { holder.bind(it) }
+            is MyIssuesPrsViewHolder -> item.issuesPullsModel?.let { holder.bind(it) }
             is TitleSectionViewHolder -> {
                 when (item.mainScreenModelRowType) {
                     MainScreenModelRowType.FEED_TITLE -> holder.bind(holder.itemView.context.getString(R.string.feeds))
