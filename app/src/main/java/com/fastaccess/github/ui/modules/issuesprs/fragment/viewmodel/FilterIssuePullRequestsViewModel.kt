@@ -21,6 +21,10 @@ class FilterIssuePullRequestsViewModel @Inject constructor(
     private var pageInfo: PageInfoModel? = null
     var filterModel = FilterIssuesPrsModel()
     var isPr = true
+        set(value) {
+            field = value
+            filterModel.isPr = field
+        }
     val list = arrayListOf<MyIssuesPullsModel>()
     val data = MutableLiveData<List<MyIssuesPullsModel>>()
 

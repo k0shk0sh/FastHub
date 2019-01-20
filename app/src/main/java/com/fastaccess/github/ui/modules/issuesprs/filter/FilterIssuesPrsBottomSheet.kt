@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseBottomSheetDialogFragment
@@ -39,10 +40,13 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
     override fun viewModel(): BaseViewModel? = null
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.filter)
-        assignCheckListener()
+        reviewRequest.isVisible = model.isPr
+
         if (savedInstanceState == null) {
             initState()
         }
+
+        assignCheckListener()
 
         submit.setOnClickListener {
             callback?.onFilterApplied(model)
@@ -62,6 +66,7 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
             FilterIssuesPrsModel.SearchType.CLOSED -> R.id.closed
         })
         visibility.check(when (model.searchVisibility) {
+            FilterIssuesPrsModel.SearchVisibility.BOTH -> R.id.bothVisibility
             FilterIssuesPrsModel.SearchVisibility.PUBLIC -> R.id.publicRepos
             FilterIssuesPrsModel.SearchVisibility.PRIVATE -> R.id.privateRepos
         })
@@ -76,7 +81,7 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
     }
 
     private fun assignCheckListener() {
-        filter.setOnCheckedChangeListener { _, id ->
+        filter.setOnCheckedChangeListener { group, id ->
             when (id) {
                 R.id.created -> model.searchBy = FilterIssuesPrsModel.SearchBy.CREATED
                 R.id.assigned -> model.searchBy = FilterIssuesPrsModel.SearchBy.ASSIGNED
@@ -92,6 +97,7 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
         }
         visibility.setOnCheckedChangeListener { _, id ->
             when (id) {
+                R.id.bothVisibility -> model.searchVisibility = FilterIssuesPrsModel.SearchVisibility.BOTH
                 R.id.privateRepos -> model.searchVisibility = FilterIssuesPrsModel.SearchVisibility.PRIVATE
                 R.id.publicRepos -> model.searchVisibility = FilterIssuesPrsModel.SearchVisibility.PUBLIC
             }

@@ -72,10 +72,15 @@ class FilterPullRequestsUseCase @Inject constructor(
                 FilterIssuesPrsModel.SearchSortBy.LEAST_RECENTLY_UPDATED -> "updated-asc"
             }}")
             .append(" ")
-            .append("is:${when (model.searchVisibility) {
-                FilterIssuesPrsModel.SearchVisibility.PUBLIC -> "public"
-                FilterIssuesPrsModel.SearchVisibility.PRIVATE -> "private"
-            }}")
+            .apply {
+                if (model.searchVisibility != FilterIssuesPrsModel.SearchVisibility.BOTH) {
+                    append("is:${when (model.searchVisibility) {
+                        FilterIssuesPrsModel.SearchVisibility.PUBLIC -> "public"
+                        FilterIssuesPrsModel.SearchVisibility.PRIVATE -> "private"
+                        else -> ""
+                    }}")
+                }
+            }
             .toString()
     }
 }

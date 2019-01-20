@@ -18,6 +18,9 @@
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?colorPrimary</item>
         <item name="chipIconSize">@dimen/spacing_xs_large</item>
+        <item name="checkedIconEnabled">true</item>
+        <item name="checkedIcon">@drawable/ic_done</item>
+        <item name="checkedIconVisible">true</item>
     </style>
 
 </resources>

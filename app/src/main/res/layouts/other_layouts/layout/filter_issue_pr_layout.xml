@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent">
+    android:background="@color/transparent"
+    android:orientation="vertical">
 
     <include layout="@layout/appbar_center_title_round_background_layout"/>
 
@@ -44,26 +45,21 @@
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/created"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/created"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/assigned"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/assigned"
-                    app:checkedIcon="@drawable/ic_done"/>
+                    android:text="@string/assigned"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/mentioned"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mentioned"
-                    app:checkedIcon="@drawable/ic_done"/>
+                    android:text="@string/mentioned"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/reviewRequest"
@@ -71,8 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/review_requests"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"/>
+                    android:visibility="gone"/>
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -99,20 +94,14 @@
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/open"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/open"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/closed"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/closed"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/closed"/>
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -132,28 +121,29 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:paddingEnd="@dimen/spacing_xs_large"
                 android:paddingStart="@dimen/spacing_xs_large"
-                app:checkedChip="@+id/publicRepos"
+                app:checkedChip="@+id/bothVisibility"
                 app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/bothVisibility"
+                    style="@style/ChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/both_label"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/publicRepos"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/public_label"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/public_label"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/privateRepos"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/private_label"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/private_label"/>
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -182,60 +172,42 @@
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/newest"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/newest"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/oldest"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/oldest"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/oldest"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/mostCommented"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/most_commented"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/most_commented"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/leastCommented"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/least_commented"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/least_commented"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/recentlyUpdated"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/recently_updated"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/recently_updated"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/leastRecentlyUpdated"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/least_recent_updated"
-                    app:checkedIcon="@drawable/ic_done"
-                    app:checkedIconEnabled="true"
-                    app:checkedIconVisible="true"/>
+                    android:text="@string/least_recent_updated"/>
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -254,4 +226,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
