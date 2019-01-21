@@ -8,7 +8,7 @@ import android.os.Parcelable
  */
 data class FilterSearchModel(
     var searchQuery: String = "",
-    var searchBy: SearchBy = SearchBy.REPOS,
+    var searchBy: SearchBy = SearchBy.NONE,
     var filterByRepo: FilterByRepo = FilterByRepo(),
     var filterIssuesPrsModel: FilterIssuesPrsModel = FilterIssuesPrsModel(),
     var filterByUser: FilterByUser = FilterByUser()
@@ -39,7 +39,7 @@ data class FilterSearchModel(
         }
     }
 
-    enum class SearchBy { REPOS, ISSUES, PRS, USERS }
+    enum class SearchBy { NONE, REPOS, ISSUES, PRS, USERS }
 
 }
 

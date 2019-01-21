@@ -38,7 +38,6 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:paddingEnd="@dimen/spacing_xs_large"
                 android:paddingStart="@dimen/spacing_xs_large"
-                app:checkedChip="@+id/repos"
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip

@@ -13,6 +13,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
+import com.fastaccess.github.ui.adapter.SearchReposAdapter
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_SEARCH
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
@@ -30,13 +31,13 @@ import javax.inject.Inject
 class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterSearchViewModel::class.java) }
-    private val adapter by lazy { MyIssuesPrsAdapter() }
+    private val issuesPrsAdapter by lazy { MyIssuesPrsAdapter() }
+    private val reposAdapter by lazy { SearchReposAdapter() }
 
     override fun layoutRes(): Int = R.layout.search_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        recyclerView.adapter = adapter
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
@@ -83,10 +84,16 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
 
     private fun listenToChanges() {
         viewModel.issuesPrsData.observeNotNull(this) {
-            adapter.submitList(it)
+            if (recyclerView.adapter !is MyIssuesPrsAdapter) {
+                recyclerView.adapter = issuesPrsAdapter
+            }
+            (recyclerView.adapter as? MyIssuesPrsAdapter)?.submitList(it)
         }
         viewModel.reposData.observeNotNull(this) {
-            //TODO
+            if (recyclerView.adapter !is SearchReposAdapter) {
+                recyclerView.adapter = reposAdapter
+            }
+            (recyclerView.adapter as? SearchReposAdapter)?.submitList(it)
         }
     }
 

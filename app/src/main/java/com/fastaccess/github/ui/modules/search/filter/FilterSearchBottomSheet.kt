@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import com.fastaccess.data.model.parcelable.FilterByRepo
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
@@ -76,6 +77,10 @@ class FilterSearchBottomSheet : BaseFragment() {
                 initIssuePrCheckState()
             }
             FilterSearchModel.SearchBy.USERS -> searchType.check(R.id.users)
+            FilterSearchModel.SearchBy.NONE -> {
+                filterIssuesPr.isVisible = false
+                filterRepos.isVisible = false
+            }
         }
     }
 
@@ -86,6 +91,7 @@ class FilterSearchBottomSheet : BaseFragment() {
                     filterIssuesPr.isVisible = false
                     filterRepos.isVisible = true
                     model.searchBy = FilterSearchModel.SearchBy.REPOS
+                    initRepoCheckListener()
                 }
                 R.id.prs, R.id.issues -> {
                     filterIssuesPr.isVisible = true
@@ -97,6 +103,7 @@ class FilterSearchBottomSheet : BaseFragment() {
                         reviewRequest.isVisible = true
                     }
                     filterRepos.isVisible = false
+                    initIssuesPrsCheckListener()
                 }
                 R.id.users -> {
                     model.searchBy = FilterSearchModel.SearchBy.USERS
@@ -110,7 +117,7 @@ class FilterSearchBottomSheet : BaseFragment() {
             FilterSearchModel.SearchBy.REPOS -> initRepoCheckListener()
             FilterSearchModel.SearchBy.ISSUES -> initIssuesPrsCheckListener()
             FilterSearchModel.SearchBy.PRS -> initIssuesPrsCheckListener()
-            FilterSearchModel.SearchBy.USERS -> {
+            FilterSearchModel.SearchBy.USERS, FilterSearchModel.SearchBy.NONE -> {
                 //NOTHING
             }
         }
@@ -133,6 +140,9 @@ class FilterSearchBottomSheet : BaseFragment() {
             }
             limitByEditText.setText(model.name ?: "")
             languageEditText.setText(model.language ?: "")
+            limitByEditText.doAfterTextChanged { text ->
+                model.name = text?.toString()
+            }
         }
     }
 

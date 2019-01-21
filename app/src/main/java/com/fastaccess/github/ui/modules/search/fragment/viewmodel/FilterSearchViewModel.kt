@@ -3,9 +3,9 @@ package com.fastaccess.github.ui.modules.search.fragment.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
+import com.fastaccess.data.model.ShortRepoModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
-import com.fastaccess.data.persistence.models.ProfileRepoModel
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
@@ -25,8 +25,8 @@ class FilterSearchViewModel @Inject constructor(
     var filterModel = FilterSearchModel()
     val issuesPrsList = arrayListOf<MyIssuesPullsModel>()
     val issuesPrsData = MutableLiveData<List<MyIssuesPullsModel>>()
-    val reposList = arrayListOf<ProfileRepoModel>()
-    val reposData = MutableLiveData<List<ProfileRepoModel>>()
+    val reposList = arrayListOf<ShortRepoModel>()
+    val reposData = MutableLiveData<List<ShortRepoModel>>()
 
     override fun onCleared() {
         super.onCleared()
@@ -49,6 +49,9 @@ class FilterSearchViewModel @Inject constructor(
             FilterSearchModel.SearchBy.ISSUES -> searchByIssue(filterModel, cursor)
             FilterSearchModel.SearchBy.PRS -> searchByPr(filterModel, cursor)
             FilterSearchModel.SearchBy.USERS -> searchByUser(filterModel, cursor)
+            FilterSearchModel.SearchBy.NONE -> {
+                // Nothing!
+            }
         }
     }
 
@@ -58,6 +61,7 @@ class FilterSearchViewModel @Inject constructor(
         filterSearchReposUseCase.filterModel = filterModel.filterByRepo
         justSubscribe(filterSearchReposUseCase.buildObservable()
             .doOnNext {
+                this.issuesPrsData.postValue(null)
                 this.pageInfo = it.first
                 this.reposList.addAll(it.second)
                 this.reposData.postValue(ArrayList(reposList))
@@ -89,6 +93,7 @@ class FilterSearchViewModel @Inject constructor(
     }
 
     private fun onRequestFinished(pair: Pair<PageInfoModel, List<MyIssuesPullsModel>>) {
+        this.reposData.postValue(null)
         this.pageInfo = pair.first
         this.issuesPrsList.addAll(pair.second)
         this.issuesPrsData.postValue(ArrayList(issuesPrsList)) // create new copy of list as submitList will never be notified
