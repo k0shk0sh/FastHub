@@ -5,10 +5,13 @@ fragment ShortRepoRowItem on Repository {
     nameWithOwner
     isFork
     forkCount
-    issues(first: 1) {
+    issues(first: 0, states: OPEN) {
       totalCount
     }
-    forks(first: 1) {
+    pullRequests(first: 0, states: OPEN) {
+          totalCount
+    }
+    forks(first: 0) {
       totalCount
     }
     isPrivate

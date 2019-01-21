@@ -82,8 +82,11 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
     }
 
     private fun listenToChanges() {
-        viewModel.data.observeNotNull(this) {
+        viewModel.issuesPrsData.observeNotNull(this) {
             adapter.submitList(it)
+        }
+        viewModel.reposData.observeNotNull(this) {
+            //TODO
         }
     }
 

@@ -56,12 +56,22 @@ class FilterSearchBottomSheet : BaseFragment() {
 
     private fun initState() {
         when (model.searchBy) {
-            FilterSearchModel.SearchBy.REPOS -> initRepoCheckState()
+            FilterSearchModel.SearchBy.REPOS -> {
+                filterIssuesPr.isVisible = false
+                filterRepos.isVisible = true
+                initRepoCheckState()
+            }
             FilterSearchModel.SearchBy.ISSUES -> {
+                filterRepos.isVisible = false
+                filterIssuesPr.isVisible = true
+                reviewRequest.isVisible = false
                 searchType.check(R.id.issues)
                 initIssuePrCheckState()
             }
             FilterSearchModel.SearchBy.PRS -> {
+                filterRepos.isVisible = false
+                filterIssuesPr.isVisible = true
+                reviewRequest.isVisible = true
                 searchType.check(R.id.prs)
                 initIssuePrCheckState()
             }

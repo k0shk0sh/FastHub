@@ -13,6 +13,7 @@ import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
+import com.fastaccess.github.usecase.search.FilterSearchReposUseCase
 import com.fastaccess.github.usecase.user.BlockUnblockUserUseCase
 import com.fastaccess.github.usecase.user.IsUserBlockedUseCase
 import com.fastaccess.github.usecase.user.UserUseCase
@@ -88,6 +89,12 @@ class UseCaseModule {
         apolloClient: ApolloClient
     ): FilterPullRequestsUseCase {
         return FilterPullRequestsUseCase(loginRepository, apolloClient)
+    }
+
+    @PerFragment @Provides fun provideFilterSearchReposUseCase(
+        apolloClient: ApolloClient
+    ): FilterSearchReposUseCase {
+        return FilterSearchReposUseCase(apolloClient)
     }
 
 }

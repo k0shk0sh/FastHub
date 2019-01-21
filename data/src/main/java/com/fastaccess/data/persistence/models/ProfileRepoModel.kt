@@ -34,7 +34,7 @@ data class ProfileReposModel(
 @Entity(tableName = ProfileRepoModel.TABLE_NAME)
 data class ProfileRepoModel(
     @PrimaryKey @SerializedName("id") var id: String = "",
-    @SerializedName("databaseId") var databaseId: Int?? = null,
+    @SerializedName("databaseId") var databaseId: Int? = null,
     @SerializedName("name") var name: String? = null,
     @SerializedName("updatedAt") var updatedAt: Date? = null,
     @SerializedName("diskUsage") var diskUsage: Int? = null,

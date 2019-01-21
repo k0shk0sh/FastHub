@@ -5,10 +5,11 @@ import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
+import com.fastaccess.data.persistence.models.ProfileRepoModel
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
-import timber.log.Timber
+import com.fastaccess.github.usecase.search.FilterSearchReposUseCase
 import javax.inject.Inject
 
 /**
@@ -16,23 +17,28 @@ import javax.inject.Inject
  */
 class FilterSearchViewModel @Inject constructor(
     private val filterIssuesUseCase: FilterIssuesUseCase,
-    private val filterPullRequestsUseCase: FilterPullRequestsUseCase
+    private val filterPullRequestsUseCase: FilterPullRequestsUseCase,
+    private val filterSearchReposUseCase: FilterSearchReposUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     var filterModel = FilterSearchModel()
-    val list = arrayListOf<MyIssuesPullsModel>()
-    val data = MutableLiveData<List<MyIssuesPullsModel>>()
+    val issuesPrsList = arrayListOf<MyIssuesPullsModel>()
+    val issuesPrsData = MutableLiveData<List<MyIssuesPullsModel>>()
+    val reposList = arrayListOf<ProfileRepoModel>()
+    val reposData = MutableLiveData<List<ProfileRepoModel>>()
 
     override fun onCleared() {
         super.onCleared()
         filterIssuesUseCase.dispose()
         filterPullRequestsUseCase.dispose()
+        filterSearchReposUseCase.dispose()
     }
 
     fun loadData(reload: Boolean = false) {
         if (reload) {
-            this.list.clear()
+            this.issuesPrsList.clear()
+            this.reposList.clear()
             pageInfo = null
         }
         val pageInfo = pageInfo
@@ -47,7 +53,15 @@ class FilterSearchViewModel @Inject constructor(
     }
 
     private fun searchByRepo(filterModel: FilterSearchModel, cursor: String?) {
-
+        filterSearchReposUseCase.cursor = Input.optional(cursor)
+        filterSearchReposUseCase.keyword = filterModel.searchQuery
+        filterSearchReposUseCase.filterModel = filterModel.filterByRepo
+        justSubscribe(filterSearchReposUseCase.buildObservable()
+            .doOnNext {
+                this.pageInfo = it.first
+                this.reposList.addAll(it.second)
+                this.reposData.postValue(ArrayList(reposList))
+            })
     }
 
     private fun searchByPr(filterModel: FilterSearchModel, cursor: String?) {
@@ -76,13 +90,11 @@ class FilterSearchViewModel @Inject constructor(
 
     private fun onRequestFinished(pair: Pair<PageInfoModel, List<MyIssuesPullsModel>>) {
         this.pageInfo = pair.first
-        this.list.addAll(pair.second)
-        this.data.postValue(ArrayList(list)) // create new copy of list as submitList will never be notified
+        this.issuesPrsList.addAll(pair.second)
+        this.issuesPrsData.postValue(ArrayList(issuesPrsList)) // create new copy of list as submitList will never be notified
     }
 
     fun filter(model: FilterSearchModel) {
-        if (model == filterModel) return
-        Timber.e("$model")
         this.filterModel = model
         loadData(true)
     }
