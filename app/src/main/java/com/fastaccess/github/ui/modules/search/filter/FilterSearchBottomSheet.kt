@@ -132,7 +132,7 @@ class FilterSearchBottomSheet : BaseFragment() {
             })
             model.filterByRepoLimitBy?.let { limit ->
                 limitBy.check(when (limit) {
-                    FilterByRepo.FilterByRepoLimitBy.USERNAME -> R.id.name
+                    FilterByRepo.FilterByRepoLimitBy.USERNAME -> R.id.username
                     FilterByRepo.FilterByRepoLimitBy.ORG -> R.id.org
                 })
                 limitByText.isVisible = true
@@ -140,9 +140,8 @@ class FilterSearchBottomSheet : BaseFragment() {
 
             limitByEditText.setText(model.name ?: "")
             languageEditText.setText(model.language ?: "")
-            limitByEditText.doAfterTextChanged { text ->
-                model.name = text?.toString()
-            }
+            limitByEditText.doAfterTextChanged { model.name = it?.toString() }
+            languageEditText.doAfterTextChanged { model.language = it?.toString() }
         }
     }
 
