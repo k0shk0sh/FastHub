@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import com.evernote.android.state.State
 import com.fastaccess.data.model.parcelable.FilterByRepo
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.filter_search_layout.*
  */
 class FilterSearchBottomSheet : BaseFragment() {
 
-    private val model by lazy { (arguments?.getParcelable(EXTRA) as? FilterSearchModel) ?: FilterSearchModel() }
+    @State lateinit var model: FilterSearchModel
     private var callback: FilterSearchCallback? = null
 
     override fun onAttach(context: Context) {
@@ -44,15 +45,15 @@ class FilterSearchBottomSheet : BaseFragment() {
     override fun layoutRes(): Int = R.layout.filter_search_layout
     override fun viewModel(): BaseViewModel? = null
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        setupToolbar(R.string.filter)
         if (savedInstanceState == null) {
-            initState()
+            model = (arguments?.getParcelable(EXTRA) as? FilterSearchModel) ?: FilterSearchModel()
         }
-        assignCheckListener()
+        setupToolbar(R.string.filter)
         submit.setOnClickListener {
             callback?.onFilterApplied(model)
             (parentFragment as? BaseBottomSheetDialogFragment)?.dismiss()
         }
+        initState()
     }
 
     private fun initState() {
@@ -61,6 +62,7 @@ class FilterSearchBottomSheet : BaseFragment() {
                 filterIssuesPr.isVisible = false
                 filterRepos.isVisible = true
                 initRepoCheckState()
+                initRepoCheckListener()
             }
             FilterSearchModel.SearchBy.ISSUES -> {
                 filterRepos.isVisible = false
@@ -68,6 +70,7 @@ class FilterSearchBottomSheet : BaseFragment() {
                 reviewRequest.isVisible = false
                 searchType.check(R.id.issues)
                 initIssuePrCheckState()
+                initIssuesPrsCheckListener()
             }
             FilterSearchModel.SearchBy.PRS -> {
                 filterRepos.isVisible = false
@@ -75,18 +78,22 @@ class FilterSearchBottomSheet : BaseFragment() {
                 reviewRequest.isVisible = true
                 searchType.check(R.id.prs)
                 initIssuePrCheckState()
+                initIssuesPrsCheckListener()
             }
-            FilterSearchModel.SearchBy.USERS -> searchType.check(R.id.users)
+            FilterSearchModel.SearchBy.USERS -> {
+                searchType.check(R.id.users)
+                filterIssuesPr.isVisible = false
+                filterRepos.isVisible = false
+            }
             FilterSearchModel.SearchBy.NONE -> {
                 filterIssuesPr.isVisible = false
                 filterRepos.isVisible = false
             }
         }
-    }
 
-    private fun assignCheckListener() {
         searchType.setOnCheckedChangeListener { _, id ->
             when (id) {
+                -1 -> model = FilterSearchModel()
                 R.id.repos -> {
                     filterIssuesPr.isVisible = false
                     filterRepos.isVisible = true
@@ -112,15 +119,6 @@ class FilterSearchBottomSheet : BaseFragment() {
                 }
             }
         }
-
-        when (model.searchBy) {
-            FilterSearchModel.SearchBy.REPOS -> initRepoCheckListener()
-            FilterSearchModel.SearchBy.ISSUES -> initIssuesPrsCheckListener()
-            FilterSearchModel.SearchBy.PRS -> initIssuesPrsCheckListener()
-            FilterSearchModel.SearchBy.USERS, FilterSearchModel.SearchBy.NONE -> {
-                //NOTHING
-            }
-        }
     }
 
     private fun initRepoCheckState() {
@@ -137,7 +135,9 @@ class FilterSearchBottomSheet : BaseFragment() {
                     FilterByRepo.FilterByRepoLimitBy.USERNAME -> R.id.name
                     FilterByRepo.FilterByRepoLimitBy.ORG -> R.id.org
                 })
+                limitByText.isVisible = true
             }
+
             limitByEditText.setText(model.name ?: "")
             languageEditText.setText(model.language ?: "")
             limitByEditText.doAfterTextChanged { text ->
@@ -206,7 +206,7 @@ class FilterSearchBottomSheet : BaseFragment() {
 
     private fun initIssuesPrsCheckListener() {
         model.filterIssuesPrsModel.let { model ->
-            filter.setOnCheckedChangeListener { group, id ->
+            filter.setOnCheckedChangeListener { _, id ->
                 when (id) {
                     R.id.created -> model.searchBy = FilterIssuesPrsModel.SearchBy.CREATED
                     R.id.assigned -> model.searchBy = FilterIssuesPrsModel.SearchBy.ASSIGNED

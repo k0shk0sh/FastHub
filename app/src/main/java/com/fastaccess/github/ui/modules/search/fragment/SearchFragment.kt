@@ -56,7 +56,11 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
             return@setOnEditorActionListener if (actionId == EditorInfo.IME_ACTION_DONE ||
                 actionId == EditorInfo.IME_ACTION_SEARCH ||
                 actionId == EditorInfo.IME_ACTION_GO) {
-                onFilterApplied(viewModel.filterModel)
+                if (viewModel.filterModel.searchBy == FilterSearchModel.SearchBy.NONE) {
+                    filter.callOnClick()
+                } else {
+                    onFilterApplied(viewModel.filterModel)
+                }
                 true
             } else {
                 false
@@ -74,6 +78,7 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
 
     override fun onFilterApplied(model: FilterSearchModel) {
         if (searchEditText.asString().isEmpty()) {
+            viewModel.filterModel = model
             searchEditText.error = getString(R.string.required_field)
         } else {
             model.searchQuery = searchEditText.asString()
