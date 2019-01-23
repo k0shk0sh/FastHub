@@ -12,7 +12,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="?android:windowBackground"
         android:orientation="vertical"
         app:layout_behavior="@string/scroll_behaviour">
@@ -86,16 +87,25 @@
                 app:layoutManager="@string/glm"
                 app:spanCount="3"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/submit"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="@dimen/spacing_xs_large"
-                android:text="@string/submit"
-                app:icon="@drawable/ic_done"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="@dimen/spacing_xs_large"
+        android:background="?android:windowBackground"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submit"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/submit"
+            app:icon="@drawable/ic_done"/>
+    </LinearLayout>
 
 </LinearLayout>
