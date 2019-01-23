@@ -130,7 +130,7 @@ dependencies {
     implementation dependency.extrasLibraries
     implementation dependency.dagger
     implementation dependency.archs
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') { transitive = true }
+    implementation dependency.firebase
     api 'com.google.guava:guava:27.0.1-android' // for the sake of listenablefuture
     debugImplementation dependency.developmentDependencies
     releaseImplementation dependency.releaseDevelopmentDependencies

@@ -55,6 +55,6 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
     }
 
     enum class BottomSheetFragmentType {
-        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS, FILTER_SEARCH
+        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS, FILTER_SEARCH, TRENDING
     }
 }

@@ -116,6 +116,7 @@ class MainFragment : BaseFragment() {
         orgs.setOnClickListener { _ ->
             MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS)
         }
+        trending.setOnClickListener { _ -> route(TRENDING_LINK) }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {

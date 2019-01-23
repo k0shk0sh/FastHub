@@ -52,6 +52,10 @@
             android:parentActivityName=".ui.modules.main.MainActivity"/>
 
         <activity
+            android:name=".ui.modules.trending.TrendingActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity"/>
+
+        <activity
             android:name=".ui.modules.routing.RoutingActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:noHistory="true"

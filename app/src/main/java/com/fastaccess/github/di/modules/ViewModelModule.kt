@@ -19,6 +19,7 @@ import com.fastaccess.github.ui.modules.profile.orgs.userorgs.viewmodel.UserOrgs
 import com.fastaccess.github.ui.modules.profile.repos.viewmodel.ProfileReposViewModel
 import com.fastaccess.github.ui.modules.profile.starred.viewmodel.ProfileStarredReposViewModel
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
+import com.fastaccess.github.ui.modules.trending.fragment.viewmodel.TrendingViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -76,4 +77,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(FilterSearchViewModel::class)
     abstract fun bindFilterSearchViewModel(viewModel: FilterSearchViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(TrendingViewModel::class)
+    abstract fun bindTrendingViewModel(viewModel: TrendingViewModel): ViewModel
 }

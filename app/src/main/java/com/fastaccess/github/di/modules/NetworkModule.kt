@@ -37,43 +37,47 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Singleton @Provides fun provideGson(): Gson = GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
-            .setDateFormat("yyyy-MM-dd HH:mm:ss")
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create()
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+        .setDateFormat("yyyy-MM-dd HH:mm:ss")
+        .disableHtmlEscaping()
+        .setPrettyPrinting()
+        .create()
 
     @Singleton @Provides fun provideInterceptor() = AuthenticationInterceptor()
 
     @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor): OkHttpClient = OkHttpClient
-            .Builder()
-            .addInterceptor(ContentTypeInterceptor())
-            .addInterceptor(auth)
-            .addInterceptor(PaginationInterceptor())
-            .addInterceptor(Pandora.get().interceptor)
-            .addInterceptor(HttpLoggingInterceptor(debug = BuildConfig.DEBUG))
-            .build()
+        .Builder()
+        .addInterceptor(ContentTypeInterceptor())
+        .addInterceptor(auth)
+        .addInterceptor(PaginationInterceptor())
+        .addInterceptor(Pandora.get().interceptor)
+        .addInterceptor(HttpLoggingInterceptor(debug = BuildConfig.DEBUG))
+        .build()
 
     @Singleton @Provides fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-            .baseUrl(BuildConfig.REST_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GithubResponseConverter(gson))
-            .client(okHttpClient)
-            .build()
+        .baseUrl(BuildConfig.REST_URL)
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(GithubResponseConverter(gson))
+        .client(okHttpClient)
+        .build()
+
+    @Singleton @Provides fun provideRetrofitBuilder(gson: Gson, okHttpClient: OkHttpClient): Retrofit.Builder = Retrofit.Builder()
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(GithubResponseConverter(gson))
+        .client(okHttpClient)
 
     @Singleton @Provides fun provideApollo(okHttpClient: OkHttpClient): ApolloClient = ApolloClient.builder()
-            .serverUrl(BuildConfig.GRAPHQL_REST_URL)
-            .okHttpClient(okHttpClient)
-            .addCustomTypeAdapter(CustomType.URI, UriApolloAdapter())
-            .addCustomTypeAdapter(CustomType.DATETIME, DateApolloAdapter())
-            .build()
+        .serverUrl(BuildConfig.GRAPHQL_REST_URL)
+        .okHttpClient(okHttpClient)
+        .addCustomTypeAdapter(CustomType.URI, UriApolloAdapter())
+        .addCustomTypeAdapter(CustomType.DATETIME, DateApolloAdapter())
+        .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)
     @Singleton @Provides fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
     @Singleton @Provides fun provideNotificationService(retrofit: Retrofit): NotificationService = retrofit.create(NotificationService::class.java)
     @Singleton @Provides fun provideOrganizationService(retrofit: Retrofit): OrganizationService = retrofit.create(OrganizationService::class.java)
-
 }
 
 class AuthenticationInterceptor(var otp: String? = null,
@@ -97,10 +101,10 @@ private class ContentTypeInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         return chain.proceed(request.newBuilder()
-                .addHeader("Accept", "application/vnd.github.v3+json")
-                .addHeader("Content-type", "application/vnd.github.v3+json")
-                .method(request.method(), request.body())
-                .build())
+            .addHeader("Accept", "application/vnd.github.v3+json")
+            .addHeader("Content-type", "application/vnd.github.v3+json")
+            .method(request.method(), request.body())
+            .build())
     }
 }
 
@@ -111,7 +115,7 @@ private class PaginationInterceptor : Interceptor {
         val headers = chain.request().headers()
         headers?.let {
             if (it.values("Accept").contains("application/vnd.github.html") ||
-                    it.values("Accept").contains("application/vnd.github.VERSION" + ".raw")) {
+                it.values("Accept").contains("application/vnd.github.VERSION" + ".raw")) {
                 return response//return them as they are.
             }
         }
@@ -143,7 +147,7 @@ private class PaginationInterceptor : Interceptor {
                 if (pagination.isNotEmpty()) {
                     val body = response.body()!!.string()
                     return response.newBuilder().body(ResponseBody.create(response.body()!!.contentType(),
-                            "{" + pagination + body.substring(1, body.length))).build()
+                        "{" + pagination + body.substring(1, body.length))).build()
                 }
             }
         }

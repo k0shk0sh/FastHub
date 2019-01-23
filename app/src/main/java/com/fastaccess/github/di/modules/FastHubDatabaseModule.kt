@@ -10,11 +10,14 @@ import com.fastaccess.data.persistence.db.LOGIN_DATABASE_NAME
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.di.annotations.ForApplication
 import com.fastaccess.github.di.annotations.ForDB
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import java.lang.reflect.Modifier
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -41,5 +44,9 @@ class FastHubDatabaseModule {
         .disableHtmlEscaping()
         .setPrettyPrinting()
         .create()
+
+    @Singleton @Provides @Named(value = "github_trending") fun provideFastHubTrendingDataReference(): DatabaseReference {
+        return FirebaseDatabase.getInstance().reference.child("github_trending")
+    }
 
 }

@@ -65,6 +65,7 @@ ext {
             'com.github.zagum:Android-ExpandIcon:1.2.1',
             "com.evernote:android-state:$androidState",
             "ru.noties:markwon:$markwonVersion",
+            "org.jsoup:jsoup:1.11.3"
     ]
 
     networking = [
@@ -108,6 +109,15 @@ ext {
             "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.0.0",
             "android.arch.work:work-runtime:$workManager",
             "android.arch.work:work-rxjava2:$workManager"
+    ]
+
+    firebase = [
+            "com.google.firebase:firebase-core:16.0.6",
+            "com.google.firebase:firebase-database:16.0.5",
+            "com.crashlytics.sdk.android:crashlytics:2.9.8",
+            "com.google.firebase:firebase-messaging:17.3.4",
+            "com.github.b3er.rxfirebase:firebase-database:11.2.0",
+            "com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0"
     ]
 
 
