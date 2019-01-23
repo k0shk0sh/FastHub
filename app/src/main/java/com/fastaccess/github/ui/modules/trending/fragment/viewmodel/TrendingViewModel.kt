@@ -48,7 +48,8 @@ class TrendingViewModel @Inject constructor(
     }
 
     fun load(lan: String, since: String) {
-        service?.getTrending(lan.replace(" ", "_"), since)?.let { observable ->
+        val language = if (lan == "All") "" else lan.replace(" ", "_").toLowerCase()
+        service?.getTrending(language, since)?.let { observable ->
             justSubscribe(observable
                 .map { html ->
                     val document = Jsoup.parse(html, "")

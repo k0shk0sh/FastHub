@@ -5,17 +5,19 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.LanguageColorsModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.TrendingsAdapter
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import com.fastaccess.github.ui.modules.trending.filter.FiltreTrendingBottomSheet
+import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
 import com.fastaccess.github.ui.modules.trending.fragment.viewmodel.TrendingViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.trending_fragment_layout.*
@@ -25,9 +27,10 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 23.01.19.
  */
-class TrendingFragment : BaseFragment(), FiltreTrendingBottomSheet.FilterTrendingCallback {
+class TrendingFragment : BaseFragment(), FilterTrendingBottomSheet.FilterTrendingCallback {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var gson: Gson
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(TrendingViewModel::class.java) }
     private val adapter by lazy { TrendingsAdapter() }
