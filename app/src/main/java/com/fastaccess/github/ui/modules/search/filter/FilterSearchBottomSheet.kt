@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import com.evernote.android.state.State
 import com.fastaccess.data.model.parcelable.FilterByRepo
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
@@ -50,6 +49,8 @@ class FilterSearchBottomSheet : BaseFragment() {
         }
         setupToolbar(R.string.filter)
         submit.setOnClickListener {
+            model.filterByRepo.name = limitByEditText.text?.toString()
+            model.filterByRepo.language = languageEditText.text?.toString()
             callback?.onFilterApplied(model)
             (parentFragment as? BaseBottomSheetDialogFragment)?.dismiss()
         }
@@ -140,8 +141,6 @@ class FilterSearchBottomSheet : BaseFragment() {
 
             limitByEditText.setText(model.name ?: "")
             languageEditText.setText(model.language ?: "")
-            limitByEditText.doAfterTextChanged { model.name = it?.toString() }
-            languageEditText.doAfterTextChanged { model.language = it?.toString() }
         }
     }
 
