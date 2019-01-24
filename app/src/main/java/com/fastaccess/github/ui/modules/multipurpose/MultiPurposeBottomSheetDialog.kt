@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
+import com.fastaccess.data.model.parcelable.FilterTrendingModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseBottomSheetDialogFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -36,7 +37,8 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
                             .newInstance(arguments?.getParcelable(EXTRA_TWO) ?: FilterIssuesPrsModel()), "FilterIssuesPrsBottomSheet")
                     BottomSheetFragmentType.FILTER_SEARCH -> replace(R.id.container, FilterSearchBottomSheet
                         .newInstance(arguments?.getParcelable(EXTRA_TWO) ?: FilterSearchModel()), "FilterSearchBottomSheet")
-                    BottomSheetFragmentType.TRENDING -> replace(R.id.container, FilterTrendingBottomSheet.newInstance(), "FilterTrendingBottomSheet")
+                    BottomSheetFragmentType.TRENDING -> replace(R.id.container,
+                        FilterTrendingBottomSheet.newInstance(arguments?.getParcelable(EXTRA_TWO) ?: FilterTrendingModel()), "FilterTrendingBottomSheet")
                 }
             }
         }

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.fastaccess.data.model.LanguageColorsModel
+import com.fastaccess.data.model.parcelable.FilterTrendingModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -15,13 +15,11 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
 import com.fastaccess.github.ui.modules.trending.fragment.viewmodel.TrendingViewModel
 import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.trending_fragment_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -46,34 +44,34 @@ class TrendingFragment : BaseFragment(), FilterTrendingBottomSheet.FilterTrendin
         fastScroller.attachRecyclerView(recyclerView)
         swipeRefresh.setOnRefreshListener {
             recyclerView.resetScrollState()
-            viewModel.load(viewModel.lang, viewModel.since)
+            viewModel.load(viewModel.filterTrendingModel)
         }
         filterTrending.setOnClickListener {
+            val modelCopy = viewModel.filterTrendingModel.copy()
             MultiPurposeBottomSheetDialog.show(childFragmentManager,
-                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.TRENDING)
+                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.TRENDING, modelCopy)
         }
         listenToChanges()
+        if (savedInstanceState == null) {
+            val model = arguments?.getParcelable(EXTRA) ?: FilterTrendingModel()
+            viewModel.load(model)
+        }
     }
 
-    override fun onFilterApplied(lan: String, since: String) {
-        viewModel.load(lan, since)
+    override fun onFilterApplied(model: FilterTrendingModel) {
+        viewModel.filterTrendingModel = model
+        viewModel.load(model)
     }
 
     private fun listenToChanges() {
         viewModel.trendingLiveData.observeNotNull(this) {
-            Timber.e("$it")
             adapter.submitList(it)
         }
     }
 
     companion object {
         fun newInstance(lan: String? = null, since: String? = null) = TrendingFragment().apply {
-            arguments = bundleOf().apply {
-                if (!lan.isNullOrEmpty()) {
-                    putString(EXTRA, lan)
-                    putString(EXTRA_TWO, since ?: "daily")
-                }
-            }
+            arguments = bundleOf(EXTRA to FilterTrendingModel(lan ?: "", FilterTrendingModel.TrendingSince.getSince(since)))
         }
     }
 }

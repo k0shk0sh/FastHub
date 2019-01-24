@@ -138,6 +138,10 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         disposal.add(disposable)
     }
 
+    fun dismiss() {
+        (parentFragment as? BaseBottomSheetDialogFragment)?.dismiss()
+    }
+
     fun setupToolbar(resId: Int, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
         view?.findViewById<Toolbar?>(R.id.toolbar)?.apply {
             val titleText = findViewById<TextView?>(R.id.toolbarTitle)
