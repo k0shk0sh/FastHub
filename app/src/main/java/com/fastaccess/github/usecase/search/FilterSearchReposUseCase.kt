@@ -34,13 +34,11 @@ class FilterSearchReposUseCase @Inject constructor(
                         CountModel(repo.stargazers.totalCount), CountModel(repo.issues.totalCount),
                         CountModel(repo.pullRequests.totalCount), repo.forkCount, repo.isFork, repo.isPrivate)
                 } ?: arrayListOf()
-            return@map Pair(PageInfoModel(), list)
+            return@map Pair(PageInfoModel(search.pageInfo.startCursor, search.pageInfo.endCursor,
+                search.pageInfo.isHasNextPage, search.pageInfo.isHasPreviousPage), list)
         }
 
 
-    /**
-     * Example: is:open is:issue author:k0shk0sh archived:false sort:created-desc
-     */
     private fun constructQuery(keyword: String): String {
         return StringBuilder()
             .apply {

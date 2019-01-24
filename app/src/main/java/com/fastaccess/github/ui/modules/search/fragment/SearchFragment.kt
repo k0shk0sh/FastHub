@@ -14,12 +14,14 @@ import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.SearchReposAdapter
+import com.fastaccess.github.ui.adapter.ShortUsersAdapter
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_SEARCH
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.asString
+import com.fastaccess.github.utils.extensions.route
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.search_fragment_layout.*
@@ -33,6 +35,11 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterSearchViewModel::class.java) }
     private val issuesPrsAdapter by lazy { MyIssuesPrsAdapter() }
     private val reposAdapter by lazy { SearchReposAdapter() }
+    private val usersAdapter by lazy {
+        ShortUsersAdapter { url ->
+            requireContext().route(url)
+        }
+    }
 
     override fun layoutRes(): Int = R.layout.search_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -99,6 +106,12 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
                 recyclerView.adapter = reposAdapter
             }
             (recyclerView.adapter as? SearchReposAdapter)?.submitList(it)
+        }
+        viewModel.usersData.observeNotNull(this) {
+            if (recyclerView.adapter !is ShortUsersAdapter) {
+                recyclerView.adapter = usersAdapter
+            }
+            (recyclerView.adapter as? ShortUsersAdapter)?.submitList(it)
         }
     }
 

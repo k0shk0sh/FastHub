@@ -4,12 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.ShortRepoModel
+import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
 import com.fastaccess.github.usecase.search.FilterSearchReposUseCase
+import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import javax.inject.Inject
 
 /**
@@ -18,7 +20,8 @@ import javax.inject.Inject
 class FilterSearchViewModel @Inject constructor(
     private val filterIssuesUseCase: FilterIssuesUseCase,
     private val filterPullRequestsUseCase: FilterPullRequestsUseCase,
-    private val filterSearchReposUseCase: FilterSearchReposUseCase
+    private val filterSearchReposUseCase: FilterSearchReposUseCase,
+    private val filterSearchUsersUseCase: FilterSearchUsersUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -27,18 +30,22 @@ class FilterSearchViewModel @Inject constructor(
     val issuesPrsData = MutableLiveData<List<MyIssuesPullsModel>>()
     val reposList = arrayListOf<ShortRepoModel>()
     val reposData = MutableLiveData<List<ShortRepoModel>>()
+    val usersList = arrayListOf<ShortUserModel>()
+    val usersData = MutableLiveData<List<ShortUserModel>>()
 
     override fun onCleared() {
         super.onCleared()
         filterIssuesUseCase.dispose()
         filterPullRequestsUseCase.dispose()
         filterSearchReposUseCase.dispose()
+        filterSearchUsersUseCase.dispose()
     }
 
     fun loadData(reload: Boolean = false) {
         if (reload) {
             this.issuesPrsList.clear()
             this.reposList.clear()
+            this.usersList.clear()
             pageInfo = null
         }
         val pageInfo = pageInfo
@@ -61,6 +68,7 @@ class FilterSearchViewModel @Inject constructor(
         filterSearchReposUseCase.filterModel = filterModel.filterByRepo
         justSubscribe(filterSearchReposUseCase.buildObservable()
             .doOnNext {
+                this.usersData.postValue(null)
                 this.issuesPrsData.postValue(null)
                 this.pageInfo = it.first
                 this.reposList.addAll(it.second)
@@ -89,11 +97,21 @@ class FilterSearchViewModel @Inject constructor(
     }
 
     private fun searchByUser(filterModel: FilterSearchModel, cursor: String?) {
-
+        filterSearchUsersUseCase.cursor = Input.optional(cursor)
+        filterSearchUsersUseCase.keyword = filterModel.searchQuery
+        justSubscribe(filterSearchUsersUseCase.buildObservable()
+            .doOnNext {
+                this.reposData.postValue(null)
+                this.issuesPrsData.postValue(null)
+                this.pageInfo = it.first
+                this.usersList.addAll(it.second)
+                this.usersData.postValue(ArrayList(usersList))
+            })
     }
 
     private fun onRequestFinished(pair: Pair<PageInfoModel, List<MyIssuesPullsModel>>) {
         this.reposData.postValue(null)
+        this.usersData.postValue(null)
         this.pageInfo = pair.first
         this.issuesPrsList.addAll(pair.second)
         this.issuesPrsData.postValue(ArrayList(issuesPrsList)) // create new copy of list as submitList will never be notified
