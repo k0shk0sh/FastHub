@@ -14,11 +14,13 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
+import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
 import com.fastaccess.github.utils.*
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.otpCode
@@ -34,7 +36,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 12.06.18.
  */
-class MainFragment : BaseFragment() {
+class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var preference: FastHubSharedPreference
@@ -86,6 +88,11 @@ class MainFragment : BaseFragment() {
         }
     }
 
+    override fun onClick(positive: Boolean) {
+        positive.isTrue { viewModel.logout() }
+    }
+
+
     private fun initClicks() {
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -98,7 +105,8 @@ class MainFragment : BaseFragment() {
         navigationView.setNavigationItemSelectedListener {
             behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
             when (it.itemId) {
-                R.id.logout -> viewModel.logout()
+                R.id.logout -> IconDialogFragment.show(childFragmentManager, R.drawable.ic_info_outline, getString(R.string.logout),
+                    getString(R.string.confirm_message), getString(R.string.logout), getString(R.string.cancel))
                 R.id.add_account -> LoginChooserActivity.startActivity(requireActivity(), false)
             }
             return@setNavigationItemSelectedListener true
