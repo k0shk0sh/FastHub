@@ -21,6 +21,7 @@ import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.asString
+import com.fastaccess.github.utils.extensions.hideKeyboard
 import com.fastaccess.github.utils.extensions.route
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
@@ -54,15 +55,17 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
             viewModel.loadData(true)
         }
         recyclerView.addOnLoadMore { viewModel.loadData() }
+        backBtn.setOnClickListener { activity?.onBackPressed() }
         clear.setOnClickListener { searchEditText.setText("") }
         filter.setOnClickListener {
             val model = viewModel.filterModel.copy()
             MultiPurposeBottomSheetDialog.show(childFragmentManager, FILTER_SEARCH, model)
         }
-        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+        searchEditText.setOnEditorActionListener { v, actionId, _ ->
             return@setOnEditorActionListener if (actionId == EditorInfo.IME_ACTION_DONE ||
                 actionId == EditorInfo.IME_ACTION_SEARCH ||
                 actionId == EditorInfo.IME_ACTION_GO) {
+                v.hideKeyboard()
                 if (viewModel.filterModel.searchBy == FilterSearchModel.SearchBy.NONE) {
                     filter.callOnClick()
                 } else {

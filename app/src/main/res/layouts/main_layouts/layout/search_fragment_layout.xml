@@ -18,6 +18,7 @@
         app:layout_scrollFlags="scroll|enterAlways">
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
@@ -31,6 +32,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/spacing_xs_large"
             android:layout_marginStart="@dimen/spacing_normal"
+            app:cardBackgroundColor="?card_background"
             app:cardCornerRadius="15dp"
             app:contentPadding="@dimen/spacing_normal">
 

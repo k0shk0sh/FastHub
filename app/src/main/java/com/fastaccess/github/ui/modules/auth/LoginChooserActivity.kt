@@ -103,6 +103,7 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
     }
 
     override fun onUserLoggedIn(login: LoginModel) {
+        if (BuildConfig.DEBUG) preference.theme = 1
         if (login.isEnterprise == true) {
             preference.enterpriseOtpCode = login.otpCode
             preference.enterpriseToken = login.token
