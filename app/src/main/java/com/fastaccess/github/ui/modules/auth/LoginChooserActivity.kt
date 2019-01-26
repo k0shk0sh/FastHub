@@ -32,12 +32,10 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(LoginChooserViewModel::class.java) }
 
     override fun layoutRes(): Int = R.layout.login_chooser_activity_layout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.LoginTheme)
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, LoginChooserFragment(), LoginChooserFragment.TAG)
@@ -113,8 +111,10 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
             preference.token = login.token
             preference.otpCode = login.otpCode
         }
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+        startActivity(Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        finishAffinity()
     }
 
     private fun handleIntent(intent: Intent?) {
@@ -125,11 +125,11 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
     }
 
     companion object {
-        fun startActivity(activity: Activity) {
+        fun startActivity(activity: Activity, finish: Boolean = true) {
             val intent = Intent(activity, LoginChooserActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             activity.startActivity(intent)
-            activity.finishAffinity()
+            if (finish) activity.finishAffinity()
         }
     }
 }

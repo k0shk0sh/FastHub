@@ -55,14 +55,6 @@ class MainFragment : BaseFragment() {
         recyclerView.addDivider()
         recyclerView.adapter = adapter
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
-        bottomBar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print))
-                R.id.notifications -> route(NOTIFICATION_LINK)
-                R.id.search -> route(SEARCH_LINK)
-            }
-            return@setOnMenuItemClickListener true
-        }
 
         behaviour.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(p0: View, p1: Float) = Unit
@@ -95,10 +87,19 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initClicks() {
+        bottomBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print))
+                R.id.notifications -> route(NOTIFICATION_LINK)
+                R.id.search -> route(SEARCH_LINK)
+            }
+            return@setOnMenuItemClickListener true
+        }
         navigationView.setNavigationItemSelectedListener {
             behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
             when (it.itemId) {
                 R.id.logout -> viewModel.logout()
+                R.id.add_account -> LoginChooserActivity.startActivity(requireActivity(), false)
             }
             return@setNavigationItemSelectedListener true
         }

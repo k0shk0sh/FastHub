@@ -48,7 +48,8 @@ class LoginChooserFragment : BaseFragment() {
     override fun viewModel(): BaseViewModel? = null
     override fun layoutRes() = R.layout.login_chooser_fragment_layout
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {}
-    override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         basicAuth.setOnClickListener { callback?.navToBasicAuth(loginCard) }
         accessToken.setOnClickListener { callback?.navToAccessToken(loginCard) }
         enterprise.setOnClickListener { callback?.navToEnterprise(loginCard) }

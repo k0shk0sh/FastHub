@@ -49,7 +49,8 @@ class AuthLoginFragment : BaseFragment() {
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) = Unit
     override fun layoutRes(): Int = R.layout.login_form_layout
 
-    override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         isAccessToken.isTrue {
             password.hint = getString(R.string.access_token)
         }
@@ -123,7 +124,8 @@ class AuthLoginFragment : BaseFragment() {
 
         viewModel.loggedInUser.observe(this, Observer { model ->
             if (model != null) {
-                callback?.onUserLoggedIn(model)
+                addDisposal(viewModel.clearDb()
+                    .subscribe({ callback?.onUserLoggedIn(model) }, { throwable -> view?.let { showSnackBar(it, message = throwable.message) } }))
             } else {
                 view?.let { showSnackBar(it, resId = R.string.failed_login) }
             }

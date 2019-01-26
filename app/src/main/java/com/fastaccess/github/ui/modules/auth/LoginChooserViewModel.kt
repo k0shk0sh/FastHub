@@ -2,6 +2,7 @@ package com.fastaccess.github.ui.modules.auth
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
+import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
@@ -19,7 +20,8 @@ class LoginChooserViewModel @Inject constructor(
     private val accessTokenUseCase: GetAccessTokenUseCase,
     private val loginWithAccessTokenUseCase: LoginWithAccessTokenUseCase,
     private val interceptor: AuthenticationInterceptor,
-    private val loginRepositoryProvider: LoginRepositoryProvider
+    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val fastHubDatabase: FastHubDatabase
 ) : BaseViewModel() {
 
     val loggedInUser = MutableLiveData<LoginModel>()
@@ -60,6 +62,8 @@ class LoginChooserViewModel @Inject constructor(
     }
 
     fun reLogin(user: LoginModel): Completable = user.let { me ->
+        loginRepositoryProvider.logoutAll() // logout everyone in case of adding account
+        fastHubDatabase.clearAll() // clear everything in db and start fresh!
         me.isLoggedIn = true
         return@let loginRepositoryProvider.update(me)
     }
