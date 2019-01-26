@@ -8,8 +8,10 @@ import com.fastaccess.domain.repository.services.LoginService
 import com.fastaccess.domain.response.AccessTokenResponse
 import com.fastaccess.domain.response.AuthBodyModel
 import com.fastaccess.domain.response.UserResponse
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
@@ -21,10 +23,10 @@ class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao
     override fun getLogin(): Maybe<LoginModel?> = loginDao.getLogin()
     override fun getLoginBlocking(): LoginModel? = loginDao.getLoginBlocking()
     override fun getAllLiveData(): LiveData<LoginModel?> = loginDao.getAllLiveData()
-    override fun getAll(): Observable<List<LoginModel?>> = loginDao.getAll().toObservable()
+    override fun getAll(): Single<List<LoginModel?>> = loginDao.getAll()
     override fun getLoggedInUsers(): Observable<List<LoginModel?>> = loginDao.getLoggedInUsers().toObservable()
     override fun insert(login: LoginModel): Long = loginDao.insert(login)
-    override fun update(login: LoginModel): Int = loginDao.update(login)
+    override fun update(login: LoginModel): Completable = Completable.fromCallable { loginDao.update(login) }
     override fun deleteLogin(login: LoginModel) = loginDao.deleteLogin(login)
     override fun logoutAll() = loginDao.logoutAll()
     override fun loginAccessToken(): Observable<UserResponse> = loginService.loginAccessToken()
@@ -39,10 +41,10 @@ interface LoginLocalRepository {
     fun getLogin(): Maybe<LoginModel?>
     fun getLoginBlocking(): LoginModel?
     fun getAllLiveData(): LiveData<LoginModel?>
-    fun getAll(): Observable<List<LoginModel?>>
+    fun getAll(): Single<List<LoginModel?>>
     fun getLoggedInUsers(): Observable<List<LoginModel?>>
     fun insert(login: LoginModel): Long
-    fun update(login: LoginModel): Int
+    fun update(login: LoginModel): Completable
     fun deleteLogin(login: LoginModel)
     fun logoutAll()
 }

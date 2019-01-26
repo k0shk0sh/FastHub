@@ -1,5 +1,6 @@
 package com.fastaccess.github.utils.extensions
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -7,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -30,11 +32,11 @@ fun BaseActivity.replaceIfNotExisting(containerId: Int,
     val existingFragment = supportFragmentManager.findFragmentByTag(tag)
     if (existingFragment == null) {
         supportFragmentManager.beginTransaction()
-                .replace(containerId, fragment, tag)
-                .runOnCommit {
-                    callback?.invoke(fragment)
-                }
-                .commitNow()
+            .replace(containerId, fragment, tag)
+            .runOnCommit {
+                callback?.invoke(fragment)
+            }
+            .commitNow()
     } else {
         callback?.invoke(fragment)
     }
@@ -45,11 +47,11 @@ fun BaseActivity.replace(containerId: Int,
                          tag: String? = null,
                          callback: ((Fragment) -> Unit)? = null) {
     supportFragmentManager.beginTransaction()
-            .replace(containerId, fragment, tag ?: fragment.getSimpleName())
-            .runOnCommit {
-                callback?.invoke(fragment)
-            }
-            .commitNow()
+        .replace(containerId, fragment, tag ?: fragment.getSimpleName())
+        .runOnCommit {
+            callback?.invoke(fragment)
+        }
+        .commitNow()
 }
 
 fun Context.getColorAttr(attr: Int): Int {
@@ -92,3 +94,13 @@ fun Context.route(url: String?) {
 }
 
 fun BaseActivity.fromDeepLink() = intent?.getBooleanExtra(DeepLink.IS_DEEP_LINK, false) ?: false
+
+fun Activity.showKeyboard() {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+}
+
+fun Activity.hideKeyboard() {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+}

@@ -31,4 +31,5 @@ abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getGistsDao(): UserGistsDao
     abstract fun getFollowingFollowerDao(): UserFollowersFollowingsDao
     abstract fun getOrganizationDao(): OrgsDao
+    fun clearAll() = clearAllTables()
 }

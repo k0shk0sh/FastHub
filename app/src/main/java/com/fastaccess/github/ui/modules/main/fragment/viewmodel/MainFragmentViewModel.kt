@@ -3,11 +3,14 @@ package com.fastaccess.github.ui.modules.main.fragment.viewmodel
 import androidx.lifecycle.LiveData
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
+import com.fastaccess.data.persistence.db.FastHubDatabase
+import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.data.repository.FeedsRepositoryProvider
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MyIssuesPullsRepositoryProvider
 import com.fastaccess.data.repository.NotificationRepositoryProvider
+import com.fastaccess.extension.uiThread
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.map
 import com.fastaccess.github.extensions.switchMap
@@ -15,6 +18,7 @@ import com.fastaccess.github.usecase.main.FeedsMainScreenUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
+import io.reactivex.Observable
 import javax.inject.Inject
 
 @Suppress("HasPlatformType")
@@ -29,7 +33,8 @@ class MainFragmentViewModel @Inject constructor(
     private val feedsRepositoryProvider: FeedsRepositoryProvider,
     private val myIssuesPullsRepo: MyIssuesPullsRepositoryProvider,
     private val notificationRepositoryProvider: NotificationRepositoryProvider,
-    loginProvider: LoginRepositoryProvider
+    private val fasthubDatabase: FastHubDatabase,
+    private val loginProvider: LoginRepositoryProvider
 ) : BaseViewModel() {
 
     val login = loginProvider.getLogin()
@@ -51,9 +56,14 @@ class MainFragmentViewModel @Inject constructor(
         ))
     }
 
-    fun logout() { //TODO
-//        add(Observable.fromCallable { fastHubDatabase.clearAllTables() }
-//                .subscribe { logoutProcess.postValue(true) })
+    fun logout() {
+        add(Observable.fromCallable {
+            fasthubDatabase.clearAll()
+            loginProvider.logoutAll()
+        }
+            .uiThread()
+            .subscribe({ logoutProcess.postValue(true) },
+                { error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, it.message)) }))
     }
 
     override fun onCleared() {

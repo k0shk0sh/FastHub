@@ -1,6 +1,8 @@
 package com.fastaccess.github.di.components
 
 import android.app.Application
+import com.fastaccess.data.persistence.db.FastHubDatabase
+import com.fastaccess.data.persistence.db.FastHubLoginDatabase
 import com.fastaccess.github.App
 import com.fastaccess.github.di.modules.*
 import com.fastaccess.github.platform.workmanager.DaggerWorkerFactory
@@ -46,6 +48,9 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
     fun daggerWorkerFactory(): DaggerWorkerFactory
 
     fun workerSubComponentBuilder(): WorkerSubComponent.Builder
+
+    fun fastHubDatabase() : FastHubDatabase
+    fun fasthubLoginDatabase() : FastHubLoginDatabase
 
     fun inject(app: App)
 

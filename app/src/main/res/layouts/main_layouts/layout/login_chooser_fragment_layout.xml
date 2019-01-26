@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/parentLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,11 +18,71 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/multiAccLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_s_large"
+                android:layout_marginStart="@dimen/spacing_s_large"
+                android:minWidth="250dp"
+                android:transitionName="login_card"
+                android:visibility="gone"
+                app:cardElevation="@dimen/spacing_normal"
+                tools:visibility="visible">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/toggle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:text="@string/choose_account"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/toggleImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            android:tint="@color/black"/>
+                    </LinearLayout>
+
+                    <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:visibility="gone"
+                        app:layoutManager="@string/llm"/>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/loginCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/spacing_s_large"
+                android:layout_marginBottom="@dimen/spacing_xs_large"
                 android:layout_marginEnd="@dimen/spacing_s_large"
                 android:layout_marginStart="@dimen/spacing_s_large"
                 android:layout_marginTop="@dimen/spacing_xs_large"
@@ -36,9 +97,9 @@
                     <LinearLayout
                         android:id="@+id/buttonsLayout"
                         android:layout_width="match_parent"
-                        tools:visibility="gone"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -176,10 +237,10 @@
                         android:id="@+id/progressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:visibility="visible"
                         android:layout_gravity="center"
                         android:padding="@dimen/spacing_s_large"
-                        android:visibility="gone"/>
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
                 </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>

@@ -20,6 +20,7 @@ import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.asString
 import com.fastaccess.github.utils.extensions.beginDelayedTransition
+import com.fastaccess.github.utils.extensions.hideKeyboard
 import kotlinx.android.synthetic.main.login_form_layout.*
 import javax.inject.Inject
 
@@ -69,10 +70,22 @@ class AuthLoginFragment : BaseFragment() {
             it.isEnabled = false
             if (progressBar.isVisible) return@setOnClickListener
             viewModel.login(usernameEditText.asString(),
-                    passwordEditText.asString(),
-                    twoFactorEditText.asString(),
-                    endpointEditText.asString(),
-                    (isAccessToken || accessTokenCheckbox.isVisible && accessTokenCheckbox.isChecked))
+                passwordEditText.asString(),
+                twoFactorEditText.asString(),
+                endpointEditText.asString(),
+                (isAccessToken || accessTokenCheckbox.isVisible && accessTokenCheckbox.isChecked))
+        }
+
+        passwordEditText.setOnEditorActionListener { v, _, _ ->
+            when {
+                twoFactor.isVisible -> twoFactor.requestFocus()
+                endpoint.isVisible -> endpoint.requestFocus()
+                else -> {
+                    v.hideKeyboard()
+                    loginBtn.callOnClick()
+                }
+            }
+            return@setOnEditorActionListener true
         }
         observeData()
     }
@@ -120,15 +133,15 @@ class AuthLoginFragment : BaseFragment() {
     companion object {
         const val TAG = "AuthLoginFragment"
         fun newInstance(accessToken: Boolean = false, isEnterprise: Boolean = false): AuthLoginFragment = AuthLoginFragment()
-                .apply {
-                    val enter = Slide(Gravity.END)
-                    val exit = Slide(Gravity.START)
-                    enterTransition = enter
-                    exitTransition = exit
-                    arguments = Bundle().apply {
-                        putBoolean(EXTRA, accessToken)
-                        putBoolean(EXTRA_TWO, isEnterprise)
-                    }
+            .apply {
+                val enter = Slide(Gravity.END)
+                val exit = Slide(Gravity.START)
+                enterTransition = enter
+                exitTransition = exit
+                arguments = Bundle().apply {
+                    putBoolean(EXTRA, accessToken)
+                    putBoolean(EXTRA_TWO, isEnterprise)
                 }
+            }
     }
 }

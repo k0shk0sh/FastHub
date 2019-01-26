@@ -1,10 +1,10 @@
 package com.fastaccess.github.utils.extensions
 
+import android.content.Context
 import android.graphics.Color
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
@@ -144,3 +144,19 @@ fun <V : View?> BottomSheetBehavior<V>.setBottomSheetCallback(
 }
 
 fun View.beginDelayedTransition() = TransitionManager.beginDelayedTransition(this as ViewGroup)
+
+fun View.focusAndshowKeyboard() {
+    requestFocusFromTouch()
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+}
+
+fun View.showKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+}
+
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(getWindowToken(), 0)
+}

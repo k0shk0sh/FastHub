@@ -55,15 +55,15 @@ class TrendingViewModel @Inject constructor(
                     val trendingList = arrayListOf<TrendingModel>()
                     list.select(trendingModel.listNameSublistTag)?.let { li ->
                         trendingList.addAll(li.map { body ->
-                            val language = kotlin.runCatching { body.select(trendingModel.language).text() }
+                            val trendingLang = kotlin.runCatching { body.select(trendingModel.language).text() }
                                 .getOrNull() ?: kotlin.runCatching { body.select(trendingModel.languageFallback).text() }.getOrNull()
                             val todayStars = kotlin.runCatching { body.select(trendingModel.todayStars).text() }
                                 .getOrNull() ?: kotlin.runCatching { body.select(trendingModel.todayStarsFallback).text() }.getOrNull()
-
-                            TrendingModel(
-                                body.select(trendingModel.title).text(), body.select(trendingModel.description).text(), language,
-                                body.select(trendingModel.stars).text(), body.select(trendingModel.forks).text(), todayStars
-                            )
+                            val title = kotlin.runCatching { body.select(trendingModel.title).text() }.getOrNull()
+                            val description = kotlin.runCatching { body.select(trendingModel.description).text() }.getOrNull()
+                            val stars = kotlin.runCatching { body.select(trendingModel.stars).text() }.getOrNull()
+                            val forks = kotlin.runCatching { body.select(trendingModel.forks).text() }.getOrNull()
+                            return@map TrendingModel(title, description, trendingLang, stars, forks, todayStars)
                         })
                     }
                     return@map trendingList

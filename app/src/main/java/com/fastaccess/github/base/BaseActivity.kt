@@ -56,7 +56,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback {
     }
 
     override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
-        if (resId == null && message == null) return
+        if ((resId == null && message == null) || isFinishing) return
         Snackbar.make(root, message ?: getString(resId ?: R.string.unknown), duration)
                 .materialize()
                 .show()

@@ -16,6 +16,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
+import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.*
@@ -135,7 +136,7 @@ class MainFragment : BaseFragment() {
             if (it) {
                 preference.token = null
                 preference.otpCode = null
-                activity?.finish()
+                LoginChooserActivity.startActivity(requireActivity())
             }
         }
     }

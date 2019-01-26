@@ -6,10 +6,12 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.extension.uiThread
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.ui.adapter.LoggedInUsersAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.utils.extensions.beginDelayedTransition
@@ -24,6 +26,14 @@ class LoginChooserFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelProviders.of(requireActivity(), viewModelFactory).get(LoginChooserViewModel::class.java) }
     private var callback: LoginChooserCallback? = null
+    private val adapter by lazy {
+        LoggedInUsersAdapter { user ->
+            addDisposal(viewModel.reLogin(user)
+                .uiThread()
+                .subscribe({ (requireActivity() as? LoginChooserCallback)?.onUserLoggedIn(user) },
+                    { throwable -> view?.let { showSnackBar(it, message = throwable.message) } }))
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,6 +58,20 @@ class LoginChooserFragment : BaseFragment() {
             this@LoginChooserFragment.view?.beginDelayedTransition()
             buttonsLayout.isVisible = !progress
             progressBar.isVisible = progress
+        }
+
+        toggle.setOnClickListener {
+            parentLayout.beginDelayedTransition()
+            val isVisible = recycler.isVisible
+            recycler.isVisible = !isVisible
+            toggleImage.rotation = if (!isVisible) 180f else 0f
+        }
+
+        viewModel.loggedInUsers.observeNotNull(this) {
+            if (it.isEmpty()) return@observeNotNull
+            multiAccLayout?.isVisible = true
+            adapter.submitList(it)
+            recycler.adapter = adapter
         }
     }
 
