@@ -83,4 +83,8 @@ class RepositoryModule {
     ): OrgRepositoryProvider {
         return OrgRepositoryProvider(fastHubDatabase.getOrganizationDao(), apolloClient, loginRepositoryProvider)
     }
+
+    @Singleton @Provides fun provideIssueRepository(fastHubDatabase: FastHubDatabase): IssueRepositoryProvider {
+        return IssueRepositoryProvider(fastHubDatabase.getIssueDao())
+    }
 }

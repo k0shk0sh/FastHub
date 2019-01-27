@@ -17,3 +17,300 @@ query getPullRequests($login: String!, $count: Int!)  {
     }
   }
 }
+
+query getIssue($login: String!, $repo: String!, $number: Int!) {
+  user(login: $login) {
+    repository(name: $repo) {
+      issue(number: $number) {
+        id
+        databaseId
+        number
+        title
+        bodyHTML
+        body
+        state
+        createdAt
+        updatedAt
+        closed
+        closedAt
+        locked
+        activeLockReason
+        viewerSubscription
+        viewerDidAuthor
+        viewerCannotUpdateReasons
+        viewerCanUpdate
+        viewerCanSubscribe
+        viewerCanReact
+        userContentEdits(first: 0) {
+          totalCount
+        }
+        reactionGroups {
+          content
+          createdAt
+          viewerHasReacted
+          users(first: 0) {
+            totalCount
+          }
+        }
+        createdViaEmail
+        repository {
+          nameWithOwner
+        }
+      }
+    }
+  }
+}
+
+query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: String) {
+  user(login: $login) {
+    repository(name: $repo) {
+      issue(number: $number) {
+        timeline(first: 30, after: $page) {
+          totalCount
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          nodes {
+            __typename
+            ... on Commit {
+              author {
+                name
+                avatarUrl
+              }
+              message
+            }
+            ... on IssueComment {
+              author {
+                login
+                avatarUrl
+              }
+              createdAt
+              authorAssociation
+              bodyHTML
+              body
+              id
+              updatedAt
+              viewerCanReact
+              viewerCanDelete
+              viewerCanUpdate
+              viewerDidAuthor
+              viewerCanMinimize
+              viewerCannotUpdateReasons
+              reactionGroups {
+                content
+                createdAt
+                viewerHasReacted
+              }
+            }
+            ... on CrossReferencedEvent {
+              createdAt
+              isCrossRepository
+              referencedAt
+              source {
+                __typename
+              }
+              willCloseTarget
+              actor {
+                login
+                avatarUrl
+              }
+            }
+            ... on ClosedEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              closer {
+                ... on Commit {
+                  abbreviatedOid
+                  author {
+                    name
+                    avatarUrl
+                  }
+                  message
+                }
+                ... on PullRequest {
+                  number
+                  author {
+                    avatarUrl
+                    login
+                  }
+                  merged
+                }
+              }
+            }
+            ... on ReopenedEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+            }
+            ... on SubscribedEvent {
+              actor {
+                avatarUrl
+                login
+              }
+              createdAt
+            }
+            ... on UnsubscribedEvent {
+              actor {
+                avatarUrl
+                login
+              }
+              createdAt
+            }
+            ... on ReferencedEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              commitRepository {
+                nameWithOwner
+              }
+              isCrossRepository
+              isDirectReference
+              commit {
+                message
+                committedDate
+                abbreviatedOid
+              }
+              subject {
+                ... on Issue {
+                  number
+                  author {
+                    login
+                    avatarUrl
+                  }
+                  repository {
+                    nameWithOwner
+                  }
+                }
+                ... on PullRequest {
+                  number
+                  author {
+                    login
+                    avatarUrl
+                  }
+                  repository {
+                    nameWithOwner
+                  }
+                }
+              }
+            }
+            ... on AssignedEvent {
+              actor {
+                avatarUrl
+                login
+              }
+              createdAt
+              user {
+                login
+                avatarUrl
+              }
+            }
+            ... on UnassignedEvent {
+              actor {
+                avatarUrl
+                login
+              }
+              createdAt
+              user {
+                login
+                avatarUrl
+              }
+            }
+            ... on LabeledEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              label {
+                color
+                name
+                isDefault
+              }
+            }
+            ... on UnlabeledEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              label {
+                color
+                name
+                isDefault
+              }
+            }
+            ... on MilestonedEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              milestoneTitle
+            }
+            ... on DemilestonedEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              milestoneTitle
+            }
+            ... on RenamedTitleEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              currentTitle
+              previousTitle
+            }
+            ... on LockedEvent {
+              actor {
+                avatarUrl
+                login
+              }
+              createdAt
+              lockReason
+              lockable {
+                activeLockReason
+              }
+            }
+            ... on UnlockedEvent {
+              actor {
+                avatarUrl
+                login
+              }
+              createdAt
+              lockable {
+                activeLockReason
+              }
+            }
+            ... on TransferredEvent {
+              actor {
+                login
+                avatarUrl
+              }
+              createdAt
+              fromRepository {
+                id
+              }
+              issue {
+                number
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -33,7 +33,7 @@ data class OrgsModel(
 @Entity(tableName = OrganizationModel.TABLE_NAME)
 data class OrganizationModel(
     @PrimaryKey @SerializedName("id") var id: String,
-    @SerializedName("databaseId") var databaseId: Int?? = null,
+    @SerializedName("databaseId") var databaseId: Int? = null,
     @SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
     @SerializedName("location") var location: String? = null,
     @SerializedName("email") var email: String? = null,

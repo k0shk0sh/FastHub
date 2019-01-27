@@ -2,12 +2,11 @@ package com.fastaccess.data.persistence.db
 
 import androidx.room.TypeConverter
 import com.fastaccess.data.model.CountModel
-import com.fastaccess.data.persistence.models.PayloadModel
-import com.fastaccess.data.persistence.models.RepositoryModel
-import com.fastaccess.data.persistence.models.UserOrganizationModel
-import com.fastaccess.data.persistence.models.UserPinnedReposModel
+import com.fastaccess.data.model.ReactionGroupModel
+import com.fastaccess.data.persistence.models.*
 import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.util.*
 
 /**
@@ -44,11 +43,26 @@ class UserCountConverter {
 class UserOrganizationConverter {
     @TypeConverter fun toDbValue(data: UserOrganizationModel? = null): String? = data?.toJson()
     @TypeConverter fun fromDbToValue(
-            data: String? = null): UserOrganizationModel? = data?.let { Gson().fromJson(it, UserOrganizationModel::class.java) }
+        data: String? = null): UserOrganizationModel? = data?.let { Gson().fromJson(it, UserOrganizationModel::class.java) }
 }
 
 class UserPinnedReposModelConverter {
     @TypeConverter fun toDbValue(data: UserPinnedReposModel? = null): String? = data?.toJson()
-    @TypeConverter fun fromDbToValue(
-            data: String? = null): UserPinnedReposModel? = data?.let { Gson().fromJson(it, UserPinnedReposModel::class.java) }
+    @TypeConverter fun fromDbToValue(data: String? = null): UserPinnedReposModel? = data?.let {
+        Gson().fromJson(it, UserPinnedReposModel::class.java)
+    }
+}
+
+class ReactionGroupConverter {
+    @TypeConverter fun toDbValue(data: List<ReactionGroupModel>? = null): String? = data?.toJson()
+    @TypeConverter fun fromDbToValue(data: String? = null): List<ReactionGroupModel>? = data?.let {
+        Gson().fromJson(it, object : TypeToken<List<FeedModel>>() {}.type)
+    }
+}
+
+class StringArrayConverter {
+    @TypeConverter fun toDbValue(data: List<String>? = null): String? = data?.toJson()
+    @TypeConverter fun fromDbToValue(data: String? = null): List<String>? = data?.let {
+        Gson().fromJson(it, object : TypeToken<List<String>>() {}.type)
+    }
 }
