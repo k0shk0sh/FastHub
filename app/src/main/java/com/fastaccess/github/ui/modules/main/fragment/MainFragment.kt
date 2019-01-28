@@ -27,7 +27,7 @@ import com.fastaccess.github.utils.extensions.otpCode
 import com.fastaccess.github.utils.extensions.route
 import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.appbar_profile_title_layout.*
+import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 import timber.log.Timber
@@ -51,9 +51,8 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
         if (savedInstanceState == null) {
             viewModel.load()
         }
-        profile.isVisible = false
+        setupToolbar(R.string.app_name)
         swipeRefresh.setOnRefreshListener { viewModel.load() }
-        toolbarTitle.setText(R.string.app_name)
         recyclerView.addDivider()
         recyclerView.adapter = adapter
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
@@ -158,7 +157,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
                 MainScreenModelRowType.NOTIFICATION_TITLE -> route(NOTIFICATION_LINK)
                 MainScreenModelRowType.NOTIFICATION -> Timber.e("${model.notificationModel}")
                 MainScreenModelRowType.ISSUES_TITLE -> route(FILTER_ISSUE_LINK)
-                MainScreenModelRowType.ISSUES -> Timber.e("${model.issuesPullsModel}")
+                MainScreenModelRowType.ISSUES -> route("$GITHUB_LINK${model.issuesPullsModel?.repoName}/issues/${model.issuesPullsModel?.number}")
                 MainScreenModelRowType.PRS_TITLE -> route(FILTER_PR_LINK)
                 MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
             }

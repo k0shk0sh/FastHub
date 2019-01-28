@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/notifications"
-        android:icon="@drawable/ic_notification"
+        android:icon="@drawable/ic_ring"
         android:title="@string/notifications"
         app:showAsAction="always"/>
 

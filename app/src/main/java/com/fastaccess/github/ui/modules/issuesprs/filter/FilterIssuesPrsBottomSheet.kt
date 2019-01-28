@@ -81,7 +81,7 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
     }
 
     private fun assignCheckListener() {
-        filter.setOnCheckedChangeListener { group, id ->
+        filter.setOnCheckedChangeListener { _, id ->
             when (id) {
                 R.id.created -> model.searchBy = FilterIssuesPrsModel.SearchBy.CREATED
                 R.id.assigned -> model.searchBy = FilterIssuesPrsModel.SearchBy.ASSIGNED

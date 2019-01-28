@@ -56,6 +56,12 @@
             android:parentActivityName=".ui.modules.main.MainActivity"/>
 
         <activity
+            android:name="com.fastaccess.github.ui.modules.multipurpose.MultiPurposeActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity"/>
+
+        <activity android:name=".ui.modules.issue.IssueActivity"/>
+
+        <activity
             android:name=".ui.modules.routing.RoutingActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:noHistory="true"
@@ -106,8 +112,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
-        <activity android:name="com.fastaccess.github.ui.modules.multipurpose.MultiPurposeActivity"/>
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

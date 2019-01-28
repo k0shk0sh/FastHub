@@ -14,15 +14,11 @@ class RoutingActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val delegate = DeepLinkDelegate(RoutingModuleLoader())
-                .dispatchFrom(this)
-        Timber.e("${delegate.isSuccessful} ---- ${delegate.uriString()} ----- ${delegate.error()}")
+            .dispatchFrom(this)
+        Timber.e("$delegate")
         if (!delegate.isSuccessful) {
             //TODO FIXME
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        setVisible(true)
+        finish()
     }
 }

@@ -142,13 +142,13 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         (parentFragment as? BaseBottomSheetDialogFragment)?.dismiss()
     }
 
-    fun setupToolbar(resId: Int, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
+    fun setupToolbar(title: String, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
         view?.findViewById<Toolbar?>(R.id.toolbar)?.apply {
             val titleText = findViewById<TextView?>(R.id.toolbarTitle)
             if (titleText != null) {
-                titleText.setText(resId)
+                titleText.text = title
             } else {
-                setTitle(resId)
+                setTitle(title)
             }
             setNavigationOnClickListener {
                 if (parentFragment is BaseBottomSheetDialogFragment) {
@@ -167,5 +167,9 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
                 }
             }
         }
+    }
+
+    fun setupToolbar(resId: Int, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
+        setupToolbar(getString(resId), menuId, onMenuItemClick)
     }
 }

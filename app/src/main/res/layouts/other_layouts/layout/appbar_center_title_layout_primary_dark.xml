@@ -8,7 +8,8 @@
     android:layout_height="wrap_content"
     android:background="?colorPrimaryDark"
     android:theme="?android:toolbarStyle"
-    app:elevation="0dp">
+    app:elevation="0dp"
+    app:liftOnScroll="true">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

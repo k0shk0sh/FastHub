@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/appbar_profile_title_layout"/>
+    <include layout="@layout/appbar_center_title_layout"/>
 
     <LinearLayout
         android:layout_width="match_parent"

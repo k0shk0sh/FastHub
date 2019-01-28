@@ -28,7 +28,7 @@ class ProfileActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        (supportFragmentManager?.findFragmentByTag(ProfileFragment.TAG) as? ProfileFragment)?.onBackPressed()?.isTrue {
+        (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) as? ProfileFragment)?.onBackPressed()?.isTrue {
             super.onBackPressed()
         }
     }

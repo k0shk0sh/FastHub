@@ -36,6 +36,7 @@ class TrendingViewModel @Inject constructor(
                 .map { it.dataSnapshot() }
                 .doOnError { onFirstLoad() } // if we failed to load firebase database lets fallback to local data
                 .doOnNext {
+                    @Suppress("UNCHECKED_CAST")
                     trendingModel = FirebaseTrendingConfigModel.map(it.value as? HashMap<String, String>)
                 })
         }
@@ -63,7 +64,7 @@ class TrendingViewModel @Inject constructor(
                             val description = kotlin.runCatching { body.select(trendingModel.description).text() }.getOrNull()
                             val stars = kotlin.runCatching { body.select(trendingModel.stars).text() }.getOrNull()
                             val forks = kotlin.runCatching { body.select(trendingModel.forks).text() }.getOrNull()
-                            return@map TrendingModel(title, description, trendingLang, stars, forks, todayStars)
+                            TrendingModel(title, description, trendingLang, stars, forks, todayStars)
                         })
                     }
                     return@map trendingList

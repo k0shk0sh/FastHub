@@ -18,7 +18,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        (supportFragmentManager?.findFragmentByTag(MainFragment.TAG) as? MainFragment)?.onBackPressed()?.isTrue {
+        (supportFragmentManager.findFragmentByTag(MainFragment.TAG) as? MainFragment)?.onBackPressed()?.isTrue {
             super.onBackPressed()
         }
     }
