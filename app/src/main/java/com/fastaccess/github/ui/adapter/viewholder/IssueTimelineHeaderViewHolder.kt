@@ -6,6 +6,7 @@ import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.ui.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.issue_header_row_item.view.*
 import ru.noties.markwon.Markwon
 
@@ -18,9 +19,17 @@ class IssueTimelineHeaderViewHolder(parent: ViewGroup) : BaseViewHolder<IssueMod
 
     override fun bind(item: IssueModel) {
         itemView.apply {
-            opener.text = "${item.author?.login} ${item.state?.toLowerCase()} this issue ${item.createdAt?.timeAgo()}"
+            title.text = item.title
+            opener.text = SpannableBuilder.builder()
+                .bold(item.author?.login)
+                .append(" opened this issue ")
+                .append(item.createdAt?.timeAgo())
+
             userIcon.loadAvatar(item.author?.avatarUrl)
-            commentName.text = "${item.author?.login} commented ${item.updatedAt?.timeAgo()}"
+            commentName.text = SpannableBuilder.builder()
+                .bold(item.author?.login)
+                .append(" commented ")
+                .append(item.createdAt?.timeAgo())
             description.text = if (item.bodyHTML.isNullOrEmpty()) {
                 context.getString(R.string.no_description_provided)
             } else {

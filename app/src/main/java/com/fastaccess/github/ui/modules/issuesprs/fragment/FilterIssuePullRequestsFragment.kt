@@ -35,7 +35,7 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
         MyIssuesPrsAdapter {
             val isPr = !it.state.isNullOrBlank()
             if (!isPr) {
-                route("$GITHUB_LINK${it.repoName}/${it.number}")
+                route("$GITHUB_LINK${it.repoName}/issues/${it.number}")
             }
         }
     }

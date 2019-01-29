@@ -56,6 +56,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:maxLines="4"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
             app:autoSizeMaxTextSize="16sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="1dp"
@@ -106,6 +109,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/spacing_micro"
+                android:maxLines="3"
+                app:autoSizeMaxTextSize="16sp"
+                app:autoSizeStepGranularity="1dp"
+                app:autoSizeTextType="uniform"
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
         </LinearLayout>
 
