@@ -5,6 +5,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.CountModel
 import com.fastaccess.data.model.EmbeddedRepoModel
 import com.fastaccess.data.model.ReactionGroupModel
+import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.domain.usecase.base.BaseCompletableUseCase
@@ -34,12 +35,13 @@ class GetIssueUseCase @Inject constructor(
         }
 
         return Rx2Apollo.from(apolloClient.query(GetIssueQuery(login, repo, number)))
-            .map { it.data()?.user?.repository?.issue }
+            .map { it.data()?.repositoryOwner?.repository?.issue }
             .map { issue ->
                 return@map IssueModel(issue.id, issue.databaseId, issue.number, issue.activeLockReason?.rawValue(),
                     issue.body, issue.bodyHTML.toString(), issue.closedAt, issue.createdAt, issue.updatedAt, issue.state.rawValue(),
-                    issue.title, issue.viewerSubscription?.rawValue(), EmbeddedRepoModel(null),
-                    CountModel(issue.userContentEdits?.totalCount), issue.reactionGroups
+                    issue.title, issue.viewerSubscription?.rawValue(), ShortUserModel(issue.author?.login, issue.author?.login,
+                    issue.author?.url?.toString(), avatarUrl = issue.author?.avatarUrl?.toString()),
+                    EmbeddedRepoModel(issue.repository.nameWithOwner), CountModel(issue.userContentEdits?.totalCount), issue.reactionGroups
                     ?.map { ReactionGroupModel(it.content.rawValue(), it.createdAt, CountModel(it.users.totalCount), it.isViewerHasReacted) },
                     issue.viewerCannotUpdateReasons.map { it.rawValue() }, issue.isClosed, issue.isCreatedViaEmail, issue.isLocked,
                     issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor)

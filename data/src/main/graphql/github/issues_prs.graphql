@@ -19,7 +19,7 @@ query getPullRequests($login: String!, $count: Int!)  {
 }
 
 query getIssue($login: String!, $repo: String!, $number: Int!) {
-  user(login: $login) {
+  repositoryOwner(login: $login) {
     repository(name: $repo) {
       issue(number: $number) {
         id
@@ -43,6 +43,11 @@ query getIssue($login: String!, $repo: String!, $number: Int!) {
         viewerCanReact
         userContentEdits(first: 0) {
           totalCount
+        }
+        author {
+          avatarUrl
+          login
+          url
         }
         reactionGroups {
           content

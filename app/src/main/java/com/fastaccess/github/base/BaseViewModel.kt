@@ -6,6 +6,7 @@ import com.fastaccess.data.persistence.models.FastHubErrors
 import com.fastaccess.extension.uiThread
 import com.fastaccess.github.R
 import com.google.gson.Gson
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -70,7 +71,15 @@ abstract class BaseViewModel : ViewModel() {
         .doOnError { handleError(it) }
         .doOnComplete { hideProgress() }
 
+    protected fun callApi(completable: Completable): Completable = completable
+        .uiThread()
+        .doOnSubscribe { showProgress() }
+        .doOnComplete { hideProgress() }
+        .doOnError { handleError(it) }
+        .doOnComplete { hideProgress() }
+
     protected fun <T> justSubscribe(observable: Observable<T>) = add(callApi(observable).subscribe({}, { it.printStackTrace() }))
+    protected fun justSubscribe(completable: Completable) = add(callApi(completable).subscribe({}, { it.printStackTrace() }))
 
     override fun onCleared() {
         super.onCleared()

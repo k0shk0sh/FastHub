@@ -7,6 +7,7 @@ import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
+import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel.FilterIssuePullRequestsViewModel
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsViewModel
@@ -80,4 +81,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(TrendingViewModel::class)
     abstract fun bindTrendingViewModel(viewModel: TrendingViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(IssueTimelineViewModel::class)
+    abstract fun bindIssueTimelineViewModel(viewModel: IssueTimelineViewModel): ViewModel
 }

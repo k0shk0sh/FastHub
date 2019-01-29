@@ -3,10 +3,7 @@ package com.fastaccess.data.persistence.models
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.fastaccess.data.model.CountModel
-import com.fastaccess.data.model.EmbeddedRepoModel
-import com.fastaccess.data.model.PageInfoModel
-import com.fastaccess.data.model.ReactionGroupModel
+import com.fastaccess.data.model.*
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -35,6 +32,7 @@ data class IssueModel(
     @SerializedName("state") var state: String? = null,
     @SerializedName("title") var title: String? = null,
     @SerializedName("viewerSubscription") var viewerSubscription: String? = null,
+    @SerializedName("author") @Embedded(prefix = "author_") var author: ShortUserModel? = null,
     @SerializedName("repository") @Embedded(prefix = "repo_") var repo: EmbeddedRepoModel? = null,
     @SerializedName("userContentEdits") @Embedded(prefix = "user_content_edits_") var userContentEdits: CountModel? = CountModel(),
     @SerializedName("reactionGroups") var reactionGroups: List<ReactionGroupModel>? = null,

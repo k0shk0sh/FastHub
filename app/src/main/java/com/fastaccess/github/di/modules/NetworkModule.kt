@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import github.type.CustomType
+import me.eugeniomarletti.kotlin.metadata.shadow.utils.addToStdlib.cast
 import okhttp3.*
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -72,6 +73,7 @@ class NetworkModule {
         .okHttpClient(okHttpClient)
         .addCustomTypeAdapter(CustomType.URI, UriApolloAdapter())
         .addCustomTypeAdapter(CustomType.DATETIME, DateApolloAdapter())
+        .addCustomTypeAdapter(CustomType.HTML, ObjectApolloAdapter())
         .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)
@@ -187,6 +189,11 @@ private class GithubResponseConverter(private val gson: Gson,
 private class UriApolloAdapter : CustomTypeAdapter<URI> {
     override fun encode(value: URI): CustomTypeValue<String> = CustomTypeValue.GraphQLString(value.toString())
     override fun decode(value: CustomTypeValue<*>): URI = URI.create(value.value.toString())
+}
+
+private class ObjectApolloAdapter : CustomTypeAdapter<Object> {
+    override fun encode(value: Object): CustomTypeValue<String> = CustomTypeValue.GraphQLString(value.toString())
+    override fun decode(value: CustomTypeValue<*>): Object = value.value.cast()
 }
 
 private class DateApolloAdapter : CustomTypeAdapter<Date> {

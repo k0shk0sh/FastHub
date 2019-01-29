@@ -39,7 +39,8 @@ android {
 apollo {
     customTypeMapping = [
             "URI" : "java.net.URI",
-            "DateTime": "java.util.Date"
+            "DateTime": "java.util.Date",
+            "Object": "java.lang.String"
     ]
     useJavaBeansSemanticNaming = true
 }

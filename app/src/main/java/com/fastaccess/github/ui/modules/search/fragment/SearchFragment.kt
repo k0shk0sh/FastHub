@@ -19,6 +19,7 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_SEARCH
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
+import com.fastaccess.github.utils.GITHUB_LINK
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.asString
 import com.fastaccess.github.utils.extensions.hideKeyboard
@@ -34,7 +35,14 @@ import javax.inject.Inject
 class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterSearchViewModel::class.java) }
-    private val issuesPrsAdapter by lazy { MyIssuesPrsAdapter() }
+    private val issuesPrsAdapter by lazy {
+        MyIssuesPrsAdapter {
+            val isPr = !it.state.isNullOrBlank()
+            if (!isPr) {
+                route("$GITHUB_LINK${it.repoName}/${it.number}")
+            }
+        }
+    }
     private val reposAdapter by lazy { SearchReposAdapter() }
     private val usersAdapter by lazy {
         ShortUsersAdapter { url ->
