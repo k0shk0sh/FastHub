@@ -18,7 +18,7 @@ import ru.noties.markwon.Markwon
  * Created by Kosh on 20.10.18.
  */
 class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInflater.from(parent.context)
-        .inflate(R.layout.feeds_main_screen_row_item, parent, false)) {
+    .inflate(R.layout.feeds_main_screen_row_item, parent, false)) {
 
     override fun bind(item: FeedModel) {
         itemView.apply {
@@ -61,20 +61,20 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
 
     private fun otherEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(item.payload?.action)
-                .space()
-                .append(item.repo?.name)
+            .space()
+            .bold(item.payload?.action)
+            .space()
+            .append(item.repo?.name)
     }
 
     private fun organizationEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(item.payload?.action?.replace("_", ""))
-                .space()
-                .append(item.payload?.invitation?.login)
-                .space()
-                .append(item.payload?.organization?.login)
+            .space()
+            .bold(item.payload?.action?.replace("_", ""))
+            .space()
+            .append(item.payload?.invitation?.login)
+            .space()
+            .append(item.payload?.organization?.login)
     }
 
     private fun projectEvent(view: View, item: FeedModel) = projectCardEvent(view, item, false)
@@ -83,65 +83,65 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
 
     private fun projectCardEvent(view: View, item: FeedModel, isColumn: Boolean = false) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(item.payload?.action)
-                .space()
-                .append(if (isColumn) "column" else "project")
-                .space()
-                .append(item.payload?.organization?.login)
+            .space()
+            .bold(item.payload?.action)
+            .space()
+            .append(if (isColumn) "column" else "project")
+            .space()
+            .append(item.payload?.organization?.login)
     }
 
     private fun orgBlockEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(item.payload?.action)
-                .space()
-                .append(item.payload?.blockedUser?.login)
-                .space()
-                .append(item.payload?.organization?.login)
+            .space()
+            .bold(item.payload?.action)
+            .space()
+            .append(item.payload?.blockedUser?.login)
+            .space()
+            .append(item.payload?.organization?.login)
     }
 
     private fun forkApplyEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(item.payload?.head)
-                .space()
-                .append(item.payload?.before)
-                .space()
-                .append(item.repo?.name)
+            .space()
+            .bold(item.payload?.head)
+            .space()
+            .append(item.payload?.before)
+            .space()
+            .append(item.repo?.name)
     }
 
     private fun releaseEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("released")
-                .space()
-                .append(item.payload?.release?.name)
-                .space()
-                .append(item.repo?.name)
+            .space()
+            .bold("released")
+            .space()
+            .append(item.payload?.release?.name)
+            .space()
+            .append(item.repo?.name)
 
     }
 
     private fun deleteEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("deleted")
-                .space()
-                .append(item.payload?.refType)
-                .space()
-                .bold("at ")
-                .append(item.repo?.name)
+            .space()
+            .bold("deleted")
+            .space()
+            .append(item.payload?.refType)
+            .space()
+            .bold("at ")
+            .append(item.repo?.name)
     }
 
     private fun teamAddedEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("added")
-                .space()
-                .append(item.payload?.user?.login ?: item.repo?.name)
-                .space()
-                .bold("in ")
-                .append(item.payload?.team?.name ?: item.payload?.team?.slug)
+            .space()
+            .bold("added")
+            .space()
+            .append(item.payload?.user?.login ?: item.repo?.name)
+            .space()
+            .bold("in ")
+            .append(item.payload?.team?.name ?: item.payload?.team?.slug)
 
     }
 
@@ -152,38 +152,38 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
             item.payload?.ref
         }
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("push to")
-                .space()
-                .append(ref)
-                .space()
-                .bold("at")
-                .space()
-                .append(item.repo?.name)
+            .space()
+            .bold("push to")
+            .space()
+            .append(ref)
+            .space()
+            .bold("at")
+            .space()
+            .append(item.repo?.name)
 
         val builder = SpannableBuilder.builder()
         val commits = item.payload?.commits
         if (commits?.isNotEmpty() == true) {
             if (commits.size != 1) {
                 builder.append("${item.payload?.size}")
-                        .bold(" new commits")
-                        .newline()
+                    .bold(" new commits")
+                    .newline()
             } else {
                 builder.bold("1 new commit").newline()
             }
             commits.take(5)
-                    .filter { !it.sha.isNullOrEmpty() }
-                    .forEach {
-                        val sha = if ((it.sha?.length ?: 0) > 7) {
-                            it.sha?.subSequence(0, 7)
-                        } else {
-                            it.sha
-                        }
-                        builder.url(sha ?: "")
-                                .space()
-                                .append(it.message?.replaceAllNewLines())
-                                .newline()
+                .filter { !it.sha.isNullOrEmpty() }
+                .forEach {
+                    val sha = if ((it.sha?.length ?: 0) > 7) {
+                        it.sha?.subSequence(0, 7)
+                    } else {
+                        it.sha
                     }
+                    builder.url(sha ?: "")
+                        .space()
+                        .append(it.message?.replaceAllNewLines())
+                        .newline()
+                }
             view.feedDescription.maxLines = 5
             view.feedDescription.text = builder
             view.feedDescription.isVisible = true
@@ -198,11 +198,11 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
 
     private fun pullRequestReviewCommentEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(if (item.payload?.comment != null) "commented on a review in " else "reviewed a pull request in")
-                .space()
-                .append("${item.repo?.name}")
-                .bold("#${item.payload?.pullRequest?.number}")
+            .space()
+            .bold(if (item.payload?.comment != null) "commented on a review in " else "reviewed a pull request in")
+            .space()
+            .append("${item.repo?.name}")
+            .bold("#${item.payload?.pullRequest?.number}")
         view.feedDescription.apply {
             text = item.payload?.comment?.body ?: ""
             isVisible = !item.payload?.comment?.body.isNullOrEmpty()
@@ -218,11 +218,11 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
         }
 
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(action ?: "")
-                .space()
-                .append("${item.repo?.name}")
-                .bold("#${pullRequest?.number}")
+            .space()
+            .bold(action ?: "")
+            .space()
+            .append("${item.repo?.name}")
+            .bold("#${pullRequest?.number}")
         if ("opened" == action || "closed" == action) {
             view.feedDescription.text = pullRequest?.title?.replaceAllNewLines() ?: ""
             view.feedDescription.isVisible = !pullRequest?.title?.replaceAllNewLines().isNullOrEmpty()
@@ -236,22 +236,22 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
             "public"
         }
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .append(item.repo?.name)
-                .space()
-                .bold(action)
+            .space()
+            .append(item.repo?.name)
+            .space()
+            .bold(action)
     }
 
     private fun memberEvent(view: View, item: FeedModel) {
         val user = item.payload?.member
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("added")
-                .space()
-                .append(user?.login)
-                .space()
-                .append("as a collaborator to ")
-                .append(item.repo?.name)
+            .space()
+            .bold("added")
+            .space()
+            .append(user?.login)
+            .space()
+            .append("as a collaborator to ")
+            .append(item.repo?.name)
     }
 
     private fun issueEvent(view: View, item: FeedModel) {
@@ -259,23 +259,23 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
         val label = item.payload?.issue?.labels?.lastOrNull()
         val isLabel = "label" == item.payload?.action
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(if (isLabel && label != null) "Labeled ${label.name}" else item.payload?.action ?: "")
-                .space()
-                .append(item.repo?.name)
-                .space()
-                .bold("#${issue?.number}")
+            .space()
+            .bold(if (isLabel && label != null) "Labeled ${label.name}" else item.payload?.action ?: "")
+            .space()
+            .append(item.repo?.name)
+            .space()
+            .bold("#${issue?.number}")
         view.feedDescription.text = issue?.title?.replaceAllNewLines() ?: ""
         view.feedDescription.isVisible = !issue?.title?.replaceAllNewLines().isNullOrEmpty()
     }
 
     private fun issueCommentEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("commented on issue")
-                .space()
-                .append("${item.repo?.name}")
-                .bold("#${item.payload?.issue?.number}")
+            .space()
+            .bold("commented on ${if (item.payload?.issue?.htmlUrl?.contains("/pull/", true) == true) "a pull request" else "an issue"}")
+            .space()
+            .append("${item.repo?.name}")
+            .bold("#${item.payload?.issue?.number}")
 
         view.feedDescription.text = Markwon.markdown(view.context, item.payload?.comment?.body?.replaceAllNewLines() ?: "")
         view.feedDescription.isVisible = !item.payload?.comment?.body?.replaceAllNewLines().isNullOrEmpty()
@@ -284,17 +284,17 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
     private fun gollumEvent(view: View, item: FeedModel) {
         val wikies = item.payload?.pages
         val builder = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
+            .space()
         if (wikies?.isNotEmpty() == true) {
             wikies.forEach {
                 builder.bold(it.action)
-                        .space()
-                        .append(it.packageName)
-                        .space()
+                    .space()
+                    .append(it.packageName)
+                    .space()
             }
         } else {
             builder.bold(view.resources.getString(R.string.gollum))
-                    .space()
+                .space()
         }
         builder.append(item.repo?.name)
         view.feedTitle.text = builder
@@ -304,70 +304,70 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
         val action = if ("create" == item.payload?.action) "created" else if ("update" == item.payload?.action) "updated" else item.payload?.action
 
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("$action ${view.resources.getString(R.string.gist).toLowerCase()}")
-                .space()
-                .append(item.payload?.gist?.id)
+            .space()
+            .bold("$action ${view.resources.getString(R.string.gist).toLowerCase()}")
+            .space()
+            .append(item.payload?.gist?.id)
     }
 
     private fun forkEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("forked")
-                .space()
-                .append(item.repo?.name)
+            .space()
+            .bold("forked")
+            .space()
+            .append(item.repo?.name)
     }
 
     private fun followEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("started following")
-                .space()
-                .append(item.payload?.target?.login)
+            .space()
+            .bold("started following")
+            .space()
+            .append(item.payload?.target?.login)
     }
 
     private fun downloadEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("uploaded a file")
-                .space()
-                .append("${item.payload?.download?.name}")
-                .space()
-                .append("to")
-                .space()
-                .bold(item.repo?.name ?: "")
+            .space()
+            .bold("uploaded a file")
+            .space()
+            .append("${item.payload?.download?.name}")
+            .space()
+            .append("to")
+            .space()
+            .bold(item.repo?.name ?: "")
     }
 
     private fun commitCommentEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold("commented on commit")
-                .space()
-                .append("${item.repo?.name}")
-                .bold("#${item.payload?.issue?.number?.toString()}")
+            .space()
+            .bold("commented on commit")
+            .space()
+            .append("${item.repo?.name}")
+            .bold("#${item.payload?.issue?.number?.toString()}")
     }
 
     private fun watchEvent(view: View, item: FeedModel) {
         view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                .space()
-                .bold(view.context.getString(item.type?.titleId ?: 0).toLowerCase())
-                .space()
-                .append(item.repo?.name)
+            .space()
+            .bold(view.context.getString(item.type?.titleId ?: 0).toLowerCase())
+            .space()
+            .append(item.repo?.name)
     }
 
     private fun createEvent(view: View, item: FeedModel) {
         item.payload?.let {
             view.feedTitle.text = SpannableBuilder.builder().append(item.actor?.login)
-                    .space()
-                    .bold("created")
-                    .space()
-                    .append(it.refType)
-                    .space()
-                    .append(if ("repository" != it.refType) it.ref else "")
-                    .space()
-                    .append("at")
-                    .space()
-                    .append(item.repo?.name)
+                .space()
+                .bold("created")
+                .space()
+                .append(it.refType)
+                .space()
+                .append(if ("repository" != it.refType) it.ref else "")
+                .space()
+                .append("at")
+                .space()
+                .append(item.repo?.name)
             view.feedDescription.text = Markwon.markdown(view.context, it.description?.replaceAllNewLines() ?: "" ?: "")
             view.feedDescription.isVisible = !it.description?.replaceAllNewLines().isNullOrEmpty()
         }

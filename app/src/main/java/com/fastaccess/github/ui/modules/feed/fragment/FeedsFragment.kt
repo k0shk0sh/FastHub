@@ -13,6 +13,7 @@ import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.extension.onClick
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -24,7 +25,11 @@ class FeedsFragment : BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FeedsViewModel::class.java) }
-    private val adapter by lazy { ProfileFeedsAdapter() }
+    private val adapter by lazy {
+        ProfileFeedsAdapter {
+            it.onClick(this)
+        }
+    }
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.toolbar_fragment_list_layout

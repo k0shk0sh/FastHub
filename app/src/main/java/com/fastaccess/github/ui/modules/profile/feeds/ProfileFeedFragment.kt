@@ -8,12 +8,13 @@ import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.extension.onClick
 import com.fastaccess.github.ui.adapter.ProfileFeedsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.feeds.viewmodel.ProfileFeedsViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.extensions.observeNotNull
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -26,7 +27,11 @@ class ProfileFeedFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileFeedsViewModel::class.java) }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
-    private val adapter by lazy { ProfileFeedsAdapter() }
+    private val adapter by lazy {
+        ProfileFeedsAdapter {
+            it.onClick(this)
+        }
+    }
 
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.simple_refresh_list_layout

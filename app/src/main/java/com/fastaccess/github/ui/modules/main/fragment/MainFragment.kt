@@ -16,6 +16,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.extension.onClick
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
@@ -30,7 +31,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -151,19 +151,9 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
 
     private fun onClickListener(): (MainScreenModel) -> Unit {
         return { model: MainScreenModel ->
-            when (model.mainScreenModelRowType) {
-                MainScreenModelRowType.FEED_TITLE -> route(FEEDS_LINK)
-                MainScreenModelRowType.FEED -> route(model.feed?.actor?.url)
-                MainScreenModelRowType.NOTIFICATION_TITLE -> route(NOTIFICATION_LINK)
-                MainScreenModelRowType.NOTIFICATION -> Timber.e("${model.notificationModel}")
-                MainScreenModelRowType.ISSUES_TITLE -> route(FILTER_ISSUE_LINK)
-                MainScreenModelRowType.ISSUES -> route("$GITHUB_LINK${model.issuesPullsModel?.repoName}/issues/${model.issuesPullsModel?.number}")
-                MainScreenModelRowType.PRS_TITLE -> route(FILTER_PR_LINK)
-                MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
-            }
+           model.onClick(this)
         }
     }
-
 
     companion object {
         const val TAG = "MainFragment"
