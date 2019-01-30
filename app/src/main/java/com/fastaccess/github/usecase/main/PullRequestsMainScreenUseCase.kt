@@ -33,7 +33,7 @@ class PullRequestsMainScreenUseCase @Inject constructor(
                         myIssues.deleteAllPrs()
                         myIssues.insert(value.asSequence().map { it.fragments.shortPullRequestRowItem }.map {
                             MyIssuesPullsModel(it.id, it.databaseId, it.number, it.title,
-                                it.repository.nameWithOwner, it.comments.totalCount, it.state.name)
+                                it.repository.nameWithOwner, it.comments.totalCount, it.state.name, it.url.toString())
                         }.toList())
                     }
             } ?: Observable.empty()

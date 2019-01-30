@@ -45,7 +45,7 @@ class FilterPullRequestsUseCase @Inject constructor(
                 val list = search.nodes?.asSequence()?.mapNotNull { it.fragments.shortPullRequestRowItem }
                     ?.map {
                         MyIssuesPullsModel(it.id, it.databaseId, it.number, it.title,
-                            it.repository.nameWithOwner, it.comments.totalCount, it.state.name)
+                            it.repository.nameWithOwner, it.comments.totalCount, it.state.name, it.url.toString())
                     }
                     ?.toList() ?: arrayListOf()
                 val pageInfo = PageInfoModel(search.pageInfo.startCursor, search.pageInfo.endCursor,

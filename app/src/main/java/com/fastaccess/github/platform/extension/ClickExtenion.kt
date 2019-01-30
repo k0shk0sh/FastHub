@@ -5,7 +5,10 @@ import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.domain.response.enums.EventsType
-import com.fastaccess.github.utils.*
+import com.fastaccess.github.utils.FEEDS_LINK
+import com.fastaccess.github.utils.FILTER_ISSUE_LINK
+import com.fastaccess.github.utils.FILTER_PR_LINK
+import com.fastaccess.github.utils.NOTIFICATION_LINK
 import com.fastaccess.github.utils.extensions.route
 import timber.log.Timber
 
@@ -22,19 +25,17 @@ fun MainScreenModel.onClick(fragment: Fragment) {
         MainScreenModelRowType.NOTIFICATION_TITLE -> fragment.route(NOTIFICATION_LINK)
         MainScreenModelRowType.NOTIFICATION -> Timber.e("${model.notificationModel}")
         MainScreenModelRowType.ISSUES_TITLE -> fragment.route(FILTER_ISSUE_LINK)
-        MainScreenModelRowType.ISSUES -> fragment.route("$GITHUB_LINK${model.issuesPullsModel?.repoName}/issues/${model.issuesPullsModel?.number}")
+        MainScreenModelRowType.ISSUES -> fragment.route("${model.issuesPullsModel?.url}")
         MainScreenModelRowType.PRS_TITLE -> fragment.route(FILTER_PR_LINK)
         MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
     }
 }
 
 fun FeedModel.onClick(fragment: Fragment) {
-    this.let { feed ->
-        when (feed.type) {
-            EventsType.IssueCommentEvent -> fragment.route("$GITHUB_LINK${feed.payload?.issue?.repo?.name}" +
-                "/issues/${feed.payload?.issue?.number}")
-            EventsType.IssuesEvent -> fragment.route("$GITHUB_LINK${feed.payload?.issue?.repo?.fullName}/issues/${feed.payload?.issue?.number}")
-            else -> fragment.route(feed.actor?.url)
-        }
+    Timber.e("$type")
+    when (type) {
+        EventsType.IssueCommentEvent -> fragment.route("${payload?.issue?.htmlUrl}")
+        EventsType.IssuesEvent -> fragment.route("${payload?.issue?.htmlUrl}")
+        else -> fragment.route(actor?.url) // TODO(handle click)
     }
 }

@@ -35,7 +35,7 @@ class IssuesMainScreenUseCase @Inject constructor(
                         myIssues.deleteAllIssues()
                         myIssues.insert(value.asSequence().map { it.fragments.shortIssueRowItem }.map {
                             MyIssuesPullsModel(it.id, it.databaseId, it.number, it.title,
-                                it.repository.nameWithOwner, it.comments.totalCount, "")
+                                it.repository.nameWithOwner, it.comments.totalCount, "", it.url.toString())
                         }.toList())
                     }
             } ?: Observable.empty()

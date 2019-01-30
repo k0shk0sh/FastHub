@@ -34,6 +34,7 @@ fragment ShortIssueRowItem on Issue {
     comments(first: 1) {
       totalCount
     }
+    url
 }
 
 fragment ShortPullRequestRowItem on PullRequest {
@@ -48,6 +49,7 @@ fragment ShortPullRequestRowItem on PullRequest {
       totalCount
     }
     state
+    url
 }
 
 
