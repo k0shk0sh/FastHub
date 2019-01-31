@@ -18,7 +18,7 @@ class OrganizationViewHolder(parent: ViewGroup) : BaseViewHolder<OrganizationMod
     override fun bind(item: OrganizationModel) {
         itemView.apply {
             title.text = if (item.name.isNullOrEmpty()) item.login else item.name
-            avatar.loadAvatar(item.avatarUrl)
+            avatar.loadAvatar(item.avatarUrl, item.url)
             teams.text = item.teams?.totalCount?.formatNumber() ?: "0"
             members.text = item.members?.totalCount?.formatNumber() ?: "0"
             projects.text = item.projects?.totalCount?.formatNumber() ?: "0"

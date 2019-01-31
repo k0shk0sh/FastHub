@@ -20,7 +20,7 @@ class LoggedInUserViewHolder(parent: ViewGroup) : BaseViewHolder<LoginModel>(Lay
             title.text = if (item.name.isNullOrEmpty()) item.login else item.name
             description.isVisible = !item.bio.isNullOrEmpty()
             description.text = item.bio
-            userIcon.loadAvatar(item.avatarUrl)
+            userIcon.loadAvatar(item.avatarUrl, null)
         }
     }
 }

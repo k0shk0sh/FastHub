@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
+    style="@style/CardViewStyle"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:contentPaddingBottom="@dimen/spacing_normal"
-    app:contentPaddingLeft="@dimen/spacing_xs_large"
-    app:contentPaddingRight="@dimen/spacing_xs_large"
-    app:contentPaddingTop="@dimen/spacing_normal">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/state"
                 style="@style/ChipStyle"
@@ -29,6 +25,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/white"
                 tools:text="@string/open"/>
 
@@ -46,7 +43,6 @@
                 app:autoSizeStepGranularity="1dp"
                 app:autoSizeTextType="uniform"
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
-
 
         </LinearLayout>
 
@@ -109,10 +105,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/spacing_micro"
-                android:maxLines="3"
-                app:autoSizeMaxTextSize="16sp"
-                app:autoSizeStepGranularity="1dp"
-                app:autoSizeTextType="uniform"
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
         </LinearLayout>
 

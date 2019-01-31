@@ -64,3 +64,51 @@ fragment ShortUserRowItem on User {
     viewerIsFollowing
     url
 }
+
+fragment ShortActor on Actor {
+    login
+    avatarUrl(size: 150)
+    url
+}
+
+fragment FullIssue on Issue {
+    id
+    databaseId
+    number
+    title
+    bodyHTML
+    body
+    state
+    createdAt
+    updatedAt
+    closed
+    closedAt
+    locked
+    activeLockReason
+    viewerSubscription
+    viewerDidAuthor
+    viewerCannotUpdateReasons
+    viewerCanUpdate
+    viewerCanSubscribe
+    viewerCanReact
+    userContentEdits(first: 0) {
+      totalCount
+    }
+    author {
+      avatarUrl
+      login
+      url
+    }
+    reactionGroups {
+      content
+      createdAt
+      viewerHasReacted
+      users(first: 0) {
+        totalCount
+      }
+    }
+    createdViaEmail
+    repository {
+      nameWithOwner
+    }
+}

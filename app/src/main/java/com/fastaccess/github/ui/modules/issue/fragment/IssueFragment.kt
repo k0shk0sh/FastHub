@@ -3,8 +3,11 @@ package com.fastaccess.github.ui.modules.issue.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -54,8 +57,15 @@ class IssueFragment : BaseFragment() {
     }
 
     private fun observeChanges() {
-        viewModel.getIssue(login, repo, number).observeNotNull(this) {
-            adapter.submitList(listOf(it))
+        val _lv = viewModel.getIssue(login, repo, number)
+        _lv.observe(this, object : Observer<IssueModel?> {
+            override fun onChanged(t: IssueModel?) {
+                t?.let { adapter.submitList(listOf(TimelineModel(issue = it))) }
+                _lv.removeObserver(this)
+            }
+        })
+        viewModel.timeline.observeNotNull(this) {
+            adapter.submitList(it)
         }
     }
 

@@ -33,4 +33,12 @@
         <item name="checkedIconVisible">true</item>
     </style>
 
+    <style name="CardViewStyle">
+        <item name="contentPaddingBottom">@dimen/spacing_normal</item>
+        <item name="contentPaddingLeft">@dimen/spacing_xs_large</item>
+        <item name="contentPaddingRight">@dimen/spacing_xs_large</item>
+        <item name="contentPaddingTop">@dimen/spacing_normal</item>
+        <item name="cardBackgroundColor">?card_background</item>
+    </style>
+
 </resources>

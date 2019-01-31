@@ -10,6 +10,7 @@ import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
 import com.fastaccess.github.usecase.feed.FeedsUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
+import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
 import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
@@ -110,5 +111,12 @@ class UseCaseModule {
         apolloClient: ApolloClient
     ): GetIssueUseCase {
         return GetIssueUseCase(issueRepositoryProvider, apolloClient)
+    }
+
+    @PerFragment @Provides fun provideGetIssueTimelineUseCase(
+        issueRepositoryProvider: IssueRepositoryProvider,
+        apolloClient: ApolloClient
+    ): GetIssueTimelineUseCase {
+        return GetIssueTimelineUseCase(issueRepositoryProvider, apolloClient)
     }
 }

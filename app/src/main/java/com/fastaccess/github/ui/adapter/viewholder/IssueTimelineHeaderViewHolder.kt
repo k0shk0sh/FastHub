@@ -2,6 +2,7 @@ package com.fastaccess.github.ui.adapter.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.timeAgo
@@ -14,10 +15,14 @@ import ru.noties.markwon.Markwon
  * Created by Kosh on 12.10.18.
  */
 
-class IssueTimelineHeaderViewHolder(parent: ViewGroup) : BaseViewHolder<IssueModel>(LayoutInflater.from(parent.context)
+class IssueTimelineHeaderViewHolder(parent: ViewGroup) : BaseViewHolder<IssueModel?>(LayoutInflater.from(parent.context)
     .inflate(R.layout.issue_header_row_item, parent, false)) {
 
-    override fun bind(item: IssueModel) {
+    override fun bind(model: IssueModel?) {
+        val item = model ?: kotlin.run {
+            itemView.isVisible = false
+            return
+        }
         itemView.apply {
             title.text = item.title
             opener.text = SpannableBuilder.builder()
@@ -25,7 +30,7 @@ class IssueTimelineHeaderViewHolder(parent: ViewGroup) : BaseViewHolder<IssueMod
                 .append(" opened this issue ")
                 .append(item.createdAt?.timeAgo())
 
-            userIcon.loadAvatar(item.author?.avatarUrl)
+            userIcon.loadAvatar(item.author?.avatarUrl, item.author?.url ?: "")
             commentName.text = SpannableBuilder.builder()
                 .bold(item.author?.login)
                 .append(" commented ")

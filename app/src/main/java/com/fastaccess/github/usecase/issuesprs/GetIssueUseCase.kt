@@ -35,7 +35,7 @@ class GetIssueUseCase @Inject constructor(
         }
 
         return Rx2Apollo.from(apolloClient.query(GetIssueQuery(login, repo, number)))
-            .map { it.data()?.repositoryOwner?.repository?.issue }
+            .map { it.data()?.repositoryOwner?.repository?.issue?.fragments?.fullIssue }
             .map { issue ->
                 return@map IssueModel(issue.id, issue.databaseId, issue.number, issue.activeLockReason?.rawValue(),
                     issue.body, issue.bodyHTML.toString(), issue.closedAt, issue.createdAt, issue.updatedAt, issue.state.rawValue(),

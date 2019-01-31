@@ -22,54 +22,17 @@ query getIssue($login: String!, $repo: String!, $number: Int!) {
   repositoryOwner(login: $login) {
     repository(name: $repo) {
       issue(number: $number) {
-        id
-        databaseId
-        number
-        title
-        bodyHTML
-        body
-        state
-        createdAt
-        updatedAt
-        closed
-        closedAt
-        locked
-        activeLockReason
-        viewerSubscription
-        viewerDidAuthor
-        viewerCannotUpdateReasons
-        viewerCanUpdate
-        viewerCanSubscribe
-        viewerCanReact
-        userContentEdits(first: 0) {
-          totalCount
-        }
-        author {
-          avatarUrl
-          login
-          url
-        }
-        reactionGroups {
-          content
-          createdAt
-          viewerHasReacted
-          users(first: 0) {
-            totalCount
-          }
-        }
-        createdViaEmail
-        repository {
-          nameWithOwner
-        }
+        ... FullIssue
       }
     }
   }
 }
 
 query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: String) {
-  user(login: $login) {
+  repositoryOwner(login: $login) {
     repository(name: $repo) {
       issue(number: $number) {
+        ... FullIssue
         timeline(first: 30, after: $page) {
           totalCount
           pageInfo {
@@ -86,6 +49,12 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
                 avatarUrl
               }
               message
+              abbreviatedOid
+              oid
+              commitUrl
+              authoredDate
+              committedViaWeb
+              id
             }
             ... on IssueComment {
               author {
@@ -115,19 +84,14 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               isCrossRepository
               referencedAt
               source {
-                __typename
+                ... ShortPullRequestRowItem
+                ... ShortIssueRowItem
               }
               willCloseTarget
-              actor {
-                login
-                avatarUrl
-              }
+                actor { ... ShortActor }
             }
             ... on ClosedEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               closer {
                 ... on Commit {
@@ -149,31 +113,19 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               }
             }
             ... on ReopenedEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
             }
             ... on SubscribedEvent {
-              actor {
-                avatarUrl
-                login
-              }
+              actor { ... ShortActor }
               createdAt
             }
             ... on UnsubscribedEvent {
-              actor {
-                avatarUrl
-                login
-              }
+              actor { ... ShortActor }
               createdAt
             }
             ... on ReferencedEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               commitRepository {
                 nameWithOwner
@@ -209,10 +161,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               }
             }
             ... on AssignedEvent {
-              actor {
-                avatarUrl
-                login
-              }
+              actor { ... ShortActor }
               createdAt
               user {
                 login
@@ -220,10 +169,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               }
             }
             ... on UnassignedEvent {
-              actor {
-                avatarUrl
-                login
-              }
+              actor { ... ShortActor }
               createdAt
               user {
                 login
@@ -231,10 +177,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               }
             }
             ... on LabeledEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               label {
                 color
@@ -243,10 +186,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               }
             }
             ... on UnlabeledEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               label {
                 color
@@ -255,35 +195,23 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               }
             }
             ... on MilestonedEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               milestoneTitle
             }
             ... on DemilestonedEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               milestoneTitle
             }
             ... on RenamedTitleEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               currentTitle
               previousTitle
             }
             ... on LockedEvent {
-              actor {
-                avatarUrl
-                login
-              }
+              actor { ... ShortActor }
               createdAt
               lockReason
               lockable {
@@ -291,20 +219,14 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               }
             }
             ... on UnlockedEvent {
-              actor {
-                avatarUrl
-                login
-              }
+              actor { ... ShortActor }
               createdAt
               lockable {
                 activeLockReason
               }
             }
             ... on TransferredEvent {
-              actor {
-                login
-                avatarUrl
-              }
+              actor { ... ShortActor }
               createdAt
               fromRepository {
                 id

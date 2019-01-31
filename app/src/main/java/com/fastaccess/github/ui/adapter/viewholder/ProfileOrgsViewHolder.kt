@@ -14,7 +14,7 @@ class ProfileOrgsViewHolder(parent: ViewGroup) : BaseViewHolder<UserOrganization
     .inflate(R.layout.icon_row_item, parent, false)) {
 
     override fun bind(item: UserOrganizationNodesModel) {
-        itemView.imageIcon.loadAvatar(item.avatarUrl)
+        itemView.imageIcon.loadAvatar(item.avatarUrl, null)
     }
 
 }
