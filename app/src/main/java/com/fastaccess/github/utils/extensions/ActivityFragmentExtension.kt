@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.view.View
@@ -16,8 +18,10 @@ import androidx.fragment.app.FragmentActivity
 import com.airbnb.deeplinkdispatch.DeepLink
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.extensions.getSimpleName
 import com.fastaccess.github.ui.modules.routing.RoutingActivity
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 /**
@@ -91,6 +95,25 @@ fun Context.route(url: String?) {
         intent.data = Uri.parse(url)
         startActivity(intent)
     }
+}
+
+fun BaseFragment.isConnected(): Boolean {
+    val isConnected = context?.isConnected() ?: false
+    if (!isConnected) {
+        view?.let {
+            Snackbar.make(it.findViewById(R.id.coordinatorLayout) ?: it, getString(R.string.no_internet_connection), Snackbar.LENGTH_LONG)
+                .materialize(R.drawable.snackbar_background_error)
+                .show()
+        }
+    }
+    return isConnected
+}
+
+fun Context.isConnected(): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+    val isConnected = activeNetwork?.isConnected == true
+    return isConnected
 }
 
 fun BaseActivity.fromDeepLink() = intent?.getBooleanExtra(DeepLink.IS_DEEP_LINK, false) ?: false

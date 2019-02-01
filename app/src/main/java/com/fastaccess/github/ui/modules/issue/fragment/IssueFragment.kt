@@ -11,6 +11,7 @@ import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
@@ -18,6 +19,7 @@ import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
@@ -45,13 +47,16 @@ class IssueFragment : BaseFragment() {
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
         recyclerView.adapter = adapter
-        recyclerView.addOnLoadMore { }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadData(login, repo, number) } }
         if (savedInstanceState == null) {
-            viewModel.loadIssue(login, repo, number)
+            isConnected().isTrue { viewModel.loadData(login, repo, number, true) }
         }
         swipeRefresh.setOnRefreshListener {
-            viewModel.loadIssue(login, repo, number)
-            viewModel.loadData(login, repo, number, true)
+            if (isConnected()) {
+                viewModel.loadData(login, repo, number, true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
         observeChanges()
     }

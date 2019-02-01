@@ -10,7 +10,6 @@ import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import github.GetIssueTimelineQuery
 import github.GetIssueTimelineQuery.*
 import io.reactivex.Observable
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -26,7 +25,7 @@ class GetIssueTimelineUseCase @Inject constructor(
     var number: Int? = null
     var page = Input.absent<String>()
 
-    override fun buildObservable(): Observable<List<TimelineModel>> {
+    override fun buildObservable(): Observable<Pair<PageInfoModel, List<TimelineModel>>> {
         val login = login
         val repo = repo
         val number = number
@@ -53,7 +52,8 @@ class GetIssueTimelineUseCase @Inject constructor(
                     list.add(TimelineModel(issueModel))
                 }
                 val timeline = it.timeline
-                val pageInfo = timeline.pageInfo
+                val pageInfo = PageInfoModel(timeline.pageInfo.startCursor, timeline.pageInfo.endCursor,
+                    timeline.pageInfo.isHasNextPage, timeline.pageInfo.isHasPreviousPage)
                 timeline.nodes?.forEach { node ->
                     when (node) {
                         is AsCommit -> {
@@ -120,9 +120,7 @@ class GetIssueTimelineUseCase @Inject constructor(
                         }
                     }
                 }
-
-                Timber.e("${list.size}")
-                return@map list
+                return@map Pair(pageInfo, list)
             }
     }
 }

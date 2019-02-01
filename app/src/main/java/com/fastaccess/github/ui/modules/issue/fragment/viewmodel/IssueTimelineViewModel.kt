@@ -7,35 +7,23 @@ import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
-import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 20.10.18.
  */
 class IssueTimelineViewModel @Inject constructor(
-    private val getIssueUseCase: GetIssueUseCase,
     private val timelineUseCase: GetIssueTimelineUseCase,
     private val issueRepositoryProvider: IssueRepositoryProvider
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     val timeline = MutableLiveData<ArrayList<TimelineModel>>()
+    private val list = arrayListOf<TimelineModel>()
 
     override fun onCleared() {
         super.onCleared()
-        getIssueUseCase.dispose()
         timelineUseCase.dispose()
-    }
-
-    fun loadIssue(login: String, repo: String, number: Int) {
-        getIssueUseCase.login = login
-        getIssueUseCase.repo = repo
-        getIssueUseCase.number = number
-        justSubscribe(getIssueUseCase.buildCompletable().doOnComplete {
-            loadData(login, repo, number, true)
-        })
     }
 
     fun getIssue(login: String, repo: String, number: Int) = issueRepositoryProvider.getIssueByNumber("$login/$repo", number)
@@ -43,7 +31,7 @@ class IssueTimelineViewModel @Inject constructor(
     fun loadData(login: String, repo: String, number: Int, reload: Boolean = false) {
         if (reload) {
             pageInfo = null
-            timeline.value?.clear()
+            list.clear()
         }
         val pageInfo = pageInfo
         if (!reload && (pageInfo != null && !pageInfo.hasNextPage)) return
@@ -54,11 +42,11 @@ class IssueTimelineViewModel @Inject constructor(
         timelineUseCase.page = Input.optional(cursor)
         justSubscribe(timelineUseCase.buildObservable()
             .doOnNext {
-                Timber.e("${it.size}")
-                timeline.postValue(ArrayList(it))
+                this.pageInfo = it.first
+                list.addAll(it.second)
+                timeline.postValue(ArrayList(list))
             })
     }
-
 
     fun hasNext() = pageInfo?.hasNextPage ?: false
 }
