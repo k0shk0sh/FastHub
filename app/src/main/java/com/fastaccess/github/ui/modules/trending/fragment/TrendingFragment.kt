@@ -9,6 +9,7 @@ import com.fastaccess.data.model.parcelable.FilterTrendingModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.TrendingsAdapter
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
@@ -16,6 +17,7 @@ import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomShee
 import com.fastaccess.github.ui.modules.trending.fragment.viewmodel.TrendingViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.extensions.isConnected
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
@@ -43,8 +45,12 @@ class TrendingFragment : BaseFragment(), FilterTrendingBottomSheet.FilterTrendin
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.load(viewModel.filterTrendingModel)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.load(viewModel.filterTrendingModel)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
         filterTrending.setOnClickListener {
             val modelCopy = viewModel.filterTrendingModel.copy()
@@ -54,13 +60,13 @@ class TrendingFragment : BaseFragment(), FilterTrendingBottomSheet.FilterTrendin
         listenToChanges()
         if (savedInstanceState == null) {
             val model = arguments?.getParcelable(EXTRA) ?: FilterTrendingModel()
-            viewModel.load(model)
+            isConnected().isTrue { viewModel.load(model) }
         }
     }
 
     override fun onFilterApplied(model: FilterTrendingModel) {
         viewModel.filterTrendingModel = model
-        viewModel.load(model)
+        isConnected().isTrue { viewModel.load(model) }
     }
 
     private fun listenToChanges() {

@@ -11,6 +11,7 @@ import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
@@ -19,6 +20,7 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.GITHUB_LINK
 import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.route
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
@@ -55,12 +57,16 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadData(true)
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadData(true) }
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.loadData(true)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.loadData(true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
-        recyclerView.addOnLoadMore { viewModel.loadData() }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadData() } }
         filter.setOnClickListener {
             val item = viewModel.filterModel.copy() // mutability!
             MultiPurposeBottomSheetDialog.show(childFragmentManager,

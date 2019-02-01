@@ -8,12 +8,14 @@ import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.ui.adapter.ProfileGistsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -36,12 +38,16 @@ class ProfileGistsFragment : BaseFragment() {
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadGists(loginBundle, true)
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadGists(loginBundle, true) }
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.loadGists(loginBundle, true)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.loadGists(loginBundle, true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
-        recyclerView.addOnLoadMore { viewModel.loadGists(loginBundle) }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadGists(loginBundle) } }
         listenToChanges()
     }
 

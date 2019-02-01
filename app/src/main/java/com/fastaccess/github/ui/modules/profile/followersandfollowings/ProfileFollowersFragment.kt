@@ -8,13 +8,15 @@ import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.ProfileFollowingFollowersAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addKeyLineDivider
-import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.route
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
@@ -39,12 +41,16 @@ class ProfileFollowersFragment : BaseFragment() {
         recyclerView.addKeyLineDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadUsers(loginBundle, isFollowers, true)
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadUsers(loginBundle, isFollowers, true) }
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.loadUsers(loginBundle, isFollowers, true)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.loadUsers(loginBundle, isFollowers, true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
-        recyclerView.addOnLoadMore { viewModel.loadUsers(loginBundle, isFollowers) }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadUsers(loginBundle, isFollowers) } }
         listenToChanges()
     }
 

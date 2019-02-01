@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.AllNotificationsAdapter
 import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -31,13 +33,18 @@ class AllNotificationsFragment : BaseFragment() {
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadNotifications()
-        swipeRefresh.setOnRefreshListener { viewModel.loadNotifications() }
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadNotifications() }
+        swipeRefresh.setOnRefreshListener {
+            if (isConnected()) {
+                viewModel.loadNotifications()
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
+        }
         listenToChanges()
     }
 
     private fun listenToChanges() {
-
         viewModel.data.observeNotNull(this) {
             adapter.submitList(it)
         }

@@ -23,10 +23,7 @@ import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentView
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
 import com.fastaccess.github.utils.*
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.otpCode
-import com.fastaccess.github.utils.extensions.route
-import com.fastaccess.github.utils.extensions.token
+import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
@@ -49,10 +46,16 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            viewModel.load()
+            isConnected().isTrue { viewModel.load() }
         }
         setupToolbar(R.string.app_name)
-        swipeRefresh.setOnRefreshListener { viewModel.load() }
+        swipeRefresh.setOnRefreshListener {
+            if (isConnected()) {
+                viewModel.load()
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
+        }
         recyclerView.addDivider()
         recyclerView.adapter = adapter
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
@@ -151,7 +154,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
 
     private fun onClickListener(): (MainScreenModel) -> Unit {
         return { model: MainScreenModel ->
-           model.onClick(this)
+            model.onClick(this)
         }
     }
 

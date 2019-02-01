@@ -35,6 +35,7 @@ import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.getDrawable
+import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.setBottomSheetCallback
 import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.tabs.TabLayout
@@ -80,8 +81,11 @@ class ProfileFragment : BasePagerFragment() {
         username.text = loginBundle
         toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
         swipeRefresh.setOnRefreshListener {
-
-            viewModel.getUserFromRemote(loginBundle)
+            if (isConnected()) {
+                viewModel.getUserFromRemote(loginBundle)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
 
         (organizationList.layoutManager as SafeGridLayoutManager).setIconSize(resources.getDimensionPixelSize(R.dimen.header_icon_zie))

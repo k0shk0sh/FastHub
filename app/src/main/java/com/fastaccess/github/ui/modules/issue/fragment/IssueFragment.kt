@@ -52,6 +52,7 @@ class IssueFragment : BaseFragment() {
             isConnected().isTrue { viewModel.loadData(login, repo, number, true) }
         }
         swipeRefresh.setOnRefreshListener {
+            recyclerView.resetScrollState()
             if (isConnected()) {
                 viewModel.loadData(login, repo, number, true)
             } else {

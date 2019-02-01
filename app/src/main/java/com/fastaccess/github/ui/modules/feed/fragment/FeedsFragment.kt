@@ -8,12 +8,14 @@ import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.extension.onClick
 import com.fastaccess.github.ui.adapter.ProfileFeedsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.platform.extension.onClick
+import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -40,12 +42,16 @@ class FeedsFragment : BaseFragment() {
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadFeeds(true)
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadFeeds(true) }
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.loadFeeds(true)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.loadFeeds(true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
-        recyclerView.addOnLoadMore { viewModel.loadFeeds() }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadFeeds() } }
         listenToChanges()
     }
 

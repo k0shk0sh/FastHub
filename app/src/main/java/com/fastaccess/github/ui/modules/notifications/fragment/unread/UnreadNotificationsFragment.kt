@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.works.MarkAsReadNotificationWorker
 import com.fastaccess.github.ui.adapter.UnreadNotificationsAdapter
@@ -15,6 +16,7 @@ import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.viewmodel.UnreadNotificationsViewModel
 import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
 import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -37,12 +39,16 @@ class UnreadNotificationsFragment : BaseFragment() {
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadNotifications(true)
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadNotifications(true) }
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.loadNotifications(true)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.loadNotifications(true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
-        recyclerView.addOnLoadMore { viewModel.loadNotifications() }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadNotifications() } }
         listenToChanges()
 
         val swipeCallback = SwipeToDeleteCallback { viewHolder, _ ->

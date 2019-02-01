@@ -11,6 +11,7 @@ import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.SearchReposAdapter
@@ -20,10 +21,7 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
 import com.fastaccess.github.utils.GITHUB_LINK
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.asString
-import com.fastaccess.github.utils.extensions.hideKeyboard
-import com.fastaccess.github.utils.extensions.route
+import com.fastaccess.github.utils.extensions.*
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.search_fragment_layout.*
@@ -57,12 +55,16 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadData(true)
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadData(true) }
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.loadData(true)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.loadData(true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
-        recyclerView.addOnLoadMore { viewModel.loadData() }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadData() } }
         backBtn.setOnClickListener { activity?.onBackPressed() }
         clear.setOnClickListener { searchEditText.setText("") }
         filter.setOnClickListener {
@@ -101,7 +103,7 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
         } else {
             model.searchQuery = searchEditText.asString()
             searchEditText.error = null
-            viewModel.filter(model)
+            isConnected().isTrue { viewModel.filter(model) }
         }
     }
 

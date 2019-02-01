@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.OrganizationsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.viewmodel.UserOrgsViewModel
 import com.fastaccess.github.utils.extensions.addDivider
+import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import timber.log.Timber
@@ -38,12 +40,16 @@ class UserOrgsFragment : BaseFragment() {
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
-        if (savedInstanceState == null) viewModel.loadOrgs(true)
+        if (savedInstanceState == null) isConnected().isTrue { viewModel.loadOrgs(true) }
         swipeRefresh.setOnRefreshListener {
-            recyclerView.resetScrollState()
-            viewModel.loadOrgs(true)
+            if (isConnected()) {
+                recyclerView.resetScrollState()
+                viewModel.loadOrgs(true)
+            } else {
+                swipeRefresh.isRefreshing = false
+            }
         }
-        recyclerView.addOnLoadMore { viewModel.loadOrgs() }
+        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadOrgs() } }
         listenToChanges()
     }
 
