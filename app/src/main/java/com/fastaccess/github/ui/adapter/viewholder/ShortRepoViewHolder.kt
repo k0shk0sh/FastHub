@@ -8,8 +8,8 @@ import com.fastaccess.data.model.ShortRepoModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.formatNumber
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.ui.widget.SpannableBuilder
-import com.fastaccess.github.ui.widget.spans.LabelSpan
+import com.fastaccess.markdown.widget.SpannableBuilder
+import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.github.extensions.getColorCompat
 import kotlinx.android.synthetic.main.profile_pinned_repo_row_item.view.*
 

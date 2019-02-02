@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.widget
+package com.fastaccess.markdown.widget
 
 import android.graphics.Typeface.BOLD
 import android.graphics.drawable.Drawable
@@ -50,7 +50,7 @@ class SpannableBuilder private constructor() : SpannableStringBuilder() {
     fun bold(text: CharSequence, span: Any): SpannableBuilder {
         var text = text
         if (!text.isEmpty()) {
-            text = SpannableBuilder.builder().bold(text)
+            text = builder().bold(text)
             append(text, span)
         }
         return this

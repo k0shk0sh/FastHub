@@ -53,5 +53,5 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterSearchBottomSheet(): FilterSearchBottomSheet
     @PerFragment @ContributesAndroidInjector abstract fun provideTrendingFragment(): TrendingFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterTrendingBottomSheet(): FilterTrendingBottomSheet
-    @PerFragment @ContributesAndroidInjector abstract fun provideIssueFragment(): IssueFragment
+    @PerFragment @ContributesAndroidInjector(modules = [FragmentModule::class]) abstract fun provideIssueFragment(): IssueFragment
 }

@@ -26,6 +26,7 @@ ext {
     pandora = 'v1.2.2'
     deepLinkDispatch = '3.1.1'
     markwonVersion = "2.0.1"
+    commonmark = '0.12.1'
 
 
     kotlin = [
@@ -118,6 +119,17 @@ ext {
             "com.google.firebase:firebase-messaging:17.3.4",
             "com.github.b3er.rxfirebase:firebase-database:11.2.0",
             "com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0"
+    ]
+
+    markdown = [
+            'com.github.NightWhistler:HtmlSpanner:-SNAPSHOT',
+            'net.sourceforge.htmlcleaner:htmlcleaner:2.22',
+            "com.atlassian.commonmark:commonmark:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
     ]
 
 

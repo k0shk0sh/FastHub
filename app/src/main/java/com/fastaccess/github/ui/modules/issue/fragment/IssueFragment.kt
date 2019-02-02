@@ -23,6 +23,7 @@ import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
+import net.nightwhistler.htmlspanner.HtmlSpanner
 import javax.inject.Inject
 
 /**
@@ -30,12 +31,13 @@ import javax.inject.Inject
  */
 class IssueFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var htmlSpanner: HtmlSpanner
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(IssueTimelineViewModel::class.java) }
     private val login by lazy { arguments?.getString(EXTRA) ?: "" }
     private val repo by lazy { arguments?.getString(EXTRA_TWO) ?: "" }
     private val number by lazy { arguments?.getInt(EXTRA_THREE) ?: 0 }
-    private val adapter by lazy { IssueTimelineAdapter() }
+    private val adapter by lazy { IssueTimelineAdapter(htmlSpanner) }
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel

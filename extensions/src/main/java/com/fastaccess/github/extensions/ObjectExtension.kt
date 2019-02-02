@@ -1,6 +1,8 @@
 package com.fastaccess.github.extensions
 
+import android.graphics.Color
 import android.text.format.DateUtils
+import androidx.annotation.ColorInt
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,4 +58,9 @@ fun getDateByDays(days: Int): String {
 
 fun getLastWeekDate(): String {
     return getDateByDays(-7)
+}
+
+@ColorInt fun Int.generateTextColor(): Int {
+    val a = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255
+    return if (a < 0.5) Color.BLACK else Color.WHITE
 }

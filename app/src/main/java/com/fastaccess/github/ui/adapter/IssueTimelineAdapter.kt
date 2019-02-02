@@ -9,11 +9,12 @@ import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueTimelineHeaderViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
+import net.nightwhistler.htmlspanner.HtmlSpanner
 
 /**
  * Created by Kosh on 20.01.19.
  */
-class IssueTimelineAdapter : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     override fun getItemViewType(position: Int): Int {
         return getItem(position)?.let {
             when {
@@ -26,8 +27,8 @@ class IssueTimelineAdapter : ListAdapter<TimelineModel, RecyclerView.ViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            HEADER -> IssueTimelineHeaderViewHolder(parent)
-            COMMENT -> CommentViewHolder(parent)
+            HEADER -> IssueTimelineHeaderViewHolder(parent, htmlSpanner)
+            COMMENT -> CommentViewHolder(parent, htmlSpanner)
             else -> LoadingViewHolder<Any>(parent)
         }
     }

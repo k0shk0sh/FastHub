@@ -10,7 +10,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.replaceAllNewLines
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.ui.widget.SpannableBuilder
+import com.fastaccess.markdown.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.feeds_main_screen_row_item.view.*
 import ru.noties.markwon.Markwon
 

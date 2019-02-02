@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.widget.spans
+package com.fastaccess.markdown.spans
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -12,7 +12,7 @@ import android.text.style.CharacterStyle
 import android.text.style.ReplacementSpan
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
-import com.fastaccess.github.utils.extensions.generateTextColor
+import com.fastaccess.github.extensions.generateTextColor
 import java.util.*
 
 /**

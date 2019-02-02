@@ -1,12 +1,10 @@
 package com.fastaccess.github.utils.extensions
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
@@ -140,11 +138,6 @@ fun <V : View?> BottomSheetBehavior<V>.setBottomSheetCallback(
     })
 }
 
-@ColorInt fun Int.generateTextColor(): Int {
-    val a = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255
-    return if (a < 0.5) Color.BLACK else Color.WHITE
-}
-
 fun View.beginDelayedTransition() = TransitionManager.beginDelayedTransition(this as ViewGroup)
 
 fun View.focusAndshowKeyboard() {
@@ -160,5 +153,5 @@ fun View.showKeyboard() {
 
 fun View.hideKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(getWindowToken(), 0)
+    imm.hideSoftInputFromWindow(windowToken, 0)
 }

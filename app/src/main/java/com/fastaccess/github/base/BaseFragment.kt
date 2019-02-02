@@ -21,8 +21,8 @@ import com.fastaccess.github.base.callback.UpdateTabCount
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.PagerAdapter
-import com.fastaccess.github.ui.widget.SpannableBuilder
-import com.fastaccess.github.ui.widget.spans.LabelSpan
+import com.fastaccess.markdown.widget.SpannableBuilder
+import com.fastaccess.markdown.spans.LabelSpan
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
