@@ -5,7 +5,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
-import com.fastaccess.github.utils.extensions.replace
+import com.fastaccess.github.extensions.replace
 
 class MainActivity : BaseActivity() {
 

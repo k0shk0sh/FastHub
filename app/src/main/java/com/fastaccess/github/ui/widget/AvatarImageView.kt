@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import com.fastaccess.github.R
+import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.platform.glide.GlideApp
-import com.fastaccess.github.utils.extensions.getDrawableCompat
 import com.fastaccess.github.utils.extensions.route
 
 /**

@@ -10,8 +10,8 @@ import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
 import com.fastaccess.github.ui.modules.issuesprs.fragment.FilterIssuePullRequestsFragment
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
 import com.fastaccess.github.ui.modules.search.fragment.SearchFragment
-import com.fastaccess.github.utils.extensions.fromDeepLink
-import com.fastaccess.github.utils.extensions.replace
+import com.fastaccess.github.extensions.fromDeepLink
+import com.fastaccess.github.extensions.replace
 
 /**
  * Created by Kosh on 20.10.18.

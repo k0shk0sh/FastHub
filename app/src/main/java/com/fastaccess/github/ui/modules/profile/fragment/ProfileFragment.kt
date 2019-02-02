@@ -34,7 +34,8 @@ import com.fastaccess.github.ui.widget.recyclerview.lm.SafeGridLayoutManager
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.getDrawable
+import com.fastaccess.github.extensions.getDrawable
+import com.fastaccess.github.extensions.isConnected
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.setBottomSheetCallback
 import com.github.zagum.expandicon.ExpandIconView

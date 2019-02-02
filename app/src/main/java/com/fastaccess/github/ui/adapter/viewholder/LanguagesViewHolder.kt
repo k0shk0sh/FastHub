@@ -7,7 +7,7 @@ import com.fastaccess.data.model.LanguageColorsModel
 import com.fastaccess.github.R
 import com.fastaccess.github.ui.adapter.LanguagesAdapter
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.utils.extensions.getColorAttr
+import com.fastaccess.github.extensions.getColorAttr
 import kotlinx.android.synthetic.main.language_row_item.view.*
 
 /**

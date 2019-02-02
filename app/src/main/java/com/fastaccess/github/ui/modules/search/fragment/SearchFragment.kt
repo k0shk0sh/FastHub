@@ -20,7 +20,6 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_SEARCH
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
-import com.fastaccess.github.utils.GITHUB_LINK
 import com.fastaccess.github.utils.extensions.*
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
@@ -35,10 +34,7 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterSearchViewModel::class.java) }
     private val issuesPrsAdapter by lazy {
         MyIssuesPrsAdapter {
-            val isPr = !it.state.isNullOrBlank()
-            if (!isPr) {
-                route("$GITHUB_LINK${it.repoName}/${it.number}")
-            }
+            route("${it.url}")
         }
     }
     private val reposAdapter by lazy { SearchReposAdapter() }

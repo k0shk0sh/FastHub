@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.TransitionManager
 import com.fastaccess.github.R
+import com.fastaccess.github.extensions.getColorAttr
+import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.ui.widget.recyclerview.decoration.InsetDividerDecoration
 import com.google.android.material.bottomsheet.BottomSheetBehavior

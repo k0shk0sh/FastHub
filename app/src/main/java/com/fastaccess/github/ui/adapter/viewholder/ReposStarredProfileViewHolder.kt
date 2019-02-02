@@ -11,7 +11,7 @@ import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.widget.SpannableBuilder
 import com.fastaccess.github.ui.widget.spans.LabelSpan
 import com.fastaccess.github.extensions.formatNumber
-import com.fastaccess.github.utils.extensions.getColorCompat
+import com.fastaccess.github.extensions.getColorCompat
 import kotlinx.android.synthetic.main.profile_pinned_repo_row_item.view.*
 
 /**

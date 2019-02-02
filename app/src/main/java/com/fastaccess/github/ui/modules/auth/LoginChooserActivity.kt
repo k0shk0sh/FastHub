@@ -13,6 +13,7 @@ import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment

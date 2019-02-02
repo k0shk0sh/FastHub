@@ -9,8 +9,8 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
-import com.fastaccess.github.utils.extensions.getColorCompat
-import com.fastaccess.github.utils.extensions.getDrawableCompat
+import com.fastaccess.github.extensions.getColorCompat
+import com.fastaccess.github.extensions.getDrawableCompat
 import kotlinx.android.synthetic.main.notification_main_screen_row_item.view.*
 
 /**

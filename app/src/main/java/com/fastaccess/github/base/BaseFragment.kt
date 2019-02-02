@@ -18,11 +18,11 @@ import androidx.viewpager.widget.ViewPager
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.callback.UpdateTabCount
+import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.widget.SpannableBuilder
 import com.fastaccess.github.ui.widget.spans.LabelSpan
-import com.fastaccess.github.utils.extensions.getColorAttr
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable

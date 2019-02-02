@@ -15,6 +15,7 @@ import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsView
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.isConnected
 import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*

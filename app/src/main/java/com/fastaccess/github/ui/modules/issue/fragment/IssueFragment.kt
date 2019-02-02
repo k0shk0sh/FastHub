@@ -21,8 +21,8 @@ import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
+import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 
 /**

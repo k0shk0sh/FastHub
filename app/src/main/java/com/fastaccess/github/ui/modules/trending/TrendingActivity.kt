@@ -5,7 +5,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.platform.deeplink.WebDeepLink
 import com.fastaccess.github.ui.modules.trending.fragment.TrendingFragment
-import com.fastaccess.github.utils.extensions.replace
+import com.fastaccess.github.extensions.replace
 
 /**
  * Created by Kosh on 18.08.18.

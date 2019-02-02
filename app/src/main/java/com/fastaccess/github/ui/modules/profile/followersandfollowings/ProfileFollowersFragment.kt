@@ -15,6 +15,7 @@ import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.github.extensions.isConnected
 import com.fastaccess.github.utils.extensions.addKeyLineDivider
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.route

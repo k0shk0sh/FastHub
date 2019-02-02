@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/appbar_center_title_layout"/>
-
-    <include layout="@layout/simple_refresh_list_layout"/>
+    <include layout="@layout/fab_simple_refresh_list_layout"/>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomBar"
@@ -32,5 +30,6 @@
         app:layout_anchorGravity="end"
         app:tint="@color/white"/>
 
+    <include layout="@layout/appbar_center_title_layout"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
