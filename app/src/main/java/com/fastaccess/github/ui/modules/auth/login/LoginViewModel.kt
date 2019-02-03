@@ -3,9 +3,9 @@ package com.fastaccess.github.ui.modules.auth.login
 import androidx.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
 import com.fastaccess.data.persistence.db.FastHubDatabase
-import com.fastaccess.data.persistence.models.FastHubErrors
+import com.fastaccess.data.model.FastHubErrors
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.data.persistence.models.ValidationError
+import com.fastaccess.data.model.ValidationError
 import com.fastaccess.extension.uiThread
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseViewModel

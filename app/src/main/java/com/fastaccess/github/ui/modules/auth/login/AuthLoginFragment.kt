@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.Slide
-import com.fastaccess.data.persistence.models.FastHubErrors
-import com.fastaccess.data.persistence.models.ValidationError.FieldType.*
+import com.fastaccess.data.model.FastHubErrors
+import com.fastaccess.data.model.ValidationError.FieldType.*
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -18,7 +18,6 @@ import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.extensions.hideKeyboard
 import com.fastaccess.github.utils.extensions.asString
 import com.fastaccess.github.utils.extensions.beginDelayedTransition
 import com.fastaccess.github.utils.extensions.hideKeyboard

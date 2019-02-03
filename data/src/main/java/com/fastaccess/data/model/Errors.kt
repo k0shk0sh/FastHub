@@ -1,4 +1,4 @@
-package com.fastaccess.data.persistence.models
+package com.fastaccess.data.model
 
 /**
  * Created by Kosh on 03.06.18.

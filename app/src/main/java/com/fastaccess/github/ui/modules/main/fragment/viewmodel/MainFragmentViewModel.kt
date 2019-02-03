@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.db.FastHubDatabase
-import com.fastaccess.data.persistence.models.FastHubErrors
+import com.fastaccess.data.model.FastHubErrors
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.data.repository.FeedsRepositoryProvider
 import com.fastaccess.data.repository.LoginRepositoryProvider

@@ -7,11 +7,13 @@ import com.fastaccess.data.model.ShortRepoModel
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
+import com.fastaccess.data.repository.SuggestionRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
 import com.fastaccess.github.usecase.search.FilterSearchReposUseCase
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
+import io.reactivex.internal.observers.EmptyCompletableObserver
 import javax.inject.Inject
 
 /**
@@ -21,7 +23,8 @@ class FilterSearchViewModel @Inject constructor(
     private val filterIssuesUseCase: FilterIssuesUseCase,
     private val filterPullRequestsUseCase: FilterPullRequestsUseCase,
     private val filterSearchReposUseCase: FilterSearchReposUseCase,
-    private val filterSearchUsersUseCase: FilterSearchUsersUseCase
+    private val filterSearchUsersUseCase: FilterSearchUsersUseCase,
+    private val suggestionRepositoryProvider: SuggestionRepositoryProvider
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -40,6 +43,9 @@ class FilterSearchViewModel @Inject constructor(
         filterSearchReposUseCase.dispose()
         filterSearchUsersUseCase.dispose()
     }
+
+
+    fun querySuggestion(query: String) = suggestionRepositoryProvider.getSuggestions(query)
 
     fun loadData(reload: Boolean = false) {
         if (reload) {
@@ -60,6 +66,7 @@ class FilterSearchViewModel @Inject constructor(
                 // Nothing!
             }
         }
+        suggestionRepositoryProvider.upsert(filterModel.searchQuery).subscribe(EmptyCompletableObserver())
     }
 
     private fun searchByRepo(filterModel: FilterSearchModel, cursor: String?) {

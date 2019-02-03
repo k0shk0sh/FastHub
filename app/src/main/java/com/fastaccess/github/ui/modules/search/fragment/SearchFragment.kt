@@ -1,18 +1,22 @@
 package com.fastaccess.github.ui.modules.search.fragment
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.parcelable.FilterSearchModel
+import com.fastaccess.data.persistence.models.SuggestionsModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.observeNull
 import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.SearchReposAdapter
 import com.fastaccess.github.ui.adapter.ShortUsersAdapter
@@ -67,6 +71,9 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
             val model = viewModel.filterModel.copy()
             MultiPurposeBottomSheetDialog.show(childFragmentManager, FILTER_SEARCH, model)
         }
+
+        searchEditText.setAdapter(ArrayAdapter<SuggestionsModel>(requireContext(), android.R.layout.simple_list_item_1))
+
         searchEditText.setOnEditorActionListener { v, actionId, _ ->
             return@setOnEditorActionListener if (actionId == EditorInfo.IME_ACTION_DONE ||
                 actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -87,6 +94,7 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
             if (show != clear.isVisible) { // prevent multiple hide/show
                 clear.isVisible = show
             }
+            searchSuggestions(text)
         }
 
         listenToChanges()
@@ -121,6 +129,16 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
                 recyclerView.adapter = usersAdapter
             }
             (recyclerView.adapter as? ShortUsersAdapter)?.submitList(it)
+        }
+    }
+
+    private fun searchSuggestions(text: Editable?) {
+        if (!text.isNullOrEmpty()) {
+            viewModel.querySuggestion(text.toString()).observeNull(this) {
+                val adapter = searchEditText?.adapter as? ArrayAdapter<SuggestionsModel> ?: return@observeNull
+                adapter.clear()
+                it?.let { list -> adapter.addAll(list) }
+            }
         }
     }
 

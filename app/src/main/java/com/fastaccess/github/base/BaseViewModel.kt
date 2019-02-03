@@ -2,7 +2,7 @@ package com.fastaccess.github.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fastaccess.data.persistence.models.FastHubErrors
+import com.fastaccess.data.model.FastHubErrors
 import com.fastaccess.extension.uiThread
 import com.fastaccess.github.R
 import com.google.gson.Gson
@@ -40,7 +40,8 @@ abstract class BaseViewModel : ViewModel() {
             if (code == 401) { // OTP
                 val twoFactor = response.headers()["X-GitHub-OTP"]
                 if (twoFactor != null) {
-                    error.postValue(FastHubErrors(FastHubErrors.ErrorType.TWO_FACTOR, message = message ?: response.message()))
+                    error.postValue(FastHubErrors(FastHubErrors.ErrorType.TWO_FACTOR, message = message
+                        ?: response.message()))
                 } else {
                     error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, resId = R.string.failed_login, message = message))
                 }

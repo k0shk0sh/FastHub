@@ -87,4 +87,8 @@ class RepositoryModule {
     @Singleton @Provides fun provideIssueRepository(fastHubDatabase: FastHubDatabase): IssueRepositoryProvider {
         return IssueRepositoryProvider(fastHubDatabase.getIssueDao())
     }
+
+    @Singleton @Provides fun provideSuggestionRepositoryProvider(fastHubDatabase: FastHubDatabase): SuggestionRepositoryProvider {
+        return SuggestionRepositoryProvider(fastHubDatabase.getSuggestionDao())
+    }
 }
