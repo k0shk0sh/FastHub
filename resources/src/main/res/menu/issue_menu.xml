@@ -79,4 +79,10 @@
         android:title="@string/open_in_browser"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/scrollTop"
+        android:icon="@drawable/ic_chevron_up"
+        android:title="@string/scroll_up"
+        app:showAsAction="always"/>
+
 </menu>

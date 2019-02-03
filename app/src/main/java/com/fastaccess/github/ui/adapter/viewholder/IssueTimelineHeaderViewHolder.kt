@@ -13,6 +13,7 @@ import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import com.fastaccess.markdown.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.issue_header_row_item.view.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
+import timber.log.Timber
 
 /**
  * Created by Kosh on 12.10.18.
@@ -54,8 +55,10 @@ class IssueTimelineHeaderViewHolder(
     override fun onDetached() {
         super.onDetached()
         itemView.description?.let {
+            Timber.e("${it.tag}")
             if (it.tag is DrawableGetter) {
-                (it.tag as DrawableGetter).clear()
+                val target = it.tag as DrawableGetter
+                target.clear(target)
             }
         }
     }

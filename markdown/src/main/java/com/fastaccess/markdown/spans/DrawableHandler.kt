@@ -9,7 +9,6 @@ import net.nightwhistler.htmlspanner.SpanStack
 import net.nightwhistler.htmlspanner.TagNodeHandler
 import org.htmlcleaner.ContentNode
 import org.htmlcleaner.TagNode
-import timber.log.Timber
 
 /**
  * Created by Kosh on 22 Apr 2017, 1:09 PM
@@ -28,14 +27,13 @@ class DrawableHandler(
         node?.let { n ->
             builder?.let { b ->
                 val src = n.getAttributeByName("fallback-src") ?: n.getAttributeByName("data-canonical-src") ?: n.getAttributeByName("src")
-                Timber.e("$src")
                 if (!src.isNullOrEmpty()) {
                     b.append("￼")
-                    this.appendNewLine(b)
-                    val imageGetter = DrawableGetter(textView, width)
+                    b.append("\n")
+                    val imageGetter = DrawableGetter(textView, width, n.getAttributeByName("src"))
                     b.setSpan(ImageSpan(imageGetter.getDrawable(src)), start, b.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 //                    b.setSpan(CenterSpan(), start, b.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // no center for now
-                    this.appendNewLine(b)
+                    b.append("\n")
                 }
             }
         }
