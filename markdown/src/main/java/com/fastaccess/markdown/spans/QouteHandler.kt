@@ -13,10 +13,6 @@ import org.htmlcleaner.TagNode
 
 class QouteHandler(private val color: Int = 0) : TagNodeHandler() {
     override fun handleTagNode(node: TagNode?, builder: SpannableStringBuilder?, start: Int, end: Int, spanStack: SpanStack?) {
-        builder?.let {
-            builder.append("\n")
-            builder.setSpan(MarkDownQuoteSpan(color), if (start > builder.length - 1) start + 1 else start, builder.length - 1, 33)
-            builder.append("\n")
-        }
+        builder?.setSpan(MarkDownQuoteSpan(color), if (start > builder.length - 1) start + 1 else start, builder.length - 1, 33)
     }
 }

@@ -12,18 +12,18 @@ import org.htmlcleaner.TagNode
  */
 
 class HrHandler(
-        private val color: Int = 0,
-        private val width: Int = 0
+    private val color: Int = 0,
+    private val width: Int = 0
 ) : TagNodeHandler() {
 
     override fun handleTagNode(node: TagNode?, builder: SpannableStringBuilder?, start: Int, end: Int, spanStack: SpanStack?) {
         builder?.let { spannableStringBuilder ->
-            spannableStringBuilder.append("\n")
+            appendNewLine(spannableStringBuilder)
             val b = SpannableStringBuilder("$")
             val hrSpan = HrSpan(color, width)
             b.setSpan(hrSpan, 0, b.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             b.setSpan(CenterSpan(), 0, b.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            b.append("\n")
+            appendNewLine(b)
             spannableStringBuilder.append(b)
         }
     }

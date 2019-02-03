@@ -8,7 +8,9 @@ import com.fastaccess.markdown.spans.HrHandler
 import com.fastaccess.markdown.spans.PreTagHandler
 import com.fastaccess.markdown.spans.QouteHandler
 import net.nightwhistler.htmlspanner.HtmlSpanner
-import timber.log.Timber
+import net.nightwhistler.htmlspanner.handlers.StyledTextHandler
+import net.nightwhistler.htmlspanner.style.Style
+import net.nightwhistler.htmlspanner.style.StyleValue
 
 /**
  * Created by Kosh on 02.02.19.
@@ -40,7 +42,6 @@ object MarkdownProvider {
             initTextView(width, htmlSpanner, textView, html, windowBackground, isLightTheme, onLinkClicked)
         } else {
             textView.doOnPreDraw {
-                Timber.e("${textView.width} ${textView.measuredWidth}")
                 initTextView(textView.width, htmlSpanner, textView, html, windowBackground, isLightTheme, onLinkClicked)
             }
         }

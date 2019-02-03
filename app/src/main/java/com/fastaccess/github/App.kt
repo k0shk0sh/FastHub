@@ -7,6 +7,7 @@ import com.fastaccess.github.di.components.AppComponent
 import com.fastaccess.github.platform.fabric.FabricProvider
 import com.fastaccess.github.platform.timber.FabricTree
 import com.fastaccess.github.platform.timber.FastHubTree
+import com.fastaccess.markdown.emoji.EmojiManager
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import timber.log.Timber
@@ -36,5 +37,6 @@ class App : DaggerApplication() {
         } else {
             Timber.plant(FabricTree())
         }
+        EmojiManager.load(this)
     }
 }

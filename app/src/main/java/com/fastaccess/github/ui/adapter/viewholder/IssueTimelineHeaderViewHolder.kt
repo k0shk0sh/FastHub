@@ -3,14 +3,13 @@ package com.fastaccess.github.ui.adapter.viewholder
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.github.R
-import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.markdown.MarkdownProvider
+import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import com.fastaccess.markdown.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.issue_header_row_item.view.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
@@ -49,6 +48,15 @@ class IssueTimelineHeaderViewHolder(
             } else {
                 R.color.material_red_700
             })
+        }
+    }
+
+    override fun onDetached() {
+        super.onDetached()
+        itemView.description?.let {
+            if (it.tag is DrawableGetter) {
+                (it.tag as DrawableGetter).clear()
+            }
         }
     }
 }

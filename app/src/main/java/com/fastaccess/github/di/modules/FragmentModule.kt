@@ -20,6 +20,7 @@ class FragmentModule {
 
     @PerFragment @Provides fun provideHtmlSpanner(@ForApplication context: Context): HtmlSpanner {
         val mySpanner = HtmlSpanner()
+        mySpanner.isStripExtraWhiteSpace = true
         val checked = context.getDrawableCompat(R.drawable.ic_checkbox_small)
         val unchecked = context.getDrawableCompat(R.drawable.ic_checkbox_empty_small)
         mySpanner.registerHandler("li", ListsHandler(checked, unchecked))

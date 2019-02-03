@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueTimelineHeaderViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
@@ -41,8 +42,14 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
         }
     }
 
-    companion object {
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        if (holder is BaseViewHolder<*>) {
+            holder.onDetached()
+        }
+        super.onViewRecycled(holder)
+    }
 
+    companion object {
         private const val HEADER = 1
         private const val COMMIT = 2
         private const val COMMENT = 3

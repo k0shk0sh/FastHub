@@ -10,6 +10,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.markdown.MarkdownProvider
+import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import kotlinx.android.synthetic.main.comment_row_item.view.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
 
@@ -37,6 +38,15 @@ class CommentViewHolder(
                 "${model.authorAssociation?.value?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
             }
             MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", Color.parseColor("#EEEEEE"), true)
+        }
+    }
+
+    override fun onDetached() {
+        super.onDetached()
+        itemView.description?.let {
+            if (it.tag is DrawableGetter) {
+                (it.tag as DrawableGetter).clear()
+            }
         }
     }
 }
