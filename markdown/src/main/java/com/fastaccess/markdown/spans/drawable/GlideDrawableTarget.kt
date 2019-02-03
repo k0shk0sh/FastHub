@@ -7,13 +7,14 @@ import android.graphics.drawable.Animatable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.graphics.drawable.DrawableWrapper
+import com.bumptech.glide.Glide.init
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import timber.log.Timber
 
 @SuppressLint("RestrictedApi")
-class GlideDrawableTarget(private val width: Int) : SimpleTarget<Drawable>() {
+class GlideDrawableTarget<T : Drawable>(private val width: Int) : SimpleTarget<T>() {
 
 
     private val transparentDrawable = ColorDrawable(Color.TRANSPARENT)
@@ -35,7 +36,7 @@ class GlideDrawableTarget(private val width: Int) : SimpleTarget<Drawable>() {
     }
 
 
-    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+    override fun onResourceReady(resource: T, transition: Transition<in T>?) {
         Timber.e("${resource is Animatable}---${resource is GifDrawable}")
         if (resource is GifDrawable) {
             resource.setLoopCount(GifDrawable.LOOP_FOREVER)

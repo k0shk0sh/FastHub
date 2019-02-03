@@ -5,6 +5,7 @@ import android.text.Html
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.fastaccess.github.extensions.getDrawableCompat
@@ -19,21 +20,29 @@ class DrawableGetter(
     private val targetView: TextView,
     private val width: Int
 ) : Html.ImageGetter, Drawable.Callback {
-    private val imageTargets = ArrayList<Target<Drawable>>()
+    private val imageTargets = ArrayList<Target<out Drawable>>()
 
     init {
         targetView.tag = this
     }
 
     override fun getDrawable(url: String): Drawable {
-        val imageTarget = GlideDrawableTarget(width)
+        val imageTarget = if (url.endsWith(".gif")) {
+            GlideDrawableTarget<GifDrawable>(width)
+        } else {
+            GlideDrawableTarget<Drawable>(width)
+        }
         val asyncWrapper = imageTarget.lazyDrawable
         asyncWrapper.callback = this
-        Glide.with(targetView)
-            .applyDefaultRequestOptions(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
+        Glide.with(targetView).apply {
+            applyDefaultRequestOptions(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(targetView.context?.getDrawableCompat(R.drawable.ic_image)))
-            .load(url)
-            .into(imageTarget)
+            if (url.endsWith(".gif")) {
+                asGif().load(url).into(imageTarget as GlideDrawableTarget<GifDrawable>)
+            } else {
+                asDrawable().load(url).into(imageTarget as GlideDrawableTarget<Drawable>)
+            }
+        }
         imageTargets.add(imageTarget)
         return asyncWrapper
     }
