@@ -15,6 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_micro"
             android:orientation="horizontal">
 
             <com.google.android.material.chip.Chip
@@ -35,8 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/spacing_micro"
-                android:layout_marginTop="@dimen/spacing_micro"
                 android:maxLines="3"
                 app:autoSizeMaxTextSize="14sp"
                 app:autoSizeMinTextSize="12sp"
@@ -55,6 +54,7 @@
             android:maxLines="4"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal"
+            android:textIsSelectable="true"
             app:autoSizeMaxTextSize="16sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="1dp"
@@ -105,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/spacing_micro"
+                android:textIsSelectable="true"
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
         </LinearLayout>
 

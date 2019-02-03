@@ -43,12 +43,11 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/searchEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:autofillHints="@string/search"
                     android:background="@color/transparent"
                     android:drawablePadding="@dimen/spacing_normal"
                     android:drawableStart="@drawable/ic_search"
@@ -57,8 +56,7 @@
                     android:hint="@string/search"
                     android:imeActionLabel="@string/search"
                     android:imeOptions="actionSearch"
-                    android:singleLine="true"
-                    tools:targetApi="o"/>
+                    android:singleLine="true"/>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/clear"
