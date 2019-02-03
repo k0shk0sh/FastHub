@@ -11,12 +11,10 @@ class UrlDrawable : BitmapDrawable(), Drawable.Callback {
     private var drawable: Drawable? = null
 
     override fun draw(canvas: Canvas) {
-        if (this.drawable != null) {
-            this.drawable!!.draw(canvas)
-            if (this.drawable is GifDrawable) {
-                if (!(this.drawable as GifDrawable).isRunning) {
-                    (this.drawable as GifDrawable).start()
-                }
+        drawable?.let {
+            it.draw(canvas)
+            if (it is GifDrawable) {
+                if (!it.isRunning) it.start()
             }
         }
     }

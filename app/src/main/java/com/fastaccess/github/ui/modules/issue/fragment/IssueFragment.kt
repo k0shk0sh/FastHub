@@ -1,8 +1,10 @@
 package com.fastaccess.github.ui.modules.issue.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -45,6 +47,9 @@ class IssueFragment : BaseFragment() {
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar("${getString(R.string.issue)}#$number")
         bottomBar.inflateMenu(R.menu.issue_menu)
+        bottomBar.menu.children.forEach {
+            it.icon.mutate().setTint(Color.WHITE)
+        }
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)

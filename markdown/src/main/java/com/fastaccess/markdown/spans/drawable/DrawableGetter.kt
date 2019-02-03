@@ -11,34 +11,30 @@ import com.bumptech.glide.request.RequestOptions
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.markdown.R
 import timber.log.Timber
-import java.lang.ref.WeakReference
 
 /**
  * Created by Kosh on 22 Apr 2017, 7:44 PM
  */
 
 class DrawableGetter(
-    tv: TextView,
+    private val tv: TextView?,
     private val width: Int,
     private val url: String
 ) : Html.ImageGetter, Drawable.Callback {
-    private val container: WeakReference<TextView>
     private val cachedTargets = hashSetOf<GlideDrawableTarget<out Drawable>>()
 
     init {
-        tv.setTag(R.id.drawable_callback, this)
-        this.container = WeakReference(tv)
+        tv?.setTag(R.id.drawable_callback, this)
     }
 
     override fun getDrawable(oriUrl: String): Drawable {
         val urlDrawable = UrlDrawable()
-        container.get()?.let {
-            Timber.e("${it.tag}")
+        tv?.let {
             val context = it.context ?: return urlDrawable
             val imageTarget = if (oriUrl.endsWith(".gif")) {
-                GlideDrawableTarget<GifDrawable>(urlDrawable, container, width)
+                GlideDrawableTarget<GifDrawable>(urlDrawable, tv, width)
             } else {
-                GlideDrawableTarget<Drawable>(urlDrawable, container, width)
+                GlideDrawableTarget<Drawable>(urlDrawable, tv, width)
             }
             Glide.with(it).apply {
                 applyDefaultRequestOptions(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -55,7 +51,7 @@ class DrawableGetter(
     }
 
     override fun invalidateDrawable(@NonNull drawable: Drawable) {
-        container.get()?.invalidate()
+        tv?.invalidate()
     }
 
     override fun scheduleDrawable(@NonNull drawable: Drawable, @NonNull runnable: Runnable, l: Long) {}
@@ -65,7 +61,7 @@ class DrawableGetter(
     fun clear(@NonNull drawableGetter: DrawableGetter) {
         Timber.e("clearing......")
         for (target in drawableGetter.cachedTargets) {
-            container.get()?.let { Glide.with(it).clear(target) }
+            tv?.let { Glide.with(it).clear(target) }
         }
     }
 }
