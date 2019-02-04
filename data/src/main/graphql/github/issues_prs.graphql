@@ -138,26 +138,8 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
                 abbreviatedOid
               }
               subject {
-                ... on Issue {
-                  number
-                  author {
-                    login
-                    avatarUrl
-                  }
-                  repository {
-                    nameWithOwner
-                  }
-                }
-                ... on PullRequest {
-                  number
-                  author {
-                    login
-                    avatarUrl
-                  }
-                  repository {
-                    nameWithOwner
-                  }
-                }
+                ... ShortPullRequestRowItem
+                ... ShortIssueRowItem
               }
             }
             ... on AssignedEvent {

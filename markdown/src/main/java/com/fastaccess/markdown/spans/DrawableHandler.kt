@@ -30,7 +30,7 @@ class DrawableHandler(
                 if (!src.isNullOrEmpty()) {
                     b.append("￼")
                     b.append("\n")
-                    val imageGetter = DrawableGetter(textView, width, n.getAttributeByName("src"))
+                    val imageGetter = DrawableGetter(textView, width, n.getAttributeByName("src") ?: src)
                     b.setSpan(ImageSpan(imageGetter.getDrawable(src)), start, b.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 //                    b.setSpan(CenterSpan(), start, b.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // no center for now
                     b.append("\n")

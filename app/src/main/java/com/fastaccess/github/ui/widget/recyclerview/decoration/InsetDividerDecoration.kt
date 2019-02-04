@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
  * this class adopted from Plaid
  */
 class InsetDividerDecoration constructor(
-        private val height: Int,
-        private val inset: Int,
-        dividerColor: Int,
-        private val toDivide: Class<*>? = null
+    private val height: Int,
+    private val inset: Int,
+    dividerColor: Int
 ) : RecyclerView.ItemDecoration() {
 
     private val paint = Paint()
@@ -33,7 +32,7 @@ class InsetDividerDecoration constructor(
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val viewHolder = parent.getChildViewHolder(child)
-            val canDivide = toDivide == null || viewHolder.javaClass == toDivide
+            val canDivide = viewHolder is HasDivider && viewHolder.canDivide()
             if (canDivide) {
                 val position = parent.getChildAdapterPosition(child)
                 if (child.isActivated || i + 1 < childCount && parent.getChildAt(i + 1).isActivated) {
@@ -52,5 +51,9 @@ class InsetDividerDecoration constructor(
         if (hasDividers) {
             canvas.drawLines(lines, paint)
         }
+    }
+
+    interface HasDivider {
+        fun canDivide(): Boolean
     }
 }

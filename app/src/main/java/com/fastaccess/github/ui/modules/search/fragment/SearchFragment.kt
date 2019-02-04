@@ -35,10 +35,11 @@ import javax.inject.Inject
  */
 class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterSearchViewModel::class.java) }
     private val issuesPrsAdapter by lazy {
         MyIssuesPrsAdapter {
-            route("${it.url}")
+            route(it.url)
         }
     }
     private val reposAdapter by lazy { SearchReposAdapter() }

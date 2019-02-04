@@ -1,6 +1,7 @@
 package com.fastaccess.data.model
 
 import com.fastaccess.data.persistence.models.IssueModel
+import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -10,7 +11,9 @@ import java.util.*
 data class TimelineModel(
     @SerializedName("issue") var issue: IssueModel? = null,
     @SerializedName("commit") var commit: CommitModel? = null,
-    @SerializedName("comment") var comment: CommentModel? = null
+    @SerializedName("comment") var comment: CommentModel? = null,
+    @SerializedName("crossReferencedEvent") var crossReferencedEventModel: CrossReferencedEventModel? = null,
+    @SerializedName("referenceEvent") var referencedEventModel: ReferencedEventModel? = null
 )
 
 data class CommitModel(
@@ -39,6 +42,28 @@ data class CommentModel(
     @SerializedName("viewerCanUpdate") var viewerCanUpdate: Boolean? = null,
     @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = null,
     @SerializedName("viewerCanMinimize") var viewerCanMinimize: Boolean? = null
+)
+
+data class CrossReferencedEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("referencedAt") var referencedAt: Date? = null,
+    @SerializedName("isCrossRepository") var isCrossRepository: Boolean? = null,
+    @SerializedName("willCloseTarget") var willCloseTarget: Boolean? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("issue") var issue: MyIssuesPullsModel? = null,
+    @SerializedName("pullRequest") var pullRequestRowItem: MyIssuesPullsModel? = null
+)
+
+
+data class ReferencedEventModel(
+    @SerializedName("repoName") var repoName: String? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("isCrossRepository") var isCrossRepository: Boolean? = null,
+    @SerializedName("isDirectReference") var isDirectReference: Boolean? = null,
+    @SerializedName("commit") var commit: CommitModel? = null,
+    @SerializedName("issue") var issue: MyIssuesPullsModel? = null,
+    @SerializedName("pullRequest") var pullRequestRowItem: MyIssuesPullsModel? = null
 )
 
 enum class CommentAuthorAssociation(val value: String) {

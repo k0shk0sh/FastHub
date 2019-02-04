@@ -13,7 +13,6 @@ import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import kotlinx.android.synthetic.main.comment_row_item.view.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
-import timber.log.Timber
 
 /**
  * Created by Kosh on 12.10.18.
@@ -45,7 +44,6 @@ class CommentViewHolder(
     override fun onDetached() {
         super.onDetached()
         itemView.description?.let {
-            Timber.e("${it.tag}")
             if (it.tag is DrawableGetter) {
                 val target = it.tag as DrawableGetter
                 target.clear(target)

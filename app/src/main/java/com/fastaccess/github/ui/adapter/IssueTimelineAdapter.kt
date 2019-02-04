@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
+import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueTimelineHeaderViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
 import net.nightwhistler.htmlspanner.HtmlSpanner
@@ -21,7 +22,7 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
             when {
                 it.issue != null -> HEADER
                 it.comment != null -> COMMENT
-                else -> COMMIT
+                else -> CONTENT
             }
         } ?: super.getItemViewType(position)
     }
@@ -30,6 +31,7 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
         return when (viewType) {
             HEADER -> IssueTimelineHeaderViewHolder(parent, htmlSpanner)
             COMMENT -> CommentViewHolder(parent, htmlSpanner)
+            CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent)
         }
     }
@@ -38,6 +40,7 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
         when (holder) {
             is IssueTimelineHeaderViewHolder -> holder.bind(getItem(position).issue)
             is CommentViewHolder -> holder.bind(getItem(position).comment)
+            is IssueContentViewHolder -> holder.bind(getItem(position))
             else -> holder.itemView.isVisible = false
         }
     }
@@ -51,8 +54,8 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
 
     companion object {
         private const val HEADER = 1
-        private const val COMMIT = 2
-        private const val COMMENT = 3
+        private const val COMMENT = 2
+        private const val CONTENT = 3
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TimelineModel?>() {
             override fun areItemsTheSame(oldItem: TimelineModel, newItem: TimelineModel): Boolean = oldItem.hashCode() == newItem.hashCode()
