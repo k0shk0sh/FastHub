@@ -1,11 +1,13 @@
 package com.fastaccess.github.ui.adapter.viewholder
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.fastaccess.data.model.*
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.issue_content_row_item.view.*
 
@@ -24,6 +26,25 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         item.referencedEventModel?.let(this::presentReference)
         item.closeOpenEventModel?.let(this::presentClosedReopen)
         item.lockUnlockEventModel?.let(this::presentLockUnlock)
+        item.labelUnlabeledEvent?.let(this::presentLabels)
+    }
+
+    private fun presentLabels(model: LabelUnlabeledEventModel) {
+        itemView.apply {
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            val builder = SpannableBuilder.builder()
+                .apply {
+                    bold(append(model.actor?.login ?: "", LabelSpan(Color.TRANSPARENT)))
+                    space()
+                    append("${if (model.isLabel == true) "added " else "unlabeled "}", LabelSpan(Color.TRANSPARENT))
+                    model.labels.forEach {
+                        append(it.name ?: "", LabelSpan(kotlin.runCatching { Color.parseColor("#${it.color}") }.getOrDefault(Color.BLUE)))
+                            .space()
+                    }
+                    append("${model.createdAt?.timeAgo()}", LabelSpan(Color.TRANSPARENT))
+                }
+            text.text = builder
+        }
     }
 
     private fun presentLockUnlock(model: LockUnlockEventModel) {
@@ -54,7 +75,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                     .append("closed this ")
                     .bold(when {
                         model.commit != null -> "in commit (${model.commit?.abbreviatedOid}) "
-                        model.pullRequest != null -> "in pull request (${model.pullRequest?.number}) "
+                        model.pullRequest != null -> "in pull request (#${model.pullRequest?.number}) "
                         else -> ""
                     })
                     .append("${model.createdAt?.timeAgo()}")
@@ -73,8 +94,8 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .space()
                 .append("${if (model.isCrossRepository == true) "cross" else ""} referenced this in ")
                 .bold(when {
-                    model.issue != null -> "issue (${model.issue?.number}) "
-                    model.pullRequest != null -> "pull request (${model.pullRequest?.number}) "
+                    model.issue != null -> "issue (#${model.issue?.number}) "
+                    model.pullRequest != null -> "pull request (#${model.pullRequest?.number}) "
                     else -> ""
                 })
                 .append("${model.referencedAt?.timeAgo()}")
