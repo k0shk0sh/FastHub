@@ -79,12 +79,8 @@ class GetIssueTimelineUseCase @Inject constructor(
                         is AsRenamedTitleEvent -> {
 
                         }
-                        is AsLockedEvent -> {
-
-                        }
-                        is AsUnlockedEvent -> {
-
-                        }
+                        is AsLockedEvent -> list.add(getLock(node))
+                        is AsUnlockedEvent -> list.add(getUnlocked(node))
                         is AsTransferredEvent -> {
 
                         }
@@ -93,6 +89,14 @@ class GetIssueTimelineUseCase @Inject constructor(
                 return@map Pair(pageInfo, list)
             }
     }
+
+    private fun getUnlocked(node: AsUnlockedEvent): TimelineModel = TimelineModel(lockUnlockEventModel = LockUnlockEventModel(
+        node.createdAt, node.actor?.fragments?.shortActor?.toUser(), null, node.lockable.activeLockReason?.rawValue()
+    ))
+
+    private fun getLock(node: AsLockedEvent): TimelineModel = TimelineModel(lockUnlockEventModel = LockUnlockEventModel(
+        node.createdAt, node.actor?.fragments?.shortActor?.toUser(), node.lockReason?.rawValue(), node.lockable.activeLockReason?.rawValue(), true
+    ))
 
     private fun getReopened(node: AsReopenedEvent): TimelineModel {
         return TimelineModel(closeOpenEventModel = CloseOpenEventModel(

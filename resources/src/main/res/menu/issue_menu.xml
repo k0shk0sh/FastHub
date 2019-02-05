@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/browser"
+        android:icon="@drawable/ic_brower"
+        android:title="@string/open_in_browser"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/editMenu"
@@ -78,17 +89,5 @@
         android:icon="@drawable/ic_refresh"
         android:title="@string/reload"
         app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/share"
-        android:icon="@drawable/ic_share"
-        android:title="@string/share"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/browser"
-        android:icon="@drawable/ic_brower"
-        android:title="@string/open_in_browser"
-        app:showAsAction="ifRoom"/>
 
 </menu>

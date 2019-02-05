@@ -50,6 +50,7 @@ class IssueFragment : BaseFragment() {
         bottomBar.menu.children.forEach {
             it.icon.mutate().setTint(Color.WHITE)
         }
+        bottomBar.overflowIcon?.mutate()?.setTint(Color.WHITE)
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)

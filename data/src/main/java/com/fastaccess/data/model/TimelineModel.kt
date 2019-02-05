@@ -14,7 +14,8 @@ data class TimelineModel(
     @SerializedName("comment") val comment: CommentModel? = null,
     @SerializedName("crossReferencedEvent") val crossReferencedEventModel: CrossReferencedEventModel? = null,
     @SerializedName("closeOpenEvent") val closeOpenEventModel: CloseOpenEventModel? = null,
-    @SerializedName("referenceEvent") val referencedEventModel: ReferencedEventModel? = null
+    @SerializedName("referenceEvent") val referencedEventModel: ReferencedEventModel? = null,
+    @SerializedName("lockUnlockEvent") var lockUnlockEventModel: LockUnlockEventModel? = null
 )
 
 data class CommitModel(
@@ -73,6 +74,26 @@ data class CloseOpenEventModel(
     @SerializedName("commit") var commit: CommitModel? = null,
     @SerializedName("pullRequest") var pullRequest: MyIssuesPullsModel? = null,
     @SerializedName("isClosed") var isClosed: Boolean? = null
+)
+
+/***
+ *  final @NotNull String __typename;
+
+final @Nullable Actor13 actor;
+
+final @NotNull Date createdAt;
+
+final @Nullable LockReason lockReason;
+
+final @NotNull Lockable lockable;
+
+ */
+data class LockUnlockEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("lockReason") var lockReason: String? = null,
+    @SerializedName("lockable") var lockable: String? = null,
+    @SerializedName("isLock") var isLock: Boolean? = null
 )
 
 enum class CommentAuthorAssociation(val value: String) {

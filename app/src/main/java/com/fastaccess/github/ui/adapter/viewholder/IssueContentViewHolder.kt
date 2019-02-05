@@ -15,21 +15,33 @@ import kotlinx.android.synthetic.main.issue_content_row_item.view.*
 class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(LayoutInflater.from(parent.context)
     .inflate(R.layout.issue_content_row_item, parent, false)) {
     override fun canDivide(): Boolean = false
+
     override fun bind(item: TimelineModel) {
         itemView.text.text = ""
         itemView.userIcon.setImageDrawable(null)
-        when {
-            item.commit != null -> presentCommit(item.commit)
-            item.crossReferencedEventModel != null -> presentCrossReference(item.crossReferencedEventModel)
-            item.referencedEventModel != null -> presentReference(item.referencedEventModel)
-            item.closeOpenEventModel != null -> presentClosedReopen(item.closeOpenEventModel)
+        item.commit?.let(this::presentCommit)
+        item.crossReferencedEventModel?.let(this::presentCrossReference)
+        item.referencedEventModel?.let(this::presentReference)
+        item.closeOpenEventModel?.let(this::presentClosedReopen)
+        item.lockUnlockEventModel?.let(this::presentLockUnlock)
+    }
+
+    private fun presentLockUnlock(model: LockUnlockEventModel) {
+        itemView.apply {
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            val builder = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+            if (model.isLock == true) {
+                builder.append("locked as ${model.lockReason?.replace("_", "")?.toLowerCase()} and limited conversation to collaborators ")
+            } else {
+                builder.append("unlocked this conversation ")
+            }
+            text.text = builder.append(model.createdAt?.timeAgo())
         }
     }
 
-    private fun presentClosedReopen(model: CloseOpenEventModel?) {
-        if (model == null) {
-            return
-        }
+    private fun presentClosedReopen(model: CloseOpenEventModel) {
         itemView.apply {
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             val builder = SpannableBuilder.builder()
@@ -51,10 +63,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         }
     }
 
-    private fun presentCrossReference(model: CrossReferencedEventModel?) {
-        if (model == null) {
-            return
-        }
+    private fun presentCrossReference(model: CrossReferencedEventModel) {
         itemView.apply {
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
@@ -70,10 +79,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         }
     }
 
-    private fun presentCommit(model: CommitModel?) {
-        if (model == null) {
-            return
-        }
+    private fun presentCommit(model: CommitModel) {
         itemView.apply {
             userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url)
             text.text = SpannableBuilder.builder()
@@ -83,10 +89,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         }
     }
 
-    private fun presentReference(model: ReferencedEventModel?) {
-        if (model == null) {
-            return
-        }
+    private fun presentReference(model: ReferencedEventModel) {
         itemView.apply {
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
