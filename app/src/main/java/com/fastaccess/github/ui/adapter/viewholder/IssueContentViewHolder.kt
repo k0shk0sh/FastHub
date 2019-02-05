@@ -34,7 +34,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             val builder = SpannableBuilder.builder()
                 .apply {
-                    bold(append(model.actor?.login ?: "", LabelSpan(Color.TRANSPARENT)))
+                    bold(SpannableBuilder.builder().append(model.actor?.login ?: "", LabelSpan(Color.TRANSPARENT)))
                     space()
                     append("${if (model.isLabel == true) "added " else "unlabeled "}", LabelSpan(Color.TRANSPARENT))
                     model.labels.forEach {
