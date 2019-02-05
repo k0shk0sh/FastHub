@@ -3,18 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/share"
-        android:icon="@drawable/ic_share"
-        android:title="@string/share"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/browser"
-        android:icon="@drawable/ic_brower"
-        android:title="@string/open_in_browser"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/editMenu"
         android:icon="@drawable/ic_edit"
         android:title="@string/action"
@@ -88,6 +76,18 @@
         android:id="@+id/refresh"
         android:icon="@drawable/ic_refresh"
         android:title="@string/reload"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/browser"
+        android:icon="@drawable/ic_brower"
+        android:title="@string/open_in_browser"
         app:showAsAction="always"/>
 
 </menu>

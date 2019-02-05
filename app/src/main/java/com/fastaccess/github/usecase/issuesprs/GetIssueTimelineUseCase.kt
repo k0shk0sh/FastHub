@@ -15,6 +15,7 @@ import github.GetIssueTimelineQuery
 import github.GetIssueTimelineQuery.*
 import io.reactivex.Observable
 import org.jetbrains.annotations.Nullable
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -64,12 +65,8 @@ class GetIssueTimelineUseCase @Inject constructor(
                         is AsUnassignedEvent -> {
 
                         }
-                        is AsLabeledEvent -> {
-
-                        }
-                        is AsUnlabeledEvent -> {
-
-                        }
+                        is AsLabeledEvent -> getLabel(node, list)?.let(list::add)
+                        is AsUnlabeledEvent -> getUnlabeled(node, list)?.let(list::add)
                         is AsMilestonedEvent -> {
 
                         }
@@ -89,6 +86,54 @@ class GetIssueTimelineUseCase @Inject constructor(
                 return@map Pair(pageInfo, list)
             }
     }
+
+    private fun getUnlabeled(
+        node: AsUnlabeledEvent,
+        list: ArrayList<TimelineModel>
+    ): TimelineModel? {
+        var shouldAdd = true
+        list.filter { it.labelUnlabeledEvent != null }.map {
+            if (it.labelUnlabeledEvent?.createdAt?.time == node.createdAt.time) {
+                it.labelUnlabeledEvent?.labels?.add(constructLabel(node.label))
+                shouldAdd = false
+            }
+        }
+        Timber.e("${list.filter { it.labelUnlabeledEvent != null }?.map { it.labelUnlabeledEvent }}")
+        if (shouldAdd) {
+            return TimelineModel(labelUnlabeledEvent = LabelUnlabeledEventModel(
+                node.createdAt, node.actor?.fragments?.shortActor?.toUser(), false, arrayListOf(constructLabel(node.label))
+            ))
+        }
+        return null
+    }
+
+    private fun getLabel(
+        node: AsLabeledEvent,
+        list: ArrayList<TimelineModel>
+    ): TimelineModel? {
+        var shouldAdd = true
+        list.filter { it.labelUnlabeledEvent != null }.map {
+            if (it.labelUnlabeledEvent?.createdAt?.time == node.createdAt.time) {
+                it.labelUnlabeledEvent?.labels?.add(constructLabel(node.label))
+                shouldAdd = false
+            }
+        }
+        if (shouldAdd) {
+            return TimelineModel(labelUnlabeledEvent = LabelUnlabeledEventModel(
+                node.createdAt, node.actor?.fragments?.shortActor?.toUser(), true, arrayListOf(constructLabel(node.label))
+            ))
+        }
+        return null
+    }
+
+    private fun constructLabel(m: Any): LabelModel {
+        return when (m) {
+            is Label -> LabelModel(m.name, m.color)
+            is Label1 -> LabelModel(m.name, m.color)
+            else -> throw IllegalArgumentException("$m is not instance of any Label")
+        }
+    }
+
 
     private fun getUnlocked(node: AsUnlockedEvent): TimelineModel = TimelineModel(lockUnlockEventModel = LockUnlockEventModel(
         node.createdAt, node.actor?.fragments?.shortActor?.toUser(), null, node.lockable.activeLockReason?.rawValue()

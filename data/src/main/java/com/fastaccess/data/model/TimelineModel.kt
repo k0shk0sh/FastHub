@@ -15,7 +15,8 @@ data class TimelineModel(
     @SerializedName("crossReferencedEvent") val crossReferencedEventModel: CrossReferencedEventModel? = null,
     @SerializedName("closeOpenEvent") val closeOpenEventModel: CloseOpenEventModel? = null,
     @SerializedName("referenceEvent") val referencedEventModel: ReferencedEventModel? = null,
-    @SerializedName("lockUnlockEvent") var lockUnlockEventModel: LockUnlockEventModel? = null
+    @SerializedName("lockUnlockEvent") val lockUnlockEventModel: LockUnlockEventModel? = null,
+    @SerializedName("labelUnlabeledEvent") val labelUnlabeledEvent: LabelUnlabeledEventModel? = null
 )
 
 data class CommitModel(
@@ -76,24 +77,25 @@ data class CloseOpenEventModel(
     @SerializedName("isClosed") var isClosed: Boolean? = null
 )
 
-/***
- *  final @NotNull String __typename;
-
-final @Nullable Actor13 actor;
-
-final @NotNull Date createdAt;
-
-final @Nullable LockReason lockReason;
-
-final @NotNull Lockable lockable;
-
- */
 data class LockUnlockEventModel(
     @SerializedName("createdAt") var createdAt: Date? = null,
     @SerializedName("actor") var actor: ShortUserModel? = null,
     @SerializedName("lockReason") var lockReason: String? = null,
     @SerializedName("lockable") var lockable: String? = null,
     @SerializedName("isLock") var isLock: Boolean? = null
+)
+
+data class LabelUnlabeledEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("isLock") var isLabel: Boolean? = null,
+    @SerializedName("labels") var labels: ArrayList<LabelModel> = arrayListOf()
+)
+
+data class LabelModel(
+    @SerializedName("name") var name: String? = null,
+    @SerializedName("color") var color: String? = null,
+    @SerializedName("isLock") var isDefault: Boolean? = null
 )
 
 enum class CommentAuthorAssociation(val value: String) {

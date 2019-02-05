@@ -33,7 +33,9 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .bold(model.actor?.login)
                 .space()
             if (model.isLock == true) {
-                builder.append("locked as ${model.lockReason?.replace("_", "")?.toLowerCase()} and limited conversation to collaborators ")
+                builder.append("locked as ")
+                    .bold("${model.lockReason?.replace("_", "")?.toLowerCase()} ")
+                    .append("and limited conversation to collaborators ")
             } else {
                 builder.append("unlocked this conversation ")
             }
