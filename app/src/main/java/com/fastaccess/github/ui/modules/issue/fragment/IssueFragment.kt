@@ -58,6 +58,7 @@ class IssueFragment : BaseFragment() {
         if (savedInstanceState == null) {
             isConnected().isTrue { viewModel.loadData(login, repo, number, true) }
         }
+
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 recyclerView.resetScrollState()
@@ -66,9 +67,14 @@ class IssueFragment : BaseFragment() {
                 swipeRefresh.isRefreshing = false
             }
         }
+
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.scrollTop -> recyclerView.scrollToPosition(0)
+                R.id.refresh -> {
+                    recyclerView.scrollToPosition(0)
+                    viewModel.loadData(login, repo, number, true)
+                }
             }
             return@setOnMenuItemClickListener true
         }

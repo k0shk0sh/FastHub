@@ -32,7 +32,7 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
             HEADER -> IssueTimelineHeaderViewHolder(parent, htmlSpanner)
             COMMENT -> CommentViewHolder(parent, htmlSpanner)
             CONTENT -> IssueContentViewHolder(parent)
-            else -> LoadingViewHolder<Any>(parent)
+            else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
         }
     }
 
@@ -41,7 +41,6 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
             is IssueTimelineHeaderViewHolder -> holder.bind(getItem(position).issue)
             is CommentViewHolder -> holder.bind(getItem(position).comment)
             is IssueContentViewHolder -> holder.bind(getItem(position))
-            else -> holder.itemView.isVisible = false
         }
     }
 

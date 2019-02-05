@@ -5,9 +5,12 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.*
 import com.fastaccess.data.persistence.models.IssueModel
-import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
+import com.fastaccess.extension.toCommit
+import com.fastaccess.extension.toIssue
+import com.fastaccess.extension.toPullRequest
+import com.fastaccess.extension.toUser
 import github.GetIssueTimelineQuery
 import github.GetIssueTimelineQuery.*
 import io.reactivex.Observable
@@ -49,10 +52,8 @@ class GetIssueTimelineUseCase @Inject constructor(
                         is AsCommit -> list.add(getCommit(node))
                         is AsIssueComment -> list.add(getComment(node))
                         is AsCrossReferencedEvent -> list.add(getCrossReference(node))
-                        is AsClosedEvent -> {
-                        }
-                        is AsReopenedEvent -> {
-                        }
+                        is AsClosedEvent -> list.add(getClosed(node))
+                        is AsReopenedEvent -> list.add(getReopened(node))
                         is AsSubscribedEvent -> {
                         }
                         is AsUnsubscribedEvent -> {
@@ -93,36 +94,34 @@ class GetIssueTimelineUseCase @Inject constructor(
             }
     }
 
-    private fun getReference(node: AsReferencedEvent): TimelineModel {
-        val shortIssue = node.subject.fragments.shortIssueRowItem
-        val shortPullRequest = node.subject.fragments.shortPullRequestRowItem
-        val issueModel = MyIssuesPullsModel(shortIssue?.id ?: "", shortIssue?.databaseId, shortIssue?.number,
-            shortIssue?.title, shortIssue?.repository?.nameWithOwner, shortIssue?.comments?.totalCount, null,
-            shortIssue?.url.toString())
-        val pullRequest = MyIssuesPullsModel(shortPullRequest?.id ?: "", shortPullRequest?.databaseId, shortPullRequest?.number,
-            shortPullRequest?.title, shortPullRequest?.repository?.nameWithOwner, shortPullRequest?.comments?.totalCount,
-            shortPullRequest?.state?.rawValue(), shortPullRequest?.url.toString())
+    private fun getReopened(node: AsReopenedEvent): TimelineModel {
+        return TimelineModel(closeOpenEventModel = CloseOpenEventModel(
+            node.createdAt, node.actor?.fragments?.shortActor?.toUser())
+        )
+    }
 
+    private fun getClosed(node: AsClosedEvent): TimelineModel {
+        val commit = node.closer?.fragments?.commitFragment?.toCommit()
+        val pr = node.closer?.fragments?.shortPullRequestRowItem?.toPullRequest()
+        return TimelineModel(closeOpenEventModel = CloseOpenEventModel(
+            node.createdAt, node.actor?.fragments?.shortActor?.toUser(), commit, pr, true)
+        )
+    }
+
+    private fun getReference(node: AsReferencedEvent): TimelineModel {
+        val issueModel = node.subject.fragments.shortIssueRowItem?.toIssue()
+        val pullRequest = node.subject.fragments.shortPullRequestRowItem?.toPullRequest()
         return TimelineModel(referencedEventModel = ReferencedEventModel(
             node.commitRepository.nameWithOwner, node.createdAt, ShortUserModel(
             node.actor?.fragments?.shortActor?.login, node.actor?.fragments?.shortActor?.login, node.actor?.fragments?.shortActor?.url?.toString(),
             avatarUrl = node.actor?.fragments?.shortActor?.avatarUrl?.toString()), node.isCrossRepository, node.isDirectReference,
-            CommitModel(message = node.commit?.message, authoredDate = node.commit?.committedDate, abbreviatedOid = node.commit?.abbreviatedOid),
-            issueModel, pullRequest))
+            node.commit?.fragments?.commitFragment?.toCommit(), issueModel, pullRequest))
     }
 
     private fun getCrossReference(node: AsCrossReferencedEvent): TimelineModel {
-        val actor = ShortUserModel(node.actor?.fragments?.shortActor?.login, node.actor?.fragments?.shortActor?.login,
-            node.actor?.fragments?.shortActor?.url?.toString(),
-            avatarUrl = node.actor?.fragments?.shortActor?.avatarUrl?.toString())
-        val shortIssue = node.source.fragments.shortIssueRowItem
-        val shortPullRequest = node.source.fragments.shortPullRequestRowItem
-        val issueModel = MyIssuesPullsModel(shortIssue?.id ?: "", shortIssue?.databaseId, shortIssue?.number,
-            shortIssue?.title, shortIssue?.repository?.nameWithOwner, shortIssue?.comments?.totalCount, null,
-            shortIssue?.url.toString())
-        val pullRequest = MyIssuesPullsModel(shortPullRequest?.id ?: "", shortPullRequest?.databaseId, shortPullRequest?.number,
-            shortPullRequest?.title, shortPullRequest?.repository?.nameWithOwner, shortPullRequest?.comments?.totalCount,
-            shortPullRequest?.state?.rawValue(), shortPullRequest?.url.toString())
+        val actor = node.actor?.fragments?.shortActor?.toUser()
+        val issueModel = node.source.fragments.shortIssueRowItem?.toIssue()
+        val pullRequest = node.source.fragments.shortPullRequestRowItem?.toPullRequest()
         return TimelineModel(crossReferencedEventModel = CrossReferencedEventModel(node.createdAt, node.referencedAt,
             node.isCrossRepository, node.isWillCloseTarget, actor, issueModel, pullRequest))
     }
@@ -138,9 +137,7 @@ class GetIssueTimelineUseCase @Inject constructor(
         node.isViewerCanUpdate, node.isViewerDidAuthor, node.isViewerCanMinimize
     ))
 
-    private fun getCommit(node: AsCommit) = TimelineModel(commit = CommitModel(node.id,
-        ShortUserModel(node.author?.name, node.author?.name, avatarUrl = node.author?.avatarUrl?.toString()), node.message,
-        node.abbreviatedOid, node.oid.toString(), node.commitUrl.toString(), node.authoredDate, node.isCommittedViaWeb))
+    private fun getCommit(node: AsCommit) = TimelineModel(commit = node.fragments?.commitFragment?.toCommit())
 
     private fun addIssue(
         it: @Nullable Issue,

@@ -71,6 +71,20 @@ fragment ShortActor on Actor {
     url
 }
 
+fragment CommitFragment on Commit {
+    author {
+      name
+      avatarUrl
+    }
+    message
+    abbreviatedOid
+    oid
+    commitUrl
+    authoredDate
+    committedViaWeb
+    id
+}
+
 fragment FullIssue on Issue {
     id
     databaseId

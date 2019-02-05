@@ -9,11 +9,12 @@ import java.util.*
  * Created by Kosh on 31.01.19.
  */
 data class TimelineModel(
-    @SerializedName("issue") var issue: IssueModel? = null,
-    @SerializedName("commit") var commit: CommitModel? = null,
-    @SerializedName("comment") var comment: CommentModel? = null,
-    @SerializedName("crossReferencedEvent") var crossReferencedEventModel: CrossReferencedEventModel? = null,
-    @SerializedName("referenceEvent") var referencedEventModel: ReferencedEventModel? = null
+    @SerializedName("issue") val issue: IssueModel? = null,
+    @SerializedName("commit") val commit: CommitModel? = null,
+    @SerializedName("comment") val comment: CommentModel? = null,
+    @SerializedName("crossReferencedEvent") val crossReferencedEventModel: CrossReferencedEventModel? = null,
+    @SerializedName("closeOpenEvent") val closeOpenEventModel: CloseOpenEventModel? = null,
+    @SerializedName("referenceEvent") val referencedEventModel: ReferencedEventModel? = null
 )
 
 data class CommitModel(
@@ -51,7 +52,7 @@ data class CrossReferencedEventModel(
     @SerializedName("willCloseTarget") var willCloseTarget: Boolean? = null,
     @SerializedName("actor") var actor: ShortUserModel? = null,
     @SerializedName("issue") var issue: MyIssuesPullsModel? = null,
-    @SerializedName("pullRequest") var pullRequestRowItem: MyIssuesPullsModel? = null
+    @SerializedName("pullRequest") var pullRequest: MyIssuesPullsModel? = null
 )
 
 
@@ -64,6 +65,14 @@ data class ReferencedEventModel(
     @SerializedName("commit") var commit: CommitModel? = null,
     @SerializedName("issue") var issue: MyIssuesPullsModel? = null,
     @SerializedName("pullRequest") var pullRequestRowItem: MyIssuesPullsModel? = null
+)
+
+data class CloseOpenEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("commit") var commit: CommitModel? = null,
+    @SerializedName("pullRequest") var pullRequest: MyIssuesPullsModel? = null,
+    @SerializedName("isClosed") var isClosed: Boolean? = null
 )
 
 enum class CommentAuthorAssociation(val value: String) {

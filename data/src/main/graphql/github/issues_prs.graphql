@@ -44,17 +44,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
           nodes {
             __typename
             ... on Commit {
-              author {
-                name
-                avatarUrl
-              }
-              message
-              abbreviatedOid
-              oid
-              commitUrl
-              authoredDate
-              committedViaWeb
-              id
+              ... CommitFragment
             }
             ... on IssueComment {
               author {
@@ -94,22 +84,8 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               actor { ... ShortActor }
               createdAt
               closer {
-                ... on Commit {
-                  abbreviatedOid
-                  author {
-                    name
-                    avatarUrl
-                  }
-                  message
-                }
-                ... on PullRequest {
-                  number
-                  author {
-                    avatarUrl
-                    login
-                  }
-                  merged
-                }
+                ... CommitFragment
+                ... ShortPullRequestRowItem
               }
             }
             ... on ReopenedEvent {
@@ -133,9 +109,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               isCrossRepository
               isDirectReference
               commit {
-                message
-                committedDate
-                abbreviatedOid
+                ... CommitFragment
               }
               subject {
                 ... ShortPullRequestRowItem
