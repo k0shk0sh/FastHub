@@ -16,7 +16,17 @@ import net.nightwhistler.htmlspanner.HtmlSpanner
 /**
  * Created by Kosh on 20.01.19.
  */
-class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class IssueTimelineAdapter(
+    private val htmlSpanner: HtmlSpanner,
+    private val theme: Int
+) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+
+    private val notifyCallback by lazy {
+        { position: Int ->
+            notifyItemChanged(position)
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return getItem(position)?.let {
             when {
@@ -29,8 +39,8 @@ class IssueTimelineAdapter(private val htmlSpanner: HtmlSpanner) : ListAdapter<T
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            HEADER -> IssueTimelineHeaderViewHolder(parent, htmlSpanner)
-            COMMENT -> CommentViewHolder(parent, htmlSpanner)
+            HEADER -> IssueTimelineHeaderViewHolder(parent, htmlSpanner, theme, notifyCallback)
+            COMMENT -> CommentViewHolder(parent, htmlSpanner, theme, notifyCallback)
             CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
         }

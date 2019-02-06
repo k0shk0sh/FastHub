@@ -8,8 +8,10 @@ import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.IssueModel
+import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -22,6 +24,7 @@ import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.isConnected
+import com.fastaccess.github.utils.extensions.theme
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
@@ -34,12 +37,13 @@ import javax.inject.Inject
 class IssueFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var htmlSpanner: HtmlSpanner
+    @Inject lateinit var preference: FastHubSharedPreference
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(IssueTimelineViewModel::class.java) }
     private val login by lazy { arguments?.getString(EXTRA) ?: "" }
     private val repo by lazy { arguments?.getString(EXTRA_TWO) ?: "" }
     private val number by lazy { arguments?.getInt(EXTRA_THREE) ?: 0 }
-    private val adapter by lazy { IssueTimelineAdapter(htmlSpanner) }
+    private val adapter by lazy { IssueTimelineAdapter(htmlSpanner, preference.theme) }
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -51,6 +55,7 @@ class IssueFragment : BaseFragment() {
             it.icon.mutate().setTint(Color.WHITE)
         }
         bottomBar.overflowIcon?.mutate()?.setTint(Color.WHITE)
+        (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)

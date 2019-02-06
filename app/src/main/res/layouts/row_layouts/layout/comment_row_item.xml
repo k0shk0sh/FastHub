@@ -72,7 +72,10 @@
             android:textIsSelectable="true"
             tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
 
-        <include layout="@layout/reactions_chips_layout"/>
+        <com.fastaccess.github.ui.widget.ReactionsChipGroup
+            android:id="@+id/reactionGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

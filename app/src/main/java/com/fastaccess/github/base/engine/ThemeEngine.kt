@@ -1,5 +1,7 @@
 package com.fastaccess.github.base.engine
 
+import android.graphics.Color
+import androidx.annotation.ColorInt
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.resources.R
@@ -18,6 +20,18 @@ object ThemeEngine {
                 4 -> R.style.ThemeBluish
                 else -> R.style.ThemeLight
             })
+        }
+    }
+
+
+    fun isLightTheme(theme: Int) = theme == R.style.ThemeLight
+
+    @ColorInt fun getCodeBackground(theme: Int): Int {
+        return when (theme) {
+            2 -> Color.parseColor("#22252A")
+            3 -> Color.parseColor("#0B162A")
+            4 -> Color.parseColor("#111C2C")
+            else -> Color.parseColor("#EEEEEE")
         }
     }
 

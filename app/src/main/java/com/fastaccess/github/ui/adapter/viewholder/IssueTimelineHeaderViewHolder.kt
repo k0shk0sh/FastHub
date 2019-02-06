@@ -1,21 +1,18 @@
 package com.fastaccess.github.ui.adapter.viewholder
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.fastaccess.data.model.ReactionContent
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.github.R
+import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.markdown.MarkdownProvider
-import com.fastaccess.markdown.extension.*
 import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import com.fastaccess.markdown.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.issue_header_row_item.view.*
-import kotlinx.android.synthetic.main.reactions_chips_layout.view.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
 
 /**
@@ -24,7 +21,9 @@ import net.nightwhistler.htmlspanner.HtmlSpanner
 
 class IssueTimelineHeaderViewHolder(
     parent: ViewGroup,
-    private val htmlSpanner: HtmlSpanner
+    private val htmlSpanner: HtmlSpanner,
+    private val theme: Int,
+    private val callback: (position: Int) -> Unit
 ) : BaseViewHolder<IssueModel?>(LayoutInflater.from(parent.context)
     .inflate(R.layout.issue_header_row_item, parent, false)) {
 
@@ -46,19 +45,17 @@ class IssueTimelineHeaderViewHolder(
                 .bold(model.author?.login)
                 .append(" commented ")
                 .append(model.createdAt?.timeAgo())
-            MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", Color.parseColor("#EEEEEE"), true)
+            MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
+                ThemeEngine.isLightTheme(theme))
             state.text = model.state?.toLowerCase()
             state.setChipBackgroundColorResource(if ("OPEN" == model.state) {
                 R.color.material_green_700
             } else {
                 R.color.material_red_700
             })
-
-            thumbsUp.text = "${getThumbsUpEmoji()} ${model.reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP }?.users?.totalCount}"
-            thumbsDown.text = "${getThumbsDownEmoji()} ${model.reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }?.users?.totalCount}"
-            laugh.text = "${getLaughEmoji()} ${model.reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH }?.users?.totalCount}"
-            hooray.text = "${getHoorayEmoji()} ${model.reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY }?.users?.totalCount}"
-            heart.text = "${getHeartEmoji()} ${model.reactionGroups?.firstOrNull { it.content == ReactionContent.HEART }?.users?.totalCount}"
+            reactionGroup.setup(model.reactionGroups) {
+                callback.invoke(adapterPosition)
+            }
         }
     }
 
