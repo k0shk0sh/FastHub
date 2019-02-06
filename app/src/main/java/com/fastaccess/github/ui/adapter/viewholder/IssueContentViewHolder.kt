@@ -27,6 +27,83 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         item.closeOpenEventModel?.let(this::presentClosedReopen)
         item.lockUnlockEventModel?.let(this::presentLockUnlock)
         item.labelUnlabeledEvent?.let(this::presentLabels)
+        item.subscribedUnsubscribedEvent?.let(this::presentSubscribeUnsubscribed)
+        item.assignedEventModel?.let(this::presentAssignedAndUnassigned)
+        item.milestoneEventModel?.let(this::presentMilestoneDemilestone)
+        item.renamedEventModel?.let(this::presentRenamed)
+        item.transferredEventModel?.let(this::presentTransferred)
+    }
+
+    private fun presentTransferred(model: TransferredEventModel) {
+        itemView.apply {
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("transferred this from ")
+                .bold(model.fromRepository)
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentRenamed(model: RenamedEventModel) {
+        itemView.apply {
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("renamed this from ")
+                .bold(model.previousTitle)
+                .append(" to ")
+                .bold(model.currentTitle)
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentMilestoneDemilestone(model: MilestoneDemilestonedEventModel) {
+        itemView.apply {
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append(if (model.isMilestone == true) "added this to the milestone " else "demilestoned this from ")
+                .bold(model.milestoneTitle)
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentAssignedAndUnassigned(model: AssignedUnAssignedEventModel) {
+        itemView.apply {
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append(if (model.isAssigned == true) "assigned " else "unassigned ")
+                .apply {
+                    model.users.forEachIndexed { index, shortUserModel ->
+                        bold(shortUserModel.login).append(when {
+                            index == model.users.size - 2 -> " and "
+                            index != model.users.size - 1 -> ", "
+                            else -> " "
+                        })
+                    }
+                }
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentSubscribeUnsubscribed(model: SubscribedUnsubscribedEventModel) {
+        itemView.apply {
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append(if (model.isSubscribe == true) "subscribed to this " else "unsubscribed from this ")
+                .append(model.createdAt?.timeAgo())
+        }
     }
 
     private fun presentLabels(model: LabelUnlabeledEventModel) {
@@ -36,7 +113,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .apply {
                     bold(SpannableBuilder.builder().append(model.actor?.login ?: "", LabelSpan(Color.TRANSPARENT)))
                     space()
-                    append("${if (model.isLabel == true) "added " else "unlabeled "}", LabelSpan(Color.TRANSPARENT))
+                    append(if (model.isLabel == true) "added " else "unlabeled ", LabelSpan(Color.TRANSPARENT))
                     model.labels.forEach {
                         append(it.name ?: "", LabelSpan(kotlin.runCatching { Color.parseColor("#${it.color}") }.getOrDefault(Color.BLUE)))
                             .space()
@@ -73,7 +150,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
             if (model.isClosed == true) {
                 builder
                     .append("closed this ")
-                    .bold(when {
+                    .clickable(when {
                         model.commit != null -> "in commit (${model.commit?.abbreviatedOid}) "
                         model.pullRequest != null -> "in pull request (#${model.pullRequest?.number}) "
                         else -> ""
@@ -93,7 +170,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .bold(model.actor?.login)
                 .space()
                 .append("${if (model.isCrossRepository == true) "cross" else ""} referenced this in ")
-                .bold(when {
+                .clickable(when {
                     model.issue != null -> "issue (#${model.issue?.number}) "
                     model.pullRequest != null -> "pull request (#${model.pullRequest?.number}) "
                     else -> ""
@@ -108,7 +185,9 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
             text.text = SpannableBuilder.builder()
                 .append(model.author?.name)
                 .space()
-                .append("referenced this in commit ${model.abbreviatedOid} ${model.authoredDate?.timeAgo()}")
+                .append("referenced this in ")
+                .clickable("commit ${model.abbreviatedOid} ")
+                .append(model.authoredDate?.timeAgo())
         }
     }
 
@@ -119,7 +198,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .bold(model.actor?.login)
                 .space()
                 .append("added a commit ")
-                .bold("(${model.commit?.abbreviatedOid})")
+                .clickable("(${model.commit?.abbreviatedOid})")
                 .append(" that referenced this issue ${model.createdAt?.timeAgo()}")
                 .newline()
                 .append(model.commit?.message)

@@ -186,9 +186,12 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
               createdAt
               fromRepository {
                 id
+                nameWithOwner
+                url
               }
               issue {
                 number
+                url
               }
             }
           }

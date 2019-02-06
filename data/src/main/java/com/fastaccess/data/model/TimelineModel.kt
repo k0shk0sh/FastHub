@@ -16,7 +16,12 @@ data class TimelineModel(
     @SerializedName("closeOpenEvent") val closeOpenEventModel: CloseOpenEventModel? = null,
     @SerializedName("referenceEvent") val referencedEventModel: ReferencedEventModel? = null,
     @SerializedName("lockUnlockEvent") val lockUnlockEventModel: LockUnlockEventModel? = null,
-    @SerializedName("labelUnlabeledEvent") val labelUnlabeledEvent: LabelUnlabeledEventModel? = null
+    @SerializedName("labelUnlabeledEvent") val labelUnlabeledEvent: LabelUnlabeledEventModel? = null,
+    @SerializedName("subscribeUnsubscribedEvent") val subscribedUnsubscribedEvent: SubscribedUnsubscribedEventModel? = null,
+    @SerializedName("assignedUnassignedEvent") val assignedEventModel: AssignedUnAssignedEventModel? = null,
+    @SerializedName("milestoneDemilestoneEvent") val milestoneEventModel: MilestoneDemilestonedEventModel? = null,
+    @SerializedName("renamedEvent") val renamedEventModel: RenamedEventModel? = null,
+    @SerializedName("transferredEvent") val transferredEventModel: TransferredEventModel? = null
 )
 
 data class CommitModel(
@@ -57,7 +62,6 @@ data class CrossReferencedEventModel(
     @SerializedName("pullRequest") var pullRequest: MyIssuesPullsModel? = null
 )
 
-
 data class ReferencedEventModel(
     @SerializedName("repoName") var repoName: String? = null,
     @SerializedName("createdAt") var createdAt: Date? = null,
@@ -96,6 +100,39 @@ data class LabelModel(
     @SerializedName("name") var name: String? = null,
     @SerializedName("color") var color: String? = null,
     @SerializedName("isLock") var isDefault: Boolean? = null
+)
+
+data class SubscribedUnsubscribedEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("isSubscribe") var isSubscribe: Boolean? = null
+)
+
+data class AssignedUnAssignedEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("isAssigned") var isAssigned: Boolean? = null,
+    @SerializedName("user") var users: ArrayList<ShortUserModel> = arrayListOf()
+)
+
+data class MilestoneDemilestonedEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("milestoneTitle") var milestoneTitle: String? = null,
+    @SerializedName("isMilestone") var isMilestone: Boolean? = null
+)
+
+data class RenamedEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("currentTitle") var currentTitle: String? = null,
+    @SerializedName("previousTitle") var previousTitle: String? = null
+)
+
+data class TransferredEventModel(
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("fromRepository") var fromRepository: String? = null
 )
 
 enum class CommentAuthorAssociation(val value: String) {

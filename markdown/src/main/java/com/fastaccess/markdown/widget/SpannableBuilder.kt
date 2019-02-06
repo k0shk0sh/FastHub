@@ -88,7 +88,7 @@ class SpannableBuilder private constructor() : SpannableStringBuilder() {
         return if (!text.isEmpty()) append(text, URLSpan(text.toString())) else this
     }
 
-    fun clickable(text: CharSequence, listener: View.OnClickListener): SpannableBuilder {
+    fun clickable(text: CharSequence, listener: View.OnClickListener? = null): SpannableBuilder {
         return if (!text.isEmpty()) append(text, object : ClickableSpan() {
             override fun updateDrawState(ds: TextPaint) {
                 ds.color = ds.linkColor
@@ -96,7 +96,7 @@ class SpannableBuilder private constructor() : SpannableStringBuilder() {
             }
 
             override fun onClick(widget: View) {
-                listener.onClick(widget)
+                listener?.onClick(widget)
             }
         }) else this
     }
