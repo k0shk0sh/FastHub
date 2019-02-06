@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.work.*
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.fastaccess.extension.uiThread
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import github.AddReactionMutation
@@ -24,10 +23,12 @@ class ReactionWorker @Inject constructor(
     private val content: String by lazy { workerParams.inputData.keyValueMap[EXTRA_TWO] as String }
     private val id: String by lazy { workerParams.inputData.keyValueMap[EXTRA] as String }
 
-    override fun createWork(): Single<Result> = Single.fromObservable<ListenableWorker.Result> {
-        Rx2Apollo.from(apolloClient.mutate(AddReactionMutation(id, ReactionContent.valueOf(content))))
-            .doOnError { it.printStackTrace() }
-    }.uiThread()
+    override fun createWork(): Single<Result> = Single.fromCallable {
+        kotlin.runCatching {
+            Rx2Apollo.from(apolloClient.mutate(AddReactionMutation(id, ReactionContent.valueOf(content)))).blockingSingle()
+        }.getOrNull()
+        return@fromCallable Result.success()
+    }
 
 
     companion object {
