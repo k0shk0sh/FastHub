@@ -45,7 +45,7 @@ class CommentViewHolder(
             MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
                 ThemeEngine.isLightTheme(theme))
 
-            reactionGroup.setup(model.reactionGroups) {
+            reactionGroup.setup(requireNotNull(model.id), model.reactionGroups) {
                 callback.invoke(adapterPosition)
             }
         }

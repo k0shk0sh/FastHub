@@ -3,6 +3,7 @@ package com.fastaccess.github.di.modules
 import androidx.work.RxWorker
 import com.fastaccess.github.di.annotations.WorkerKey
 import com.fastaccess.github.platform.works.MarkAsReadNotificationWorker
+import com.fastaccess.github.platform.works.ReactionWorker
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -14,5 +15,10 @@ import dagger.multibindings.IntoMap
     @Binds
     @IntoMap
     @WorkerKey(MarkAsReadNotificationWorker::class)
-    abstract fun bindHelloWorldWorker(worker: MarkAsReadNotificationWorker): RxWorker
+    abstract fun bindMarkAsReadNotificationWorker(worker: MarkAsReadNotificationWorker): RxWorker
+
+    @Binds
+    @IntoMap
+    @WorkerKey(ReactionWorker::class)
+    abstract fun bindReactionWorker(worker: ReactionWorker): RxWorker
 }

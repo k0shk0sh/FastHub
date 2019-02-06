@@ -53,7 +53,7 @@ class IssueTimelineHeaderViewHolder(
             } else {
                 R.color.material_red_700
             })
-            reactionGroup.setup(model.reactionGroups) {
+            reactionGroup.setup(model.id, model.reactionGroups) {
                 callback.invoke(adapterPosition)
             }
         }

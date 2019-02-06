@@ -7,6 +7,7 @@ import android.view.View
 import com.fastaccess.data.model.ReactionContent
 import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.github.R
+import com.fastaccess.github.platform.works.ReactionWorker
 import com.fastaccess.markdown.extension.*
 import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.reactions_chips_layout.view.*
@@ -26,7 +27,10 @@ class ReactionsChipGroup : ChipGroup {
         isSingleLine = true
     }
 
-    @SuppressLint("SetTextI18n") fun setup(reactionGroups: List<ReactionGroupModel>?, callback: (() -> Unit)?) {
+    @SuppressLint("SetTextI18n") fun setup(
+        id: String,
+        reactionGroups: List<ReactionGroupModel>?,
+        callback: (() -> Unit)?) {
         thumbsUp.text = "${getThumbsUpEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.THUMBS_UP }
             ?.users?.totalCount}"
@@ -46,15 +50,18 @@ class ReactionsChipGroup : ChipGroup {
             ?.firstOrNull { it.content == ReactionContent.HEART }
             ?.users?.totalCount}"
 
-        thumbsUp.setOnClickListener { react(reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP }, callback) }
-        thumbsDown.setOnClickListener { react(reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }, callback) }
-        confused.setOnClickListener { react(reactionGroups?.firstOrNull { it.content == ReactionContent.CONFUSED }, callback) }
-        laugh.setOnClickListener { react(reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH }, callback) }
-        hooray.setOnClickListener { react(reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY }, callback) }
-        heart.setOnClickListener { react(reactionGroups?.firstOrNull { it.content == ReactionContent.HEART }, callback) }
+        thumbsUp.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP }, callback) }
+        thumbsDown.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }, callback) }
+        confused.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.CONFUSED }, callback) }
+        laugh.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH }, callback) }
+        hooray.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY }, callback) }
+        heart.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HEART }, callback) }
     }
 
-    private fun react(model: ReactionGroupModel?, callback: (() -> Unit)?) {
+    private fun react(
+        id: String,
+        model: ReactionGroupModel?,
+        callback: (() -> Unit)?) {
         model?.let { reaction ->
             if (reaction.viewerHasReacted == true) {
                 reaction.users?.totalCount = reaction.users?.totalCount?.minus(1)
@@ -63,6 +70,7 @@ class ReactionsChipGroup : ChipGroup {
                 reaction.users?.totalCount = reaction.users?.totalCount?.plus(1)
                 model.viewerHasReacted = true
             }
+            ReactionWorker.enqueue(model.content?.value ?: "", id)
             callback?.invoke()
         }
     }
