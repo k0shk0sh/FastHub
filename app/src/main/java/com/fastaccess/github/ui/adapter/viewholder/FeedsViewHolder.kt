@@ -10,9 +10,9 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.replaceAllNewLines
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.feeds_main_screen_row_item.view.*
-import ru.noties.markwon.Markwon
 
 /**
  * Created by Kosh on 20.10.18.
@@ -277,7 +277,7 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
             .append("${item.repo?.name}")
             .bold("#${item.payload?.issue?.number}")
 
-        view.feedDescription.text = Markwon.markdown(view.context, item.payload?.comment?.body?.replaceAllNewLines() ?: "")
+        view.feedDescription.text = item.payload?.comment?.body?.replaceAllNewLines()?.let { MarkdownProvider.stripMd(it) }
         view.feedDescription.isVisible = !item.payload?.comment?.body?.replaceAllNewLines().isNullOrEmpty()
     }
 
@@ -368,7 +368,7 @@ class FeedsViewHolder(parent: ViewGroup) : BaseViewHolder<FeedModel>(LayoutInfla
                 .append("at")
                 .space()
                 .append(item.repo?.name)
-            view.feedDescription.text = Markwon.markdown(view.context, it.description?.replaceAllNewLines() ?: "" ?: "")
+            view.feedDescription.text = it.description?.replaceAllNewLines()?.let { MarkdownProvider.stripMd(it) }
             view.feedDescription.isVisible = !it.description?.replaceAllNewLines().isNullOrEmpty()
         }
     }

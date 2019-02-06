@@ -1,6 +1,7 @@
 package com.fastaccess.markdown
 
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.core.view.doOnPreDraw
 import com.fastaccess.github.extensions.generateTextColor
 import com.fastaccess.markdown.spans.DrawableHandler
@@ -8,9 +9,8 @@ import com.fastaccess.markdown.spans.HrHandler
 import com.fastaccess.markdown.spans.PreTagHandler
 import com.fastaccess.markdown.spans.QouteHandler
 import net.nightwhistler.htmlspanner.HtmlSpanner
-import net.nightwhistler.htmlspanner.handlers.StyledTextHandler
-import net.nightwhistler.htmlspanner.style.Style
-import net.nightwhistler.htmlspanner.style.StyleValue
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 
 /**
  * Created by Kosh on 02.02.19.
@@ -46,6 +46,14 @@ object MarkdownProvider {
             }
         }
     }
+
+    fun stripHtml(text: String): String {
+        val parser = Parser.builder().build()
+        val node = parser.parse(text)
+        return HtmlCompat.fromHtml(HtmlRenderer.builder().build().render(node), HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+    }
+
+    fun stripMd(text: String) = stripHtml(text)
 
     private fun initTextView(
         width: Int,
