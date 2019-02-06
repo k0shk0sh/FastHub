@@ -79,17 +79,19 @@ class IssueFragment : BaseFragment() {
             }
             return@setOnMenuItemClickListener true
         }
-        observeChanges()
+        observeChanges(savedInstanceState)
     }
 
-    private fun observeChanges() {
-        val _lv = viewModel.getIssue(login, repo, number)
-        _lv.observe(this, object : Observer<IssueModel?> {
-            override fun onChanged(t: IssueModel?) {
-                t?.let { adapter.submitList(listOf(TimelineModel(issue = it))) }
-                _lv.removeObserver(this)
-            }
-        })
+    private fun observeChanges(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            val _lv = viewModel.getIssue(login, repo, number)
+            _lv.observe(this, object : Observer<IssueModel?> {
+                override fun onChanged(t: IssueModel?) {
+                    t?.let { adapter.submitList(listOf(TimelineModel(issue = it))) }
+                    _lv.removeObserver(this)
+                }
+            })
+        }
         viewModel.timeline.observeNotNull(this) {
             adapter.submitList(it)
         }

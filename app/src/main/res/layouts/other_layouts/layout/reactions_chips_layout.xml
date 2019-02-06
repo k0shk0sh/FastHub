@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.ChipGroup
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_normal"
+    app:singleLine="true">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/thumbsUp"
+        style="@style/ChipStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/thumbsDown"
+        style="@style/ChipStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/laugh"
+        style="@style/ChipStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/hooray"
+        style="@style/ChipStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/heart"
+        style="@style/ChipStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</com.google.android.material.chip.ChipGroup>

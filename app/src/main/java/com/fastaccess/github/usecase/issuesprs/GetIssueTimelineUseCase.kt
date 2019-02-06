@@ -232,7 +232,7 @@ class GetIssueTimelineUseCase @Inject constructor(
         node.bodyHTML.toString(), node.body, CommentAuthorAssociation.fromName(node.authorAssociation.rawValue()),
         node.viewerCannotUpdateReasons.map { reason -> CommentCannotUpdateReason.fromName(reason.rawValue()) }.toList(),
         node.reactionGroups?.map { reaction ->
-            ReactionGroupModel(reaction.content.rawValue(), reaction.createdAt, CountModel(0),
+            ReactionGroupModel(ReactionContent.getByValue(reaction.content.rawValue()), reaction.createdAt, CountModel(0),
                 reaction.isViewerHasReacted)
         }, node.createdAt, node.updatedAt, node.isViewerCanReact, node.isViewerCanDelete,
         node.isViewerCanUpdate, node.isViewerDidAuthor, node.isViewerCanMinimize
@@ -251,7 +251,8 @@ class GetIssueTimelineUseCase @Inject constructor(
             ShortUserModel(fullIssue.author?.login, fullIssue.author?.login, fullIssue.author?.url?.toString(),
                 avatarUrl = fullIssue.author?.avatarUrl?.toString()), EmbeddedRepoModel(fullIssue.repository.nameWithOwner),
             CountModel(fullIssue.userContentEdits?.totalCount), fullIssue.reactionGroups?.map {
-            ReactionGroupModel(it.content.rawValue(), it.createdAt, CountModel(it.users.totalCount), it.isViewerHasReacted)
+            ReactionGroupModel(ReactionContent.getByValue(it.content.rawValue()), it.createdAt,
+                CountModel(it.users.totalCount), it.isViewerHasReacted)
         }, fullIssue.viewerCannotUpdateReasons.map { it.rawValue() }, fullIssue.isClosed, fullIssue.isCreatedViaEmail,
             fullIssue.isLocked, fullIssue.isViewerCanReact, fullIssue.isViewerCanSubscribe, fullIssue.isViewerCanUpdate,
             fullIssue.isViewerDidAuthor)

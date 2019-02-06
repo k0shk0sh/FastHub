@@ -13,9 +13,9 @@ fun TagNodeHandler.getFontFamilySpan(builder: SpannableStringBuilder, start: Int
     return if (spans.isNotEmpty()) spans[spans.size - 1] else null
 }
 
-fun String.getLaughEmoji() = String(Character.toChars(0x1F601))
-fun String.getSadEmoji() = String(Character.toChars(0x1F615))
-fun String.getThumbsUpEmoji() = String(Character.toChars(0x1f44d))
-fun String.getThumbsDownEmoji() = String(Character.toChars(0x1f44e))
-fun String.getHoorayEmoji() = String(Character.toChars(0x1f389))
-fun String.getHeartEmoji() = String(Character.toChars(0x2764))
+fun getLaughEmoji() = String(Character.toChars(0x1F601))
+fun getSadEmoji() = String(Character.toChars(0x1F615))
+fun getThumbsUpEmoji() = String(Character.toChars(0x1f44d))
+fun getThumbsDownEmoji() = String(Character.toChars(0x1f44e))
+fun getHoorayEmoji() = String(Character.toChars(0x1f389))
+fun getHeartEmoji() = String(Character.toChars(0x2764))

@@ -109,6 +109,8 @@
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
         </LinearLayout>
 
+        <include layout="@layout/reactions_chips_layout"/>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

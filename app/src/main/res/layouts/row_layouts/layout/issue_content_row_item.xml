@@ -6,7 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_normal"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginEnd="@dimen/spacing_xs_large"
+    android:layout_marginStart="@dimen/spacing_xs_large"
+    android:layout_marginTop="@dimen/spacing_normal"
     android:orientation="vertical"
     app:cardCornerRadius="26dp">
 

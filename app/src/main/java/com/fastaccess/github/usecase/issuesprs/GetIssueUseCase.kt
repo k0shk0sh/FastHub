@@ -2,10 +2,7 @@ package com.fastaccess.github.usecase.issuesprs
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.fastaccess.data.model.CountModel
-import com.fastaccess.data.model.EmbeddedRepoModel
-import com.fastaccess.data.model.ReactionGroupModel
-import com.fastaccess.data.model.ShortUserModel
+import com.fastaccess.data.model.*
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.domain.usecase.base.BaseCompletableUseCase
@@ -42,7 +39,10 @@ class GetIssueUseCase @Inject constructor(
                     issue.title, issue.viewerSubscription?.rawValue(), ShortUserModel(issue.author?.login, issue.author?.login,
                     issue.author?.url?.toString(), avatarUrl = issue.author?.avatarUrl?.toString()),
                     EmbeddedRepoModel(issue.repository.nameWithOwner), CountModel(issue.userContentEdits?.totalCount), issue.reactionGroups
-                    ?.map { ReactionGroupModel(it.content.rawValue(), it.createdAt, CountModel(it.users.totalCount), it.isViewerHasReacted) },
+                    ?.map {
+                        ReactionGroupModel(ReactionContent.getByValue(it.content.rawValue()),
+                            it.createdAt, CountModel(it.users.totalCount), it.isViewerHasReacted)
+                    },
                     issue.viewerCannotUpdateReasons.map { it.rawValue() }, issue.isClosed, issue.isCreatedViaEmail, issue.isLocked,
                     issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor)
             }

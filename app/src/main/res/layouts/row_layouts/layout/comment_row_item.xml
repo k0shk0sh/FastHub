@@ -68,9 +68,12 @@
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textIsSelectable="true"
             android:layout_gravity="center"
+            android:textIsSelectable="true"
             tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
+
+        <include layout="@layout/reactions_chips_layout"/>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
