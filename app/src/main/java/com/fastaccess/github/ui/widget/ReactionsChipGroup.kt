@@ -70,7 +70,7 @@ class ReactionsChipGroup : ChipGroup {
                 reaction.users?.totalCount = reaction.users?.totalCount?.plus(1)
                 model.viewerHasReacted = true
             }
-            ReactionWorker.enqueue(model.content?.value ?: "", id)
+            ReactionWorker.enqueue(model.content?.value ?: "", id, model.viewerHasReacted == false)
             callback?.invoke()
         }
     }

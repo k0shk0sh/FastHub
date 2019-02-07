@@ -2,10 +2,7 @@ package com.fastaccess.extension
 
 import com.fastaccess.data.model.*
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
-import github.fragment.CommitFragment
-import github.fragment.ShortActor
-import github.fragment.ShortIssueRowItem
-import github.fragment.ShortPullRequestRowItem
+import github.fragment.*
 
 /**
  * Created by Kosh on 05.02.19.
@@ -21,6 +18,9 @@ fun ShortPullRequestRowItem.toPullRequest(): MyIssuesPullsModel = MyIssuesPullsM
 fun ShortIssueRowItem.toIssue(): MyIssuesPullsModel = MyIssuesPullsModel(id, databaseId, number,
     title, repository.nameWithOwner, comments.totalCount, "", url.toString())
 
-fun CommitFragment.toCommit() : CommitModel = CommitModel(id,
+fun CommitFragment.toCommit(): CommitModel = CommitModel(id,
     ShortUserModel(author?.name, author?.name, avatarUrl = author?.avatarUrl?.toString()), message,
     abbreviatedOid, oid.toString(), commitUrl.toString(), authoredDate, isCommittedViaWeb)
+
+fun Reactions.toReactionGroup(): ReactionGroupModel = ReactionGroupModel(ReactionContent.getByValue(this.content.rawValue()),
+    this.createdAt, CountModel(this.users.totalCount), this.isViewerHasReacted)

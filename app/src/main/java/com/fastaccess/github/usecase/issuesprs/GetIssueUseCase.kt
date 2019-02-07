@@ -2,10 +2,13 @@ package com.fastaccess.github.usecase.issuesprs
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.fastaccess.data.model.*
+import com.fastaccess.data.model.CountModel
+import com.fastaccess.data.model.EmbeddedRepoModel
+import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.domain.usecase.base.BaseCompletableUseCase
+import com.fastaccess.extension.toReactionGroup
 import github.GetIssueQuery
 import io.reactivex.Completable
 import javax.inject.Inject
@@ -38,11 +41,8 @@ class GetIssueUseCase @Inject constructor(
                     issue.body, issue.bodyHTML.toString(), issue.closedAt, issue.createdAt, issue.updatedAt, issue.state.rawValue(),
                     issue.title, issue.viewerSubscription?.rawValue(), ShortUserModel(issue.author?.login, issue.author?.login,
                     issue.author?.url?.toString(), avatarUrl = issue.author?.avatarUrl?.toString()),
-                    EmbeddedRepoModel(issue.repository.nameWithOwner), CountModel(issue.userContentEdits?.totalCount), issue.reactionGroups
-                    ?.map {
-                        ReactionGroupModel(ReactionContent.getByValue(it.content.rawValue()),
-                            it.createdAt, CountModel(it.users.totalCount), it.isViewerHasReacted)
-                    },
+                    EmbeddedRepoModel(issue.repository.nameWithOwner), CountModel(issue.userContentEdits?.totalCount),
+                    issue.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
                     issue.viewerCannotUpdateReasons.map { it.rawValue() }, issue.isClosed, issue.isCreatedViaEmail, issue.isLocked,
                     issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor)
             }

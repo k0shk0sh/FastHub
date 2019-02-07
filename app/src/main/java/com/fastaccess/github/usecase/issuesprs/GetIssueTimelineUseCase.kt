@@ -7,10 +7,7 @@ import com.fastaccess.data.model.*
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
-import com.fastaccess.extension.toCommit
-import com.fastaccess.extension.toIssue
-import com.fastaccess.extension.toPullRequest
-import com.fastaccess.extension.toUser
+import com.fastaccess.extension.*
 import github.GetIssueTimelineQuery
 import github.GetIssueTimelineQuery.*
 import io.reactivex.Observable
@@ -231,11 +228,8 @@ class GetIssueTimelineUseCase @Inject constructor(
         ShortUserModel(node.author?.login, node.author?.login, avatarUrl = node.author?.avatarUrl.toString()),
         node.bodyHTML.toString(), node.body, CommentAuthorAssociation.fromName(node.authorAssociation.rawValue()),
         node.viewerCannotUpdateReasons.map { reason -> CommentCannotUpdateReason.fromName(reason.rawValue()) }.toList(),
-        node.reactionGroups?.map { reaction ->
-            ReactionGroupModel(ReactionContent.getByValue(reaction.content.rawValue()), reaction.createdAt, CountModel(0),
-                reaction.isViewerHasReacted)
-        }, node.createdAt, node.updatedAt, node.isViewerCanReact, node.isViewerCanDelete,
-        node.isViewerCanUpdate, node.isViewerDidAuthor, node.isViewerCanMinimize
+        node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }, node.createdAt, node.updatedAt,
+        node.isViewerCanReact, node.isViewerCanDelete, node.isViewerCanUpdate, node.isViewerDidAuthor, node.isViewerCanMinimize
     ))
 
     private fun getCommit(node: AsCommit) = TimelineModel(commit = node.fragments.commitFragment?.toCommit())
@@ -250,10 +244,8 @@ class GetIssueTimelineUseCase @Inject constructor(
             fullIssue.state.rawValue(), fullIssue.title, fullIssue.viewerSubscription?.rawValue(),
             ShortUserModel(fullIssue.author?.login, fullIssue.author?.login, fullIssue.author?.url?.toString(),
                 avatarUrl = fullIssue.author?.avatarUrl?.toString()), EmbeddedRepoModel(fullIssue.repository.nameWithOwner),
-            CountModel(fullIssue.userContentEdits?.totalCount), fullIssue.reactionGroups?.map {
-            ReactionGroupModel(ReactionContent.getByValue(it.content.rawValue()), it.createdAt,
-                CountModel(it.users.totalCount), it.isViewerHasReacted)
-        }, fullIssue.viewerCannotUpdateReasons.map { it.rawValue() }, fullIssue.isClosed, fullIssue.isCreatedViaEmail,
+            CountModel(fullIssue.userContentEdits?.totalCount), fullIssue.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
+            fullIssue.viewerCannotUpdateReasons.map { it.rawValue() }, fullIssue.isClosed, fullIssue.isCreatedViaEmail,
             fullIssue.isLocked, fullIssue.isViewerCanReact, fullIssue.isViewerCanSubscribe, fullIssue.isViewerCanUpdate,
             fullIssue.isViewerDidAuthor)
         issueRepositoryProvider.upsert(issueModel)

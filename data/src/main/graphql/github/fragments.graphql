@@ -114,15 +114,19 @@ fragment FullIssue on Issue {
       url
     }
     reactionGroups {
-      content
-      createdAt
-      viewerHasReacted
-      users(first: 0) {
-        totalCount
-      }
+      ... Reactions
     }
     createdViaEmail
     repository {
       nameWithOwner
     }
+}
+
+fragment Reactions on ReactionGroup {
+  content
+  createdAt
+  viewerHasReacted
+  users(first: 0) {
+    totalCount
+  }
 }

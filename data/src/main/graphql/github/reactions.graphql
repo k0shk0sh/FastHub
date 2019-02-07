@@ -3,3 +3,9 @@ mutation addReaction($subjectId: ID!, $reaction: ReactionContent!) {
     clientMutationId
   }
 }
+
+mutation removeReaction($subjectId: ID!, $reaction: ReactionContent!) {
+  removeReaction(input: {subjectId: $subjectId, content: $reaction}) {
+    clientMutationId
+  }
+}
