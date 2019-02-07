@@ -63,14 +63,17 @@ class ReactionsChipGroup : ChipGroup {
         model: ReactionGroupModel?,
         callback: (() -> Unit)?) {
         model?.let { reaction ->
+            val add: Boolean
             if (reaction.viewerHasReacted == true) {
                 reaction.users?.totalCount = reaction.users?.totalCount?.minus(1)
                 model.viewerHasReacted = false
+                add = false
             } else {
                 reaction.users?.totalCount = reaction.users?.totalCount?.plus(1)
                 model.viewerHasReacted = true
+                add = true
             }
-            ReactionWorker.enqueue(model.content?.value ?: "", id, model.viewerHasReacted == false)
+            ReactionWorker.enqueue(model.content?.value ?: "", id, add)
             callback?.invoke()
         }
     }
