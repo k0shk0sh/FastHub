@@ -12,7 +12,7 @@ pool:
 steps:
 - task: Gradle@2
   inputs:
-    workingDirectory: ''
+    workingDirectory: '/home/'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
