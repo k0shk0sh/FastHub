@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.PopupWindow
 import com.fastaccess.data.model.ReactionContent
 import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.github.R
@@ -24,12 +25,12 @@ class ReactionsChipGroup : ChipGroup {
     override fun onFinishInflate() {
         super.onFinishInflate()
         View.inflate(context, R.layout.reactions_chips_layout, this)
-        isSingleLine = false
     }
 
     @SuppressLint("SetTextI18n") fun setup(
         id: String,
         reactionGroups: List<ReactionGroupModel>?,
+        popupWindow: PopupWindow? = null,
         callback: (() -> Unit)?) {
         thumbsUp.text = "${getThumbsUpEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.THUMBS_UP }
@@ -56,19 +57,20 @@ class ReactionsChipGroup : ChipGroup {
             ?.firstOrNull { it.content == ReactionContent.EYES }
             ?.users?.totalCount}"
 
-        thumbsUp.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP }, callback) }
-        thumbsDown.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }, callback) }
-        confused.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.CONFUSED }, callback) }
-        laugh.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH }, callback) }
-        hooray.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY }, callback) }
-        heart.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HEART }, callback) }
-        rocket.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.ROCKET }, callback) }
-        eyes.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.EYES }, callback) }
+        thumbsUp.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP }, popupWindow, callback) }
+        thumbsDown.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }, popupWindow, callback) }
+        confused.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.CONFUSED }, popupWindow, callback) }
+        laugh.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH }, popupWindow, callback) }
+        hooray.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY }, popupWindow, callback) }
+        heart.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HEART }, popupWindow, callback) }
+        rocket.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.ROCKET }, popupWindow, callback) }
+        eyes.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.EYES }, popupWindow, callback) }
     }
 
     private fun react(
         id: String,
         model: ReactionGroupModel?,
+        popupWindow: PopupWindow?,
         callback: (() -> Unit)?) {
         model?.let { reaction ->
             val add: Boolean
@@ -83,6 +85,7 @@ class ReactionsChipGroup : ChipGroup {
             }
             ReactionWorker.enqueue(model.content?.value ?: "", id, add)
             callback?.invoke()
+            popupWindow?.dismiss()
         }
     }
 }

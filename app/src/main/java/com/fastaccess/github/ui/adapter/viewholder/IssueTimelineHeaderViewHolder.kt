@@ -9,6 +9,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import com.fastaccess.markdown.widget.SpannableBuilder
@@ -42,7 +43,7 @@ class IssueTimelineHeaderViewHolder(
 
             userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
             author.text = model.author?.login
-            association.text =if ("NONE" == model.authorAssociation) {
+            association.text = if ("NONE" == model.authorAssociation) {
                 model.updatedAt?.timeAgo()
             } else {
                 "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
@@ -55,8 +56,10 @@ class IssueTimelineHeaderViewHolder(
             } else {
                 R.color.material_red_700
             })
-            reactionGroup.setup(model.id, model.reactionGroups) {
-                callback.invoke(adapterPosition)
+            addEmoji.setOnClickListener {
+                it.popupEmoji(requireNotNull(model.id), model.reactionGroups) {
+                    callback.invoke(adapterPosition)
+                }
             }
         }
     }

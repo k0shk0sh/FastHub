@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.TransitionManager
+import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.getDrawableCompat
@@ -20,6 +22,7 @@ import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.ui.widget.recyclerview.decoration.InsetDividerDecoration
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.reaction_group_chip_widget.view.*
 
 /**
  * Created by Kosh on 03.06.18.
@@ -154,4 +157,18 @@ fun View.showKeyboard() {
 fun View.hideKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)
+}
+
+fun View.popupEmoji(id: String, list: List<ReactionGroupModel>?, callback: (() -> Unit)?) {
+    val popupWindow = PopupWindow(context)
+
+    val view = View.inflate(context, R.layout.reaction_group_chip_widget, null)
+    view.reactionGroup.setup(id, list, popupWindow, callback)
+    popupWindow.contentView = view
+    popupWindow.setBackgroundDrawable(context.getDrawableCompat(R.drawable.popup_window_background))
+    popupWindow.elevation = resources.getDimension(R.dimen.spacing_normal)
+    popupWindow.isOutsideTouchable = true
+    popupWindow.isFocusable = true
+    popupWindow.isTouchable = true
+    popupWindow.showAsDropDown(this)
 }

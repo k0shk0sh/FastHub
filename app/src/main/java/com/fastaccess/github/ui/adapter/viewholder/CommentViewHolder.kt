@@ -10,6 +10,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import kotlinx.android.synthetic.main.comment_row_item.view.*
@@ -45,8 +46,10 @@ class CommentViewHolder(
             MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
                 ThemeEngine.isLightTheme(theme))
 
-            reactionGroup.setup(requireNotNull(model.id), model.reactionGroups) {
-                callback.invoke(adapterPosition)
+            addEmoji.setOnClickListener {
+                it.popupEmoji(requireNotNull(model.id), model.reactionGroups) {
+                    callback.invoke(adapterPosition)
+                }
             }
         }
     }
