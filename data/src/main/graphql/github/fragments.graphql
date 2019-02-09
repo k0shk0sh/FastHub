@@ -120,6 +120,7 @@ fragment FullIssue on Issue {
     repository {
       nameWithOwner
     }
+    authorAssociation
 }
 
 fragment Reactions on ReactionGroup {

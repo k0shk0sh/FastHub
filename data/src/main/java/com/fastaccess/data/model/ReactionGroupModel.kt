@@ -42,6 +42,16 @@ enum class ReactionContent(val value: String) {
     HEART("HEART"),
 
     /**
+     * Represents the 🚀 emoji.
+     */
+    ROCKET("ROCKET"),
+
+    /**
+     * Represents the 👀 emoji.
+     */
+    EYES("EYES"),
+
+    /**
      * Auto generated constant for unknown enum values
      */
     `$UNKNOWN`("UNKNOWN");

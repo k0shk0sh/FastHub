@@ -44,7 +44,8 @@ class GetIssueUseCase @Inject constructor(
                     EmbeddedRepoModel(issue.repository.nameWithOwner), CountModel(issue.userContentEdits?.totalCount),
                     issue.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
                     issue.viewerCannotUpdateReasons.map { it.rawValue() }, issue.isClosed, issue.isCreatedViaEmail, issue.isLocked,
-                    issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor)
+                    issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor,
+                    issue.authorAssociation.rawValue())
             }
             .flatMapCompletable { Completable.fromCallable { issueRepositoryProvider.upsert(it) } }
     }

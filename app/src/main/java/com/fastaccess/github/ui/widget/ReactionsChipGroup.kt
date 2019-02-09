@@ -24,7 +24,7 @@ class ReactionsChipGroup : ChipGroup {
     override fun onFinishInflate() {
         super.onFinishInflate()
         View.inflate(context, R.layout.reactions_chips_layout, this)
-        isSingleLine = true
+        isSingleLine = false
     }
 
     @SuppressLint("SetTextI18n") fun setup(
@@ -49,6 +49,12 @@ class ReactionsChipGroup : ChipGroup {
         heart.text = "${getHeartEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.HEART }
             ?.users?.totalCount}"
+        rocket.text = "${getRocketEmoji()} ${reactionGroups
+            ?.firstOrNull { it.content == ReactionContent.ROCKET }
+            ?.users?.totalCount}"
+        eyes.text = "${getEyesEmoji()} ${reactionGroups
+            ?.firstOrNull { it.content == ReactionContent.EYES }
+            ?.users?.totalCount}"
 
         thumbsUp.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP }, callback) }
         thumbsDown.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }, callback) }
@@ -56,6 +62,8 @@ class ReactionsChipGroup : ChipGroup {
         laugh.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH }, callback) }
         hooray.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY }, callback) }
         heart.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HEART }, callback) }
+        rocket.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.ROCKET }, callback) }
+        eyes.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.EYES }, callback) }
     }
 
     private fun react(

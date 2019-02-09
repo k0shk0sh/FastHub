@@ -43,7 +43,8 @@ data class IssueModel(
     @SerializedName("viewerCanReact") var viewerCanReact: Boolean? = false,
     @SerializedName("viewerCanSubscribe") var viewerCanSubscribe: Boolean? = false,
     @SerializedName("viewerCanUpdate") var viewerCanUpdate: Boolean? = false,
-    @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = false
+    @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = false,
+    @SerializedName("authorAssociation") var authorAssociation: String? = null
 ) {
     companion object {
         const val TABLE_NAME = "issue_table"

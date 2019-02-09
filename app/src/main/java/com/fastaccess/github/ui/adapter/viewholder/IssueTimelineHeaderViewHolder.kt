@@ -41,10 +41,12 @@ class IssueTimelineHeaderViewHolder(
                 .append(model.createdAt?.timeAgo())
 
             userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
-            commentName.text = SpannableBuilder.builder()
-                .bold(model.author?.login)
-                .append(" commented ")
-                .append(model.createdAt?.timeAgo())
+            author.text = model.author?.login
+            association.text =if ("NONE" == model.authorAssociation) {
+                model.updatedAt?.timeAgo()
+            } else {
+                "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
+            }
             MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
                 ThemeEngine.isLightTheme(theme))
             state.text = model.state?.toLowerCase()

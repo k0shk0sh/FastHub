@@ -247,7 +247,7 @@ class GetIssueTimelineUseCase @Inject constructor(
             CountModel(fullIssue.userContentEdits?.totalCount), fullIssue.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
             fullIssue.viewerCannotUpdateReasons.map { it.rawValue() }, fullIssue.isClosed, fullIssue.isCreatedViaEmail,
             fullIssue.isLocked, fullIssue.isViewerCanReact, fullIssue.isViewerCanSubscribe, fullIssue.isViewerCanUpdate,
-            fullIssue.isViewerDidAuthor)
+            fullIssue.isViewerDidAuthor, fullIssue.authorAssociation.rawValue())
         issueRepositoryProvider.upsert(issueModel)
         if (!page.defined) {
             list.add(TimelineModel(issueModel))
