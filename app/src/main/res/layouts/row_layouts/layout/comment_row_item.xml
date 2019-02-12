@@ -91,6 +91,17 @@
             android:textIsSelectable="true"
             tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/reactionsText"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeStepGranularity="1dp"
+            tools:text="emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, "/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

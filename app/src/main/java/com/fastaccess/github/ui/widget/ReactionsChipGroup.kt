@@ -7,9 +7,9 @@ import android.view.View
 import android.widget.PopupWindow
 import com.fastaccess.data.model.ReactionContent
 import com.fastaccess.data.model.ReactionGroupModel
+import com.fastaccess.data.model.getEmoji
 import com.fastaccess.github.R
 import com.fastaccess.github.platform.works.ReactionWorker
-import com.fastaccess.markdown.extension.*
 import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.reactions_chips_layout.view.*
 
@@ -32,28 +32,28 @@ class ReactionsChipGroup : ChipGroup {
         reactionGroups: List<ReactionGroupModel>?,
         popupWindow: PopupWindow? = null,
         callback: (() -> Unit)?) {
-        thumbsUp.text = "${getThumbsUpEmoji()} ${reactionGroups
+        thumbsUp.text = "${ReactionContent.THUMBS_UP.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.THUMBS_UP }
             ?.users?.totalCount}"
-        thumbsDown.text = "${getThumbsDownEmoji()} ${reactionGroups
+        thumbsDown.text = "${ReactionContent.THUMBS_DOWN.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }
             ?.users?.totalCount}"
-        confused.text = "${getSadEmoji()} ${reactionGroups
+        confused.text = "${ReactionContent.CONFUSED.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.CONFUSED }
             ?.users?.totalCount}"
-        laugh.text = "${getLaughEmoji()} ${reactionGroups
+        laugh.text = "${ReactionContent.LAUGH.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.LAUGH }
             ?.users?.totalCount}"
-        hooray.text = "${getHoorayEmoji()} ${reactionGroups
+        hooray.text = "${ReactionContent.HOORAY.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.HOORAY }
             ?.users?.totalCount}"
-        heart.text = "${getHeartEmoji()} ${reactionGroups
+        heart.text = "${ReactionContent.HEART.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.HEART }
             ?.users?.totalCount}"
-        rocket.text = "${getRocketEmoji()} ${reactionGroups
+        rocket.text = "${ReactionContent.ROCKET.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.ROCKET }
             ?.users?.totalCount}"
-        eyes.text = "${getEyesEmoji()} ${reactionGroups
+        eyes.text = "${ReactionContent.EYES.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.EYES }
             ?.users?.totalCount}"
 

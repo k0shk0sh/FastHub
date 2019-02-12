@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
 import com.fastaccess.data.model.CommentModel
+import com.fastaccess.data.model.getEmoji
 import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.timeAgo
@@ -50,6 +51,22 @@ class CommentViewHolder(
                 it.popupEmoji(requireNotNull(model.id), model.reactionGroups) {
                     callback.invoke(adapterPosition)
                 }
+            }
+
+            reactionsText.isVisible = model.reactionGroups?.any { it.users?.totalCount != 0 } ?: false
+            if (reactionsText.isVisible) {
+                val stringBuilder = StringBuilder()
+                model.reactionGroups?.forEach {
+                    if (it.users?.totalCount != 0) {
+                        stringBuilder.append(it.content.getEmoji())
+                            .append(" ")
+                            .append("${it.users?.totalCount}")
+                            .append("   ")
+                    }
+                }
+                reactionsText.text = stringBuilder
+            } else {
+                reactionsText.text = ""
             }
         }
     }

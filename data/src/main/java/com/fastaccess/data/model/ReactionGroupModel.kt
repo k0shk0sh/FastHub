@@ -10,6 +10,19 @@ data class ReactionGroupModel(
     @SerializedName("viewerHasReacted") var viewerHasReacted: Boolean? = false
 )
 
+
+fun ReactionContent?.getEmoji(): String = when (this ?: ReactionContent.`$UNKNOWN`) {
+    ReactionContent.THUMBS_UP -> String(Character.toChars(0x1f44d))
+    ReactionContent.THUMBS_DOWN -> String(Character.toChars(0x1f44e))
+    ReactionContent.LAUGH -> String(Character.toChars(0x1F601))
+    ReactionContent.HOORAY -> String(Character.toChars(0x1f389))
+    ReactionContent.CONFUSED -> String(Character.toChars(0x1F615))
+    ReactionContent.HEART -> String(Character.toChars(0x2764))
+    ReactionContent.ROCKET -> String(Character.toChars(0x1f680))
+    ReactionContent.EYES -> String(Character.toChars(0x1f440))
+    ReactionContent.`$UNKNOWN` -> ""
+}
+
 enum class ReactionContent(val value: String) {
     /**
      * Represents the 👍 emoji.
@@ -58,5 +71,7 @@ enum class ReactionContent(val value: String) {
 
     companion object {
         fun getByValue(value: String? = null): ReactionContent? = values().firstOrNull { it.value == value }
+
+
     }
 }
