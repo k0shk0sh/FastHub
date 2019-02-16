@@ -21,7 +21,7 @@ class EditIssurPrUseCase @Inject constructor(
 
     override fun buildObservable(): Observable<*> = issueRepositoryProvider.getIssueByNumberSingle("$login/$repo", number)
         .flatMapObservable { issue ->
-            issuePrService.editIssue(login, repo, number, IssueRequestModel(state = if (issue.state == "closed") "open" else "closed"))
+            issuePrService.editIssue(login, repo, number, IssueRequestModel(state = if ("closed".equals(issue.state, true)) "open" else "closed"))
                 .map {
                     issue.state = it.issueState
                     issueRepositoryProvider.upsert(issue)
