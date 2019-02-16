@@ -81,6 +81,7 @@ class IssueFragment : BaseFragment() {
                     recyclerView.scrollToPosition(0)
                     viewModel.loadData(login, repo, number, true)
                 }
+                R.id.closeIssue -> viewModel.closeOpenIssue(login, repo, number)
             }
             return@setOnMenuItemClickListener true
         }

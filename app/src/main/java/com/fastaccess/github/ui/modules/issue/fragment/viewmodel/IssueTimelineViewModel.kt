@@ -6,6 +6,7 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.usecase.issuesprs.EditIssurPrUseCase
 import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
 import javax.inject.Inject
 
@@ -14,7 +15,8 @@ import javax.inject.Inject
  */
 class IssueTimelineViewModel @Inject constructor(
     private val timelineUseCase: GetIssueTimelineUseCase,
-    private val issueRepositoryProvider: IssueRepositoryProvider
+    private val issueRepositoryProvider: IssueRepositoryProvider,
+    private val editIssuePrUseCase: EditIssurPrUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -24,6 +26,7 @@ class IssueTimelineViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         timelineUseCase.dispose()
+        editIssuePrUseCase.dispose()
     }
 
     fun getIssue(login: String, repo: String, number: Int) = issueRepositoryProvider.getIssueByNumber("$login/$repo", number)
@@ -46,6 +49,13 @@ class IssueTimelineViewModel @Inject constructor(
                 list.addAll(it.second)
                 timeline.postValue(ArrayList(list))
             })
+    }
+
+    fun closeOpenIssue(login: String, repo: String, number: Int) {
+        editIssuePrUseCase.repo = repo
+        editIssuePrUseCase.login = login
+        editIssuePrUseCase.number = number
+        justSubscribe(editIssuePrUseCase.buildObservable())
     }
 
     fun hasNext() = pageInfo?.hasNextPage ?: false

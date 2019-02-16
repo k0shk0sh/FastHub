@@ -5,10 +5,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.response.CustomTypeAdapter
 import com.apollographql.apollo.response.CustomTypeValue
 import com.fastaccess.domain.HttpLoggingInterceptor
-import com.fastaccess.domain.repository.services.LoginService
-import com.fastaccess.domain.repository.services.NotificationService
-import com.fastaccess.domain.repository.services.OrganizationService
-import com.fastaccess.domain.repository.services.UserService
+import com.fastaccess.domain.repository.services.*
 import com.fastaccess.github.BuildConfig
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -80,6 +77,7 @@ class NetworkModule {
     @Singleton @Provides fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
     @Singleton @Provides fun provideNotificationService(retrofit: Retrofit): NotificationService = retrofit.create(NotificationService::class.java)
     @Singleton @Provides fun provideOrganizationService(retrofit: Retrofit): OrganizationService = retrofit.create(OrganizationService::class.java)
+    @Singleton @Provides fun provideIssueService(retrofit: Retrofit): IssuePrService = retrofit.create(IssuePrService::class.java)
 }
 
 class AuthenticationInterceptor(var otp: String? = null,
@@ -191,9 +189,9 @@ private class UriApolloAdapter : CustomTypeAdapter<URI> {
     override fun decode(value: CustomTypeValue<*>): URI = URI.create(value.value.toString())
 }
 
-private class ObjectApolloAdapter : CustomTypeAdapter<Object> {
-    override fun encode(value: Object): CustomTypeValue<String> = CustomTypeValue.GraphQLString(value.toString())
-    override fun decode(value: CustomTypeValue<*>): Object = value.value.cast()
+private class ObjectApolloAdapter : CustomTypeAdapter<Any> {
+    override fun encode(value: Any): CustomTypeValue<String> = CustomTypeValue.GraphQLString(value.toString())
+    override fun decode(value: CustomTypeValue<*>): Any = value.value.cast()
 }
 
 private class DateApolloAdapter : CustomTypeAdapter<Date> {

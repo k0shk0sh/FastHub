@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.fastaccess.data.persistence.dao.IssueDao
 import com.fastaccess.data.persistence.models.IssueModel
+import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -16,6 +17,7 @@ class IssueRepositoryProvider @Inject constructor(
     override fun getIssues(repo: String, state: String): DataSource.Factory<Int, IssueModel> = dao.getIssues(repo, state)
     override fun getIssueById(id: String): LiveData<IssueModel> = dao.getIssueById(id)
     override fun getIssueByNumber(repo: String, number: Int): LiveData<IssueModel> = dao.getIssueByNumber(repo, number)
+    override fun getIssueByNumberSingle(repo: String, number: Int): Single<IssueModel> = dao.getIssueByNumberSingle(repo, number)
     override fun deleteAll(repo: String) = dao.deleteAll(repo)
     override fun deleteAll() = dao.deleteAll()
 
@@ -26,6 +28,7 @@ interface IssueRepository {
     fun getIssues(repo: String, state: String): DataSource.Factory<Int, IssueModel>
     fun getIssueById(id: String): LiveData<IssueModel>
     fun getIssueByNumber(repo: String, number: Int): LiveData<IssueModel>
+    fun getIssueByNumberSingle(repo: String, number: Int): Single<IssueModel>
     fun deleteAll(repo: String)
     fun deleteAll()
 }

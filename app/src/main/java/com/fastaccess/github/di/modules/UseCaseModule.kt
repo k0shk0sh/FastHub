@@ -2,16 +2,14 @@ package com.fastaccess.github.di.modules
 
 import com.apollographql.apollo.ApolloClient
 import com.fastaccess.data.repository.*
+import com.fastaccess.domain.repository.services.IssuePrService
 import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase
 import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
 import com.fastaccess.github.usecase.feed.FeedsUseCase
-import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
-import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
-import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
-import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
+import com.fastaccess.github.usecase.issuesprs.*
 import com.fastaccess.github.usecase.main.IssuesMainScreenUseCase
 import com.fastaccess.github.usecase.main.PullRequestsMainScreenUseCase
 import com.fastaccess.github.usecase.notification.NotificationUseCase
@@ -118,5 +116,12 @@ class UseCaseModule {
         apolloClient: ApolloClient
     ): GetIssueTimelineUseCase {
         return GetIssueTimelineUseCase(issueRepositoryProvider, apolloClient)
+    }
+
+    @PerFragment @Provides fun provideEditIssurPrUseCase(
+        issueRepositoryProvider: IssueRepositoryProvider,
+        issuePrService: IssuePrService
+    ): EditIssurPrUseCase {
+        return EditIssurPrUseCase(issueRepositoryProvider, issuePrService)
     }
 }
