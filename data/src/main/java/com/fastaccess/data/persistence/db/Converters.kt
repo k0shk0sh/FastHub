@@ -3,7 +3,10 @@ package com.fastaccess.data.persistence.db
 import androidx.room.TypeConverter
 import com.fastaccess.data.model.CountModel
 import com.fastaccess.data.model.ReactionGroupModel
-import com.fastaccess.data.persistence.models.*
+import com.fastaccess.data.persistence.models.PayloadModel
+import com.fastaccess.data.persistence.models.RepositoryModel
+import com.fastaccess.data.persistence.models.UserOrganizationModel
+import com.fastaccess.data.persistence.models.UserPinnedReposModel
 import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -56,7 +59,7 @@ class UserPinnedReposModelConverter {
 class ReactionGroupConverter {
     @TypeConverter fun toDbValue(data: List<ReactionGroupModel>? = null): String? = data?.toJson()
     @TypeConverter fun fromDbToValue(data: String? = null): List<ReactionGroupModel>? = data?.let {
-        Gson().fromJson(it, object : TypeToken<List<FeedModel>>() {}.type)
+        Gson().fromJson(it, object : TypeToken<List<ReactionGroupModel>>() {}.type)
     }
 }
 

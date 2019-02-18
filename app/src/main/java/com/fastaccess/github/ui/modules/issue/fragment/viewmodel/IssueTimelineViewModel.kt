@@ -8,12 +8,15 @@ import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.EditIssurPrUseCase
 import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
+import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
+import io.reactivex.Observable
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 20.10.18.
  */
 class IssueTimelineViewModel @Inject constructor(
+    private val issueUseCase: GetIssueUseCase,
     private val timelineUseCase: GetIssueTimelineUseCase,
     private val issueRepositoryProvider: IssueRepositoryProvider,
     private val editIssuePrUseCase: EditIssurPrUseCase
@@ -27,6 +30,7 @@ class IssueTimelineViewModel @Inject constructor(
         super.onCleared()
         timelineUseCase.dispose()
         editIssuePrUseCase.dispose()
+        issueUseCase.dispose()
     }
 
     fun getIssue(login: String, repo: String, number: Int) = issueRepositoryProvider.getIssueByNumber("$login/$repo", number)
@@ -39,16 +43,28 @@ class IssueTimelineViewModel @Inject constructor(
         val pageInfo = pageInfo
         if (!reload && (pageInfo != null && !pageInfo.hasNextPage)) return
         val cursor = if (hasNext()) pageInfo?.endCursor else null
+        if (pageInfo == null) {
+            issueUseCase.login = login
+            issueUseCase.repo = repo
+            issueUseCase.number = number
+            justSubscribe(issueUseCase.buildObservable()
+                .flatMap { loadTimeline(login, repo, number, cursor) })
+        } else {
+            justSubscribe(loadTimeline(login, repo, number, cursor))
+        }
+    }
+
+    private fun loadTimeline(login: String, repo: String, number: Int, cursor: String?): Observable<Pair<PageInfoModel, List<TimelineModel>>> {
         timelineUseCase.login = login
         timelineUseCase.repo = repo
         timelineUseCase.number = number
         timelineUseCase.page = Input.optional(cursor)
-        justSubscribe(timelineUseCase.buildObservable()
+        return timelineUseCase.buildObservable()
             .doOnNext {
                 this.pageInfo = it.first
                 list.addAll(it.second)
                 timeline.postValue(ArrayList(list))
-            })
+            }
     }
 
     fun closeOpenIssue(login: String, repo: String, number: Int) {

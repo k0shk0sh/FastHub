@@ -9,7 +9,6 @@ import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.IssueTimelineHeaderViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
 import net.nightwhistler.htmlspanner.HtmlSpanner
 
@@ -39,7 +38,6 @@ class IssueTimelineAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            HEADER -> IssueTimelineHeaderViewHolder(parent, htmlSpanner, theme, notifyCallback)
             COMMENT -> CommentViewHolder(parent, htmlSpanner, theme, notifyCallback)
             CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
@@ -48,7 +46,6 @@ class IssueTimelineAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is IssueTimelineHeaderViewHolder -> holder.bind(getItem(position).issue)
             is CommentViewHolder -> holder.bind(getItem(position).comment)
             is IssueContentViewHolder -> holder.bind(getItem(position))
         }

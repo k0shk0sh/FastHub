@@ -32,7 +32,6 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
   repositoryOwner(login: $login) {
     repository(name: $repo) {
       issue(number: $number) {
-        ... FullIssue
         timeline(first: 30, after: $page) {
           totalCount
           pageInfo {

@@ -4,7 +4,6 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.*
-import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.*
@@ -12,7 +11,6 @@ import github.GetIssueTimelineQuery
 import github.GetIssueTimelineQuery.*
 import io.reactivex.Observable
 import me.eugeniomarletti.kotlin.metadata.shadow.utils.addIfNotNull
-import org.jetbrains.annotations.Nullable
 import javax.inject.Inject
 
 /**
@@ -41,7 +39,6 @@ class GetIssueTimelineUseCase @Inject constructor(
             .map { it.data()?.repositoryOwner?.repository?.issue }
             .map {
                 val list = arrayListOf<TimelineModel>()
-                addIssue(it, list)
                 val timeline = it.timeline
                 val pageInfo = PageInfoModel(timeline.pageInfo.startCursor, timeline.pageInfo.endCursor,
                     timeline.pageInfo.isHasNextPage, timeline.pageInfo.isHasPreviousPage)
@@ -233,24 +230,4 @@ class GetIssueTimelineUseCase @Inject constructor(
     ))
 
     private fun getCommit(node: AsCommit) = TimelineModel(commit = node.fragments.commitFragment?.toCommit())
-
-    private fun addIssue(
-        it: @Nullable Issue,
-        list: ArrayList<TimelineModel>
-    ) {
-        val fullIssue = it.fragments.fullIssue
-        val issueModel = IssueModel(fullIssue.id, fullIssue.databaseId, fullIssue.number, fullIssue.activeLockReason?.rawValue(),
-            fullIssue.body, fullIssue.bodyHTML.toString(), fullIssue.closedAt, fullIssue.createdAt, fullIssue.updatedAt,
-            fullIssue.state.rawValue(), fullIssue.title, fullIssue.viewerSubscription?.rawValue(),
-            ShortUserModel(fullIssue.author?.login, fullIssue.author?.login, fullIssue.author?.url?.toString(),
-                avatarUrl = fullIssue.author?.avatarUrl?.toString()), EmbeddedRepoModel(fullIssue.repository.nameWithOwner),
-            CountModel(fullIssue.userContentEdits?.totalCount), fullIssue.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
-            fullIssue.viewerCannotUpdateReasons.map { it.rawValue() }, fullIssue.isClosed, fullIssue.isCreatedViaEmail,
-            fullIssue.isLocked, fullIssue.isViewerCanReact, fullIssue.isViewerCanSubscribe, fullIssue.isViewerCanUpdate,
-            fullIssue.isViewerDidAuthor, fullIssue.authorAssociation.rawValue())
-        issueRepositoryProvider.upsert(issueModel)
-        if (!page.defined) {
-            list.add(TimelineModel(issueModel))
-        }
-    }
 }

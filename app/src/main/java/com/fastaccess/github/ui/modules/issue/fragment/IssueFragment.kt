@@ -5,18 +5,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.children
-import androidx.lifecycle.Observer
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.getEmoji
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.utils.EXTRA
@@ -24,9 +26,12 @@ import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.isConnected
+import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
+import com.fastaccess.markdown.MarkdownProvider
+import com.fastaccess.markdown.widget.SpannableBuilder
 import kotlinx.android.synthetic.main.empty_state_layout.*
-import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
+import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
 import javax.inject.Inject
@@ -49,6 +54,7 @@ class IssueFragment : BaseFragment() {
     override fun viewModel(): BaseViewModel? = viewModel
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
+        swipeRefresh.appBarLayout = appBar
         setupToolbar("${getString(R.string.issue)}#$number")
         bottomBar.inflateMenu(R.menu.issue_menu)
         bottomBar.menu.children.forEach {
@@ -64,7 +70,6 @@ class IssueFragment : BaseFragment() {
         if (savedInstanceState == null) {
             isConnected().isTrue { viewModel.loadData(login, repo, number, true) }
         }
-
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 recyclerView.resetScrollState()
@@ -89,20 +94,58 @@ class IssueFragment : BaseFragment() {
     }
 
     private fun observeChanges(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            val _lv = viewModel.getIssue(login, repo, number)
-            _lv.observe(this, object : Observer<IssueModel?> {
-                override fun onChanged(t: IssueModel?) {
-                    t?.let { adapter.submitList(listOf(TimelineModel(issue = it))) }
-                    _lv.removeObserver(this)
-                }
-            })
+        viewModel.getIssue(login, repo, number).observeNotNull(this) {
+            bind(it)
         }
         viewModel.timeline.observeNotNull(this) {
             adapter.submitList(it)
         }
     }
 
+    private fun bind(model: IssueModel) {
+        val theme = preference.theme
+        title.text = model.title
+        opener.text = SpannableBuilder.builder()
+            .bold(model.author?.login)
+            .append(" opened this issue ")
+            .append(model.createdAt?.timeAgo())
+
+        userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
+        author.text = model.author?.login
+        association.text = if ("NONE" == model.authorAssociation) {
+            model.updatedAt?.timeAgo()
+        } else {
+            "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
+        }
+        MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
+            ThemeEngine.isLightTheme(theme))
+        state.text = model.state?.toLowerCase()
+        state.setChipBackgroundColorResource(if ("OPEN" == model.state) {
+            R.color.material_green_700
+        } else {
+            R.color.material_red_700
+        })
+        addEmoji.setOnClickListener {
+            it.popupEmoji(requireNotNull(model.id), model.reactionGroups) {
+                //                    callback.invoke(adapterPosition)
+            }
+        }
+        reactionsText.isVisible = model.reactionGroups?.any { it.users?.totalCount != 0 } ?: false
+        if (reactionsText.isVisible) {
+            val stringBuilder = StringBuilder()
+            model.reactionGroups?.forEach {
+                if (it.users?.totalCount != 0) {
+                    stringBuilder.append(it.content.getEmoji())
+                        .append(" ")
+                        .append("${it.users?.totalCount}")
+                        .append("   ")
+                }
+            }
+            reactionsText.text = stringBuilder
+        } else {
+            reactionsText.text = ""
+        }
+    }
 
     companion object {
         const val TAG = "IssueFragment"
