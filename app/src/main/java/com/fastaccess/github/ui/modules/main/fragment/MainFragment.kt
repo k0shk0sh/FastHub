@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.MainScreenModel
-import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
@@ -22,7 +21,9 @@ import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
-import com.fastaccess.github.utils.*
+import com.fastaccess.github.utils.NOTIFICATION_LINK
+import com.fastaccess.github.utils.SEARCH_LINK
+import com.fastaccess.github.utils.TRENDING_LINK
 import com.fastaccess.github.utils.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
@@ -48,7 +49,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
         if (savedInstanceState == null) {
             isConnected().isTrue { viewModel.load() }
         }
-        setupToolbar(R.string.app_name)
+        toolbar.setTitle(R.string.app_name)
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 viewModel.load()

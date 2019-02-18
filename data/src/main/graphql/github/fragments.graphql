@@ -6,20 +6,20 @@ fragment ShortRepoRowItem on Repository {
     isFork
     forkCount
     issues(first: 0, states: OPEN) {
-      totalCount
+        totalCount
     }
     pullRequests(first: 0, states: OPEN) {
-          totalCount
+        totalCount
     }
     forks(first: 0) {
-      totalCount
+        totalCount
     }
     isPrivate
     stargazers(first: 1) {
-      totalCount
+        totalCount
     }
     watchers(first: 1) {
-      totalCount
+        totalCount
     }
 }
 
@@ -29,10 +29,10 @@ fragment ShortIssueRowItem on Issue {
     number
     title
     repository {
-      nameWithOwner
+        nameWithOwner
     }
     comments(first: 1) {
-      totalCount
+        totalCount
     }
     url
 }
@@ -43,10 +43,10 @@ fragment ShortPullRequestRowItem on PullRequest {
     number
     title
     repository {
-      nameWithOwner
+        nameWithOwner
     }
     comments(first: 1) {
-      totalCount
+        totalCount
     }
     state
     url
@@ -73,8 +73,8 @@ fragment ShortActor on Actor {
 
 fragment CommitFragment on Commit {
     author {
-      name
-      avatarUrl
+        name
+        avatarUrl
     }
     message
     abbreviatedOid
@@ -106,28 +106,67 @@ fragment FullIssue on Issue {
     viewerCanSubscribe
     viewerCanReact
     userContentEdits(first: 0) {
-      totalCount
+        totalCount
     }
     author {
-      avatarUrl
-      login
-      url
+        avatarUrl
+        login
+        url
     }
     reactionGroups {
-      ... Reactions
+        ... Reactions
     }
     createdViaEmail
     repository {
-      nameWithOwner
+        nameWithOwner
     }
     authorAssociation
+    participants(first: 10) {
+        nodes {
+            ... ShortUserRowItem
+        }
+    }
+    labels(first: 30) {
+        nodes {
+            ... Labels
+        }
+    }
+    assignees(first: 30) {
+        nodes {
+            ... ShortUserRowItem
+        }
+    }
+    milestone {
+        ...MilestoneFragment
+    }
 }
 
 fragment Reactions on ReactionGroup {
-  content
-  createdAt
-  viewerHasReacted
-  users(first: 0) {
-    totalCount
-  }
+    content
+    createdAt
+    viewerHasReacted
+    users(first: 0) {
+        totalCount
+    }
+}
+
+fragment Labels on Label {
+    color
+    description
+    name
+    id
+    url
+    createdAt
+    isDefault
+}
+
+fragment MilestoneFragment on Milestone {
+    description
+    dueOn
+    id
+    closed
+    number
+    url
+    title
+    state
 }

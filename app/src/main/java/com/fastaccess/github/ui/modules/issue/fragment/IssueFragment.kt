@@ -81,10 +81,10 @@ class IssueFragment : BaseFragment() {
 
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.scrollTop -> recyclerView.scrollToPosition(0)
+                R.id.scrollTop -> appBar.setExpanded(true, true)
                 R.id.refresh -> {
-                    recyclerView.scrollToPosition(0)
                     viewModel.loadData(login, repo, number, true)
+                    appBar.setExpanded(true, true)
                 }
                 R.id.closeIssue -> viewModel.closeOpenIssue(login, repo, number)
             }
