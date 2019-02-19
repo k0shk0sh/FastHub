@@ -105,6 +105,7 @@ fragment FullIssue on Issue {
     viewerCanUpdate
     viewerCanSubscribe
     viewerCanReact
+    url
     userContentEdits(first: 0) {
         totalCount
     }

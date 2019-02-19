@@ -1,9 +1,7 @@
 package com.fastaccess.github.ui.modules.main.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -13,6 +11,7 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.extension.onClick
@@ -49,7 +48,8 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
         if (savedInstanceState == null) {
             isConnected().isTrue { viewModel.load() }
         }
-        toolbar.setTitle(R.string.app_name)
+        setupToolbar(R.string.app_name)
+        toolbar.navigationIcon = null
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 viewModel.load()
@@ -60,21 +60,15 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
         recyclerView.addDivider()
         recyclerView.adapter = adapter
         bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
-
-        behaviour.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(p0: View, p1: Float) = Unit
-
-            @SuppressLint("SwitchIntDef")
-            override fun onStateChanged(p0: View, state: Int) {
-                when (state) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        shadow?.isVisible = false
-                        bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_arrow_drop_down)
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        shadow?.isVisible = true
-                        bottomBar.navigationIcon = ContextCompat.getDrawable(p0.context, R.drawable.ic_menu)
-                    }
+        behaviour.setBottomSheetCallback({ state: Int ->
+            when (state) {
+                BottomSheetBehavior.STATE_EXPANDED -> {
+                    shadow?.isVisible = false
+                    bottomBar.navigationIcon = requireContext().getDrawableCompat(R.drawable.ic_arrow_drop_down)
+                }
+                BottomSheetBehavior.STATE_COLLAPSED -> {
+                    shadow?.isVisible = true
+                    bottomBar.navigationIcon = requireContext().getDrawableCompat(R.drawable.ic_menu)
                 }
             }
         })

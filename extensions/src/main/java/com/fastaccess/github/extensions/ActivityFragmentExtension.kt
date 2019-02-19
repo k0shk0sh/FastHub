@@ -10,8 +10,10 @@ import android.net.NetworkInfo
 import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -103,4 +105,18 @@ fun Activity.hideKeyboard() {
 fun Int.toPx(): Int {
     val density = Resources.getSystem().displayMetrics.density
     return (this * density + .5F).toInt()
+}
+
+fun Activity.shareUrl(url: String?) {
+    url?.let {
+        kotlin.runCatching {
+            ShareCompat.IntentBuilder.from(this)
+                .setChooserTitle(this.getString(R.string.share))
+                .setType("text/plain")
+                .setText(it)
+                .startChooser()
+        }.onFailure {
+            Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+        }.getOrNull()
+    }
 }

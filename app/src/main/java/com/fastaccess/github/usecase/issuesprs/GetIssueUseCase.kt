@@ -45,7 +45,7 @@ class GetIssueUseCase @Inject constructor(
                     issue.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
                     issue.viewerCannotUpdateReasons.map { it.rawValue() }, issue.isClosed, issue.isCreatedViaEmail, issue.isLocked,
                     issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor,
-                    issue.authorAssociation.rawValue()))
+                    issue.authorAssociation.rawValue(), issue.url.toString()))
             }
     }
 }

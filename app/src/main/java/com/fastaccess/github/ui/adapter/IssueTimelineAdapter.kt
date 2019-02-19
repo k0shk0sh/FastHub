@@ -58,6 +58,10 @@ class IssueTimelineAdapter(
         super.onViewRecycled(holder)
     }
 
+    fun getItemByPosition(position: Int): TimelineModel? {
+        return kotlin.runCatching { getItem(position) }.getOrNull()
+    }
+
     companion object {
         private const val HEADER = 1
         private const val COMMENT = 2

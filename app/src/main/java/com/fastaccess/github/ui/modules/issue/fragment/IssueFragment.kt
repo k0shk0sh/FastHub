@@ -18,12 +18,14 @@ import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.shareUrl
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.github.utils.GITHUB_LINK
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
@@ -78,7 +80,11 @@ class IssueFragment : BaseFragment() {
                 swipeRefresh.isRefreshing = false
             }
         }
+        menuClick()
+        observeChanges()
+    }
 
+    private fun menuClick() {
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.scrollTop -> appBar.setExpanded(true, true)
@@ -87,22 +93,22 @@ class IssueFragment : BaseFragment() {
                     appBar.setExpanded(true, true)
                 }
                 R.id.closeIssue -> viewModel.closeOpenIssue(login, repo, number)
+                R.id.share -> requireActivity().shareUrl("$GITHUB_LINK$login/$repo/issues/$number")
             }
             return@setOnMenuItemClickListener true
         }
-        observeChanges(savedInstanceState)
     }
 
-    private fun observeChanges(savedInstanceState: Bundle?) {
+    private fun observeChanges() {
         viewModel.getIssue(login, repo, number).observeNotNull(this) {
-            bind(it)
+            initIssue(it)
         }
         viewModel.timeline.observeNotNull(this) {
             adapter.submitList(it)
         }
     }
 
-    private fun bind(model: IssueModel) {
+    private fun initIssue(model: IssueModel) {
         val theme = preference.theme
         title.text = model.title
         opener.text = SpannableBuilder.builder()
@@ -127,18 +133,22 @@ class IssueFragment : BaseFragment() {
         })
         addEmoji.setOnClickListener {
             it.popupEmoji(requireNotNull(model.id), model.reactionGroups) {
-                //                    callback.invoke(adapterPosition)
+                initReactions(model)
             }
         }
+        initReactions(model)
+    }
+
+    private fun initReactions(model: IssueModel) {
         reactionsText.isVisible = model.reactionGroups?.any { it.users?.totalCount != 0 } ?: false
         if (reactionsText.isVisible) {
             val stringBuilder = StringBuilder()
             model.reactionGroups?.forEach {
                 if (it.users?.totalCount != 0) {
                     stringBuilder.append(it.content.getEmoji())
-                        .append(" ")
-                        .append("${it.users?.totalCount}")
-                        .append("   ")
+                            .append(" ")
+                            .append("${it.users?.totalCount}")
+                            .append("   ")
                 }
             }
             reactionsText.text = stringBuilder
