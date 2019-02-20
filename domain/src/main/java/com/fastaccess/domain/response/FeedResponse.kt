@@ -56,7 +56,7 @@ data class IssueResponse(
     @SerializedName("closed_at") var closedAt: Date? = null,
     @SerializedName("created_at") var createdAt: Date? = null,
     @SerializedName("updated_at") var UpdatedAt: Date? = null,
-    @SerializedName("issue_state") var issueState: String? = null,
+    @SerializedName(value = "issue_state", alternate = ["state"]) var issueState: String? = null,
     @SerializedName("user") var user: UserResponse? = null,
     @SerializedName("assignee") var assignee: UserResponse? = null,
     @SerializedName("closedBy") var closedBy: UserResponse? = null,

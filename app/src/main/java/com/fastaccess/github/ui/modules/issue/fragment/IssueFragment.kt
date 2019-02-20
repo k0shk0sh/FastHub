@@ -126,7 +126,7 @@ class IssueFragment : BaseFragment() {
         MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
             ThemeEngine.isLightTheme(theme))
         state.text = model.state?.toLowerCase()
-        state.setChipBackgroundColorResource(if ("OPEN" == model.state) {
+        state.setChipBackgroundColorResource(if ("OPEN".equals(model.state, true)) {
             R.color.material_green_700
         } else {
             R.color.material_red_700
@@ -137,6 +137,13 @@ class IssueFragment : BaseFragment() {
             }
         }
         initReactions(model)
+        bottomBar.menu.let {
+            it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
+                getString(R.string.re_open_issue)
+            } else {
+                getString(R.string.close_issue)
+            }
+        }
     }
 
     private fun initReactions(model: IssueModel) {
