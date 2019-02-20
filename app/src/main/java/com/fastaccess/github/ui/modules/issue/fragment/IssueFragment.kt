@@ -66,7 +66,7 @@ class IssueFragment : BaseFragment() {
         (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
-        fastScroller.attachRecyclerView(recyclerView)
+        fastScroller.attachRecyclerView(recyclerView, appBar)
         recyclerView.adapter = adapter
         recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadData(login, repo, number) } }
         if (savedInstanceState == null) {
@@ -146,9 +146,9 @@ class IssueFragment : BaseFragment() {
             model.reactionGroups?.forEach {
                 if (it.users?.totalCount != 0) {
                     stringBuilder.append(it.content.getEmoji())
-                            .append(" ")
-                            .append("${it.users?.totalCount}")
-                            .append("   ")
+                        .append(" ")
+                        .append("${it.users?.totalCount}")
+                        .append("   ")
                 }
             }
             reactionsText.text = stringBuilder

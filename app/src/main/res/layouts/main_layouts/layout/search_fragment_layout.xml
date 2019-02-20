@@ -79,7 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-
             app:layout_behavior="@string/scroll_behaviour">
 
             <include layout="@layout/fab_simple_refresh_list_layout"/>

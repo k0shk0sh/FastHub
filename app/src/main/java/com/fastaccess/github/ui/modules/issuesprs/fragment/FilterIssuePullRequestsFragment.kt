@@ -22,6 +22,7 @@ import com.fastaccess.github.utils.GITHUB_LINK
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.route
+import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.issues_prs_fragment_layout.*
@@ -56,7 +57,7 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
         recyclerView.adapter = adapter
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
-        fastScroller.attachRecyclerView(recyclerView)
+        fastScroller.attachRecyclerView(recyclerView, appBar)
         if (savedInstanceState == null) isConnected().isTrue { viewModel.loadData(true) }
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {

@@ -16,6 +16,7 @@ import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.isConnected
+import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -41,7 +42,7 @@ class FeedsFragment : BaseFragment() {
         recyclerView.adapter = adapter
         recyclerView.addDivider()
         recyclerView.setEmptyView(emptyLayout)
-        fastScroller.attachRecyclerView(recyclerView)
+        fastScroller.attachRecyclerView(recyclerView, appBar)
         if (savedInstanceState == null) isConnected().isTrue { viewModel.loadFeeds(true) }
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
