@@ -134,8 +134,22 @@ class ProfileFragment : BasePagerFragment() {
                 behaviour.state = AnchorSheetBehavior.STATE_COLLAPSED
             }
         }
-        followers.setOnClickListener { if (pager.adapter != null) selectTab(FragmentType.FOLLOWERS) }
-        following.setOnClickListener { if (pager.adapter != null) selectTab(FragmentType.FOLLOWINGS) }
+        onButtonPressed()
+    }
+
+    private fun onButtonPressed() {
+        followers.setOnClickListener {
+            if (pager.adapter != null) {
+                selectTab(FragmentType.FEEDS)
+                pager.currentItem = adapter.getIndex(FragmentType.FOLLOWERS)
+            }
+        }
+        following.setOnClickListener {
+            if (pager.adapter != null){
+                selectTab(FragmentType.FEEDS)
+                pager.currentItem = adapter.getIndex(FragmentType.FOLLOWINGS)
+            }
+        }
     }
 
     override fun onBackPressed(): Boolean {
