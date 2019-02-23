@@ -22,6 +22,8 @@ import com.fastaccess.github.extensions.shareUrl
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
+import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
+import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
@@ -32,6 +34,7 @@ import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.widget.SpannableBuilder
+import github.type.LockReason
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
@@ -41,7 +44,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 28.01.19.
  */
-class IssueFragment : BaseFragment() {
+class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var htmlSpanner: HtmlSpanner
     @Inject lateinit var preference: FastHubSharedPreference
@@ -84,6 +87,10 @@ class IssueFragment : BaseFragment() {
         observeChanges()
     }
 
+    override fun onLockReasonSelected(lockReason: LockReason?) {
+        viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
+    }
+
     private fun menuClick() {
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -94,6 +101,11 @@ class IssueFragment : BaseFragment() {
                 }
                 R.id.closeIssue -> viewModel.closeOpenIssue(login, repo, number)
                 R.id.share -> requireActivity().shareUrl("$GITHUB_LINK$login/$repo/issues/$number")
+                R.id.lockIssue -> if (item.title == getString(R.string.lock_issue)) {
+                    MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LOCK_UNLOCK)
+                } else {
+                    viewModel.lockUnlockIssue(login, repo, number)
+                }
             }
             return@setOnMenuItemClickListener true
         }
@@ -143,6 +155,7 @@ class IssueFragment : BaseFragment() {
             } else {
                 getString(R.string.close_issue)
             }
+            it.findItem(R.id.lockIssue).title = if (model.locked == true) getString(R.string.unlock_issue) else getString(R.string.lock_issue)
         }
     }
 

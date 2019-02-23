@@ -1,0 +1,23 @@
+mutation addReaction($subjectId: ID!, $reaction: ReactionContent!) {
+    addReaction(input: {subjectId: $subjectId, content: $reaction}) {
+        clientMutationId
+    }
+}
+
+mutation removeReaction($subjectId: ID!, $reaction: ReactionContent!) {
+    removeReaction(input: {subjectId: $subjectId, content: $reaction}) {
+        clientMutationId
+    }
+}
+
+mutation lock($subjectId: ID!, $lockReason: LockReason) {
+    lockLockable(input: {lockableId: $subjectId, lockReason: $lockReason}) {
+        clientMutationId
+    }
+}
+
+mutation unlock($subjectId: ID!) {
+    unlockLockable(input: {lockableId: $subjectId}) {
+        clientMutationId
+    }
+}

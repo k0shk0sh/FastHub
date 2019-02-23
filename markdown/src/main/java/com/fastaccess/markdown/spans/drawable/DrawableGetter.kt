@@ -37,6 +37,7 @@ class DrawableGetter(
                 GlideDrawableTarget<Drawable>(urlDrawable, tv, width)
             }
             Glide.with(it).apply {
+                clear(it)
                 applyDefaultRequestOptions(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(context.getDrawableCompat(R.drawable.ic_image)))
                 if (oriUrl.endsWith(".gif")) {

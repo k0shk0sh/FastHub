@@ -6,9 +6,11 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.usecase.issuesprs.EditIssurPrUseCase
+import com.fastaccess.github.usecase.issuesprs.CloseOpenIssuePrUseCase
 import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
 import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
+import com.fastaccess.github.usecase.issuesprs.LockUnlockIssuePrUseCase
+import github.type.LockReason
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -19,7 +21,8 @@ class IssueTimelineViewModel @Inject constructor(
     private val issueUseCase: GetIssueUseCase,
     private val timelineUseCase: GetIssueTimelineUseCase,
     private val issueRepositoryProvider: IssueRepositoryProvider,
-    private val editIssuePrUseCase: EditIssurPrUseCase
+    private val editIssuePrUseCase: CloseOpenIssuePrUseCase,
+    private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -31,6 +34,7 @@ class IssueTimelineViewModel @Inject constructor(
         timelineUseCase.dispose()
         editIssuePrUseCase.dispose()
         issueUseCase.dispose()
+        lockUnlockIssuePrUseCase.dispose()
     }
 
     fun getIssue(login: String, repo: String, number: Int) = issueRepositoryProvider.getIssueByNumber("$login/$repo", number)
@@ -72,6 +76,15 @@ class IssueTimelineViewModel @Inject constructor(
         editIssuePrUseCase.login = login
         editIssuePrUseCase.number = number
         justSubscribe(editIssuePrUseCase.buildObservable())
+    }
+
+    fun lockUnlockIssue(login: String, repo: String, number: Int, lockReason: LockReason? = null, lock: Boolean = false) {
+        lockUnlockIssuePrUseCase.repo = repo
+        lockUnlockIssuePrUseCase.login = login
+        lockUnlockIssuePrUseCase.number = number
+        lockUnlockIssuePrUseCase.lockReason = lockReason
+        lockUnlockIssuePrUseCase.lock = lock
+        justSubscribe(lockUnlockIssuePrUseCase.buildObservable())
     }
 
     fun hasNext() = pageInfo?.hasNextPage ?: false

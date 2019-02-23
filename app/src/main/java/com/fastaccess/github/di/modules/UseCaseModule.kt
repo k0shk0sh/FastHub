@@ -121,7 +121,14 @@ class UseCaseModule {
     @PerFragment @Provides fun provideEditIssurPrUseCase(
         issueRepositoryProvider: IssueRepositoryProvider,
         issuePrService: IssuePrService
-    ): EditIssurPrUseCase {
-        return EditIssurPrUseCase(issueRepositoryProvider, issuePrService)
+    ): CloseOpenIssuePrUseCase {
+        return CloseOpenIssuePrUseCase(issueRepositoryProvider, issuePrService)
+    }
+
+    @PerFragment @Provides fun provideLockUnlockIssuePrUseCase(
+        issueRepositoryProvider: IssueRepositoryProvider,
+        apolloClient: ApolloClient
+    ): LockUnlockIssuePrUseCase {
+        return LockUnlockIssuePrUseCase(issueRepositoryProvider, apolloClient)
     }
 }

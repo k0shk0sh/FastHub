@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 16.02.19.
  */
-class EditIssurPrUseCase @Inject constructor(
+class CloseOpenIssuePrUseCase @Inject constructor(
     private val issueRepositoryProvider: IssueRepositoryProvider,
     private val issuePrService: IssuePrService
 ) : BaseObservableUseCase() {

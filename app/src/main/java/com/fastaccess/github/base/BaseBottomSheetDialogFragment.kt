@@ -106,6 +106,8 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasS
         super.onDestroyView()
     }
 
+    fun dismissDialog() = dialog?.dismiss()
+
     protected fun addDisposal(disposable: Disposable) {
         disposal.add(disposable)
     }

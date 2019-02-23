@@ -37,6 +37,12 @@
 
                     <include layout="@layout/issue_header_row_item"/>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:alpha="0.5"
+                        android:background="?dividerColor"/>
+
                 </LinearLayout>
 
                 <androidx.appcompat.widget.Toolbar
