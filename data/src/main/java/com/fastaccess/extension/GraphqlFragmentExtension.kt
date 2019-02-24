@@ -1,6 +1,7 @@
 package com.fastaccess.extension
 
 import com.fastaccess.data.model.*
+import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import github.fragment.*
 
@@ -24,3 +25,5 @@ fun CommitFragment.toCommit(): CommitModel = CommitModel(id,
 
 fun Reactions.toReactionGroup(): ReactionGroupModel = ReactionGroupModel(ReactionContent.getByValue(this.content.rawValue()),
     this.createdAt, CountModel(this.users.totalCount), this.isViewerHasReacted)
+
+fun LoginModel.me(): ShortUserModel = ShortUserModel(login, login, url, name, avatarUrl = avatarUrl)

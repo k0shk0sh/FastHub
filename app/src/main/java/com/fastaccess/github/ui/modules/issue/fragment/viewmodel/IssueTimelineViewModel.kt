@@ -75,7 +75,10 @@ class IssueTimelineViewModel @Inject constructor(
         editIssuePrUseCase.repo = repo
         editIssuePrUseCase.login = login
         editIssuePrUseCase.number = number
-        justSubscribe(editIssuePrUseCase.buildObservable())
+        justSubscribe(editIssuePrUseCase.buildObservable()
+            .doOnNext {
+                addAndPost(it)
+            })
     }
 
     fun lockUnlockIssue(login: String, repo: String, number: Int, lockReason: LockReason? = null, lock: Boolean = false) {
@@ -84,7 +87,15 @@ class IssueTimelineViewModel @Inject constructor(
         lockUnlockIssuePrUseCase.number = number
         lockUnlockIssuePrUseCase.lockReason = lockReason
         lockUnlockIssuePrUseCase.lock = lock
-        justSubscribe(lockUnlockIssuePrUseCase.buildObservable())
+        justSubscribe(lockUnlockIssuePrUseCase.buildObservable()
+            .doOnNext {
+                addAndPost(it)
+            })
+    }
+
+    private fun addAndPost(it: TimelineModel) {
+        list.add(it)
+        timeline.postValue(ArrayList(list))
     }
 
     fun hasNext() = pageInfo?.hasNextPage ?: false
