@@ -11,6 +11,7 @@ import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.toLabels
 import com.fastaccess.extension.toMilestone
 import com.fastaccess.extension.toReactionGroup
+import com.fastaccess.extension.toUser
 import github.GetIssueQuery
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -47,7 +48,8 @@ class GetIssueUseCase @Inject constructor(
                     issue.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
                     issue.viewerCannotUpdateReasons.map { it.rawValue() }, issue.isClosed, issue.isCreatedViaEmail, issue.isLocked,
                     issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor,
-                    issue.authorAssociation.rawValue(), issue.url.toString(), issue.labels.toLabels(), issue.milestone?.toMilestone()))
+                    issue.authorAssociation.rawValue(), issue.url.toString(), issue.labels.toLabels(),
+                    issue.milestone?.toMilestone(), issue.assignees.nodes?.map { it.fragments }?.map { it.shortUserRowItem.toUser() }))
             }
     }
 }

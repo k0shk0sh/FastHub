@@ -14,6 +14,8 @@ import github.fragment.*
 
 fun ShortActor.toUser(): ShortUserModel = ShortUserModel(login, login, url.toString(), avatarUrl = avatarUrl.toString())
 
+fun ShortUserRowItem.toUser(): ShortUserModel = ShortUserModel(id, login, url.toString(), name, avatarUrl = avatarUrl.toString())
+
 fun ShortPullRequestRowItem.toPullRequest(): MyIssuesPullsModel = MyIssuesPullsModel(id, databaseId, number,
     title, repository.nameWithOwner, comments.totalCount,
     state.rawValue(), url.toString())

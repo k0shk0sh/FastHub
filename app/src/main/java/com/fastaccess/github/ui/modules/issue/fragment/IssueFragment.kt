@@ -151,6 +151,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
         }
         initReactions(model)
         initLabels(model)
+        initAssignees(model)
         initMilestone(model)
         bottomBar.menu.let {
             it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
@@ -160,6 +161,15 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
             }
             it.findItem(R.id.lockIssue).title = if (model.locked == true) getString(R.string.unlock_issue) else getString(R.string.lock_issue)
         }
+    }
+
+    private fun initAssignees(model: IssueModel) {
+        assigneesLayout.isVisible = !model.assignees.isNullOrEmpty()
+        val builder = SpannableBuilder.builder()
+        model.assignees?.forEachIndexed { index, item ->
+            builder.append(item.login ?: item.name).append(if (index == model.assignees?.size?.minus(1)) "" else ", ")
+        }
+        assignees.text = builder
     }
 
     private fun initMilestone(model: IssueModel) {

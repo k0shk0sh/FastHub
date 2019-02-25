@@ -49,7 +49,8 @@ data class IssueModel(
     @SerializedName("authorAssociation") var authorAssociation: String? = null,
     @SerializedName("url") var url: String? = null,
     @SerializedName("labels") var labels: List<LabelModel>? = null,
-    @SerializedName("milestone") @Embedded(prefix = "milestone_") var milestone: MilestoneModel? = null
+    @SerializedName("milestone") @Embedded(prefix = "milestone_") var milestone: MilestoneModel? = null,
+    @SerializedName("assignees") var assignees: List<ShortUserModel>? = null
 ) {
     companion object {
         const val TABLE_NAME = "issue_table"
