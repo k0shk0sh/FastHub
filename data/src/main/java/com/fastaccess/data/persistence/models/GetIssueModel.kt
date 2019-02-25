@@ -45,7 +45,8 @@ data class IssueModel(
     @SerializedName("viewerCanUpdate") var viewerCanUpdate: Boolean? = false,
     @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = false,
     @SerializedName("authorAssociation") var authorAssociation: String? = null,
-    @SerializedName("url") var url: String? = null
+    @SerializedName("url") var url: String? = null,
+    @SerializedName("labels") var labels: List<LabelModel>? = null
 ) {
     companion object {
         const val TABLE_NAME = "issue_table"

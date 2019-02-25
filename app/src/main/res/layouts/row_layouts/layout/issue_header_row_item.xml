@@ -105,19 +105,39 @@
                         app:autoSizeTextType="uniform"
                         tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/association"
-                        style="@style/TextAppearance.AppCompat.Caption"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:maxLines="1"
-                        android:textStyle="bold"
-                        app:autoSizeMaxTextSize="14sp"
-                        app:autoSizeMinTextSize="10sp"
-                        app:autoSizeStepGranularity="1dp"
-                        app:autoSizeTextType="uniform"
-                        tools:text="Owner"/>
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/association"
+                            style="@style/TextAppearance.AppCompat.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLines="1"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="10sp"
+                            app:autoSizeStepGranularity="1dp"
+                            app:autoSizeTextType="uniform"
+                            tools:text="Owner"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/reactionsText"
+                            style="@style/TextAppearance.AppCompat.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:maxLines="1"
+                            app:autoSizeMaxTextSize="12sp"
+                            app:autoSizeMinTextSize="10sp"
+                            app:autoSizeStepGranularity="1dp"
+                            tools:text="emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, "/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -150,17 +170,50 @@
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reactionsText"
-            style="@style/TextAppearance.AppCompat.Caption"
+        <LinearLayout
+            android:id="@+id/labelsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="12sp"
-            app:autoSizeMinTextSize="10sp"
-            app:autoSizeStepGranularity="1dp"
-            tools:text="emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, "/>
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/labels"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/labels"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/milestoneLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/milestone"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/milestone"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

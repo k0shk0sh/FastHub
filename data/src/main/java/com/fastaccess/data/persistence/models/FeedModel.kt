@@ -3,6 +3,7 @@ package com.fastaccess.data.persistence.models
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.fastaccess.data.model.LabelModel
 import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -146,12 +147,6 @@ data class CommentModel(
     @SerializedName("position") var position: Long? = null,
     @SerializedName("created_at") var createdAt: Date? = null,
     @SerializedName("updated_at") var UpdatedAt: Date? = null
-)
-
-data class LabelModel(
-    @SerializedName("url") var url: String? = null,
-    @SerializedName("color") var color: String? = null,
-    @SerializedName("name") var name: String? = null
 )
 
 data class FeedGistModel(

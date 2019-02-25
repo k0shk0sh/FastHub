@@ -48,19 +48,40 @@
                     app:autoSizeTextType="uniform"
                     tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/association"
-                    style="@style/TextAppearance.AppCompat.Caption"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:maxLines="1"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="14sp"
-                    app:autoSizeMinTextSize="10sp"
-                    app:autoSizeStepGranularity="1dp"
-                    app:autoSizeTextType="uniform"
-                    tools:text="Owner"/>
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/association"
+                        style="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxLines="1"
+                        android:textStyle="bold"
+                        app:autoSizeMaxTextSize="14sp"
+                        app:autoSizeMinTextSize="10sp"
+                        app:autoSizeStepGranularity="1dp"
+                        app:autoSizeTextType="uniform"
+                        tools:text="Owner"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/reactionsText"
+                        style="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:maxLines="1"
+                        app:autoSizeMaxTextSize="12sp"
+                        app:autoSizeMinTextSize="10sp"
+                        app:autoSizeStepGranularity="1dp"
+                        tools:text="emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, "/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -90,18 +111,6 @@
             android:layout_gravity="center"
             android:textIsSelectable="true"
             tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reactionsText"
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="12sp"
-            app:autoSizeMinTextSize="10sp"
-            app:autoSizeStepGranularity="1dp"
-            tools:text="emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, "/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -68,13 +68,6 @@
                     android:text="Resolved"/>
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/recentlyUpdated"
-                    style="@style/ChipStyleCheckable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/recently_updated"/>
-
-                <com.google.android.material.chip.Chip
                     android:id="@+id/spam"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"

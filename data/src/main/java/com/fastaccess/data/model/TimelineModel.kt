@@ -96,12 +96,6 @@ data class LabelUnlabeledEventModel(
     @SerializedName("labels") var labels: ArrayList<LabelModel> = arrayListOf()
 )
 
-data class LabelModel(
-    @SerializedName("name") var name: String? = null,
-    @SerializedName("color") var color: String? = null,
-    @SerializedName("isLock") var isDefault: Boolean? = null
-)
-
 data class SubscribedUnsubscribedEventModel(
     @SerializedName("createdAt") var createdAt: Date? = null,
     @SerializedName("actor") var actor: ShortUserModel? = null,

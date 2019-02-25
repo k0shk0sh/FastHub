@@ -2,6 +2,7 @@ package com.fastaccess.data.persistence.db
 
 import androidx.room.TypeConverter
 import com.fastaccess.data.model.CountModel
+import com.fastaccess.data.model.LabelModel
 import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.data.persistence.models.PayloadModel
 import com.fastaccess.data.persistence.models.RepositoryModel
@@ -67,5 +68,12 @@ class StringArrayConverter {
     @TypeConverter fun toDbValue(data: List<String>? = null): String? = data?.toJson()
     @TypeConverter fun fromDbToValue(data: String? = null): List<String>? = data?.let {
         Gson().fromJson(it, object : TypeToken<List<String>>() {}.type)
+    }
+}
+
+class LabelsConverter {
+    @TypeConverter fun toDbValue(data: List<LabelModel>? = null): String? = data?.toJson()
+    @TypeConverter fun fromDbToValue(data: String? = null): List<LabelModel>? = data?.let {
+        Gson().fromJson(it, object : TypeToken<List<LabelModel>>() {}.type)
     }
 }

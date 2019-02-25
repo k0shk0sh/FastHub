@@ -33,6 +33,7 @@ import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.MarkdownProvider
+import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.LockReason
 import kotlinx.android.synthetic.main.empty_state_layout.*
@@ -149,6 +150,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
             }
         }
         initReactions(model)
+        initLabels(model)
         bottomBar.menu.let {
             it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
                 getString(R.string.re_open_issue)
@@ -157,6 +159,16 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
             }
             it.findItem(R.id.lockIssue).title = if (model.locked == true) getString(R.string.unlock_issue) else getString(R.string.lock_issue)
         }
+    }
+
+    private fun initLabels(model: IssueModel) {
+        labelsLayout.isVisible = !model.labels.isNullOrEmpty()
+        val builder = SpannableBuilder.builder()
+        model.labels?.forEach {
+            builder.append(it.name ?: "", LabelSpan(Color.parseColor("#${it.color}")))
+                .append(" ")
+        }
+        labels.text = builder
     }
 
     private fun initReactions(model: IssueModel) {

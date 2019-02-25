@@ -27,3 +27,6 @@ fun Reactions.toReactionGroup(): ReactionGroupModel = ReactionGroupModel(Reactio
     this.createdAt, CountModel(this.users.totalCount), this.isViewerHasReacted)
 
 fun LoginModel.me(): ShortUserModel = ShortUserModel(login, login, url, name, avatarUrl = avatarUrl)
+
+fun FullIssue.Labels?.toLabels(): List<LabelModel>? = this?.nodes?.map { it.fragments }
+    ?.map { LabelModel(it.labels.name, it.labels.color, it.labels.url.toString(), it.labels.isDefault) }
