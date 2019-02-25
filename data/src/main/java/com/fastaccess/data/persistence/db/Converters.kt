@@ -2,7 +2,7 @@ package com.fastaccess.data.persistence.db
 
 import androidx.room.TypeConverter
 import com.fastaccess.data.model.CountModel
-import com.fastaccess.data.model.LabelModel
+import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.data.persistence.models.PayloadModel
 import com.fastaccess.data.persistence.models.RepositoryModel

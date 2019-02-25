@@ -10,7 +10,7 @@ import com.fastaccess.data.persistence.models.*
  * Created by Kosh on 11.05.18.
  */
 
-const val VERSION = 24
+const val VERSION = 25
 const val DATABASE_NAME = "FastHub-Room-DB"
 
 @Database(version = VERSION, entities = [UserModel::class, MyIssuesPullsModel::class,

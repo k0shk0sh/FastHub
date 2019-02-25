@@ -1,4 +1,4 @@
-package com.fastaccess.data.model
+package com.fastaccess.data.model.parcelable
 
 import android.os.Parcel
 import android.os.Parcelable

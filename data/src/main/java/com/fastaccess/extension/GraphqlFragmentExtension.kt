@@ -1,6 +1,8 @@
 package com.fastaccess.extension
 
 import com.fastaccess.data.model.*
+import com.fastaccess.data.model.parcelable.LabelModel
+import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import github.fragment.*
@@ -30,3 +32,7 @@ fun LoginModel.me(): ShortUserModel = ShortUserModel(login, login, url, name, av
 
 fun FullIssue.Labels?.toLabels(): List<LabelModel>? = this?.nodes?.map { it.fragments }
     ?.map { LabelModel(it.labels.name, it.labels.color, it.labels.url.toString(), it.labels.isDefault) }
+
+fun FullIssue.Milestone.toMilestone(): MilestoneModel = this.fragments.milestoneFragment.let {
+    MilestoneModel(it.id, it.title, it.description, it.state.rawValue(), it.url.toString(), it.number, it.isClosed, it.dueOn)
+}

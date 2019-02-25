@@ -151,6 +151,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
         }
         initReactions(model)
         initLabels(model)
+        initMilestone(model)
         bottomBar.menu.let {
             it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
                 getString(R.string.re_open_issue)
@@ -159,6 +160,17 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
             }
             it.findItem(R.id.lockIssue).title = if (model.locked == true) getString(R.string.unlock_issue) else getString(R.string.lock_issue)
         }
+    }
+
+    private fun initMilestone(model: IssueModel) {
+        model.milestone?.let {
+            milestoneLayout.isVisible = true
+            milestone.text = when {
+                it.title != null -> "${it.title}"
+                it.description != null -> "${it.description}"
+                else -> ""
+            }
+        } ?: kotlin.run { milestoneLayout.isVisible = false }
     }
 
     private fun initLabels(model: IssueModel) {

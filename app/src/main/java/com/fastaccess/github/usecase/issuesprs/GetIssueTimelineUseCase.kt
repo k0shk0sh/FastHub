@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.*
+import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.*

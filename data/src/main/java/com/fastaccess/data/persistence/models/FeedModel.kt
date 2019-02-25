@@ -3,7 +3,7 @@ package com.fastaccess.data.persistence.models
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.fastaccess.data.model.LabelModel
+import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.domain.response.enums.EventsType
 import com.google.gson.annotations.SerializedName
 import java.util.*

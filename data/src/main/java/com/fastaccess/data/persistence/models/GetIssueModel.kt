@@ -4,6 +4,8 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.fastaccess.data.model.*
+import com.fastaccess.data.model.parcelable.LabelModel
+import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -46,7 +48,8 @@ data class IssueModel(
     @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = false,
     @SerializedName("authorAssociation") var authorAssociation: String? = null,
     @SerializedName("url") var url: String? = null,
-    @SerializedName("labels") var labels: List<LabelModel>? = null
+    @SerializedName("labels") var labels: List<LabelModel>? = null,
+    @SerializedName("milestone") @Embedded(prefix = "milestone_") var milestone: MilestoneModel? = null
 ) {
     companion object {
         const val TABLE_NAME = "issue_table"

@@ -1,5 +1,6 @@
 package com.fastaccess.data.model
 
+import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.google.gson.annotations.SerializedName
