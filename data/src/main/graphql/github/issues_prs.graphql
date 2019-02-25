@@ -1,199 +1,218 @@
 query getIssues($login: String!, $state: [IssueState!], $count: Int!) {
-  user(login: $login) {
-    issues(first: $count, orderBy: {field: CREATED_AT, direction: DESC}, states: $state) {
-      nodes {
-        ...ShortIssueRowItem
-      }
+    user(login: $login) {
+        issues(first: $count, orderBy: {field: CREATED_AT, direction: DESC}, states: $state) {
+            nodes {
+                ...ShortIssueRowItem
+            }
+        }
     }
-  }
 }
 
 query getPullRequests($login: String!, $count: Int!)  {
-  user(login: $login) {
-    pullRequests(first: $count, orderBy: {field: CREATED_AT, direction: DESC}) {
-      nodes {
-       ...ShortPullRequestRowItem
-      }
+    user(login: $login) {
+        pullRequests(first: $count, orderBy: {field: CREATED_AT, direction: DESC}) {
+            nodes {
+                ...ShortPullRequestRowItem
+            }
+        }
     }
-  }
 }
 
 query getIssue($login: String!, $repo: String!, $number: Int!) {
-  repositoryOwner(login: $login) {
-    repository(name: $repo) {
-      issue(number: $number) {
-        ... FullIssue
-      }
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            issue(number: $number) {
+                ... FullIssue
+            }
+        }
     }
-  }
 }
 
 query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: String) {
-  repositoryOwner(login: $login) {
-    repository(name: $repo) {
-      issue(number: $number) {
-        timeline(first: 30, after: $page) {
-          totalCount
-          pageInfo {
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-          }
-          nodes {
-            __typename
-            ... on Commit {
-              ... CommitFragment
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            issue(number: $number) {
+                timeline(first: 30, after: $page) {
+                    totalCount
+                    pageInfo {
+                        endCursor
+                        hasNextPage
+                        hasPreviousPage
+                        startCursor
+                    }
+                    nodes {
+                        __typename
+                        ... on Commit {
+                            ... CommitFragment
+                        }
+                        ... on IssueComment {
+                            author {
+                                login
+                                avatarUrl
+                            }
+                            createdAt
+                            authorAssociation
+                            bodyHTML
+                            body
+                            id
+                            updatedAt
+                            viewerCanReact
+                            viewerCanDelete
+                            viewerCanUpdate
+                            viewerDidAuthor
+                            viewerCanMinimize
+                            viewerCannotUpdateReasons
+                            reactionGroups {
+                                ... Reactions
+                            }
+                        }
+                        ... on CrossReferencedEvent {
+                            createdAt
+                            isCrossRepository
+                            referencedAt
+                            source {
+                                ... ShortPullRequestRowItem
+                                ... ShortIssueRowItem
+                            }
+                            willCloseTarget
+                            actor { ... ShortActor }
+                        }
+                        ... on ClosedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            closer {
+                                ... CommitFragment
+                                ... ShortPullRequestRowItem
+                            }
+                        }
+                        ... on ReopenedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                        }
+                        ... on SubscribedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                        }
+                        ... on UnsubscribedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                        }
+                        ... on ReferencedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            commitRepository {
+                                nameWithOwner
+                            }
+                            isCrossRepository
+                            isDirectReference
+                            commit {
+                                ... CommitFragment
+                            }
+                            subject {
+                                ... ShortPullRequestRowItem
+                                ... ShortIssueRowItem
+                            }
+                        }
+                        ... on AssignedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            user {
+                                login
+                                avatarUrl
+                            }
+                        }
+                        ... on UnassignedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            user {
+                                login
+                                avatarUrl
+                            }
+                        }
+                        ... on LabeledEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            label {
+                                color
+                                name
+                                isDefault
+                            }
+                        }
+                        ... on UnlabeledEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            label {
+                                color
+                                name
+                                isDefault
+                            }
+                        }
+                        ... on MilestonedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            milestoneTitle
+                        }
+                        ... on DemilestonedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            milestoneTitle
+                        }
+                        ... on RenamedTitleEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            currentTitle
+                            previousTitle
+                        }
+                        ... on LockedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            lockReason
+                            lockable {
+                                activeLockReason
+                            }
+                        }
+                        ... on UnlockedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            lockable {
+                                activeLockReason
+                            }
+                        }
+                        ... on TransferredEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            fromRepository {
+                                id
+                                nameWithOwner
+                                url
+                            }
+                            issue {
+                                number
+                                url
+                            }
+                        }
+                    }
+                }
             }
-            ... on IssueComment {
-              author {
-                login
-                avatarUrl
-              }
-              createdAt
-              authorAssociation
-              bodyHTML
-              body
-              id
-              updatedAt
-              viewerCanReact
-              viewerCanDelete
-              viewerCanUpdate
-              viewerDidAuthor
-              viewerCanMinimize
-              viewerCannotUpdateReasons
-              reactionGroups {
-                ... Reactions
-              }
-            }
-            ... on CrossReferencedEvent {
-              createdAt
-              isCrossRepository
-              referencedAt
-              source {
-                ... ShortPullRequestRowItem
-                ... ShortIssueRowItem
-              }
-              willCloseTarget
-                actor { ... ShortActor }
-            }
-            ... on ClosedEvent {
-              actor { ... ShortActor }
-              createdAt
-              closer {
-                ... CommitFragment
-                ... ShortPullRequestRowItem
-              }
-            }
-            ... on ReopenedEvent {
-              actor { ... ShortActor }
-              createdAt
-            }
-            ... on SubscribedEvent {
-              actor { ... ShortActor }
-              createdAt
-            }
-            ... on UnsubscribedEvent {
-              actor { ... ShortActor }
-              createdAt
-            }
-            ... on ReferencedEvent {
-              actor { ... ShortActor }
-              createdAt
-              commitRepository {
-                nameWithOwner
-              }
-              isCrossRepository
-              isDirectReference
-              commit {
-                ... CommitFragment
-              }
-              subject {
-                ... ShortPullRequestRowItem
-                ... ShortIssueRowItem
-              }
-            }
-            ... on AssignedEvent {
-              actor { ... ShortActor }
-              createdAt
-              user {
-                login
-                avatarUrl
-              }
-            }
-            ... on UnassignedEvent {
-              actor { ... ShortActor }
-              createdAt
-              user {
-                login
-                avatarUrl
-              }
-            }
-            ... on LabeledEvent {
-              actor { ... ShortActor }
-              createdAt
-              label {
-                color
-                name
-                isDefault
-              }
-            }
-            ... on UnlabeledEvent {
-              actor { ... ShortActor }
-              createdAt
-              label {
-                color
-                name
-                isDefault
-              }
-            }
-            ... on MilestonedEvent {
-              actor { ... ShortActor }
-              createdAt
-              milestoneTitle
-            }
-            ... on DemilestonedEvent {
-              actor { ... ShortActor }
-              createdAt
-              milestoneTitle
-            }
-            ... on RenamedTitleEvent {
-              actor { ... ShortActor }
-              createdAt
-              currentTitle
-              previousTitle
-            }
-            ... on LockedEvent {
-              actor { ... ShortActor }
-              createdAt
-              lockReason
-              lockable {
-                activeLockReason
-              }
-            }
-            ... on UnlockedEvent {
-              actor { ... ShortActor }
-              createdAt
-              lockable {
-                activeLockReason
-              }
-            }
-            ... on TransferredEvent {
-              actor { ... ShortActor }
-              createdAt
-              fromRepository {
-                id
-                nameWithOwner
-                url
-              }
-              issue {
-                number
-                url
-              }
-            }
-          }
         }
-      }
     }
-  }
+}
+
+query getLabels($login: String!, $repo: String!, $page: String){
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            labels(first: 30, after: $page){
+                totalCount
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                }
+                nodes {
+                    ... Labels
+                }
+            }
+        }
+    }
 }

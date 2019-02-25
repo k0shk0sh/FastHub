@@ -133,4 +133,10 @@ class UseCaseModule {
     ): LockUnlockIssuePrUseCase {
         return LockUnlockIssuePrUseCase(issueRepositoryProvider, apolloClient, loginRepositoryProvider)
     }
+
+    @PerFragment @Provides fun provideGetLabelsUseCase(
+        apolloClient: ApolloClient
+    ): GetLabelsUseCase {
+        return GetLabelsUseCase(apolloClient)
+    }
 }

@@ -32,8 +32,7 @@ fun Reactions.toReactionGroup(): ReactionGroupModel = ReactionGroupModel(Reactio
 
 fun LoginModel.me(): ShortUserModel = ShortUserModel(login, login, url, name, avatarUrl = avatarUrl)
 
-fun FullIssue.Labels?.toLabels(): List<LabelModel>? = this?.nodes?.map { it.fragments }
-    ?.map { LabelModel(it.labels.name, it.labels.color, it.labels.url.toString(), it.labels.isDefault) }
+fun Labels?.toLabels(): LabelModel = LabelModel(this?.name, this?.color, this?.url.toString(), this?.isDefault)
 
 fun FullIssue.Milestone.toMilestone(): MilestoneModel = this.fragments.milestoneFragment.let {
     MilestoneModel(it.id, it.title, it.description, it.state.rawValue(), it.url.toString(), it.number, it.isClosed, it.dueOn)

@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.getEmoji
+import com.fastaccess.data.model.parcelable.LabelModel
+import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
@@ -23,11 +25,11 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.GITHUB_LINK
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
@@ -40,12 +42,13 @@ import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 28.01.19.
  */
-class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
+class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, LabelsFragment.OnLabelSelected {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var htmlSpanner: HtmlSpanner
     @Inject lateinit var preference: FastHubSharedPreference
@@ -84,7 +87,6 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
                 swipeRefresh.isRefreshing = false
             }
         }
-        menuClick()
         observeChanges()
     }
 
@@ -92,7 +94,12 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
         viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
     }
 
-    private fun menuClick() {
+    override fun onLabelsSelected(labels: List<LabelModel>?) {
+        Timber.e("$labels")
+        //TODO
+    }
+
+    private fun menuClick(model: IssueModel) {
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.scrollTop -> appBar.setExpanded(true, true)
@@ -101,12 +108,14 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
                     appBar.setExpanded(true, true)
                 }
                 R.id.closeIssue -> viewModel.closeOpenIssue(login, repo, number)
-                R.id.share -> requireActivity().shareUrl("$GITHUB_LINK$login/$repo/issues/$number")
+                R.id.share -> requireActivity().shareUrl(model.url)
                 R.id.lockIssue -> if (item.title == getString(R.string.lock_issue)) {
                     MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LOCK_UNLOCK)
                 } else {
                     viewModel.lockUnlockIssue(login, repo, number)
                 }
+                R.id.labels -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, model.labels))
             }
             return@setOnMenuItemClickListener true
         }
@@ -149,6 +158,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected {
                 initReactions(model)
             }
         }
+        menuClick(model)
         initReactions(model)
         initLabels(model)
         initAssignees(model)
