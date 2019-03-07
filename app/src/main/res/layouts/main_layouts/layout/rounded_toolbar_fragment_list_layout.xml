@@ -9,10 +9,11 @@
     <include layout="@layout/appbar_center_title_round_background_layout"/>
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/keyline_2"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/keyline_2"
         app:layout_behavior="@string/scroll_behaviour">
 
         <include layout="@layout/simple_refresh_list_layout"/>

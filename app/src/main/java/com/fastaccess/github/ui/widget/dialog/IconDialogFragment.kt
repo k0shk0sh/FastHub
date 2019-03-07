@@ -1,18 +1,12 @@
 package com.fastaccess.github.ui.widget.dialog
 
-import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.fastaccess.github.R
+import com.fastaccess.github.base.BaseDialogFragment
 import com.fastaccess.github.utils.*
 import kotlinx.android.synthetic.main.icon_dialog_layout.*
 
@@ -20,7 +14,8 @@ import kotlinx.android.synthetic.main.icon_dialog_layout.*
 /**
  * Created by Kosh on 26.01.19.
  */
-class IconDialogFragment : DialogFragment() {
+class IconDialogFragment : BaseDialogFragment() {
+    override fun layoutRes(): Int = R.layout.icon_dialog_layout
 
     private var callback: IconDialogClickListener? = null
 
@@ -44,19 +39,6 @@ class IconDialogFragment : DialogFragment() {
         super.onDetach()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NO_TITLE, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        val contextThemeWrapper = ContextThemeWrapper(requireContext(), requireContext().theme)
-        val themeAwareInflater = inflater.cloneInContext(contextThemeWrapper)
-        return themeAwareInflater.inflate(com.fastaccess.github.R.layout.icon_dialog_layout, container, false)
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialogIcon.setImageResource(bundleDrawable)
@@ -73,12 +55,6 @@ class IconDialogFragment : DialogFragment() {
             callback?.onClick(false)
             dialog?.cancel()
         }
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        return dialog
     }
 
     companion object {

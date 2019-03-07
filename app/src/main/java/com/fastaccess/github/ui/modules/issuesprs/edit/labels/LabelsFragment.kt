@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.evernote.android.state.State
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.github.R
@@ -15,6 +16,7 @@ import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.LabelsAdapter
+import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.viewmodel.LabelsViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.isConnected
@@ -25,12 +27,13 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2018-11-26.
  */
-class LabelsFragment : BaseFragment() {
+class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @State var selection = hashSetOf<LabelModel>()
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(LabelsViewModel::class.java) }
     private val model by lazy { arguments?.getParcelable(EXTRA) as? LoginRepoParcelableModel<LabelModel> }
     private val adapter by lazy {
-        LabelsAdapter().apply {
+        LabelsAdapter(selection).apply {
             model?.items?.forEach { this.selection.add(it) }
         }
     }
@@ -69,6 +72,9 @@ class LabelsFragment : BaseFragment() {
                     callback?.onLabelsSelected(adapter.selection.toList())
                     dismiss()
                 }
+                R.id.add -> {
+                    CreateLabelFragment.newInstance().show(childFragmentManager, "CreateLabelFragment")
+                }
             }
         }
         recyclerView.adapter = adapter
@@ -85,6 +91,17 @@ class LabelsFragment : BaseFragment() {
         }
         recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.load(login, repo) } }
         listenToChanges()
+    }
+
+    override fun onCreateLabel(name: String, color: String) {
+        val login = model?.login
+        val repo = model?.repo
+
+        if (login == null || repo == null) {
+            dismiss()
+            return
+        }
+        viewModel.addLabel(login, repo, name, color)
     }
 
     private fun listenToChanges() {

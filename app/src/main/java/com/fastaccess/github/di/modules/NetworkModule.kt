@@ -78,6 +78,7 @@ class NetworkModule {
     @Singleton @Provides fun provideNotificationService(retrofit: Retrofit): NotificationService = retrofit.create(NotificationService::class.java)
     @Singleton @Provides fun provideOrganizationService(retrofit: Retrofit): OrganizationService = retrofit.create(OrganizationService::class.java)
     @Singleton @Provides fun provideIssueService(retrofit: Retrofit): IssuePrService = retrofit.create(IssuePrService::class.java)
+    @Singleton @Provides fun provideRepoService(retrofit: Retrofit): RepoService = retrofit.create(RepoService::class.java)
 }
 
 class AuthenticationInterceptor(var otp: String? = null,

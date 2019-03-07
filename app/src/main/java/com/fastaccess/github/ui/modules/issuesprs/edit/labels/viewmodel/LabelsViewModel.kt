@@ -5,6 +5,7 @@ import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.usecase.issuesprs.CreateLabelUseCase
 import com.fastaccess.github.usecase.issuesprs.GetLabelsUseCase
 import javax.inject.Inject
 
@@ -12,7 +13,8 @@ import javax.inject.Inject
  * Created by Kosh on 2018-11-26.
  */
 class LabelsViewModel @Inject constructor(
-    private val usecase: GetLabelsUseCase
+    private val usecase: GetLabelsUseCase,
+    private val createLabelUseCase: CreateLabelUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -41,4 +43,16 @@ class LabelsViewModel @Inject constructor(
     }
 
     fun hasNext() = pageInfo?.hasNextPage == true
+
+    fun addLabel(login: String, repo: String, name: String, color: String) {
+        createLabelUseCase.login = login
+        createLabelUseCase.repo = repo
+        createLabelUseCase.name = name
+        createLabelUseCase.color = color
+        justSubscribe(createLabelUseCase.buildObservable()
+            .doOnNext {
+                list.add(0, it)
+                data.postValue(ArrayList(list))
+            })
+    }
 }

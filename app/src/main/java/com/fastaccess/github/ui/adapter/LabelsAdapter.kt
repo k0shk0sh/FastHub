@@ -9,9 +9,7 @@ import com.fastaccess.github.ui.adapter.viewholder.LabelViewHolder
 /**
  * Created by Kosh on 20.01.19.
  */
-class LabelsAdapter : ListAdapter<LabelModel, LabelViewHolder>(DIFF_CALLBACK) {
-
-    val selection = hashSetOf<LabelModel>()
+class LabelsAdapter(val selection: HashSet<LabelModel>) : ListAdapter<LabelModel, LabelViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LabelViewHolder = LabelViewHolder(parent).apply {
         itemView.let { view ->

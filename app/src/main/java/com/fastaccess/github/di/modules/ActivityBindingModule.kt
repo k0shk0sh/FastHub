@@ -13,12 +13,13 @@ import dagger.android.ContributesAndroidInjector
 /**
  * Created by Kosh on 12.05.18.
  */
-@Module()
+@Suppress("unused")
+@Module
 abstract class ActivityBindingModule {
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun mainActivity(): MainActivity
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun loginChooser(): LoginChooserActivity
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun profileActivity(): ProfileActivity
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun multiPurposeActivity(): MultiPurposeActivity
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun trendingActivity(): TrendingActivity
-    @PerActivity @ContributesAndroidInjector(modules = [FragmentBindingModule::class]) abstract fun trendingIssueActivity(): IssueActivity
+    @PerActivity @ContributesAndroidInjector abstract fun mainActivity(): MainActivity
+    @PerActivity @ContributesAndroidInjector abstract fun loginChooser(): LoginChooserActivity
+    @PerActivity @ContributesAndroidInjector abstract fun profileActivity(): ProfileActivity
+    @PerActivity @ContributesAndroidInjector abstract fun multiPurposeActivity(): MultiPurposeActivity
+    @PerActivity @ContributesAndroidInjector abstract fun trendingActivity(): TrendingActivity
+    @PerActivity @ContributesAndroidInjector abstract fun trendingIssueActivity(): IssueActivity
 }

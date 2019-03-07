@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import com.fastaccess.data.repository.*
 import com.fastaccess.domain.repository.services.IssuePrService
 import com.fastaccess.domain.repository.services.NotificationService
+import com.fastaccess.domain.repository.services.RepoService
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase
@@ -138,5 +139,11 @@ class UseCaseModule {
         apolloClient: ApolloClient
     ): GetLabelsUseCase {
         return GetLabelsUseCase(apolloClient)
+    }
+
+    @PerFragment @Provides fun provideCreateLabelUseCase(
+        repoService: RepoService
+    ): CreateLabelUseCase {
+        return CreateLabelUseCase(repoService)
     }
 }

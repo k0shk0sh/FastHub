@@ -37,8 +37,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     private var activityCallback: ActivityCallback? = null
     private var disposal = CompositeDisposable()
 
-    @LayoutRes
-    abstract fun layoutRes(): Int
+    @LayoutRes abstract fun layoutRes(): Int
 
     abstract fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?)
     protected open fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {}
@@ -139,7 +138,11 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     }
 
     fun dismiss() {
-        (parentFragment as? BaseBottomSheetDialogFragment)?.dismissDialog()
+        when (parentFragment) {
+            is BaseBottomSheetDialogFragment -> (parentFragment as? BaseBottomSheetDialogFragment)?.dismissDialog()
+            is BaseDialogFragment -> (parentFragment as? BaseDialogFragment)?.dismissDialog()
+            else -> activity?.onBackPressed()
+        }
     }
 
     fun setupToolbar(title: String, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
@@ -150,13 +153,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
             } else {
                 setTitle(title)
             }
-            setNavigationOnClickListener {
-                if (parentFragment is BaseBottomSheetDialogFragment) {
-                    (parentFragment as BaseBottomSheetDialogFragment).dismiss()
-                    return@setNavigationOnClickListener
-                }
-                activity?.onBackPressed()
-            }
+            setNavigationOnClickListener { dismiss() }
             menuId?.let { menuResId ->
                 inflateMenu(menuResId)
                 onMenuItemClick?.let { onClick ->

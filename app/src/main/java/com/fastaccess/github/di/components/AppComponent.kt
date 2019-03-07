@@ -23,6 +23,8 @@ import javax.inject.Singleton
     NetworkModule::class,
     RepositoryModule::class,
     ActivityBindingModule::class,
+    FragmentBindingModule::class,
+    DialogFragmentBindingModule::class,
     ActivityModule::class,
     RepositoryModule::class,
     AndroidSupportInjectionModule::class])
