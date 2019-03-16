@@ -609,4 +609,7 @@
     <string name="limit_by">Limit by</string>
     <string name="no_internet_connection">Not connected to Internet</string>
     <string name="lock_reason">Lock Reason</string>
+    <string name="sort_by">Sort By</string>
+    <string name="mostStars">Most Stars</string>
+    <string name="leastStars">Least Stars</string>
 </resources>

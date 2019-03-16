@@ -138,7 +138,13 @@ class FilterSearchBottomSheet : BaseFragment() {
                 })
                 limitByText.isVisible = true
             }
+            model.filterByRepoSortBy?.let { limit ->
+                sortBy.check(when (limit) {
+                    FilterByRepo.FilterByRepoSortBy.MOST_STARS -> R.id.mostStars
+                    FilterByRepo.FilterByRepoSortBy.LEAST_STARS -> R.id.leastStars
+                })
 
+            }
             limitByEditText.setText(model.name ?: "")
             languageEditText.setText(model.language ?: "")
         }
@@ -192,6 +198,13 @@ class FilterSearchBottomSheet : BaseFragment() {
                 }
             }
             limitByText.isVisible = group.checkedChipId != -1
+        }
+        sortBy.setOnCheckedChangeListener { group, id ->
+            when (id) {
+                R.id.mostStars -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.MOST_STARS
+                R.id.leastStars -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.LEAST_STARS
+            }
+
         }
         languages.setOnCheckedChangeListener { chipGroup, id ->
             if (id != -1) {

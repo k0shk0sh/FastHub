@@ -65,12 +65,14 @@ data class FilterByUser(var name: String? = "") : Parcelable {
 data class FilterByRepo(
     var filterByRepoIn: FilterByRepoIn = FilterByRepoIn.ALL,
     var filterByRepoLimitBy: FilterByRepoLimitBy? = null,
+    var filterByRepoSortBy: FilterByRepoSortBy? = null,
     var name: String? = null,
     var language: String? = null
 ) : Parcelable {
     constructor(source: Parcel) : this(
         FilterByRepoIn.values()[source.readInt()],
         source.readValue(Int::class.java.classLoader)?.let { FilterByRepoLimitBy.values()[it as Int] },
+        source.readValue(Int::class.java.classLoader)?.let { FilterByRepoSortBy.values()[it as Int] },
         source.readString(),
         source.readString()
     )
@@ -80,6 +82,7 @@ data class FilterByRepo(
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(filterByRepoIn.ordinal)
         writeValue(filterByRepoLimitBy?.ordinal)
+        writeValue(filterByRepoSortBy?.ordinal)
         writeString(name)
         writeString(language)
     }
@@ -93,4 +96,5 @@ data class FilterByRepo(
 
     enum class FilterByRepoIn { ALL, NAME, DESCRIPTION, README }
     enum class FilterByRepoLimitBy { USERNAME, ORG }
+    enum class FilterByRepoSortBy {MOST_STARS, LEAST_STARS}
 }

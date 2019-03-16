@@ -177,6 +177,38 @@
 
                 </com.google.android.material.chip.ChipGroup>
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:padding="@dimen/spacing_xs_large"
+                    android:text="@string/sort_by"/>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/sortBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/mostStars"
+                        style="@style/ChipStyleCheckable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mostStars"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/leastStars"
+                        style="@style/ChipStyleCheckable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/leastStars"/>
+                </com.google.android.material.chip.ChipGroup>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/TextAppearance.AppCompat.Title"
