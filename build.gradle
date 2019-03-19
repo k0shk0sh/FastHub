@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        butterKnifeVersion = '8.5.1'
+        butterKnifeVersion = '10.1.0'
         state_version = '1.2.0'
         lombokVersion = '1.16.20'
         supportVersion = "27.1.0"
