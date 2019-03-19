@@ -145,7 +145,7 @@ dependencies {
     implementation "io.requery:requery-android:${requery}"
     implementation('com.mikepenz:aboutlibraries:5.9.7@aar') { transitive = true }
     implementation 'com.github.nightwhistler:HtmlSpanner:0.4'
-    implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
+    implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.22'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
     implementation "com.atlassian.commonmark:commonmark:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}"
