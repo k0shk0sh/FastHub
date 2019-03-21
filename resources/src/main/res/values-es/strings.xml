@@ -55,13 +55,13 @@
     <string name="unfollow">Dejar de seguir</string>
     <string name="user">Usuario</string>
     <string name="details">Detalles</string>
-    <string name="archive_file_detected_error">Archive file detected, please download the file to view its content.</string>
+    <string name="archive_file_detected_error">Archivo detectado, por favor descargue el archivo para ver su contenido</string>
     <string name="minimum_three_chars">Mínimo de caracteres (3)</string>
     <string name="no_file_found">No se encontraron archivos</string>
-    <string name="no_readme_found">No se encontró léeme</string>
+    <string name="no_readme_found">No se encontró README</string>
     <string name="downloading">Descargando…</string>
     <string name="downloading_file">Descargando archivo…</string>
-    <string name="released">Lanzado</string>
+    <string name="released">Publicado</string>
     <string name="drafted">En borrador</string>
     <string name="releases">Lanzamientos</string>
     <string name="no_body">Sin body</string>
@@ -79,8 +79,8 @@
     <string name="unlock_issue_details">Desbloquear la conversación significa:\n&#183;Todos serán capaces de comentar en este issue nuevamente.\n&#183;Puedes volver a bloquear la conversación en el futuro nuevamente.\n</string>
     <string name="lock_issue">Bloquear conversación</string>
     <string name="unlock_issue">Desbloquear conversación</string>
-    <string name="error_closing_issue">Error cerrando el issue, por favor intenta nuevamente luego.</string>
-    <string name="error_re_opening_issue">Error reabriendo el issue, por favor intenta nuevamente luego.</string>
+    <string name="error_closing_issue">Error cerrando el issue, por favor intenta luego.</string>
+    <string name="error_re_opening_issue">Error reabriendo el issue, por favor intenta luego.</string>
     <string name="success_closed">Issue cerrado con éxito</string>
     <string name="no_description_provided"><p>No hay descripción</p></string>
     <string name="header_one">Cabecera Uno</string>
@@ -113,7 +113,7 @@
     <string name="back">Atrás</string>
     <string name="parent_folder">Carpeta anterior</string>
     <string name="code_viewer">Visor de código</string>
-    <string name="open_in_browser">Abrir en el navegador</string>
+    <string name="open_in_browser">Abrir en navegador</string>
     <string name="big_file">Archivo grande</string>
     <string name="big_file_description">El archivo es muy grande para abrirlo.\nPresioná Si para descargarlo.</string>
     <string name="viewer">Visor</string>
@@ -135,7 +135,7 @@
     <string name="users">Usuarios</string>
     <string name="title">Título</string>
     <string name="file">Archivo</string>
-    <string name="milestone">Milestone</string>
+    <string name="milestone">Hito</string>
     <string name="assign_myself">Asignármelo</string>
     <string name="submit_issue">Enviar issue</string>
     <string name="error_creating_issue">Error creando issue</string>
@@ -162,7 +162,7 @@
     <string name="gist_description">Descripción del Gist </string>
     <string name="avatar_click_hint">Siempre que haya una imagen de perfil, puedes clickear en ella para abrir el perfil del usuario</string>
     <string name="feeds_fork_hint">Mantén presionado en un \'fork\' para abrir el repositorio original ó la división.</string>
-    <string name="click_here_to_download_release_hint">Descargar versiones lanzadas</string>
+    <string name="click_here_to_download_release_hint">Descargar versiones publicadas</string>
     <string name="options">Opciones</string>
     <string name="click_file_option_hint">Descargar archivo o compartir directorio</string>
     <string name="comment_hint">Toca un comentario para etiquetar a su autor o para editar tu comentario.
@@ -186,7 +186,7 @@
     <string name="unread">No leídas</string>
     <string name="all">Todas</string>
     <string name="delete_repo">Eliminar repositorio</string>
-    <string name="delete_repo_warning">Esta acción no se puede deshacer</string>
+    <string name="delete_repo_warning">Esta acción no puede deshacerse</string>
     <string name="thirty_minutes">30 minutos</string>
     <string name="twenty_minutes">20 minutos</string>
     <string name="ten_minutes">10 minutos</string>
@@ -213,12 +213,12 @@
     <string name="edited">\u2022 editado</string>
     <string name="update_issue">Actualizar issue</string>
     <string name="update_pull_request">Actualizar Pull Request</string>
-    <string name="no_milestones">No hay milestones</string>
+    <string name="no_milestones">No hay hitos</string>
     <string name="add">Agregar</string>
     <string name="done">Hecho</string>
     <string name="home">Inicio</string>
-    <string name="create_milestone">Crear Milestone</string>
-    <string name="error_creating_milestone">Error creando milestone</string>
+    <string name="create_milestone">Crear Hito</string>
+    <string name="error_creating_milestone">Error creando hito</string>
     <string name="due_on">Vence en</string>
     <string name="no_assignees">Nadie asignado</string>
     <string name="this_value">Esto</string>
@@ -293,7 +293,7 @@
     <string name="no_starred_repos">No hay repositorios con estrella</string>
     <string name="no_commits">No hay commits</string>
     <string name="no_contributors">No hay colaboradores</string>
-    <string name="no_releases">No hay versiones lanzadas</string>
+    <string name="no_releases">No hay versiones publicadas</string>
     <string name="no_events">No hay eventos</string>
     <string name="no_pull_requests">No hay pull requests</string>
     <string name="no_search_results">Búsqueda sin resultados</string>
@@ -325,7 +325,7 @@
     <string name="animations">Animaciones</string>
     <string name="dialog_animation_summary">Activar animaciones</string>
     <string name="dialog_animation_title">Animaciones en diálogos emergentes</string>
-    <string name="milestones">Milestones</string>
+    <string name="milestones">Hitos</string>
     <string name="assignee">Asignado</string>
     <string name="checks_failed">Algunas comprobaciones fallaron</string>
     <string name="checks_pending">Todas las comprobaciones están pendientes</string>
@@ -338,7 +338,7 @@
     <string name="recently_updated">Recientemente actualizado</string>
     <string name="least_recent_updated">Menos recientemente actualizado</string>
     <string name="up_to_date">¡Estás al día!</string>
-    <string name="new_version">Hay una nueva versión disponible.</string>
+    <string name="new_version">Hay nueva versión disponible.</string>
     <string name="empty_search_error">El campo de búsqueda no puede estar vacío</string>
     <string name="long_press_repo_fab_hint">Mantén presionado para crear un issue en el momento</string>
     <string name="commit_can_be_merged">Este pull request puede ser fusionado</string>
@@ -390,19 +390,19 @@
     <string name="reply">Responder</string>
     <string name="failed_selecting_image">Falló al cargar la imagen.</string>
     <string name="want_to_merge">quiere fusionar</string>
-    <string name="watchers">Watchers</string>
+    <string name="watchers">Observadores</string>
     <string name="reviewers">Revisores</string>
     <string name="no_reviewers">Sin revisores</string>
     <string name="sent_from_fasthub">Enviado desde mi %1$s usando %2$s%3$s</string>
     <string name="enable_signature">Habilitar firma</string>
     <string name="enable_signature_summary">Habilitar mensaje \'enviado desde\'</string>
     <string name="enable_signature_box">Habilitar botón de firma</string>
-    <string name="enable_signature_box_summary">Habilitar un checkbox para poner o quitar la firma en el editor de mensajes</string>
+    <string name="enable_signature_box_summary">Habilitar checkbox para poner o quitar la firma en el editor de mensajes</string>
     <string name="tags">Etiquetas</string>
     <string name="add_comment">Agregar comentario</string>
     <string name="image_error">Error cargando imagen, por favor intenta nuevamente.</string>
     <string name="trending">Tendencias</string>
-    <string name="not_really_working">Ordenar por emojies no funciona debido a una limitación de GitHub</string>
+    <string name="not_really_working">Ordenar por emojis no funciona debido a una limitación de GitHub</string>
     <string name="scroll_up">Sube</string>
     <string name="scroll_down">Baja</string>
     <string name="participated">Participando</string>
@@ -418,7 +418,7 @@
     <string name="sort_direction">Sentido de la clasificación</string>
     <string name="assignee_added">Asignado exitosamente</string>
     <string name="reviewer_added">Revisor agregado con éxito</string>
-    <string name="milestone_added">Milestone agregado con éxito</string>
+    <string name="milestone_added">Hito agregado con éxito</string>
     <string name="feed">Actividad</string>
     <string name="premium_theme">Tema Premium </string>
     <string name="choose_code_theme">Código del tema</string>
@@ -426,7 +426,7 @@
         de su API, de otro modo tu sesión expirará cada vez que accedas a cualquier sección que no pertenezca a tu cuenta Enterprise.</string>
     <string name="add_account">Agregar cuenta</string>
     <string name="choose_account">Elegir cuenta</string>
-    <string name="not_match">No concuerda</string>
+    <string name="not_match">No coincide</string>
     <string name="warning">Aviso</string>
     <string name="owner">Propietario</string>
     <string name="original_poster">Creador del hilo (OP)</string>
@@ -497,6 +497,6 @@
     <string name="user_unblocked">Usuario desbloqueado</string>
     <string name="clear_image_cache">Borrar caché de imágenes</string>
     <string name="restart_app_message">Por favor, reinicia la aplicación</string>
-    <string name="public_label">public</string>
-    <string name="private_label">private</string>
+    <string name="public_label">publico</string>
+    <string name="private_label">privado</string>
 </resources>
