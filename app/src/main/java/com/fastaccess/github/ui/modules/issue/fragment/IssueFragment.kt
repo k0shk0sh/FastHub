@@ -30,10 +30,7 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.isConnected
-import com.fastaccess.github.utils.extensions.popupEmoji
-import com.fastaccess.github.utils.extensions.theme
+import com.fastaccess.github.utils.extensions.*
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
@@ -177,7 +174,9 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, L
         assigneesLayout.isVisible = !model.assignees.isNullOrEmpty()
         val builder = SpannableBuilder.builder()
         model.assignees?.forEachIndexed { index, item ->
-            builder.append(item.login ?: item.name).append(if (index == model.assignees?.size?.minus(1)) "" else ", ")
+            builder.clickable(item.login ?: item.name ?: "", View.OnClickListener {
+                it.context.route(item.url)
+            }).append(if (index == model.assignees?.size?.minus(1)) "" else ", ")
         }
         assignees.text = builder
     }
