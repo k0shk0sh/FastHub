@@ -1,5 +1,7 @@
 package com.fastaccess.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -15,4 +17,41 @@ data class ShortUserModel(
     @SerializedName(value = "avatar_url", alternate = ["avatarUrl"]) var avatarUrl: String? = null,
     @SerializedName("viewerCanFollow") var viewerCanFollow: Boolean? = null,
     @SerializedName("viewerIsFollowing") var viewerIsFollowing: Boolean? = null
-)
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean)
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(login)
+        parcel.writeString(url)
+        parcel.writeString(name)
+        parcel.writeString(location)
+        parcel.writeString(bio)
+        parcel.writeString(avatarUrl)
+        parcel.writeValue(viewerCanFollow)
+        parcel.writeValue(viewerIsFollowing)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<ShortUserModel> {
+        override fun createFromParcel(parcel: Parcel): ShortUserModel {
+            return ShortUserModel(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ShortUserModel?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

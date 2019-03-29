@@ -13,6 +13,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseBottomSheetDialogFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
@@ -45,6 +46,8 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
                     BottomSheetFragmentType.LOCK_UNLOCK -> replace(R.id.container, LockUnlockFragment.newInstance(), "LockUnlockFragment")
                     BottomSheetFragmentType.LABELS -> replace(R.id.container,
                         LabelsFragment.newInstance(arguments?.getParcelable(EXTRA_TWO)), "LabelsFragment")
+                    BottomSheetFragmentType.ASSIGNEES -> replace(R.id.container,
+                        AssigneesFragment.newInstance(arguments?.getParcelable(EXTRA_TWO)), "LabelsFragment")
                     null -> dialog?.dismiss()
                 }
             }
@@ -66,6 +69,6 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
     }
 
     enum class BottomSheetFragmentType {
-        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS, FILTER_SEARCH, TRENDING, LOCK_UNLOCK, LABELS
+        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS, FILTER_SEARCH, TRENDING, LOCK_UNLOCK, LABELS, ASSIGNEES
     }
 }
