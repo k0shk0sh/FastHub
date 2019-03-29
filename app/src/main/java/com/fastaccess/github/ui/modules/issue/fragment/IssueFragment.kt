@@ -100,7 +100,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     }
 
     override fun onAssigneesSelected(assignees: List<ShortUserModel>?) {
-        initAssignees(assignees)
+        viewModel.onAssigneesChanged(assignees, login, repo, number)
         //TODO update adapter
     }
 

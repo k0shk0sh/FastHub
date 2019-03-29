@@ -9,7 +9,10 @@ import com.fastaccess.github.ui.adapter.viewholder.AssigneeViewHolder
 /**
  * Created by Kosh on 20.01.19.
  */
-class AssigneesAdapter(val selection: HashSet<ShortUserModel>) : ListAdapter<ShortUserModel, AssigneeViewHolder>(DIFF_CALLBACK) {
+class AssigneesAdapter(
+    val selection: HashSet<ShortUserModel>,
+    val deselection: HashSet<ShortUserModel>
+) : ListAdapter<ShortUserModel, AssigneeViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssigneeViewHolder = AssigneeViewHolder(parent).apply {
         itemView.let { view ->
@@ -18,7 +21,9 @@ class AssigneesAdapter(val selection: HashSet<ShortUserModel>) : ListAdapter<Sho
                 val item = getItem(position)
                 if (!selection.contains(item)) {
                     selection.add(item)
+                    deselection.remove(item)
                 } else {
+                    deselection.add(item)
                     selection.remove(item)
                 }
                 notifyItemChanged(position)

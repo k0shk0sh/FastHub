@@ -30,10 +30,11 @@ import javax.inject.Inject
 class AssigneesFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @State var selection = hashSetOf<ShortUserModel>()
+    @State var deselection = hashSetOf<ShortUserModel>()
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(AssigneesViewModel::class.java) }
     private val model by lazy { arguments?.getParcelable(EXTRA) as? LoginRepoParcelableModel<ShortUserModel> }
     private val adapter by lazy {
-        AssigneesAdapter(selection).apply {
+        AssigneesAdapter(selection, deselection).apply {
             model?.items?.forEach { this.selection.add(it) }
         }
     }
@@ -73,7 +74,7 @@ class AssigneesFragment : BaseFragment() {
                     if (adapter.selection.toList() != model?.items) {
                         viewModel.addAssignees(login, repo, number,
                             adapter.selection.toList().map { it.login ?: "" },
-                            model?.items?.map { it.login ?: "" })
+                            adapter.deselection.toList().map { it.login ?: "" })
                     }
                 }
             }

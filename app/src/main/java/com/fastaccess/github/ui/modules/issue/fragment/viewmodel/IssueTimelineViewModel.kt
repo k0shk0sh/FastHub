@@ -2,7 +2,9 @@ package com.fastaccess.github.ui.modules.issue.fragment.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Input
+import com.fastaccess.data.model.AssignedUnAssignedEventModel
 import com.fastaccess.data.model.PageInfoModel
+import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
@@ -12,7 +14,9 @@ import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
 import com.fastaccess.github.usecase.issuesprs.LockUnlockIssuePrUseCase
 import github.type.LockReason
 import io.reactivex.Observable
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 /**
  * Created by Kosh on 20.10.18.
@@ -99,4 +103,20 @@ class IssueTimelineViewModel @Inject constructor(
     }
 
     fun hasNext() = pageInfo?.hasNextPage ?: false
+
+    fun onAssigneesChanged(assignees: List<ShortUserModel>?, login: String, repo: String, number: Int) {
+        assignees?.let { assigneesList ->
+            add(Observable.fromCallable {
+                list.add(TimelineModel(assignedEventModel = AssignedUnAssignedEventModel(Date(), null, true, ArrayList(assignees))))
+                kotlin.runCatching {
+                    val issue = issueRepositoryProvider.getIssueByNumberSingle("$login/$repo", number).blockingGet()
+                    issue.assignees = assignees
+                    issueRepositoryProvider.upsert(issue)
+                }
+            }
+                .subscribe({
+                    timeline.postValue(ArrayList(list))
+                }, {}, {}))
+        }
+    }
 }
