@@ -19,7 +19,7 @@ class AddAssigneesUseCase @Inject constructor(
     var assignees: List<String>? = null
     var toRemove: List<String>? = null
 
-    override fun buildObservable(): Observable<Boolean> = repoService.removeAssignees(login, repo, number, AssigneesBodyModel(assignees))
+    override fun buildObservable(): Observable<Boolean> = repoService.removeAssignees(login, repo, number, AssigneesBodyModel(toRemove))
         .flatMap { repoService.addAssignees(login, repo, number, AssigneesBodyModel(assignees)) }
         .map { true }
 }
