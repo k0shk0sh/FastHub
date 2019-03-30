@@ -30,10 +30,11 @@ import javax.inject.Inject
 class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @State var selection = hashSetOf<LabelModel>()
+    @State var deselection = hashSetOf<LabelModel>()
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(LabelsViewModel::class.java) }
     private val model by lazy { arguments?.getParcelable(EXTRA) as? LoginRepoParcelableModel<LabelModel> }
     private val adapter by lazy {
-        LabelsAdapter(selection).apply {
+        LabelsAdapter(selection, deselection).apply {
             model?.items?.forEach { this.selection.add(it) }
         }
     }
@@ -61,16 +62,20 @@ class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         val login = model?.login
         val repo = model?.repo
+        val number = model?.number
 
-        if (login == null || repo == null) {
+        if (login == null || repo == null || number == null) {
             dismiss()
             return
         }
         setupToolbar(R.string.labels, R.menu.edit_submit_menu) { item: MenuItem ->
             when (item.itemId) {
                 R.id.submit -> {
-                    callback?.onLabelsSelected(adapter.selection.toList())
-                    dismiss()
+                    if (adapter.selection.toList() != model?.items) {
+                        viewModel.putLabels(login, repo, number, adapter.selection, adapter.deselection)
+                    } else {
+                        dismiss()
+                    }
                 }
                 R.id.add -> {
                     CreateLabelFragment.newInstance().show(childFragmentManager, "CreateLabelFragment")
@@ -107,6 +112,10 @@ class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback
     private fun listenToChanges() {
         viewModel.data.observeNotNull(this) {
             adapter.submitList(it)
+        }
+        viewModel.putLabelsLiveData.observeNotNull(this) {
+            callback?.onLabelsSelected(adapter.selection.toList())
+            dismiss()
         }
     }
 

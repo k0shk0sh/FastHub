@@ -96,12 +96,10 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
     override fun onLabelsSelected(labels: List<LabelModel>?) {
         initLabels(labels)
-        //TODO update adapter
     }
 
     override fun onAssigneesSelected(assignees: List<ShortUserModel>?) {
-        viewModel.onAssigneesChanged(assignees, login, repo, number)
-        //TODO update adapter
+        initAssignees(assignees)
     }
 
     private fun menuClick(model: IssueModel) {
@@ -120,7 +118,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                     viewModel.lockUnlockIssue(login, repo, number)
                 }
                 R.id.labels -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
-                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, model.labels))
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, model.labels, number))
                 R.id.assignees -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
                     MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ASSIGNEES, LoginRepoParcelableModel(login, repo, model.assignees, number))
             }

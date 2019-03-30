@@ -147,6 +147,12 @@ class UseCaseModule {
         return CreateLabelUseCase(repoService)
     }
 
+    @PerFragment @Provides fun providePutLabelsUseCase(
+        repoService: RepoService
+    ): PutLabelsUseCase {
+        return PutLabelsUseCase(repoService)
+    }
+
     @PerFragment @Provides fun provideGetAssigneesUseCase(
         apolloClient: ApolloClient
     ): GetAssigneesUseCase {
