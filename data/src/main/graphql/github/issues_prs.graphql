@@ -235,3 +235,22 @@ query getAssignees($login: String!, $repo: String!, $page: String) {
     }
   }
 }
+
+query getMilestones($login: String!, $repo: String!, $page: String) {
+  repositoryOwner(login: $login) {
+    repository(name: $repo) {
+        milestones(first: 30, after: $page) {
+          totalCount
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          nodes {
+            ... MilestoneFragment
+          }
+        }
+    }
+  }
+}

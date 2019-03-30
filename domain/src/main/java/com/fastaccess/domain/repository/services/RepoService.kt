@@ -4,7 +4,9 @@ import com.fastaccess.domain.response.IssueResponse
 import com.fastaccess.domain.response.LabelResponse
 import com.fastaccess.domain.response.body.AssigneesBodyModel
 import com.fastaccess.domain.response.body.LabelsBodyModel
+import com.fastaccess.domain.response.body.MilestoneBodyModel
 import io.reactivex.Observable
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.HTTP
 import retrofit2.http.POST
@@ -33,4 +35,8 @@ interface RepoService {
     @HTTP(method = "DELETE", path = "repos/{owner}/{repo}/issues/{number}/assignees", hasBody = true)
     fun removeAssignees(@Path("owner") owner: String, @Path("repo") repo: String, @Path("number") number: Int,
                         @Body body: AssigneesBodyModel): Observable<IssueResponse>
+
+    @POST("repos/{owner}/{repo}/milestones")
+    fun createMilestone(@Path("owner") owner: String, @Path("repo") repo: String,
+                        @Body create: MilestoneBodyModel): Observable<ResponseBody>
 }

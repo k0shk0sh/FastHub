@@ -15,7 +15,9 @@ import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
+import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog.BottomSheetFragmentType.*
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
@@ -34,20 +36,22 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
         if (savedInstanceState == null) {
             childFragmentManager.commit {
                 when (type) {
-                    BottomSheetFragmentType.ORGANIZATIONS -> replace(R.id.container, UserOrgsFragment.newInstance(), "UserOrgsFragment")
-                    BottomSheetFragmentType.FILTER_ISSUES, BottomSheetFragmentType.FILTER_PRS ->
+                    ORGANIZATIONS -> replace(R.id.container, UserOrgsFragment.newInstance(), "UserOrgsFragment")
+                    FILTER_ISSUES, FILTER_PRS ->
                         replace(R.id.container, FilterIssuesPrsBottomSheet
                             .newInstance(arguments?.getParcelable(EXTRA_TWO) ?: FilterIssuesPrsModel()), "FilterIssuesPrsBottomSheet")
-                    BottomSheetFragmentType.FILTER_SEARCH -> replace(R.id.container, FilterSearchBottomSheet
+                    FILTER_SEARCH -> replace(R.id.container, FilterSearchBottomSheet
                         .newInstance(arguments?.getParcelable(EXTRA_TWO) ?: FilterSearchModel()), "FilterSearchBottomSheet")
-                    BottomSheetFragmentType.TRENDING -> replace(R.id.container,
+                    TRENDING -> replace(R.id.container,
                         FilterTrendingBottomSheet.newInstance(arguments?.getParcelable(EXTRA_TWO)
                             ?: FilterTrendingModel()), "FilterTrendingBottomSheet")
-                    BottomSheetFragmentType.LOCK_UNLOCK -> replace(R.id.container, LockUnlockFragment.newInstance(), "LockUnlockFragment")
-                    BottomSheetFragmentType.LABELS -> replace(R.id.container,
+                    LOCK_UNLOCK -> replace(R.id.container, LockUnlockFragment.newInstance(), "LockUnlockFragment")
+                    LABELS -> replace(R.id.container,
                         LabelsFragment.newInstance(arguments?.getParcelable(EXTRA_TWO)), "LabelsFragment")
-                    BottomSheetFragmentType.ASSIGNEES -> replace(R.id.container,
-                        AssigneesFragment.newInstance(arguments?.getParcelable(EXTRA_TWO)), "LabelsFragment")
+                    ASSIGNEES -> replace(R.id.container,
+                        AssigneesFragment.newInstance(arguments?.getParcelable(EXTRA_TWO)), "AssigneesFragment")
+                    MILESTONE -> replace(R.id.container,
+                        MilestoneFragment.newInstance(arguments?.getParcelable(EXTRA_TWO)), "MilestoneFragment")
                     null -> dialog?.dismiss()
                 }
             }
@@ -69,6 +73,7 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
     }
 
     enum class BottomSheetFragmentType {
-        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS, FILTER_SEARCH, TRENDING, LOCK_UNLOCK, LABELS, ASSIGNEES
+        ORGANIZATIONS, FILTER_ISSUES, FILTER_PRS, FILTER_SEARCH,
+        TRENDING, LOCK_UNLOCK, LABELS, ASSIGNEES, MILESTONE
     }
 }

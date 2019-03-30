@@ -8,6 +8,7 @@ import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.issuesprs.fragment.FilterIssuePullRequestsFragment
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
@@ -60,4 +61,5 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideLockUnlockFragment(): LockUnlockFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideLabelsFragment(): LabelsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideAssigneesFragment(): AssigneesFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideMilestoneFragment(): MilestoneFragment
 }

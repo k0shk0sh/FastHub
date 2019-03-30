@@ -121,6 +121,8 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                     MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, model.labels, number))
                 R.id.assignees -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
                     MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ASSIGNEES, LoginRepoParcelableModel(login, repo, model.assignees, number))
+                R.id.milestone -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(login, repo, model.assignees, number))
             }
             return@setOnMenuItemClickListener true
         }

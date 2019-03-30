@@ -159,10 +159,21 @@ class UseCaseModule {
         return GetAssigneesUseCase(apolloClient)
     }
 
-
     @PerFragment @Provides fun provideAddAssigneesUseCase(
         repoService: RepoService
     ): AddAssigneesUseCase {
         return AddAssigneesUseCase(repoService)
+    }
+
+    @PerFragment @Provides fun provideGetMilestonesUseCase(
+        apolloClient: ApolloClient
+    ): GetMilestonesUseCase {
+        return GetMilestonesUseCase(apolloClient)
+    }
+
+    @PerFragment @Provides fun provideCreateMilestoneUseCase(
+        repoService: RepoService
+    ): CreateMilestoneUseCase {
+        return CreateMilestoneUseCase(repoService)
     }
 }
