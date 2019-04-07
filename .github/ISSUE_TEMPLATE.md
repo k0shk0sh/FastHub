@@ -12,6 +12,7 @@
    - Make sure you are always on latest (FastHub/About & Click on version name).
    - Make sure the issue doesn't exists, lets keep things clean & tidy here :).  
 -->
+## Environment
 
 **FastHub Version:**  <!-- Don't forget to mention "Enterprise" here if needed. -->  
 **Android Version:**  
@@ -19,4 +20,24 @@
 - MANUFACTURER: <!-- e.g. Yota Devices Limited -->  
 - BRAND: <!-- e.g. YotaPhone -->  
 - MODEL: <!-- e.g. YD201 -->  
----
+
+## Description
+
+**Expected behaviour**:
+
+**Current behaviour**:
+
+## Steps to reproduce
+
+1. This
+1. Than that
+1. Then
+
+# Details
+```
+[if available]
+```
+
+**Stacktrace/Logcat**: 
+
+**Images**: 
