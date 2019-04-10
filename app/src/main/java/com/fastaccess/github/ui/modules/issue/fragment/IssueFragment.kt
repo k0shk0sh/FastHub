@@ -16,6 +16,7 @@ import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.data.persistence.models.IssueModel
+import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -142,14 +143,14 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
     private fun observeChanges() {
         viewModel.getIssue(login, repo, number).observeNotNull(this) {
-            initIssue(it)
+            initIssue(it.first, it.second)
         }
         viewModel.timeline.observeNotNull(this) {
             adapter.submitList(it)
         }
     }
 
-    private fun initIssue(model: IssueModel) {
+    private fun initIssue(model: IssueModel, login: LoginModel?) {
         val theme = preference.theme
         title.text = model.title
         opener.text = SpannableBuilder.builder()
@@ -183,6 +184,13 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         initAssignees(model.assignees)
         initMilestone(model.milestone)
         bottomBar.menu.let {
+            val isAuthor = model.author?.login == login?.login
+            it.findItem(R.id.edit).isVisible = model.viewerDidAuthor == true
+            it.findItem(R.id.assignees).isVisible = isAuthor
+            it.findItem(R.id.milestone).isVisible = isAuthor
+            it.findItem(R.id.labels).isVisible = isAuthor
+            it.findItem(R.id.closeIssue).isVisible = model.viewerDidAuthor == true || isAuthor
+            it.findItem(R.id.lockIssue).isVisible = model.viewerDidAuthor == true || isAuthor
             it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
                 getString(R.string.re_open_issue)
             } else {
@@ -190,6 +198,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             }
             it.findItem(R.id.lockIssue).title = if (model.locked == true) getString(R.string.unlock_issue) else getString(R.string.lock_issue)
         }
+        recyclerView.removeEmptyView()
     }
 
     private fun initAssignees(assigneesList: List<ShortUserModel>?) {
