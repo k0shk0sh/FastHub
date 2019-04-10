@@ -15,6 +15,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.show
 import com.fastaccess.github.ui.adapter.LabelsAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.viewmodel.LabelsViewModel
@@ -78,7 +79,7 @@ class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback
                     }
                 }
                 R.id.add -> {
-                    CreateLabelFragment.newInstance().show(childFragmentManager, "CreateLabelFragment")
+                    CreateLabelFragment.newInstance().show(childFragmentManager)
                 }
             }
         }

@@ -77,7 +77,7 @@ class IssueTimelineViewModel @Inject constructor(
         editIssuePrUseCase.number = number
         justSubscribe(editIssuePrUseCase.buildObservable()
             .doOnNext {
-                addAndPost(it)
+                addTimeline(it)
             })
     }
 
@@ -89,11 +89,11 @@ class IssueTimelineViewModel @Inject constructor(
         lockUnlockIssuePrUseCase.lock = lock
         justSubscribe(lockUnlockIssuePrUseCase.buildObservable()
             .doOnNext {
-                addAndPost(it)
+                addTimeline(it)
             })
     }
 
-    private fun addAndPost(it: TimelineModel) {
+    fun addTimeline(it: TimelineModel) {
         list.add(it)
         timeline.postValue(ArrayList(list))
     }

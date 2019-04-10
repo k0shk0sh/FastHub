@@ -1,9 +1,7 @@
 package com.fastaccess.github.extensions
 
 import android.graphics.Color
-import android.text.format.DateUtils
 import androidx.annotation.ColorInt
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -22,18 +20,11 @@ fun Boolean.isFalse(body: (() -> Unit)?): Boolean {
     return this
 }
 
-fun Date.timeAgo(): CharSequence {
-    val now = System.currentTimeMillis()
-    return DateUtils.getRelativeTimeSpanString(this.time, now, DateUtils.SECOND_IN_MILLIS)
-}
+fun Date.timeAgo(): CharSequence = DatePrettifier.getTimeAgo(this)
 
 fun String.replaceAllNewLines(prefix: String = " "): String {
     return this.replace("\\r?\\n|\\r".toRegex(), prefix)
 }
-
-fun me() = "k0shk0sh"
-fun myProfile() = "app://fasthub/k0shk0sh"
-fun fastHub() = "k0shk0sh/FastHub"
 
 fun Long.formatNumber(): String {
     if (this < 999) return this.toString()
@@ -49,16 +40,9 @@ fun Int.formatNumber(): String {
     return String.format("%.1f%c", count / Math.pow(1000.0, exp.toDouble()), "kMGTPE"[exp - 1])
 }
 
-fun getDateByDays(days: Int): String {
-    val cal = Calendar.getInstance()
-    val s = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-    cal.add(Calendar.DAY_OF_YEAR, days)
-    return s.format(Date(cal.timeInMillis))
-}
+fun getDateByDays(days: Int): String = DatePrettifier.getDateByDays(days)
 
-fun getLastWeekDate(): String {
-    return getDateByDays(-7)
-}
+fun getLastWeekDate(): String = DatePrettifier.lastWeekDate
 
 @ColorInt fun Int.generateTextColor(): Int {
     val a = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255

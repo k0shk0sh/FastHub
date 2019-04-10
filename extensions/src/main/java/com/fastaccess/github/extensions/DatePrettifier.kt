@@ -55,7 +55,7 @@ class DatePrettifier private constructor() {
 
         fun getDateFromString(date: String): Date? = kotlin.runCatching { instance.prettifier.parse(date) }.getOrNull()
 
-        private fun getDateByDays(days: Int): String {
+        fun getDateByDays(days: Int): String {
             val cal = Calendar.getInstance()
             val s = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
             cal.add(Calendar.DAY_OF_YEAR, days)

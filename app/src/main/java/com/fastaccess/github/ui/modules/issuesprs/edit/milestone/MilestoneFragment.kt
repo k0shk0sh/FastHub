@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
@@ -15,6 +16,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.show
 import com.fastaccess.github.ui.adapter.MilestonesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.viewmodel.MilestoneViewModel
 import com.fastaccess.github.utils.EXTRA
@@ -36,7 +38,15 @@ class MilestoneFragment : BaseFragment(), CreateMilestoneDialogFragment.OnAddNew
     private val model by lazy { arguments?.getParcelable(EXTRA) as? LoginRepoParcelableModel<LabelModel> }
     private val adapter by lazy {
         MilestonesAdapter {
-            viewModel.onSubmit(it)
+            val login = model?.login
+            val repo = model?.repo
+            val number = model?.number
+            if (login == null || repo == null || number == null) {
+                dismiss()
+                return@MilestonesAdapter
+            }
+
+            viewModel.onSubmit(login, repo, number, it)
         }
     }
 
@@ -72,7 +82,7 @@ class MilestoneFragment : BaseFragment(), CreateMilestoneDialogFragment.OnAddNew
         setupToolbar(R.string.milestones, R.menu.edit_submit_menu) { item: MenuItem ->
             when (item.itemId) {
                 R.id.add -> {
-                    CreateMilestoneDialogFragment().show(childFragmentManager, "CreateMilestoneDialogFragment")
+                    CreateMilestoneDialogFragment().show(childFragmentManager)
                 }
             }
         }
@@ -102,6 +112,10 @@ class MilestoneFragment : BaseFragment(), CreateMilestoneDialogFragment.OnAddNew
         viewModel.data.observeNotNull(this) {
             adapter.submitList(it)
         }
+        viewModel.response.observeNotNull(this) {
+            callback?.onMilestoneAdded(it.first, it.second)
+            dismiss()
+        }
     }
 
     companion object {
@@ -111,6 +125,6 @@ class MilestoneFragment : BaseFragment(), CreateMilestoneDialogFragment.OnAddNew
     }
 
     interface OnMilestoneChanged {
-        fun onMilestoneAdded(milestone: MilestoneModel)
+        fun onMilestoneAdded(timeline: TimelineModel, milestone: MilestoneModel)
     }
 }

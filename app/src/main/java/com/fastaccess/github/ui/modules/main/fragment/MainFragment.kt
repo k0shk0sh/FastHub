@@ -117,13 +117,14 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
                 }
             }
         }
-        starred.setOnClickListener { _ -> onUserRetrieved { route(it?.toStarred()) } }
-        repos.setOnClickListener { _ -> onUserRetrieved { route(it?.toRepos()) } }
-        gists.setOnClickListener { _ -> onUserRetrieved { route(it?.toGists()) } }
-        orgs.setOnClickListener { _ ->
-            MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS)
+        starred.setOnClickListener { onUserRetrieved { route(it?.toStarred()) } }
+        repos.setOnClickListener { onUserRetrieved { route(it?.toRepos()) } }
+        gists.setOnClickListener { onUserRetrieved { route(it?.toGists()) } }
+        orgs.setOnClickListener {
+            MultiPurposeBottomSheetDialog.show(childFragmentManager,
+                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS)
         }
-        trending.setOnClickListener { _ -> route(TRENDING_LINK) }
+        trending.setOnClickListener { route(TRENDING_LINK) }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {

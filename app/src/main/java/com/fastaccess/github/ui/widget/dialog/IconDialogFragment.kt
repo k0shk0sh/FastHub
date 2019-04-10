@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseDialogFragment
+import com.fastaccess.github.extensions.show
 import com.fastaccess.github.utils.*
 import kotlinx.android.synthetic.main.icon_dialog_layout.*
 
@@ -71,7 +72,7 @@ class IconDialogFragment : BaseDialogFragment() {
                 EXTRA_THREE to description,
                 EXTRA_FOUR to positiveBtnText,
                 EXTRA_FIVE to negativeBtnText)
-            show(fragmentManager, this::class.java.simpleName)
+            show(fragmentManager)
         }
     }
 

@@ -12,6 +12,7 @@ import com.fastaccess.data.model.parcelable.FilterTrendingModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseBottomSheetDialogFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.show
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
@@ -67,7 +68,7 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
                     arguments = bundleOf(EXTRA to type).apply {
                         if (parcelable != null) putParcelable(EXTRA_TWO, parcelable)
                     }
-                    show(fragmentManager, "MultiPurposeBottomSheetDialog")
+                    show(fragmentManager)
                 }
         }
     }

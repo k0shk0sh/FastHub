@@ -10,9 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.ShortUserModel
+import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.getEmoji
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
+import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
@@ -28,6 +30,7 @@ import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineVi
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
@@ -47,7 +50,7 @@ import javax.inject.Inject
  * Created by Kosh on 28.01.19.
  */
 class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
-    LabelsFragment.OnLabelSelected, AssigneesFragment.OnAssigneesSelected {
+    LabelsFragment.OnLabelSelected, AssigneesFragment.OnAssigneesSelected, MilestoneFragment.OnMilestoneChanged {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var htmlSpanner: HtmlSpanner
@@ -100,6 +103,11 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
     override fun onAssigneesSelected(assignees: List<ShortUserModel>?) {
         initAssignees(assignees)
+    }
+
+    override fun onMilestoneAdded(timeline: TimelineModel, milestone: MilestoneModel) {
+        viewModel.addTimeline(timeline)
+        initMilestone(milestone)
     }
 
     private fun menuClick(model: IssueModel) {
@@ -169,7 +177,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         initReactions(model)
         initLabels(model.labels)
         initAssignees(model.assignees)
-        initMilestone(model)
+        initMilestone(model.milestone)
         bottomBar.menu.let {
             it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
                 getString(R.string.re_open_issue)
@@ -191,8 +199,8 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         assignees.text = builder
     }
 
-    private fun initMilestone(model: IssueModel) {
-        model.milestone?.let {
+    private fun initMilestone(model: MilestoneModel?) {
+        model?.let {
             milestoneLayout.isVisible = true
             milestone.text = when {
                 it.title != null -> "${it.title}"

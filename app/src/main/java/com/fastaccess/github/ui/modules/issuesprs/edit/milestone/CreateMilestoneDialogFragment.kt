@@ -9,6 +9,7 @@ import com.fastaccess.datetimepicker.callback.DatePickerCallback
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseDialogFragment
 import com.fastaccess.github.extensions.DatePrettifier
+import com.fastaccess.github.extensions.show
 import com.fastaccess.github.utils.extensions.asString
 import kotlinx.android.synthetic.main.add_milestone_layout.*
 import java.util.*
@@ -52,7 +53,7 @@ class CreateMilestoneDialogFragment : BaseDialogFragment(), DatePickerCallback {
         }
         dueOn.editText?.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                DatePickerFragmentDialog.newInstance().show(childFragmentManager, "DatePickerFragmentDialog")
+                DatePickerFragmentDialog.newInstance().show(childFragmentManager)
                 return@setOnTouchListener true
             }
             return@setOnTouchListener false

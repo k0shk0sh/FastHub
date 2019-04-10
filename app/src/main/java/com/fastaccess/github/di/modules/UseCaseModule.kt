@@ -119,7 +119,7 @@ class UseCaseModule {
         return GetIssueTimelineUseCase(issueRepositoryProvider, apolloClient)
     }
 
-    @PerFragment @Provides fun provideEditIssurPrUseCase(
+    @PerFragment @Provides fun provideEditIssuePrUseCase(
         issueRepositoryProvider: IssueRepositoryProvider,
         issuePrService: IssuePrService,
         loginRepositoryProvider: LoginRepositoryProvider
@@ -175,5 +175,13 @@ class UseCaseModule {
         repoService: RepoService
     ): CreateMilestoneUseCase {
         return CreateMilestoneUseCase(repoService)
+    }
+
+    @PerFragment @Provides fun provideMilestoneIssuePrUseCase(
+        issueRepositoryProvider: IssueRepositoryProvider,
+        issuePrService: IssuePrService,
+        loginRepositoryProvider: LoginRepositoryProvider
+    ): MilestoneIssuePrUseCase {
+        return MilestoneIssuePrUseCase(issueRepositoryProvider, issuePrService, loginRepositoryProvider)
     }
 }
