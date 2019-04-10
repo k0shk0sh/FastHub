@@ -113,10 +113,14 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     private fun menuClick(model: IssueModel) {
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.scrollTop -> appBar.setExpanded(true, true)
+                R.id.scrollTop -> {
+                    appBar.setExpanded(true, true)
+                    recyclerView.scrollToPosition(0)
+                }
                 R.id.refresh -> {
                     viewModel.loadData(login, repo, number, true)
                     appBar.setExpanded(true, true)
+                    recyclerView.scrollToPosition(0)
                 }
                 R.id.closeIssue -> viewModel.closeOpenIssue(login, repo, number)
                 R.id.share -> requireActivity().shareUrl(model.url)
