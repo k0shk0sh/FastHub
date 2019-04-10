@@ -74,8 +74,8 @@ class BaseRecyclerView constructor(context: Context,
     }
 
     fun removeEmptyView() {
-        emptyView = null
         showParentOrSelf(true)
+        emptyView = null
     }
 
     private fun showEmptyView() {
