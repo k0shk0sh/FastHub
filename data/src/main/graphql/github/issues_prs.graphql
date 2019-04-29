@@ -216,3 +216,41 @@ query getLabels($login: String!, $repo: String!, $page: String){
         }
     }
 }
+
+query getAssignees($login: String!, $repo: String!, $page: String) {
+  repositoryOwner(login: $login) {
+    repository(name: $repo) {
+        assignableUsers(first: 30, after: $page) {
+          totalCount
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          nodes {
+            ...ShortUserRowItem
+          }
+        }
+    }
+  }
+}
+
+query getMilestones($login: String!, $repo: String!, $page: String) {
+  repositoryOwner(login: $login) {
+    repository(name: $repo) {
+        milestones(first: 30, after: $page) {
+          totalCount
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          nodes {
+            ... MilestoneFragment
+          }
+        }
+    }
+  }
+}

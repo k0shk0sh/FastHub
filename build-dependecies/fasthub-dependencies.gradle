@@ -64,7 +64,8 @@ ext {
             'com.airbnb.android:lottie:2.8.0',
             'com.github.zagum:Android-ExpandIcon:1.2.1',
             "com.evernote:android-state:$androidState",
-            "org.jsoup:jsoup:1.11.3"
+            "org.jsoup:jsoup:1.11.3",
+            'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
     ]
 
     networking = [

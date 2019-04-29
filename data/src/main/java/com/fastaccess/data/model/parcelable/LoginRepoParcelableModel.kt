@@ -9,7 +9,8 @@ import android.os.Parcelable
 data class LoginRepoParcelableModel<T : Parcelable>(
     val login: String,
     val repo: String,
-    val items: List<T>? = null
+    val items: List<T>? = null,
+    val number: Int? = null
 ) : Parcelable {
 
     constructor(source: Parcel) : this(
@@ -17,7 +18,8 @@ data class LoginRepoParcelableModel<T : Parcelable>(
         source.readString() ?: "",
         arrayListOf<T>().apply {
             source.readList(this, this.javaClass.classLoader)
-        }
+        },
+        source.readInt()
     )
 
     override fun describeContents() = 0
@@ -26,6 +28,7 @@ data class LoginRepoParcelableModel<T : Parcelable>(
         writeString(login)
         writeString(repo)
         writeTypedList(items)
+        writeInt(number ?: -1)
     }
 
     companion object {

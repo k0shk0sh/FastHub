@@ -62,7 +62,8 @@ data class IssueResponse(
     @SerializedName("closedBy") var closedBy: UserResponse? = null,
     @SerializedName("repository") var repo: RepositoryResponse? = null,
     @SerializedName("merged") var isMerged: Boolean? = null,
-    @SerializedName("labels") var labels: List<LabelResponse>? = null
+    @SerializedName("labels") var labels: List<LabelResponse>? = null,
+    @SerializedName("milestone") var milestone: MilestoneResponse? = null
 )
 
 data class WikiResponse(
@@ -153,4 +154,19 @@ data class GistResponse(
     @SerializedName("public_x") var publicX: String? = null,
     @SerializedName("description") var description: String? = null,
     @SerializedName("truncated") var truncated: Boolean? = null
+)
+
+data class MilestoneResponse(
+    @SerializedName("id") var id: Int? = null,
+    @SerializedName("number") var number: Int? = null,
+    @SerializedName("state") var state: String? = null,
+    @SerializedName("title") var title: String? = null,
+    @SerializedName("description") var description: String? = null,
+    @SerializedName("closed_at") var closedAt: Date? = null,
+    @SerializedName("created_at") var createdAt: Date? = null,
+    @SerializedName("updated_at") var UpdatedAt: Date? = null,
+    @SerializedName("due_on") var dueOn: Date? = null,
+    @SerializedName("url") var url: String? = null,
+    @SerializedName("html_url") var htmlUrl: String? = null,
+    @SerializedName("creator") var creator: UserResponse? = null
 )

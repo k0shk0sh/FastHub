@@ -21,6 +21,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
     override fun bind(item: TimelineModel) {
         itemView.text.text = ""
         itemView.userIcon.setImageDrawable(null)
+        itemView.stateIcon.setImageDrawable(null)
         item.commit?.let(this::presentCommit)
         item.crossReferencedEventModel?.let(this::presentCrossReference)
         item.referencedEventModel?.let(this::presentReference)
@@ -36,6 +37,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentTransferred(model: TransferredEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -49,6 +51,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentRenamed(model: RenamedEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_edit)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -64,6 +67,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentMilestoneDemilestone(model: MilestoneDemilestonedEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_milestone)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -77,6 +81,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentAssignedAndUnassigned(model: AssignedUnAssignedEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_profile)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -97,6 +102,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentSubscribeUnsubscribed(model: SubscribedUnsubscribedEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(if (model.isSubscribe == true) R.drawable.ic_subscribe else R.drawable.ic_unsubscribe)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -108,6 +114,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentLabels(model: LabelUnlabeledEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_label)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             val builder = SpannableBuilder.builder()
                 .apply {
@@ -126,6 +133,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentLockUnlock(model: LockUnlockEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(if (model.isLock == true) R.drawable.ic_lock else R.drawable.ic_unlock)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             val builder = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -143,6 +151,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentClosedReopen(model: CloseOpenEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(if (model.isClosed == true) R.drawable.ic_issue_closed else R.drawable.ic_issue_opened)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             val builder = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -165,6 +174,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentCrossReference(model: CrossReferencedEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_format_quote)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
@@ -181,6 +191,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentCommit(model: CommitModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_push)
             userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url)
             text.text = SpannableBuilder.builder()
                 .append(model.author?.name)
@@ -193,6 +204,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentReference(model: ReferencedEventModel) {
         itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_format_quote)
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)

@@ -73,6 +73,11 @@ class BaseRecyclerView constructor(context: Context,
         onScrollMore.resetState()
     }
 
+    fun removeEmptyView() {
+        showParentOrSelf(true)
+        emptyView = null
+    }
+
     private fun showEmptyView() {
         val adapter = adapter
         if (adapter != null) {

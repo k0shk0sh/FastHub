@@ -15,8 +15,10 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.airbnb.deeplinkdispatch.DeepLink
 
 /**
@@ -56,6 +58,8 @@ fun AppCompatActivity.replace(
         }
         .commitNow()
 }
+
+fun DialogFragment.show(fragmentManager: FragmentManager) = show(fragmentManager, this::class.java.simpleName)
 
 fun Context.getColorAttr(attr: Int): Int {
     val theme = theme

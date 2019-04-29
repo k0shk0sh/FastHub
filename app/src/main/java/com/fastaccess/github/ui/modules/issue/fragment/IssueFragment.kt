@@ -9,10 +9,14 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.fastaccess.data.model.ShortUserModel
+import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.getEmoji
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
+import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.data.persistence.models.IssueModel
+import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -25,15 +29,14 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.isConnected
-import com.fastaccess.github.utils.extensions.popupEmoji
-import com.fastaccess.github.utils.extensions.theme
+import com.fastaccess.github.utils.extensions.*
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
@@ -48,7 +51,9 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 28.01.19.
  */
-class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, LabelsFragment.OnLabelSelected {
+class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
+    LabelsFragment.OnLabelSelected, AssigneesFragment.OnAssigneesSelected, MilestoneFragment.OnMilestoneChanged {
+
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var htmlSpanner: HtmlSpanner
     @Inject lateinit var preference: FastHubSharedPreference
@@ -95,17 +100,29 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, L
     }
 
     override fun onLabelsSelected(labels: List<LabelModel>?) {
-        Timber.e("$labels")
-        //TODO
+        initLabels(labels)
+    }
+
+    override fun onAssigneesSelected(assignees: List<ShortUserModel>?) {
+        initAssignees(assignees)
+    }
+
+    override fun onMilestoneAdded(timeline: TimelineModel, milestone: MilestoneModel) {
+        viewModel.addTimeline(timeline)
+        initMilestone(milestone)
     }
 
     private fun menuClick(model: IssueModel) {
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.scrollTop -> appBar.setExpanded(true, true)
+                R.id.scrollTop -> {
+                    appBar.setExpanded(true, true)
+                    recyclerView.scrollToPosition(0)
+                }
                 R.id.refresh -> {
                     viewModel.loadData(login, repo, number, true)
                     appBar.setExpanded(true, true)
+                    recyclerView.scrollToPosition(0)
                 }
                 R.id.closeIssue -> viewModel.closeOpenIssue(login, repo, number)
                 R.id.share -> requireActivity().shareUrl(model.url)
@@ -115,7 +132,11 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, L
                     viewModel.lockUnlockIssue(login, repo, number)
                 }
                 R.id.labels -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
-                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, model.labels))
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, model.labels, number))
+                R.id.assignees -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ASSIGNEES, LoginRepoParcelableModel(login, repo, model.assignees, number))
+                R.id.milestone -> MultiPurposeBottomSheetDialog.show(childFragmentManager,
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(login, repo, model.assignees, number))
             }
             return@setOnMenuItemClickListener true
         }
@@ -123,14 +144,14 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, L
 
     private fun observeChanges() {
         viewModel.getIssue(login, repo, number).observeNotNull(this) {
-            initIssue(it)
+            initIssue(it.first, it.second)
         }
         viewModel.timeline.observeNotNull(this) {
             adapter.submitList(it)
         }
     }
 
-    private fun initIssue(model: IssueModel) {
+    private fun initIssue(model: IssueModel, me: LoginModel?) {
         val theme = preference.theme
         title.text = model.title
         opener.text = SpannableBuilder.builder()
@@ -160,10 +181,21 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, L
         }
         menuClick(model)
         initReactions(model)
-        initLabels(model)
-        initAssignees(model)
-        initMilestone(model)
+        initLabels(model.labels)
+        initAssignees(model.assignees)
+        initMilestone(model.milestone)
         bottomBar.menu.let {
+            val isAuthor = login == me?.login || model.authorAssociation?.equals("OWNER", true) == true ||
+                model.authorAssociation?.equals("COLLABORATOR", true) == true
+
+            Timber.e("$isAuthor")
+
+            it.findItem(R.id.edit).isVisible = model.viewerDidAuthor == true
+            it.findItem(R.id.assignees).isVisible = isAuthor
+            it.findItem(R.id.milestone).isVisible = isAuthor
+            it.findItem(R.id.labels).isVisible = isAuthor
+            it.findItem(R.id.closeIssue).isVisible = model.viewerDidAuthor == true || isAuthor
+            it.findItem(R.id.lockIssue).isVisible = isAuthor
             it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
                 getString(R.string.re_open_issue)
             } else {
@@ -171,19 +203,22 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, L
             }
             it.findItem(R.id.lockIssue).title = if (model.locked == true) getString(R.string.unlock_issue) else getString(R.string.lock_issue)
         }
+        recyclerView.removeEmptyView()
     }
 
-    private fun initAssignees(model: IssueModel) {
-        assigneesLayout.isVisible = !model.assignees.isNullOrEmpty()
+    private fun initAssignees(assigneesList: List<ShortUserModel>?) {
+        assigneesLayout.isVisible = !assigneesList.isNullOrEmpty()
         val builder = SpannableBuilder.builder()
-        model.assignees?.forEachIndexed { index, item ->
-            builder.append(item.login ?: item.name).append(if (index == model.assignees?.size?.minus(1)) "" else ", ")
+        assigneesList?.forEachIndexed { index, item ->
+            builder.clickable(item.login ?: item.name ?: "", View.OnClickListener {
+                it.context.route(item.url)
+            }).append(if (index == assigneesList.size.minus(1)) "" else ", ")
         }
         assignees.text = builder
     }
 
-    private fun initMilestone(model: IssueModel) {
-        model.milestone?.let {
+    private fun initMilestone(model: MilestoneModel?) {
+        model?.let {
             milestoneLayout.isVisible = true
             milestone.text = when {
                 it.title != null -> "${it.title}"
@@ -193,10 +228,10 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected, L
         } ?: kotlin.run { milestoneLayout.isVisible = false }
     }
 
-    private fun initLabels(model: IssueModel) {
-        labelsLayout.isVisible = !model.labels.isNullOrEmpty()
+    private fun initLabels(labelList: List<LabelModel>?) {
+        labelsLayout.isVisible = !labelList.isNullOrEmpty()
         val builder = SpannableBuilder.builder()
-        model.labels?.forEach {
+        labelList?.forEach {
             builder.append(it.name ?: "", LabelSpan(Color.parseColor("#${it.color}")))
                 .append(" ")
         }

@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.issuesprs.edit.labels
+package com.fastaccess.github.ui.modules.issuesprs.edit.assignees
 
 import android.content.Context
 import android.os.Bundle
@@ -8,19 +8,18 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.evernote.android.state.State
-import com.fastaccess.data.model.parcelable.LabelModel
+import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.extensions.show
-import com.fastaccess.github.ui.adapter.LabelsAdapter
-import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
-import com.fastaccess.github.ui.modules.issuesprs.edit.labels.viewmodel.LabelsViewModel
+import com.fastaccess.github.ui.adapter.AssigneesAdapter
+import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.viewmodel.AssigneesViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.isConnected
+import kotlinx.android.synthetic.main.appbar_center_title_round_background_layout.*
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -28,26 +27,26 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2018-11-26.
  */
-class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback {
+class AssigneesFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @State var selection = hashSetOf<LabelModel>()
-    @State var deselection = hashSetOf<LabelModel>()
-    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(LabelsViewModel::class.java) }
-    private val model by lazy { arguments?.getParcelable(EXTRA) as? LoginRepoParcelableModel<LabelModel> }
+    @State var selection = hashSetOf<ShortUserModel>()
+    @State var deselection = hashSetOf<ShortUserModel>()
+    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(AssigneesViewModel::class.java) }
+    private val model by lazy { arguments?.getParcelable(EXTRA) as? LoginRepoParcelableModel<ShortUserModel> }
     private val adapter by lazy {
-        LabelsAdapter(selection, deselection).apply {
+        AssigneesAdapter(selection, deselection).apply {
             model?.items?.forEach { this.selection.add(it) }
         }
     }
 
-    private var callback: OnLabelSelected? = null
+    private var callback: OnAssigneesSelected? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = when {
-            context is OnLabelSelected -> context
-            parentFragment is OnLabelSelected -> parentFragment as OnLabelSelected
-            parentFragment?.parentFragment is OnLabelSelected -> parentFragment?.parentFragment as OnLabelSelected // deep hierarchy
+            context is OnAssigneesSelected -> context
+            parentFragment is OnAssigneesSelected -> parentFragment as OnAssigneesSelected
+            parentFragment?.parentFragment is OnAssigneesSelected -> parentFragment?.parentFragment as OnAssigneesSelected // deep hierarchy
             else -> null
         }
     }
@@ -69,20 +68,18 @@ class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback
             dismiss()
             return
         }
-        setupToolbar(R.string.labels, R.menu.edit_submit_menu) { item: MenuItem ->
+        setupToolbar(R.string.assignees, R.menu.edit_submit_menu) { item: MenuItem ->
             when (item.itemId) {
                 R.id.submit -> {
                     if (adapter.selection.toList() != model?.items) {
-                        viewModel.putLabels(login, repo, number, adapter.selection, adapter.deselection)
-                    } else {
-                        dismiss()
+                        viewModel.addAssignees(login, repo, number,
+                            adapter.selection.toList().map { it.login ?: "" },
+                            adapter.deselection.toList().map { it.login ?: "" })
                     }
-                }
-                R.id.add -> {
-                    CreateLabelFragment.newInstance().show(childFragmentManager)
                 }
             }
         }
+        toolbar.menu?.findItem(R.id.add)?.isVisible = false
         recyclerView.adapter = adapter
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
@@ -99,35 +96,26 @@ class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback
         listenToChanges()
     }
 
-    override fun onCreateLabel(name: String, color: String) {
-        val login = model?.login
-        val repo = model?.repo
-
-        if (login == null || repo == null) {
-            dismiss()
-            return
-        }
-        viewModel.addLabel(login, repo, name, color)
-    }
-
     private fun listenToChanges() {
         viewModel.data.observeNotNull(this) {
             adapter.submitList(it)
         }
-        viewModel.putLabelsLiveData.observeNotNull(this) {
-            callback?.onLabelsSelected(adapter.selection.toList())
-            dismiss()
+        viewModel.additionLiveData.observeNotNull(this) {
+            if (it == true) {
+                callback?.onAssigneesSelected(adapter.selection.toList())
+                dismiss()
+            }
         }
     }
 
 
     companion object {
-        fun newInstance(model: LoginRepoParcelableModel<LabelModel>?) = LabelsFragment().apply {
+        fun newInstance(model: LoginRepoParcelableModel<ShortUserModel>?) = AssigneesFragment().apply {
             arguments = bundleOf(EXTRA to model)
         }
     }
 
-    interface OnLabelSelected {
-        fun onLabelsSelected(labels: List<LabelModel>?)
+    interface OnAssigneesSelected {
+        fun onAssigneesSelected(assignees: List<ShortUserModel>?)
     }
 }

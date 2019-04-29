@@ -7,6 +7,7 @@ import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.CreateLabelUseCase
 import com.fastaccess.github.usecase.issuesprs.GetLabelsUseCase
+import com.fastaccess.github.usecase.issuesprs.PutLabelsUseCase
 import javax.inject.Inject
 
 /**
@@ -14,12 +15,14 @@ import javax.inject.Inject
  */
 class LabelsViewModel @Inject constructor(
     private val usecase: GetLabelsUseCase,
-    private val createLabelUseCase: CreateLabelUseCase
+    private val createLabelUseCase: CreateLabelUseCase,
+    private val putLabelsUseCase: PutLabelsUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     private val list = ArrayList<LabelModel>()
     val data = MutableLiveData<List<LabelModel>>()
+    val putLabelsLiveData = MutableLiveData<Boolean>()
 
     fun load(login: String, repo: String, reload: Boolean = false) {
         if (reload) {
@@ -53,6 +56,20 @@ class LabelsViewModel @Inject constructor(
             .doOnNext {
                 list.add(0, it)
                 data.postValue(ArrayList(list))
+            })
+    }
+
+    fun putLabels(login: String, repo: String, number: Int,
+                  selection: HashSet<LabelModel>,
+                  deselection: HashSet<LabelModel>) {
+        putLabelsUseCase.login = login
+        putLabelsUseCase.repo = repo
+        putLabelsUseCase.number = number
+        putLabelsUseCase.toAdd = selection.toList().map { it.name ?: "" }
+        putLabelsUseCase.toRemove = deselection.toList().map { it.name ?: "" }
+        justSubscribe(putLabelsUseCase.buildObservable()
+            .doOnNext {
+                putLabelsLiveData.postValue(true)
             })
     }
 }

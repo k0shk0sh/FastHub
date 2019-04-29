@@ -23,15 +23,30 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.fastaccess.github.ui.widget.AvatarImageView
-                android:id="@+id/userIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/ic_ring"/>
+                android:layout_marginEnd="@dimen/spacing_normal">
+
+                <com.fastaccess.github.ui.widget.AvatarImageView
+                    android:id="@+id/userIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/ic_ring"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/stateIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/circle_shape_cardview"
+                    android:padding="@dimen/spacing_micro"
+                    tools:src="@drawable/ic_issue_closed_small"/>
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text"

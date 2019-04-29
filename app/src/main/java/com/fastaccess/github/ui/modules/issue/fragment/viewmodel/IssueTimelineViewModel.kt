@@ -5,7 +5,9 @@ import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
+import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.map
 import com.fastaccess.github.usecase.issuesprs.CloseOpenIssuePrUseCase
 import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
 import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
@@ -22,7 +24,8 @@ class IssueTimelineViewModel @Inject constructor(
     private val timelineUseCase: GetIssueTimelineUseCase,
     private val issueRepositoryProvider: IssueRepositoryProvider,
     private val editIssuePrUseCase: CloseOpenIssuePrUseCase,
-    private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase
+    private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase,
+    private val loginRepositoryProvider: LoginRepositoryProvider
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -38,6 +41,7 @@ class IssueTimelineViewModel @Inject constructor(
     }
 
     fun getIssue(login: String, repo: String, number: Int) = issueRepositoryProvider.getIssueByNumber("$login/$repo", number)
+        .map { Pair(it, loginRepositoryProvider.getLoginBlocking()) }
 
     fun loadData(login: String, repo: String, number: Int, reload: Boolean = false) {
         if (reload) {
@@ -77,7 +81,7 @@ class IssueTimelineViewModel @Inject constructor(
         editIssuePrUseCase.number = number
         justSubscribe(editIssuePrUseCase.buildObservable()
             .doOnNext {
-                addAndPost(it)
+                addTimeline(it)
             })
     }
 
@@ -89,11 +93,11 @@ class IssueTimelineViewModel @Inject constructor(
         lockUnlockIssuePrUseCase.lock = lock
         justSubscribe(lockUnlockIssuePrUseCase.buildObservable()
             .doOnNext {
-                addAndPost(it)
+                addTimeline(it)
             })
     }
 
-    private fun addAndPost(it: TimelineModel) {
+    fun addTimeline(it: TimelineModel) {
         list.add(it)
         timeline.postValue(ArrayList(list))
     }
