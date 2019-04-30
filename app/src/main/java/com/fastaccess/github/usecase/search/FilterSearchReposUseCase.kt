@@ -24,7 +24,7 @@ class FilterSearchReposUseCase @Inject constructor(
     var keyword: String = ""
 
     override fun buildObservable(): Observable<Pair<PageInfoModel, List<ShortRepoModel>>> = Rx2Apollo
-        .from(apolloClient.query(SearchReposQuery(constructQuery(keyword), cursor)))
+        .from(apolloClient.query(SearchReposQuery(constructQuery(keyword, filterModel), cursor)))
         .map { it.data()?.search }
         .map { search ->
             val list = search.nodes
@@ -39,7 +39,7 @@ class FilterSearchReposUseCase @Inject constructor(
         }
 
 
-    private fun constructQuery(keyword: String): String {
+    private fun constructQuery(keyword: String, model: FilterByRepo): String {
         return StringBuilder()
             .apply {
                 append(keyword).append(" ")
@@ -59,6 +59,17 @@ class FilterSearchReposUseCase @Inject constructor(
                         }
                     }
                 }
+
+                when (filterModel.filterByRepoSortBy) {
+                    FilterByRepo.FilterByRepoSortBy.BEST_MATCH -> append("sort:relevance").append(" ")
+                    FilterByRepo.FilterByRepoSortBy.MOST_STARS -> append("sort:stars-desc").append(" ")
+                    FilterByRepo.FilterByRepoSortBy.LEAST_STARS -> append("sort:stars-asc").append(" ")
+                    FilterByRepo.FilterByRepoSortBy.MOST_FORKS -> append("sort:forks-desc").append(" ")
+                    FilterByRepo.FilterByRepoSortBy.LEAST_FORKS -> append("sort:forks-asc").append(" ")
+                    FilterByRepo.FilterByRepoSortBy.RECENTLY_UPDATED -> append("sort:updated-desc").append(" ")
+                    FilterByRepo.FilterByRepoSortBy.LEAST_RECENTLY_UPDATED -> append("sort:updated-asc").append(" ")
+                }
+
                 if (!filterModel.language.isNullOrEmpty()) {
                     append("language:${filterModel.language}").append(" ")
                 }

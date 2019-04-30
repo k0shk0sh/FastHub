@@ -612,4 +612,9 @@
     <string name="sort_by">Sort By</string>
     <string name="mostStars">Most Stars</string>
     <string name="leastStars">Least Stars</string>
+    <string name="bestMatch">Best Match</string>
+    <string name="mostForks">Most Forks</string>
+    <string name="leastForks">Least Forks</string>
+    <string name="recentlyUpdated">Recently Updated</string>
+    <string name="leastRecentlyUpdated">Least Recently Updated</string>
 </resources>

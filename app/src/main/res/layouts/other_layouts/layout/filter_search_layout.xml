@@ -196,6 +196,13 @@
                     app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/bestMatch"
+                        style="@style/ChipStyleCheckable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bestMatch"/>
+
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/mostStars"
                         style="@style/ChipStyleCheckable"
                         android:layout_width="wrap_content"
@@ -208,6 +215,35 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/leastStars"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/recentlyUpdated"
+                        style="@style/ChipStyleCheckable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/recentlyUpdated"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/leastRecentlyUpdated"
+                        style="@style/ChipStyleCheckable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/leastRecentlyUpdated"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/mostForks"
+                        style="@style/ChipStyleCheckable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mostForks"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/leastForks"
+                        style="@style/ChipStyleCheckable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/leastForks"/>
+
                 </com.google.android.material.chip.ChipGroup>
 
                 <androidx.appcompat.widget.AppCompatTextView

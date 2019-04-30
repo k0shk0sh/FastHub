@@ -140,8 +140,14 @@ class FilterSearchBottomSheet : BaseFragment() {
             }
             model.filterByRepoSortBy?.let { limit ->
                 sortBy.check(when (limit) {
+                    FilterByRepo.FilterByRepoSortBy.BEST_MATCH ->  R.id.bestMatch
                     FilterByRepo.FilterByRepoSortBy.MOST_STARS -> R.id.mostStars
                     FilterByRepo.FilterByRepoSortBy.LEAST_STARS -> R.id.leastStars
+                    FilterByRepo.FilterByRepoSortBy.RECENTLY_UPDATED -> R.id.recentlyUpdated
+                    FilterByRepo.FilterByRepoSortBy.LEAST_RECENTLY_UPDATED -> R.id.leastRecentlyUpdated
+                    FilterByRepo.FilterByRepoSortBy.MOST_FORKS -> R.id.mostForks
+                    FilterByRepo.FilterByRepoSortBy.LEAST_FORKS ->  R.id.leastForks
+
                 })
 
             }
@@ -201,8 +207,15 @@ class FilterSearchBottomSheet : BaseFragment() {
         }
         sortBy.setOnCheckedChangeListener { group, id ->
             when (id) {
+                R.id.bestMatch -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.BEST_MATCH
                 R.id.mostStars -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.MOST_STARS
                 R.id.leastStars -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.LEAST_STARS
+                R.id.recentlyUpdated -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.RECENTLY_UPDATED
+                R.id.leastRecentlyUpdated -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.LEAST_RECENTLY_UPDATED
+                R.id.mostForks -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.MOST_FORKS
+                R.id.leastForks -> model.filterByRepo.filterByRepoSortBy = FilterByRepo.FilterByRepoSortBy.LEAST_FORKS
+
+
             }
 
         }

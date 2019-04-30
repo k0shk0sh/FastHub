@@ -96,5 +96,5 @@ data class FilterByRepo(
 
     enum class FilterByRepoIn { ALL, NAME, DESCRIPTION, README }
     enum class FilterByRepoLimitBy { USERNAME, ORG }
-    enum class FilterByRepoSortBy {MOST_STARS, LEAST_STARS}
+    enum class FilterByRepoSortBy {BEST_MATCH, MOST_STARS, LEAST_STARS, RECENTLY_UPDATED, LEAST_RECENTLY_UPDATED, MOST_FORKS, LEAST_FORKS}
 }
