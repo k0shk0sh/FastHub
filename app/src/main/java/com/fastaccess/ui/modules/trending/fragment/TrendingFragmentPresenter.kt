@@ -54,14 +54,14 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
     private fun getTrendingObservable(response: String): Observable<TrendingModel> {
         return Observable.fromPublisher { s ->
             val document: Document = Jsoup.parse(response, "")
-            val repoList = document.select(".repo-list")
+            val repoList = document.select(".Box")
             if (repoList.isNotEmpty()) {
-                val list: Elements? = repoList.select("li")
+                val list: Elements? = repoList.select(".Box-row")
                 list?.let {
                     if (list.isNotEmpty()) {
                         it.onEach {
-                            val title = it.select(".d-inline-block > h3 > a").text()
-                            val description = it.select(".py-1 > p").text()
+                            val title = it.select("h1 > a").text()
+                            val description = it.select("p").text()
                             val stars = it.select(".f6 > a[href*=/stargazers]").text()
                             val forks = it.select(".f6 > a[href*=/network]").text()
                             var todayStars = it.select(".f6 > span.float-right").text()
