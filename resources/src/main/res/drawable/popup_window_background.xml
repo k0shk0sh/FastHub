@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+
+    <corners
+        android:bottomLeftRadius="@dimen/spacing_xs_large"
+        android:bottomRightRadius="@dimen/spacing_xs_large"
+        android:topLeftRadius="@dimen/spacing_xs_large"
+        android:topRightRadius="@dimen/spacing_xs_large"/>
+
+    <solid android:color="?android:windowBackground"/>
+
+    <padding
+        android:bottom="@dimen/spacing_xs_large"
+        android:left="@dimen/spacing_xs_large"
+        android:right="@dimen/spacing_xs_large"
+        android:top="@dimen/spacing_xs_large"/>
+</shape>

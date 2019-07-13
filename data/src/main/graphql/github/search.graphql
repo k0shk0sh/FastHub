@@ -1,0 +1,55 @@
+query searchRepos($query: String!, $cursor: String) {
+  search(query: $query, type: REPOSITORY, first: 30, after: $cursor) {
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+        ...ShortRepoRowItem
+    }
+  }
+}
+
+query searchIssues($query: String!, $cursor: String) {
+  search(query: $query, type: ISSUE, first: 30, after: $cursor) {
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+        ...ShortIssueRowItem
+    }
+  }
+}
+
+query searchPullRequests($query: String!, $cursor: String) {
+  search(query: $query, type: ISSUE, first: 30, after: $cursor) {
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+        ...ShortPullRequestRowItem
+    }
+  }
+}
+
+query searchUser($query: String!, $cursor: String) {
+  search(query: $query, type: USER, first: 30, after: $cursor) {
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+        ...ShortUserRowItem
+    }
+  }
+}

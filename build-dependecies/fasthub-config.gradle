@@ -1,0 +1,10 @@
+ext {
+    android = [
+            applicationId    : "com.fastaccess.github",
+            versionCode      : 500,
+            versionName      : "5.0.0",
+            minSdkVersion    : 21,
+            targetSdkVersion : 28,
+            compileSdkVersion: 28
+    ]
+}

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/parentLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/multiAccLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_s_large"
+                android:layout_marginStart="@dimen/spacing_s_large"
+                android:minWidth="250dp"
+                android:transitionName="login_card"
+                android:visibility="gone"
+                app:cardElevation="@dimen/spacing_normal"
+                tools:visibility="visible">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/toggle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:text="@string/choose_account"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/toggleImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            android:tint="@color/black"/>
+                    </LinearLayout>
+
+                    <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:visibility="gone"
+                        app:layoutManager="@string/llm"/>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/loginCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_s_large"
+                android:layout_marginStart="@dimen/spacing_s_large"
+                android:layout_marginTop="@dimen/spacing_xs_large"
+                android:minWidth="250dp"
+                android:transitionName="login_card"
+                app:cardElevation="@dimen/spacing_normal">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/buttonsLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?colorAccent"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/mainCard"
+                                style="@style/TextAppearance.AppCompat.Title.Inverse"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:paddingBottom="@dimen/spacing_xs_large"
+                                android:text="@string/sign_in_to_github"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/choose_your_login_type"
+                                android:textColor="@color/material_blue_accent_100"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_normal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/basicAuth"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?selectableItemBackground"
+                                android:gravity="center"
+                                android:padding="@dimen/spacing_xs_large"
+                                android:text="@string/basic_authentication"
+                                android:textColor="@color/material_green_700"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bottom_border"
+                                android:gravity="center"
+                                android:paddingBottom="@dimen/spacing_normal"
+                                android:paddingEnd="@dimen/spacing_large"
+                                android:paddingStart="@dimen/spacing_large"
+                                android:text="@string/or_character"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/accessToken"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="?selectableItemBackground"
+                                    android:gravity="center"
+                                    android:paddingBottom="@dimen/spacing_xs_large"
+                                    android:paddingTop="@dimen/spacing_xs_large"
+                                    android:text="@string/access_token"
+                                    android:textColor="@color/material_pink_700"/>
+
+                                <View
+                                    android:layout_width="0.5dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/spacing_normal"
+                                    android:layout_marginTop="@dimen/spacing_normal"
+                                    android:background="@drawable/left_border"/>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/enterprise"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="?selectableItemBackground"
+                                    android:gravity="center"
+                                    android:paddingBottom="@dimen/spacing_xs_large"
+                                    android:paddingTop="@dimen/spacing_xs_large"
+                                    android:text="@string/enterprise"
+                                    android:textColor="@color/material_purple_700"/>
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bottom_border"
+                                android:gravity="center"
+                                android:paddingBottom="@dimen/spacing_normal"
+                                android:paddingEnd="@dimen/spacing_large"
+                                android:paddingStart="@dimen/spacing_large"
+                                android:text="@string/or_character"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_xs_large"
+                                android:gravity="center"
+                                android:text="@string/login_using_your_default_browser"/>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/browserLogin"
+                                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:drawablePadding="@dimen/spacing_normal"
+                                android:drawableStart="@drawable/ic_github"
+                                android:drawableTint="?colorAccent"
+                                android:text="@string/open_in_browser"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/spacing_s_large"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

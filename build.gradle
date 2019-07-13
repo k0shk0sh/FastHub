@@ -1,35 +1,31 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'build-dependecies/fasthub-dependencies.gradle'
+apply from: 'build-dependecies/fasthub-config.gradle'
+
+configurations {
+    ktlint
+}
+
 buildscript {
     ext {
-        butterKnifeVersion = '8.5.1'
-        state_version = '1.2.0'
-        lombokVersion = '1.16.20'
-        supportVersion = "27.1.0"
-        gms = "12.0.0"
-        thirtyinchVersion = '0.8.0'
-        retrofit = '2.3.0'
-        junitVersion = '4.12'
-        mockitoVersion = '1.10.19'
-        assertjVersion = '2.5.0'
-        espresseVersion = '2.2.2'
-        requery = '1.3.2'
-        kotlin_version = '1.2.10'
-        commonmark = '0.10.0'
-        glideVersion = '3.7.0'
+        kotlin = '1.3.41'
     }
     repositories {
         google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha08'
-        classpath 'com.google.gms:google-services:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
+        classpath 'io.fabric.tools:gradle:1.27.1'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
-        classpath 'io.fabric.tools:gradle:1.24.1'
-        classpath 'com.apollographql.apollo:gradle-plugin:0.4.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0'
+        classpath 'com.google.gms:google-services:4.3.0'
+        classpath 'com.apollographql.apollo:apollo-gradle-plugin:1.0.1'
+        classpath 'gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:2.3.0'
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.21.0"
     }
 }
 
@@ -37,9 +33,17 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url  'https://dl.bintray.com/sysdata/maven' }
+        maven { url 'http://repo.pageturner-reader.org' }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+subprojects {
+    apply plugin: "org.jlleitschuh.gradle.ktlint"
 }

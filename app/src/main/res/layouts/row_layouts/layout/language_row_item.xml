@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip
+    android:id="@+id/languageChip"
+    style="@style/ChipStyleCheckable"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginEnd="@dimen/spacing_xs_large"
+    android:layout_marginStart="@dimen/spacing_xs_large"
+    android:layout_marginTop="@dimen/spacing_normal"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    tools:checked="true"
+    tools:text="@string/daily"/>

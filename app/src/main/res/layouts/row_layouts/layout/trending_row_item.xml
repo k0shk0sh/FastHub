@@ -1,112 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_micro"
-    android:foreground="?android:selectableItemBackground"
-    app:cardBackgroundColor="?card_background"
-    app:contentPaddingBottom="@dimen/spacing_normal"
-    app:contentPaddingLeft="@dimen/spacing_xs_large"
-    app:contentPaddingRight="@dimen/spacing_xs_large"
-    app:contentPaddingTop="@dimen/spacing_normal"
-    tools:ignore="RtlSymmetry">
+    android:foreground="?selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
-        <com.fastaccess.ui.widgets.FontTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
+            android:layout_gravity="top"
             android:maxLines="2"
-            android:textColor="?android:textColorPrimary"
-            android:textStyle="bold"
-            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+            tools:text="To some, a believer is a sex for loving."/>
 
-        <com.fastaccess.ui.widgets.FontTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/description"
-            style="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
-            android:layout_marginTop="@dimen/spacing_micro"
-            android:ellipsize="marquee"
-            android:maxLines="4"
-            android:textColor="?android:textColorSecondary"
-            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+            android:layout_gravity="top"
+            android:maxLines="3"
+            tools:text="To some, a believer is a sex for loving."/>
 
-        <com.fastaccess.ui.widgets.AutoLinearLayout
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_micro"
-            android:orientation="horizontal"
-            app:auto_gravity="start"
-            app:auto_orientation="horizontal">
+            android:orientation="horizontal">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/stars"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_star_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="10000"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/forks"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_fork_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="50000"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/todayStars"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_star_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="50 minutes ago"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
+            <com.google.android.material.chip.Chip
                 android:id="@+id/language"
-                style="@style/TextAppearance.AppCompat.Caption"
+                style="@style/ChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_language_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                android:visibility="gone"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="10000"/>
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_language"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:chipIconTint="@color/material_green_700"
+                tools:text="12000"/>
 
-        </com.fastaccess.ui.widgets.AutoLinearLayout>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/star"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_star"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/forks"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_fork"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/todayStars"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_star"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
     </LinearLayout>
-
-</android.support.v7.widget.CardView>
+</FrameLayout>

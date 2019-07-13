@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:drawableEnd="@drawable/ic_arrow_right"
+    android:fontFamily="@font/rubik_bold"
+    android:gravity="center|start"
+    android:padding="@dimen/spacing_xs_large"
+    android:textAllCaps="true"
+    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+    android:textStyle="bold"
+    tools:text="k0shk0sh/FastHub" />

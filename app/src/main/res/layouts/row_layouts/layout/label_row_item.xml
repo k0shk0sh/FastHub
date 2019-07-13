@@ -4,36 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/grid_spacing"
-    android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal">
+    android:layout_marginBottom="@dimen/spacing_micro"
+    android:layout_marginTop="@dimen/spacing_micro"
+    android:foreground="?selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:ignore="UselessParent">
+        android:layout_gravity="center"
+        android:background="?card_background"
+        android:padding="@dimen/spacing_xs_large">
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/colorImage"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="30dp"/>
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/name"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/spacing_xs_large"
-            android:ellipsize="middle"
-            android:maxLines="3"
-            android:textColor="?android:textColorPrimary"
-            android:transitionName="@string/title_transition"
-            tools:text="Bug Fixes."/>
+            android:maxLines="2"
+            tools:text="Label 1"/>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/backgroundLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:background="@drawable/selectable_layout_background"
+        android:clickable="false"
+        android:paddingBottom="@dimen/spacing_s_large"
+        android:paddingTop="@dimen/spacing_s_large"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
 </FrameLayout>

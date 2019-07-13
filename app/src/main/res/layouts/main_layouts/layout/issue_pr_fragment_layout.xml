@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:windowBackground"
+                android:theme="?android:toolbarStyle"
+                app:elevation="0dp">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentScrim="?android:windowBackground"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:scrimAnimationDuration="0"
+                    app:titleEnabled="false">
+
+                    <LinearLayout
+                        android:id="@+id/issueHeaderWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="?actionBarSize"
+                        android:orientation="vertical"
+                        android:visibility="invisible"
+                        app:layout_collapseMode="none">
+
+                        <include layout="@layout/issue_header_row_item" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:windowBackground"
+                        android:elevation="0dp"
+                        app:layout_collapseMode="pin"
+                        app:navigationIcon="@drawable/ic_back"
+                        app:popupTheme="?android:toolbarStyle"
+                        app:theme="?android:toolbarStyle">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/toolbarTitle"
+                            style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="?android:textColorPrimary"
+                            android:textStyle="bold"
+                            app:fontFamily="@font/abeezee"
+                            tools:text="Title" />
+
+                    </androidx.appcompat.widget.Toolbar>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:windowBackground"
+                app:layout_behavior="@string/scroll_behaviour">
+
+                <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="115dp"
+                    app:layoutManager="@string/llm" />
+
+                <com.fastaccess.github.ui.widget.recyclerview.RecyclerViewFastScroller
+                    android:id="@+id/fastScroller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end" />
+
+                <include layout="@layout/empty_state_layout" />
+            </FrameLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_edit"
+                android:tint="?colorAccent"
+                app:backgroundTint="?android:windowBackground" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/toolbar_shadow_up" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/toggleButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?colorPrimaryDark"
+            android:contentDescription="@string/expand"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:rotation="180"
+            android:src="@drawable/arrow_toggle_drawable"
+            android:tint="?colorAccent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/commentText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:hint="@string/comment"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="5"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:scrollbars="vertical" />
+
+        <ImageButton
+            android:id="@+id/sendComment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?colorPrimaryDark"
+            android:contentDescription="@string/comment"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:src="@drawable/ic_send"
+            android:tint="?colorAccent" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,158 @@
+ext {
+    rxJava2 = '2.1.9'
+    rxKotlin = '2.2.0'
+    rxAndroid = '2.0.1'
+    room = '2.1.0-beta01'
+    paging = '2.1.0'
+    androidX = '1.0.0'
+    lifecycle = '2.2.0-alpha01'
+    navigation = '1.0.0'
+    workManager = '1.0.1'
+    constraintLayout = '2.0.0-beta1'
+    dagger2 = '2.22.1'
+    butterKnife = '8.8.1'
+    javaxAnnotation = '10.0-b28'
+    okHttp = '3.11.0'
+    retrofit2 = '2.5.0'
+    gson = '2.8.5'
+    glide = '4.9.0'
+    timber = '4.7.1'
+    androidState = '1.4.1'
+    junit = '4.13-beta-3'
+    mockito = '2.23.4'
+    mockitoKotlin = '1.5.0'
+    assertJ = '3.12.2'
+    apollo = '1.0.1'
+    pandora = 'v1.2.2'
+    deepLinkDispatch = '4.1.0'
+    commonmark = '0.12.1'
+
+
+    kotlin = [
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin",
+    ]
+
+    supportLibraries = [
+            "androidx.appcompat:appcompat:$androidX",
+            "androidx.coordinatorlayout:coordinatorlayout:$androidX",
+            "com.google.android.material:material:1.0.0-rc01",
+            "androidx.drawerlayout:drawerlayout:$androidX",
+            "androidx.recyclerview:recyclerview-selection:$androidX",
+            "androidx.cardview:cardview:$androidX",
+            "androidx.recyclerview:recyclerview:$androidX",
+            "androidx.annotation:annotation:$androidX",
+            "androidx.core:core:$androidX",
+            "androidx.fragment:fragment:$androidX",
+            "androidx.swiperefreshlayout:swiperefreshlayout:$androidX",
+            "androidx.browser:browser:$androidX",
+            "androidx.webkit:webkit:$androidX",
+            "androidx.browser:browser:$androidX",
+            "androidx.constraintlayout:constraintlayout:$constraintLayout",
+            "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
+            "android.arch.navigation:navigation-ui:$navigation",
+            "android.arch.navigation:navigation-runtime:$navigation",
+            "android.arch.navigation:navigation-runtime-ktx:$navigation",
+            "android.arch.navigation:navigation-fragment:$navigation",
+            "android.arch.navigation:navigation-fragment-ktx:$navigation",
+    ]
+
+    extrasLibraries = [
+            'com.github.daniel-stoneuk:material-about-library:2.1.0',
+            'com.scottyab:secure-preferences-lib:0.1.7',
+            "com.airbnb:deeplinkdispatch:$deepLinkDispatch",
+            'com.airbnb.android:lottie:3.0.7',
+            'com.github.zagum:Android-ExpandIcon:1.2.1',
+            "com.evernote:android-state:$androidState",
+            'org.jsoup:jsoup:1.12.1',
+            'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
+    ]
+
+    networking = [
+            "com.squareup.okhttp3:okhttp:4.0.0",
+            "com.squareup.okhttp3:logging-interceptor:4.0.0",
+            "com.squareup.retrofit2:retrofit:2.6.0",
+            "com.squareup.retrofit2:adapter-rxjava2:2.6.0",
+            "com.squareup.retrofit2:converter-gson:2.6.0",
+            "com.google.code.gson:gson:$gson",
+            "com.github.bumptech.glide:glide:$glide",
+            "com.jakewharton.timber:timber:$timber",
+            "com.apollographql.apollo:apollo-runtime:$apollo",
+            "com.apollographql.apollo:apollo-rx2-support:$apollo",
+    ]
+
+    rxJava = [
+            "io.reactivex.rxjava2:rxjava:$rxJava2",
+            "io.reactivex.rxjava2:rxkotlin:$rxKotlin",
+            "io.reactivex.rxjava2:rxkotlin:$rxKotlin",
+            "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+    ]
+
+    dagger = [
+            "com.google.dagger:dagger:2.23.2",
+            "com.google.dagger:dagger-android-support:2.23.2",
+            "org.glassfish:javax.annotation:$javaxAnnotation"
+    ]
+
+    archs = [
+            "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02",
+            "androidx.lifecycle:lifecycle-livedata:2.2.0-alpha02",
+            "androidx.lifecycle:lifecycle-reactivestreams:2.2.0-alpha02",
+            "androidx.paging:paging-common:$paging",
+            "androidx.paging:paging-runtime:$paging",
+            "androidx.room:room-common:2.1.0",
+            "androidx.room:room-rxjava2:2.1.0",
+            "androidx.room:room-compiler:2.1.0",
+            'androidx.core:core-ktx:1.2.0-alpha02',
+            'androidx.fragment:fragment-ktx:1.2.0-alpha01',
+            'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02',
+            'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0-alpha02',
+            "android.arch.work:work-runtime:$workManager",
+            "android.arch.work:work-rxjava2:$workManager"
+    ]
+
+    firebase = [
+            'com.google.firebase:firebase-core:17.0.0',
+            'com.google.firebase:firebase-database:18.0.0',
+            'com.crashlytics.sdk.android:crashlytics:2.10.1',
+            'com.google.firebase:firebase-messaging:19.0.1',
+            "com.github.b3er.rxfirebase:firebase-database:11.2.0",
+            "com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0"
+    ]
+
+    markdown = [
+            'com.github.NightWhistler:HtmlSpanner:-SNAPSHOT',
+            'net.sourceforge.htmlcleaner:htmlcleaner:2.22',
+            "com.atlassian.commonmark:commonmark:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}",
+            "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
+    ]
+
+
+    processing = [
+            "com.google.dagger:dagger-android-processor:2.23.2",
+            "com.google.dagger:dagger-compiler:2.23.2",
+            "com.github.bumptech.glide:compiler:$glide",
+            "androidx.room:room-runtime:2.1.0",
+            "com.evernote:android-state-processor:$androidState",
+            "com.airbnb:deeplinkdispatch-processor:$deepLinkDispatch"
+    ]
+
+    testing = [
+            "junit:junit:$junit",
+            "org.assertj:assertj-core:$assertJ",
+            "org.mockito:mockito-core:$mockito",
+            "com.nhaarman:mockito-kotlin:$mockitoKotlin",
+//            "android.arch.work:work-testing:$workManager"
+    ]
+
+    developmentDependencies = [
+            "com.github.whataa:pandora:$pandora"
+    ]
+
+    releaseDevelopmentDependencies = [
+            "com.github.whataa:pandora-no-op:$pandora"
+    ]
+}

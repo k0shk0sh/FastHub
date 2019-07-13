@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':data', ':domain', ':resources', ':extensions', ':markdown', ':editor'

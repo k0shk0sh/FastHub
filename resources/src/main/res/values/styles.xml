@@ -1,0 +1,44 @@
+<resources>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="behavior_peekHeight">220dp</item>
+    </style>
+
+    <style name="ChipStyleDisabled">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="chipBackgroundColor">?colorPrimary</item>
+        <item name="android:enabled">false</item>
+    </style>
+
+    <style name="ChipStyle">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="chipBackgroundColor">?android:windowBackground</item>
+    </style>
+
+    <style name="ChipStyleChoiceNoDrawable" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="chipBackgroundColor">?colorPrimary</item>
+    </style>
+
+    <style name="ChipStyleCheckable" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="chipBackgroundColor">?colorPrimary</item>
+        <item name="chipIconSize">@dimen/spacing_xs_large</item>
+        <item name="checkedIconEnabled">true</item>
+        <item name="checkedIcon">@drawable/ic_dot_colored</item>
+        <item name="checkedIconVisible">true</item>
+    </style>
+
+    <style name="CardViewStyle">
+        <item name="contentPaddingBottom">@dimen/spacing_normal</item>
+        <item name="contentPaddingLeft">@dimen/spacing_xs_large</item>
+        <item name="contentPaddingRight">@dimen/spacing_xs_large</item>
+        <item name="contentPaddingTop">@dimen/spacing_normal</item>
+        <item name="cardBackgroundColor">?card_background</item>
+    </style>
+
+</resources>

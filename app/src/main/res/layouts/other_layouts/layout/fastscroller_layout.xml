@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
@@ -9,9 +8,9 @@
         android:id="@+id/fast_scroller_bar"
         android:layout_width="7dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"/>
+        android:layout_gravity="end" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/scrollUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,16 +19,18 @@
         android:background="?selectableItemBackground"
         android:src="@drawable/ic_arrow_drop_up"
         android:tint="?colorAccent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/fast_scroller_handle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:contentDescription="@null"
-        android:paddingStart="6dp"
+        android:elevation="2dp"
+        android:padding="2dp"
+        android:outlineProvider="background"
         android:src="@drawable/fastscroller_bubble"
-        tools:ignore="RtlSymmetry"/>
+        tools:ignore="RtlSymmetry" />
 
 </merge>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="llm" translatable="false">com.fastaccess.github.ui.widget.recyclerview.lm.SafeLinearLayoutManager</string>
+    <string name="glm" translatable="false">com.fastaccess.github.ui.widget.recyclerview.lm.SafeGridLayoutManager</string>
+    <string name="slm" translatable="false">com.fastaccess.github.ui.widget.recyclerview.lm.SafeStaggeredLayoutManager</string>
+</resources>
