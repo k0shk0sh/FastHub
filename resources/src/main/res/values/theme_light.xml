@@ -13,6 +13,7 @@
     <style name="ThemeLight" parent="ThemeLight.Base"/>
 
     <style name="ThemeLight.Base" parent="Theme.Light.NoActionBar">
+        <item name="chip_background">@color/lightWindowBackground</item>
         <item name="icon_color">#212121</item>
         <item name="card_background">@color/cardview_light_background</item>
         <item name="comment_box_style">@style/CommentBoxLight</item>

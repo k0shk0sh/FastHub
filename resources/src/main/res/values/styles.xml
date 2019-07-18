@@ -16,7 +16,14 @@
 
     <style name="ChipStyle">
         <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="chipBackgroundColor">?android:windowBackground</item>
+        <item name="chipBackgroundColor">?chip_background</item>
+        <item name="android:elevation">@dimen/spacing_micro</item>
+    </style>
+
+    <style name="ChipStyleNoElevation">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="chipBackgroundColor">?chip_background</item>
+        <item name="android:elevation">@dimen/spacing_micro</item>
     </style>
 
     <style name="ChipStyleChoiceNoDrawable" parent="Widget.MaterialComponents.Chip.Choice">

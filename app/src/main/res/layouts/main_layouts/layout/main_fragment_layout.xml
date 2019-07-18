@@ -23,6 +23,15 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/trending"
+                    style="@style/ChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_normal"
+                    android:text="@string/trending"
+                    android:textAllCaps="false" />
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/orgs"
                     style="@style/ChipStyle"
                     android:layout_width="wrap_content"
@@ -31,8 +40,6 @@
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:layout_marginEnd="@dimen/spacing_normal"
                     android:layout_marginBottom="@dimen/spacing_normal"
-                    android:elevation="@dimen/spacing_micro"
-                    android:outlineProvider="background"
                     android:text="@string/organizations"
                     android:textAllCaps="false" />
 
@@ -42,8 +49,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_normal"
-                    android:elevation="@dimen/spacing_micro"
-                    android:outlineProvider="background"
                     android:text="@string/pinned"
                     android:textAllCaps="false" />
 
@@ -53,8 +58,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_normal"
-                    android:elevation="@dimen/spacing_micro"
-                    android:outlineProvider="background"
                     android:text="@string/starred"
                     android:textAllCaps="false" />
 
@@ -64,20 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_normal"
-                    android:elevation="@dimen/spacing_micro"
-                    android:outlineProvider="background"
                     android:text="@string/repos"
-                    android:textAllCaps="false" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/trending"
-                    style="@style/ChipStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_normal"
-                    android:elevation="@dimen/spacing_micro"
-                    android:outlineProvider="background"
-                    android:text="@string/trending"
                     android:textAllCaps="false" />
 
                 <com.google.android.material.chip.Chip
@@ -89,8 +79,6 @@
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:layout_marginEnd="@dimen/spacing_normal"
                     android:layout_marginBottom="@dimen/spacing_xs_large"
-                    android:elevation="@dimen/spacing_micro"
-                    android:outlineProvider="background"
                     android:text="@string/gists"
                     android:textAllCaps="false" />
 

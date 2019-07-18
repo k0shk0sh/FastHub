@@ -12,6 +12,7 @@
     <style name="ThemeDark.Base" parent="Theme.Dark.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="chip_background">@color/darkWindowBackground</item>
         <item name="card_background">#2D3035</item>
         <item name="comment_box_style">@style/CommentBoxDark</item>
         <item name="icon_color">#eee</item>

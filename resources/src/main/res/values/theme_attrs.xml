@@ -8,4 +8,5 @@
     <attr name="patch_ref" format="color"/>
     <attr name="dividerColor" format="color|reference"/>
     <attr name="comment_box_style" format="reference"/>
+    <attr name="chip_background" format="color|reference"/>
 </resources>

@@ -43,7 +43,10 @@ fun Snackbar.materialize(drawable: Int? = null): Snackbar {
     return this
 }
 
-fun View.showHideFabAnimation(show: Boolean, listener: ((show: Boolean) -> Unit)? = null) {
+fun View.showHideFabAnimation(
+    show: Boolean,
+    listener: ((show: Boolean) -> Unit)? = null
+) {
     val view = this
     if (show) {
         view.animate().cancel()
@@ -87,15 +90,21 @@ fun View.showHideFabAnimation(show: Boolean, listener: ((show: Boolean) -> Unit)
 fun RecyclerView.addKeyLineDivider() {
     if (canAddDivider()) {
         val resources = resources
-        addItemDecoration(InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
-            resources.getDimensionPixelSize(R.dimen.keyline_2), context.getColorAttr(R.attr.dividerColor)))
+        addItemDecoration(
+            InsetDividerDecoration(
+                resources.getDimensionPixelSize(R.dimen.divider_height),
+                resources.getDimensionPixelSize(R.dimen.keyline_2), context.getColorAttr(R.attr.dividerColor)
+            )
+        )
     }
 }
 
 fun RecyclerView.addDivider() {
     if (canAddDivider()) {
         val resources = resources
-        addItemDecoration(InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0, context.getColorAttr(R.attr.dividerColor)))
+        addItemDecoration(
+            InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0, context.getColorAttr(R.attr.dividerColor))
+        )
     }
 }
 
@@ -116,11 +125,17 @@ fun <V : View?> AnchorSheetBehavior<V>.setBottomSheetCallback(
     onSlide: ((slideOffset: Float) -> Unit)? = null
 ) {
     this.setAnchorSheetCallback(object : AnchorSheetBehavior.AnchorSheetCallback() {
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+        override fun onSlide(
+            bottomSheet: View,
+            slideOffset: Float
+        ) {
             onSlide?.invoke(slideOffset)
         }
 
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
+        override fun onStateChanged(
+            bottomSheet: View,
+            newState: Int
+        ) {
             onStateChanged?.invoke(newState)
         }
     })
@@ -131,11 +146,17 @@ fun <V : View?> BottomSheetBehavior<V>.setBottomSheetCallback(
     onSlide: ((slideOffset: Float) -> Unit)? = null
 ) {
     this.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+        override fun onSlide(
+            bottomSheet: View,
+            slideOffset: Float
+        ) {
             onSlide?.invoke(slideOffset)
         }
 
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
+        override fun onStateChanged(
+            bottomSheet: View,
+            newState: Int
+        ) {
             onStateChanged?.invoke(newState)
         }
     })
@@ -159,9 +180,12 @@ fun View.hideKeyboard() {
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
 
-fun View.popupEmoji(id: String, list: List<ReactionGroupModel>?, callback: (() -> Unit)?) {
+fun View.popupEmoji(
+    id: String,
+    list: List<ReactionGroupModel>?,
+    callback: (() -> Unit)?
+) {
     val popupWindow = PopupWindow(context)
-
     val view = View.inflate(context, R.layout.reaction_group_chip_widget, null)
     view.reactionGroup.setup(id, list, popupWindow, callback)
     popupWindow.contentView = view

@@ -9,6 +9,7 @@
     <style name="ThemeAmlod.Base" parent="Theme.Dark.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="chip_background">@color/amlodWindowBackground</item>
         <item name="card_background">#050910</item>
         <item name="comment_box_style">@style/CommentBoxDarkAmlod</item>
         <item name="icon_color">#eee</item>
