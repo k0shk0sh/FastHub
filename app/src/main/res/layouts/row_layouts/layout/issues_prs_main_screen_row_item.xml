@@ -14,31 +14,38 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/stateIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:background="@drawable/circle_shape_cardview"
-            android:padding="@dimen/spacing_micro"
-            tools:src="@drawable/circle_shape_green_small" />
 
+        <FrameLayout
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_xs_large">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/stateIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_shape_cardview"
+                android:padding="@dimen/spacing_micro"
+                tools:src="@drawable/circle_shape_green_small" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/spacing_xs_large"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/issueTitle"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 tools:text="To some, a believer is a sex for loving." />
 
 
