@@ -2,6 +2,7 @@ package com.fastaccess.github.ui.modules.issue.fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -21,10 +22,8 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.base.engine.ThemeEngine
-import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.extensions.shareUrl
-import com.fastaccess.github.extensions.timeAgo
+import com.fastaccess.github.extensions.*
+import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
@@ -43,6 +42,9 @@ import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import com.google.android.material.appbar.AppBarLayout
+import com.otaliastudios.autocomplete.Autocomplete
+import com.otaliastudios.autocomplete.AutocompleteCallback
+import com.otaliastudios.autocomplete.CharPolicy
 import github.type.LockReason
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
@@ -61,6 +63,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var htmlSpanner: HtmlSpanner
     @Inject lateinit var preference: FastHubSharedPreference
+    @Inject lateinit var mentionsPresenter: MentionsPresenter
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(IssueTimelineViewModel::class.java) }
     private val login by lazy { arguments?.getString(EXTRA) ?: "" }
@@ -97,7 +100,13 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 swipeRefresh.isRefreshing = false
             }
         }
+        setupEditText()
         observeChanges()
+    }
+
+    override fun onDestroyView() {
+        mentionsPresenter.onDispose()
+        super.onDestroyView()
     }
 
     override fun onLockReasonSelected(lockReason: LockReason?) {
@@ -118,6 +127,29 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     ) {
         viewModel.addTimeline(timeline)
         initMilestone(milestone)
+    }
+
+    private fun setupEditText() {
+        Autocomplete.on<String>(commentText)
+            .with(CharPolicy('@'))
+            .with(mentionsPresenter)
+            .with(requireContext().getDrawableCompat(R.drawable.popup_window_background))
+            .with(object : AutocompleteCallback<String?> {
+                override fun onPopupItemClicked(
+                    editable: Editable?,
+                    item: String?
+                ): Boolean {
+                    val range = CharPolicy.getQueryRange(editable) ?: return false
+                    val start = range[0]
+                    val end = range[1]
+                    Timber.e("$start $end $item")
+                    editable?.replace(start, end, "$item ")
+                    return true
+                }
+
+                override fun onPopupVisibilityChanged(shown: Boolean) {}
+            })
+            .build()
     }
 
     private fun menuClick(model: IssueModel) {
@@ -160,8 +192,11 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         viewModel.getIssue(login, repo, number).observeNotNull(this) {
             initIssue(it.first, it.second)
         }
-        viewModel.timeline.observeNotNull(this) {
-            adapter.submitList(it)
+        viewModel.timeline.observeNotNull(this) { timeline ->
+            adapter.submitList(timeline)
+        }
+        viewModel.userNamesLiveData.observeNotNull(this) {
+            mentionsPresenter.setUsers(it)
         }
     }
 

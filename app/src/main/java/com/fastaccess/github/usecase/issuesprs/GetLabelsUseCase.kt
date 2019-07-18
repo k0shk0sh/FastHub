@@ -5,6 +5,7 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.parcelable.LabelModel
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.toLabels
 import github.GetLabelsQuery
@@ -15,7 +16,8 @@ import javax.inject.Inject
  * Created by Kosh on 27.01.19.
  */
 class GetLabelsUseCase @Inject constructor(
-    private val apolloClient: ApolloClient
+    private val apolloClient: ApolloClient,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
     var login: String? = null
@@ -27,13 +29,19 @@ class GetLabelsUseCase @Inject constructor(
         val repo = repo
 
         if (login.isNullOrEmpty() || repo.isNullOrEmpty()) {
-            return Observable.error(Throwable("this should never happen ;)"))
+            return Observable.error<Pair<PageInfoModel, List<LabelModel>>>(Throwable("this should never happen ;)"))
+                .subscribeOn(schedulerProvider.ioThread())
+                .observeOn(schedulerProvider.uiThread())
         }
         return Rx2Apollo.from(apolloClient.query(GetLabelsQuery(login, repo, page)))
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
             .map { it.data()?.repositoryOwner?.repository?.labels }
             .map { data ->
-                val pageInfo = PageInfoModel(data.pageInfo.startCursor, data.pageInfo.endCursor,
-                    data.pageInfo.isHasNextPage, data.pageInfo.isHasPreviousPage)
+                val pageInfo = PageInfoModel(
+                    data.pageInfo.startCursor, data.pageInfo.endCursor,
+                    data.pageInfo.isHasNextPage, data.pageInfo.isHasPreviousPage
+                )
                 return@map Pair(pageInfo, data.nodes?.map { it.fragments.labels.toLabels() } ?: listOf())
             }
     }

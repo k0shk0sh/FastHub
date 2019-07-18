@@ -7,6 +7,7 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import github.SearchIssuesQuery
 import io.reactivex.Observable
@@ -17,7 +18,8 @@ import javax.inject.Inject
  */
 class FilterIssuesUseCase @Inject constructor(
     private val loginRepository: LoginRepositoryProvider,
-    private val apolloClient: ApolloClient
+    private val apolloClient: ApolloClient,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
     var cursor: Input<String?> = Input.absent()
@@ -28,6 +30,8 @@ class FilterIssuesUseCase @Inject constructor(
         val query = keyword
         return if (query.isNullOrEmpty()) {
             loginRepository.getLogin()
+                .subscribeOn(schedulerProvider.ioThread())
+                .observeOn(schedulerProvider.uiThread())
                 .flatMapObservable { user ->
                     return@flatMapObservable user.login?.let { login ->
                         searchObservable(login = login)
@@ -43,6 +47,8 @@ class FilterIssuesUseCase @Inject constructor(
         query: String? = null
     ): Observable<Pair<PageInfoModel, List<MyIssuesPullsModel>>> {
         return Rx2Apollo.from(apolloClient.query(SearchIssuesQuery(constructQuery(filterModel, login, query), cursor)))
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
             .map { it.data()?.search }
             .map { search ->
                 val list = search.nodes?.asSequence()?.mapNotNull { it.fragments.shortIssueRowItem }

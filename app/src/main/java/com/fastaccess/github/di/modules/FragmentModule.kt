@@ -4,6 +4,9 @@ import android.content.Context
 import com.fastaccess.github.di.annotations.ForApplication
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.extensions.getDrawableCompat
+import com.fastaccess.github.platform.mentions.MentionsPresenter
+import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
+import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import com.fastaccess.markdown.R
 import com.fastaccess.markdown.spans.*
 import dagger.Module
@@ -17,6 +20,8 @@ import net.nightwhistler.htmlspanner.style.Style
  */
 @Module
 class FragmentModule {
+
+    @PerFragment @Provides fun provideContext(fragment: IssueFragment) = fragment.requireContext()
 
     @PerFragment @Provides fun provideHtmlSpanner(@ForApplication context: Context): HtmlSpanner {
         val mySpanner = HtmlSpanner()
@@ -48,4 +53,9 @@ class FragmentModule {
         mySpanner.registerHandler("h6", HeaderHandler(1.0f))
         return mySpanner
     }
+
+    @PerFragment @Provides fun provideMentionsPresenter(
+        context: Context,
+        searchUsersUseCase: FilterSearchUsersUseCase
+    ) = MentionsPresenter(context, searchUsersUseCase)
 }

@@ -5,6 +5,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.data.repository.MyIssuesPullsRepositoryProvider
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import github.GetIssuesWithoutStateQuery
 import github.type.IssueState
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class IssuesMainScreenUseCase @Inject constructor(
     private val loginRepository: LoginRepositoryProvider,
     private val myIssues: MyIssuesPullsRepositoryProvider,
-    private val apolloClient: ApolloClient
+    private val apolloClient: ApolloClient,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
     var state: IssueState = IssueState.OPEN
@@ -33,6 +35,8 @@ class IssuesMainScreenUseCase @Inject constructor(
                             .build()
                     )
                 )
+                    .subscribeOn(schedulerProvider.ioThread())
+                    .observeOn(schedulerProvider.uiThread())
                     .map { it.data()?.user?.issues?.nodes }
                     .map { value ->
                         myIssues.deleteAllIssues()

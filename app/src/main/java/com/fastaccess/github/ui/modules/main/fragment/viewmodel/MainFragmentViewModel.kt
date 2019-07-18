@@ -6,11 +6,7 @@ import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.models.FeedModel
-import com.fastaccess.data.repository.FeedsRepositoryProvider
-import com.fastaccess.data.repository.LoginRepositoryProvider
-import com.fastaccess.data.repository.MyIssuesPullsRepositoryProvider
-import com.fastaccess.data.repository.NotificationRepositoryProvider
-import com.fastaccess.extension.uiThread
+import com.fastaccess.data.repository.*
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.map
 import com.fastaccess.github.extensions.switchMap
@@ -34,7 +30,8 @@ class MainFragmentViewModel @Inject constructor(
     private val myIssuesPullsRepo: MyIssuesPullsRepositoryProvider,
     private val notificationRepositoryProvider: NotificationRepositoryProvider,
     private val fasthubDatabase: FastHubDatabase,
-    private val loginProvider: LoginRepositoryProvider
+    private val loginProvider: LoginRepositoryProvider,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
     val login = loginProvider.getLogin()
@@ -55,7 +52,7 @@ class MainFragmentViewModel @Inject constructor(
                 .flatMap { notificationUseCase.buildObservable() }
                 .flatMap { issuesMainScreenUseCase.buildObservable() }
                 .flatMap { pullRequestsMainScreenUseCase.buildObservable() }
-        ))
+        ).subscribeOn(schedulerProvider.ioThread()).observeOn(schedulerProvider.uiThread()))
     }
 
     fun logout() {
@@ -63,7 +60,8 @@ class MainFragmentViewModel @Inject constructor(
             fasthubDatabase.clearAll()
             loginProvider.logoutAll()
         }
-            .uiThread()
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
             .subscribe({ logoutProcess.postValue(true) },
                 { error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, it.message)) })
         )

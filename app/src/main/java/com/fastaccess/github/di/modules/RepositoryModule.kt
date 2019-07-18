@@ -35,8 +35,11 @@ class RepositoryModule {
         return MyIssuesPullsRepositoryProvider(fastHubDatabase.getMainIssuesPullsDao())
     }
 
-    @Singleton @Provides fun provideNotificationRepositoryProvider(fastHubDatabase: FastHubDatabase): NotificationRepositoryProvider {
-        return NotificationRepositoryProvider(fastHubDatabase.getNotifications())
+    @Singleton @Provides fun provideNotificationRepositoryProvider(
+        fastHubDatabase: FastHubDatabase,
+        schedulerProvider: SchedulerProvider
+    ): NotificationRepositoryProvider {
+        return NotificationRepositoryProvider(fastHubDatabase.getNotifications(), schedulerProvider)
     }
 
     @Singleton @Provides fun provideFeedsRepositoryProvider(
@@ -91,4 +94,6 @@ class RepositoryModule {
     @Singleton @Provides fun provideSuggestionRepositoryProvider(fastHubDatabase: FastHubDatabase): SuggestionRepositoryProvider {
         return SuggestionRepositoryProvider(fastHubDatabase.getSuggestionDao())
     }
+
+    @Singleton @Provides fun provideAndroidSchedulerProvider(): SchedulerProvider = AndroidSchedulerProvider()
 }

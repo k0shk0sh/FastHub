@@ -7,6 +7,7 @@ import com.fastaccess.data.model.LockUnlockEventModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.me
 import github.LockMutation
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class LockUnlockIssuePrUseCase @Inject constructor(
     private val issueRepositoryProvider: IssueRepositoryProvider,
     private val apolloClient: ApolloClient,
-    private val loginRepositoryProvider: LoginRepositoryProvider
+    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
     var repo: String = ""
@@ -32,12 +34,16 @@ class LockUnlockIssuePrUseCase @Inject constructor(
     var lock: Boolean = false
 
     override fun buildObservable(): Observable<TimelineModel> = issueRepositoryProvider.getIssueByNumberMaybe("$login/$repo", number)
+        .subscribeOn(schedulerProvider.ioThread())
+        .observeOn(schedulerProvider.uiThread())
         .flatMapObservable { issue ->
             if (lockReason == null) {
                 Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, Input.optional(lockReason))))
             } else {
                 Rx2Apollo.from(apolloClient.mutate(UnlockMutation(issue.id)))
             }
+                .subscribeOn(schedulerProvider.ioThread())
+                .observeOn(schedulerProvider.uiThread())
                 .map {
                     issue.locked = lock == true
                     issue.activeLockReason = lockReason?.rawValue()

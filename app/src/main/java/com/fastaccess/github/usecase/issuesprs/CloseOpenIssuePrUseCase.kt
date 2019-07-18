@@ -5,6 +5,7 @@ import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.repository.services.IssuePrService
 import com.fastaccess.domain.response.IssueRequestModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class CloseOpenIssuePrUseCase @Inject constructor(
     private val issueRepositoryProvider: IssueRepositoryProvider,
     private val issuePrService: IssuePrService,
-    private val loginRepositoryProvider: LoginRepositoryProvider
+    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
     var repo: String = ""
@@ -27,14 +29,22 @@ class CloseOpenIssuePrUseCase @Inject constructor(
     var number: Int = -1
 
     override fun buildObservable(): Observable<TimelineModel> = issueRepositoryProvider.getIssueByNumberMaybe("$login/$repo", number)
+        .subscribeOn(schedulerProvider.ioThread())
+        .observeOn(schedulerProvider.uiThread())
         .flatMapObservable { issue ->
             issuePrService.editIssue(login, repo, number, IssueRequestModel(state = if ("closed".equals(issue.state, true)) "open" else "closed"))
                 .map {
                     issue.state = it.issueState
                     issueRepositoryProvider.upsert(issue)
                     val me = loginRepositoryProvider.getLoginBlocking()?.me()
-                    return@map TimelineModel(closeOpenEventModel = CloseOpenEventModel(Date(), me, null,
-                        MyIssuesPullsModel(issue.id, issue.databaseId, issue.number, issue.title, issue.repo?.nameWithOwner, 0, it.issueState, issue.url)))
+                    return@map TimelineModel(
+                        closeOpenEventModel = CloseOpenEventModel(
+                            Date(), me, null,
+                            MyIssuesPullsModel(
+                                issue.id, issue.databaseId, issue.number, issue.title, issue.repo?.nameWithOwner, 0, it.issueState, issue.url
+                            )
+                        )
+                    )
                 }
         }
 }

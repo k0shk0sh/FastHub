@@ -33,155 +33,190 @@ class UseCaseModule {
 
     @PerFragment @Provides fun provideLoginWithAccessTokenUseCase(
         loginRemoteRepository: LoginRepositoryProvider,
-        gson: Gson
+        gson: Gson,
+        schedulerProvider: SchedulerProvider
     ): LoginWithAccessTokenUseCase {
-        return LoginWithAccessTokenUseCase(loginRemoteRepository, gson)
+        return LoginWithAccessTokenUseCase(loginRemoteRepository, gson, schedulerProvider)
     }
 
-    @PerFragment @Provides fun provideGetAccessTokenUseCase(loginRemoteRepository: LoginRepositoryProvider): GetAccessTokenUseCase {
-        return GetAccessTokenUseCase(loginRemoteRepository)
+    @PerFragment @Provides fun provideGetAccessTokenUseCase(
+        loginRemoteRepository: LoginRepositoryProvider,
+        schedulerProvider: SchedulerProvider
+    ): GetAccessTokenUseCase {
+        return GetAccessTokenUseCase(loginRemoteRepository, schedulerProvider)
     }
 
-    @PerFragment @Provides fun provideUserUseCase(userRepository: UserRepositoryProvider): UserUseCase = UserUseCase(userRepository)
+    @PerFragment @Provides fun provideUserUseCase(
+        userRepository: UserRepositoryProvider,
+        schedulerProvider: SchedulerProvider
+    ): UserUseCase = UserUseCase(userRepository, schedulerProvider)
 
     @PerFragment @Provides fun provideIssuesMainScreenUseCase(
         loginRepository: LoginRepositoryProvider,
         myIssuesPullsRepository: MyIssuesPullsRepositoryProvider,
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): IssuesMainScreenUseCase {
-        return IssuesMainScreenUseCase(loginRepository, myIssuesPullsRepository, apolloClient)
+        return IssuesMainScreenUseCase(loginRepository, myIssuesPullsRepository, apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun providePullRequestsMainScreenUseCase(
         loginRepository: LoginRepositoryProvider,
         myIssues: MyIssuesPullsRepositoryProvider,
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): PullRequestsMainScreenUseCase {
-        return PullRequestsMainScreenUseCase(loginRepository, myIssues, apolloClient)
+        return PullRequestsMainScreenUseCase(loginRepository, myIssues, apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideNotificationUseCase(
         notificationRepositoryProvider: NotificationRepositoryProvider,
         notificationService: NotificationService,
-        gson: Gson
+        gson: Gson,
+        schedulerProvider: SchedulerProvider
     ): NotificationUseCase {
-        return NotificationUseCase(notificationRepositoryProvider, notificationService, gson)
+        return NotificationUseCase(notificationRepositoryProvider, notificationService, gson, schedulerProvider)
     }
 
-    @PerFragment @Provides fun provideFeedsUseCase(provider: FeedsRepositoryProvider): FeedsUseCase = FeedsUseCase(provider)
+    @PerFragment @Provides fun provideFeedsUseCase(
+        provider: FeedsRepositoryProvider,
+        schedulerProvider: SchedulerProvider
+    ): FeedsUseCase = FeedsUseCase(provider, schedulerProvider)
 
 
-    @PerFragment @Provides fun provideBlockUnblockUserUseCase(userRepository: UserRepositoryProvider): BlockUnblockUserUseCase {
-        return BlockUnblockUserUseCase(userRepository)
+    @PerFragment @Provides fun provideBlockUnblockUserUseCase(
+        userRepository: UserRepositoryProvider,
+        schedulerProvider: SchedulerProvider
+    ): BlockUnblockUserUseCase {
+        return BlockUnblockUserUseCase(userRepository, schedulerProvider)
     }
 
-    @PerFragment @Provides fun provideIsUserBlockedUseCase(userRepository: UserRepositoryProvider): IsUserBlockedUseCase {
-        return IsUserBlockedUseCase(userRepository)
+    @PerFragment @Provides fun provideIsUserBlockedUseCase(
+        userRepository: UserRepositoryProvider,
+        schedulerProvider: SchedulerProvider
+    ): IsUserBlockedUseCase {
+        return IsUserBlockedUseCase(userRepository, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideFilterIssuesUseCase(
         loginRepository: LoginRepositoryProvider,
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): FilterIssuesUseCase {
-        return FilterIssuesUseCase(loginRepository, apolloClient)
+        return FilterIssuesUseCase(loginRepository, apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideFilterPullRequestsUseCase(
         loginRepository: LoginRepositoryProvider,
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): FilterPullRequestsUseCase {
-        return FilterPullRequestsUseCase(loginRepository, apolloClient)
+        return FilterPullRequestsUseCase(loginRepository, apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideFilterSearchReposUseCase(
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): FilterSearchReposUseCase {
-        return FilterSearchReposUseCase(apolloClient)
+        return FilterSearchReposUseCase(apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideFilterSearchUsersUseCase(
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): FilterSearchUsersUseCase {
-        return FilterSearchUsersUseCase(apolloClient)
+        return FilterSearchUsersUseCase(apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideGetIssueUseCase(
         issueRepositoryProvider: IssueRepositoryProvider,
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): GetIssueUseCase {
-        return GetIssueUseCase(issueRepositoryProvider, apolloClient)
+        return GetIssueUseCase(issueRepositoryProvider, apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideGetIssueTimelineUseCase(
         issueRepositoryProvider: IssueRepositoryProvider,
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): GetIssueTimelineUseCase {
-        return GetIssueTimelineUseCase(issueRepositoryProvider, apolloClient)
+        return GetIssueTimelineUseCase(issueRepositoryProvider, apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideEditIssuePrUseCase(
         issueRepositoryProvider: IssueRepositoryProvider,
         issuePrService: IssuePrService,
-        loginRepositoryProvider: LoginRepositoryProvider
+        loginRepositoryProvider: LoginRepositoryProvider,
+        schedulerProvider: SchedulerProvider
     ): CloseOpenIssuePrUseCase {
-        return CloseOpenIssuePrUseCase(issueRepositoryProvider, issuePrService, loginRepositoryProvider)
+        return CloseOpenIssuePrUseCase(issueRepositoryProvider, issuePrService, loginRepositoryProvider, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideLockUnlockIssuePrUseCase(
         issueRepositoryProvider: IssueRepositoryProvider,
         apolloClient: ApolloClient,
-        loginRepositoryProvider: LoginRepositoryProvider
+        loginRepositoryProvider: LoginRepositoryProvider,
+        schedulerProvider: SchedulerProvider
     ): LockUnlockIssuePrUseCase {
-        return LockUnlockIssuePrUseCase(issueRepositoryProvider, apolloClient, loginRepositoryProvider)
+        return LockUnlockIssuePrUseCase(issueRepositoryProvider, apolloClient, loginRepositoryProvider, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideGetLabelsUseCase(
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): GetLabelsUseCase {
-        return GetLabelsUseCase(apolloClient)
+        return GetLabelsUseCase(apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideCreateLabelUseCase(
-        repoService: RepoService
+        repoService: RepoService,
+        schedulerProvider: SchedulerProvider
     ): CreateLabelUseCase {
-        return CreateLabelUseCase(repoService)
+        return CreateLabelUseCase(repoService, schedulerProvider)
     }
 
     @PerFragment @Provides fun providePutLabelsUseCase(
-        repoService: RepoService
+        repoService: RepoService,
+        schedulerProvider: SchedulerProvider
     ): PutLabelsUseCase {
-        return PutLabelsUseCase(repoService)
+        return PutLabelsUseCase(repoService, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideGetAssigneesUseCase(
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): GetAssigneesUseCase {
-        return GetAssigneesUseCase(apolloClient)
+        return GetAssigneesUseCase(apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideAddAssigneesUseCase(
-        repoService: RepoService
+        repoService: RepoService,
+        schedulerProvider: SchedulerProvider
     ): AddAssigneesUseCase {
-        return AddAssigneesUseCase(repoService)
+        return AddAssigneesUseCase(repoService, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideGetMilestonesUseCase(
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
+        schedulerProvider: SchedulerProvider
     ): GetMilestonesUseCase {
-        return GetMilestonesUseCase(apolloClient)
+        return GetMilestonesUseCase(apolloClient, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideCreateMilestoneUseCase(
-        repoService: RepoService
+        repoService: RepoService,
+        schedulerProvider: SchedulerProvider
     ): CreateMilestoneUseCase {
-        return CreateMilestoneUseCase(repoService)
+        return CreateMilestoneUseCase(repoService, schedulerProvider)
     }
 
     @PerFragment @Provides fun provideMilestoneIssuePrUseCase(
         issueRepositoryProvider: IssueRepositoryProvider,
         issuePrService: IssuePrService,
-        loginRepositoryProvider: LoginRepositoryProvider
+        loginRepositoryProvider: LoginRepositoryProvider,
+        schedulerProvider: SchedulerProvider
     ): MilestoneIssuePrUseCase {
-        return MilestoneIssuePrUseCase(issueRepositoryProvider, issuePrService, loginRepositoryProvider)
+        return MilestoneIssuePrUseCase(issueRepositoryProvider, issuePrService, loginRepositoryProvider, schedulerProvider)
     }
 }

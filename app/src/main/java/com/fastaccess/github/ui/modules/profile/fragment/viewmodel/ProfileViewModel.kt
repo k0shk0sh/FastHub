@@ -1,7 +1,6 @@
 package com.fastaccess.github.ui.modules.profile.fragment.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.fastaccess.extension.uiThread
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.user.BlockUnblockUserUseCase
 import com.fastaccess.github.usecase.user.FollowUnfollowUserUseCase
@@ -26,30 +25,38 @@ class ProfileViewModel @Inject constructor(
 
     fun getUserFromRemote(login: String) {
         userUseCase.login = login
-        add(callApi(userUseCase.buildObservable())
-            .subscribe({}, { it.printStackTrace() }))
+        add(
+            callApi(userUseCase.buildObservable())
+                .subscribe({}, { it.printStackTrace() })
+        )
     }
 
     fun checkBlockingState(login: String) {
         blockedUseCase.login = login
-        add(blockedUseCase.buildObservable()
-            .uiThread()
-            .subscribe({
-                isBlocked.postValue(it)
-            }, {
-                isBlocked.postValue(false)
-                it.printStackTrace()
-            }))
+        add(
+            blockedUseCase.buildObservable()
+                .subscribe({
+                    isBlocked.postValue(it)
+                }, {
+                    isBlocked.postValue(false)
+                    it.printStackTrace()
+                })
+        )
     }
 
     fun blockUnblockUser(login: String) {
         unblockUserUseCase.login = login
         unblockUserUseCase.block = isBlocked.value == false
-        add(callApi(unblockUserUseCase.buildObservable())
-            .subscribe({ isBlocked.postValue(it) }, { it.printStackTrace() }))
+        add(
+            callApi(unblockUserUseCase.buildObservable())
+                .subscribe({ isBlocked.postValue(it) }, { it.printStackTrace() })
+        )
     }
 
-    fun followUnfollowUser(login: String, viewerIsFollowing: Boolean?) {
+    fun followUnfollowUser(
+        login: String,
+        viewerIsFollowing: Boolean?
+    ) {
         followUnfollowUserUseCase.login = login
         followUnfollowUserUseCase.follow = viewerIsFollowing == false
         justSubscribe(followUnfollowUserUseCase.buildObservable())

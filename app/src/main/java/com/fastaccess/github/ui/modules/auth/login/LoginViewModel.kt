@@ -2,11 +2,11 @@ package com.fastaccess.github.ui.modules.auth.login
 
 import androidx.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
-import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.model.FastHubErrors
-import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.model.ValidationError
-import com.fastaccess.extension.uiThread
+import com.fastaccess.data.persistence.db.FastHubDatabase
+import com.fastaccess.data.persistence.models.LoginModel
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.di.modules.AuthenticationInterceptor
@@ -25,17 +25,20 @@ class LoginViewModel @Inject constructor(
     private val accessTokenUseCase: GetAccessTokenUseCase,
     private val loginWithAccessTokenUseCase: LoginWithAccessTokenUseCase,
     private val interceptor: AuthenticationInterceptor,
-    private val fasthubDatabase: FastHubDatabase
+    private val fasthubDatabase: FastHubDatabase,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
     val validationLiveData = MutableLiveData<ValidationError>()
     val loggedInUser = MutableLiveData<LoginModel>()
 
-    fun login(userName: String? = null,
-              password: String? = null,
-              twoFactorCode: String? = null,
-              endPoint: String? = null,
-              isAccessToken: Boolean = true) {
+    fun login(
+        userName: String? = null,
+        password: String? = null,
+        twoFactorCode: String? = null,
+        endPoint: String? = null,
+        isAccessToken: Boolean = true
+    ) {
         validationLiveData.value = ValidationError(ValidationError.FieldType.TWO_FACTOR, !twoFactorCode.isNullOrBlank())
         validationLiveData.value = ValidationError(ValidationError.FieldType.URL, !endPoint.isNullOrBlank())
         validationLiveData.value = ValidationError(ValidationError.FieldType.PASSWORD, !password.isNullOrBlank())
@@ -59,10 +62,12 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun loginWithAccessToken(password: String,
-                                     twoFactorCode: String? = null,
-                                     isEnterprise: Boolean? = false,
-                                     enterpriseUrl: String? = null) {
+    private fun loginWithAccessToken(
+        password: String,
+        twoFactorCode: String? = null,
+        isEnterprise: Boolean? = false,
+        enterpriseUrl: String? = null
+    ) {
         interceptor.token = password
         loginWithAccessTokenUseCase.executeSafely(callApi(loginWithAccessTokenUseCase.buildObservable()
             .flatMap { user ->
@@ -77,9 +82,11 @@ class LoginViewModel @Inject constructor(
         ))
     }
 
-    private fun loginBasic(twoFactorCode: String? = null,
-                           isEnterprise: Boolean? = false,
-                           enterpriseUrl: String? = null) {
+    private fun loginBasic(
+        twoFactorCode: String? = null,
+        isEnterprise: Boolean? = false,
+        enterpriseUrl: String? = null
+    ) {
         loginUserCase.setAuthBody(twoFactorCode)
         loginUserCase.executeSafely(callApi(loginUserCase.buildObservable()
             .flatMap({
@@ -104,5 +111,7 @@ class LoginViewModel @Inject constructor(
         super.onCleared()
     }
 
-    fun clearDb() = Completable.fromCallable { fasthubDatabase.clearAll() }.uiThread()
+    fun clearDb() = Completable.fromCallable { fasthubDatabase.clearAll() }
+        .subscribeOn(schedulerProvider.ioThread())
+        .observeOn(schedulerProvider.uiThread())
 }

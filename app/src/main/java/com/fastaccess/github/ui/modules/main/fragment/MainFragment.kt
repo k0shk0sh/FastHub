@@ -145,7 +145,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
             swipeRefresh.isRefreshing = it == true
         }
         viewModel.list.observeNotNull(this) {
-            adapter.submitList(it.distinct())
+            adapter.submitList(it)
         }
         viewModel.logoutProcess.observeNotNull(this) {
             if (it) {

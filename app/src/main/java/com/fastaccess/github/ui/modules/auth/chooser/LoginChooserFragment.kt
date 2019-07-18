@@ -6,7 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.fastaccess.extension.uiThread
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -23,15 +23,19 @@ import javax.inject.Inject
  */
 class LoginChooserFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var schedulerProvider: SchedulerProvider
 
     private val viewModel by lazy { ViewModelProviders.of(requireActivity(), viewModelFactory).get(LoginChooserViewModel::class.java) }
     private var callback: LoginChooserCallback? = null
     private val adapter by lazy {
         LoggedInUsersAdapter { user ->
-            addDisposal(viewModel.reLogin(user)
-                .uiThread()
-                .subscribe({ (requireActivity() as? LoginChooserCallback)?.onUserLoggedIn(user) },
-                    { throwable -> view?.let { showSnackBar(it, message = throwable.message) } }))
+            addDisposal(
+                viewModel.reLogin(user)
+                    .subscribeOn(schedulerProvider.ioThread())
+                    .observeOn(schedulerProvider.uiThread())
+                    .subscribe({ (requireActivity() as? LoginChooserCallback)?.onUserLoggedIn(user) },
+                        { throwable -> view?.let { showSnackBar(it, message = throwable.message) } })
+            )
         }
     }
 
@@ -47,8 +51,16 @@ class LoginChooserFragment : BaseFragment() {
 
     override fun viewModel(): BaseViewModel? = null
     override fun layoutRes() = R.layout.login_chooser_fragment_layout
-    override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {}
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onFragmentCreatedWithUser(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
         basicAuth.setOnClickListener { callback?.navToBasicAuth(loginCard) }
         accessToken.setOnClickListener { callback?.navToAccessToken(loginCard) }

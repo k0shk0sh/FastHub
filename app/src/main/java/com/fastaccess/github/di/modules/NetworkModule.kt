@@ -25,6 +25,7 @@ import java.lang.reflect.Type
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -52,6 +53,14 @@ class NetworkModule {
         .addInterceptor(HttpLoggingInterceptor())
         .build()
 
+    @Named("apolloClient") @Singleton @Provides fun provideHttpClientForApollo(auth: AuthenticationInterceptor): OkHttpClient = OkHttpClient
+        .Builder()
+        .addInterceptor(auth)
+        .addInterceptor(Pandora.get().interceptor)
+        .addInterceptor(HttpLoggingInterceptor())
+        .build()
+
+
     @Singleton @Provides fun provideRetrofit(
         gson: Gson,
         okHttpClient: OkHttpClient
@@ -70,12 +79,13 @@ class NetworkModule {
         .addConverterFactory(GithubResponseConverter(gson))
         .client(okHttpClient)
 
-    @Singleton @Provides fun provideApollo(okHttpClient: OkHttpClient): ApolloClient = ApolloClient.builder()
+    @Singleton @Provides fun provideApollo(@Named("apolloClient") okHttpClient: OkHttpClient): ApolloClient = ApolloClient.builder()
         .serverUrl(BuildConfig.GRAPHQL_REST_URL)
         .okHttpClient(okHttpClient)
         .addCustomTypeAdapter(CustomType.URI, UriApolloAdapter())
         .addCustomTypeAdapter(CustomType.DATETIME, DateApolloAdapter())
         .addCustomTypeAdapter(CustomType.HTML, ObjectApolloAdapter())
+        .addCustomTypeAdapter(CustomType.ID, ObjectApolloAdapter())
         .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)

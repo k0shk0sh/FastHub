@@ -64,7 +64,8 @@ ext {
             'com.github.zagum:Android-ExpandIcon:1.2.1',
             "com.evernote:android-state:$androidState",
             'org.jsoup:jsoup:1.12.1',
-            'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
+            'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2',
+            'com.otaliastudios:autocomplete:1.1.0'
     ]
 
     networking = [

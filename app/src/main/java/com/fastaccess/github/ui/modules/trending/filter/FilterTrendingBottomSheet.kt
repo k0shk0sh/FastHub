@@ -6,7 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.fastaccess.data.model.LanguageColorsModel
 import com.fastaccess.data.model.parcelable.FilterTrendingModel
-import com.fastaccess.extension.uiThread
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -24,6 +24,7 @@ import javax.inject.Inject
 class FilterTrendingBottomSheet : BaseFragment() {
 
     @Inject lateinit var gson: Gson
+    @Inject lateinit var schedulerProvider: SchedulerProvider
 
     private var callback: FilterTrendingCallback? = null
     private val adapter by lazy { LanguagesAdapter() }
@@ -48,19 +49,26 @@ class FilterTrendingBottomSheet : BaseFragment() {
         super.onDetach()
     }
 
-    override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
+    override fun onFragmentCreatedWithUser(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         setupToolbar(R.string.filter)
         adapter.checkedLanguage = model.lang
         languageRecyclerView.adapter = adapter
         languageRecyclerView.addDivider()
-        sinceGroup.check(when (model.since) {
-            FilterTrendingModel.TrendingSince.DAILY -> R.id.daily
-            FilterTrendingModel.TrendingSince.WEEKLY -> R.id.weekly
-            FilterTrendingModel.TrendingSince.MONTHLY -> R.id.monthly
-        })
+        sinceGroup.check(
+            when (model.since) {
+                FilterTrendingModel.TrendingSince.DAILY -> R.id.daily
+                FilterTrendingModel.TrendingSince.WEEKLY -> R.id.weekly
+                FilterTrendingModel.TrendingSince.MONTHLY -> R.id.monthly
+            }
+        )
         addDisposal(LanguageColorsModel.newInstance(gson, requireContext())
-            .uiThread()
-            .subscribe({ adapter.submitList(it) }, { showSnackBar(view, message = it.message) }))
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
+            .subscribe({ adapter.submitList(it) }, { showSnackBar(view, message = it.message) })
+        )
 
         submit.setOnClickListener {
             model.lang = adapter.checkedLanguage

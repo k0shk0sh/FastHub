@@ -32,6 +32,7 @@ class IssueTimelineViewModel @Inject constructor(
     private var pageInfo: PageInfoModel? = null
     val timeline = MutableLiveData<ArrayList<TimelineModel>>()
     private val list = arrayListOf<TimelineModel>()
+    val userNamesLiveData = MutableLiveData<ArrayList<String>>()
 
     override fun onCleared() {
         super.onCleared()
@@ -41,11 +42,20 @@ class IssueTimelineViewModel @Inject constructor(
         lockUnlockIssuePrUseCase.dispose()
     }
 
-    fun getIssue(login: String, repo: String, number: Int) = issueRepositoryProvider.getIssueByNumber("$login/$repo", number)
+    fun getIssue(
+        login: String,
+        repo: String,
+        number: Int
+    ) = issueRepositoryProvider.getIssueByNumber("$login/$repo", number)
         .filterNull()
         .map { Pair(it, loginRepositoryProvider.getLoginBlocking()) }
 
-    fun loadData(login: String, repo: String, number: Int, reload: Boolean = false) {
+    fun loadData(
+        login: String,
+        repo: String,
+        number: Int,
+        reload: Boolean = false
+    ) {
         if (reload) {
             pageInfo = null
             list.clear()
@@ -58,13 +68,20 @@ class IssueTimelineViewModel @Inject constructor(
             issueUseCase.repo = repo
             issueUseCase.number = number
             justSubscribe(issueUseCase.buildObservable()
-                .flatMap { loadTimeline(login, repo, number, cursor) })
+                .flatMap { loadTimeline(login, repo, number, cursor) }
+                .map { mapToUserNames(it.second) })
         } else {
-            justSubscribe(loadTimeline(login, repo, number, cursor))
+            justSubscribe(loadTimeline(login, repo, number, cursor)
+                .map { mapToUserNames(it.second) })
         }
     }
 
-    private fun loadTimeline(login: String, repo: String, number: Int, cursor: String?): Observable<Pair<PageInfoModel, List<TimelineModel>>> {
+    private fun loadTimeline(
+        login: String,
+        repo: String,
+        number: Int,
+        cursor: String?
+    ): Observable<Pair<PageInfoModel, List<TimelineModel>>> {
         timelineUseCase.login = login
         timelineUseCase.repo = repo
         timelineUseCase.number = number
@@ -77,7 +94,11 @@ class IssueTimelineViewModel @Inject constructor(
             }
     }
 
-    fun closeOpenIssue(login: String, repo: String, number: Int) {
+    fun closeOpenIssue(
+        login: String,
+        repo: String,
+        number: Int
+    ) {
         editIssuePrUseCase.repo = repo
         editIssuePrUseCase.login = login
         editIssuePrUseCase.number = number
@@ -87,7 +108,13 @@ class IssueTimelineViewModel @Inject constructor(
             })
     }
 
-    fun lockUnlockIssue(login: String, repo: String, number: Int, lockReason: LockReason? = null, lock: Boolean = false) {
+    fun lockUnlockIssue(
+        login: String,
+        repo: String,
+        number: Int,
+        lockReason: LockReason? = null,
+        lock: Boolean = false
+    ) {
         lockUnlockIssuePrUseCase.repo = repo
         lockUnlockIssuePrUseCase.login = login
         lockUnlockIssuePrUseCase.number = number
@@ -105,4 +132,10 @@ class IssueTimelineViewModel @Inject constructor(
     }
 
     fun hasNext() = pageInfo?.hasNextPage ?: false
+
+    private fun mapToUserNames(list: List<TimelineModel>) {
+        val _list = userNamesLiveData.value ?: arrayListOf()
+        _list.addAll(list.map { it.comment?.author?.login ?: it.comment?.author?.name ?: "" })
+        userNamesLiveData.postValue(_list)
+    }
 }

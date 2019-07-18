@@ -18,13 +18,14 @@
         <FrameLayout
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_xs_large">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/typeIcon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_gravity="center"
                 android:background="@drawable/circle_shape_cardview"
                 android:padding="@dimen/spacing_micro"
                 tools:src="@drawable/ic_issues" />

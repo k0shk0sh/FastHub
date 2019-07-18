@@ -2,6 +2,7 @@ package com.fastaccess.github.usecase.notification
 
 import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.data.repository.NotificationRepositoryProvider
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.domain.response.NotificationResponse
 import com.fastaccess.domain.response.PageableResponse
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class NotificationUseCase @Inject constructor(
     private val notificationRepositoryProvider: NotificationRepositoryProvider,
     private val notificationService: NotificationService,
-    private val gson: Gson
+    private val gson: Gson,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
     var page: Int? = null
@@ -36,18 +38,21 @@ class NotificationUseCase @Inject constructor(
                 notificationService.getNotifications(getLastWeekDate(), page)
             }
         }
-        return observable.map { it ->
-            it.items?.let { items ->
-                if (all == true) {
-                    notificationRepositoryProvider.deleteAll(false)
-                    val list = items.asSequence().filter { it.unread == false }.toList()
-                    notificationRepositoryProvider.insert(NotificationModel.convert(gson, list))
-                    return@map it
+        return observable
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
+            .map { it ->
+                it.items?.let { items ->
+                    if (all == true) {
+                        notificationRepositoryProvider.deleteAll(false)
+                        val list = items.asSequence().filter { it.unread == false }.toList()
+                        notificationRepositoryProvider.insert(NotificationModel.convert(gson, list))
+                        return@map it
+                    }
+                    if (page ?: 0 <= 1) notificationRepositoryProvider.deleteAll(true)
+                    notificationRepositoryProvider.insert(NotificationModel.convert(gson, items))
                 }
-                if (page ?: 0 <= 1) notificationRepositoryProvider.deleteAll(true)
-                notificationRepositoryProvider.insert(NotificationModel.convert(gson, items))
+                return@map it
             }
-            return@map it
-        }
     }
 }

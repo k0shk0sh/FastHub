@@ -3,7 +3,6 @@ package com.fastaccess.github.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastaccess.data.model.FastHubErrors
-import com.fastaccess.extension.uiThread
 import com.fastaccess.github.R
 import com.google.gson.Gson
 import io.reactivex.Completable
@@ -66,14 +65,12 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected fun <T> callApi(observable: Observable<T>): Observable<T> = observable
-        .uiThread()
         .doOnSubscribe { showProgress() }
         .doOnNext { hideProgress() }
         .doOnError { handleError(it) }
         .doOnComplete { hideProgress() }
 
     protected fun callApi(completable: Completable): Completable = completable
-        .uiThread()
         .doOnSubscribe { showProgress() }
         .doOnComplete { hideProgress() }
         .doOnError { handleError(it) }
