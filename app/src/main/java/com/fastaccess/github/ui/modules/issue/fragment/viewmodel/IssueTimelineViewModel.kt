@@ -9,10 +9,7 @@ import com.fastaccess.data.repository.LoginRepositoryProvider
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.filterNull
 import com.fastaccess.github.extensions.map
-import com.fastaccess.github.usecase.issuesprs.CloseOpenIssuePrUseCase
-import com.fastaccess.github.usecase.issuesprs.GetIssueTimelineUseCase
-import com.fastaccess.github.usecase.issuesprs.GetIssueUseCase
-import com.fastaccess.github.usecase.issuesprs.LockUnlockIssuePrUseCase
+import com.fastaccess.github.usecase.issuesprs.*
 import github.type.LockReason
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -26,13 +23,15 @@ class IssueTimelineViewModel @Inject constructor(
     private val issueRepositoryProvider: IssueRepositoryProvider,
     private val editIssuePrUseCase: CloseOpenIssuePrUseCase,
     private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase,
-    private val loginRepositoryProvider: LoginRepositoryProvider
+    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val createIssueCommentUseCase: CreateIssueCommentUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     val timeline = MutableLiveData<ArrayList<TimelineModel>>()
     private val list = arrayListOf<TimelineModel>()
     val userNamesLiveData = MutableLiveData<ArrayList<String>>()
+    val commentProgress = MutableLiveData<Boolean>()
 
     override fun onCleared() {
         super.onCleared()
@@ -40,6 +39,7 @@ class IssueTimelineViewModel @Inject constructor(
         editIssuePrUseCase.dispose()
         issueUseCase.dispose()
         lockUnlockIssuePrUseCase.dispose()
+        createIssueCommentUseCase.dispose()
     }
 
     fun getIssue(
@@ -124,6 +124,21 @@ class IssueTimelineViewModel @Inject constructor(
             .doOnNext {
                 addTimeline(it)
             })
+    }
+
+    fun createComment(
+        login: String,
+        repo: String,
+        number: Int,
+        comment: String
+    ) {
+        createIssueCommentUseCase.login = login
+        createIssueCommentUseCase.repo = repo
+        createIssueCommentUseCase.number = number
+        createIssueCommentUseCase.body = comment
+        justSubscribe(createIssueCommentUseCase.buildObservable()
+            .doOnSubscribe { commentProgress.postValue(true) }
+            .doOnNext { commentProgress.postValue(false) }) // TODO(to call graphql with orderby to get latest comment
     }
 
     fun addTimeline(it: TimelineModel) {

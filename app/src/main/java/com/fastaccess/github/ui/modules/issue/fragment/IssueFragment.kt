@@ -150,6 +150,13 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 override fun onPopupVisibilityChanged(shown: Boolean) {}
             })
             .build()
+        sendComment.setOnClickListener {
+            if (viewModel.commentProgress.value == true) return@setOnClickListener
+            val comment = commentText.text?.toString()
+            if (!comment.isNullOrEmpty()) {
+                viewModel.createComment(login, repo, number, comment)
+            }
+        }
     }
 
     private fun menuClick(model: IssueModel) {
@@ -197,6 +204,9 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         }
         viewModel.userNamesLiveData.observeNotNull(this) {
             mentionsPresenter.setUsers(it)
+        }
+        viewModel.commentProgress.observeNotNull(this) {
+            if (!it) commentText.setText("")
         }
     }
 
