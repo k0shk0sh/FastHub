@@ -47,7 +47,7 @@ class MentionsPresenter @Inject constructor(
 
     fun setUsers(newList: List<String>) {
         localList.addAll(newList)
-        adapter.newList(localList.distinct())
+        adapter.newList(localList.filter { it.isNotBlank() }.distinct())
     }
 
     fun onClick(item: String) = dispatchClick(item)

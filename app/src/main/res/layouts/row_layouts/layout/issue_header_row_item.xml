@@ -16,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:maxLines="4"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textIsSelectable="true"
-        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMaxTextSize="20sp"
         app:autoSizeMinTextSize="12sp"
         app:autoSizeStepGranularity="1dp"
         app:autoSizeTextType="uniform"
@@ -28,17 +28,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_micro"
         android:layout_marginTop="@dimen/spacing_micro"
+        android:layout_marginBottom="@dimen/spacing_micro"
         android:orientation="horizontal">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/state"
-            style="@style/ChipStyle"
+            style="@style/ChipStyleNoElevation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_micro"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/white"

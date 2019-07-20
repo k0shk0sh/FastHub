@@ -46,6 +46,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
 import com.otaliastudios.autocomplete.CharPolicy
+import github.type.CommentAuthorAssociation
+import github.type.IssueState
 import github.type.LockReason
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
@@ -81,7 +83,6 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     ) {
         swipeRefresh.appBarLayout = appBar
         appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
-            Timber.e("$p1")
             toolbar.menu?.findItem(R.id.scrollTop)?.isVisible = p1 < 0
         })
         setupToolbar("", R.menu.issue_menu)
@@ -234,7 +235,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
         userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
         author.text = model.author?.login
-        association.text = if ("NONE" == model.authorAssociation) {
+        association.text = if (CommentAuthorAssociation.NONE.rawValue() == model.authorAssociation) {
             model.updatedAt?.timeAgo()
         } else {
             "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
@@ -245,7 +246,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         )
         state.text = model.state?.toLowerCase()
         state.setChipBackgroundColorResource(
-            if ("OPEN".equals(model.state, true)) {
+            if (IssueState.OPEN.rawValue().equals(model.state, true)) {
                 R.color.material_green_700
             } else {
                 R.color.material_red_700
@@ -261,16 +262,17 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         initLabels(model.labels)
         initAssignees(model.assignees)
         initMilestone(model.milestone)
+        val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
+            model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true
+        editFab.isVisible = isAuthor
         toolbar.menu.let {
-            val isAuthor = login == me?.login || model.authorAssociation?.equals("OWNER", true) == true ||
-                model.authorAssociation?.equals("COLLABORATOR", true) == true
             it.findItem(R.id.edit).isVisible = model.viewerDidAuthor == true
             it.findItem(R.id.assignees).isVisible = isAuthor
             it.findItem(R.id.milestone).isVisible = isAuthor
             it.findItem(R.id.labels).isVisible = isAuthor
             it.findItem(R.id.closeIssue).isVisible = model.viewerDidAuthor == true || isAuthor
             it.findItem(R.id.lockIssue).isVisible = isAuthor
-            it.findItem(R.id.closeIssue).title = if (!"OPEN".equals(model.state, true)) {
+            it.findItem(R.id.closeIssue).title = if (!IssueState.OPEN.rawValue().equals(model.state, true)) {
                 getString(R.string.re_open_issue)
             } else {
                 getString(R.string.close_issue)
@@ -284,7 +286,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         assigneesLayout.isVisible = !assigneesList.isNullOrEmpty()
         val builder = SpannableBuilder.builder()
         assigneesList?.forEachIndexed { index, item ->
-            builder.clickable("@${item.login}" ?: item.name ?: "", View.OnClickListener {
+            builder.clickable("@${item.login ?: item.name ?: ""}", View.OnClickListener {
                 it.context.route(item.url)
             }).append(if (index == assigneesList.size.minus(1)) "" else ", ")
         }
