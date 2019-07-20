@@ -120,7 +120,7 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/toggleButtons"
+            android:id="@+id/toggleFullScreen"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="?colorPrimaryDark"
@@ -129,7 +129,7 @@
             android:paddingStart="@dimen/spacing_normal"
             android:paddingEnd="@dimen/spacing_normal"
             android:rotation="180"
-            android:src="@drawable/arrow_toggle_drawable"
+            android:src="@drawable/ic_fullscreen"
             android:tint="?colorAccent" />
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -145,16 +145,31 @@
             android:paddingEnd="@dimen/spacing_normal"
             android:scrollbars="vertical" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/sendComment"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="38dp"
             android:layout_height="match_parent"
-            android:background="?colorPrimaryDark"
-            android:contentDescription="@string/comment"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:paddingStart="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:src="@drawable/ic_send"
-            android:tint="?colorAccent" />
+            android:layout_gravity="center"
+            android:background="?colorPrimaryDark">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/sendComment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/comment"
+                android:paddingStart="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:src="@drawable/ic_send"
+                android:tint="?colorAccent" />
+
+            <ProgressBar
+                android:id="@+id/commentProgress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>

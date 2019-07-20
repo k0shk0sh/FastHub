@@ -23,6 +23,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.*
+import com.fastaccess.github.platform.deeplink.WEB_EDITOR_DEEPLINK
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
@@ -157,6 +158,9 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 viewModel.createComment(login, repo, number, comment)
             }
         }
+        toggleFullScreen.setOnClickListener {
+            it.context.route(WEB_EDITOR_DEEPLINK)
+        }
     }
 
     private fun menuClick(model: IssueModel) {
@@ -206,6 +210,8 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             mentionsPresenter.setUsers(it)
         }
         viewModel.commentProgress.observeNotNull(this) {
+            commentProgress.isVisible = it
+            sendComment.isVisible = !it
             if (!it) commentText.setText("")
         }
     }

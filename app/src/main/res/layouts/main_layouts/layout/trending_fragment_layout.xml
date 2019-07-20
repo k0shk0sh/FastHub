@@ -22,7 +22,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_filter"
-        android:tint="@color/white"
+        android:tint="?colorAccent"
+        app:backgroundTint="?android:windowBackground"
         app:fabSize="auto"/>
 
     <include layout="@layout/appbar_center_title_layout"/>

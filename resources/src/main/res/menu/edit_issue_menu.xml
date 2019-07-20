@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit" />
+
+    <item
+        android:id="@+id/lockIssue"
+        android:icon="@drawable/ic_lock"
+        android:title="@string/lock_issue"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/closeIssue"
+        android:icon="@drawable/ic_issues"
+        android:title="@string/close_issue"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/labels"
+        android:icon="@drawable/ic_label"
+        android:title="@string/labels" />
+    <item
+        android:id="@+id/milestone"
+        android:icon="@drawable/ic_milestone"
+        android:title="@string/milestone" />
+
+    <item
+        android:id="@+id/assignees"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/assignees" />
+
+</menu>

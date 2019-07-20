@@ -3,6 +3,7 @@ package com.fastaccess.github.di.modules
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
+import com.fastaccess.github.ui.modules.editor.WebEditorFragment
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
@@ -62,4 +63,5 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideLabelsFragment(): LabelsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideAssigneesFragment(): AssigneesFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideMilestoneFragment(): MilestoneFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideEditorFragment(): WebEditorFragment
 }

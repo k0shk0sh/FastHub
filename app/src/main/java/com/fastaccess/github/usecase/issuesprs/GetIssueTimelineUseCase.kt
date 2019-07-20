@@ -44,14 +44,13 @@ class GetIssueTimelineUseCase @Inject constructor(
             .map { it.data()?.repositoryOwner?.repository?.issue }
             .map {
                 val list = arrayListOf<TimelineModel>()
-                val timeline = it.timeline
+                val timeline = it.timelineItems
                 val pageInfo = PageInfoModel(
                     timeline.pageInfo.startCursor, timeline.pageInfo.endCursor,
                     timeline.pageInfo.isHasNextPage, timeline.pageInfo.isHasPreviousPage
                 )
                 timeline.nodes?.forEach { node ->
                     when (node) {
-                        is AsCommit -> list.add(getCommit(node))
                         is AsIssueComment -> list.add(getComment(node))
                         is AsCrossReferencedEvent -> list.add(getCrossReference(node))
                         is AsClosedEvent -> list.add(getClosed(node))
@@ -275,6 +274,4 @@ class GetIssueTimelineUseCase @Inject constructor(
             node.isViewerCanReact, node.isViewerCanDelete, node.isViewerCanUpdate, node.isViewerDidAuthor, node.isViewerCanMinimize
         )
     )
-
-    private fun getCommit(node: AsCommit) = TimelineModel(commit = node.fragments.commitFragment?.toCommit())
 }

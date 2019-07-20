@@ -42,7 +42,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
     repositoryOwner(login: $login) {
         repository(name: $repo) {
             issue(number: $number) {
-                timeline(first: 30, after: $page) {
+                timelineItems(first: 30, after: $page, itemTypes: [ISSUE_COMMENT, CLOSED_EVENT, REOPENED_EVENT, REFERENCED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT, LABELED_EVENT, UNLABELED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, RENAMED_TITLE_EVENT, LOCKED_EVENT, UNLOCKED_EVENT, TRANSFERRED_EVENT]) {
                     totalCount
                     pageInfo {
                         endCursor
@@ -52,9 +52,6 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
                     }
                     nodes {
                         __typename
-                        ... on Commit {
-                            ... CommitFragment
-                        }
                         ... on IssueComment {
                             author {
                                 login
