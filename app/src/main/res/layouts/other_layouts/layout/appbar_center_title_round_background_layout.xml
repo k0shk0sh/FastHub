@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBar"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/top_round_corner_background"
     android:theme="?android:toolbarStyle"
     app:liftOnScroll="true">
 
-    <com.github.zagum.expandicon.ExpandIconView
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/toggleArrow"
         android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:layout_gravity="center"
-        app:eiv_color="?icon_color"/>
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_normal"
+        android:src="@drawable/ic_bottom_sheet_rectangle" />
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,7 +38,7 @@
             android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
             app:fontFamily="@font/abeezee"
-            tools:text="Title"/>
+            tools:text="Title" />
 
     </androidx.appcompat.widget.Toolbar>
 </com.google.android.material.appbar.AppBarLayout>

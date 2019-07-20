@@ -23,7 +23,6 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.*
-import com.fastaccess.github.platform.deeplink.WEB_EDITOR_DEEPLINK
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
@@ -35,9 +34,9 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.github.utils.WEB_EDITOR_DEEPLINK
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
-import com.fastaccess.github.utils.extensions.route
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
@@ -82,7 +81,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         savedInstanceState: Bundle?
     ) {
         swipeRefresh.appBarLayout = appBar
-        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
+        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
             toolbar.menu?.findItem(R.id.scrollTop)?.isVisible = p1 < 0
         })
         setupToolbar("", R.menu.issue_menu)
@@ -160,7 +159,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             }
         }
         toggleFullScreen.setOnClickListener {
-            it.context.route(WEB_EDITOR_DEEPLINK)
+            route(WEB_EDITOR_DEEPLINK)
         }
     }
 
@@ -223,11 +222,11 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     ) {
         issueHeaderWrapper.isVisible = true
         val theme = preference.theme
-        title.text = SpannableBuilder.builder()
+        title.text = model.title
+        toolbar.title = SpannableBuilder.builder()
             .append(getString(R.string.issue))
             .bold("#${model.number}")
-            .newline()
-            .append(model.title)
+
         opener.text = SpannableBuilder.builder()
             .bold(model.author?.login)
             .append(" opened this issue ")
@@ -262,10 +261,9 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         initLabels(model.labels)
         initAssignees(model.assignees)
         initMilestone(model.milestone)
-        val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
-            model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true
-        editFab.isVisible = isAuthor
         toolbar.menu.let {
+            val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
+                model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true
             it.findItem(R.id.edit).isVisible = model.viewerDidAuthor == true
             it.findItem(R.id.assignees).isVisible = isAuthor
             it.findItem(R.id.milestone).isVisible = isAuthor
@@ -287,7 +285,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         val builder = SpannableBuilder.builder()
         assigneesList?.forEachIndexed { index, item ->
             builder.clickable("@${item.login ?: item.name ?: ""}", View.OnClickListener {
-                it.context.route(item.url)
+                route(item.url)
             }).append(if (index == assigneesList.size.minus(1)) "" else ", ")
         }
         assignees.text = builder

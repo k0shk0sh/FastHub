@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/coordinatorLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/appbar_center_title_layout_bottomsheet"/>
+    <include layout="@layout/appbar_center_title_layout_bottomsheet" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -25,19 +24,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingBottom="?actionBarSize"
-                android:paddingTop="@dimen/spacing_xs_large">
+                android:paddingTop="@dimen/spacing_xs_large"
+                android:paddingBottom="?actionBarSize">
 
                 <com.fastaccess.github.ui.widget.AvatarImageView
                     android:id="@+id/userImageView"
                     android:layout_width="@dimen/header_icon_zie"
                     android:layout_height="@dimen/header_icon_zie"
                     android:layout_gravity="center|top"
-                    android:background="@color/transparent"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:layout_marginBottom="@dimen/spacing_micro"
-                    tools:src="@mipmap/ic_launcher"
-                    android:translationZ="9dp"/>
+                    android:background="@color/transparent"
+                    android:translationZ="9dp"
+                    tools:src="@mipmap/ic_launcher" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/username"
@@ -47,12 +46,12 @@
                     android:layout_marginTop="@dimen/spacing_xs_large"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingEnd="@dimen/spacing_xs_large"
                     app:autoSizeMaxTextSize="24sp"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform"
-                    tools:text="K0shk0sh"/>
+                    tools:text="K0shk0sh" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/name"
@@ -62,13 +61,13 @@
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:visibility="visible"
                     app:autoSizeMaxTextSize="20sp"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform"
-                    tools:text="K0shk0sh"/>
+                    tools:text="K0shk0sh" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,8 +75,8 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large">
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingEnd="@dimen/spacing_xs_large">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/following"
@@ -85,14 +84,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/spacing_xs_large"
-                        android:layout_marginEnd="@dimen/spacing_normal"
                         android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
                         android:maxLines="1"
-                        app:autoSizeMaxTextSize="18sp"
-                        app:autoSizeStepGranularity="2sp"
-                        app:autoSizeTextType="uniform"
-                        tools:text="Following (10000)"/>
+                        tools:text="Following (10000)" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/followers"
@@ -100,13 +96,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/spacing_xs_large"
                         android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
                         android:maxLines="1"
-                        app:autoSizeMaxTextSize="18sp"
-                        app:autoSizeStepGranularity="2sp"
-                        app:autoSizeTextType="uniform"
-                        tools:text="Followers (1000)"/>
+                        tools:text="Followers (1000)" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -116,8 +109,8 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/spacing_xs_large"
                     android:background="@drawable/top_border"
-                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingEnd="@dimen/spacing_xs_large"
                     android:visibility="gone">
 
                     <com.google.android.material.button.MaterialButton
@@ -128,7 +121,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:text="@string/follow"
-                        app:icon="@drawable/ic_add"/>
+                        app:icon="@drawable/ic_add" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/blockBtn"
@@ -141,7 +134,7 @@
                         android:visibility="visible"
                         app:icon="@drawable/ic_block"
                         app:iconTint="@color/material_red_accent_700"
-                        tools:visibility="visible"/>
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
@@ -165,7 +158,7 @@
                             android:background="@drawable/bottom_border"
                             android:paddingBottom="@dimen/spacing_normal"
                             android:textStyle="normal"
-                            tools:text="Cook smooth squids in a wok with fish sauce for about an hour to enhance their tartness.Sunt tabeses promissio noster, grandis zeluses."/>
+                            tools:text="Cook smooth squids in a wok with fish sauce for about an hour to enhance their tartness.Sunt tabeses promissio noster, grandis zeluses." />
 
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -175,19 +168,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_normal"
                             android:background="@drawable/bottom_border"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableStart="@drawable/ic_group"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center|start"
                             android:maxLines="1"
-                            android:paddingBottom="@dimen/spacing_normal"
                             android:paddingTop="@dimen/spacing_normal"
+                            android:paddingBottom="@dimen/spacing_normal"
                             android:textStyle="normal"
                             android:visibility="gone"
                             app:autoSizeMaxTextSize="14sp"
                             app:autoSizeStepGranularity="2sp"
                             app:autoSizeTextType="uniform"
                             tools:text="Company"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/location"
@@ -196,19 +189,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_normal"
                             android:background="@drawable/bottom_border"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableStart="@drawable/ic_location"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center|start"
                             android:maxLines="1"
-                            android:paddingBottom="@dimen/spacing_normal"
                             android:paddingTop="@dimen/spacing_normal"
+                            android:paddingBottom="@dimen/spacing_normal"
                             android:textStyle="normal"
                             android:visibility="gone"
                             app:autoSizeMaxTextSize="14sp"
                             app:autoSizeStepGranularity="2sp"
                             app:autoSizeTextType="uniform"
                             tools:text="Dresden, Germany"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/email"
@@ -218,19 +211,19 @@
                             android:layout_marginTop="@dimen/spacing_normal"
                             android:autoLink="email"
                             android:background="@drawable/bottom_border"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableStart="@drawable/ic_group"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center|start"
                             android:maxLines="1"
-                            android:paddingBottom="@dimen/spacing_normal"
                             android:paddingTop="@dimen/spacing_normal"
+                            android:paddingBottom="@dimen/spacing_normal"
                             android:textStyle="normal"
                             android:visibility="gone"
                             app:autoSizeMaxTextSize="14sp"
                             app:autoSizeStepGranularity="2sp"
                             app:autoSizeTextType="uniform"
                             tools:text="example@gmail.com"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/developerProgram"
@@ -238,19 +231,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_normal"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableStart="@drawable/ic_developer_programm"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center|start"
                             android:maxLines="1"
-                            android:paddingBottom="@dimen/spacing_normal"
                             android:paddingTop="@dimen/spacing_normal"
+                            android:paddingBottom="@dimen/spacing_normal"
                             android:text="@string/developer_program_member"
                             android:textStyle="normal"
                             android:visibility="gone"
                             app:autoSizeMaxTextSize="14sp"
                             app:autoSizeStepGranularity="2sp"
                             app:autoSizeTextType="uniform"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/joined"
@@ -258,19 +251,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_normal"
-                            android:drawablePadding="@dimen/spacing_micro"
                             android:drawableStart="@drawable/ic_time"
+                            android:drawablePadding="@dimen/spacing_micro"
                             android:gravity="center|start"
                             android:maxLines="1"
-                            android:paddingBottom="@dimen/spacing_normal"
                             android:paddingTop="@dimen/spacing_normal"
+                            android:paddingBottom="@dimen/spacing_normal"
                             android:textStyle="normal"
                             android:visibility="gone"
                             app:autoSizeMaxTextSize="14sp"
                             app:autoSizeStepGranularity="2sp"
                             app:autoSizeTextType="uniform"
                             tools:text="Aug 5, 2011"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -294,22 +287,23 @@
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/spacing_normal"
                             android:drawableStart="@drawable/ic_group"
+                            android:drawablePadding="@dimen/spacing_normal"
                             android:gravity="center|start"
-                            android:paddingEnd="@dimen/spacing_xs_large"
                             android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingEnd="@dimen/spacing_xs_large"
                             android:text="@string/organizations"
-                            android:textStyle="bold"/>
+                            android:textAllCaps="true"
+                            android:textStyle="bold" />
 
                         <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/organizationList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
-                            android:paddingEnd="@dimen/spacing_normal"
                             android:paddingStart="@dimen/spacing_normal"
-                            app:layoutManager="@string/glm"/>
+                            android:paddingEnd="@dimen/spacing_normal"
+                            app:layoutManager="@string/glm" />
 
                     </LinearLayout>
 
@@ -335,21 +329,22 @@
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/spacing_normal"
                             android:drawableStart="@drawable/ic_pin"
-                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:drawablePadding="@dimen/spacing_normal"
                             android:paddingStart="@dimen/spacing_xs_large"
+                            android:paddingEnd="@dimen/spacing_xs_large"
                             android:text="@string/pinned"
-                            android:textStyle="bold"/>
+                            android:textAllCaps="true"
+                            android:textStyle="bold" />
 
                         <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/pinnedList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_micro"
-                            android:paddingEnd="@dimen/spacing_normal"
                             android:paddingStart="@dimen/spacing_normal"
-                            app:layoutManager="@string/llm"/>
+                            android:paddingEnd="@dimen/spacing_normal"
+                            app:layoutManager="@string/llm" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
@@ -357,7 +352,7 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/profile_bottom_sheet"/>
+    <include layout="@layout/profile_bottom_sheet" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

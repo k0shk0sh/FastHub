@@ -11,10 +11,7 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.extensions.getDrawable
-import com.fastaccess.github.extensions.getDrawableCompat
-import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.extension.onClick
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
@@ -24,7 +21,10 @@ import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
 import com.fastaccess.github.utils.NOTIFICATION_LINK
 import com.fastaccess.github.utils.SEARCH_LINK
 import com.fastaccess.github.utils.TRENDING_LINK
-import com.fastaccess.github.utils.extensions.*
+import com.fastaccess.github.utils.extensions.isConnected
+import com.fastaccess.github.utils.extensions.otpCode
+import com.fastaccess.github.utils.extensions.setBottomSheetCallback
+import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.appbar_logo_center_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*

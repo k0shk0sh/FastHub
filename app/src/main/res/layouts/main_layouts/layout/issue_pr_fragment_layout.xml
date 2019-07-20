@@ -97,16 +97,6 @@
                 <include layout="@layout/empty_state_layout" />
             </FrameLayout>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/editFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_edit"
-                android:tint="?colorAccent"
-                app:backgroundTint="?android:windowBackground" />
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout>
 

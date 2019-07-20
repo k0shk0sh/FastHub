@@ -5,8 +5,9 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.getDrawableCompat
+import com.fastaccess.github.extensions.route
 import com.fastaccess.github.platform.glide.GlideApp
-import com.fastaccess.github.utils.extensions.route
+
 
 /**
  * Created by Kosh on 27.12.18.

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.view.ContextThemeWrapper
@@ -17,7 +18,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.utils.extensions.setBottomSheetCallback
-import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.android.AndroidInjector
@@ -88,17 +88,6 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasS
         viewModel()?.error?.observeNotNull(this) {
             this@BaseBottomSheetDialogFragment.view?.let { view -> activityCallback?.showSnackBar(view, resId = it.resId, message = it.message) }
         }
-
-        val toggleArrow = view.findViewById<View?>(R.id.toggleArrow)
-        toggleArrow?.setOnClickListener {
-            bottomSheetBehavior?.let { behaviour ->
-                if (behaviour.state != BottomSheetBehavior.STATE_EXPANDED) {
-                    behaviour.state = BottomSheetBehavior.STATE_EXPANDED
-                } else {
-                    behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -133,17 +122,11 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasS
     private fun onGlobalLayoutChanged(view: View) {
         val parent = dialog?.findViewById<ViewGroup>(R.id.design_bottom_sheet);
         if (parent != null) {
-            val toggleArrow = view.findViewById<ExpandIconView?>(R.id.toggleArrow)
-            toggleArrow?.setState(ExpandIconView.LESS, true)
+            val toggleArrow = view.findViewById<ImageView?>(R.id.toggleArrow)
             parent.setBackgroundColor(Color.TRANSPARENT)
             bottomSheetBehavior = BottomSheetBehavior.from(parent)
             bottomSheetBehavior?.setBottomSheetCallback({ newState ->
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) dialog?.cancel()
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> toggleArrow?.setState(ExpandIconView.MORE, true)
-                    BottomSheetBehavior.STATE_COLLAPSED -> toggleArrow?.setState(ExpandIconView.LESS, true)
-                    else -> toggleArrow?.setFraction(0.5f, false)
-                }
             })
             bottomSheetBehavior?.let { behaviour ->
                 toggleArrow?.setOnClickListener {

@@ -36,8 +36,8 @@ class UserRepositoryProvider @Inject constructor(
                     UserOrganizationModel(queryUser.organizations.totalCount, queryUser.organizations.nodes?.asSequence()?.map {
                         UserOrganizationNodesModel(it.avatarUrl.toString(), it.location, it.email, it.login, it.name)
                     }?.toList()), UserPinnedReposModel(
-                        queryUser.pinnedRepositories.totalCount,
-                        queryUser.pinnedRepositories.nodes?.asSequence()?.map {
+                        queryUser.pinnedItems.totalCount,
+                        queryUser.pinnedItems.nodes?.asSequence()?.map { it as? GetProfileQuery.AsRepository }?.filterNotNull()?.map {
                             UserPinnedRepoNodesModel(
                                 it.name, it.nameWithOwner,
                                 RepoLanguageModel(it.primaryLanguage?.name, it.primaryLanguage?.color),

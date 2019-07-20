@@ -85,7 +85,7 @@ fun FragmentActivity.clearDarkStatusBarIcons() {
     }
 }
 
-fun FragmentActivity.setStatusBarColor(colorAttr: Int = com.fastaccess.github.extensions.R.attr.colorAccent) {
+fun FragmentActivity.setStatusBarColor(colorAttr: Int = R.attr.colorAccent) {
     window?.statusBarColor = getColorAttr(colorAttr)
 }
 
@@ -142,3 +142,6 @@ fun Context.route(
     data = Uri.parse(url)
     bundle?.let { putExtras(it) }
 })
+
+
+fun Fragment.route(url: String?) = url?.let { context?.route(it, null) }

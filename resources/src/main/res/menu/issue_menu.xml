@@ -3,10 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/scrollTop"
+        android:icon="@drawable/ic_chevron_up"
+        android:title="@string/scroll_up"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/editMenu"
         android:icon="@drawable/ic_edit"
         android:title="@string/action"
-        android:visible="false"
         app:showAsAction="always">
         <menu>
             <item
@@ -62,23 +68,16 @@
     </item>
 
     <item
-        android:id="@+id/scrollTop"
-        android:icon="@drawable/ic_chevron_up"
-        android:title="@string/scroll_up"
-        android:visible="false"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/pinUnpin"
         android:icon="@drawable/ic_pin"
         android:title="@string/pin"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/refresh"
         android:icon="@drawable/ic_refresh"
         android:title="@string/reload"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 
     <item

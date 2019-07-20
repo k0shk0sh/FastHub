@@ -19,12 +19,12 @@
         android:theme="?android:toolbarStyle"
         app:liftOnScroll="true">
 
-        <com.github.zagum.expandicon.ExpandIconView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toggleArrow"
             android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_gravity="center"
-            app:eiv_color="?icon_color"/>
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_bottom_sheet_rectangle" />
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"

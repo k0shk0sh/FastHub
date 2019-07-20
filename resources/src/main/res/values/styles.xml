@@ -47,4 +47,11 @@
         <item name="cardBackgroundColor">?card_background</item>
     </style>
 
+    <style name="LayoutPadding">
+        <item name="android:paddingTop">@dimen/spacing_normal</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal</item>
+        <item name="android:paddingStart">@dimen/spacing_xs_large</item>
+        <item name="android:paddingEnd">@dimen/spacing_xs_large</item>
+    </style>
+
 </resources>

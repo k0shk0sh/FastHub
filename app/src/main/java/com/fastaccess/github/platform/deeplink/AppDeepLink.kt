@@ -1,12 +1,7 @@
 package com.fastaccess.github.platform.deeplink
 
 import com.airbnb.deeplinkdispatch.DeepLinkSpec
+import com.fastaccess.github.utils.IN_APP_LINK
 
-
-const val WEB_EDITOR_PATH = "editor"
-
-const val APP_DEEPLINK = "app://fasthub"
-const val WEB_EDITOR_DEEPLINK = "$APP_DEEPLINK/$WEB_EDITOR_PATH"
-
-@DeepLinkSpec(prefix = [APP_DEEPLINK])
+@DeepLinkSpec(prefix = [IN_APP_LINK])
 annotation class AppDeepLink(vararg val value: String)

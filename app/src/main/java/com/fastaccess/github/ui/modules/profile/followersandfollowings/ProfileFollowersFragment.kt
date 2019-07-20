@@ -10,15 +10,14 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.route
 import com.fastaccess.github.ui.adapter.ProfileFollowingFollowersAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.extensions.isConnected
 import com.fastaccess.github.utils.extensions.addKeyLineDivider
 import com.fastaccess.github.utils.extensions.isConnected
-import com.fastaccess.github.utils.extensions.route
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
@@ -37,7 +36,10 @@ class ProfileFollowersFragment : BaseFragment() {
     override fun viewModel(): BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.simple_refresh_list_layout
 
-    override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
+    override fun onFragmentCreatedWithUser(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         recyclerView.adapter = adapter
         recyclerView.addKeyLineDivider()
         recyclerView.setEmptyView(emptyLayout)
@@ -71,7 +73,10 @@ class ProfileFollowersFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(login: String, isFollowers: Boolean) = ProfileFollowersFragment().apply {
+        fun newInstance(
+            login: String,
+            isFollowers: Boolean
+        ) = ProfileFollowersFragment().apply {
             arguments = Bundle().apply {
                 putString(EXTRA, login)
                 putBoolean(EXTRA_TWO, isFollowers)

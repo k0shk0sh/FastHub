@@ -5,7 +5,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.extensions.replace
 import com.fastaccess.github.platform.deeplink.AppDeepLink
-import com.fastaccess.github.platform.deeplink.WEB_EDITOR_PATH
+import com.fastaccess.github.utils.WEB_EDITOR_PATH
 
 /**
  * Created by Kosh on 2019-04-11.

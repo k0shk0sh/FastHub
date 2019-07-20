@@ -16,10 +16,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.extensions.observeNull
-import com.fastaccess.github.extensions.timeAgo
+import com.fastaccess.github.extensions.*
 import com.fastaccess.github.ui.adapter.PagerAdapter
 import com.fastaccess.github.ui.adapter.ProfileOrgsAdapter
 import com.fastaccess.github.ui.adapter.ProfilePinnedReposAdapter
@@ -34,11 +31,7 @@ import com.fastaccess.github.ui.widget.recyclerview.lm.SafeGridLayoutManager
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.extensions.getDrawable
-import com.fastaccess.github.extensions.isConnected
 import com.fastaccess.github.utils.extensions.isConnected
-import com.fastaccess.github.utils.extensions.setBottomSheetCallback
-import com.github.zagum.expandicon.ExpandIconView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.appbar_center_title_layout_bottomsheet.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
@@ -97,14 +90,6 @@ class ProfileFragment : BasePagerFragment() {
         observeChanges()
 
         behaviour.state = AnchorSheetBehavior.STATE_ANCHOR
-        behaviour.setBottomSheetCallback({ newState ->
-            when (newState) {
-                AnchorSheetBehavior.STATE_EXPANDED -> toggleArrow.setState(ExpandIconView.MORE, true)
-                AnchorSheetBehavior.STATE_COLLAPSED -> toggleArrow.setState(ExpandIconView.LESS, true)
-                else -> toggleArrow.setFraction(0.5f, false)
-            }
-        })
-
 
         toggleArrow.setOnClickListener {
             if (behaviour.state != AnchorSheetBehavior.STATE_EXPANDED) {

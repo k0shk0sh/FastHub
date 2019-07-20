@@ -10,10 +10,8 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
-import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.issuesprs.fragment.FilterIssuePullRequestsFragment
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
-import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.UnreadNotificationsFragment
@@ -24,9 +22,7 @@ import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
-import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.SearchFragment
-import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
 import com.fastaccess.github.ui.modules.trending.fragment.TrendingFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -50,14 +46,10 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideNotificationPagerFragment(): NotificationPagerFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideUnreadNotificationsFragment(): UnreadNotificationsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideAllNotificationsFragment(): AllNotificationsFragment
-    @PerFragment @ContributesAndroidInjector abstract fun provideMultiPurposeBottomSheetDialog(): MultiPurposeBottomSheetDialog
     @PerFragment @ContributesAndroidInjector abstract fun provideUserOrgsFragment(): UserOrgsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuePullRequestsFragment(): FilterIssuePullRequestsFragment
-    @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuesPrsBottomSheet(): FilterIssuesPrsBottomSheet
     @PerFragment @ContributesAndroidInjector abstract fun provideSearchFragment(): SearchFragment
-    @PerFragment @ContributesAndroidInjector abstract fun provideFilterSearchBottomSheet(): FilterSearchBottomSheet
     @PerFragment @ContributesAndroidInjector abstract fun provideTrendingFragment(): TrendingFragment
-    @PerFragment @ContributesAndroidInjector abstract fun provideFilterTrendingBottomSheet(): FilterTrendingBottomSheet
     @PerFragment @ContributesAndroidInjector(modules = [FragmentModule::class]) abstract fun provideIssueFragment(): IssueFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideLockUnlockFragment(): LockUnlockFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideLabelsFragment(): LabelsFragment
