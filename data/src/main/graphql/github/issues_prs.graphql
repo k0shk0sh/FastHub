@@ -38,6 +38,74 @@ query getIssue($login: String!, $repo: String!, $number: Int!) {
     }
 }
 
+query getLastIssueComment($login: String!, $repo: String!, $number: Int!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+          issue(number: $number) {
+            timelineItems(last: 1, itemTypes: [ISSUE_COMMENT]) {
+              nodes {
+                ... on IssueComment {
+                    author {
+                        login
+                        avatarUrl
+                    }
+                    createdAt
+                    authorAssociation
+                    bodyHTML
+                    body
+                    id
+                    updatedAt
+                    viewerCanReact
+                    viewerCanDelete
+                    viewerCanUpdate
+                    viewerDidAuthor
+                    viewerCanMinimize
+                    viewerCannotUpdateReasons
+                    reactionGroups {
+                        ... Reactions
+                    }
+                }
+              }
+            }
+          }
+        }
+    }
+}
+
+query getLastPrComment($login: String!, $repo: String!, $number: Int!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+          pullRequest(number: $number) {
+            timelineItems(last: 1, itemTypes: [ISSUE_COMMENT]) {
+              nodes {
+                ... on IssueComment {
+                    author {
+                        login
+                        avatarUrl
+                    }
+                    createdAt
+                    authorAssociation
+                    bodyHTML
+                    body
+                    id
+                    updatedAt
+                    viewerCanReact
+                    viewerCanDelete
+                    viewerCanUpdate
+                    viewerDidAuthor
+                    viewerCanMinimize
+                    viewerCannotUpdateReasons
+                    reactionGroups {
+                        ... Reactions
+                    }
+                }
+              }
+            }
+          }
+        }
+    }
+}
+
 query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: String) {
     repositoryOwner(login: $login) {
         repository(name: $repo) {

@@ -136,9 +136,16 @@ class IssueTimelineViewModel @Inject constructor(
         createIssueCommentUseCase.repo = repo
         createIssueCommentUseCase.number = number
         createIssueCommentUseCase.body = comment
-        justSubscribe(createIssueCommentUseCase.buildObservable()
+        add(createIssueCommentUseCase.buildObservable()
             .doOnSubscribe { commentProgress.postValue(true) }
-            .doOnNext { commentProgress.postValue(false) }) // TODO(to call graphql with orderby to get latest comment
+            .subscribe({
+                addTimeline(it)
+                commentProgress.postValue(false)
+            }, {
+                commentProgress.postValue(false)
+                handleError(it)
+            })
+        )
     }
 
     fun addTimeline(it: TimelineModel) {

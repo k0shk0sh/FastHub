@@ -30,7 +30,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun disposeAll() = disposable.clear()
 
-    private fun handleError(throwable: Throwable) {
+    protected fun handleError(throwable: Throwable) {
         hideProgress()
         if (throwable is HttpException) {
             val response = throwable.response()
@@ -39,8 +39,12 @@ abstract class BaseViewModel : ViewModel() {
             if (code == 401) { // OTP
                 val twoFactor = response.headers()["X-GitHub-OTP"]
                 if (twoFactor != null) {
-                    error.postValue(FastHubErrors(FastHubErrors.ErrorType.TWO_FACTOR, message = message
-                        ?: response.message()))
+                    error.postValue(
+                        FastHubErrors(
+                            FastHubErrors.ErrorType.TWO_FACTOR, message = message
+                                ?: response.message()
+                        )
+                    )
                 } else {
                     error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, resId = R.string.failed_login, message = message))
                 }
