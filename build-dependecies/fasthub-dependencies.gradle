@@ -26,6 +26,7 @@ ext {
     pandora = 'v1.2.2'
     deepLinkDispatch = '4.1.0'
     commonmark = '0.12.1'
+    markwon_version = '4.0.2'
 
 
     kotlin = [
@@ -127,7 +128,19 @@ ext {
             "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}",
             "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}",
             "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}",
-            "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
+            "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}",
+            "io.noties.markwon:core:$markwon_version",
+            "io.noties.markwon:ext-latex:$markwon_version",
+            "io.noties.markwon:ext-strikethrough:$markwon_version",
+            "io.noties.markwon:ext-tables:$markwon_version",
+            "io.noties.markwon:ext-tasklist:$markwon_version",
+            "io.noties.markwon:html:$markwon_version",
+            "io.noties.markwon:image-glide:$markwon_version",
+            "io.noties.markwon:recycler:$markwon_version",
+            "io.noties.markwon:recycler-table:$markwon_version",
+            "io.noties.markwon:simple-ext:$markwon_version",
+            "io.noties.markwon:syntax-highlight:$markwon_version",
+            "io.noties:prism4j:2.0.0"
     ]
 
 
@@ -137,7 +150,8 @@ ext {
             "com.github.bumptech.glide:compiler:$glide",
             "androidx.room:room-runtime:2.1.0",
             "com.evernote:android-state-processor:$androidState",
-            "com.airbnb:deeplinkdispatch-processor:$deepLinkDispatch"
+            "com.airbnb:deeplinkdispatch-processor:$deepLinkDispatch",
+            "io.noties:prism4j-bundler:2.0.0"
     ]
 
     testing = [

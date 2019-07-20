@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.getEmoji
-import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
@@ -16,6 +15,7 @@ import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.drawable.DrawableGetter
 import kotlinx.android.synthetic.main.comment_row_item.view.*
 import net.nightwhistler.htmlspanner.HtmlSpanner
+
 
 /**
  * Created by Kosh on 12.10.18.
@@ -26,8 +26,10 @@ class CommentViewHolder(
     private val htmlSpanner: HtmlSpanner,
     private val theme: Int,
     private val callback: (position: Int) -> Unit
-) : BaseViewHolder<CommentModel?>(LayoutInflater.from(parent.context)
-    .inflate(R.layout.comment_row_item, parent, false)) {
+) : BaseViewHolder<CommentModel?>(
+    LayoutInflater.from(parent.context)
+        .inflate(com.fastaccess.github.R.layout.comment_row_item, parent, false)
+) {
 
     @SuppressLint("SetTextI18n")
     override fun bind(item: CommentModel?) {
@@ -44,7 +46,7 @@ class CommentViewHolder(
                 "${model.authorAssociation?.value?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
             }
 
-            MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
+            MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.body ?: "", ThemeEngine.getCodeBackground(theme),
                 ThemeEngine.isLightTheme(theme))
 
             addEmoji.setOnClickListener {

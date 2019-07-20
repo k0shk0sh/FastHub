@@ -114,6 +114,8 @@ android {
 
     configurations {
         all*.exclude module: 'javax.annotation'
+        all*.exclude group: 'org.jetbrains', module: 'annotations-java5'
+
     }
 }
 

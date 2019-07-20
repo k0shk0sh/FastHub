@@ -1,14 +1,22 @@
 package com.fastaccess.markdown
 
-import android.text.method.LinkMovementMethod
+import android.text.method.ScrollingMovementMethod
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.view.doOnPreDraw
-import com.fastaccess.github.extensions.generateTextColor
-import com.fastaccess.markdown.spans.DrawableHandler
-import com.fastaccess.markdown.spans.HrHandler
-import com.fastaccess.markdown.spans.PreTagHandler
-import com.fastaccess.markdown.spans.QuoteHandler
+import io.noties.markwon.Markwon
+import io.noties.markwon.ext.latex.JLatexMathPlugin
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.ext.tables.TablePlugin
+import io.noties.markwon.ext.tasklist.TaskListPlugin
+import io.noties.markwon.html.HtmlPlugin
+import io.noties.markwon.image.glide.GlideImagesPlugin
+import io.noties.markwon.movement.MovementMethodPlugin
+import io.noties.markwon.syntax.Prism4jThemeDarkula
+import io.noties.markwon.syntax.Prism4jThemeDefault
+import io.noties.markwon.syntax.SyntaxHighlightPlugin
+import io.noties.prism4j.Prism4j
+import io.noties.prism4j.annotations.PrismBundle
 import net.nightwhistler.htmlspanner.HtmlSpanner
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
@@ -16,6 +24,7 @@ import org.commonmark.renderer.html.HtmlRenderer
 /**
  * Created by Kosh on 02.02.19.
  */
+@PrismBundle(includeAll = true)
 object MarkdownProvider {
 
     private const val TOGGLE_START = "<span class=\"email-hidden-toggle\">"
@@ -65,19 +74,26 @@ object MarkdownProvider {
         isLightTheme: Boolean,
         onLinkClicked: ((link: String) -> Unit)? = null
     ) {
-        val linkMovementMethod = LinkMovementMethod.getInstance()
-        textView.movementMethod =  linkMovementMethod
-        htmlSpanner.registerHandler("pre", PreTagHandler(windowBackground, true, isLightTheme))
-        htmlSpanner.registerHandler("code", PreTagHandler(windowBackground, false, isLightTheme))
-        htmlSpanner.registerHandler("img", DrawableHandler(textView, width))
-        htmlSpanner.registerHandler("blockquote", QuoteHandler(windowBackground))
-        htmlSpanner.registerHandler("hr", HrHandler(windowBackground, width))
-        val tableHandler = net.nightwhistler.htmlspanner.handlers.TableHandler()
-        tableHandler.setTableWidth(width)
-        tableHandler.setTextSize(20f)
-        tableHandler.setTextColor(windowBackground.generateTextColor())
-        htmlSpanner.registerHandler("table", tableHandler)
-        textView.text = htmlSpanner.fromHtml(format(html).toString())
+        val context = textView.context
+        Markwon.builder(context)
+            .usePlugin(JLatexMathPlugin.create(textView.textSize - 20))
+            .usePlugin(TaskListPlugin.create(context))
+            .usePlugin(HtmlPlugin.create())
+            .usePlugin(GlideImagesPlugin.create(context))
+            .usePlugin(TablePlugin.create(context))
+            .usePlugin(StrikethroughPlugin.create())
+            .usePlugin(MovementMethodPlugin.create(ScrollingMovementMethod.getInstance()))
+            .usePlugin(
+                SyntaxHighlightPlugin.create(
+                    Prism4j(GrammarLocatorDef()), if (isLightTheme) {
+                        Prism4jThemeDefault.create()
+                    } else {
+                        Prism4jThemeDarkula.create()
+                    }
+                )
+            )
+            .build()
+            .setMarkdown(textView, html)
     }
 
     //https://github.com/k0shk0sh/GitHubSdk/blob/master/library/src/main/java/com/meisolsson/githubsdk/core/HtmlUtils.java
@@ -93,7 +109,11 @@ object MarkdownProvider {
         return formatted
     }
 
-    private fun strip(input: StringBuilder, prefix: String, suffix: String) {
+    private fun strip(
+        input: StringBuilder,
+        prefix: String,
+        suffix: String
+    ) {
         var start = input.indexOf(prefix)
         while (start != -1) {
             var end = input.indexOf(suffix, start + prefix.length)
@@ -104,7 +124,11 @@ object MarkdownProvider {
         }
     }
 
-    private fun replace(input: StringBuilder, from: String, to: String): Boolean {
+    private fun replace(
+        input: StringBuilder,
+        from: String,
+        to: String
+    ): Boolean {
         var start = input.indexOf(from)
         if (start == -1) return false
         val fromLength = from.length

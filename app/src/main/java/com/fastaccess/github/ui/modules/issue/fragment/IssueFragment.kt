@@ -240,7 +240,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
         }
         MarkdownProvider.loadIntoTextView(
-            htmlSpanner, description, model.bodyHTML ?: "", ThemeEngine.getCodeBackground(theme),
+            htmlSpanner, description, model.body ?: "", ThemeEngine.getCodeBackground(theme),
             ThemeEngine.isLightTheme(theme)
         )
         state.text = model.state?.toLowerCase()
