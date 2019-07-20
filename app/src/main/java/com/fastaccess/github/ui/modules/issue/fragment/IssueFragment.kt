@@ -246,9 +246,9 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         state.text = model.state?.toLowerCase()
         state.setChipBackgroundColorResource(
             if (IssueState.OPEN.rawValue().equals(model.state, true)) {
-                R.color.material_green_700
+                R.color.material_green_500
             } else {
-                R.color.material_red_700
+                R.color.material_red_500
             }
         )
         addEmoji.setOnClickListener {

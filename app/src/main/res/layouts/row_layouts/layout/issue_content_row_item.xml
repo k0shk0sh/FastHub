@@ -52,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:maxLines="3"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
         </LinearLayout>

@@ -168,30 +168,12 @@ class FeedsViewHolder(
         val commits = item.payload?.commits
         if (commits?.isNotEmpty() == true) {
             if (commits.size != 1) {
-                builder.append("${item.payload?.size}")
-                    .bold(" new commits")
-                    .newline()
+                builder.bold("${commits.size} new commits")
             } else {
                 builder.bold("1 new commit").newline()
             }
-            commits.take(5)
-                .filter { !it.sha.isNullOrEmpty() }
-                .forEach {
-                    val sha = if ((it.sha?.length ?: 0) > 7) {
-                        it.sha?.subSequence(0, 7)
-                    } else {
-                        it.sha
-                    }
-                    builder.url(sha ?: "")
-                        .space()
-                        .append(it.message?.replaceAllNewLines())
-                        .newline()
-                }
-            view.feedDescription.maxLines = 5
             view.feedDescription.text = builder
             view.feedDescription.isVisible = true
-        } else {
-            view.feedDescription.maxLines = 2
         }
     }
 
