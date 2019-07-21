@@ -48,10 +48,10 @@ import com.otaliastudios.autocomplete.CharPolicy
 import github.type.CommentAuthorAssociation
 import github.type.IssueState
 import github.type.LockReason
+import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
-import net.nightwhistler.htmlspanner.HtmlSpanner
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -63,7 +63,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                       MilestoneFragment.OnMilestoneChanged {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var htmlSpanner: HtmlSpanner
+    @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
     @Inject lateinit var mentionsPresenter: MentionsPresenter
 
@@ -71,7 +71,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     private val login by lazy { arguments?.getString(EXTRA) ?: "" }
     private val repo by lazy { arguments?.getString(EXTRA_TWO) ?: "" }
     private val number by lazy { arguments?.getInt(EXTRA_THREE) ?: 0 }
-    private val adapter by lazy { IssueTimelineAdapter(htmlSpanner, preference.theme) }
+    private val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme) }
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -240,7 +240,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
         }
         MarkdownProvider.loadIntoTextView(
-            htmlSpanner, description, model.body ?: "", ThemeEngine.getCodeBackground(theme),
+            markwon, description, model.body ?: "", ThemeEngine.getCodeBackground(theme),
             ThemeEngine.isLightTheme(theme)
         )
         state.text = model.state?.toLowerCase()

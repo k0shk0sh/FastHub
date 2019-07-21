@@ -1,4 +1,4 @@
-package com.fastaccess.github.platform.markwon.emoji
+package com.fastaccess.markdown.extension.markwon.emoji
 
 import org.commonmark.node.CustomNode
 import org.commonmark.node.Delimited
@@ -13,6 +13,8 @@ class Emoji : CustomNode(), Delimited {
     override fun getOpeningDelimiter(): String = DELIMITER
 
     override fun getClosingDelimiter(): String = DELIMITER
+
+    override fun toString(): String = emoji ?: "no emoji"
 
     companion object {
         private const val DELIMITER = ":"

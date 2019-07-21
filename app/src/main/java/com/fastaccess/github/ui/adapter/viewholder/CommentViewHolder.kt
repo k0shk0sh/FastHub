@@ -1,6 +1,8 @@
 package com.fastaccess.github.ui.adapter.viewholder
 
 import android.annotation.SuppressLint
+import android.text.util.Linkify
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -12,9 +14,9 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.markdown.MarkdownProvider
-import com.fastaccess.markdown.spans.drawable.DrawableGetter
+import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.comment_row_item.view.*
-import net.nightwhistler.htmlspanner.HtmlSpanner
+import java.util.regex.Pattern
 
 
 /**
@@ -23,7 +25,7 @@ import net.nightwhistler.htmlspanner.HtmlSpanner
 
 class CommentViewHolder(
     parent: ViewGroup,
-    private val htmlSpanner: HtmlSpanner,
+    private val markwon: Markwon,
     private val theme: Int,
     private val callback: (position: Int) -> Unit
 ) : BaseViewHolder<CommentModel?>(
@@ -33,7 +35,7 @@ class CommentViewHolder(
 
     @SuppressLint("SetTextI18n")
     override fun bind(item: CommentModel?) {
-        val model = item ?: kotlin.run {
+        val model = item ?: run {
             itemView.isVisible = false
             return
         }
@@ -46,8 +48,23 @@ class CommentViewHolder(
                 "${model.authorAssociation?.value?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
             }
 
-            MarkdownProvider.loadIntoTextView(htmlSpanner, description, model.body ?: "", ThemeEngine.getCodeBackground(theme),
-                ThemeEngine.isLightTheme(theme))
+            MarkdownProvider.loadIntoTextView(
+                markwon, description, model.body ?: "", ThemeEngine.getCodeBackground(theme),
+                ThemeEngine.isLightTheme(theme)
+            )
+
+            val filter = Linkify.TransformFilter { match, _ -> match.group() }
+
+            val mentionPattern = Pattern.compile("@([A-Za-z0-9_-]+)")
+            val mentionScheme = "https://www.github.com/"
+            Linkify.addLinks(description, mentionPattern, mentionScheme, null, filter)
+
+            val hashtagPattern = Pattern.compile("#([A-Za-z0-9_-]+)")
+            val hashtagScheme = "https://www.github.com/"
+            Linkify.addLinks(description, hashtagPattern, hashtagScheme, null, filter)
+
+            val urlPattern = Patterns.WEB_URL
+            Linkify.addLinks(description, urlPattern, null, null, filter)
 
             addEmoji.setOnClickListener {
                 it.popupEmoji(requireNotNull(model.id), model.reactionGroups) {
@@ -69,16 +86,6 @@ class CommentViewHolder(
                 reactionsText.text = stringBuilder
             } else {
                 reactionsText.text = ""
-            }
-        }
-    }
-
-    override fun onDetached() {
-        super.onDetached()
-        itemView.description?.let {
-            if (it.tag is DrawableGetter) {
-                val target = it.tag as DrawableGetter
-                target.clear(target)
             }
         }
     }

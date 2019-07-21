@@ -44,20 +44,34 @@ class NetworkModule {
 
     @Singleton @Provides fun provideInterceptor() = AuthenticationInterceptor()
 
-    @Singleton @Provides fun provideHttpClient(auth: AuthenticationInterceptor): OkHttpClient = OkHttpClient
+    @Singleton @Provides fun provideHttpLogging() = HttpLoggingInterceptor().apply {
+        level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
+    }
+
+    @Singleton @Provides fun provideHttpClient(
+        auth: AuthenticationInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient = OkHttpClient
         .Builder()
         .addInterceptor(ContentTypeInterceptor())
         .addInterceptor(auth)
         .addInterceptor(PaginationInterceptor())
         .addInterceptor(Pandora.get().interceptor)
-        .addInterceptor(HttpLoggingInterceptor())
+        .addInterceptor(httpLoggingInterceptor)
         .build()
 
-    @Named("apolloClient") @Singleton @Provides fun provideHttpClientForApollo(auth: AuthenticationInterceptor): OkHttpClient = OkHttpClient
+    @Named("apolloClient") @Singleton @Provides fun provideHttpClientForApollo(
+        auth: AuthenticationInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient = OkHttpClient
         .Builder()
         .addInterceptor(auth)
         .addInterceptor(Pandora.get().interceptor)
-        .addInterceptor(HttpLoggingInterceptor())
+        .addInterceptor(httpLoggingInterceptor)
         .build()
 
 

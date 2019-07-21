@@ -33,6 +33,8 @@ class CloseOpenIssuePrUseCase @Inject constructor(
         .observeOn(schedulerProvider.uiThread())
         .flatMapObservable { issue ->
             issuePrService.editIssue(login, repo, number, IssueRequestModel(state = if ("closed".equals(issue.state, true)) "open" else "closed"))
+                .subscribeOn(schedulerProvider.ioThread())
+                .observeOn(schedulerProvider.uiThread())
                 .map {
                     issue.state = it.issueState
                     issueRepositoryProvider.upsert(issue)

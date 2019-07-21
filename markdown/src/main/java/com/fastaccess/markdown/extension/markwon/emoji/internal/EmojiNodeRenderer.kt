@@ -1,23 +1,21 @@
-package com.fastaccess.github.platform.markwon.hashtag.internal
+package com.fastaccess.markdown.extension.markwon.emoji.internal
 
-import com.fastaccess.github.platform.markwon.hashtag.HashTag
+import com.fastaccess.markdown.extension.markwon.emoji.Emoji
 import org.commonmark.node.Node
 import org.commonmark.renderer.NodeRenderer
 import org.commonmark.renderer.html.HtmlNodeRendererContext
 import org.commonmark.renderer.html.HtmlWriter
 
-class HashTagNodeRenderer(private val context: HtmlNodeRendererContext) : NodeRenderer {
+class EmojiNodeRenderer(private val context: HtmlNodeRendererContext) : NodeRenderer {
     private val html: HtmlWriter = context.writer
 
-    override fun getNodeTypes(): Set<Class<out Node>> {
-        return setOf<Class<out Node>>(HashTag::class.java)
-    }
+    override fun getNodeTypes(): Set<Class<out Node>> = setOf<Class<out Node>>(Emoji::class.java)
 
     override fun render(node: Node) {
-        val attributes = context.extendAttributes(node, "hashtag", emptyMap())
-        html.tag("hashtag", attributes)
+        val attributes = context.extendAttributes(node, "emoji", emptyMap())
+        html.tag("emoji", attributes)
         renderChildren(node)
-        html.tag("/hashtag")
+        html.tag("/emoji")
     }
 
     private fun renderChildren(parent: Node) {

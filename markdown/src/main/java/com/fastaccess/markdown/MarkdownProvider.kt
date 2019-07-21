@@ -1,25 +1,13 @@
 package com.fastaccess.markdown
 
-import android.text.method.ScrollingMovementMethod
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.view.doOnPreDraw
 import io.noties.markwon.Markwon
-import io.noties.markwon.ext.latex.JLatexMathPlugin
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
-import io.noties.markwon.ext.tables.TablePlugin
-import io.noties.markwon.ext.tasklist.TaskListPlugin
-import io.noties.markwon.html.HtmlPlugin
-import io.noties.markwon.image.glide.GlideImagesPlugin
-import io.noties.markwon.movement.MovementMethodPlugin
-import io.noties.markwon.syntax.Prism4jThemeDarkula
-import io.noties.markwon.syntax.Prism4jThemeDefault
-import io.noties.markwon.syntax.SyntaxHighlightPlugin
-import io.noties.prism4j.Prism4j
 import io.noties.prism4j.annotations.PrismBundle
-import net.nightwhistler.htmlspanner.HtmlSpanner
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
+
 
 /**
  * Created by Kosh on 02.02.19.
@@ -40,7 +28,7 @@ object MarkdownProvider {
     private const val PARAGRAPH_END = "</p>"
 
     fun loadIntoTextView(
-        htmlSpanner: HtmlSpanner,
+        markwon: Markwon,
         textView: TextView,
         html: String,
         windowBackground: Int,
@@ -49,10 +37,10 @@ object MarkdownProvider {
     ) {
         val width = textView.measuredWidth
         if (width > 0) {
-            initTextView(width, htmlSpanner, textView, html, windowBackground, isLightTheme, onLinkClicked)
+            initTextView(width, markwon, textView, html, windowBackground, isLightTheme, onLinkClicked)
         } else {
             textView.doOnPreDraw {
-                initTextView(textView.width, htmlSpanner, textView, html, windowBackground, isLightTheme, onLinkClicked)
+                initTextView(textView.width, markwon, textView, html, windowBackground, isLightTheme, onLinkClicked)
             }
         }
     }
@@ -67,94 +55,13 @@ object MarkdownProvider {
 
     private fun initTextView(
         width: Int,
-        htmlSpanner: HtmlSpanner,
+        markwon: Markwon,
         textView: TextView,
         html: String,
         windowBackground: Int,
         isLightTheme: Boolean,
         onLinkClicked: ((link: String) -> Unit)? = null
     ) {
-        val context = textView.context
-        Markwon.builder(context)
-            .usePlugin(JLatexMathPlugin.create(textView.textSize - 20))
-            .usePlugin(TaskListPlugin.create(context))
-            .usePlugin(HtmlPlugin.create())
-            .usePlugin(GlideImagesPlugin.create(context))
-            .usePlugin(TablePlugin.create(context))
-            .usePlugin(StrikethroughPlugin.create())
-            .usePlugin(MovementMethodPlugin.create(ScrollingMovementMethod.getInstance()))
-            .usePlugin(
-                SyntaxHighlightPlugin.create(
-                    Prism4j(GrammarLocatorDef()), if (isLightTheme) {
-                        Prism4jThemeDefault.create()
-                    } else {
-                        Prism4jThemeDarkula.create()
-                    }
-                )
-            )
-            .build()
-            .setMarkdown(textView, html)
-    }
-
-    //https://github.com/k0shk0sh/GitHubSdk/blob/master/library/src/main/java/com/meisolsson/githubsdk/core/HtmlUtils.java
-    private fun format(html: String): CharSequence {
-        if (html.isEmpty()) return ""
-        val formatted = StringBuilder(html)
-        strip(formatted, TOGGLE_START, TOGGLE_END)
-        strip(formatted, SIGNATURE_START, SIGNATURE_END)
-        strip(formatted, REPLY_START, REPLY_END)
-        strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END)
-        if (replace(formatted, PARAGRAPH_START, BREAK)) replace(formatted, PARAGRAPH_END, BREAK)
-        trim(formatted)
-        return formatted
-    }
-
-    private fun strip(
-        input: StringBuilder,
-        prefix: String,
-        suffix: String
-    ) {
-        var start = input.indexOf(prefix)
-        while (start != -1) {
-            var end = input.indexOf(suffix, start + prefix.length)
-            if (end == -1)
-                end = input.length
-            input.delete(start, end + suffix.length)
-            start = input.indexOf(prefix, start)
-        }
-    }
-
-    private fun replace(
-        input: StringBuilder,
-        from: String,
-        to: String
-    ): Boolean {
-        var start = input.indexOf(from)
-        if (start == -1) return false
-        val fromLength = from.length
-        val toLength = to.length
-        while (start != -1) {
-            input.replace(start, start + fromLength, to)
-            start = input.indexOf(from, start + toLength)
-        }
-        return true
-    }
-
-    private fun trim(input: StringBuilder) {
-        var length = input.length
-        val breakLength = BREAK.length
-        while (length > 0) {
-            if (input.indexOf(BREAK) == 0)
-                input.delete(0, breakLength)
-            else if (length >= breakLength && input.lastIndexOf(BREAK) == length - breakLength)
-                input.delete(length - breakLength, length)
-            else if (Character.isWhitespace(input[0]))
-                input.deleteCharAt(0)
-            else if (Character.isWhitespace(input[length - 1]))
-                input.deleteCharAt(length - 1)
-            else
-                break
-            length = input.length
-        }
+        markwon.setMarkdown(textView, html)
     }
 }

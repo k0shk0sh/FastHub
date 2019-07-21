@@ -1,19 +1,32 @@
 package com.fastaccess.github.di.modules
 
+import android.annotation.SuppressLint
 import android.content.Context
+import com.fastaccess.data.storage.FastHubSharedPreference
+import com.fastaccess.github.R
+import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.di.annotations.ForApplication
 import com.fastaccess.github.di.scopes.PerFragment
-import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
-import com.fastaccess.markdown.R
-import com.fastaccess.markdown.spans.*
+import com.fastaccess.github.utils.extensions.theme
+import com.fastaccess.markdown.GrammarLocatorDef
+import com.fastaccess.markdown.extension.markwon.emoji.EmojiPlugin
 import dagger.Module
 import dagger.Provides
-import net.nightwhistler.htmlspanner.HtmlSpanner
-import net.nightwhistler.htmlspanner.handlers.StyledTextHandler
-import net.nightwhistler.htmlspanner.style.Style
+import io.noties.markwon.Markwon
+import io.noties.markwon.ext.latex.JLatexMathPlugin
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.ext.tables.TablePlugin
+import io.noties.markwon.ext.tasklist.TaskListPlugin
+import io.noties.markwon.html.HtmlPlugin
+import io.noties.markwon.image.glide.GlideImagesPlugin
+import io.noties.markwon.linkify.LinkifyPlugin
+import io.noties.markwon.syntax.Prism4jThemeDarkula
+import io.noties.markwon.syntax.Prism4jThemeDefault
+import io.noties.markwon.syntax.SyntaxHighlightPlugin
+import io.noties.prism4j.Prism4j
 
 /**
  * Created by Kosh on 02.02.19.
@@ -23,36 +36,29 @@ class FragmentModule {
 
     @PerFragment @Provides fun provideContext(fragment: IssueFragment) = fragment.requireContext()
 
-    @PerFragment @Provides fun provideHtmlSpanner(@ForApplication context: Context): HtmlSpanner {
-        val mySpanner = HtmlSpanner()
-        mySpanner.isStripExtraWhiteSpace = true
-        val checked = context.getDrawableCompat(R.drawable.ic_checkbox_small)
-        val unchecked = context.getDrawableCompat(R.drawable.ic_checkbox_empty_small)
-        mySpanner.registerHandler("li", ListsHandler(checked, unchecked))
-        mySpanner.registerHandler("g-emoji", EmojiHandler())
-        mySpanner.registerHandler("b", StyledTextHandler(Style().setFontWeight(Style.FontWeight.BOLD)))
-        mySpanner.registerHandler("strong", StyledTextHandler(Style().setFontWeight(Style.FontWeight.BOLD)))
-        mySpanner.registerHandler("i", ItalicHandler())
-        mySpanner.registerHandler("em", ItalicHandler())
-        mySpanner.registerHandler("ul", MarginHandler())
-        mySpanner.registerHandler("ol", MarginHandler())
-        mySpanner.registerHandler("u", UnderlineHandler())
-        mySpanner.registerHandler("strike", StrikethroughHandler())
-        mySpanner.registerHandler("ins", UnderlineHandler())
-        mySpanner.registerHandler("del", StrikethroughHandler())
-        mySpanner.registerHandler("sub", SubScriptHandler())
-        mySpanner.registerHandler("sup", SuperScriptHandler())
-        mySpanner.registerHandler("a", LinkHandler())
-        mySpanner.registerHandler("emoji", EmojiHandler())
-        mySpanner.registerHandler("mention", LinkHandler())
-        mySpanner.registerHandler("h1", HeaderHandler(1.5f))
-        mySpanner.registerHandler("h2", HeaderHandler(1.4f))
-        mySpanner.registerHandler("h3", HeaderHandler(1.3f))
-        mySpanner.registerHandler("h4", HeaderHandler(1.2f))
-        mySpanner.registerHandler("h5", HeaderHandler(1.1f))
-        mySpanner.registerHandler("h6", HeaderHandler(1.0f))
-        return mySpanner
-    }
+    @SuppressLint("PrivateResource")
+    @PerFragment @Provides fun provideMarkwon(
+        @ForApplication context: Context,
+        preference: FastHubSharedPreference
+    ): Markwon = Markwon.builder(context)
+        .usePlugin(JLatexMathPlugin.create(context.resources.getDimension(R.dimen.abc_text_size_subhead_material)))
+        .usePlugin(TaskListPlugin.create(context))
+        .usePlugin(HtmlPlugin.create())
+        .usePlugin(GlideImagesPlugin.create(context))
+        .usePlugin(TablePlugin.create(context))
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(LinkifyPlugin.create())
+        .usePlugin(
+            SyntaxHighlightPlugin.create(
+                Prism4j(GrammarLocatorDef()), if (ThemeEngine.isLightTheme(preference.theme)) {
+                    Prism4jThemeDefault.create()
+                } else {
+                    Prism4jThemeDarkula.create()
+                }
+            )
+        )
+        .usePlugin(EmojiPlugin.create())
+        .build()
 
     @PerFragment @Provides fun provideMentionsPresenter(
         context: Context,

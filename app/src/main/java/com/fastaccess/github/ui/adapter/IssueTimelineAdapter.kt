@@ -10,13 +10,13 @@ import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
-import net.nightwhistler.htmlspanner.HtmlSpanner
+import io.noties.markwon.Markwon
 
 /**
  * Created by Kosh on 20.01.19.
  */
 class IssueTimelineAdapter(
-    private val htmlSpanner: HtmlSpanner,
+    private val markwon: Markwon,
     private val theme: Int
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
@@ -38,7 +38,7 @@ class IssueTimelineAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            COMMENT -> CommentViewHolder(parent, htmlSpanner, theme, notifyCallback)
+            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback)
             CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
         }

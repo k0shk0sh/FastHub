@@ -121,25 +121,21 @@ ext {
     ]
 
     markdown = [
-            'com.github.NightWhistler:HtmlSpanner:-SNAPSHOT',
-            'net.sourceforge.htmlcleaner:htmlcleaner:2.22',
-            "com.atlassian.commonmark:commonmark:${commonmark}",
-            "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}",
-            "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}",
-            "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}",
-            "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}",
-            "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}",
             "io.noties.markwon:core:$markwon_version",
             "io.noties.markwon:ext-latex:$markwon_version",
             "io.noties.markwon:ext-strikethrough:$markwon_version",
             "io.noties.markwon:ext-tables:$markwon_version",
             "io.noties.markwon:ext-tasklist:$markwon_version",
             "io.noties.markwon:html:$markwon_version",
+            "io.noties.markwon:image:$markwon_version",
             "io.noties.markwon:image-glide:$markwon_version",
             "io.noties.markwon:recycler:$markwon_version",
             "io.noties.markwon:recycler-table:$markwon_version",
             "io.noties.markwon:simple-ext:$markwon_version",
             "io.noties.markwon:syntax-highlight:$markwon_version",
+            "io.noties.markwon:linkify:$markwon_version",
+            "com.caverock:androidsvg:1.4",
+            "pl.droidsonroids.gif:android-gif-drawable:1.2.14",
             "io.noties:prism4j:2.0.0"
     ]
 

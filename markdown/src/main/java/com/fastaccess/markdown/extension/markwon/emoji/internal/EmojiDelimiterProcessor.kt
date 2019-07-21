@@ -1,7 +1,7 @@
-package com.fastaccess.github.platform.markwon.emoji.internal
+package com.fastaccess.markdown.extension.markwon.emoji.internal
 
 
-import com.fastaccess.github.platform.markwon.emoji.Emoji
+import com.fastaccess.markdown.extension.markwon.emoji.Emoji
 import org.commonmark.node.Text
 import org.commonmark.parser.delimiter.DelimiterProcessor
 import org.commonmark.parser.delimiter.DelimiterRun
