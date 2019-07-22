@@ -17,7 +17,8 @@ class LoginWithAccessTokenUseCase @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
     override fun buildObservable(): Observable<LoginModel> = loginRemoteRepository.loginAccessToken()
-
+        .subscribeOn(schedulerProvider.ioThread())
+        .observeOn(schedulerProvider.uiThread())
         .map { gson.fromJson(gson.toJson(it), LoginModel::class.java) }
 
     fun insertUser(loginModel: LoginModel): Observable<LoginModel?> = Observable.fromCallable {

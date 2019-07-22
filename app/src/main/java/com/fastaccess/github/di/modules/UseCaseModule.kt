@@ -29,7 +29,10 @@ import dagger.Provides
 @Module(includes = [FastHubDatabaseModule::class, NetworkModule::class])
 class UseCaseModule {
 
-    @PerFragment @Provides fun provideLoginUseCase(loginRemoteRepository: LoginRepositoryProvider): LoginUseCase = LoginUseCase(loginRemoteRepository)
+    @PerFragment @Provides fun provideLoginUseCase(
+        loginRemoteRepository: LoginRepositoryProvider,
+        schedulerProvider: SchedulerProvider
+    ): LoginUseCase = LoginUseCase(loginRemoteRepository, schedulerProvider)
 
     @PerFragment @Provides fun provideLoginWithAccessTokenUseCase(
         loginRemoteRepository: LoginRepositoryProvider,
