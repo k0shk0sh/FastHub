@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/bottomSheet"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="?actionBarSize"
+    app:behavior_peekHeight="71dp"
     app:layout_behavior="@string/bottom_sheet_behavior"
     tools:showIn="@layout/main_fragment_layout">
 
@@ -17,7 +16,14 @@
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@drawable/toolbar_shadow_up"/>
+        android:background="@drawable/toolbar_shadow_up" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/toggleArrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_normal"
+        android:src="@drawable/ic_bottom_sheet_rectangle" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -29,10 +35,10 @@
             android:layout_height="wrap_content"
             app:backgroundTint="?android:windowBackground"
             app:buttonGravity="bottom"
-            app:navigationContentDescription="@string/menu_label"
-            app:navigationIcon="@drawable/ic_menu"
+            app:navigationContentDescription="@string/profile"
+            app:navigationIcon="@drawable/ic_profile"
             app:popupTheme="?android:toolbarStyle"
-            app:theme="?android:toolbarStyle"/>
+            app:theme="?android:toolbarStyle" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"
@@ -42,6 +48,6 @@
             app:itemBackground="@color/transparent"
             app:itemIconTint="?colorAccent"
             app:itemTextColor="?colorAccent"
-            app:menu="@menu/main_menu"/>
+            app:menu="@menu/main_menu" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

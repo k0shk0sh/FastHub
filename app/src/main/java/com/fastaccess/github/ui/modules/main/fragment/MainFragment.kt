@@ -11,7 +11,10 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.extensions.*
+import com.fastaccess.github.extensions.getDrawable
+import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.route
 import com.fastaccess.github.platform.extension.onClick
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
@@ -67,11 +70,9 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
             when (state) {
                 BottomSheetBehavior.STATE_EXPANDED -> {
                     shadow?.isVisible = false
-                    bottomBar.navigationIcon = requireContext().getDrawableCompat(R.drawable.ic_arrow_drop_down)
                 }
                 BottomSheetBehavior.STATE_COLLAPSED -> {
                     shadow?.isVisible = true
-                    bottomBar.navigationIcon = requireContext().getDrawableCompat(R.drawable.ic_menu)
                 }
             }
         })
@@ -93,9 +94,9 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
     }
 
     private fun initClicks() {
+        bottomBar.setNavigationOnClickListener { addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print)) }
         bottomBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.profile -> addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print))
                 R.id.notifications -> route(NOTIFICATION_LINK)
                 R.id.search -> route(SEARCH_LINK)
             }
@@ -111,15 +112,6 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
                 R.id.add_account -> LoginChooserActivity.startActivity(requireActivity(), false)
             }
             return@setNavigationItemSelectedListener true
-        }
-        bottomBar.setNavigationOnClickListener {
-            behaviour.apply {
-                state = if (state == BottomSheetBehavior.STATE_EXPANDED) {
-                    BottomSheetBehavior.STATE_COLLAPSED
-                } else {
-                    BottomSheetBehavior.STATE_EXPANDED
-                }
-            }
         }
         starred.setOnClickListener { onUserRetrieved { route(it?.toStarred()) } }
         repos.setOnClickListener { onUserRetrieved { route(it?.toRepos()) } }
