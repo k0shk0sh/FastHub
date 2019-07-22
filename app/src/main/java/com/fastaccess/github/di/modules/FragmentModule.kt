@@ -2,6 +2,7 @@ package com.fastaccess.github.di.modules
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.util.Linkify
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
@@ -47,7 +48,7 @@ class FragmentModule {
         .usePlugin(GlideImagesPlugin.create(context))
         .usePlugin(TablePlugin.create(context))
         .usePlugin(StrikethroughPlugin.create())
-        .usePlugin(LinkifyPlugin.create())
+        .usePlugin(LinkifyPlugin.create(Linkify.EMAIL_ADDRESSES or Linkify.WEB_URLS))
         .usePlugin(
             SyntaxHighlightPlugin.create(
                 Prism4j(GrammarLocatorDef()), if (ThemeEngine.isLightTheme(preference.theme)) {
