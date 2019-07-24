@@ -15,6 +15,7 @@ import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.asString
+import com.fastaccess.markdown.MarkdownProvider
 import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
 import com.otaliastudios.autocomplete.CharPolicy
@@ -50,7 +51,6 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
             activity?.setResult(Activity.RESULT_OK, intent)
             activity?.finish()
         }
-
         mentionsPresenter.isMatchParent = true
         setToolbarNavigationIcon(R.drawable.ic_clear)
         markdownLayout.init(editText)
@@ -87,13 +87,7 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
                 override fun onPopupItemClicked(
                     editable: Editable?,
                     item: String?
-                ): Boolean {
-                    val range = CharPolicy.getQueryRange(editable) ?: return false
-                    val start = range[0]
-                    val end = range[1]
-                    editable?.replace(start, end, "$item ")
-                    return true
-                }
+                ): Boolean = MarkdownProvider.replaceMention(editable, item)
 
                 override fun onPopupVisibilityChanged(shown: Boolean) {}
             })

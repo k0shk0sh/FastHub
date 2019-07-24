@@ -39,6 +39,7 @@ import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
+import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import com.google.android.material.appbar.AppBarLayout
@@ -159,14 +160,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 override fun onPopupItemClicked(
                     editable: Editable?,
                     item: String?
-                ): Boolean {
-                    val range = CharPolicy.getQueryRange(editable) ?: return false
-                    val start = range[0]
-                    val end = range[1]
-                    Timber.e("$start $end $item")
-                    editable?.replace(start, end, "$item ")
-                    return true
-                }
+                ): Boolean = MarkdownProvider.replaceMention(editable, item)
 
                 override fun onPopupVisibilityChanged(shown: Boolean) {}
             })

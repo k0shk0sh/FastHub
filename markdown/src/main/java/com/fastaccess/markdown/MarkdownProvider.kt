@@ -1,10 +1,12 @@
 package com.fastaccess.markdown
 
+import android.text.Editable
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.view.doOnPreDraw
+import com.otaliastudios.autocomplete.CharPolicy
 import io.noties.markwon.Markwon
 import io.noties.prism4j.annotations.PrismBundle
 import org.commonmark.parser.Parser
@@ -302,5 +304,16 @@ object MarkdownProvider {
             editText.setText(builder.toString())
             editText.setSelection(index + text.length)
         }
+    }
+
+    fun replaceMention(
+        editable: Editable?,
+        item: String?
+    ): Boolean {
+        val range = CharPolicy.getQueryRange(editable) ?: return false
+        val start = range[0]
+        val end = range[1]
+        editable?.replace(start, end, "$item ")
+        return true
     }
 }
