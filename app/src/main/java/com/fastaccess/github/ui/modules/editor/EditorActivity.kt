@@ -16,7 +16,14 @@ class EditorActivity : BaseActivity() {
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            replace(R.id.container, EditorFragment.newInstance(intent?.extras))
+            replace(R.id.container, EditorFragment.newInstance(intent?.extras), EditorFragment.TAG)
+        }
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag(EditorFragment.TAG) as? EditorFragment
+        if (fragment?.onBackPressed() == true) {
+            super.onBackPressed()
         }
     }
 }

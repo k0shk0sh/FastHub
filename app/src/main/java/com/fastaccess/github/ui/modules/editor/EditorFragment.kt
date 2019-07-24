@@ -10,7 +10,9 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.getDrawableCompat
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.platform.mentions.MentionsPresenter
+import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.asString
 import com.otaliastudios.autocomplete.Autocomplete
@@ -24,8 +26,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2019-07-20.
  */
-class EditorFragment : BaseFragment() {
-
+class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener {
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
     @Inject lateinit var mentionsPresenter: MentionsPresenter
@@ -61,6 +62,22 @@ class EditorFragment : BaseFragment() {
         super.onDestroyView()
     }
 
+    override fun onBackPressed(): Boolean {
+        if (editText.asString().isNotBlank()) {
+            IconDialogFragment.show(
+                childFragmentManager, R.drawable.ic_info,
+                getString(R.string.close), getString(R.string.confirm_message),
+                getString(R.string.close), getString(R.string.cancel)
+            )
+            return false
+        }
+        return true
+    }
+
+    override fun onClick(positive: Boolean) {
+        positive.isTrue { activity?.finish() }
+    }
+
     private fun initEditText() {
         Autocomplete.on<String>(editText)
             .with(CharPolicy('@'))
@@ -84,6 +101,7 @@ class EditorFragment : BaseFragment() {
     }
 
     companion object {
+        const val TAG = "EditorFragment"
         fun newInstance(bundle: Bundle?) = EditorFragment().apply {
             arguments = bundle
         }
