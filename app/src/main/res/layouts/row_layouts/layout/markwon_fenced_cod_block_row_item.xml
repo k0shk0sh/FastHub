@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:nestedScrollingEnabled="false"
+    android:scrollbarStyle="outsideInset">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text"
+        style="@style/LayoutPadding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+</HorizontalScrollView>

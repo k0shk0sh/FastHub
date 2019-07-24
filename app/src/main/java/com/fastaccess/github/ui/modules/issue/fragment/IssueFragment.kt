@@ -21,7 +21,6 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
@@ -38,7 +37,6 @@ import com.fastaccess.github.utils.WEB_EDITOR_DEEPLINK
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
-import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import com.google.android.material.appbar.AppBarLayout
@@ -49,6 +47,7 @@ import github.type.CommentAuthorAssociation
 import github.type.IssueState
 import github.type.LockReason
 import io.noties.markwon.Markwon
+import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
@@ -66,12 +65,14 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
     @Inject lateinit var mentionsPresenter: MentionsPresenter
+    @Inject lateinit var markwonAdapterBuilder: MarkwonAdapter.Builder
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(IssueTimelineViewModel::class.java) }
     private val login by lazy { arguments?.getString(EXTRA) ?: "" }
     private val repo by lazy { arguments?.getString(EXTRA_TWO) ?: "" }
     private val number by lazy { arguments?.getInt(EXTRA_THREE) ?: 0 }
-    private val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme) }
+    private val markwonAdapter by lazy { markwonAdapterBuilder.build() }
+    private val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme, markwonAdapterBuilder) }
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -239,10 +240,11 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         } else {
             "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
         }
-        MarkdownProvider.loadIntoTextView(
-            markwon, description, model.body ?: "", ThemeEngine.getCodeBackground(theme),
-            ThemeEngine.isLightTheme(theme)
-        )
+
+        descriptionRecyclerView.adapter = markwonAdapter
+        markwonAdapter.setMarkdown(markwon, model.body ?: "**${getString(R.string.no_description_provided)}**")
+        markwonAdapter.notifyDataSetChanged()
+
         state.text = model.state?.toLowerCase()
         state.setChipBackgroundColorResource(
             if (IssueState.OPEN.rawValue().equals(model.state, true)) {

@@ -38,7 +38,7 @@ class BaseRecyclerView constructor(context: Context,
         }
     }
 
-    override fun setAdapter(adapter: RecyclerView.Adapter<*>?) {
+    override fun setAdapter(adapter: Adapter<*>?) {
         super.setAdapter(adapter)
         if (isInEditMode) return
         if (adapter != null) {

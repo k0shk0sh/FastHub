@@ -7,19 +7,28 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.platform.glide.GlideApp
+import timber.log.Timber
 
 
 /**
  * Created by Kosh on 27.12.18.
  */
-class AvatarImageView constructor(context: Context,
-                                  attrs: AttributeSet? = null,
-                                  defStyle: Int = 0) : AppCompatImageView(context, attrs, defStyle) {
+class AvatarImageView constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : AppCompatImageView(context, attrs, defStyle) {
     constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(
+        context: Context,
+        attrs: AttributeSet?
+    ) : this(context, attrs, 0)
 
 
-    fun loadAvatar(url: String? = null, userUrl: String? = null) {
+    fun loadAvatar(
+        url: String? = null,
+        userUrl: String? = null
+    ) {
         setBackgroundResource(R.drawable.circle_shape)
         if (url.isNullOrEmpty()) {
             setImageResource(R.drawable.ic_profile)
@@ -34,6 +43,9 @@ class AvatarImageView constructor(context: Context,
                 .dontAnimate()
                 .into(this)
         }
-        userUrl?.let { setOnClickListener { it.context.route(userUrl) } }
+        userUrl?.let { userUrl ->
+            Timber.e(userUrl)
+            setOnClickListener { it.context.route(userUrl) }
+        }
     }
 }

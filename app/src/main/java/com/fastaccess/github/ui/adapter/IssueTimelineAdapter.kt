@@ -11,13 +11,15 @@ import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
 import io.noties.markwon.Markwon
+import io.noties.markwon.recycler.MarkwonAdapter
 
 /**
  * Created by Kosh on 20.01.19.
  */
 class IssueTimelineAdapter(
     private val markwon: Markwon,
-    private val theme: Int
+    private val theme: Int,
+    private val markwonAdapterBuilder: MarkwonAdapter.Builder
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val notifyCallback by lazy {
@@ -36,15 +38,21 @@ class IssueTimelineAdapter(
         } ?: super.getItemViewType(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
         return when (viewType) {
-            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback)
+            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback, markwonAdapterBuilder)
             CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int
+    ) {
         when (holder) {
             is CommentViewHolder -> holder.bind(getItem(position).comment)
             is IssueContentViewHolder -> holder.bind(getItem(position))
@@ -68,8 +76,15 @@ class IssueTimelineAdapter(
         private const val CONTENT = 3
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TimelineModel?>() {
-            override fun areItemsTheSame(oldItem: TimelineModel, newItem: TimelineModel): Boolean = oldItem.hashCode() == newItem.hashCode()
-            override fun areContentsTheSame(oldItem: TimelineModel, newItem: TimelineModel): Boolean = oldItem == newItem
+            override fun areItemsTheSame(
+                oldItem: TimelineModel,
+                newItem: TimelineModel
+            ): Boolean = oldItem.hashCode() == newItem.hashCode()
+
+            override fun areContentsTheSame(
+                oldItem: TimelineModel,
+                newItem: TimelineModel
+            ): Boolean = oldItem == newItem
         }
     }
 }
