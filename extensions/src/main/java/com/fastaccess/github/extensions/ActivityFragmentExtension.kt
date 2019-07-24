@@ -147,4 +147,17 @@ fun Context.route(
 }
 
 
-fun Fragment.route(url: String?) = url?.let { context?.route(it, null) }
+fun Fragment.route(
+    url: String?,
+    bundle: Bundle? = null
+) = url?.let { context?.route(it, bundle) }
+
+fun Fragment.routeForResult(
+    url: String?,
+    requestCode: Int,
+    bundle: Bundle? = null
+) = this.startActivityForResult(Intent(Intent.ACTION_VIEW).apply {
+    setPackage(requireContext().getPackageInfo()?.packageName ?: requireContext().packageName)
+    data = Uri.parse(url)
+    bundle?.let { putExtras(it) }
+}, requestCode)

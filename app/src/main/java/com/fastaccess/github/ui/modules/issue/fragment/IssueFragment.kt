@@ -1,5 +1,7 @@
 package com.fastaccess.github.ui.modules.issue.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -111,6 +113,23 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         super.onDestroyView()
     }
 
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                COMMENT_REQUEST_CODE -> {
+                    commentText.setText(data?.getStringExtra(EXTRA))
+                    sendComment.callOnClick()
+                }
+                else -> Timber.e("nothing yet for requestCode($requestCode)")
+            }
+        }
+    }
+
     override fun onLockReasonSelected(lockReason: LockReason?) {
         viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
     }
@@ -160,7 +179,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             }
         }
         toggleFullScreen.setOnClickListener {
-            route(EDITOR_DEEPLINK)
+            routeForResult(EDITOR_DEEPLINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
         }
     }
 
@@ -334,6 +353,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
     companion object {
         const val TAG = "IssueFragment"
+        const val COMMENT_REQUEST_CODE = 1001
         fun newInstance(
             login: String,
             repo: String,

@@ -1,5 +1,7 @@
 package com.fastaccess.github.ui.modules.editor
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -9,6 +11,8 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.platform.mentions.MentionsPresenter
+import com.fastaccess.github.utils.EXTRA
+import com.fastaccess.github.utils.extensions.asString
 import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
 import com.otaliastudios.autocomplete.CharPolicy
@@ -34,9 +38,17 @@ class EditorFragment : BaseFragment() {
         view: View,
         savedInstanceState: Bundle?
     ) {
-        setupToolbar(R.string.markdown, R.menu.submit_menu, { item ->
 
-        })
+        if (savedInstanceState == null) {
+            editText.setText(arguments?.getString(EXTRA) ?: "")
+        }
+        setupToolbar(R.string.markdown, R.menu.submit_menu) { item ->
+            val intent = Intent().apply {
+                putExtra(EXTRA, editText.asString())
+            }
+            activity?.setResult(Activity.RESULT_OK, intent)
+            activity?.finish()
+        }
 
         mentionsPresenter.isMatchParent = true
         setToolbarNavigationIcon(R.drawable.ic_clear)
