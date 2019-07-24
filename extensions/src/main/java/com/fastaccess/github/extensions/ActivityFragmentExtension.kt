@@ -133,15 +133,18 @@ fun Context.getPackageInfo(): PackageInfo? {
     return kotlin.runCatching { packageManager.getPackageInfo(packageName, 0) }.getOrNull()
 }
 
-
 fun Context.route(
     url: String,
     bundle: Bundle? = null
-) = this.startActivity(Intent(Intent.ACTION_VIEW).apply {
-    setPackage(getPackageInfo()?.packageName ?: packageName)
-    data = Uri.parse(url)
-    bundle?.let { putExtras(it) }
-})
+) {
+    runCatching {
+        this.startActivity(Intent(Intent.ACTION_VIEW).apply {
+            setPackage(getPackageInfo()?.packageName ?: packageName)
+            data = Uri.parse(url)
+            bundle?.let { putExtras(it) }
+        })
+    }
+}
 
 
 fun Fragment.route(url: String?) = url?.let { context?.route(it, null) }

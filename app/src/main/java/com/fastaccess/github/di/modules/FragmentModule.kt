@@ -6,9 +6,9 @@ import android.text.util.Linkify
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
-import com.fastaccess.github.di.annotations.ForApplication
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.platform.mentions.MentionsPresenter
+import com.fastaccess.github.ui.modules.editor.EditorFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import com.fastaccess.github.utils.extensions.theme
@@ -39,11 +39,9 @@ import org.commonmark.node.FencedCodeBlock
 @Module
 class FragmentModule {
 
-    @PerFragment @Provides fun provideContext(fragment: IssueFragment) = fragment.requireContext()
-
     @SuppressLint("PrivateResource")
     @PerFragment @Provides fun provideMarkwon(
-        @ForApplication context: Context,
+        context: Context,
         preference: FastHubSharedPreference
     ): Markwon = Markwon.builder(context)
         .usePlugin(JLatexMathPlugin.create(context.resources.getDimension(R.dimen.abc_text_size_subhead_material)))
@@ -76,4 +74,14 @@ class FragmentModule {
         context: Context,
         searchUsersUseCase: FilterSearchUsersUseCase
     ) = MentionsPresenter(context, searchUsersUseCase)
+}
+
+@Module(includes = [FragmentModule::class])
+class IssueModule {
+    @PerFragment @Provides fun provideIssueContext(fragment: IssueFragment) = fragment.requireContext()
+}
+
+@Module(includes = [FragmentModule::class])
+class EditorModule {
+    @PerFragment @Provides fun provideEditorContext(fragment: EditorFragment) = fragment.requireContext()
 }

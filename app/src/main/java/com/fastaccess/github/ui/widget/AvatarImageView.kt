@@ -7,7 +7,6 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.platform.glide.GlideApp
-import timber.log.Timber
 
 
 /**
@@ -43,8 +42,7 @@ class AvatarImageView constructor(
                 .dontAnimate()
                 .into(this)
         }
-        userUrl?.let { userUrl ->
-            Timber.e(userUrl)
+        userUrl?.let {
             setOnClickListener { it.context.route(userUrl) }
         }
     }

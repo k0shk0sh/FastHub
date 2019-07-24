@@ -61,8 +61,10 @@
         <activity android:name=".ui.modules.issue.IssueActivity" />
 
         <activity
-            android:name=".ui.modules.editor.EditorWebViewActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
+            android:name=".ui.modules.editor.EditorActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/markdown"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.modules.routing.RoutingActivity"

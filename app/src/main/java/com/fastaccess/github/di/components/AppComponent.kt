@@ -17,17 +17,19 @@ import javax.inject.Singleton
  * Created by Kosh on 12.05.18.
  */
 @Singleton
-@Component(modules = [
-    ApplicationModule::class,
-    FastHubDatabaseModule::class,
-    NetworkModule::class,
-    RepositoryModule::class,
-    ActivityBindingModule::class,
-    FragmentBindingModule::class,
-    DialogFragmentBindingModule::class,
-    ActivityModule::class,
-    RepositoryModule::class,
-    AndroidSupportInjectionModule::class])
+@Component(
+    modules = [
+        ApplicationModule::class,
+        FastHubDatabaseModule::class,
+        NetworkModule::class,
+        RepositoryModule::class,
+        ActivityBindingModule::class,
+        FragmentBindingModule::class,
+        DialogFragmentBindingModule::class,
+        ActivityModule::class,
+        RepositoryModule::class,
+        AndroidSupportInjectionModule::class]
+)
 interface AppComponent : AndroidInjector<DaggerApplication> {
 
     @Component.Builder
@@ -51,8 +53,8 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
 
     fun workerSubComponentBuilder(): WorkerSubComponent.Builder
 
-    fun fastHubDatabase() : FastHubDatabase
-    fun fasthubLoginDatabase() : FastHubLoginDatabase
+    fun fastHubDatabase(): FastHubDatabase
+    fun fasthubLoginDatabase(): FastHubLoginDatabase
 
     fun inject(app: App)
 
@@ -60,12 +62,12 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
 
     companion object {
         fun getComponent(app: App): AppComponent = DaggerAppComponent.builder()
-                .application(app)
-                .fastHubDatabaseModule(FastHubDatabaseModule())
-                .networkModule(NetworkModule())
-                .activityModule(ActivityModule())
-                .repoModule(RepositoryModule())
-                .repositoryModule(RepositoryModule())
-                .build()
+            .application(app)
+            .fastHubDatabaseModule(FastHubDatabaseModule())
+            .networkModule(NetworkModule())
+            .activityModule(ActivityModule())
+            .repoModule(RepositoryModule())
+            .repositoryModule(RepositoryModule())
+            .build()
     }
 }

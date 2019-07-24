@@ -39,8 +39,17 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
 
     @LayoutRes abstract fun layoutRes(): Int
 
-    abstract fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?)
-    protected open fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {}
+    abstract fun onFragmentCreatedWithUser(
+        view: View,
+        savedInstanceState: Bundle?
+    )
+
+    protected open fun onFragmentCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+    }
+
     abstract fun viewModel(): BaseViewModel?
 
     override fun onAttach(context: Context) {
@@ -63,12 +72,19 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(layoutRes(), container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
         if (isLoggedIn()) {
             onFragmentCreatedWithUser(view, savedInstanceState)
@@ -95,11 +111,19 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
 
     override fun isEnterprise(): Boolean = activityCallback?.isEnterprise() ?: false
 
-    override fun showSnackBar(root: View, resId: Int?, message: String?, duration: Int) {
+    override fun showSnackBar(
+        root: View,
+        resId: Int?,
+        message: String?,
+        duration: Int
+    ) {
         activityCallback?.showSnackBar(root, resId, message, duration)
     }
 
-    override fun updateCount(type: FragmentType, count: Int) {
+    override fun updateCount(
+        type: FragmentType,
+        count: Int
+    ) {
         val pager = view?.findViewById<ViewPager?>(R.id.pager) ?: return
         val tabs = view?.findViewById<TabLayout?>(R.id.tabs) ?: return
         val adapter = pager.adapter as? PagerAdapter ?: return
@@ -114,7 +138,10 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         }
     }
 
-    protected fun postCount(type: FragmentType, count: Int) {
+    protected fun postCount(
+        type: FragmentType,
+        count: Int
+    ) {
         updateCountCallback?.updateCount(type, count)
     }
 
@@ -145,7 +172,11 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         }
     }
 
-    fun setupToolbar(title: String, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
+    protected fun setupToolbar(
+        title: String,
+        menuId: Int? = null,
+        onMenuItemClick: ((item: MenuItem) -> Unit)? = null
+    ) {
         view?.findViewById<Toolbar?>(R.id.toolbar)?.apply {
             val titleText = findViewById<TextView?>(R.id.toolbarTitle)
             if (titleText != null) {
@@ -166,7 +197,12 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         }
     }
 
-    fun setupToolbar(resId: Int, menuId: Int? = null, onMenuItemClick: ((item: MenuItem) -> Unit)? = null) {
-        setupToolbar(getString(resId), menuId, onMenuItemClick)
-    }
+
+    protected fun setupToolbar(
+        resId: Int,
+        menuId: Int? = null,
+        onMenuItemClick: ((item: MenuItem) -> Unit)? = null
+    ) = setupToolbar(getString(resId), menuId, onMenuItemClick)
+
+    protected fun setToolbarNavigationIcon(resId: Int) = view?.findViewById<Toolbar?>(R.id.toolbar)?.setNavigationIcon(resId) ?: Unit
 }

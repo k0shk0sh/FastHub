@@ -30,10 +30,10 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragme
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
+import com.fastaccess.github.utils.EDITOR_DEEPLINK
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.WEB_EDITOR_DEEPLINK
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
@@ -160,7 +160,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             }
         }
         toggleFullScreen.setOnClickListener {
-            route(WEB_EDITOR_DEEPLINK)
+            route(EDITOR_DEEPLINK)
         }
     }
 

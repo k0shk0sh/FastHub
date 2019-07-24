@@ -34,7 +34,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/header_two"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_header_two" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -44,7 +43,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/header_three"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_header_three" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -54,7 +52,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/bold"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_format_bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -74,7 +71,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/strike_through"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_format_strikethrough" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -84,7 +80,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/bullet"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_format_list_bulleted" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -94,7 +89,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/numbered_list"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_list_numbers" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -104,7 +98,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/todo_checked"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_checkbox" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -114,7 +107,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/todo_unchecked"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_checkbox_empty" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -124,7 +116,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/divider"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_minus" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -134,7 +125,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/code"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_inline_code" />
 
             <androidx.appcompat.widget.AppCompatImageView
