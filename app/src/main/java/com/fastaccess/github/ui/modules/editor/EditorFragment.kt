@@ -15,7 +15,6 @@ import com.otaliastudios.autocomplete.CharPolicy
 import io.noties.markwon.Markwon
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.editor_fragment_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -38,6 +37,8 @@ class EditorFragment : BaseFragment() {
         setupToolbar(R.string.markdown, R.menu.submit_menu, { item ->
 
         })
+
+        mentionsPresenter.isMatchParent = true
         setToolbarNavigationIcon(R.drawable.ic_clear)
         markdownLayout.init(editText)
         initEditText()
@@ -61,7 +62,6 @@ class EditorFragment : BaseFragment() {
                     val range = CharPolicy.getQueryRange(editable) ?: return false
                     val start = range[0]
                     val end = range[1]
-                    Timber.e("$start $end $item")
                     editable?.replace(start, end, "$item ")
                     return true
                 }

@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import com.otaliastudios.autocomplete.RecyclerViewPresenter
@@ -23,6 +25,7 @@ class MentionsPresenter @Inject constructor(
     private val localList = ArrayList<String>()
 
     private val adapter by lazy { MentionsAdapter(this, arrayListOf()) }
+    var isMatchParent = false
 
     override fun instantiateAdapter(): RecyclerView.Adapter<*> = adapter
 
@@ -53,6 +56,12 @@ class MentionsPresenter @Inject constructor(
     fun onClick(item: String) = dispatchClick(item)
 
     fun onDispose() = searchUsersUseCase.dispose()
+
+    override fun getPopupDimensions(): PopupDimensions {
+        return super.getPopupDimensions().apply {
+            isMatchParent.isTrue { height = LinearLayout.LayoutParams.MATCH_PARENT }
+        }
+    }
 }
 
 class MentionsAdapter(
