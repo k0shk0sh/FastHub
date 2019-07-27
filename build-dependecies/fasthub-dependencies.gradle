@@ -9,7 +9,7 @@ ext {
     navigation = '1.0.0'
     workManager = '1.0.1'
     constraintLayout = '2.0.0-beta1'
-    dagger2 = '2.22.1'
+    dagger2 = '2.24'
     butterKnife = '8.8.1'
     javaxAnnotation = '10.0-b28'
     okHttp = '3.11.0'

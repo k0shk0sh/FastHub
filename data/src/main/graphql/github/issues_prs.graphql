@@ -124,6 +124,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
                             author {
                                 login
                                 avatarUrl
+                                url
                             }
                             createdAt
                             authorAssociation

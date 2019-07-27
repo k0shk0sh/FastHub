@@ -267,7 +267,7 @@ class GetIssueTimelineUseCase @Inject constructor(
     private fun getComment(node: AsIssueComment) = TimelineModel(
         comment = CommentModel(
             node.id,
-            ShortUserModel(node.author?.login, node.author?.login, avatarUrl = node.author?.avatarUrl.toString()),
+            ShortUserModel(node.author?.login, node.author?.login, node.author?.url?.toString(), avatarUrl = node.author?.avatarUrl.toString()),
             node.bodyHTML.toString(), node.body, CommentAuthorAssociation.fromName(node.authorAssociation.rawValue()),
             node.viewerCannotUpdateReasons.map { reason -> CommentCannotUpdateReason.fromName(reason.rawValue()) }.toList(),
             node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }, node.createdAt, node.updatedAt,

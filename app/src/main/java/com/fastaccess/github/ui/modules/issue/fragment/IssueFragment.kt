@@ -36,6 +36,7 @@ import com.fastaccess.github.utils.EDITOR_DEEPLINK
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.github.utils.extensions.hideKeyboard
 import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
@@ -226,7 +227,11 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         viewModel.commentProgress.observeNotNull(this) {
             commentProgress.isVisible = it
             sendComment.isVisible = !it
-            if (!it) commentText.setText("")
+            if (!it) {
+                commentText.setText("")
+                commentText.hideKeyboard()
+                recyclerView.scrollToPosition(adapter.itemCount)
+            }
         }
     }
 

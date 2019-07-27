@@ -26,7 +26,6 @@ import javax.inject.Singleton
         ActivityBindingModule::class,
         FragmentBindingModule::class,
         DialogFragmentBindingModule::class,
-        ActivityModule::class,
         RepositoryModule::class,
         AndroidSupportInjectionModule::class]
 )
@@ -35,37 +34,24 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
     @Component.Builder
     interface Builder {
         @BindsInstance fun application(application: Application): Builder
-
-        @BindsInstance fun fastHubDatabaseModule(fastHubDatabaseModule: FastHubDatabaseModule): Builder
-
-        @BindsInstance fun networkModule(networkModule: NetworkModule): Builder
-
-        @BindsInstance fun activityModule(activityModule: ActivityModule): Builder
-
-        @BindsInstance fun repoModule(repositoryModule: RepositoryModule): Builder
-
-        @BindsInstance fun repositoryModule(repositoryModule: RepositoryModule): Builder
+        @BindsInstance fun fastHubDatabaseModule(module: FastHubDatabaseModule): Builder
+        @BindsInstance fun networkModule(module: NetworkModule): Builder
+        @BindsInstance fun repoModule(module: RepositoryModule): Builder
+        @BindsInstance fun repositoryModule(module: RepositoryModule): Builder
 
         fun build(): AppComponent
     }
 
     fun daggerWorkerFactory(): DaggerWorkerFactory
-
     fun workerSubComponentBuilder(): WorkerSubComponent.Builder
-
     fun fastHubDatabase(): FastHubDatabase
     fun fasthubLoginDatabase(): FastHubLoginDatabase
-
-    fun inject(app: App)
-
-    override fun inject(instance: DaggerApplication)
 
     companion object {
         fun getComponent(app: App): AppComponent = DaggerAppComponent.builder()
             .application(app)
             .fastHubDatabaseModule(FastHubDatabaseModule())
             .networkModule(NetworkModule())
-            .activityModule(ActivityModule())
             .repoModule(RepositoryModule())
             .repositoryModule(RepositoryModule())
             .build()
