@@ -25,8 +25,7 @@ ext {
     apollo = '1.0.1'
     pandora = 'v1.2.2'
     deepLinkDispatch = '4.1.0'
-    commonmark = '0.12.1'
-    markwon_version = '4.0.2'
+    markwon_version = '4.1.0-SNAPSHOT'
 
 
     kotlin = [

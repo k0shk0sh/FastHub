@@ -12,7 +12,6 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.utils.extensions.popupEmoji
 import io.noties.markwon.Markwon
-import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.android.synthetic.main.comment_row_item.view.*
 
 
@@ -24,8 +23,7 @@ class CommentViewHolder(
     parent: ViewGroup,
     private val markwon: Markwon,
     private val theme: Int,
-    private val callback: (position: Int) -> Unit,
-    private val markwonAdapterBuilder: MarkwonAdapter.Builder
+    private val callback: (position: Int) -> Unit
 ) : BaseViewHolder<CommentModel?>(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.comment_row_item, parent, false)
@@ -45,10 +43,11 @@ class CommentViewHolder(
             } else {
                 "${model.authorAssociation?.value?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
             }
-            val adapter = markwonAdapterBuilder.build()
-            descriptionRecyclerView.adapter = adapter
-            adapter.setMarkdown(markwon, model.body ?: resources.getString(R.string.no_description_provided))
-            adapter.notifyDataSetChanged()
+
+            description.post {
+                val bodyMd = model.body
+                markwon.setMarkdown(description, if (!bodyMd.isNullOrEmpty()) bodyMd else resources.getString(R.string.no_description_provided))
+            }
 
 
 //            val filter = Linkify.TransformFilter { match, _ -> match.group() }

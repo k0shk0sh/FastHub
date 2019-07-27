@@ -151,14 +151,15 @@
                 android:src="@drawable/ic_overflow" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/descriptionRecyclerView"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/spacing_micro"
-            android:nestedScrollingEnabled="false"
-            android:orientation="vertical"
-            app:layoutManager="@string/llm" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textIsSelectable="true"
+            tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
     </LinearLayout>
 
     <LinearLayout

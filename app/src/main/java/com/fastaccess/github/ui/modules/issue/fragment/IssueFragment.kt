@@ -75,8 +75,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     private val login by lazy { arguments?.getString(EXTRA) ?: "" }
     private val repo by lazy { arguments?.getString(EXTRA_TWO) ?: "" }
     private val number by lazy { arguments?.getInt(EXTRA_THREE) ?: 0 }
-    private val markwonAdapter by lazy { markwonAdapterBuilder.build() }
-    private val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme, markwonAdapterBuilder) }
+    private val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme) }
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -259,9 +258,12 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
             "${model.authorAssociation?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
         }
 
-        descriptionRecyclerView.adapter = markwonAdapter
-        markwonAdapter.setMarkdown(markwon, model.body ?: "**${getString(R.string.no_description_provided)}**")
-        markwonAdapter.notifyDataSetChanged()
+        description.post {
+            val bodyMd = model.body
+            markwon.setMarkdown(
+                description, if (!bodyMd.isNullOrEmpty()) bodyMd else "**${getString(R.string.no_description_provided)}**"
+            )
+        }
 
         state.text = model.state?.toLowerCase()
         state.setChipBackgroundColorResource(

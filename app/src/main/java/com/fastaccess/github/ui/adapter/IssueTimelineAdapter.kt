@@ -11,15 +11,13 @@ import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
 import io.noties.markwon.Markwon
-import io.noties.markwon.recycler.MarkwonAdapter
 
 /**
  * Created by Kosh on 20.01.19.
  */
 class IssueTimelineAdapter(
     private val markwon: Markwon,
-    private val theme: Int,
-    private val markwonAdapterBuilder: MarkwonAdapter.Builder
+    private val theme: Int
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val notifyCallback by lazy {
@@ -43,7 +41,7 @@ class IssueTimelineAdapter(
         viewType: Int
     ): RecyclerView.ViewHolder {
         return when (viewType) {
-            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback, markwonAdapterBuilder)
+            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback)
             CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
         }

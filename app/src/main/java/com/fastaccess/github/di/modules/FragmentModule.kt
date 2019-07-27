@@ -2,7 +2,6 @@ package com.fastaccess.github.di.modules
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.util.Linkify
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
@@ -16,22 +15,23 @@ import com.fastaccess.markdown.GrammarLocatorDef
 import dagger.Module
 import dagger.Provides
 import io.noties.markwon.Markwon
+import io.noties.markwon.PrecomputedTextSetterCompat
 import io.noties.markwon.ext.latex.JLatexMathPlugin
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.ext.tables.TablePlugin
 import io.noties.markwon.ext.tasklist.TaskListPlugin
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.glide.GlideImagesPlugin
-import io.noties.markwon.linkify.LinkifyPlugin
 import io.noties.markwon.recycler.MarkwonAdapter
 import io.noties.markwon.recycler.SimpleEntry
 import io.noties.markwon.recycler.table.TableEntry
-import io.noties.markwon.recycler.table.TableEntryPlugin
 import io.noties.markwon.syntax.Prism4jThemeDarkula
 import io.noties.markwon.syntax.Prism4jThemeDefault
 import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
 import org.commonmark.ext.gfm.tables.TableBlock
 import org.commonmark.node.FencedCodeBlock
+import java.util.concurrent.Executors
 
 /**
  * Created by Kosh on 02.02.19.
@@ -48,9 +48,8 @@ class FragmentModule {
         .usePlugin(TaskListPlugin.create(context))
         .usePlugin(HtmlPlugin.create())
         .usePlugin(GlideImagesPlugin.create(context))
-        .usePlugin(TableEntryPlugin.create(context))
+        .usePlugin(TablePlugin.create(context))
         .usePlugin(StrikethroughPlugin.create())
-        .usePlugin(LinkifyPlugin.create(Linkify.EMAIL_ADDRESSES or Linkify.WEB_URLS))
         .usePlugin(
             SyntaxHighlightPlugin.create(
                 Prism4j(GrammarLocatorDef()), if (ThemeEngine.isLightTheme(preference.theme)) {
@@ -60,6 +59,7 @@ class FragmentModule {
                 }
             )
         )
+        .textSetter(PrecomputedTextSetterCompat.create(Executors.newCachedThreadPool()))
         .build()
 
     @PerFragment @Provides fun provideMarkwonAdapterBuilder(): MarkwonAdapter.Builder =
