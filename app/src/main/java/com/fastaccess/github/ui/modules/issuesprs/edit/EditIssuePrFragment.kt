@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -37,6 +38,10 @@ class EditIssuePrFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ) {
 
+        assigneesLayout.isVisible = model.isOwner
+        labelsLayout.isVisible = model.isOwner
+        milestoneLayout.isVisible = model.isOwner
+
         toolbar.title = if (model.isCreate) getString(R.string.create_issue) else getString(R.string.edit)
         toolbar.subtitle = "${model.login}/${model.repo}/${getString(R.string.issue)}${if (model.isCreate) "" else "#${model.number}"}"
         setToolbarNavigationIcon(R.drawable.ic_clear)
@@ -49,7 +54,7 @@ class EditIssuePrFragment : BaseFragment() {
                 descriptionEditText.post { markwon.setMarkdown(descriptionEditText, description) }
             }
         }
-        descriptionEditText.setOnTouchListener { v, event ->
+        descriptionEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 routeForResult(EDITOR_DEEPLINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to model.description))
                 return@setOnTouchListener true
@@ -67,7 +72,8 @@ class EditIssuePrFragment : BaseFragment() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 COMMENT_REQUEST_CODE -> {
-                    descriptionEditText.post { markwon.setMarkdown(descriptionEditText, data?.getStringExtra(EXTRA) ?: model.description ?: "") }
+                    model.description = data?.getStringExtra(EXTRA)
+                    descriptionEditText.post { markwon.setMarkdown(descriptionEditText, model.description ?: "") }
                 }
                 else -> Timber.e("nothing yet for requestCode($requestCode)")
             }

@@ -185,7 +185,10 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         }
     }
 
-    private fun menuClick(model: IssueModel) {
+    private fun menuClick(
+        model: IssueModel,
+        isOwner: Boolean
+    ) {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.scrollTop -> {
@@ -218,7 +221,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 )
                 R.id.edit -> EditIssuePrActivity.startForResult(
                     this, EditIssuePrBundleModel(
-                        login, repo, number, model.title, model.body, false
+                        login, repo, number, model.title, model.body, false, isOwner = isOwner
                     ), EDIT_ISSUE_REQUEST_CODE
                 )
             }
@@ -291,15 +294,15 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 initReactions(model)
             }
         }
-        menuClick(model)
+        val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
+            model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true
+        menuClick(model, isAuthor)
         initReactions(model)
         initLabels(model.labels)
         initAssignees(model.assignees)
         initMilestone(model.milestone)
         toolbar.menu.let {
-            val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
-                model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true
-            it.findItem(R.id.edit).isVisible = model.viewerDidAuthor == true
+            it.findItem(R.id.edit).isVisible = model.viewerDidAuthor == true || isAuthor
             it.findItem(R.id.assignees).isVisible = isAuthor
             it.findItem(R.id.milestone).isVisible = isAuthor
             it.findItem(R.id.labels).isVisible = isAuthor

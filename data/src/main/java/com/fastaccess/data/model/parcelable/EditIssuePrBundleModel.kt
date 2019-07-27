@@ -10,11 +10,11 @@ data class EditIssuePrBundleModel(
     val login: String,
     val repo: String,
     val number: Int,
-    val title: String? = null,
-    val description: String? = null,
+    var title: String? = null,
+    var description: String? = null,
     val isCreate: Boolean = true,
     val isPr: Boolean = false,
-    val IsOwner: Boolean = false
+    val isOwner: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -38,7 +38,7 @@ data class EditIssuePrBundleModel(
         parcel.writeString(description)
         parcel.writeByte(if (isCreate) 1 else 0)
         parcel.writeByte(if (isPr) 1 else 0)
-        parcel.writeByte(if (IsOwner) 1 else 0)
+        parcel.writeByte(if (isOwner) 1 else 0)
     }
 
     override fun describeContents(): Int {
