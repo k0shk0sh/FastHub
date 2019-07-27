@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.getEmoji
+import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
@@ -27,9 +28,10 @@ import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
-import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.lockunlock.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.EDITOR_DEEPLINK
@@ -85,13 +87,12 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         savedInstanceState: Bundle?
     ) {
         swipeRefresh.appBarLayout = appBar
-        val scrollTop = toolbar.menu?.findItem(R.id.scrollTop)
         appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
+            val scrollTop = toolbar.menu?.findItem(R.id.scrollTop)
             val isVisible = p1 < 0
             if (isVisible && scrollTop?.isVisible == false) {
                 scrollTop.isVisible = true
-            }
-            if (!isVisible && scrollTop?.isVisible == true) {
+            } else if (!isVisible && scrollTop?.isVisible == true) {
                 scrollTop.isVisible = false
             }
         })
@@ -214,6 +215,11 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 R.id.milestone -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,
                     MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(login, repo, model.assignees, number)
+                )
+                R.id.edit -> EditIssuePrActivity.startForResult(
+                    this, EditIssuePrBundleModel(
+                        login, repo, number, model.title, model.body, false
+                    ), EDIT_ISSUE_REQUEST_CODE
                 )
             }
             return@setOnMenuItemClickListener true
@@ -362,6 +368,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
     companion object {
         const val TAG = "IssueFragment"
         const val COMMENT_REQUEST_CODE = 1001
+        const val EDIT_ISSUE_REQUEST_CODE = 1002
         fun newInstance(
             login: String,
             repo: String,

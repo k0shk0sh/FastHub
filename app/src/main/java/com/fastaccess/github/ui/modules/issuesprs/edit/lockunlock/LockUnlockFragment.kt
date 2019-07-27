@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.issuesprs.edit
+package com.fastaccess.github.ui.modules.issuesprs.edit.lockunlock
 
 import android.content.Context
 import android.os.Bundle

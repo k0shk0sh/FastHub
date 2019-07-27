@@ -117,6 +117,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.modules.issuesprs.edit.EditIssuePrActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

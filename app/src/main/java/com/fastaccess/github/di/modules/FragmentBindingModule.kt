@@ -6,9 +6,10 @@ import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
 import com.fastaccess.github.ui.modules.editor.EditorFragment
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
-import com.fastaccess.github.ui.modules.issuesprs.edit.LockUnlockFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.lockunlock.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.issuesprs.fragment.FilterIssuePullRequestsFragment
 import com.fastaccess.github.ui.modules.main.fragment.MainFragment
@@ -56,4 +57,5 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideAssigneesFragment(): AssigneesFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideMilestoneFragment(): MilestoneFragment
     @PerFragment @ContributesAndroidInjector(modules = [EditorModule::class]) abstract fun provideEditorFragment(): EditorFragment
+    @PerFragment @ContributesAndroidInjector(modules = [EditIssuePrModule::class]) abstract fun provideEditIssuePrFragment(): EditIssuePrFragment
 }

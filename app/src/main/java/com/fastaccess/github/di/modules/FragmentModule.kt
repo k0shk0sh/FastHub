@@ -9,6 +9,7 @@ import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.modules.editor.EditorFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
+import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.GrammarLocatorDef
@@ -84,4 +85,9 @@ class IssueModule {
 @Module(includes = [FragmentModule::class])
 class EditorModule {
     @PerFragment @Provides fun provideEditorContext(fragment: EditorFragment) = fragment.requireContext()
+}
+
+@Module(includes = [FragmentModule::class])
+class EditIssuePrModule {
+    @PerFragment @Provides fun provideEditorContext(fragment: EditIssuePrFragment) = fragment.requireContext()
 }
