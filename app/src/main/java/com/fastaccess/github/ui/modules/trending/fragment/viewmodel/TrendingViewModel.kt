@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.fastaccess.data.model.FirebaseTrendingConfigModel
 import com.fastaccess.data.model.TrendingModel
 import com.fastaccess.data.model.parcelable.FilterTrendingModel
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.repository.services.ScrapService
 import com.fastaccess.github.BuildConfig
 import com.fastaccess.github.base.BaseViewModel
@@ -20,7 +21,8 @@ import javax.inject.Named
  */
 class TrendingViewModel @Inject constructor(
     @Named(value = "github_trending") private val databaseReference: DatabaseReference,
-    private val retrofitBuilder: Retrofit.Builder
+    private val retrofitBuilder: Retrofit.Builder,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
     private var trendingModel = FirebaseTrendingConfigModel()
@@ -50,6 +52,8 @@ class TrendingViewModel @Inject constructor(
         val language = if (model.lang == "All") "" else model.lang.replace(" ", "_").toLowerCase()
         service?.getTrending(language, model.since.name.toLowerCase())?.let { observable ->
             justSubscribe(observable
+                .subscribeOn(schedulerProvider.ioThread())
+                .observeOn(schedulerProvider.uiThread())
                 .map { html ->
                     val document = Jsoup.parse(html, "")
                     val list = document.select(trendingModel.listName)

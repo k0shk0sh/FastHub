@@ -121,6 +121,7 @@
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <string name="feeds" translatable="false">Feeds</string>
+    <string name="opened_this_issue" translatable="false">opened this issue</string>
     <!-- END OF DO NOT COPY, START COPYING FROM LINE BELOW -->
 
     <!--Please DO NOT translate github terms, such as Pull Request, Issues, Commits & etc.-->

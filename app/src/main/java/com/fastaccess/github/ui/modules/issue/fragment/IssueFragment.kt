@@ -85,8 +85,15 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
         savedInstanceState: Bundle?
     ) {
         swipeRefresh.appBarLayout = appBar
+        val scrollTop = toolbar.menu?.findItem(R.id.scrollTop)
         appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
-            toolbar.menu?.findItem(R.id.scrollTop)?.isVisible = p1 < 0
+            val isVisible = p1 < 0
+            if (isVisible && scrollTop?.isVisible == false) {
+                scrollTop.isVisible = true
+            }
+            if (!isVisible && scrollTop?.isVisible == true) {
+                scrollTop.isVisible = false
+            }
         })
         setupToolbar("", R.menu.issue_menu)
         (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
@@ -247,7 +254,7 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
         opener.text = SpannableBuilder.builder()
             .bold(model.author?.login)
-            .append(" opened this issue ")
+            .append(getString(R.string.opened_this_issue))
             .append(model.createdAt?.timeAgo())
 
         userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
