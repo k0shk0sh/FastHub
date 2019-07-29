@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.R
 import kotlinx.android.synthetic.main.markdown_buttons_layout.view.*
@@ -14,7 +15,8 @@ import kotlinx.android.synthetic.main.markdown_buttons_layout.view.*
  */
 class MarkdownLayout : LinearLayout, View.OnClickListener {
 
-    private lateinit var editText: EditText
+    lateinit var layoutCallback: MarkdownLayoutCallback
+
 
     constructor(context: Context?) : super(context)
     constructor(
@@ -35,8 +37,7 @@ class MarkdownLayout : LinearLayout, View.OnClickListener {
         if (isInEditMode) return
     }
 
-    fun init(editText: EditText) {
-        this.editText = editText
+    fun init() {
         headerOne.setOnClickListener(this)
         headerTwo.setOnClickListener(this)
         headerThree.setOnClickListener(this)
@@ -55,10 +56,12 @@ class MarkdownLayout : LinearLayout, View.OnClickListener {
         inlineCode.setOnClickListener(this)
         addEmoji.setOnClickListener(this)
         signature.setOnClickListener(this)
+        view.setOnClickListener(this)
 
     }
 
     override fun onClick(v: View?) {
+        val editText = layoutCallback.provideEditText()
         if (editText.selectionEnd == -1 || editText.selectionStart == -1) {
             return
         }
@@ -75,12 +78,36 @@ class MarkdownLayout : LinearLayout, View.OnClickListener {
                 R.id.code -> MarkdownProvider.addCode(editText)
                 R.id.numbered -> MarkdownProvider.addList(editText, "1")
                 R.id.quote -> MarkdownProvider.addQuote(editText)
-                R.id.link -> MarkdownProvider.addLink(editText, "", "")
-                R.id.image -> MarkdownProvider.addPhoto(editText, "", "")
+                R.id.link -> layoutCallback.openLinkDialog()
+                R.id.image -> layoutCallback.openLinkDialog(true)
                 R.id.unCheckbox -> MarkdownProvider.addList(editText, "- [x]")
                 R.id.checkbox -> MarkdownProvider.addList(editText, "- [ ]")
                 R.id.inlineCode -> MarkdownProvider.addInlinleCode(editText)
+                R.id.view -> {
+                    val isPreview = editText.isVisible
+                    editText.isVisible = !isPreview
+                    layoutCallback.provideReview(isPreview)
+                }
             }
         }
+    }
+
+    fun onLinkSelected(
+        title: String,
+        link: String,
+        isImage: Boolean
+    ) {
+        val editText = layoutCallback.provideEditText()
+        if (isImage) {
+            MarkdownProvider.addPhoto(editText, title, link)
+        } else {
+            MarkdownProvider.addLink(editText, title, link)
+        }
+    }
+
+    interface MarkdownLayoutCallback {
+        fun provideEditText(): EditText
+        fun provideReview(isReview: Boolean)
+        fun openLinkDialog(isImage: Boolean = false)
     }
 }

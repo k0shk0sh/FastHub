@@ -6,6 +6,7 @@ import com.fastaccess.github.di.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
+import com.fastaccess.github.ui.modules.editor.dialog.UploadPictureViewModel
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.viewmodel.AssigneesViewModel
@@ -96,4 +97,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(MilestoneViewModel::class)
     abstract fun bindMilestoneViewModel(viewModel: MilestoneViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(UploadPictureViewModel::class)
+    abstract fun bindUploadPictureViewModel(viewModel: UploadPictureViewModel): ViewModel
 }

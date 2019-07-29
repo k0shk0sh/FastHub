@@ -11,12 +11,18 @@ import com.fastaccess.github.ui.modules.profile.ProfileActivity
 import com.fastaccess.github.ui.modules.trending.TrendingActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 
 /**
  * Created by Kosh on 12.05.18.
  */
 @Suppress("unused")
-@Module
+@Module(
+    includes = [
+        AndroidSupportInjectionModule::class,
+        FragmentBindingModule::class,
+        DialogFragmentBindingModule::class]
+)
 abstract class ActivityBindingModule {
     @PerActivity @ContributesAndroidInjector abstract fun mainActivity(): MainActivity
     @PerActivity @ContributesAndroidInjector abstract fun loginChooser(): LoginChooserActivity

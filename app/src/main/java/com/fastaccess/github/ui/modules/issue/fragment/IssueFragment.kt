@@ -263,7 +263,9 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
         opener.text = SpannableBuilder.builder()
             .bold(model.author?.login)
+            .space()
             .append(getString(R.string.opened_this_issue))
+            .space()
             .append(model.createdAt?.timeAgo())
 
         userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")

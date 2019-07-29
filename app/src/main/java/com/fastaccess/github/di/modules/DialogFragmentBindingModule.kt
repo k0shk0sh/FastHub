@@ -1,6 +1,7 @@
 package com.fastaccess.github.di.modules
 
 import com.fastaccess.github.di.scopes.PerFragment
+import com.fastaccess.github.ui.modules.editor.dialog.CreateLinkDialogFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.CreateMilestoneDialogFragment
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
@@ -24,4 +25,5 @@ abstract class DialogFragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuesPrsBottomSheet(): FilterIssuesPrsBottomSheet
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterSearchBottomSheet(): FilterSearchBottomSheet
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterTrendingBottomSheet(): FilterTrendingBottomSheet
+    @PerFragment @ContributesAndroidInjector abstract fun provideCreateLinkDialogFragment(): CreateLinkDialogFragment
 }

@@ -46,6 +46,7 @@ class EditIssuePrFragment : BaseFragment() {
         toolbar.subtitle = "${model.login}/${model.repo}/${getString(R.string.issue)}${if (model.isCreate) "" else "#${model.number}"}"
         setToolbarNavigationIcon(R.drawable.ic_clear)
         toolbar.inflateMenu(R.menu.submit_menu)
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         if (savedInstanceState == null) {
             titleEditText.setText(model.title)

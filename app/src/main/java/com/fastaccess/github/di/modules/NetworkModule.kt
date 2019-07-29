@@ -64,6 +64,24 @@ class NetworkModule {
         .addInterceptor(httpLoggingInterceptor)
         .build()
 
+    @Named("imgurClient") @Singleton @Provides fun provideHttpClientForImgur(
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient = OkHttpClient
+        .Builder()
+        .addInterceptor(Pandora.get().interceptor)
+        .addInterceptor(httpLoggingInterceptor)
+        .addInterceptor(object : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                requestBuilder.header("Authorization", "Client-ID " + BuildConfig.IMGUR_CLIENT_ID)
+                requestBuilder.method(original.method, original.body)
+                val request = requestBuilder.build()
+                return chain.proceed(request)
+            }
+        })
+        .build()
+
     @Named("apolloClient") @Singleton @Provides fun provideHttpClientForApollo(
         auth: AuthenticationInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
@@ -108,6 +126,14 @@ class NetworkModule {
     @Singleton @Provides fun provideOrganizationService(retrofit: Retrofit): OrganizationService = retrofit.create(OrganizationService::class.java)
     @Singleton @Provides fun provideIssueService(retrofit: Retrofit): IssuePrService = retrofit.create(IssuePrService::class.java)
     @Singleton @Provides fun provideRepoService(retrofit: Retrofit): RepoService = retrofit.create(RepoService::class.java)
+    @Singleton @Provides fun provideImgurService(
+        retrofit: Retrofit.Builder,
+        @Named("imgurClient") okHttpClient: OkHttpClient
+    ): ImgurService = retrofit
+        .baseUrl(BuildConfig.IMGUR_URL)
+        .client(okHttpClient)
+        .build()
+        .create(ImgurService::class.java)
 }
 
 class AuthenticationInterceptor(

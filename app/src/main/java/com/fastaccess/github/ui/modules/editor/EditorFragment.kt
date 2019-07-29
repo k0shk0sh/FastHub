@@ -5,17 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
+import android.widget.EditText
+import androidx.core.view.isVisible
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.show
 import com.fastaccess.github.platform.mentions.MentionsPresenter
+import com.fastaccess.github.ui.modules.editor.dialog.CreateLinkDialogFragment
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.asString
+import com.fastaccess.github.utils.extensions.showKeyboard
 import com.fastaccess.markdown.MarkdownProvider
+import com.fastaccess.markdown.widget.MarkdownLayout
 import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
 import com.otaliastudios.autocomplete.CharPolicy
@@ -27,11 +33,14 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2019-07-20.
  */
-class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener {
+class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener,
+                       MarkdownLayout.MarkdownLayoutCallback,
+                       CreateLinkDialogFragment.OnLinkSelected {
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
     @Inject lateinit var mentionsPresenter: MentionsPresenter
     @Inject lateinit var markwonAdapterBuilder: MarkwonAdapter.Builder
+
 
     override fun viewModel(): BaseViewModel? = null
     override fun layoutRes(): Int = R.layout.editor_fragment_layout
@@ -44,6 +53,8 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
         if (savedInstanceState == null) {
             editText.setText(arguments?.getString(EXTRA) ?: "")
         }
+        editText.showKeyboard()
+        editText.setSelection(editText.asString().length)
         setupToolbar(R.string.markdown, R.menu.submit_menu) { item ->
             val intent = Intent().apply {
                 putExtra(EXTRA, editText.asString())
@@ -53,7 +64,8 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
         }
         mentionsPresenter.isMatchParent = true
         setToolbarNavigationIcon(R.drawable.ic_clear)
-        markdownLayout.init(editText)
+        markdownLayout.layoutCallback = this
+        markdownLayout.init()
         initEditText()
     }
 
@@ -76,6 +88,28 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
 
     override fun onClick(positive: Boolean) {
         positive.isTrue { activity?.finish() }
+    }
+
+    override fun provideEditText(): EditText = editText
+    override fun provideReview(isReview: Boolean) {
+        if (isReview) {
+            preview.isVisible = true
+            markwon.setMarkdown(preview, editText.asString())
+        } else {
+            preview.setText("")
+            preview.isVisible = false
+        }
+    }
+
+    override fun openLinkDialog(isImage: Boolean) = CreateLinkDialogFragment.newInstance(isImage).show(childFragmentManager)
+
+    override fun onLinkSelected(
+        title: String,
+        link: String,
+        isImage: Boolean
+    ) {
+        //TODO upload pic and get URL
+        markdownLayout.onLinkSelected(title, link, isImage)
     }
 
     private fun initEditText() {
