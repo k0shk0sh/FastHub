@@ -54,16 +54,19 @@ class EditIssuePrFragment : BaseFragment() {
         toolbar.inflateMenu(R.menu.submit_menu)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
+        viewModel.templateLiveData.observeNotNull(this) {
+            if (model.description.isNullOrEmpty()) {
+                model.description = it
+                descriptionEditText.post { markwon.setMarkdown(descriptionEditText, it) }
+            }
+        }
+
         if (savedInstanceState == null) {
             titleEditText.setText(model.title)
             val description = model.description
             if (!description.isNullOrEmpty()) {
                 descriptionEditText.post { markwon.setMarkdown(descriptionEditText, description) }
             } else {
-                viewModel.templateLiveData.observeNotNull(this) {
-                    model.description = it
-                    descriptionEditText.post { markwon.setMarkdown(descriptionEditText, it) }
-                }
                 viewModel.loadTemplate(model.login, model.repo)
             }
         }
