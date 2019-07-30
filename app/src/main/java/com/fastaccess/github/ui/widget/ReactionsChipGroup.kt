@@ -18,8 +18,16 @@ import kotlinx.android.synthetic.main.reactions_chips_layout.view.*
  */
 class ReactionsChipGroup : ChipGroup {
     constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(
+        context: Context?,
+        attrs: AttributeSet?
+    ) : super(context, attrs)
+
+    constructor(
+        context: Context?,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr)
 
     @SuppressLint("RestrictedApi")
     override fun onFinishInflate() {
@@ -31,7 +39,8 @@ class ReactionsChipGroup : ChipGroup {
         id: String,
         reactionGroups: List<ReactionGroupModel>?,
         popupWindow: PopupWindow? = null,
-        callback: (() -> Unit)?) {
+        callback: (() -> Unit)?
+    ) {
         thumbsUp.text = "${ReactionContent.THUMBS_UP.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.THUMBS_UP }
             ?.users?.totalCount}"
@@ -71,7 +80,8 @@ class ReactionsChipGroup : ChipGroup {
         id: String,
         model: ReactionGroupModel?,
         popupWindow: PopupWindow?,
-        callback: (() -> Unit)?) {
+        callback: (() -> Unit)?
+    ) {
         model?.let { reaction ->
             val add: Boolean
             if (reaction.viewerHasReacted == true) {

@@ -40,7 +40,6 @@ import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.hideKeyboard
 import com.fastaccess.github.utils.extensions.isConnected
-import com.fastaccess.github.utils.extensions.popupEmoji
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
@@ -291,10 +290,8 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                 R.color.material_red_500
             }
         )
-        addEmoji.setOnClickListener {
-            it.popupEmoji(requireNotNull(model.id), model.reactionGroups) {
-                initReactions(model)
-            }
+        adaptiveEmoticon.init(requireNotNull(model.id), model.reactionGroups) {
+            initReactions(model)
         }
         val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
             model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true

@@ -64,27 +64,7 @@
                     app:autoSizeTextType="uniform"
                     tools:text="Owner" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/reactionsText"
-                    style="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    app:autoSizeMaxTextSize="12sp"
-                    app:autoSizeMinTextSize="10sp"
-                    app:autoSizeStepGranularity="1dp"
-                    tools:text="emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, emoji 1, " />
             </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/addEmoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_add_emoji" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/menu"
@@ -103,6 +83,12 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textIsSelectable="true"
             tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
+
+        <com.fastaccess.github.ui.widget.AdaptiveEmoticonLayout
+            android:id="@+id/adaptiveEmoticon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal" />
     </LinearLayout>
 
 </FrameLayout>

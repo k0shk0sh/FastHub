@@ -36,11 +36,11 @@ import javax.inject.Inject
 class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener,
                        MarkdownLayout.MarkdownLayoutCallback,
                        CreateLinkDialogFragment.OnLinkSelected {
+
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
     @Inject lateinit var mentionsPresenter: MentionsPresenter
     @Inject lateinit var markwonAdapterBuilder: MarkwonAdapter.Builder
-
 
     override fun viewModel(): BaseViewModel? = null
     override fun layoutRes(): Int = R.layout.editor_fragment_layout
@@ -107,10 +107,7 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
         title: String,
         link: String,
         isImage: Boolean
-    ) {
-        //TODO upload pic and get URL
-        markdownLayout.onLinkSelected(title, link, isImage)
-    }
+    ) = markdownLayout.onLinkSelected(title, link, isImage)
 
     private fun initEditText() {
         Autocomplete.on<String>(editText)
