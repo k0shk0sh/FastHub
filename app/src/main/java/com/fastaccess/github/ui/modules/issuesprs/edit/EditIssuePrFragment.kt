@@ -7,10 +7,13 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.routeForResult
 import com.fastaccess.github.utils.EDITOR_DEEPLINK
 import com.fastaccess.github.utils.EXTRA
@@ -24,8 +27,11 @@ import javax.inject.Inject
  * Created by Kosh on 2019-07-27.
  */
 class EditIssuePrFragment : BaseFragment() {
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var markwon: Markwon
 
+    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(EditIssuePrViewModel::class.java) }
     private val model by lazy {
         arguments?.getParcelable(EXTRA) as? EditIssuePrBundleModel ?: throw NullPointerException("EditIssuePrBundleModel is null")
     }
@@ -53,6 +59,12 @@ class EditIssuePrFragment : BaseFragment() {
             val description = model.description
             if (!description.isNullOrEmpty()) {
                 descriptionEditText.post { markwon.setMarkdown(descriptionEditText, description) }
+            } else {
+                viewModel.templateLiveData.observeNotNull(this) {
+                    model.description = it
+                    descriptionEditText.post { markwon.setMarkdown(descriptionEditText, it) }
+                }
+                viewModel.loadTemplate(model.login, model.repo)
             }
         }
         descriptionEditText.setOnTouchListener { _, event ->

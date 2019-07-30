@@ -9,6 +9,7 @@ import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
 import com.fastaccess.github.ui.modules.editor.dialog.UploadPictureViewModel
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
+import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.viewmodel.AssigneesViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.viewmodel.LabelsViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.viewmodel.MilestoneViewModel
@@ -100,4 +101,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(UploadPictureViewModel::class)
     abstract fun bindUploadPictureViewModel(viewModel: UploadPictureViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(EditIssuePrViewModel::class)
+    abstract fun bindEditIssuePrViewModel(viewModel: EditIssuePrViewModel): ViewModel
 }
