@@ -1,5 +1,6 @@
 package com.fastaccess.github.ui.modules.issuesprs.edit
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -35,6 +36,15 @@ class EditIssuePrActivity : BaseActivity() {
             fragment.startActivityForResult(Intent(fragment.requireContext(), EditIssuePrActivity::class.java).apply {
                 putExtra(EXTRA, model)
             }, requestCode)
+        }
+
+        fun start(
+            context: Context,
+            model: EditIssuePrBundleModel
+        ) {
+            context.startActivity(Intent(context, EditIssuePrActivity::class.java).apply {
+                putExtra(EXTRA, model)
+            })
         }
     }
 }

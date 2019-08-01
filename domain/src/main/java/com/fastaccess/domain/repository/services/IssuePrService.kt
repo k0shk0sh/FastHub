@@ -24,7 +24,7 @@ interface IssuePrService {
         @Body issue: IssueRequestModel
     ): Observable<IssueResponse>
 
-    @PATCH("repos/{owner}/{repo}/issues")
+    @POST("repos/{owner}/{repo}/issues")
     fun createIssue(
         @Path("owner") owner: String,
         @Path("repo") repo: String,

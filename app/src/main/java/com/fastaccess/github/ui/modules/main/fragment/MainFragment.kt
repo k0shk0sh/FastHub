@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.MainScreenModel
+import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
@@ -18,6 +19,7 @@ import com.fastaccess.github.extensions.route
 import com.fastaccess.github.platform.extension.onClick
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
+import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
@@ -110,6 +112,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
                     getString(R.string.confirm_message), getString(R.string.logout), getString(R.string.cancel)
                 )
                 R.id.add_account -> LoginChooserActivity.startActivity(requireActivity(), false)
+                R.id.reportBug -> EditIssuePrActivity.start(requireContext(), EditIssuePrBundleModel("k0shk0sh", "FastHub", 0, isCreate = true))
             }
             return@setNavigationItemSelectedListener true
         }

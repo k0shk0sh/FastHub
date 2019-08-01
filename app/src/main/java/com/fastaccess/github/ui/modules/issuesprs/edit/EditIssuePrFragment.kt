@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
@@ -18,6 +19,7 @@ import com.fastaccess.github.extensions.routeForResult
 import com.fastaccess.github.utils.EDITOR_DEEPLINK
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.asString
+import com.fastaccess.github.utils.extensions.beginDelayedTransition
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.edit_issue_pr_fragment_layout.*
@@ -45,12 +47,15 @@ class EditIssuePrFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ) {
 
+        observeChanges()
+
         toolbar.title = if (model.isCreate) getString(R.string.create_issue) else getString(R.string.edit)
         toolbar.subtitle = "${model.login}/${model.repo}/${getString(R.string.issue)}${if (model.isCreate) "" else "#${model.number}"}"
         setToolbarNavigationIcon(R.drawable.ic_clear)
         toolbar.inflateMenu(R.menu.submit_menu)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         toolbar.setOnMenuItemClickListener {
+            if (viewModel.progress.value == true) return@setOnMenuItemClickListener true
             val title = titleEditText.asString()
             val description = model.description
             if (title.isEmpty() || model.login.isEmpty() || model.repo.isEmpty()) {
@@ -72,8 +77,6 @@ class EditIssuePrFragment : BaseFragment() {
             }
             return@setOnMenuItemClickListener true
         }
-
-        observeChanges()
 
         if (savedInstanceState == null) {
             titleEditText.setText(model.title)
@@ -111,6 +114,11 @@ class EditIssuePrFragment : BaseFragment() {
     }
 
     private fun observeChanges() {
+        viewModel.progress.observeNotNull(this) {
+            container.beginDelayedTransition()
+            progressBar.isVisible = it
+            toolbar.menu?.findItem(R.id.submit)?.isVisible = !it
+        }
         viewModel.templateLiveData.observeNotNull(this) {
             if (model.description.isNullOrEmpty()) {
                 model.description = it
