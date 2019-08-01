@@ -21,10 +21,11 @@ class IssueTimelineViewModel @Inject constructor(
     private val issueUseCase: GetIssueUseCase,
     private val timelineUseCase: GetIssueTimelineUseCase,
     private val issueRepositoryProvider: IssueRepositoryProvider,
-    private val editIssuePrUseCase: CloseOpenIssuePrUseCase,
+    private val closeOpenIssuePrUseCase: CloseOpenIssuePrUseCase,
     private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase,
     private val loginRepositoryProvider: LoginRepositoryProvider,
-    private val createIssueCommentUseCase: CreateIssueCommentUseCase
+    private val createIssueCommentUseCase: CreateIssueCommentUseCase,
+    private val editIssuePrUseCase: EditIssuePrUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -36,10 +37,11 @@ class IssueTimelineViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         timelineUseCase.dispose()
-        editIssuePrUseCase.dispose()
+        closeOpenIssuePrUseCase.dispose()
         issueUseCase.dispose()
         lockUnlockIssuePrUseCase.dispose()
         createIssueCommentUseCase.dispose()
+        editIssuePrUseCase.dispose()
     }
 
     fun getIssue(
@@ -99,10 +101,10 @@ class IssueTimelineViewModel @Inject constructor(
         repo: String,
         number: Int
     ) {
-        editIssuePrUseCase.repo = repo
-        editIssuePrUseCase.login = login
-        editIssuePrUseCase.number = number
-        justSubscribe(editIssuePrUseCase.buildObservable()
+        closeOpenIssuePrUseCase.repo = repo
+        closeOpenIssuePrUseCase.login = login
+        closeOpenIssuePrUseCase.number = number
+        justSubscribe(closeOpenIssuePrUseCase.buildObservable()
             .doOnNext {
                 addTimeline(it)
             })
@@ -159,5 +161,20 @@ class IssueTimelineViewModel @Inject constructor(
         val _list = userNamesLiveData.value ?: arrayListOf()
         _list.addAll(list.map { it.comment?.author?.login ?: it.comment?.author?.name ?: "" })
         userNamesLiveData.postValue(_list)
+    }
+
+    fun editIssue(
+        login: String,
+        repo: String,
+        number: Int,
+        title: String?,
+        description: String?
+    ) {
+        editIssuePrUseCase.login = login
+        editIssuePrUseCase.repo = repo
+        editIssuePrUseCase.number = number
+        editIssuePrUseCase.title = title
+        editIssuePrUseCase.description = description
+        justSubscribe(editIssuePrUseCase.buildObservable())
     }
 }

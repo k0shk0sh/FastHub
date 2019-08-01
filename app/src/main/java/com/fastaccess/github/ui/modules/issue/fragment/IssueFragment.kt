@@ -133,6 +133,10 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
                     commentText.setText(data?.getStringExtra(EXTRA))
                     sendComment.callOnClick()
                 }
+                EDIT_ISSUE_REQUEST_CODE -> {
+                    val model = data?.getParcelableExtra<EditIssuePrBundleModel>(EXTRA) ?: return
+                    viewModel.editIssue(login, repo, number, model.title, model.description)
+                }
                 else -> Timber.e("nothing yet for requestCode($requestCode)")
             }
         }

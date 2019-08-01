@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -73,131 +72,9 @@
                     android:gravity="top|start"
                     android:inputType="none"
                     android:maxLines="20"
-                    android:minLines="5" />
+                    android:minLines="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:id="@+id/assigneesLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs_large"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
-                    android:drawableEnd="@drawable/ic_add"
-                    android:fontFamily="@font/rubik_bold"
-                    android:gravity="center|start"
-                    android:paddingTop="@dimen/spacing_xs_large"
-                    android:paddingBottom="@dimen/spacing_xs_large"
-                    android:text="@string/assignees"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/CardViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="10dp">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/assigneesList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/spacing_normal"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        tools:text="All children like flattened walnuts in peanut sauce and wasabi." />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/labelsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs_large"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
-                    android:drawableEnd="@drawable/ic_add"
-                    android:fontFamily="@font/rubik_bold"
-                    android:gravity="center|start"
-                    android:paddingTop="@dimen/spacing_xs_large"
-                    android:paddingBottom="@dimen/spacing_xs_large"
-                    android:text="@string/labels"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/CardViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="10dp">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/labelsList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/spacing_normal"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        tools:text="All children like flattened walnuts in peanut sauce and wasabi." />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/milestoneLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs_large"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
-                    android:drawableEnd="@drawable/ic_add"
-                    android:fontFamily="@font/rubik_bold"
-                    android:gravity="center|start"
-                    android:paddingTop="@dimen/spacing_xs_large"
-                    android:paddingBottom="@dimen/spacing_xs_large"
-                    android:text="@string/milestone"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/CardViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="10dp">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/assignees"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/spacing_normal"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        tools:text="All children like flattened walnuts in peanut sauce and wasabi." />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

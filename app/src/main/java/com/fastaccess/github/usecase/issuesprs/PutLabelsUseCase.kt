@@ -1,7 +1,7 @@
 package com.fastaccess.github.usecase.issuesprs
 
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.repository.services.RepoService
+import com.fastaccess.domain.repository.services.IssuePrService
 import com.fastaccess.domain.response.body.LabelsBodyModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable
@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Created by Kosh on 16.02.19.
  */
 class PutLabelsUseCase @Inject constructor(
-    private val repoService: RepoService,
+    private val issueService: IssuePrService,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
@@ -22,15 +22,15 @@ class PutLabelsUseCase @Inject constructor(
     var toRemove: List<String>? = null
 
     override fun buildObservable(): Observable<Boolean> = when (toRemove.isNullOrEmpty()) {
-        true -> repoService.addLabelsToIssue(login, repo, number, LabelsBodyModel(toAdd))
+        true -> issueService.addLabelsToIssue(login, repo, number, LabelsBodyModel(toAdd))
             .subscribeOn(schedulerProvider.ioThread())
             .observeOn(schedulerProvider.uiThread())
             .map { true }
-        else -> repoService.addLabelsToIssue(login, repo, number, LabelsBodyModel(toAdd))
+        else -> issueService.addLabelsToIssue(login, repo, number, LabelsBodyModel(toAdd))
             .subscribeOn(schedulerProvider.ioThread())
             .observeOn(schedulerProvider.uiThread())
             .flatMap { Observable.fromIterable(toRemove) }
-            .flatMap { repoService.removeLabelsToIssue(login, repo, number, it) }
+            .flatMap { issueService.removeLabelsToIssue(login, repo, number, it) }
             .map { true }
     }
 }
