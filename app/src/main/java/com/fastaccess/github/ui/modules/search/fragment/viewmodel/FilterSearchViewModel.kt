@@ -7,7 +7,7 @@ import com.fastaccess.data.model.ShortRepoModel
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
-import com.fastaccess.data.repository.SuggestionRepositoryProvider
+import com.fastaccess.data.repository.SuggestionRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
@@ -24,7 +24,7 @@ class FilterSearchViewModel @Inject constructor(
     private val filterPullRequestsUseCase: FilterPullRequestsUseCase,
     private val filterSearchReposUseCase: FilterSearchReposUseCase,
     private val filterSearchUsersUseCase: FilterSearchUsersUseCase,
-    private val suggestionRepositoryProvider: SuggestionRepositoryProvider
+    private val suggestionRepositoryProvider: SuggestionRepository
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null

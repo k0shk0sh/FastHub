@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
-import com.fastaccess.data.repository.LoginRepositoryProvider
-import com.fastaccess.data.repository.isMe
+import com.fastaccess.data.repository.LoginLocalRepository
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
@@ -43,7 +42,7 @@ import javax.inject.Inject
  */
 class ProfileFragment : BasePagerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var loginRepositoryProvider: LoginRepositoryProvider
+    @Inject lateinit var loginRepositoryProvider: LoginLocalRepository
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }

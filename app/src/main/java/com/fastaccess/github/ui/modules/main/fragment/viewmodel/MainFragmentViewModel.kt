@@ -26,11 +26,11 @@ class MainFragmentViewModel @Inject constructor(
     private val pullRequestsMainScreenUseCase: PullRequestsMainScreenUseCase,
     private val notificationUseCase: NotificationUseCase,
     private val feedsMainScreenUseCase: FeedsMainScreenUseCase,
-    private val feedsRepositoryProvider: FeedsRepositoryProvider,
-    private val myIssuesPullsRepo: MyIssuesPullsRepositoryProvider,
-    private val notificationRepositoryProvider: NotificationRepositoryProvider,
+    private val feedsRepositoryProvider: FeedsRepository,
+    private val myIssuesPullsRepo: MyIssuesPullsRepository,
+    private val notificationRepositoryProvider: NotificationRepository,
     private val fasthubDatabase: FastHubDatabase,
-    private val loginProvider: LoginRepositoryProvider,
+    private val loginProvider: LoginLocalRepository,
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 

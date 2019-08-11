@@ -17,8 +17,10 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 11.05.18.
  */
-class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao,
-                                                  private val loginService: LoginService) : LoginLocalRepository, LoginRemoteRepository {
+class LoginRepositoryProvider @Inject constructor(
+    private val loginDao: LoginDao,
+    private val loginService: LoginService
+) : LoginLocalRepository, LoginRemoteRepository {
     override fun getLogin(): Maybe<LoginModel?> = loginDao.getLogin()
     override fun getLoginBlocking(): LoginModel? = loginDao.getLoginBlocking()
     override fun getAllLiveData(): LiveData<LoginModel?> = loginDao.getAllLiveData()
@@ -30,10 +32,24 @@ class LoginRepositoryProvider @Inject constructor(private val loginDao: LoginDao
     override fun logoutAll() = loginDao.logoutAll()
     override fun loginAccessToken(): Observable<UserResponse> = loginService.loginAccessToken()
     override fun login(authModel: AuthBodyModel): Observable<AccessTokenResponse> = loginService.login(authModel)
-    override fun getAccessToken(code: String, clientId: String, clientSecret: String, state: String,
-                                redirectUrl: String) = loginService.getAccessToken(
+    override fun getAccessToken(
+        code: String,
+        clientId: String,
+        clientSecret: String,
+        state: String,
+        redirectUrl: String
+    ) = loginService.getAccessToken(
         "https://github.com/login/oauth/access_token", code, clientId, clientSecret, state, redirectUrl
     )
+
+    override fun isMe(
+        login: String,
+        action: (isMe: Boolean) -> Unit
+    ): Disposable {
+        return getLogin().subscribe({ action.invoke(login == it?.login) }, { action.invoke(false) })
+    }
+
+
 }
 
 interface LoginLocalRepository {
@@ -46,8 +62,8 @@ interface LoginLocalRepository {
     fun update(login: LoginModel): Completable
     fun deleteLogin(login: LoginModel)
     fun logoutAll()
-}
-
-fun LoginRepositoryProvider.isMe(login: String, action: (isMe: Boolean) -> Unit): Disposable {
-    return getLogin().subscribe({ action.invoke(login == it?.login) }, { action.invoke(false) })
+    fun isMe(
+        login: String,
+        action: (isMe: Boolean) -> Unit
+    ): Disposable
 }

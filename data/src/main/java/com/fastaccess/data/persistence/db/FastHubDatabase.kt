@@ -10,19 +10,24 @@ import com.fastaccess.data.persistence.models.*
  * Created by Kosh on 11.05.18.
  */
 
-const val VERSION = 28
+const val VERSION = 29
 const val DATABASE_NAME = "FastHub-Room-DB"
 
-@Database(version = VERSION, entities = [UserModel::class, MyIssuesPullsModel::class,
-    NotificationModel::class, FeedModel::class, ProfileRepoModel::class,
-    ProfileStarredRepoModel::class, ProfileGistModel::class,
-    FollowingFollowerModel::class, OrganizationModel::class,
-    IssueModel::class, SuggestionsModel::class], exportSchema = false)
-@TypeConverters(DateConverter::class, EventTypesConverter::class,
+@Database(
+    version = VERSION, entities = [UserModel::class, MyIssuesPullsModel::class,
+        NotificationModel::class, FeedModel::class, ProfileRepoModel::class,
+        ProfileStarredRepoModel::class, ProfileGistModel::class,
+        FollowingFollowerModel::class, OrganizationModel::class,
+        IssueModel::class, SuggestionsModel::class,
+        PullRequestModel::class], exportSchema = false
+)
+@TypeConverters(
+    DateConverter::class, EventTypesConverter::class,
     FeedPayloadConverter::class, FeedRepoConverter::class,
     UserCountConverter::class, UserOrganizationConverter::class,
     UserPinnedReposModelConverter::class, ReactionGroupConverter::class,
-    StringArrayConverter::class, LabelsConverter::class, ShortUserModelsConverter::class)
+    StringArrayConverter::class, LabelsConverter::class, ShortUserModelsConverter::class
+)
 abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getMainIssuesPullsDao(): MyIssuesPullsDao
     abstract fun getNotifications(): NotificationsDao
@@ -35,5 +40,6 @@ abstract class FastHubDatabase : RoomDatabase() {
     abstract fun getOrganizationDao(): OrgsDao
     abstract fun getIssueDao(): IssueDao
     abstract fun getSuggestionDao(): SuggestionDao
+    abstract fun getPullRequestDao(): PullRequestDao
     fun clearAll() = clearAllTables()
 }

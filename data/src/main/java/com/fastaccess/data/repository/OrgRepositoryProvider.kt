@@ -19,7 +19,7 @@ import javax.inject.Inject
 class OrgRepositoryProvider @Inject constructor(
     private val dao: OrgsDao,
     private val apolloClient: ApolloClient,
-    private val loginRepositoryProvider: LoginRepositoryProvider
+    private val loginRepositoryProvider: LoginLocalRepository
 ) : OrgRepository {
 
     /**
@@ -35,7 +35,7 @@ class OrgRepositoryProvider @Inject constructor(
             return@map data
         }
 
-    override fun getOrgs():  DataSource.Factory<Int, OrganizationModel> = dao.getOrgs()
+    override fun getOrgs(): DataSource.Factory<Int, OrganizationModel> = dao.getOrgs()
     override fun getOrgBlocking(login: String): OrganizationModel? = dao.getOrgBlocking(login)
     override fun getOrg(login: String): LiveData<OrganizationModel> = dao.getOrg(login)
     override fun deleteAll() = dao.deleteAll()

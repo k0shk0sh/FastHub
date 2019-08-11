@@ -38,6 +38,16 @@ query getIssue($login: String!, $repo: String!, $number: Int!) {
     }
 }
 
+query getPullRequest($login: String!, $repo: String!, $number: Int!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                ... FullPullRequest
+            }
+        }
+    }
+}
+
 query getLastIssueComment($login: String!, $repo: String!, $number: Int!) {
     repositoryOwner(login: $login) {
         repository(name: $repo) {

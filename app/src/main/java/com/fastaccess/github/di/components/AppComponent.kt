@@ -22,8 +22,8 @@ import javax.inject.Singleton
         FastHubDatabaseModule::class,
         NetworkModule::class,
         RepositoryModule::class,
-        ActivityBindingModule::class,
-        RepositoryModule::class ]
+        ActivityBindingModule::class
+    ]
 )
 interface AppComponent : AndroidInjector<DaggerApplication> {
 
@@ -32,7 +32,6 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
         @BindsInstance fun application(application: Application): Builder
         @BindsInstance fun fastHubDatabaseModule(module: FastHubDatabaseModule): Builder
         @BindsInstance fun networkModule(module: NetworkModule): Builder
-        @BindsInstance fun repoModule(module: RepositoryModule): Builder
         @BindsInstance fun repositoryModule(module: RepositoryModule): Builder
 
         fun build(): AppComponent
@@ -48,7 +47,6 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
             .application(app)
             .fastHubDatabaseModule(FastHubDatabaseModule())
             .networkModule(NetworkModule())
-            .repoModule(RepositoryModule())
             .repositoryModule(RepositoryModule())
             .build()
     }

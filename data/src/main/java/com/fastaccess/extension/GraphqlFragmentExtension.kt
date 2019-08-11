@@ -37,3 +37,6 @@ fun Labels?.toLabels(): LabelModel = LabelModel(this?.name, this?.color, this?.u
 fun FullIssue.Milestone.toMilestone(): MilestoneModel = this.fragments.milestoneFragment.let {
     MilestoneModel(it.id, it.title, it.description, it.state.rawValue(), it.url.toString(), it.number, it.isClosed, it.dueOn)
 }
+fun FullPullRequest.Milestone.toMilestone(): MilestoneModel = this.fragments.milestoneFragment.let {
+    MilestoneModel(it.id, it.title, it.description, it.state.rawValue(), it.url.toString(), it.number, it.isClosed, it.dueOn)
+}

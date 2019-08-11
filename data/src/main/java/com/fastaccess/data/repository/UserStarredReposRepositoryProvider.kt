@@ -11,24 +11,28 @@ import com.fastaccess.data.persistence.models.ProfileStarredReposModel
 import github.GetProfileStarredReposQuery
 import io.reactivex.Observable
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Kosh on 11.10.18.
  */
 class UserStarredReposRepositoryProvider @Inject constructor(
-        private val reposDao: UserStarredReposDao,
-        private val apolloClient: ApolloClient
+    private val reposDao: UserStarredReposDao,
+    private val apolloClient: ApolloClient
 ) : UserStarredReposRepository {
 
-    override fun getStarredReposFromRemote(login: String, page: String?): Observable<ProfileStarredReposModel> {
+    override fun getStarredReposFromRemote(
+        login: String,
+        page: String?
+    ): Observable<ProfileStarredReposModel> {
         return Rx2Apollo.from(apolloClient.query(GetProfileStarredReposQuery(login, Input.optional(page))))
-                .filter { !it.hasErrors() }
-                .map {
-                    val data = ProfileStarredReposModel.newInstance(it.data(), login)
-                    if (page.isNullOrBlank()) reposDao.deleteAll(login)
-                    data?.repos?.let { repos -> reposDao.insert(repos) }
-                    return@map data
-                }
+            .filter { !it.hasErrors() }
+            .map {
+                val data = ProfileStarredReposModel.newInstance(it.data(), login)
+                if (page.isNullOrBlank()) reposDao.deleteAll(login)
+                data?.repos?.let { repos -> reposDao.insert(repos) }
+                return@map data
+            }
     }
 
     override fun getStarredRepos(login: String): DataSource.Factory<Int, ProfileStarredRepoModel> = reposDao.getStarredRepos(login)
@@ -39,7 +43,11 @@ class UserStarredReposRepositoryProvider @Inject constructor(
 }
 
 interface UserStarredReposRepository {
-    fun getStarredReposFromRemote(login: String, page: String?): Observable<ProfileStarredReposModel>
+    fun getStarredReposFromRemote(
+        login: String,
+        page: String?
+    ): Observable<ProfileStarredReposModel>
+
     fun getStarredRepos(login: String): DataSource.Factory<Int, ProfileStarredRepoModel>
     fun getStarredRepo(id: String): LiveData<ProfileStarredRepoModel>
     fun deleteAll()

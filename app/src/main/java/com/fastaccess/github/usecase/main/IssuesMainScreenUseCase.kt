@@ -3,8 +3,8 @@ package com.fastaccess.github.usecase.main
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
-import com.fastaccess.data.repository.LoginRepositoryProvider
-import com.fastaccess.data.repository.MyIssuesPullsRepositoryProvider
+import com.fastaccess.data.repository.LoginLocalRepository
+import com.fastaccess.data.repository.MyIssuesPullsRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import github.GetIssuesWithoutStateQuery
@@ -16,8 +16,8 @@ import javax.inject.Inject
  * Created by Kosh on 16.06.18.
  */
 class IssuesMainScreenUseCase @Inject constructor(
-    private val loginRepository: LoginRepositoryProvider,
-    private val myIssues: MyIssuesPullsRepositoryProvider,
+    private val loginRepository: LoginLocalRepository,
+    private val myIssues: MyIssuesPullsRepository,
     private val apolloClient: ApolloClient,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {

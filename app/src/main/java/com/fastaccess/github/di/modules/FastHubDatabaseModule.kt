@@ -26,14 +26,18 @@ import javax.inject.Singleton
 @Module
 class FastHubDatabaseModule {
 
-    @Singleton @Provides fun provideDatabase(@ForApplication context: Context): FastHubDatabase = Room.databaseBuilder(context,
-        FastHubDatabase::class.java, DATABASE_NAME)
+    @Singleton @Provides fun provideDatabase(@ForApplication context: Context): FastHubDatabase = Room.databaseBuilder(
+        context,
+        FastHubDatabase::class.java, DATABASE_NAME
+    )
         .allowMainThreadQueries() // allow querying on MainThread (this useful in some cases)
         .fallbackToDestructiveMigration() //  this mean that it will delete all tables and recreate them after version is changed
         .build()
 
-    @Singleton @Provides fun provideLoginDatabase(@ForApplication context: Context): FastHubLoginDatabase = Room.databaseBuilder(context,
-        FastHubLoginDatabase::class.java, LOGIN_DATABASE_NAME)
+    @Singleton @Provides fun provideLoginDatabase(@ForApplication context: Context): FastHubLoginDatabase = Room.databaseBuilder(
+        context,
+        FastHubLoginDatabase::class.java, LOGIN_DATABASE_NAME
+    )
         .allowMainThreadQueries() // allow querying on MainThread
         .build()
 

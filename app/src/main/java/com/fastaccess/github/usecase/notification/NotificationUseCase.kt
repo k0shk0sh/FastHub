@@ -1,7 +1,7 @@
 package com.fastaccess.github.usecase.notification
 
 import com.fastaccess.data.persistence.models.NotificationModel
-import com.fastaccess.data.repository.NotificationRepositoryProvider
+import com.fastaccess.data.repository.NotificationRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.domain.response.NotificationResponse
@@ -17,7 +17,7 @@ import javax.inject.Inject
  */
 
 class NotificationUseCase @Inject constructor(
-    private val notificationRepositoryProvider: NotificationRepositoryProvider,
+    private val notificationRepositoryProvider: NotificationRepository,
     private val notificationService: NotificationService,
     private val gson: Gson,
     private val schedulerProvider: SchedulerProvider

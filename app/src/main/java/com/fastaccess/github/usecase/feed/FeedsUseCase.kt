@@ -1,6 +1,6 @@
 package com.fastaccess.github.usecase.feed
 
-import com.fastaccess.data.repository.FeedsRepositoryProvider
+import com.fastaccess.data.repository.FeedsRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.response.FeedResponse
 import com.fastaccess.domain.response.PageableResponse
@@ -12,7 +12,7 @@ import javax.inject.Inject
  * Created by Kosh on 26.06.18.
  */
 class FeedsUseCase @Inject constructor(
-    private val feedsRepositoryProvider: FeedsRepositoryProvider,
+    private val feedsRepositoryProvider: FeedsRepository,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
     var page: Int = 0

@@ -3,8 +3,8 @@ package com.fastaccess.github.usecase.issuesprs
 import com.fastaccess.data.model.CloseOpenEventModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
-import com.fastaccess.data.repository.IssueRepositoryProvider
-import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.IssueRepository
+import com.fastaccess.data.repository.LoginLocalRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.repository.services.IssuePrService
 import com.fastaccess.domain.response.IssueRequestModel
@@ -18,9 +18,9 @@ import javax.inject.Inject
  * Created by Kosh on 16.02.19.
  */
 class CloseOpenIssuePrUseCase @Inject constructor(
-    private val issueRepositoryProvider: IssueRepositoryProvider,
+    private val issueRepositoryProvider: IssueRepository,
     private val issuePrService: IssuePrService,
-    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val loginRepositoryProvider: LoginLocalRepository,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 

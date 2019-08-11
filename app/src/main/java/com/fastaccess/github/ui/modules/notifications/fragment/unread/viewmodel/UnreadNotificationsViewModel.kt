@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.persistence.models.NotificationModel
-import com.fastaccess.data.repository.NotificationRepositoryProvider
+import com.fastaccess.data.repository.NotificationRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.notification.NotificationUseCase
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
  * Created by Kosh on 31.10.18.
  */
 class UnreadNotificationsViewModel @Inject constructor(
-    private val provider: NotificationRepositoryProvider,
+    private val provider: NotificationRepository,
     private val usecase: NotificationUseCase
 ) : BaseViewModel() {
 

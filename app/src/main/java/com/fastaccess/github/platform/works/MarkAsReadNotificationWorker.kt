@@ -2,7 +2,7 @@ package com.fastaccess.github.platform.works
 
 import android.app.Application
 import androidx.work.*
-import com.fastaccess.data.repository.NotificationRepositoryProvider
+import com.fastaccess.data.repository.NotificationRepository
 import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_TWO
@@ -16,7 +16,7 @@ class MarkAsReadNotificationWorker @Inject constructor(
     context: Application,
     private val workerParams: WorkerParameters,
     private val notificationService: NotificationService,
-    private val provider: NotificationRepositoryProvider
+    private val provider: NotificationRepository
 ) : RxWorker(context, workerParams) {
     override fun createWork(): Single<Result> {
         val id = workerParams.inputData.getString(EXTRA)

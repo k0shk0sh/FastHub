@@ -2,7 +2,7 @@ package com.fastaccess.github.ui.modules.notifications.fragment.read
 
 import androidx.lifecycle.LiveData
 import com.fastaccess.data.model.GroupedNotificationsModel
-import com.fastaccess.data.repository.NotificationRepositoryProvider
+import com.fastaccess.data.repository.NotificationRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.notification.NotificationUseCase
 import javax.inject.Inject
@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Created by Kosh on 04.11.18.
  */
 class AllNotificationsViewModel @Inject constructor(
-    provider: NotificationRepositoryProvider,
+    provider: NotificationRepository,
     private val usecase: NotificationUseCase
 ) : BaseViewModel() {
 

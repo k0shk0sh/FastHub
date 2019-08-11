@@ -11,24 +11,28 @@ import com.fastaccess.data.persistence.models.ProfileReposModel
 import github.GetProfileReposQuery
 import io.reactivex.Observable
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Kosh on 11.10.18.
  */
 class UserReposRepositoryProvider @Inject constructor(
-        private val reposDao: UserReposDao,
-        private val apolloClient: ApolloClient
+    private val reposDao: UserReposDao,
+    private val apolloClient: ApolloClient
 ) : UserReposRepository {
 
-    override fun getReposFromRemote(login: String, page: String?): Observable<ProfileReposModel> {
+    override fun getReposFromRemote(
+        login: String,
+        page: String?
+    ): Observable<ProfileReposModel> {
         return Rx2Apollo.from(apolloClient.query(GetProfileReposQuery(login, Input.optional(page))))
-                .filter { !it.hasErrors() }
-                .map {
-                    val data = ProfileReposModel.newInstance(it.data(), login)
-                    if (page.isNullOrBlank()) reposDao.deleteAll(login)
-                    data?.repos?.let { repos -> reposDao.insert(repos) }
-                    return@map data
-                }
+            .filter { !it.hasErrors() }
+            .map {
+                val data = ProfileReposModel.newInstance(it.data(), login)
+                if (page.isNullOrBlank()) reposDao.deleteAll(login)
+                data?.repos?.let { repos -> reposDao.insert(repos) }
+                return@map data
+            }
 
     }
 
@@ -40,7 +44,11 @@ class UserReposRepositoryProvider @Inject constructor(
 }
 
 interface UserReposRepository {
-    fun getReposFromRemote(login: String, page: String?): Observable<ProfileReposModel>
+    fun getReposFromRemote(
+        login: String,
+        page: String?
+    ): Observable<ProfileReposModel>
+
     fun getRepos(login: String): DataSource.Factory<Int, ProfileRepoModel>
     fun getRepo(id: String): LiveData<ProfileRepoModel>
     fun deleteAll()

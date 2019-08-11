@@ -8,7 +8,9 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 17.06.18.
  */
-class MyIssuesPullsRepositoryProvider @Inject constructor(private val dao: MyIssuesPullsDao) : MyIssuesPullsRepository {
+class MyIssuesPullsRepositoryProvider @Inject constructor(
+    private val dao: MyIssuesPullsDao
+) : MyIssuesPullsRepository {
     override fun getMainScreenIssues(): LiveData<List<MyIssuesPullsModel>> = dao.getMainScreenIssues()
     override fun getMainScreenPulls(): LiveData<List<MyIssuesPullsModel>> = dao.getMainScreenPulls()
     override fun insert(model: MyIssuesPullsModel): Long = dao.insert(model)

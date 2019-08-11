@@ -12,6 +12,7 @@ import github.GetProfileQuery
 import io.reactivex.Observable
 import retrofit2.Response
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Kosh on 10.06.18.

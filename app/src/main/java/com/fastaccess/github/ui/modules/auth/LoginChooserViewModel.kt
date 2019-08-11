@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.LoginLocalRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.di.modules.AuthenticationInterceptor
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
@@ -20,7 +20,7 @@ class LoginChooserViewModel @Inject constructor(
     private val accessTokenUseCase: GetAccessTokenUseCase,
     private val loginWithAccessTokenUseCase: LoginWithAccessTokenUseCase,
     private val interceptor: AuthenticationInterceptor,
-    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val loginRepositoryProvider: LoginLocalRepository,
     private val fastHubDatabase: FastHubDatabase
 ) : BaseViewModel() {
 

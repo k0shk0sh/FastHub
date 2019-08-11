@@ -1,6 +1,6 @@
 package com.fastaccess.github.usecase.user
 
-import com.fastaccess.data.repository.UserRepositoryProvider
+import com.fastaccess.data.repository.UserRepository
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -8,7 +8,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 10.06.18.
  */
-class FollowUnfollowUserUseCase @Inject constructor(private val userRepository: UserRepositoryProvider) : BaseObservableUseCase() {
+class FollowUnfollowUserUseCase @Inject constructor(private val userRepository: UserRepository) : BaseObservableUseCase() {
     var login: String? = null
     var follow: Boolean = false
 

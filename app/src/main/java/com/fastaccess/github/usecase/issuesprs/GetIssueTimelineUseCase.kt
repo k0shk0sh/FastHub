@@ -5,7 +5,6 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.*
 import com.fastaccess.data.model.parcelable.LabelModel
-import com.fastaccess.data.repository.IssueRepositoryProvider
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.*
@@ -19,7 +18,6 @@ import javax.inject.Inject
  * Created by Kosh on 27.01.19.
  */
 class GetIssueTimelineUseCase @Inject constructor(
-    private val issueRepositoryProvider: IssueRepositoryProvider,
     private val apolloClient: ApolloClient,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {

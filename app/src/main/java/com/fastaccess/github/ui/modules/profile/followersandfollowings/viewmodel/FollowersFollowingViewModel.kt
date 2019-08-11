@@ -5,7 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.FollowingFollowerModel
-import com.fastaccess.data.repository.UserFollowersFollowingRepositoryProvider
+import com.fastaccess.data.repository.FollowersFollowingRepository
 import com.fastaccess.github.base.BaseViewModel
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ import javax.inject.Inject
  * Created by Kosh on 15.10.18.
  */
 class FollowersFollowingViewModel @Inject constructor(
-        private val provider: UserFollowersFollowingRepositoryProvider
+        private val provider: FollowersFollowingRepository
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null

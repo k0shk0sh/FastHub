@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
-import com.fastaccess.data.repository.IssueRepositoryProvider
-import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.IssueRepository
+import com.fastaccess.data.repository.LoginLocalRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.filterNull
 import com.fastaccess.github.extensions.map
@@ -20,10 +20,10 @@ import javax.inject.Inject
 class IssueTimelineViewModel @Inject constructor(
     private val issueUseCase: GetIssueUseCase,
     private val timelineUseCase: GetIssueTimelineUseCase,
-    private val issueRepositoryProvider: IssueRepositoryProvider,
+    private val issueRepositoryProvider: IssueRepository,
     private val closeOpenIssuePrUseCase: CloseOpenIssuePrUseCase,
     private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase,
-    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val loginRepositoryProvider: LoginLocalRepository,
     private val createIssueCommentUseCase: CreateIssueCommentUseCase,
     private val editIssuePrUseCase: EditIssuePrUseCase
 ) : BaseViewModel() {

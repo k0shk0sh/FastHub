@@ -6,6 +6,7 @@ import com.fastaccess.data.persistence.dao.SuggestionDao
 import com.fastaccess.data.persistence.models.SuggestionsModel
 import io.reactivex.Completable
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Kosh on 10.06.18.
@@ -22,7 +23,7 @@ class SuggestionRepositoryProvider @Inject constructor(
 
 interface SuggestionRepository {
     fun getAll(): DataSource.Factory<Int, SuggestionsModel>
-    fun getSuggestions(keyword: String):  LiveData<List<SuggestionsModel>>
+    fun getSuggestions(keyword: String): LiveData<List<SuggestionsModel>>
     fun upsert(query: String): Completable
     fun deleteAll(): Completable
 }

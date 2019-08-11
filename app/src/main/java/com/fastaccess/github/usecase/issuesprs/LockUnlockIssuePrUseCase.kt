@@ -5,8 +5,8 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.LockUnlockEventModel
 import com.fastaccess.data.model.TimelineModel
-import com.fastaccess.data.repository.IssueRepositoryProvider
-import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.IssueRepository
+import com.fastaccess.data.repository.LoginLocalRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.me
@@ -21,9 +21,9 @@ import javax.inject.Inject
  * Created by Kosh on 16.02.19.
  */
 class LockUnlockIssuePrUseCase @Inject constructor(
-    private val issueRepositoryProvider: IssueRepositoryProvider,
+    private val issueRepositoryProvider: IssueRepository,
     private val apolloClient: ApolloClient,
-    private val loginRepositoryProvider: LoginRepositoryProvider,
+    private val loginRepositoryProvider: LoginLocalRepository,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 

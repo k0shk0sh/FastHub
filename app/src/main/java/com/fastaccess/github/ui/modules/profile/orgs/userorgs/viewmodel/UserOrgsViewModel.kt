@@ -5,7 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.OrganizationModel
-import com.fastaccess.data.repository.OrgRepositoryProvider
+import com.fastaccess.data.repository.OrgRepository
 import com.fastaccess.github.base.BaseViewModel
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ import javax.inject.Inject
  * Created by Kosh on 2018-11-26.
  */
 class UserOrgsViewModel @Inject constructor(
-    private val provider: OrgRepositoryProvider
+    private val provider: OrgRepository
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null

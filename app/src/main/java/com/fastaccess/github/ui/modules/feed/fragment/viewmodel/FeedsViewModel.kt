@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.persistence.models.FeedModel
-import com.fastaccess.data.repository.FeedsRepositoryProvider
+import com.fastaccess.data.repository.FeedsRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.feed.FeedsUseCase
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
  * Created by Kosh on 20.10.18.
  */
 class FeedsViewModel @Inject constructor(
-    private val provider: FeedsRepositoryProvider,
+    private val provider: FeedsRepository,
     private val usecase: FeedsUseCase
 ) : BaseViewModel() {
 
