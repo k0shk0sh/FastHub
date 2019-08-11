@@ -25,7 +25,7 @@ ext {
     apollo = '1.0.1'
     pandora = 'v1.2.2'
     deepLinkDispatch = '4.1.0'
-    markwon_version = '4.1.0-SNAPSHOT'
+    markwonVersion = '4.1.0'
 
 
     kotlin = [
@@ -121,19 +121,19 @@ ext {
     ]
 
     markdown = [
-            "io.noties.markwon:core:$markwon_version",
-            "io.noties.markwon:ext-latex:$markwon_version",
-            "io.noties.markwon:ext-strikethrough:$markwon_version",
-            "io.noties.markwon:ext-tables:$markwon_version",
-            "io.noties.markwon:ext-tasklist:$markwon_version",
-            "io.noties.markwon:html:$markwon_version",
-            "io.noties.markwon:image:$markwon_version",
-            "io.noties.markwon:image-glide:$markwon_version",
-            "io.noties.markwon:recycler:$markwon_version",
-            "io.noties.markwon:recycler-table:$markwon_version",
-            "io.noties.markwon:simple-ext:$markwon_version",
-            "io.noties.markwon:syntax-highlight:$markwon_version",
-            "io.noties.markwon:linkify:$markwon_version",
+            "io.noties.markwon:core:$markwonVersion",
+            "io.noties.markwon:ext-latex:$markwonVersion",
+            "io.noties.markwon:ext-strikethrough:$markwonVersion",
+            "io.noties.markwon:ext-tables:$markwonVersion",
+            "io.noties.markwon:ext-tasklist:$markwonVersion",
+            "io.noties.markwon:html:$markwonVersion",
+            "io.noties.markwon:image:$markwonVersion",
+            "io.noties.markwon:image-glide:$markwonVersion",
+            "io.noties.markwon:recycler:$markwonVersion",
+            "io.noties.markwon:recycler-table:$markwonVersion",
+            "io.noties.markwon:simple-ext:$markwonVersion",
+            "io.noties.markwon:syntax-highlight:$markwonVersion",
+            "io.noties.markwon:linkify:$markwonVersion",
             "com.caverock:androidsvg:1.4",
             "pl.droidsonroids.gif:android-gif-drawable:1.2.14",
             "io.noties:prism4j:2.0.0"

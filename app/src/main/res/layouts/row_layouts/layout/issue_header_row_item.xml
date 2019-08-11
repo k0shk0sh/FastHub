@@ -147,8 +147,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/spacing_micro"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textIsSelectable="true"
+            tools:targetApi="m"
             tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
     </LinearLayout>
 

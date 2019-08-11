@@ -53,6 +53,7 @@ import github.type.IssueState
 import github.type.LockReason
 import io.noties.markwon.Markwon
 import io.noties.markwon.recycler.MarkwonAdapter
+import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_fragment_layout.*
@@ -281,6 +282,8 @@ class IssueFragment : BaseFragment(), LockUnlockFragment.OnLockReasonSelected,
 
         description.post {
             val bodyMd = model.body
+//            description.setMovementMethod(LinkMovementMethod.getInstance())
+            description.setSpannableFactory(NoCopySpannableFactory.getInstance())
             markwon.setMarkdown(
                 description, if (!bodyMd.isNullOrEmpty()) bodyMd else "**${getString(R.string.no_description_provided)}**"
             )

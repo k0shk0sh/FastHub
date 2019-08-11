@@ -10,6 +10,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import io.noties.markwon.Markwon
+import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_row_item.view.*
 
 
@@ -43,6 +44,7 @@ class CommentViewHolder(
             }
 
             description.post {
+                description.setSpannableFactory(NoCopySpannableFactory.getInstance())
                 val bodyMd = model.body
                 markwon.setMarkdown(description, if (!bodyMd.isNullOrEmpty()) bodyMd else resources.getString(R.string.no_description_provided))
             }
