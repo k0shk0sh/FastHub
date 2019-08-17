@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:orientation="horizontal"
+    tools:showIn="@layout/issue_pr_fragment_layout">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/toggleFullScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/expand"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:rotation="180"
+        android:src="@drawable/ic_fullscreen" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/commentText"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/transparent"
+        android:hint="@string/comment"
+        android:inputType="textMultiLine|textCapSentences"
+        android:maxLines="5"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:scrollbars="vertical" />
+
+    <FrameLayout
+        android:layout_width="38dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/sendComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/comment"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:src="@drawable/ic_send"
+            android:tint="?colorAccent" />
+
+        <ProgressBar
+            android:id="@+id/commentProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
+</LinearLayout>

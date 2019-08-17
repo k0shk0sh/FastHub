@@ -44,7 +44,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/language"
-                style="@style/ChipStyle"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -62,7 +62,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/star"
-                style="@style/ChipStyle"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -78,7 +78,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/forks"
-                style="@style/ChipStyle"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -95,7 +95,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/todayStars"
-                style="@style/ChipStyle"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"

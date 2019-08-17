@@ -117,7 +117,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.modules.issuesprs.edit.EditIssuePrActivity" />
+
+        <activity
+            android:name=".ui.modules.issuesprs.edit.EditIssuePrActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity" />
+
+        <activity
+            android:name=".ui.modules.pr.PullRequestActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

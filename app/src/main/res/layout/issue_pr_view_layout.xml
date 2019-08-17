@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    tools:showIn="@layout/issue_pr_fragment_layout">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:windowBackground"
+            android:theme="?android:toolbarStyle"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentScrim="?android:windowBackground"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:scrimAnimationDuration="0"
+                app:titleEnabled="false">
+
+                <LinearLayout
+                    android:id="@+id/issueHeaderWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="?actionBarSize"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    app:layout_collapseMode="none">
+
+                    <include layout="@layout/issue_header_row_item" />
+                </LinearLayout>
+
+                <include layout="@layout/title_toolbar_layout" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <include layout="@layout/recyclerview_fastscroll_empty_state_layout" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout>
