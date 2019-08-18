@@ -75,6 +75,9 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
         description: String?
     ) = viewModel.editIssue(login, repo, number, title, description)
 
+    override fun lockUnlockIssuePr() = viewModel.lockUnlockIssue(login, repo, number)
+    override fun closeOpenIssuePr() = viewModel.closeOpenIssue(login, repo, number)
+
     private fun observeChanges() {
         viewModel.getIssue(login, repo, number).observeNotNull(this) {
             initIssue(it.first, it.second)

@@ -75,7 +75,7 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         title: String? = null,
         description: String? = null
     )
-    
+
     override fun onFragmentCreatedWithUser(
         view: View,
         savedInstanceState: Bundle?
@@ -111,6 +111,7 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                 swipeRefresh.isRefreshing = false
             }
         }
+        setupEditText()
     }
 
     override fun onDestroyView() {
@@ -219,12 +220,12 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                     appBar.setExpanded(true, true)
                     recyclerView.scrollToPosition(0)
                 }
-                R.id.closeIssue -> closeOpenIssuePr(login, repo, number)
+                R.id.closeIssue -> closeOpenIssuePr()
                 R.id.share -> requireActivity().shareUrl(model.url)
                 R.id.lockIssue -> if (item.title == getString(R.string.lock_issue)) {
                     MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LOCK_UNLOCK)
                 } else {
-                    lockUnlockIssuePr(login, repo, number)
+                    lockUnlockIssuePr()
                 }
                 R.id.labels -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,
@@ -248,17 +249,8 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         }
     }
 
-    protected fun lockUnlockIssuePr(
-        login: String,
-        repo: String,
-        number: Int
-    ) = Unit
-
-    protected fun closeOpenIssuePr(
-        login: String,
-        repo: String,
-        number: Int
-    ) = Unit
+    protected open fun lockUnlockIssuePr() = Unit
+    protected open fun closeOpenIssuePr() = Unit
 
     protected fun initAssignees(assigneesList: List<ShortUserModel>?) {
         assigneesLayout.isVisible = !assigneesList.isNullOrEmpty()
@@ -318,5 +310,6 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
     companion object {
         const val COMMENT_REQUEST_CODE = 1001
         const val EDIT_ISSUE_REQUEST_CODE = 1002
+        const val EDIT_COMMENT_CODE = 1003
     }
 }
