@@ -2,6 +2,8 @@ package com.fastaccess.github.ui.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
@@ -10,8 +12,10 @@ import com.fastaccess.data.model.ReactionContent
 import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.data.model.getEmoji
 import com.fastaccess.github.R
+import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.platform.works.ReactionWorker
 import com.fastaccess.github.utils.extensions.popupEmoji
+import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.add_reactions_layout.view.*
 
 /**
@@ -62,91 +66,113 @@ class AdaptiveEmoticonLayout : LinearLayout {
 
 
     @SuppressLint("SetTextI18n")
-    private fun initReactions(
+    fun initReactions(
         reactionGroups: List<ReactionGroupModel>?
     ) {
         getReactionCount(reactionGroups, ReactionContent.THUMBS_UP).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 thumbsUp.isVisible = true
-                thumbsUp.text = "${ReactionContent.THUMBS_UP.getEmoji()} $it"
+                thumbsUp.text = "${ReactionContent.THUMBS_UP.getEmoji()} ${it.first}"
+                highlightChip(thumbsUp, it.second?.viewerHasReacted == true)
+
             } else {
                 thumbsUp.isVisible = false
             }
         }
 
         getReactionCount(reactionGroups, ReactionContent.THUMBS_DOWN).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 thumbsDown.isVisible = true
-                thumbsDown.text = "${ReactionContent.THUMBS_DOWN.getEmoji()} $it"
+                thumbsDown.text = "${ReactionContent.THUMBS_DOWN.getEmoji()} ${it.first}"
+                highlightChip(thumbsDown, it.second?.viewerHasReacted == true)
             } else {
                 thumbsDown.isVisible = false
             }
         }
 
         getReactionCount(reactionGroups, ReactionContent.CONFUSED).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 confused.isVisible = true
-                confused.text = "${ReactionContent.CONFUSED.getEmoji()} $it"
+                confused.text = "${ReactionContent.CONFUSED.getEmoji()} ${it.first}"
+                highlightChip(confused, it.second?.viewerHasReacted == true)
             } else {
                 confused.isVisible = false
             }
         }
 
         getReactionCount(reactionGroups, ReactionContent.LAUGH).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 laugh.isVisible = true
-                laugh.text = "${ReactionContent.LAUGH.getEmoji()} $it"
+                laugh.text = "${ReactionContent.LAUGH.getEmoji()} ${it.first}"
+                highlightChip(laugh, it.second?.viewerHasReacted == true)
             } else {
                 laugh.isVisible = false
             }
         }
 
         getReactionCount(reactionGroups, ReactionContent.HOORAY).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 hooray.isVisible = true
-                hooray.text = "${ReactionContent.HOORAY.getEmoji()} $it"
+                hooray.text = "${ReactionContent.HOORAY.getEmoji()} ${it.first}"
+                highlightChip(hooray, it.second?.viewerHasReacted == true)
             } else {
                 hooray.isVisible = false
             }
         }
 
         getReactionCount(reactionGroups, ReactionContent.HEART).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 heart.isVisible = true
-                heart.text = "${ReactionContent.HEART.getEmoji()} $it"
+                heart.text = "${ReactionContent.HEART.getEmoji()} ${it.first}"
+                highlightChip(heart, it.second?.viewerHasReacted == true)
             } else {
                 heart.isVisible = false
             }
         }
 
         getReactionCount(reactionGroups, ReactionContent.ROCKET).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 rocket.isVisible = true
-                rocket.text = "${ReactionContent.ROCKET.getEmoji()} $it"
+                rocket.text = "${ReactionContent.ROCKET.getEmoji()} ${it.first}"
+                highlightChip(rocket, it.second?.viewerHasReacted == true)
             } else {
                 rocket.isVisible = false
             }
         }
 
         getReactionCount(reactionGroups, ReactionContent.EYES).let {
-            if (it > 0) {
+            if (it.first > 0) {
                 eyes.isVisible = true
-                eyes.text = "${ReactionContent.EYES.getEmoji()} $it"
+                eyes.text = "${ReactionContent.EYES.getEmoji()} ${it.first}"
+                highlightChip(eyes, it.second?.viewerHasReacted == true)
             } else {
                 eyes.isVisible = false
             }
         }
+    }
 
+    private fun highlightChip(
+        chip: Chip,
+        didReaction: Boolean
+    ) {
+        chip.chipStrokeWidth = if (didReaction) 1f else 0f
+        chip.chipStrokeColor = ColorStateList.valueOf(
+            if (didReaction) {
+                context.getColorAttr(R.attr.colorAccent)
+            } else {
+                Color.TRANSPARENT
+            }
+        )
     }
 
     private fun getReactionCount(
         reactionGroups: List<ReactionGroupModel>?,
         content: ReactionContent
-    ): Int = reactionGroups
+    ): Pair<Int, ReactionGroupModel?> = reactionGroups
         ?.filter { it.users != null && it.content != null }
         ?.firstOrNull { it.content == content }?.let {
-            return@let it.users?.totalCount ?: 0
-        } ?: 0
+            return@let Pair(it.users?.totalCount ?: 0, it)
+        } ?: Pair(0, null)
 
     private fun react(
         view: View,

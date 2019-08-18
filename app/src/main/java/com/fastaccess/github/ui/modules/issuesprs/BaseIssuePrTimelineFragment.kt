@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
-import com.fastaccess.data.model.getEmoji
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
@@ -70,13 +69,12 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
     abstract fun reload(refresh: Boolean = false)
     abstract fun isPr(): Boolean
     abstract fun sendComment(comment: String)
+    abstract fun lockIssuePr(lockReason: LockReason?)
+    abstract fun onMilestoneAdd(timeline: TimelineModel)
     abstract fun editIssuerPr(
         title: String? = null,
         description: String? = null
     )
-
-    abstract fun lockIssuePr(lockReason: LockReason?)
-    abstract fun onMilestoneAdd(timeline: TimelineModel)
     
     override fun onFragmentCreatedWithUser(
         view: View,
@@ -292,24 +290,6 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                 .append(" ")
         }
         labels.text = builder
-    }
-
-    protected fun initReactions(model: IssueModel) {
-        reactionsText.isVisible = model.reactionGroups?.any { it.users?.totalCount != 0 } ?: false
-        if (reactionsText.isVisible) {
-            val stringBuilder = StringBuilder()
-            model.reactionGroups?.forEach {
-                if (it.users?.totalCount != 0) {
-                    stringBuilder.append(it.content.getEmoji())
-                        .append(" ")
-                        .append("${it.users?.totalCount}")
-                        .append("   ")
-                }
-            }
-            reactionsText.text = stringBuilder
-        } else {
-            reactionsText.text = ""
-        }
     }
 
     protected fun initToolbarMenu(

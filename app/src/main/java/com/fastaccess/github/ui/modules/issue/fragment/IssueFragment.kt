@@ -139,13 +139,13 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
                 R.color.material_red_500
             }
         )
+
         adaptiveEmoticon.init(requireNotNull(model.id), model.reactionGroups) {
-            initReactions(model)
+            adaptiveEmoticon.initReactions(model.reactionGroups)
         }
         val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
             model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true
         menuClick(model, isAuthor)
-        initReactions(model)
         initLabels(model.labels)
         initAssignees(model.assignees)
         initMilestone(model.milestone)
