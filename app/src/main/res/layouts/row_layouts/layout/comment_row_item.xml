@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?card_background"
+    android:foreground="?selectableItemBackground"
     android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
@@ -53,10 +54,10 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/association"
-                    style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textStyle="bold"
                     app:autoSizeMaxTextSize="14sp"
                     app:autoSizeMinTextSize="10sp"

@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
@@ -21,6 +22,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.mentions.MentionsPresenter
+import com.fastaccess.github.ui.modules.comment.CommentActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
@@ -307,9 +309,15 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         }
     }
 
+    protected open fun onCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment ->
+        CommentActivity.startActivity(
+            this, COMMENT_REQUEST_CODE, comment.body ?: "",
+            comment.author?.login ?: comment.author?.name, comment.author?.avatarUrl
+        )
+    }
+
     companion object {
         const val COMMENT_REQUEST_CODE = 1001
         const val EDIT_ISSUE_REQUEST_CODE = 1002
-        const val EDIT_COMMENT_CODE = 1003
     }
 }

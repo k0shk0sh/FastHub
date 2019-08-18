@@ -7,6 +7,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
 import com.fastaccess.github.di.scopes.PerFragment
 import com.fastaccess.github.platform.mentions.MentionsPresenter
+import com.fastaccess.github.ui.modules.comment.CommentFragment
 import com.fastaccess.github.ui.modules.editor.EditorFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
@@ -90,4 +91,9 @@ class EditorModule {
 @Module(includes = [FragmentModule::class])
 class EditIssuePrModule {
     @PerFragment @Provides fun provideEditorContext(fragment: EditIssuePrFragment) = fragment.requireContext()
+}
+
+@Module(includes = [FragmentModule::class])
+class CommentModule {
+    @PerFragment @Provides fun provideEditorContext(fragment: CommentFragment) = fragment.requireContext()
 }

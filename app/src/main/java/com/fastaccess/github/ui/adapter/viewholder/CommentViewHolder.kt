@@ -2,6 +2,7 @@ package com.fastaccess.github.ui.adapter.viewholder
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
@@ -47,6 +48,13 @@ class CommentViewHolder(
                 description.setSpannableFactory(NoCopySpannableFactory.getInstance())
                 val bodyMd = model.body
                 markwon.setMarkdown(description, if (!bodyMd.isNullOrEmpty()) bodyMd else resources.getString(R.string.no_description_provided))
+            }
+
+            description.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP && !description.hasSelection()) {
+                    itemView.callOnClick()
+                }
+                return@setOnTouchListener false
             }
 
 

@@ -48,7 +48,8 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(IssueTimelineViewModel::class.java) }
 
-    override val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme) }
+    override val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme, onCommentClicked()) }
+
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
     override fun isPr(): Boolean = false

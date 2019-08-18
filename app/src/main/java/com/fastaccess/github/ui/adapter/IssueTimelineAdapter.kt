@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
@@ -17,7 +18,8 @@ import io.noties.markwon.Markwon
  */
 class IssueTimelineAdapter(
     private val markwon: Markwon,
-    private val theme: Int
+    private val theme: Int,
+    private val commentClickListener: (position: Int, comment: CommentModel) -> Unit
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val notifyCallback by lazy {
@@ -41,7 +43,13 @@ class IssueTimelineAdapter(
         viewType: Int
     ): RecyclerView.ViewHolder {
         return when (viewType) {
-            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback)
+            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback).apply {
+                itemView.setOnClickListener {
+                    val position = adapterPosition
+                    if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                    getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
+                }
+            }
             CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
         }
