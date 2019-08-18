@@ -21,10 +21,9 @@ class NotificationRepositoryProvider @Inject constructor(
     override fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>> = dao.getAllNotifications(false).map(groupNotifications())
     override fun getMainNotifications(): LiveData<List<NotificationModel>> = dao.getMainNotifications()
     override fun countUnread(): LiveData<Int> = dao.countUnread()
-
-    override fun insert(model: NotificationModel): Long = dao.insert(model)
+    override fun insert(model: NotificationModel) = dao.insert(model)
     override fun insert(model: List<NotificationModel>) = dao.insert(model)
-    override fun update(model: NotificationModel): Int = dao.update(model)
+    override fun update(model: NotificationModel) = dao.update(model)
     override fun delete(model: NotificationModel) = dao.delete(model)
     override fun deleteAll(unread: Boolean) = dao.deleteAll(unread)
     override fun markAsRead(id: String): Completable = Completable.fromCallable { dao.markAsRead(id) }
@@ -58,8 +57,8 @@ interface NotificationRepository {
     fun getMainNotifications(): LiveData<List<NotificationModel>>
     fun countUnread(): LiveData<Int>
     fun insert(model: NotificationModel): Long
-    fun insert(model: List<NotificationModel>)
-    fun update(model: NotificationModel): Int
+    fun insert(model: List<NotificationModel>): List<Long>
+    fun update(model: NotificationModel)
     fun delete(model: NotificationModel)
     fun deleteAll(unread: Boolean)
     fun markAsRead(id: String): Completable

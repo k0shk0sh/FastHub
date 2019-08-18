@@ -8,6 +8,7 @@ import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.getColorCompat
 import com.fastaccess.github.extensions.getDrawableCompat
+import com.fastaccess.github.extensions.replaceAllNewLines
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
@@ -41,7 +42,7 @@ class NotificationsViewHolder(parent: ViewGroup) : BaseViewHolder<NotificationMo
         this.item = item
         itemView.apply {
             item.subject?.let { subject ->
-                notificationTitle.text = subject.title ?: ""
+                notificationTitle.text = subject.title?.replaceAllNewLines() ?: ""
                 subject.type?.let { type ->
                     when (type) {
                         "PullRequest" -> typeIcon.setImageResource(R.drawable.ic_pull_requests)

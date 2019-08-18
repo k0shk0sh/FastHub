@@ -42,8 +42,6 @@ fun Int.formatNumber(): String {
 
 fun getDateByDays(days: Int): String = DatePrettifier.getDateByDays(days)
 
-fun getLastWeekDate(): String = DatePrettifier.lastWeekDate
-
 @ColorInt fun Int.generateTextColor(): Int {
     val a = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255
     return if (a < 0.5) Color.BLACK else Color.WHITE

@@ -7,7 +7,6 @@ import com.fastaccess.domain.repository.services.NotificationService
 import com.fastaccess.domain.response.NotificationResponse
 import com.fastaccess.domain.response.PageableResponse
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
-import com.fastaccess.github.extensions.getLastWeekDate
 import com.google.gson.Gson
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -35,7 +34,7 @@ class NotificationUseCase @Inject constructor(
             if (page == null) {
                 notificationService.getMainNotifications()
             } else {
-                notificationService.getNotifications(getLastWeekDate(), page)
+                notificationService.getNotifications(page)
             }
         }
         return observable
@@ -49,7 +48,9 @@ class NotificationUseCase @Inject constructor(
                         notificationRepositoryProvider.insert(NotificationModel.convert(gson, list))
                         return@map it
                     }
-                    if (page ?: 0 <= 1) notificationRepositoryProvider.deleteAll(true)
+                    if (page ?: 0 <= 1) {
+                        notificationRepositoryProvider.deleteAll(true)
+                    }
                     notificationRepositoryProvider.insert(NotificationModel.convert(gson, items))
                 }
                 return@map it

@@ -18,6 +18,9 @@ interface NotificationService {
     @GET("notifications") fun getNotifications(@Query("since") date: String, @Query("page") page: Int):
         Observable<PageableResponse<NotificationResponse>>
 
+    @GET("notifications") fun getNotifications(@Query("page") page: Int):
+        Observable<PageableResponse<NotificationResponse>>
+
     @GET("notifications?all=true&per_page=200") fun getAllNotifications(): Observable<PageableResponse<NotificationResponse>>
 
     @PATCH("notifications/threads/{id}") fun markAsRead(@Path("id") id: String): Observable<Response<Boolean>>
