@@ -150,7 +150,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
             }
         }
         viewModel.unreadNotificationLiveData.observeNotNull(this) {
-            bottomBar.menu?.findItem(R.id.notifications)?.icon = if (it) {
+            bottomBar.menu?.findItem(R.id.notifications)?.icon = if (it > 0) {
                 getDrawable(R.drawable.ic_notification_unread)
             } else {
                 getDrawable(R.drawable.ic_notifications_none)

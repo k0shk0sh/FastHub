@@ -33,4 +33,7 @@ import com.fastaccess.data.persistence.models.NotificationModel
     @Delete fun delete(model: NotificationModel)
 
     @Query("DELETE FROM ${NotificationModel.TABLE_NAME} WHERE `unread` = :unread") fun deleteAll(unread: Boolean)
+
+    @Query("SELECT COUNT(*) FROM  ${NotificationModel.TABLE_NAME} WHERE `unread` = 0")
+    fun countUnread(): LiveData<Int>
 }

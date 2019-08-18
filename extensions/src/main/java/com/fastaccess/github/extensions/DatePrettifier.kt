@@ -1,10 +1,10 @@
 package com.fastaccess.github.extensions
 
-import android.text.format.DateUtils
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+
 
 class DatePrettifier private constructor() {
 
@@ -28,51 +28,29 @@ class DatePrettifier private constructor() {
 
     companion object {
         private val instance = DatePrettifier()
-        private val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
-        private val HOUR_MILLIS = TimeUnit.HOURS.toMillis(1)
-        private val MINUTE_MILLIS = TimeUnit.MINUTES.toMillis(1)
+        private val times = listOf(
+            TimeUnit.DAYS.toMillis(365), TimeUnit.DAYS.toMillis(30),
+            TimeUnit.DAYS.toMillis(1), TimeUnit.HOURS.toMillis(1),
+            TimeUnit.MINUTES.toMillis(1), TimeUnit.SECONDS.toMillis(1)
+        )
+        private val timesString = listOf("y", "m", "d", "h", "m", "s")
 
         fun getTimeAgo(parsedDate: Date?): CharSequence {
-            var _time = parsedDate?.time ?: return "N/A"
-            if (_time < 1000000000000L) {
-                _time *= 1000
-            }
-
-            val now = System.currentTimeMillis()
-            if (_time > now || _time <= 0) {
-                return "N/A"
-            }
-
-
-            val diff = now - _time
-            return when {
-                diff < MINUTE_MILLIS -> "just now"
-                diff < 50 * MINUTE_MILLIS -> {
-                    val mns = (diff / MINUTE_MILLIS)
-                    "$mns${if (mns > 1) "ms" else "m"} ago"
-                }
-                diff < 24 * HOUR_MILLIS -> {
-                    val hours = (diff / HOUR_MILLIS)
-                    "$hours${if (hours > 1) "hs" else "h"}  ago"
-                }
-                else -> {
-                    val days = (diff / DAY_MILLIS)
-                    "$days${if (days > 1) "ds" else "d"} ago"
+            val date = parsedDate?.time ?: return "N/A"
+            val duration = System.currentTimeMillis() - date
+            val sb = StringBuilder()
+            for (i in 0 until times.size) {
+                val temp = duration / times[i]
+                if (temp > 0) {
+                    sb.append(temp)
+                        .append(timesString[i])
+                        .append(if (temp > 1) "s" else "")
+                        .append(" ago")
+                    break
                 }
             }
+            return if (sb.toString().isEmpty()) "just now" else sb.toString()
         }
-
-        fun getTimeAgo(toParse: String?): CharSequence {
-            try {
-                val parsedDate = instance.dateFormat.parse(toParse)
-                val now = System.currentTimeMillis()
-                return DateUtils.getRelativeTimeSpanString(parsedDate.time, now, DateUtils.SECOND_IN_MILLIS)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            return "N/A"
-        }
-
 
         fun toGithubDate(date: Date): String = instance.format(date)
 

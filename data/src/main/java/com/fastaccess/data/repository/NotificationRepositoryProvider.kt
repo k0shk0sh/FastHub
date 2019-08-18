@@ -19,8 +19,9 @@ class NotificationRepositoryProvider @Inject constructor(
 ) : NotificationRepository {
     override fun getNotifications(unread: Boolean): DataSource.Factory<Int, NotificationModel> = dao.getNotifications(unread)
     override fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>> = dao.getAllNotifications(false).map(groupNotifications())
-
     override fun getMainNotifications(): LiveData<List<NotificationModel>> = dao.getMainNotifications()
+    override fun countUnread(): LiveData<Int> = dao.countUnread()
+
     override fun insert(model: NotificationModel): Long = dao.insert(model)
     override fun insert(model: List<NotificationModel>) = dao.insert(model)
     override fun update(model: NotificationModel): Int = dao.update(model)
@@ -55,6 +56,7 @@ interface NotificationRepository {
     fun getNotifications(unread: Boolean): DataSource.Factory<Int, NotificationModel>
     fun getAllNotifications(): LiveData<List<GroupedNotificationsModel>>
     fun getMainNotifications(): LiveData<List<NotificationModel>>
+    fun countUnread(): LiveData<Int>
     fun insert(model: NotificationModel): Long
     fun insert(model: List<NotificationModel>)
     fun update(model: NotificationModel): Int
