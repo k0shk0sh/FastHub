@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.widget.EditText
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
@@ -57,7 +58,9 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
         editText.setSelection(editText.asString().length)
         setupToolbar(R.string.markdown, R.menu.submit_menu) { item ->
             val intent = Intent().apply {
-                putExtra(EXTRA, editText.asString())
+                val bundle = arguments  ?: bundleOf()
+                bundle.putString(EXTRA, editText.asString())
+                putExtras(bundle)
             }
             activity?.setResult(Activity.RESULT_OK, intent)
             activity?.finish()

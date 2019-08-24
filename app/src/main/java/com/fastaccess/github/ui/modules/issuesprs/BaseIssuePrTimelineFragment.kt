@@ -139,6 +139,11 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                     val model = data?.getParcelableExtra<EditIssuePrBundleModel>(EXTRA) ?: return
                     editIssuerPr(model.title, model.description)
                 }
+                EDIT_COMMENT_REQUEST_CODE -> {
+                    val comment = data?.getStringExtra(EXTRA)
+                    val commentId = data?.getIntExtra(EXTRA_TWO, 0)
+                    onEditComment(comment, commentId)
+                }
                 else -> Timber.e("nothing yet for requestCode($requestCode)")
             }
         }
@@ -252,8 +257,9 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
     private fun startEditingIssue(model: IssueModel, isOwner: Boolean) {
         EditIssuePrActivity.startForResult(
             this, EditIssuePrBundleModel(
-            login, repo, number, model.title, model.body, false, isOwner = isOwner
-        ), EDIT_ISSUE_REQUEST_CODE)
+                login, repo, number, model.title, model.body, false, isOwner = isOwner
+            ), EDIT_ISSUE_REQUEST_CODE
+        )
     }
 
     protected open fun lockUnlockIssuePr() = Unit
@@ -324,9 +330,11 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
 
     protected open fun onEditCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment -> }
     protected open fun onDeleteCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment -> }
+    protected open fun onEditComment(comment: String?, commentId: Int?) = Unit
 
     companion object {
         const val COMMENT_REQUEST_CODE = 1001
         const val EDIT_ISSUE_REQUEST_CODE = 1002
+        const val EDIT_COMMENT_REQUEST_CODE = 1003
     }
 }

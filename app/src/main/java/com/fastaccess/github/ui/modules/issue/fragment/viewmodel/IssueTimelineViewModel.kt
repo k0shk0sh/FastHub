@@ -12,6 +12,7 @@ import com.fastaccess.github.extensions.map
 import com.fastaccess.github.usecase.issuesprs.*
 import github.type.LockReason
 import io.reactivex.Observable
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -26,25 +27,16 @@ class IssueTimelineViewModel @Inject constructor(
     private val loginRepositoryProvider: LoginLocalRepository,
     private val createIssueCommentUseCase: CreateIssueCommentUseCase,
     private val editIssuePrUseCase: EditIssuePrUseCase,
-    private val deleteCommentUseCase: DeleteCommentUseCase
+    private val deleteCommentUseCase: DeleteCommentUseCase,
+    private val editCommentUseCase: EditCommentUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
-    val timeline = MutableLiveData<ArrayList<TimelineModel>>()
     private val list = arrayListOf<TimelineModel>()
+    val forceAdapterUpdate = MutableLiveData<Boolean>()
+    val timeline = MutableLiveData<ArrayList<TimelineModel>>()
     val userNamesLiveData = MutableLiveData<ArrayList<String>>()
     val commentProgress = MutableLiveData<Boolean>()
-
-    override fun onCleared() {
-        super.onCleared()
-        timelineUseCase.dispose()
-        closeOpenIssuePrUseCase.dispose()
-        issueUseCase.dispose()
-        lockUnlockIssuePrUseCase.dispose()
-        createIssueCommentUseCase.dispose()
-        editIssuePrUseCase.dispose()
-        deleteCommentUseCase.dispose()
-    }
 
     fun getIssue(
         login: String,
@@ -189,12 +181,42 @@ class IssueTimelineViewModel @Inject constructor(
         deleteCommentUseCase.login = login
         deleteCommentUseCase.repo = repo
         justSubscribe(deleteCommentUseCase.buildObservable()
-            .doOnNext {
+            .map {
                 val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
                 if (index != -1) {
                     list.removeAt(index)
-                    timeline.postValue(ArrayList(list))
                 }
+                return@map list
+            }
+            .doOnNext { list ->
+                timeline.postValue(ArrayList(list))
             })
+    }
+
+    fun editComment(
+        login: String,
+        repo: String,
+        comment: String?,
+        commentId: Long?
+    ) {
+        if (!comment.isNullOrBlank() && commentId != null) {
+            editCommentUseCase.comment = comment
+            editCommentUseCase.login = login
+            editCommentUseCase.repo = repo
+            editCommentUseCase.commentId = commentId
+            justSubscribe(editCommentUseCase.buildObservable()
+                .map {
+                    val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
+                    val item = list.getOrNull(index) ?: return@map list
+                    item.comment?.body = comment
+                    list[index] = item
+                    Timber.e("${list[index]}")
+                    return@map list
+                }
+                .doOnNext { list ->
+                    timeline.postValue(ArrayList(list))
+                    forceAdapterUpdate.postValue(true)
+                })
+        }
     }
 }

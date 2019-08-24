@@ -49,23 +49,23 @@ class GetIssueTimelineUseCase @Inject constructor(
                 )
                 timeline.nodes?.forEach { node ->
                     when (node) {
-                        is AsIssueComment         -> list.add(getComment(node))
+                        is AsIssueComment -> list.add(getComment(node))
                         is AsCrossReferencedEvent -> list.add(getCrossReference(node))
-                        is AsClosedEvent          -> list.add(getClosed(node))
-                        is AsReopenedEvent        -> list.add(getReopened(node))
-                        is AsSubscribedEvent      -> list.add(getSubscribed(node))
-                        is AsUnsubscribedEvent    -> list.add(getUnsubscribed(node))
-                        is AsReferencedEvent      -> list.add(getReference(node))
-                        is AsAssignedEvent        -> list.addIfNotNull(getAssigned(node, list))
-                        is AsUnassignedEvent      -> list.addIfNotNull(getUnassigned(node, list))
-                        is AsLabeledEvent         -> list.addIfNotNull(getLabel(node, list))
-                        is AsUnlabeledEvent       -> list.addIfNotNull(getUnlabeled(node, list))
-                        is AsMilestonedEvent      -> list.add(getMilestone(node))
-                        is AsDemilestonedEvent    -> list.add(getDemilestoned(node))
-                        is AsRenamedTitleEvent    -> list.add(getRenamed(node))
-                        is AsLockedEvent          -> list.add(getLock(node))
-                        is AsUnlockedEvent        -> list.add(getUnlocked(node))
-                        is AsTransferredEvent     -> list.add(getTransferred(node))
+                        is AsClosedEvent -> list.add(getClosed(node))
+                        is AsReopenedEvent -> list.add(getReopened(node))
+                        is AsSubscribedEvent -> list.add(getSubscribed(node))
+                        is AsUnsubscribedEvent -> list.add(getUnsubscribed(node))
+                        is AsReferencedEvent -> list.add(getReference(node))
+                        is AsAssignedEvent -> list.addIfNotNull(getAssigned(node, list))
+                        is AsUnassignedEvent -> list.addIfNotNull(getUnassigned(node, list))
+                        is AsLabeledEvent -> list.addIfNotNull(getLabel(node, list))
+                        is AsUnlabeledEvent -> list.addIfNotNull(getUnlabeled(node, list))
+                        is AsMilestonedEvent -> list.add(getMilestone(node))
+                        is AsDemilestonedEvent -> list.add(getDemilestoned(node))
+                        is AsRenamedTitleEvent -> list.add(getRenamed(node))
+                        is AsLockedEvent -> list.add(getLock(node))
+                        is AsUnlockedEvent -> list.add(getUnlocked(node))
+                        is AsTransferredEvent -> list.add(getTransferred(node))
                     }
                 }
                 return@map Pair(pageInfo, list)
@@ -198,9 +198,9 @@ class GetIssueTimelineUseCase @Inject constructor(
 
     private fun constructLabel(m: Any): LabelModel {
         return when (m) {
-            is Label  -> LabelModel(m.name, m.color)
+            is Label -> LabelModel(m.name, m.color)
             is Label1 -> LabelModel(m.name, m.color)
-            else      -> throw IllegalArgumentException("$m is not instance of any Label")
+            else -> throw IllegalArgumentException("$m is not instance of any Label")
         }
     }
 
