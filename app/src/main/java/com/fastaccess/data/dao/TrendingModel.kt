@@ -13,6 +13,7 @@ data class TrendingModel(
         val todayStars: String? = null) : KotlinParcelable {
     companion object {
         @JvmField val CREATOR = parcelableCreator(::TrendingModel)
+        const val DEFAULT_LANG = "All Languages"
     }
 
     constructor(source: Parcel) : this(

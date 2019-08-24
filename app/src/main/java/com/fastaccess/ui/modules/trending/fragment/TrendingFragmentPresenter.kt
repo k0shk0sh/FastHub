@@ -35,9 +35,13 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
     }
 
     override fun onCallApi(lang: String, since: String) {
+        var l = when (lang) {
+            TrendingModel.DEFAULT_LANG -> ""
+            else -> lang
+        }
         disposel?.let { if (!it.isDisposed) it.dispose() }
         disposel = RxHelper.getObservable(JsoupProvider.getTrendingService().getTrending(
-                (if (!InputHelper.isEmpty(lang)) lang.replace(" ".toRegex(), "-") else "").toLowerCase(), since))
+                (if (!InputHelper.isEmpty(l)) l.replace(" ".toRegex(), "-") else "").toLowerCase(), since))
                 .flatMap { s -> RxHelper.getObservable(getTrendingObservable(s)) }
                 .doOnSubscribe {
                     sendToView {

@@ -21,6 +21,7 @@ import butterknife.OnTextChanged
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.*
+import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
@@ -44,7 +45,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     @BindView(R.id.searchEditText) lateinit var searchEditText: FontEditText
 
 
-    @State var selectedTitle: String = "All Language"
+    @State var selectedTitle: String = TrendingModel.DEFAULT_LANG
 
     @OnTextChanged(value = [R.id.searchEditText], callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) fun onTextChange(s: Editable) {
         val text = s.toString()
@@ -136,8 +137,12 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
                 true
             }
             R.id.share -> {
+                var lang: String = when (selectedTitle) {
+                    TrendingModel.DEFAULT_LANG -> ""
+                    else -> selectedTitle
+                }
                 ActivityHelper.shareUrl(this, "${LinkParserHelper.PROTOCOL_HTTPS}://${LinkParserHelper.HOST_DEFAULT}" +
-                        "/trending/$selectedTitle")
+                        "/trending/${lang.replace(" ".toRegex(), "-").toLowerCase()}")
                 return true
             }
             android.R.id.home -> {
@@ -161,10 +166,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
-        selectedTitle = when (item?.title.toString()) {
-            "All Language" -> ""
-            else -> item?.title.toString()
-        }
+        selectedTitle = item?.title.toString()
         Logger.e(selectedTitle)
         setValues()
         return true
