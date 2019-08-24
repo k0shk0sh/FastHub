@@ -25,7 +25,8 @@ class IssueTimelineViewModel @Inject constructor(
     private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase,
     private val loginRepositoryProvider: LoginLocalRepository,
     private val createIssueCommentUseCase: CreateIssueCommentUseCase,
-    private val editIssuePrUseCase: EditIssuePrUseCase
+    private val editIssuePrUseCase: EditIssuePrUseCase,
+    private val deleteCommentUseCase: DeleteCommentUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -42,6 +43,7 @@ class IssueTimelineViewModel @Inject constructor(
         lockUnlockIssuePrUseCase.dispose()
         createIssueCommentUseCase.dispose()
         editIssuePrUseCase.dispose()
+        deleteCommentUseCase.dispose()
     }
 
     fun getIssue(
@@ -176,5 +178,23 @@ class IssueTimelineViewModel @Inject constructor(
         editIssuePrUseCase.title = title
         editIssuePrUseCase.description = description
         justSubscribe(editIssuePrUseCase.buildObservable())
+    }
+
+    fun deleteComment(
+        login: String,
+        repo: String,
+        commentId: Long
+    ) {
+        deleteCommentUseCase.commentId = commentId
+        deleteCommentUseCase.login = login
+        deleteCommentUseCase.repo = repo
+        justSubscribe(deleteCommentUseCase.buildObservable()
+            .doOnNext {
+                val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
+                if (index != -1) {
+                    list.removeAt(index)
+                    timeline.postValue(ArrayList(list))
+                }
+            })
     }
 }

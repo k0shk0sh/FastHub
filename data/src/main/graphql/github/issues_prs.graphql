@@ -64,6 +64,7 @@ query getLastIssueComment($login: String!, $repo: String!, $number: Int!) {
                     bodyHTML
                     body
                     id
+                    databaseId
                     updatedAt
                     viewerCanReact
                     viewerCanDelete
@@ -98,6 +99,7 @@ query getLastPrComment($login: String!, $repo: String!, $number: Int!) {
                     bodyHTML
                     body
                     id
+                    databaseId
                     updatedAt
                     viewerCanReact
                     viewerCanDelete
@@ -141,6 +143,7 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
                             bodyHTML
                             body
                             id
+                            databaseId
                             updatedAt
                             viewerCanReact
                             viewerCanDelete

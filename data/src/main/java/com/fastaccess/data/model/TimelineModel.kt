@@ -37,6 +37,7 @@ data class CommitModel(
 
 data class CommentModel(
     @SerializedName("id") var id: String? = null,
+    @SerializedName("databaseId") var databaseId: Int? = null,
     @SerializedName("author") var author: ShortUserModel? = null,
     @SerializedName("bodyHTML") var bodyHTML: String? = null,
     @SerializedName("body") var body: String? = null,

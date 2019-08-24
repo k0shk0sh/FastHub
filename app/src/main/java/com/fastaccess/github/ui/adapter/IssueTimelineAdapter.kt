@@ -19,7 +19,9 @@ import io.noties.markwon.Markwon
 class IssueTimelineAdapter(
     private val markwon: Markwon,
     private val theme: Int,
-    private val commentClickListener: (position: Int, comment: CommentModel) -> Unit
+    private val commentClickListener: (position: Int, comment: CommentModel) -> Unit,
+    private val deleteCommentListener: (position: Int, comment: CommentModel) -> Unit,
+    private val editCommentListener: (position: Int, comment: CommentModel) -> Unit
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val notifyCallback by lazy {
@@ -43,7 +45,7 @@ class IssueTimelineAdapter(
         viewType: Int
     ): RecyclerView.ViewHolder {
         return when (viewType) {
-            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback).apply {
+            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback, deleteCommentListener, editCommentListener).apply {
                 itemView.setOnClickListener {
                     val position = adapterPosition
                     if (position == RecyclerView.NO_POSITION) return@setOnClickListener

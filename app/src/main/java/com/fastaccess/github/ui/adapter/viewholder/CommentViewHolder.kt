@@ -8,8 +8,11 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.github.R
+import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.showYesNoDialog
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.utils.extensions.popMenu
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_row_item.view.*
@@ -23,13 +26,15 @@ class CommentViewHolder(
     parent: ViewGroup,
     private val markwon: Markwon,
     private val theme: Int,
-    private val callback: (position: Int) -> Unit
+    private val callback: (position: Int) -> Unit,
+    private val deleteCommentListener: (position: Int, comment: CommentModel) -> Unit,
+    private val editCommentListener: (position: Int, comment: CommentModel) -> Unit
 ) : BaseViewHolder<CommentModel?>(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.comment_row_item, parent, false)
 ) {
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "DefaultLocale")
     override fun bind(item: CommentModel?) {
         val model = item ?: run {
             itemView.isVisible = false
@@ -41,7 +46,10 @@ class CommentViewHolder(
             association.text = if (CommentAuthorAssociation.NONE == model.authorAssociation) {
                 model.updatedAt?.timeAgo()
             } else {
-                "${model.authorAssociation?.value?.toLowerCase()?.replace("_", "")} ${model.updatedAt?.timeAgo()}"
+                com.fastaccess.markdown.widget.SpannableBuilder.builder()
+                    .bold(model.authorAssociation?.value?.toLowerCase()?.replace("_", "") ?: "")
+                    .space()
+                    .append(model.updatedAt?.timeAgo())
             }
 
             description.post {
@@ -55,6 +63,25 @@ class CommentViewHolder(
                     itemView.callOnClick()
                 }
                 return@setOnTouchListener false
+            }
+
+            val canAlter = model.viewerCanUpdate == true || model.viewerCanDelete == true
+            menu.isVisible = canAlter
+            if (canAlter) {
+                menu.popMenu(R.menu.comment_menu, { menu ->
+                    menu.findItem(R.id.edit)?.isVisible = model.viewerCanUpdate == true
+                    menu.findItem(R.id.delete)?.isVisible = model.viewerCanDelete == true
+                }) { itemId ->
+                    if (itemId == R.id.delete) {
+                        context.showYesNoDialog(R.string.delete) {
+                            it.isTrue {
+                                deleteCommentListener.invoke(adapterPosition, model)
+                            }
+                        }
+                    } else if (itemId == R.id.edit) {
+                        editCommentListener.invoke(adapterPosition, model)
+                    }
+                }
             }
 
 

@@ -1,11 +1,13 @@
 package com.fastaccess.github.ui.modules.issue.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.persistence.models.LoginModel
@@ -48,7 +50,9 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(IssueTimelineViewModel::class.java) }
 
-    override val adapter by lazy { IssueTimelineAdapter(markwon, preference.theme, onCommentClicked()) }
+    override val adapter by lazy {
+        IssueTimelineAdapter(markwon, preference.theme, onCommentClicked(), onDeleteCommentClicked(), onEditCommentClicked())
+    }
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
@@ -100,6 +104,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun initIssue(
         model: IssueModel,
         me: LoginModel?
@@ -153,10 +158,17 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
         initLabels(model.labels)
         initAssignees(model.assignees)
         initMilestone(model.milestone)
-        initToolbarMenu(isAuthor, model.viewerDidAuthor, model.locked, state = model.state)
+        initToolbarMenu(isAuthor, model.viewerCanUpdate == true, model.viewerDidAuthor, model.locked, state = model.state)
         recyclerView.removeEmptyView()
     }
 
+    override fun onEditCommentClicked(): (position: Int, comment: CommentModel) -> Unit {
+        return super.onEditCommentClicked()
+    }
+
+    override fun onDeleteCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment ->
+        viewModel.deleteComment(login, repo, comment.databaseId?.toLong() ?: 0L)
+    }
 
     companion object {
         const val TAG = "IssueFragment"

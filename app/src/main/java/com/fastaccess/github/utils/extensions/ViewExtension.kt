@@ -1,11 +1,14 @@
 package com.fastaccess.github.utils.extensions
 
 import android.content.Context
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.annotation.MenuRes
 import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
@@ -195,4 +198,21 @@ fun View.popupEmoji(
     popupWindow.isFocusable = true
     popupWindow.isTouchable = true
     popupWindow.showAsDropDown(this)
+}
+
+fun View.popMenu(
+    @MenuRes menuId: Int,
+    menuCallback: ((menu: Menu) -> Unit)?,
+    callback: ((itemId: Int) -> Unit)?
+) {
+    setOnClickListener {
+        val menu = PopupMenu(context, this)
+        menu.inflate(menuId)
+        menuCallback?.invoke(menu.menu)
+        menu.setOnMenuItemClickListener {
+            callback?.invoke(it.itemId)
+            return@setOnMenuItemClickListener true
+        }
+        menu.show()
+    }
 }

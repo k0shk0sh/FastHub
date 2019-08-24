@@ -58,7 +58,6 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textStyle="bold"
                     app:autoSizeMaxTextSize="14sp"
                     app:autoSizeMinTextSize="10sp"
                     app:autoSizeStepGranularity="1dp"

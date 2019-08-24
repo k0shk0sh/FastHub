@@ -36,6 +36,7 @@ class CreateIssueCommentUseCase @Inject constructor(
             return@map TimelineModel(
                 comment = CommentModel(
                     node.id,
+                    node.databaseId,
                     ShortUserModel(node.author?.login, node.author?.login, avatarUrl = node.author?.avatarUrl.toString()),
                     node.bodyHTML.toString(), node.body, CommentAuthorAssociation.fromName(node.authorAssociation.rawValue()),
                     node.viewerCannotUpdateReasons.map { reason -> CommentCannotUpdateReason.fromName(reason.rawValue()) }.toList(),

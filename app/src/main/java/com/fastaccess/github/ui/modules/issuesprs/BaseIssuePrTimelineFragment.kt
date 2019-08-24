@@ -8,6 +8,7 @@ import android.text.Editable
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.CommentModel
@@ -34,6 +35,7 @@ import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.isConnected
+import com.fastaccess.github.utils.extensions.popMenu
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
@@ -56,10 +58,10 @@ import javax.inject.Inject
  * Created by Kosh on 2019-08-17.
  */
 abstract class BaseIssuePrTimelineFragment : BaseFragment(),
-                                             LockUnlockFragment.OnLockReasonSelected,
-                                             LabelsFragment.OnLabelSelected,
-                                             AssigneesFragment.OnAssigneesSelected,
-                                             MilestoneFragment.OnMilestoneChanged {
+    LockUnlockFragment.OnLockReasonSelected,
+    LabelsFragment.OnLabelSelected,
+    AssigneesFragment.OnAssigneesSelected,
+    MilestoneFragment.OnMilestoneChanged {
 
     @Inject lateinit var mentionsPresenter: MentionsPresenter
 
@@ -241,14 +243,17 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                     childFragmentManager,
                     MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(login, repo, model.assignees, number)
                 )
-                R.id.edit -> EditIssuePrActivity.startForResult(
-                    this, EditIssuePrBundleModel(
-                        login, repo, number, model.title, model.body, false, isOwner = isOwner
-                    ), EDIT_ISSUE_REQUEST_CODE
-                )
+                R.id.edit -> startEditingIssue(model, isOwner)
             }
             return@setOnMenuItemClickListener true
         }
+    }
+
+    private fun startEditingIssue(model: IssueModel, isOwner: Boolean) {
+        EditIssuePrActivity.startForResult(
+            this, EditIssuePrBundleModel(
+            login, repo, number, model.title, model.body, false, isOwner = isOwner
+        ), EDIT_ISSUE_REQUEST_CODE)
     }
 
     protected open fun lockUnlockIssuePr() = Unit
@@ -287,19 +292,20 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
     }
 
     protected fun initToolbarMenu(
-        isAuthor: Boolean,
+        isOwner: Boolean,
+        canUpdate: Boolean,
         viewerDidAuthor: Boolean? = null,
         isLocked: Boolean? = null,
         isMerged: Boolean? = null,
         state: String? = null
     ) {
         toolbar.menu.let {
-            it.findItem(R.id.edit).isVisible = viewerDidAuthor == true || isAuthor
-            it.findItem(R.id.assignees).isVisible = isAuthor
-            it.findItem(R.id.milestone).isVisible = isAuthor
-            it.findItem(R.id.labels).isVisible = isAuthor
-            it.findItem(R.id.closeIssue).isVisible = viewerDidAuthor == true || isAuthor
-            it.findItem(R.id.lockIssue).isVisible = isAuthor
+            it.findItem(R.id.edit).isVisible = viewerDidAuthor == true || canUpdate
+            it.findItem(R.id.assignees).isVisible = isOwner
+            it.findItem(R.id.milestone).isVisible = isOwner
+            it.findItem(R.id.labels).isVisible = isOwner
+            it.findItem(R.id.closeIssue).isVisible = isOwner
+            it.findItem(R.id.lockIssue).isVisible = isOwner
             it.findItem(R.id.closeIssue).title = if (!IssueState.OPEN.rawValue().equals(state, true)) {
                 getString(R.string.re_open_issue)
             } else {
@@ -315,6 +321,9 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
             comment.author?.login ?: comment.author?.name, comment.author?.avatarUrl
         )
     }
+
+    protected open fun onEditCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment -> }
+    protected open fun onDeleteCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment -> }
 
     companion object {
         const val COMMENT_REQUEST_CODE = 1001

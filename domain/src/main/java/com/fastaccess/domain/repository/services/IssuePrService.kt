@@ -77,5 +77,4 @@ interface IssuePrService {
         @Path("owner") owner: String, @Path("repo") repo: String, @Path("number") number: Int,
         @Body body: AssigneesBodyModel
     ): Observable<IssueResponse>
-
 }
