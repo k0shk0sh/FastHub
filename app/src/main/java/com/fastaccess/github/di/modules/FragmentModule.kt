@@ -11,6 +11,7 @@ import com.fastaccess.github.ui.modules.comment.CommentFragment
 import com.fastaccess.github.ui.modules.editor.EditorFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
+import com.fastaccess.github.ui.modules.pr.fragment.PullRequestFragment
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.GrammarLocatorDef
@@ -96,4 +97,9 @@ class EditIssuePrModule {
 @Module(includes = [FragmentModule::class])
 class CommentModule {
     @PerFragment @Provides fun provideEditorContext(fragment: CommentFragment) = fragment.requireContext()
+}
+
+@Module(includes = [FragmentModule::class])
+class PullRequestModule {
+    @PerFragment @Provides fun provideEditorContext(fragment: PullRequestFragment) = fragment.requireContext()
 }

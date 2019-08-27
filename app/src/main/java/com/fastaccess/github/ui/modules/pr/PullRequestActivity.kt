@@ -6,6 +6,7 @@ import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.extensions.replace
 import com.fastaccess.github.platform.deeplink.WebDeepLink
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
+import com.fastaccess.github.ui.modules.pr.fragment.PullRequestFragment
 
 /**
  * Created by Kosh on 28.01.19.
@@ -23,7 +24,7 @@ class PullRequestActivity : BaseActivity() {
                 finish()
                 return
             }
-            replace(R.id.container, IssueFragment.newInstance(login, repo, number), IssueFragment.TAG)
+            replace(R.id.container, PullRequestFragment.newInstance(login, repo, number), IssueFragment.TAG)
         }
     }
 

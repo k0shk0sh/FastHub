@@ -3,6 +3,7 @@ package com.fastaccess.data.model
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
+import com.fastaccess.data.persistence.models.PullRequestModel
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -22,7 +23,8 @@ data class TimelineModel(
     @SerializedName("assignedUnassignedEvent") val assignedEventModel: AssignedUnAssignedEventModel? = null,
     @SerializedName("milestoneDemilestoneEvent") val milestoneEventModel: MilestoneDemilestonedEventModel? = null,
     @SerializedName("renamedEvent") val renamedEventModel: RenamedEventModel? = null,
-    @SerializedName("transferredEvent") val transferredEventModel: TransferredEventModel? = null
+    @SerializedName("transferredEvent") val transferredEventModel: TransferredEventModel? = null,
+    @SerializedName("pullRequest") val pullRequest: PullRequestModel? = null
 )
 
 data class CommitModel(

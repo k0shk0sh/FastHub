@@ -60,7 +60,8 @@ class GetPullRequestUseCase @Inject constructor(
                     issue.isViewerCanReact, issue.isViewerCanSubscribe, issue.isViewerCanUpdate, issue.isViewerDidAuthor,
                     issue.mergeable.rawValue(), issue.isMerged, issue.mergedAt,
                     issue.authorAssociation.rawValue(), issue.url.toString(), issue.labels?.nodes?.map { it.fragments.labels.toLabels() },
-                    issue.milestone?.toMilestone(), issue.assignees.nodes?.map { it.fragments }?.map { it.shortUserRowItem.toUser() })
+                    issue.milestone?.toMilestone(), issue.assignees.nodes?.map { it.fragments }?.map { it.shortUserRowItem.toUser() },
+                    issue.headRefName, issue.baseRefName)
                 )
             }
     }

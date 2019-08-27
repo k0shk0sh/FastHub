@@ -27,7 +27,7 @@ fun MainScreenModel.onClick(fragment: Fragment) {
         MainScreenModelRowType.ISSUES_TITLE -> fragment.route(FILTER_ISSUE_LINK)
         MainScreenModelRowType.ISSUES -> fragment.route("${model.issuesPullsModel?.url}")
         MainScreenModelRowType.PRS_TITLE -> fragment.route(FILTER_PR_LINK)
-        MainScreenModelRowType.PRS -> Timber.e("${model.issuesPullsModel}")
+        MainScreenModelRowType.PRS -> fragment.route(model.issuesPullsModel?.url)
     }
 }
 
@@ -36,6 +36,9 @@ fun FeedModel.onClick(fragment: Fragment) {
     when (type) {
         EventsType.IssueCommentEvent -> fragment.route("${payload?.issue?.htmlUrl}")
         EventsType.IssuesEvent -> fragment.route("${payload?.issue?.htmlUrl}")
+        EventsType.PullRequestEvent -> fragment.route("${payload?.pullRequest?.htmlUrl}")
+        EventsType.PullRequestReviewCommentEvent -> fragment.route("${payload?.pullRequest?.htmlUrl}")
+        EventsType.PullRequestReviewEvent -> fragment.route("${payload?.pullRequest?.htmlUrl}")
         else -> fragment.route(actor?.url) // TODO(handle click)
     }
 }

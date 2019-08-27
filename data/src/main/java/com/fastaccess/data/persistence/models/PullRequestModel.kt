@@ -50,7 +50,9 @@ data class PullRequestModel(
     @SerializedName("url") var url: String? = null,
     @SerializedName("labels") var labels: List<LabelModel>? = null,
     @SerializedName("milestone") @Embedded(prefix = "milestone_") var milestone: MilestoneModel? = null,
-    @SerializedName("assignees") var assignees: List<ShortUserModel>? = null
+    @SerializedName("assignees") var assignees: List<ShortUserModel>? = null,
+    @SerializedName("headRefName") var headRefName: String? = null,
+    @SerializedName("baseRefName") var baseRefName: String? = null
 ) {
     companion object {
         const val TABLE_NAME = "pullrequest_table"

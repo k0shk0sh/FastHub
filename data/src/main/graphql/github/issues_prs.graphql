@@ -55,26 +55,7 @@ query getLastIssueComment($login: String!, $repo: String!, $number: Int!) {
             timelineItems(last: 1, itemTypes: [ISSUE_COMMENT]) {
               nodes {
                 ... on IssueComment {
-                    author {
-                        login
-                        avatarUrl
-                    }
-                    createdAt
-                    authorAssociation
-                    bodyHTML
-                    body
-                    id
-                    databaseId
-                    updatedAt
-                    viewerCanReact
-                    viewerCanDelete
-                    viewerCanUpdate
-                    viewerDidAuthor
-                    viewerCanMinimize
-                    viewerCannotUpdateReasons
-                    reactionGroups {
-                        ... Reactions
-                    }
+                    ... Comment
                 }
               }
             }
@@ -90,26 +71,7 @@ query getLastPrComment($login: String!, $repo: String!, $number: Int!) {
             timelineItems(last: 1, itemTypes: [ISSUE_COMMENT]) {
               nodes {
                 ... on IssueComment {
-                    author {
-                        login
-                        avatarUrl
-                    }
-                    createdAt
-                    authorAssociation
-                    bodyHTML
-                    body
-                    id
-                    databaseId
-                    updatedAt
-                    viewerCanReact
-                    viewerCanDelete
-                    viewerCanUpdate
-                    viewerDidAuthor
-                    viewerCanMinimize
-                    viewerCannotUpdateReasons
-                    reactionGroups {
-                        ... Reactions
-                    }
+                    ... Comment
                 }
               }
             }
@@ -133,152 +95,55 @@ query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: St
                     nodes {
                         __typename
                         ... on IssueComment {
-                            author {
-                                login
-                                avatarUrl
-                                url
-                            }
-                            createdAt
-                            authorAssociation
-                            bodyHTML
-                            body
-                            id
-                            databaseId
-                            updatedAt
-                            viewerCanReact
-                            viewerCanDelete
-                            viewerCanUpdate
-                            viewerDidAuthor
-                            viewerCanMinimize
-                            viewerCannotUpdateReasons
-                            reactionGroups {
-                                ... Reactions
-                            }
+                            ... Comment
                         }
                         ... on CrossReferencedEvent {
-                            createdAt
-                            isCrossRepository
-                            referencedAt
-                            source {
-                                ... ShortPullRequestRowItem
-                                ... ShortIssueRowItem
-                            }
-                            willCloseTarget
-                            actor { ... ShortActor }
+                            ... CrossReferenced
                         }
                         ... on ClosedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            closer {
-                                ... CommitFragment
-                                ... ShortPullRequestRowItem
-                            }
+                            ... Closed
                         }
                         ... on ReopenedEvent {
-                            actor { ... ShortActor }
-                            createdAt
+                            ... Reopened
                         }
                         ... on SubscribedEvent {
-                            actor { ... ShortActor }
-                            createdAt
+                            ... Subscribed
                         }
                         ... on UnsubscribedEvent {
-                            actor { ... ShortActor }
-                            createdAt
+                            ... Unsubscribed
                         }
                         ... on ReferencedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            commitRepository {
-                                nameWithOwner
-                            }
-                            isCrossRepository
-                            isDirectReference
-                            commit {
-                                ... CommitFragment
-                            }
-                            subject {
-                                ... ShortPullRequestRowItem
-                                ... ShortIssueRowItem
-                            }
+                            ... Referenced
                         }
                         ... on AssignedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            user {
-                                login
-                                avatarUrl
-                            }
+                            ... Assigned
                         }
                         ... on UnassignedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            user {
-                                login
-                                avatarUrl
-                            }
+                           ... UnAssigned
                         }
                         ... on LabeledEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            label {
-                                color
-                                name
-                                isDefault
-                            }
+                            ... Labeled
                         }
                         ... on UnlabeledEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            label {
-                                color
-                                name
-                                isDefault
-                            }
+                            ... UnLabeled
                         }
                         ... on MilestonedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            milestoneTitle
+                            ... Milestoned
                         }
                         ... on DemilestonedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            milestoneTitle
+                            ... Demilestoned
                         }
                         ... on RenamedTitleEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            currentTitle
-                            previousTitle
+                            ... Renamed
                         }
                         ... on LockedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            lockReason
-                            lockable {
-                                activeLockReason
-                            }
+                            ... Locked
                         }
                         ... on UnlockedEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            lockable {
-                                activeLockReason
-                            }
+                            ... Unlocked
                         }
                         ... on TransferredEvent {
-                            actor { ... ShortActor }
-                            createdAt
-                            fromRepository {
-                                id
-                                nameWithOwner
-                                url
-                            }
-                            issue {
-                                number
-                                url
-                            }
+                            ... Transferred
                         }
                     }
                 }

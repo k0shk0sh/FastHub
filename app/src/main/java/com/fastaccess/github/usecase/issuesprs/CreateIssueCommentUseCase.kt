@@ -31,8 +31,9 @@ class CreateIssueCommentUseCase @Inject constructor(
         .observeOn(schedulerProvider.uiThread())
         .flatMap { Rx2Apollo.from(apolloClient.query(GetLastIssueCommentQuery(login, repo, number))) }
         .map {
-            val node = it.data()?.repositoryOwner?.repository?.issue?.timelineItems?.nodes?.firstOrNull()
+            val type = it.data()?.repositoryOwner?.repository?.issue?.timelineItems?.nodes?.firstOrNull()
                 as? GetLastIssueCommentQuery.AsIssueComment ?: return@map TimelineModel()
+            val node = type.fragments.comment ?: return@map TimelineModel()
             return@map TimelineModel(
                 comment = CommentModel(
                     node.id,

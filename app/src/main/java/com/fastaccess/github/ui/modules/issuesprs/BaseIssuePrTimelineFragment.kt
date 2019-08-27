@@ -19,6 +19,7 @@ import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.data.persistence.models.IssueModel
+import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.extensions.*
@@ -215,7 +216,11 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
     }
 
     protected fun menuClick(
-        model: IssueModel,
+        url: String?,
+        labels: List<LabelModel>?,
+        assignees: List<ShortUserModel>?,
+        title: String?,
+        body: String?,
         isOwner: Boolean
     ) {
         toolbar.setOnMenuItemClickListener { item ->
@@ -230,7 +235,7 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                     recyclerView.scrollToPosition(0)
                 }
                 R.id.closeIssue -> closeOpenIssuePr()
-                R.id.share -> requireActivity().shareUrl(model.url)
+                R.id.share -> requireActivity().shareUrl(url)
                 R.id.lockIssue -> if (item.title == getString(R.string.lock_issue)) {
                     MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LOCK_UNLOCK)
                 } else {
@@ -238,26 +243,30 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                 }
                 R.id.labels -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,
-                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, model.labels, number)
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LABELS, LoginRepoParcelableModel(login, repo, labels, number)
                 )
                 R.id.assignees -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,
-                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ASSIGNEES, LoginRepoParcelableModel(login, repo, model.assignees, number)
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ASSIGNEES, LoginRepoParcelableModel(login, repo, assignees, number)
                 )
                 R.id.milestone -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,
-                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(login, repo, model.assignees, number)
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(login, repo, assignees, number)
                 )
-                R.id.edit -> startEditingIssue(model, isOwner)
+                R.id.edit -> startEditingIssue(title, body, isOwner)
             }
             return@setOnMenuItemClickListener true
         }
     }
 
-    private fun startEditingIssue(model: IssueModel, isOwner: Boolean) {
+    private fun startEditingIssue(
+        title: String?,
+        body: String?,
+        isOwner: Boolean
+    ) {
         EditIssuePrActivity.startForResult(
             this, EditIssuePrBundleModel(
-                login, repo, number, model.title, model.body, false, isOwner = isOwner
+                login, repo, number, title, body, false, isOwner = isOwner
             ), EDIT_ISSUE_REQUEST_CODE
         )
     }

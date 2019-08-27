@@ -83,6 +83,10 @@ fragment CommitFragment on Commit {
     authoredDate
     committedViaWeb
     id
+    oid
+    status {
+        state
+    }
 }
 
 fragment FullIssue on Issue {
@@ -165,40 +169,42 @@ fragment FullPullRequest on PullRequest {
     mergeable
     merged
     mergedAt
+    headRefName
+    baseRefName
     mergedBy {
-      avatarUrl
-      login
-      url
+        avatarUrl
+        login
+        url
     }
     url
     userContentEdits(first: 0) {
-      totalCount
+        totalCount
     }
     author {
-      avatarUrl
-      login
-      url
+        avatarUrl
+        login
+        url
     }
     reactionGroups {
-      ...Reactions
+        ...Reactions
     }
     createdViaEmail
     repository {
-      nameWithOwner
+        nameWithOwner
     }
     authorAssociation
     labels(first: 30) {
-      nodes {
-        ...Labels
-      }
+        nodes {
+            ...Labels
+        }
     }
     assignees(first: 30) {
-      nodes {
-        ...ShortUserRowItem
-      }
+        nodes {
+            ...ShortUserRowItem
+        }
     }
     milestone {
-      ...MilestoneFragment
+        ...MilestoneFragment
     }
 }
 
@@ -230,4 +236,167 @@ fragment MilestoneFragment on Milestone {
     url
     title
     state
+}
+
+fragment Comment on IssueComment {
+    author {
+        login
+        avatarUrl
+        url
+    }
+    createdAt
+    authorAssociation
+    bodyHTML
+    body
+    id
+    databaseId
+    updatedAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    viewerCanMinimize
+    viewerCannotUpdateReasons
+    reactionGroups {
+        ... Reactions
+    }
+}
+
+fragment CrossReferenced on CrossReferencedEvent {
+    createdAt
+    isCrossRepository
+    referencedAt
+    source {
+        ... ShortPullRequestRowItem
+        ... ShortIssueRowItem
+    }
+    willCloseTarget
+    actor { ... ShortActor }
+}
+
+fragment Closed on ClosedEvent {
+    actor { ... ShortActor }
+    createdAt
+    closer {
+        ... CommitFragment
+        ... ShortPullRequestRowItem
+    }
+}
+
+fragment Reopened on ReopenedEvent {
+    actor { ... ShortActor }
+    createdAt
+}
+
+fragment Subscribed on SubscribedEvent {
+    actor { ... ShortActor }
+    createdAt
+}
+
+fragment Unsubscribed on UnsubscribedEvent {
+    actor { ... ShortActor }
+    createdAt
+}
+
+fragment Referenced on ReferencedEvent {
+    actor { ... ShortActor }
+    createdAt
+    commitRepository {
+        nameWithOwner
+    }
+    isCrossRepository
+    isDirectReference
+    commit {
+        ... CommitFragment
+    }
+    subject {
+        ... ShortPullRequestRowItem
+        ... ShortIssueRowItem
+    }
+}
+
+fragment Assigned on AssignedEvent {
+    actor { ... ShortActor }
+    createdAt
+    user {
+        login
+        avatarUrl
+    }
+}
+
+fragment UnAssigned on UnassignedEvent {
+    actor { ... ShortActor }
+    createdAt
+    user {
+        login
+        avatarUrl
+    }
+}
+
+fragment Labeled on LabeledEvent {
+    actor { ... ShortActor }
+    createdAt
+    label {
+        color
+        name
+        isDefault
+    }
+}
+
+fragment UnLabeled on UnlabeledEvent {
+    actor { ... ShortActor }
+    createdAt
+    label {
+        ... Labels
+    }
+}
+
+fragment Milestoned on MilestonedEvent {
+    actor { ... ShortActor }
+    createdAt
+    milestoneTitle
+}
+
+fragment Demilestoned on DemilestonedEvent {
+    actor { ... ShortActor }
+    createdAt
+    milestoneTitle
+}
+
+fragment Renamed on RenamedTitleEvent {
+    actor { ... ShortActor }
+    createdAt
+    currentTitle
+    previousTitle
+}
+
+fragment Locked on LockedEvent {
+    actor { ... ShortActor }
+    createdAt
+    lockReason
+    lockable {
+        activeLockReason
+    }
+}
+
+fragment Unlocked on UnlockedEvent {
+    actor { ... ShortActor }
+    createdAt
+    lockable {
+        activeLockReason
+    }
+}
+
+fragment Transferred on TransferredEvent {
+    actor { ... ShortActor }
+    createdAt
+    fromRepository {
+        id
+        nameWithOwner
+        url
+    }
+    issue {
+        number
+        url
+    }
 }

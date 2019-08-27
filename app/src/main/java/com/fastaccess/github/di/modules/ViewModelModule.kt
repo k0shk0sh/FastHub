@@ -17,6 +17,7 @@ import com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel.FilterIssue
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsViewModel
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.viewmodel.UnreadNotificationsViewModel
+import com.fastaccess.github.ui.modules.pr.fragment.viewmodel.PullRequestTimelineViewModel
 import com.fastaccess.github.ui.modules.profile.feeds.viewmodel.ProfileFeedsViewModel
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 import com.fastaccess.github.ui.modules.profile.fragment.viewmodel.ProfileViewModel
@@ -104,4 +105,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(EditIssuePrViewModel::class)
     abstract fun bindEditIssuePrViewModel(viewModel: EditIssuePrViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(PullRequestTimelineViewModel::class)
+    abstract fun bindPullRequestTimelineViewModel(viewModel: PullRequestTimelineViewModel): ViewModel
 }

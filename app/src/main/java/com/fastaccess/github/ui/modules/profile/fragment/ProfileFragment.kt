@@ -85,9 +85,7 @@ class ProfileFragment : BasePagerFragment() {
         organizationList.adapter = orgsAdapter
         pinnedList.adapter = pinnedReposAdapter
         pinnedList.addDivider()
-
         observeChanges()
-
         behaviour.state = AnchorSheetBehavior.STATE_ANCHOR
 
         toggleArrow.setOnClickListener {
@@ -120,6 +118,7 @@ class ProfileFragment : BasePagerFragment() {
         }
         followers.setOnClickListener { if (pager.adapter != null) selectTab(FragmentType.FOLLOWERS) }
         following.setOnClickListener { if (pager.adapter != null) selectTab(FragmentType.FOLLOWINGS) }
+        viewModel.getUserFromRemote(loginBundle)
     }
 
     override fun onBackPressed(): Boolean {
@@ -132,12 +131,8 @@ class ProfileFragment : BasePagerFragment() {
     }
 
     private fun observeChanges() {
-        viewModel.getUser(loginBundle).observeNull(this) { user ->
-            if (user == null) {
-                viewModel.getUserFromRemote(loginBundle)
-            } else {
-                initUI(user)
-            }
+        viewModel.getUser(loginBundle).observeNotNull(this) { user ->
+            initUI(user)
         }
 
         viewModel.isBlocked.observeNotNull(this) {

@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.issue.fragment
+package com.fastaccess.github.ui.modules.pr.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
-import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.persistence.models.LoginModel
+import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseViewModel
@@ -19,8 +19,8 @@ import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.routeForResult
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
-import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
+import com.fastaccess.github.ui.modules.pr.fragment.viewmodel.PullRequestTimelineViewModel
 import com.fastaccess.github.utils.EDITOR_DEEPLINK
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
@@ -32,7 +32,6 @@ import github.type.CommentAuthorAssociation
 import github.type.IssueState
 import github.type.LockReason
 import io.noties.markwon.Markwon
-import io.noties.markwon.recycler.MarkwonAdapter
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
@@ -44,14 +43,13 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 28.01.19.
  */
-class IssueFragment : BaseIssuePrTimelineFragment() {
+class PullRequestFragment : BaseIssuePrTimelineFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
-    @Inject lateinit var markwonAdapterBuilder: MarkwonAdapter.Builder
 
-    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(IssueTimelineViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(PullRequestTimelineViewModel::class.java) }
 
     override val adapter by lazy {
         IssueTimelineAdapter(markwon, preference.theme, onCommentClicked(), onDeleteCommentClicked(), onEditCommentClicked())
@@ -59,7 +57,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
-    override fun isPr(): Boolean = false
+    override fun isPr(): Boolean = true
     override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
     override fun onMilestoneAdd(timeline: TimelineModel) = viewModel.addTimeline(timeline)
     override fun reload(refresh: Boolean) = viewModel.loadData(login, repo, number, refresh)
@@ -87,7 +85,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
     override fun closeOpenIssuePr() = viewModel.closeOpenIssue(login, repo, number)
 
     private fun observeChanges() {
-        viewModel.getIssue(login, repo, number).observeNotNull(this) {
+        viewModel.getPullRequest(login, repo, number).observeNotNull(this) {
             initIssue(it.first, it.second)
         }
         viewModel.timeline.observeNotNull(this) { timeline ->
@@ -112,22 +110,43 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
 
     @SuppressLint("DefaultLocale")
     private fun initIssue(
-        model: IssueModel,
+        model: PullRequestModel,
         me: LoginModel?
     ) {
         issueHeaderWrapper.isVisible = true
         val theme = preference.theme
         title.text = model.title
         toolbar.title = SpannableBuilder.builder()
-            .append(getString(R.string.issue))
+            .append(getString(R.string.pull_request))
             .bold("#${model.number}")
 
-        opener.text = SpannableBuilder.builder()
-            .bold(model.author?.login)
-            .space()
-            .append(getString(R.string.opened_this_issue))
-            .space()
-            .append(model.createdAt?.timeAgo())
+        opener.text = if (model.merged == true) {
+            SpannableBuilder.builder()
+                .bold(model.mergedBy?.login)
+                .space()
+                .append(getString(R.string.merged).toLowerCase())
+                .space()
+                .bold(model.headRefName)
+                .space()
+                .append(getString(R.string.to))
+                .space()
+                .bold(model.baseRefName)
+                .space()
+                .append(model.mergedAt?.timeAgo())
+        } else {
+            SpannableBuilder.builder()
+                .bold(model.author?.login)
+                .space()
+                .append(getString(R.string.want_to_merge))
+                .space()
+                .bold(model.headRefName)
+                .space()
+                .append(getString(R.string.to))
+                .space()
+                .bold(model.baseRefName)
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
 
         userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
         author.text = model.author?.login
@@ -191,7 +210,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
             login: String,
             repo: String,
             number: Int
-        ) = IssueFragment().apply {
+        ) = PullRequestFragment().apply {
             arguments = bundleOf(EXTRA to login, EXTRA_TWO to repo, EXTRA_THREE to number)
         }
     }
