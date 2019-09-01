@@ -48,12 +48,9 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                     timeline.pageInfo.isHasNextPage, timeline.pageInfo.isHasPreviousPage
                 )
                 /**
-                 * [ISSUE_COMMENT, CLOSED_EVENT, REOPENED_EVENT, REFERENCED_EVENT, ASSIGNED_EVENT,
-                UNASSIGNED_EVENT, LABELED_EVENT, UNLABELED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, RENAMED_TITLE_EVENT,
-                LOCKED_EVENT, UNLOCKED_EVENT, TRANSFERRED_EVENT, PULL_REQUEST_COMMIT, PULL_REQUEST_COMMIT_COMMENT_THREAD,
-                PULL_REQUEST_REVIEW, PULL_REQUEST_REVIEW_THREAD, HEAD_REF_DELETED_EVENT, HEAD_REF_FORCE_PUSHED_EVENT,
-                MERGED_EVENT, MERGED_EVENT, REVIEW_DISMISSED_EVENT, REVIEW_REQUESTED_EVENT,
-                REVIEW_REQUEST_REMOVED_EVENT, READY_FOR_REVIEW_EVENT]
+                 *
+                PULL_REQUEST_COMMIT, PULL_REQUEST_COMMIT_COMMENT_THREAD,
+                PULL_REQUEST_REVIEW, PULL_REQUEST_REVIEW_THREAD,]
                  */
                 timeline.nodes?.forEach { node ->
                     when (node) {
@@ -91,13 +88,86 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                         is AsHeadRefDeletedEvent -> list.add(getHeadRefDeleted(node))
                         is AsReviewRequestedEvent -> list.add(getRequestForReview(node))
                         is AsReviewDismissedEvent -> list.add(getDismissedReview(node))
+                        is AsReviewRequestRemovedEvent -> list.add(getReviewRemoved(node))
+                        is AsPullRequestReview -> list.add(getPullRequestReview(node))
+                        is AsPullRequestCommit -> list.add(getPullRequestCommit(node))
                     }
                 }
                 return@map Pair(pageInfo, list)
             }
     }
 
-    private fun getDismissedReview(node: AsReviewDismissedEvent): TimelineModel = TimelineModel(
+    private fun getPullRequestReview(node: AsPullRequestReview) = TimelineModel(
+        review = ReviewModel(
+            node.id,
+            node.databaseId,
+            ShortUserModel(node.author?.login, node.author?.login, node.author?.url?.toString(), avatarUrl = node.author?.avatarUrl?.toString()),
+            node.body,
+            node.authorAssociation.rawValue(),
+            node.state.rawValue(),
+            node.createdAt,
+            node.comments.nodes?.map {
+                ReviewComment(
+                    ShortUserModel(
+                        it.author?.login,
+                        it.author?.login,
+                        it.author?.url?.toString(),
+                        avatarUrl = it.author?.avatarUrl.toString()
+                    ),
+                    ShortUserModel(
+                        it.replyTo?.author?.login,
+                        it.replyTo?.author?.login,
+                        it.replyTo?.author?.url?.toString(),
+                        avatarUrl = it.replyTo?.author?.avatarUrl.toString()
+                    ),
+                    it.body,
+                    it.path,
+                    it.originalPosition,
+                    it.isOutdated
+                )
+            }?.firstOrNull()
+        )
+    )
+
+    private fun getPullRequestCommit(node: AsPullRequestCommit) = TimelineModel(
+        pullRequestCommit = PullRequestCommitModel(
+            node.id,
+            node.url.toString(),
+            CommitModel(
+                node.prCommit.oid.toString(),
+                ShortUserModel(
+                    node.prCommit.author?.name,
+                    node.prCommit.author?.name,
+                    node.prCommit.author?.user?.url.toString(),
+                    avatarUrl = node.prCommit.author?.avatarUrl?.toString() ?: node.prCommit.author?.user?.avatarUrl?.toString()
+                ),
+                node.prCommit.message,
+                node.prCommit.abbreviatedOid,
+                node.prCommit.commitUrl.toString(),
+                node.prCommit.authoredDate,
+                node.prCommit.isCommittedViaWeb,
+                node.prCommit.status?.state?.rawValue()
+            )
+        )
+    )
+
+    private fun getReviewRemoved(node: AsReviewRequestRemovedEvent) = TimelineModel(
+        reviewRequestRemoved = ReviewRequestRemovedModel(
+            node.actor?.fragments?.shortActor?.toUser(),
+            when (val m = node.requestedReviewer) {
+                is AsUser1 -> ShortUserModel(m.login, m.login, m.url.toString(), avatarUrl = m.userAvatar.toString())
+                is AsTeam1 -> ShortUserModel(m.name, m.name, m.url.toString(), avatarUrl = m.teamAvatar.toString())
+                is AsMannequin1 -> ShortUserModel(m.login, m.login, m.url.toString(), avatarUrl = m.monnequinAvatar.toString())
+                else -> null
+            },
+            node.createdAt,
+            node.requestedReviewer is AsUser1,
+            node.requestedReviewer is AsTeam1,
+            node.requestedReviewer is AsMannequin1
+        )
+    )
+
+    private fun getDismissedReview(node: AsReviewDismissedEvent) = TimelineModel(
         reviewDismissed = ReviewDismissedModel(
             node.actor?.fragments?.shortActor?.toUser(),
             node.createdAt,

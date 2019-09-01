@@ -231,6 +231,22 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                             prCommit: commit {
                                 oid
                                 abbreviatedOid
+                                committedViaWeb
+                                authoredDate
+                                message
+                                commitUrl
+                                status {
+                                    state
+                                }
+                                author {
+                                    avatarUrl
+                                    name
+                                    user {
+                                        login
+                                        avatarUrl
+                                        url
+                                    }
+                                }
                             }
                         }
                         ... on PullRequestCommitCommentThread {
@@ -378,6 +394,24 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                         }
                         ... on ReviewRequestRemovedEvent {
                             actor { ... ShortActor }
+                            createdAt
+                            requestedReviewer {
+                                ... on User {
+                                    userAvatar: avatarUrl
+                                    login
+                                    url
+                                }
+                                ... on Team {
+                                    teamAvatar: avatarUrl
+                                    name
+                                    url
+                                }
+                                ... on Mannequin {
+                                    monnequinAvatar: avatarUrl
+                                    login
+                                    url
+                                }
+                            }
                         }
                         ... on PullRequestReview {
                             id

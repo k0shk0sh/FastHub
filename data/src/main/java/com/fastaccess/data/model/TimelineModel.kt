@@ -30,7 +30,10 @@ data class TimelineModel(
     @SerializedName("headRefRestored") var headRefRestored: HeadRefRestoredModel? = null,
     @SerializedName("headRefDeleted") var headRefDeleted: HeadRefDeletedModel? = null,
     @SerializedName("reviewRequested") var reviewRequested: ReviewRequestedModel? = null,
-    @SerializedName("reviewDismissed") var reviewDismissed: ReviewDismissedModel? = null
+    @SerializedName("reviewDismissed") var reviewDismissed: ReviewDismissedModel? = null,
+    @SerializedName("reviewRequestRemoved") var reviewRequestRemoved: ReviewRequestRemovedModel? = null,
+    @SerializedName("pullRequestCommit") var pullRequestCommit: PullRequestCommitModel? = null,
+    @SerializedName("review") var review: ReviewModel? = null
 )
 
 data class CommitModel(
@@ -40,7 +43,8 @@ data class CommitModel(
     @SerializedName("abbreviatedOid") var abbreviatedOid: String? = null,
     @SerializedName("commitUrl") var commitUrl: String? = null,
     @SerializedName("authoredDate") var authoredDate: Date? = null,
-    @SerializedName("committedViaWeb") var committedViaWeb: Boolean? = null
+    @SerializedName("committedViaWeb") var committedViaWeb: Boolean? = null,
+    @SerializedName("state") var state: String? = null
 )
 
 data class CommentModel(
@@ -178,8 +182,44 @@ data class ReviewDismissedModel(
     @SerializedName("createdAt") var createdAt: Date? = null,
     @SerializedName("dismissalMessage") var dismissalMessage: String? = null,
     @SerializedName("previousReviewState") var previousReviewState: String? = null,
-    @SerializedName("url") var url: String
+    @SerializedName("url") var url: String? = null
 )
+
+data class ReviewRequestRemovedModel(
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("reviewer") var reviewer: ShortUserModel? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("isUser") var isUser: Boolean = true,
+    @SerializedName("isTeam") var isTeam: Boolean = false,
+    @SerializedName("isMannequin") var isMannequin: Boolean = false
+)
+
+data class PullRequestCommitModel(
+    @SerializedName("id") var id: String? = null,
+    @SerializedName("url") var url: String? = null,
+    @SerializedName("commit") var commit: CommitModel? = null
+)
+
+data class ReviewModel(
+    @SerializedName("id") var id: String? = null,
+    @SerializedName("databaseId") var databaseId: Int? = null,
+    @SerializedName("author") var author: ShortUserModel? = null,
+    @SerializedName("body") var body: String? = null,
+    @SerializedName("authorAssociation") var authorAssociation: String? = null,
+    @SerializedName("state") var state: String? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("comment") var comment: ReviewComment? = null
+)
+
+data class ReviewComment(
+    @SerializedName("author") var author: ShortUserModel? = null,
+    @SerializedName("replyTo") var replyTo: ShortUserModel? = null,
+    @SerializedName("body") var body: String? = null,
+    @SerializedName("path") var path: String? = null,
+    @SerializedName("originalPosition") var originalPosition: Int? = null,
+    @SerializedName("outdated") var outdated: Boolean? = null
+)
+
 
 enum class CommentAuthorAssociation(val value: String) {
     MEMBER("MEMBER"),
@@ -204,6 +244,6 @@ enum class CommentCannotUpdateReason(val value: kotlin.String) {
     DENIED("LOGIN_REQUIRED");
 
     companion object {
-        fun fromName(name: String): CommentCannotUpdateReason? = CommentCannotUpdateReason.values().firstOrNull { it.value == name }
+        fun fromName(name: String): CommentCannotUpdateReason? = values().firstOrNull { it.value == name }
     }
 }
