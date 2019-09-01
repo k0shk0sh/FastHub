@@ -283,16 +283,19 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                             id
                             url
                             resourcePath
+                            createdAt
                         }
                         ... on ReviewDismissedEvent {
                             actor { ... ShortActor }
                             dismissalMessage
                             previousReviewState
                             url
+                            createdAt
                         }
                         ... on BaseRefChangedEvent {
                             actor { ... ShortActor }
                             databaseId
+                            createdAt
                         }
                         ... on BaseRefForcePushedEvent {
                             actor { ... ShortActor }
@@ -306,6 +309,13 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                                     commitResourcePath
                                 }
                             }
+                            afterCommit {
+                                abbreviatedOid
+                            }
+                            beforeCommit {
+                                abbreviatedOid
+                            }
+                            createdAt
                         }
                         ... on DeployedEvent {
                             actor { ... ShortActor }
@@ -344,6 +354,12 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                             ref {
                                 name
                                 prefix
+                            }
+                            afterCommit {
+                                abbreviatedOid
+                            }
+                            beforeCommit {
+                                abbreviatedOid
                             }
                         }
                         ... on HeadRefRestoredEvent {

@@ -24,7 +24,13 @@ data class TimelineModel(
     @SerializedName("milestoneDemilestoneEvent") val milestoneEventModel: MilestoneDemilestonedEventModel? = null,
     @SerializedName("renamedEvent") val renamedEventModel: RenamedEventModel? = null,
     @SerializedName("transferredEvent") val transferredEventModel: TransferredEventModel? = null,
-    @SerializedName("pullRequest") val pullRequest: PullRequestModel? = null
+    @SerializedName("pullRequest") val pullRequest: PullRequestModel? = null,
+    @SerializedName("baseRefChanged") val baseRefChangedEvent: BaseRefChangedModel? = null,
+    @SerializedName("baseRefForcePush") val baseRefForcePush: BaseRefForcePushModel? = null,
+    @SerializedName("headRefRestored") var headRefRestored: HeadRefRestoredModel? = null,
+    @SerializedName("headRefDeleted") var headRefDeleted: HeadRefDeletedModel? = null,
+    @SerializedName("reviewRequested") var reviewRequested: ReviewRequestedModel? = null,
+    @SerializedName("reviewDismissed") var reviewDismissed: ReviewDismissedModel? = null
 )
 
 data class CommitModel(
@@ -130,6 +136,49 @@ data class TransferredEventModel(
     @SerializedName("createdAt") var createdAt: Date? = null,
     @SerializedName("actor") var actor: ShortUserModel? = null,
     @SerializedName("fromRepository") var fromRepository: String? = null
+)
+
+data class BaseRefChangedModel(
+    @SerializedName("databaseId") var databaseId: Int? = null,
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("isBase") var isBase: Boolean = true
+)
+
+data class BaseRefForcePushModel(
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("beforeCommit") var beforeCommit: String? = null,
+    @SerializedName("afterCommit") var afterCommit: String? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("isBase") var isBase: Boolean = true
+)
+
+data class HeadRefRestoredModel(
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null
+)
+
+data class HeadRefDeletedModel(
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("headRefName") var headRefName: String? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null
+)
+
+data class ReviewRequestedModel(
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("reviewer") var reviewer: ShortUserModel? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("isUser") var isUser: Boolean = true,
+    @SerializedName("isTeam") var isTeam: Boolean = false,
+    @SerializedName("isMannequin") var isMannequin: Boolean = false
+)
+
+data class ReviewDismissedModel(
+    @SerializedName("actor") var actor: ShortUserModel? = null,
+    @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("dismissalMessage") var dismissalMessage: String? = null,
+    @SerializedName("previousReviewState") var previousReviewState: String? = null,
+    @SerializedName("url") var url: String
 )
 
 enum class CommentAuthorAssociation(val value: String) {

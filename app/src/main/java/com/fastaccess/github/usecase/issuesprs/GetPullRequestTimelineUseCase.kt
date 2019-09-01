@@ -3,10 +3,10 @@ package com.fastaccess.github.usecase.issuesprs
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.fastaccess.data.model.PageInfoModel
-import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.*
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.SchedulerProvider
+import com.fastaccess.extension.toUser
 import com.fastaccess.github.extensions.addIfNotNull
 import github.GetPullRequestTimelineQuery
 import github.GetPullRequestTimelineQuery.*
@@ -47,6 +47,14 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                     timeline.pageInfo.startCursor, timeline.pageInfo.endCursor,
                     timeline.pageInfo.isHasNextPage, timeline.pageInfo.isHasPreviousPage
                 )
+                /**
+                 * [ISSUE_COMMENT, CLOSED_EVENT, REOPENED_EVENT, REFERENCED_EVENT, ASSIGNED_EVENT,
+                UNASSIGNED_EVENT, LABELED_EVENT, UNLABELED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, RENAMED_TITLE_EVENT,
+                LOCKED_EVENT, UNLOCKED_EVENT, TRANSFERRED_EVENT, PULL_REQUEST_COMMIT, PULL_REQUEST_COMMIT_COMMENT_THREAD,
+                PULL_REQUEST_REVIEW, PULL_REQUEST_REVIEW_THREAD, HEAD_REF_DELETED_EVENT, HEAD_REF_FORCE_PUSHED_EVENT,
+                MERGED_EVENT, MERGED_EVENT, REVIEW_DISMISSED_EVENT, REVIEW_REQUESTED_EVENT,
+                REVIEW_REQUEST_REMOVED_EVENT, READY_FOR_REVIEW_EVENT]
+                 */
                 timeline.nodes?.forEach { node ->
                     when (node) {
                         is AsIssueComment -> node.fragments.comment?.let { list.add(getComment(it)) }
@@ -76,9 +84,84 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                         is AsLockedEvent -> node.fragments.locked?.let { list.add(getLock(it)) }
                         is AsUnlockedEvent -> node.fragments.unlocked?.let { list.add(getUnlocked(it)) }
                         is AsTransferredEvent -> node.fragments.transferred?.let { list.add(getTransferred(it)) }
+                        is AsBaseRefChangedEvent -> list.add(getBaseRefChanged(node))
+                        is AsBaseRefForcePushedEvent -> list.add(getBaseRefForcePush(node))
+                        is AsHeadRefForcePushedEvent -> list.add(getHeadRefForcePush(node))
+                        is AsHeadRefRestoredEvent -> list.add(getHeadRestored(node))
+                        is AsHeadRefDeletedEvent -> list.add(getHeadRefDeleted(node))
+                        is AsReviewRequestedEvent -> list.add(getRequestForReview(node))
+                        is AsReviewDismissedEvent -> list.add(getDismissedReview(node))
                     }
                 }
                 return@map Pair(pageInfo, list)
             }
     }
+
+    private fun getDismissedReview(node: AsReviewDismissedEvent): TimelineModel = TimelineModel(
+        reviewDismissed = ReviewDismissedModel(
+            node.actor?.fragments?.shortActor?.toUser(),
+            node.createdAt,
+            node.dismissalMessage,
+            node.previousReviewState.rawValue(),
+            node.url.toString()
+        )
+    )
+
+    private fun getRequestForReview(node: AsReviewRequestedEvent) = TimelineModel(
+        reviewRequested = ReviewRequestedModel(
+            node.actor?.fragments?.shortActor?.toUser(),
+            when (val m = node.requestedReviewer) {
+                is AsUser -> ShortUserModel(m.login, m.login, m.url.toString(), avatarUrl = m.userAvatar.toString())
+                is AsTeam -> ShortUserModel(m.name, m.name, m.url.toString(), avatarUrl = m.teamAvatar.toString())
+                is AsMannequin -> ShortUserModel(m.login, m.login, m.url.toString(), avatarUrl = m.monnequinAvatar.toString())
+                else -> null
+            },
+            node.createdAt,
+            node.requestedReviewer is AsUser,
+            node.requestedReviewer is AsTeam,
+            node.requestedReviewer is AsMannequin
+        )
+    )
+
+    private fun getHeadRefDeleted(node: AsHeadRefDeletedEvent) = TimelineModel(
+        headRefDeleted = HeadRefDeletedModel(
+            node.actor?.fragments?.shortActor?.toUser(),
+            node.headRefName,
+            node.createdAt
+        )
+    )
+
+    private fun getHeadRestored(node: AsHeadRefRestoredEvent) = TimelineModel(
+        headRefRestored = HeadRefRestoredModel(
+            node.actor?.fragments?.shortActor?.toUser(),
+            node.createdAt
+        )
+    )
+
+    private fun getHeadRefForcePush(node: AsHeadRefForcePushedEvent): TimelineModel = TimelineModel(
+        baseRefForcePush = BaseRefForcePushModel(
+            node.actor?.fragments?.shortActor?.toUser(),
+            node.beforeCommit?.abbreviatedOid,
+            node.afterCommit?.abbreviatedOid,
+            node.createdAt,
+            false
+        )
+    )
+
+    private fun getBaseRefForcePush(node: AsBaseRefForcePushedEvent) = TimelineModel(
+        baseRefForcePush = BaseRefForcePushModel(
+            node.actor?.fragments?.shortActor?.toUser(),
+            node.beforeCommit?.abbreviatedOid,
+            node.afterCommit?.abbreviatedOid,
+            node.createdAt
+        )
+    )
+
+    private fun getBaseRefChanged(node: AsBaseRefChangedEvent) = TimelineModel(
+        baseRefChangedEvent = BaseRefChangedModel(
+            node.databaseId,
+            node.actor?.fragments?.shortActor?.toUser(),
+            node.createdAt
+        )
+    )
 }
