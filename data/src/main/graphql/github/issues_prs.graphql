@@ -238,6 +238,13 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                                 status {
                                     state
                                 }
+                                history {
+                                    nodes {
+                                        status {
+                                            state
+                                        }
+                                    }
+                                }
                                 author {
                                     avatarUrl
                                     name

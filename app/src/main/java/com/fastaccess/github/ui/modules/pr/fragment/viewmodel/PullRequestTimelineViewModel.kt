@@ -77,7 +77,7 @@ class PullRequestTimelineViewModel @Inject constructor(
         repo: String,
         number: Int,
         cursor: String?
-    ): Observable<Pair<PageInfoModel, List<TimelineModel>>> {
+    ): Observable<Pair<PageInfoModel, ArrayList<TimelineModel>>> {
         timelineUseCase.login = login
         timelineUseCase.repo = repo
         timelineUseCase.number = number

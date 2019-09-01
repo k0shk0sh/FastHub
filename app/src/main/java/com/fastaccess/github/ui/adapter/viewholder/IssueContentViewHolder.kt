@@ -54,16 +54,19 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         itemView.apply {
             stateIcon.setImageResource(
                 when (model.commit?.state) {
-                    StatusState.ERROR.rawValue() -> R.drawable.ic_state_error
+                    StatusState.ERROR.rawValue(), StatusState.FAILURE.rawValue() -> R.drawable.ic_state_error
                     StatusState.SUCCESS.rawValue() -> R.drawable.ic_state_success
-                    else -> R.drawable.ic_state_pending
+                    StatusState.PENDING.rawValue() -> R.drawable.ic_state_pending
+                    else -> 0
                 }
             )
             userIcon.loadAvatar(model.commit?.author?.avatarUrl, model.commit?.author?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.commit?.author?.login)
                 .space()
-                .url("committed ${model.commit?.abbreviatedOid}", View.OnClickListener { view ->
+                .append("committed")
+                .space()
+                .url("${model.commit?.abbreviatedOid}", View.OnClickListener { view ->
                     model.commit?.commitUrl?.let { view.context.route(it) }
                 })
                 .space()

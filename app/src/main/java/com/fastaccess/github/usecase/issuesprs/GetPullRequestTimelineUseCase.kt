@@ -27,7 +27,7 @@ class GetPullRequestTimelineUseCase @Inject constructor(
     var number: Int? = null
     var page: Input<String> = Input.absent<String>()
 
-    override fun buildObservable(): Observable<Pair<PageInfoModel, List<TimelineModel>>> {
+    override fun buildObservable(): Observable<Pair<PageInfoModel, ArrayList<TimelineModel>>> {
         val login = login
         val repo = repo
         val number = number
@@ -36,9 +36,7 @@ class GetPullRequestTimelineUseCase @Inject constructor(
             return Observable.error(Throwable("this should never happen ;)"))
         }
 
-        return Rx2Apollo.from(apolloClient.query(GetPullRequestTimelineQuery(login, repo, number, page)))
-            .subscribeOn(schedulerProvider.ioThread())
-            .observeOn(schedulerProvider.uiThread())
+        val observable = Rx2Apollo.from(apolloClient.query(GetPullRequestTimelineQuery(login, repo, number, page)))
             .map { it.data()?.repositoryOwner?.repository?.pullRequest }
             .map { pullRequest ->
                 val list = arrayListOf<TimelineModel>()
@@ -95,6 +93,9 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                 }
                 return@map Pair(pageInfo, list)
             }
+
+        return observable.subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
     }
 
     private fun getPullRequestReview(node: AsPullRequestReview) = TimelineModel(
@@ -146,7 +147,7 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                 node.prCommit.commitUrl.toString(),
                 node.prCommit.authoredDate,
                 node.prCommit.isCommittedViaWeb,
-                node.prCommit.status?.state?.rawValue()
+                node.prCommit.history.nodes?.lastOrNull()?.status?.state?.rawValue()
             )
         )
     )
