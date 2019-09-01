@@ -136,6 +136,7 @@ abstract class BaseTimelineUseCase : BaseObservableUseCase() {
     protected fun constructLabel(m: Any): LabelModel {
         return when (m) {
             is Labels -> LabelModel(m.name, m.color)
+            is Labeled.Label -> LabelModel(m.name, m.color)
             else -> throw IllegalArgumentException("$m is not instance of any Label")
         }
     }
