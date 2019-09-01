@@ -5,12 +5,13 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.github.extensions.addIfNotNull
 import github.GetPullRequestTimelineQuery
 import github.GetPullRequestTimelineQuery.*
+import github.type.PullRequestState
 import io.reactivex.Observable
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -50,7 +51,17 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                     when (node) {
                         is AsIssueComment -> node.fragments.comment?.let { list.add(getComment(it)) }
                         is AsCrossReferencedEvent -> node.fragments.crossReferenced?.let { list.add(getCrossReference(it)) }
-                        is AsClosedEvent -> node.fragments.closed?.let { list.add(getClosed(it)) }
+                        is AsClosedEvent -> node.fragments.closed?.let {
+                            list.add(
+                                if (PullRequestState.MERGED == pullRequest.state) {
+                                    getClosed(it).apply {
+                                        closeOpenEventModel?.pullRequest = MyIssuesPullsModel(state = pullRequest.state.rawValue(), isPr = true)
+                                    }
+                                } else {
+                                    getClosed(it)
+                                }
+                            )
+                        }
                         is AsReopenedEvent -> node.fragments.reopened?.let { list.add(getReopened(it)) }
                         is AsSubscribedEvent -> node.fragments.subscribed?.let { list.add(getSubscribed(it)) }
                         is AsUnsubscribedEvent -> node.fragments.unsubscribed?.let { list.add(getUnsubscribed(it)) }
@@ -67,7 +78,6 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                         is AsTransferredEvent -> node.fragments.transferred?.let { list.add(getTransferred(it)) }
                     }
                 }
-                Timber.e("${list.size}")
                 return@map Pair(pageInfo, list)
             }
     }

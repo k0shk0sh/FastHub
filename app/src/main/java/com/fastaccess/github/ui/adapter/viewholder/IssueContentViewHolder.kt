@@ -234,7 +234,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .clickable("(${model.commit?.abbreviatedOid})")
                 .append(" that referenced this issue ${model.createdAt?.timeAgo()}")
                 .newline()
-                .append(model.commit?.message)
+                .bold(model.commit?.message)
         }
     }
 }
