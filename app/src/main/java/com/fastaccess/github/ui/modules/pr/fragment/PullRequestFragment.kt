@@ -29,8 +29,8 @@ import com.fastaccess.github.utils.extensions.hideKeyboard
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.CommentAuthorAssociation
-import github.type.IssueState
 import github.type.LockReason
+import github.type.PullRequestState
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_box_layout.*
@@ -167,10 +167,12 @@ class PullRequestFragment : BaseIssuePrTimelineFragment() {
 
         state.text = model.state?.toLowerCase()
         state.setChipBackgroundColorResource(
-            if (IssueState.OPEN.rawValue().equals(model.state, true)) {
+            if (PullRequestState.OPEN.rawValue().equals(model.state, true)) {
                 R.color.material_green_500
-            } else {
+            } else if (PullRequestState.CLOSED.rawValue().equals(model.state, true)) {
                 R.color.material_red_500
+            } else {
+                R.color.material_blue_700
             }
         )
 

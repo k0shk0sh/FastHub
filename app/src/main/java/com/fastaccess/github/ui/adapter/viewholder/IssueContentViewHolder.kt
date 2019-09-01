@@ -9,13 +9,16 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
+import github.type.PullRequestState
 import kotlinx.android.synthetic.main.issue_content_row_item.view.*
 
 /**
  * Created by Kosh on 04.02.19.
  */
-class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(LayoutInflater.from(parent.context)
-    .inflate(R.layout.issue_content_row_item, parent, false)) {
+class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
+    LayoutInflater.from(parent.context)
+        .inflate(R.layout.issue_content_row_item, parent, false)
+) {
     override fun canDivide(): Boolean = false
 
     override fun bind(item: TimelineModel) {
@@ -89,11 +92,13 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .append(if (model.isAssigned == true) "assigned " else "unassigned ")
                 .apply {
                     model.users.forEachIndexed { index, shortUserModel ->
-                        bold(shortUserModel.login).append(when {
-                            index == model.users.size - 2 -> " and "
-                            index != model.users.size - 1 -> ", "
-                            else -> " "
-                        })
+                        bold(shortUserModel.login).append(
+                            when {
+                                index == model.users.size - 2 -> " and "
+                                index != model.users.size - 1 -> ", "
+                                else -> " "
+                            }
+                        )
                     }
                 }
                 .append(model.createdAt?.timeAgo())
@@ -151,19 +156,33 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
 
     private fun presentClosedReopen(model: CloseOpenEventModel) {
         itemView.apply {
-            stateIcon.setImageResource(if (model.isClosed == true) R.drawable.ic_issue_closed else R.drawable.ic_issue_opened)
+            stateIcon.setImageResource(
+                if (PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false)) {
+                    R.drawable.ic_issue_merged
+                } else if (model.isClosed == true) {
+                    R.drawable.ic_issue_closed
+                } else {
+                    R.drawable.ic_issue_opened
+                }
+            )
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             val builder = SpannableBuilder.builder()
                 .bold(model.actor?.login)
                 .space()
-            if (model.isClosed == true) {
+            if (PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false)) {
+                builder
+                    .append("merged this ")
+                    .append("${model.createdAt?.timeAgo()}")
+            } else if (model.isClosed == true) {
                 builder
                     .append("closed this ")
-                    .clickable(when {
-                        model.commit != null -> "in commit (${model.commit?.abbreviatedOid}) "
-                        model.pullRequest != null -> "in pull request (#${model.pullRequest?.number}) "
-                        else -> ""
-                    })
+                    .clickable(
+                        when {
+                            model.commit != null -> "in commit (${model.commit?.abbreviatedOid}) "
+                            model.pullRequest != null -> "in pull request (#${model.pullRequest?.number}) "
+                            else -> ""
+                        }
+                    )
                     .append("${model.createdAt?.timeAgo()}")
             } else {
                 builder.append("reopened this  ${model.createdAt?.timeAgo()}")
@@ -180,11 +199,13 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .bold(model.actor?.login)
                 .space()
                 .append("${if (model.isCrossRepository == true) "cross" else ""} referenced this in ")
-                .clickable(when {
-                    model.issue != null -> "issue (#${model.issue?.number}) "
-                    model.pullRequest != null -> "pull request (#${model.pullRequest?.number}) "
-                    else -> ""
-                })
+                .clickable(
+                    when {
+                        model.issue != null -> "issue (#${model.issue?.number}) "
+                        model.pullRequest != null -> "pull request (#${model.pullRequest?.number}) "
+                        else -> ""
+                    }
+                )
                 .append("${model.referencedAt?.timeAgo()}")
         }
     }

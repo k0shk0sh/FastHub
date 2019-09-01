@@ -19,7 +19,6 @@ import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSh
 import com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel.FilterIssuePullRequestsViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.GITHUB_LINK
 import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.empty_state_layout.*
@@ -35,10 +34,7 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterIssuePullRequestsViewModel::class.java) }
     private val adapter by lazy {
         MyIssuesPrsAdapter {
-            val isPr = it.isPr
-            if (!isPr) {
-                route("$GITHUB_LINK${it.repoName}/issues/${it.number}")
-            }
+            route("${it.url}")
         }
     }
     private val fragmentType by lazy { arguments?.getSerializable(EXTRA) as? FragmentType }

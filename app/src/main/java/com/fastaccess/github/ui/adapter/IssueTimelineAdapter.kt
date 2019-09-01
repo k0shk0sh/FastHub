@@ -33,7 +33,6 @@ class IssueTimelineAdapter(
     override fun getItemViewType(position: Int): Int {
         return getItem(position)?.let {
             when {
-                it.issue != null -> HEADER
                 it.comment != null -> COMMENT
                 else -> CONTENT
             }

@@ -118,6 +118,7 @@ class NetworkModule {
         .addCustomTypeAdapter(CustomType.DATETIME, DateApolloAdapter())
         .addCustomTypeAdapter(CustomType.HTML, ObjectApolloAdapter())
         .addCustomTypeAdapter(CustomType.ID, ObjectApolloAdapter())
+        .addCustomTypeAdapter(CustomType.GITOBJECTID, ObjectApolloAdapter())
         .build()
 
     @Singleton @Provides fun provideLoginService(retrofit: Retrofit): LoginService = retrofit.create(LoginService::class.java)

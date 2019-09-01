@@ -1,6 +1,7 @@
 package com.fastaccess.github.ui.modules.pr.fragment.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.LoginLocalRepository
@@ -19,7 +20,7 @@ import javax.inject.Inject
  */
 class PullRequestTimelineViewModel @Inject constructor(
     private val issueUseCase: GetPullRequestUseCase,
-    private val timelineUseCase: GetIssueTimelineUseCase,
+    private val timelineUseCase: GetPullRequestTimelineUseCase,
     private val issueRepositoryProvider: PullRequestRepository,
     private val closeOpenIssuePrUseCase: CloseOpenIssuePrUseCase,
     private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase,
@@ -77,17 +78,16 @@ class PullRequestTimelineViewModel @Inject constructor(
         number: Int,
         cursor: String?
     ): Observable<Pair<PageInfoModel, List<TimelineModel>>> {
-        return Observable.empty()
-//        timelineUseCase.login = login
-//        timelineUseCase.repo = repo
-//        timelineUseCase.number = number
-//        timelineUseCase.page = Input.optional(cursor)
-//        return timelineUseCase.buildObservable()
-//            .doOnNext {
-//                this.pageInfo = it.first
-//                list.addAll(it.second)
-//                timeline.postValue(ArrayList(list))
-//            }
+        timelineUseCase.login = login
+        timelineUseCase.repo = repo
+        timelineUseCase.number = number
+        timelineUseCase.page = Input.optional(cursor)
+        return timelineUseCase.buildObservable()
+            .doOnNext {
+                this.pageInfo = it.first
+                list.addAll(it.second)
+                timeline.postValue(ArrayList(list))
+            }
     }
 
     fun closeOpenIssue(
