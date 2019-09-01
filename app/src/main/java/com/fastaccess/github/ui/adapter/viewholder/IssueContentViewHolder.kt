@@ -1,15 +1,19 @@
 package com.fastaccess.github.ui.adapter.viewholder
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.fastaccess.data.model.*
 import com.fastaccess.github.R
+import com.fastaccess.github.extensions.route
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.PullRequestState
+import github.type.StatusState
 import kotlinx.android.synthetic.main.issue_content_row_item.view.*
 
 /**
@@ -36,6 +40,130 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         item.milestoneEventModel?.let(this::presentMilestoneDemilestone)
         item.renamedEventModel?.let(this::presentRenamed)
         item.transferredEventModel?.let(this::presentTransferred)
+        item.baseRefChangedEvent?.let(this::presentBaseRefChanged)
+        item.baseRefForcePush?.let(this::presentForcePush)
+        item.headRefRestored?.let(this::presentRefRestored)
+        item.headRefDeleted?.let(this::presentHeadDeleted)
+        item.reviewRequested?.let(this::presentReviewRequest)
+        item.reviewDismissed?.let(this::presenetReviewDismissed)
+        item.reviewRequestRemoved?.let(this::presenetReviewRequestRemoved)
+        item.pullRequestCommit?.let(this::presentPrCommit)
+    }
+
+    private fun presentPrCommit(model: PullRequestCommitModel) {
+        itemView.apply {
+            stateIcon.setImageResource(
+                when (model.commit?.state) {
+                    StatusState.ERROR.rawValue() -> R.drawable.ic_state_error
+                    StatusState.SUCCESS.rawValue() -> R.drawable.ic_state_success
+                    else -> R.drawable.ic_state_pending
+                }
+            )
+            userIcon.loadAvatar(model.commit?.author?.avatarUrl, model.commit?.author?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.commit?.author?.login)
+                .space()
+                .url("committed ${model.commit?.abbreviatedOid}", View.OnClickListener { view ->
+                    model.commit?.commitUrl?.let { view.context.route(it) }
+                })
+                .space()
+                .append(model.commit?.authoredDate?.timeAgo())
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private fun presenetReviewRequestRemoved(model: ReviewRequestRemovedModel) {
+        itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("dismissed ${model.reviewer?.login} review ")
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private fun presenetReviewDismissed(model: ReviewDismissedModel) {
+        itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("dismissed their review (${model.previousReviewState?.toLowerCase()})")
+                .newline()
+                .append(model.dismissalMessage ?: "")
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentReviewRequest(model: ReviewRequestedModel) {
+        itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("requested review from ")
+                .bold(model.reviewer?.login ?: "")
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentHeadDeleted(model: HeadRefDeletedModel) {
+        itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("deleted ${model.headRefName ?: "this branch"}")
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentRefRestored(model: HeadRefRestoredModel) {
+        itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("restored this branch")
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentForcePush(model: BaseRefForcePushModel) {
+        itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("force pushed this branch from ${model.beforeCommit} to ${model.afterCommit}")
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
+    }
+
+    private fun presentBaseRefChanged(model: BaseRefChangedModel) {
+        itemView.apply {
+            stateIcon.setImageResource(R.drawable.ic_track_changes)
+            userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.actor?.login)
+                .space()
+                .append("changed base reference ")
+                .space()
+                .append(model.createdAt?.timeAgo())
+        }
     }
 
     private fun presentTransferred(model: TransferredEventModel) {
@@ -136,6 +264,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun presentLockUnlock(model: LockUnlockEventModel) {
         itemView.apply {
             stateIcon.setImageResource(if (model.isLock == true) R.drawable.ic_lock else R.drawable.ic_unlock)
@@ -157,24 +286,21 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
     private fun presentClosedReopen(model: CloseOpenEventModel) {
         itemView.apply {
             stateIcon.setImageResource(
-                if (PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false)) {
-                    R.drawable.ic_issue_merged
-                } else if (model.isClosed == true) {
-                    R.drawable.ic_issue_closed
-                } else {
-                    R.drawable.ic_issue_opened
+                when {
+                    PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false) -> R.drawable.ic_issue_merged
+                    model.isClosed == true -> R.drawable.ic_issue_closed
+                    else -> R.drawable.ic_issue_opened
                 }
             )
             userIcon.loadAvatar(model.actor?.avatarUrl, model.actor?.url)
             val builder = SpannableBuilder.builder()
                 .bold(model.actor?.login)
                 .space()
-            if (PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false)) {
-                builder
+            when {
+                PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false) -> builder
                     .append("merged this ")
                     .append("${model.createdAt?.timeAgo()}")
-            } else if (model.isClosed == true) {
-                builder
+                model.isClosed == true -> builder
                     .append("closed this ")
                     .clickable(
                         when {
@@ -184,8 +310,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                         }
                     )
                     .append("${model.createdAt?.timeAgo()}")
-            } else {
-                builder.append("reopened this  ${model.createdAt?.timeAgo()}")
+                else -> builder.append("reopened this  ${model.createdAt?.timeAgo()}")
             }
             text.text = builder
         }
