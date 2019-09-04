@@ -223,7 +223,7 @@
     <string name="feedback">Feedback</string>
     <string name="report_issue">Signaler un bug</string>
     <string name="report_issue_here">Vous avez rencontrez un bug ? Signalez-le ici</string>
-    <string name="about">À propros</string>
+    <string name="about">À propos</string>
     <string name="notification_settings">Notifications</string>
     <string name="turn_off">Éteindre</string>
     <string name="unauthorized_user">Utilisateur non autorisé</string>
