@@ -9,6 +9,7 @@
     android:layout_marginTop="@dimen/spacing_micro"
     android:layout_marginEnd="@dimen/spacing_xs_large"
     android:layout_marginBottom="@dimen/spacing_micro"
+    android:foreground="?selectableItemBackground"
     app:cardBackgroundColor="?colorPrimary">
 
     <LinearLayout

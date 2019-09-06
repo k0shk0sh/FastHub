@@ -5,7 +5,6 @@
     android:id="@+id/commentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?selectableItemBackground"
     android:paddingTop="@dimen/spacing_normal"
     android:paddingBottom="@dimen/spacing_normal">
 
