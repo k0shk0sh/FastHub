@@ -2,7 +2,10 @@ package com.fastaccess.github.usecase.issuesprs
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.fastaccess.data.model.*
+import com.fastaccess.data.model.CommentAuthorAssociation
+import com.fastaccess.data.model.CommentModel
+import com.fastaccess.data.model.ShortUserModel
+import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.repository.services.IssuePrService
 import com.fastaccess.domain.response.body.CommentRequestModel
@@ -39,8 +42,7 @@ class CreateIssueCommentUseCase @Inject constructor(
                     node.id,
                     node.databaseId,
                     ShortUserModel(node.author?.login, node.author?.login, avatarUrl = node.author?.avatarUrl.toString()),
-                    node.bodyHTML.toString(), node.body, CommentAuthorAssociation.fromName(node.authorAssociation.rawValue()),
-                    node.viewerCannotUpdateReasons.map { reason -> CommentCannotUpdateReason.fromName(reason.rawValue()) }.toList(),
+                    node.body, CommentAuthorAssociation.fromName(node.authorAssociation.rawValue()),
                     node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }, node.createdAt, node.updatedAt,
                     node.isViewerCanReact, node.isViewerCanDelete, node.isViewerCanUpdate, node.isViewerDidAuthor, node.isViewerCanMinimize
                 )

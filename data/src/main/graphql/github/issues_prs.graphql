@@ -161,7 +161,7 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                 state
                 timelineItems(first: 30, after: $page, itemTypes: [ISSUE_COMMENT, CLOSED_EVENT, REOPENED_EVENT, REFERENCED_EVENT, ASSIGNED_EVENT,
                     UNASSIGNED_EVENT, LABELED_EVENT, UNLABELED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, RENAMED_TITLE_EVENT,
-                    LOCKED_EVENT, UNLOCKED_EVENT, TRANSFERRED_EVENT, PULL_REQUEST_COMMIT, PULL_REQUEST_COMMIT_COMMENT_THREAD,
+                    LOCKED_EVENT, UNLOCKED_EVENT, TRANSFERRED_EVENT, PULL_REQUEST_COMMIT_COMMENT_THREAD,
                     PULL_REQUEST_REVIEW, PULL_REQUEST_REVIEW_THREAD, HEAD_REF_DELETED_EVENT, HEAD_REF_FORCE_PUSHED_EVENT,
                     MERGED_EVENT, MERGED_EVENT, REVIEW_DISMISSED_EVENT, REVIEW_REQUESTED_EVENT,
                     REVIEW_REQUEST_REMOVED_EVENT, READY_FOR_REVIEW_EVENT]) {
@@ -225,41 +225,10 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                         ... on TransferredEvent {
                             ... Transferred
                         }
-                        ... on PullRequestCommit {
-                            id
-                            url
-                            prCommit: commit {
-                                oid
-                                abbreviatedOid
-                                committedViaWeb
-                                authoredDate
-                                message
-                                commitUrl
-                                status {
-                                    state
-                                }
-                                history {
-                                    nodes {
-                                        status {
-                                            state
-                                        }
-                                    }
-                                }
-                                author {
-                                    avatarUrl
-                                    name
-                                    user {
-                                        login
-                                        avatarUrl
-                                        url
-                                    }
-                                }
-                            }
-                        }
                         ... on PullRequestCommitCommentThread {
                             path
                             position
-                            tComment: comments(first: 5) {
+                            tComment: comments(first: 1) {
                                 nodes {
                                     author {
                                         avatarUrl
@@ -433,8 +402,10 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                             createdAt
                             state
                             resourcePath
-                            comments(first: 5) {
+                            comments(first: 1) {
                                 nodes {
+                                    id
+                                    databaseId
                                     author {
                                         login
                                         avatarUrl
@@ -444,12 +415,15 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                                     originalPosition
                                     path
                                     outdated
-                                    replyTo {
-                                        author {
-                                            login
-                                            avatarUrl
-                                            url
-                                        }
+                                    authorAssociation
+                                    updatedAt
+                                    viewerCanReact
+                                    viewerCanDelete
+                                    viewerCanUpdate
+                                    viewerDidAuthor
+                                    diffHunk
+                                    reactionGroups {
+                                        ...Reactions
                                     }
                                 }
                             }

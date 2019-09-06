@@ -211,4 +211,156 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_normal" />
 
+
+    <LinearLayout
+        android:id="@+id/prDashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xs_large"
+        android:layout_marginBottom="@dimen/spacing_xs_large"
+        android:orientation="horizontal">
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/CardViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_weight="1"
+            android:minHeight="150dp"
+            app:cardCornerRadius="@dimen/spacing_normal"
+            app:cardElevation="@dimen/spacing_micro">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/commits"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/commits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/commits_with_count"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Commits: 100,00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/files"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/files_with_count"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Files: 100,00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/addition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/addition_with_count"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Addition 100,00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/deletion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/deletion_with_count"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Deletion 100,00" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/CardViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_weight="1"
+            android:minHeight="150dp"
+            app:cardCornerRadius="@dimen/spacing_normal"
+            app:cardElevation="@dimen/spacing_micro">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/reviews"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/approved"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/approved_with_count"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Approved 100,00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/commented"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/commented_with_count"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Commented 100,00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/changes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/changes_with_count"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Changes 100,00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_normal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:visibility="invisible"
+                    tools:text="Changes 100,00" />
+
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
 </LinearLayout>

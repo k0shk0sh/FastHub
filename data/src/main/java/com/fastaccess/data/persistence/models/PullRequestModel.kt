@@ -3,10 +3,7 @@ package com.fastaccess.data.persistence.models
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.fastaccess.data.model.CountModel
-import com.fastaccess.data.model.EmbeddedRepoModel
-import com.fastaccess.data.model.ReactionGroupModel
-import com.fastaccess.data.model.ShortUserModel
+import com.fastaccess.data.model.*
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.google.gson.annotations.SerializedName
@@ -52,7 +49,8 @@ data class PullRequestModel(
     @SerializedName("milestone") @Embedded(prefix = "milestone_") var milestone: MilestoneModel? = null,
     @SerializedName("assignees") var assignees: List<ShortUserModel>? = null,
     @SerializedName("headRefName") var headRefName: String? = null,
-    @SerializedName("baseRefName") var baseRefName: String? = null
+    @SerializedName("baseRefName") var baseRefName: String? = null,
+    @SerializedName("reviewDashboard") @Embedded(prefix = "dashboard_") var dashboard: PullRequestDashboard? = null
 ) {
     companion object {
         const val TABLE_NAME = "pullrequest_table"

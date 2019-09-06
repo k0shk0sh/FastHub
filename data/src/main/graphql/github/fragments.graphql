@@ -171,12 +171,29 @@ fragment FullPullRequest on PullRequest {
     mergedAt
     headRefName
     baseRefName
+    changedFiles
+    additions
+    deletions
+    url
+    createdViaEmail
+    authorAssociation
+    commits(first: 0) {
+        totalCount
+    }
+    commentedReviews: reviews(first: 0, states: COMMENTED) {
+        totalCount
+    }
+    approvedReviews: reviews(first: 0, states: APPROVED) {
+        totalCount
+    }
+    changeRequestedReviews: reviews(first: 0, states: CHANGES_REQUESTED) {
+        totalCount
+    }
     mergedBy {
         avatarUrl
         login
         url
     }
-    url
     userContentEdits(first: 0) {
         totalCount
     }
@@ -188,11 +205,9 @@ fragment FullPullRequest on PullRequest {
     reactionGroups {
         ...Reactions
     }
-    createdViaEmail
     repository {
         nameWithOwner
     }
-    authorAssociation
     labels(first: 30) {
         nodes {
             ...Labels

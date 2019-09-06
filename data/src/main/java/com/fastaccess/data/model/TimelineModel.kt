@@ -51,10 +51,8 @@ data class CommentModel(
     @SerializedName("id") var id: String? = null,
     @SerializedName("databaseId") var databaseId: Int? = null,
     @SerializedName("author") var author: ShortUserModel? = null,
-    @SerializedName("bodyHTML") var bodyHTML: String? = null,
     @SerializedName("body") var body: String? = null,
     @SerializedName("authorAssociation") var authorAssociation: CommentAuthorAssociation? = null,
-    @SerializedName("viewerCannotUpdateReasons") var viewerCannotUpdateReasons: List<CommentCannotUpdateReason?>? = null,
     @SerializedName("reactionGroups") var reactionGroups: List<ReactionGroupModel>? = null,
     @SerializedName("createdAt") var createdAt: Date? = null,
     @SerializedName("updatedAt") var updatedAt: Date? = null,
@@ -62,7 +60,11 @@ data class CommentModel(
     @SerializedName("viewerCanDelete") var viewerCanDelete: Boolean? = null,
     @SerializedName("viewerCanUpdate") var viewerCanUpdate: Boolean? = null,
     @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = null,
-    @SerializedName("viewerCanMinimize") var viewerCanMinimize: Boolean? = null
+    @SerializedName("viewerCanMinimize") var viewerCanMinimize: Boolean? = null,
+    @SerializedName("path") var path: String? = null,
+    @SerializedName("originalPosition") var originalPosition: Int? = null,
+    @SerializedName("outdated") var outdated: Boolean? = null,
+    @SerializedName("diffHunk") var diffHunk: String? = null
 )
 
 data class CrossReferencedEventModel(
@@ -208,18 +210,8 @@ data class ReviewModel(
     @SerializedName("authorAssociation") var authorAssociation: String? = null,
     @SerializedName("state") var state: String? = null,
     @SerializedName("createdAt") var createdAt: Date? = null,
-    @SerializedName("comment") var comment: ReviewComment? = null
+    @SerializedName("comment") var comment: CommentModel? = null
 )
-
-data class ReviewComment(
-    @SerializedName("author") var author: ShortUserModel? = null,
-    @SerializedName("replyTo") var replyTo: ShortUserModel? = null,
-    @SerializedName("body") var body: String? = null,
-    @SerializedName("path") var path: String? = null,
-    @SerializedName("originalPosition") var originalPosition: Int? = null,
-    @SerializedName("outdated") var outdated: Boolean? = null
-)
-
 
 enum class CommentAuthorAssociation(val value: String) {
     MEMBER("MEMBER"),

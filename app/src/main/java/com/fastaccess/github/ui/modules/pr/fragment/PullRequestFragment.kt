@@ -34,8 +34,8 @@ import github.type.PullRequestState
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_box_layout.*
-import kotlinx.android.synthetic.main.issue_header_row_item.*
-import kotlinx.android.synthetic.main.issue_pr_view_layout.*
+import kotlinx.android.synthetic.main.pr_header_row_item.*
+import kotlinx.android.synthetic.main.pr_view_layout.*
 import kotlinx.android.synthetic.main.recyclerview_fastscroll_empty_state_layout.*
 import kotlinx.android.synthetic.main.title_toolbar_layout.*
 import javax.inject.Inject
@@ -55,7 +55,7 @@ class PullRequestFragment : BaseIssuePrTimelineFragment() {
         IssueTimelineAdapter(markwon, preference.theme, onCommentClicked(), onDeleteCommentClicked(), onEditCommentClicked())
     }
 
-    override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
+    override fun layoutRes(): Int = R.layout.pr_fragment_layout
     override fun viewModel(): BaseViewModel? = viewModel
     override fun isPr(): Boolean = true
     override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
@@ -186,7 +186,18 @@ class PullRequestFragment : BaseIssuePrTimelineFragment() {
         initAssignees(model.assignees)
         initMilestone(model.milestone)
         initToolbarMenu(isAuthor, model.viewerCanUpdate == true, model.viewerDidAuthor, model.locked, state = model.state)
+        initDashboard(model)
         recyclerView.removeEmptyView()
+    }
+
+    private fun initDashboard(model: PullRequestModel) {
+        commits.text = getString(R.string.commits_with_count, model.dashboard?.commits ?: 0)
+        files.text = getString(R.string.files_with_count, model.dashboard?.changedFiles ?: 0)
+        addition.text = getString(R.string.addition_with_count, model.dashboard?.additions ?: 0)
+        deletion.text = getString(R.string.deletion_with_count, model.dashboard?.deletions ?: 0)
+        approved.text = getString(R.string.approved_with_count, model.dashboard?.approvedReviews ?: 0)
+        commented.text = getString(R.string.commented_with_count, model.dashboard?.commentedReviews ?: 0)
+        changes.text = getString(R.string.changes_with_count, model.dashboard?.changeRequestedReviews ?: 0)
     }
 
     override fun onEditCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment ->

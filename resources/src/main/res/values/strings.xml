@@ -610,4 +610,14 @@
     <string name="limit_by">Limit by</string>
     <string name="no_internet_connection">Not connected to Internet</string>
     <string name="lock_reason">Lock Reason</string>
+    <string name="reviews">Reviews</string>
+    <string name="approved">Approved</string>
+    <string name="commented">Commented</string>
+    <string name="files_with_count">Files: %d</string>
+    <string name="addition_with_count">Addition: %d</string>
+    <string name="changes_with_count">Changes: %d</string>
+    <string name="deletion_with_count">Deletion: %d</string>
+    <string name="approved_with_count">Approved: %d</string>
+    <string name="commented_with_count">Commented: %d</string>
+    <string name="commits_with_count">Commits: %d</string>
 </resources>

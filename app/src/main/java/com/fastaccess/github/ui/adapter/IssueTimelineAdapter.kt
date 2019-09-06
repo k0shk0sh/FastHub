@@ -11,6 +11,7 @@ import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
+import com.fastaccess.github.ui.adapter.viewholder.ReviewViewHolder
 import io.noties.markwon.Markwon
 
 /**
@@ -34,6 +35,7 @@ class IssueTimelineAdapter(
         return getItem(position)?.let {
             when {
                 it.comment != null -> COMMENT
+                it.review?.comment != null -> REVIEW_THREAD
                 else -> CONTENT
             }
         } ?: super.getItemViewType(position)
@@ -51,6 +53,13 @@ class IssueTimelineAdapter(
                     getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
                 }
             }
+            REVIEW_THREAD -> ReviewViewHolder(parent, markwon, theme, notifyCallback, deleteCommentListener, editCommentListener).apply {
+                itemView.setOnClickListener {
+                    val position = adapterPosition
+                    if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                    getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
+                }
+            }
             CONTENT -> IssueContentViewHolder(parent)
             else -> LoadingViewHolder<Any>(parent).apply { itemView.isVisible = false }
         }
@@ -62,6 +71,7 @@ class IssueTimelineAdapter(
     ) {
         when (holder) {
             is CommentViewHolder -> holder.bind(getItem(position).comment)
+            is ReviewViewHolder -> holder.bind(getItem(position).review)
             is IssueContentViewHolder -> holder.bind(getItem(position))
         }
     }
@@ -79,6 +89,7 @@ class IssueTimelineAdapter(
         private const val HEADER = 1
         private const val COMMENT = 2
         private const val CONTENT = 3
+        private const val REVIEW_THREAD = 4
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TimelineModel?>() {
             override fun areItemsTheSame(

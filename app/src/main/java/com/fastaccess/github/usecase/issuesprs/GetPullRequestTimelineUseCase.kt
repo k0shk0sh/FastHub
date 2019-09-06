@@ -6,6 +6,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.*
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.SchedulerProvider
+import com.fastaccess.extension.toReactionGroup
 import com.fastaccess.extension.toUser
 import com.fastaccess.github.extensions.addIfNotNull
 import github.GetPullRequestTimelineQuery
@@ -45,11 +46,6 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                     timeline.pageInfo.startCursor, timeline.pageInfo.endCursor,
                     timeline.pageInfo.isHasNextPage, timeline.pageInfo.isHasPreviousPage
                 )
-                /**
-                 *
-                PULL_REQUEST_COMMIT, PULL_REQUEST_COMMIT_COMMENT_THREAD,
-                PULL_REQUEST_REVIEW, PULL_REQUEST_REVIEW_THREAD,]
-                 */
                 timeline.nodes?.forEach { node ->
                     when (node) {
                         is AsIssueComment -> node.fragments.comment?.let { list.add(getComment(it)) }
@@ -88,7 +84,6 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                         is AsReviewDismissedEvent -> list.add(getDismissedReview(node))
                         is AsReviewRequestRemovedEvent -> list.add(getReviewRemoved(node))
                         is AsPullRequestReview -> list.add(getPullRequestReview(node))
-                        is AsPullRequestCommit -> list.add(getPullRequestCommit(node))
                     }
                 }
                 return@map Pair(pageInfo, list)
@@ -108,49 +103,41 @@ class GetPullRequestTimelineUseCase @Inject constructor(
             node.state.rawValue(),
             node.createdAt,
             node.comments.nodes?.map {
-                ReviewComment(
-                    ShortUserModel(
-                        it.author?.login,
-                        it.author?.login,
-                        it.author?.url?.toString(),
-                        avatarUrl = it.author?.avatarUrl.toString()
-                    ),
-                    ShortUserModel(
-                        it.replyTo?.author?.login,
-                        it.replyTo?.author?.login,
-                        it.replyTo?.author?.url?.toString(),
-                        avatarUrl = it.replyTo?.author?.avatarUrl.toString()
-                    ),
-                    it.body,
-                    it.path,
-                    it.originalPosition,
-                    it.isOutdated
+                CommentModel(
+                    it.id,
+                    it.databaseId,
+                    ShortUserModel(it.author?.login, it.author?.login, it.author?.url?.toString(), avatarUrl = it.author?.avatarUrl?.toString()),
+                    it.body, CommentAuthorAssociation.fromName(it.authorAssociation.rawValue()),
+                    it.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
+                    it.updatedAt, it.updatedAt, it.isViewerCanReact, it.isViewerCanDelete,
+                    it.isViewerCanUpdate, it.isViewerDidAuthor, false,
+                    it.path, it.originalPosition, it.isOutdated, it.diffHunk
                 )
             }?.firstOrNull()
         )
     )
 
-    private fun getPullRequestCommit(node: AsPullRequestCommit) = TimelineModel(
-        pullRequestCommit = PullRequestCommitModel(
-            node.id,
-            node.url.toString(),
-            CommitModel(
-                node.prCommit.oid.toString(),
-                ShortUserModel(
-                    node.prCommit.author?.name,
-                    node.prCommit.author?.name,
-                    node.prCommit.author?.user?.url.toString(),
-                    avatarUrl = node.prCommit.author?.avatarUrl?.toString() ?: node.prCommit.author?.user?.avatarUrl?.toString()
-                ),
-                node.prCommit.message,
-                node.prCommit.abbreviatedOid,
-                node.prCommit.commitUrl.toString(),
-                node.prCommit.authoredDate,
-                node.prCommit.isCommittedViaWeb,
-                node.prCommit.history.nodes?.lastOrNull()?.status?.state?.rawValue()
-            )
-        )
-    )
+//    private fun getPullRequestCommit(node: AsPullRequestCommit) = TimelineModel(
+//        pullRequestCommit = PullRequestCommitModel(
+//            node.id,
+//            node.url.toString(),
+//            CommitModel(
+//                node.prCommit.oid.toString(),
+//                ShortUserModel(
+//                    node.prCommit.author?.name,
+//                    node.prCommit.author?.name,
+//                    node.prCommit.author?.user?.url.toString(),
+//                    avatarUrl = node.prCommit.author?.avatarUrl?.toString() ?: node.prCommit.author?.user?.avatarUrl?.toString()
+//                ),
+//                node.prCommit.message,
+//                node.prCommit.abbreviatedOid,
+//                node.prCommit.commitUrl.toString(),
+//                node.prCommit.authoredDate,
+//                node.prCommit.isCommittedViaWeb,
+//                node.prCommit.history.nodes?.lastOrNull()?.status?.state?.rawValue()
+//            )
+//        )
+//    )
 
     private fun getReviewRemoved(node: AsReviewRequestRemovedEvent) = TimelineModel(
         reviewRequestRemoved = ReviewRequestRemovedModel(

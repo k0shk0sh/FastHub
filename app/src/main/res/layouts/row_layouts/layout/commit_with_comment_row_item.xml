@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardViewStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_xs_large"
+    android:layout_marginTop="@dimen/spacing_micro"
+    android:layout_marginEnd="@dimen/spacing_xs_large"
+    android:layout_marginBottom="@dimen/spacing_micro"
+    app:cardBackgroundColor="?colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fileName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_push"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:ellipsize="middle"
+            android:gravity="start|center"
+            android:maxLines="2"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="/app/src/main/java/blah/blah/blah/blah/MainActivity.kt" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/diffHunk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            tools:text="long text....." />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?dividerColor" />
+
+        <include layout="@layout/comment_small_row_item" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

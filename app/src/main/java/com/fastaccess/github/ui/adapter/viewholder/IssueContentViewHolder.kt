@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.fastaccess.data.model.*
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.route
@@ -12,6 +13,7 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
+import github.type.PullRequestReviewState
 import github.type.PullRequestState
 import github.type.StatusState
 import kotlinx.android.synthetic.main.issue_content_row_item.view.*
@@ -48,18 +50,57 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         item.reviewDismissed?.let(this::presenetReviewDismissed)
         item.reviewRequestRemoved?.let(this::presenetReviewRequestRemoved)
         item.pullRequestCommit?.let(this::presentPrCommit)
+        item.review?.let(this::presentReview)
+    }
+
+    @SuppressLint("DefaultLocale")
+    private fun presentReview(model: ReviewModel) {
+        itemView.apply {
+            val icon = when (model.state) {
+                PullRequestReviewState.APPROVED.rawValue() -> R.drawable.ic_done
+                PullRequestReviewState.CHANGES_REQUESTED.rawValue() -> R.drawable.ic_clear
+                PullRequestReviewState.COMMENTED.rawValue() -> R.drawable.ic_comment
+                else -> 0
+            }
+            if (icon != 0) {
+                stateIcon.setImageResource(icon)
+                stateIcon.isVisible = true
+            } else {
+                stateIcon.isVisible = false
+            }
+            userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url)
+            text.text = SpannableBuilder.builder()
+                .bold(model.author?.login)
+                .space()
+                .apply {
+                    append(model.state?.replace("_", " ")?.toLowerCase() ?: "")
+                    val body = model.body
+                    if (!body.isNullOrEmpty()) {
+                        newline()
+                        append(body)
+                        space()
+                    } else {
+                        space()
+                    }
+                }
+                .append(model.createdAt?.timeAgo())
+        }
     }
 
     private fun presentPrCommit(model: PullRequestCommitModel) {
         itemView.apply {
-            stateIcon.setImageResource(
-                when (model.commit?.state) {
-                    StatusState.ERROR.rawValue(), StatusState.FAILURE.rawValue() -> R.drawable.ic_state_error
-                    StatusState.SUCCESS.rawValue() -> R.drawable.ic_state_success
-                    StatusState.PENDING.rawValue() -> R.drawable.ic_state_pending
-                    else -> 0
-                }
-            )
+            val icon = when (model.commit?.state) {
+                StatusState.ERROR.rawValue(), StatusState.FAILURE.rawValue() -> R.drawable.ic_state_error
+                StatusState.SUCCESS.rawValue() -> R.drawable.ic_state_success
+                StatusState.PENDING.rawValue() -> R.drawable.ic_state_pending
+                else -> 0
+            }
+            if (icon == 0) {
+                stateIcon.isVisible = false
+            } else {
+                stateIcon.setImageResource(icon)
+                stateIcon.isVisible = true
+            }
             userIcon.loadAvatar(model.commit?.author?.avatarUrl, model.commit?.author?.url)
             text.text = SpannableBuilder.builder()
                 .bold(model.commit?.author?.login)
@@ -70,6 +111,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                     model.commit?.commitUrl?.let { view.context.route(it) }
                 })
                 .space()
+                .append("${model.commit?.message} " ?: "")
                 .append(model.commit?.authoredDate?.timeAgo())
         }
     }
@@ -95,7 +137,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
                 .space()
-                .append("dismissed their review (${model.previousReviewState?.toLowerCase()})")
+                .append("dismissed ${model.previousReviewState?.replace("_", " ")?.toLowerCase()} review")
                 .newline()
                 .append(model.dismissalMessage ?: "")
                 .space()
