@@ -33,7 +33,8 @@ data class TimelineModel(
     @SerializedName("reviewDismissed") var reviewDismissed: ReviewDismissedModel? = null,
     @SerializedName("reviewRequestRemoved") var reviewRequestRemoved: ReviewRequestRemovedModel? = null,
     @SerializedName("pullRequestCommit") var pullRequestCommit: PullRequestCommitModel? = null,
-    @SerializedName("review") var review: ReviewModel? = null
+    @SerializedName("review") var review: ReviewModel? = null,
+    @SerializedName("commitThread") var commitThread: CommitThreadModel? = null
 )
 
 data class CommitModel(
@@ -210,6 +211,12 @@ data class ReviewModel(
     @SerializedName("authorAssociation") var authorAssociation: String? = null,
     @SerializedName("state") var state: String? = null,
     @SerializedName("createdAt") var createdAt: Date? = null,
+    @SerializedName("comment") var comment: CommentModel? = null
+)
+
+data class CommitThreadModel(
+    @SerializedName("path") var path: String? = null,
+    @SerializedName("position") var position: Int? = null,
     @SerializedName("comment") var comment: CommentModel? = null
 )
 

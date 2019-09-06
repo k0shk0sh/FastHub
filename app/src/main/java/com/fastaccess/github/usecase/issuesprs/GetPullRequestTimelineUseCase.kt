@@ -84,6 +84,7 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                         is AsReviewDismissedEvent -> list.add(getDismissedReview(node))
                         is AsReviewRequestRemovedEvent -> list.add(getReviewRemoved(node))
                         is AsPullRequestReview -> list.add(getPullRequestReview(node))
+                        is AsPullRequestCommitCommentThread -> list.add(getCommitThread(node))
                     }
                 }
                 return@map Pair(pageInfo, list)
@@ -92,6 +93,24 @@ class GetPullRequestTimelineUseCase @Inject constructor(
         return observable.subscribeOn(schedulerProvider.ioThread())
             .observeOn(schedulerProvider.uiThread())
     }
+
+    private fun getCommitThread(node: AsPullRequestCommitCommentThread) = TimelineModel(
+        commitThread = CommitThreadModel(
+            node.path, node.position,
+            node.tComment.nodes?.map {
+                CommentModel(
+                    it.id,
+                    it.databaseId,
+                    ShortUserModel(it.author?.login, it.author?.login, it.author?.url?.toString(), avatarUrl = it.author?.avatarUrl?.toString()),
+                    it.body, CommentAuthorAssociation.fromName(it.authorAssociation.rawValue()),
+                    it.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
+                    it.updatedAt, it.updatedAt, it.isViewerCanReact, it.isViewerCanDelete,
+                    it.isViewerCanUpdate, it.isViewerDidAuthor, false,
+                    it.path, it.position
+                )
+            }?.firstOrNull()
+        )
+    )
 
     private fun getPullRequestReview(node: AsPullRequestReview) = TimelineModel(
         review = ReviewModel(

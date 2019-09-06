@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
 import com.fastaccess.data.model.CommentModel
-import com.fastaccess.data.model.ReviewModel
+import com.fastaccess.data.model.CommitThreadModel
 import com.fastaccess.github.R
-import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.showYesNoDialog
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.utils.extensions.popMenu
-import com.fastaccess.markdown.spans.DiffLineSpan
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_small_row_item.view.*
@@ -33,13 +31,13 @@ class CommitThreadViewHolder(
     private val callback: (position: Int) -> Unit,
     private val deleteCommentListener: (position: Int, comment: CommentModel) -> Unit,
     private val editCommentListener: (position: Int, comment: CommentModel) -> Unit
-) : BaseViewHolder<ReviewModel?>(
+) : BaseViewHolder<CommitThreadModel?>(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.commit_with_comment_row_item, parent, false)
 ) {
 
     @SuppressLint("SetTextI18n", "DefaultLocale")
-    override fun bind(item: ReviewModel?) {
+    override fun bind(item: CommitThreadModel?) {
         val review = item ?: run {
             itemView.isVisible = false
             return
@@ -48,17 +46,6 @@ class CommitThreadViewHolder(
             itemView.commentLayout.isVisible = review.comment != null
             review.comment?.let { model ->
                 fileName.text = model.path
-                if (model.diffHunk.isNullOrEmpty()) {
-                    diffHunk.text = DiffLineSpan.getSpannable(
-                        model.diffHunk,
-                        context.getColorAttr(R.attr.patch_addition), context.getColorAttr(R.attr.patch_deletion),
-                        context.getColorAttr(R.attr.patch_ref),
-                        truncate = true
-                    )
-                    diffHunk.isVisible = true
-                } else {
-                    diffHunk.isVisible = false
-                }
                 userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
                 author.text = model.author?.login ?: ""
                 association.text = if (CommentAuthorAssociation.NONE == model.authorAssociation) {

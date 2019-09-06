@@ -30,21 +30,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="/app/src/main/java/blah/blah/blah/blah/MainActivity.kt" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/diffHunk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="5"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            tools:text="long text....." />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?dividerColor" />
-
         <include layout="@layout/comment_small_row_item" />
 
     </LinearLayout>

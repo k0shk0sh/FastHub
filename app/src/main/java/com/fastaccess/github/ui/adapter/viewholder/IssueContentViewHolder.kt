@@ -137,10 +137,15 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
             text.text = SpannableBuilder.builder()
                 .bold(model.actor?.login)
                 .space()
-                .append("dismissed ${model.previousReviewState?.replace("_", " ")?.toLowerCase()} review")
-                .newline()
-                .append(model.dismissalMessage ?: "")
-                .space()
+                .append("dismissed their review (${model.previousReviewState?.toLowerCase()})")
+                .apply {
+                    val msg = model.dismissalMessage
+                    if (!msg.isNullOrEmpty()) {
+                        newline()
+                        append(msg)
+                    }
+                    space()
+                }
                 .append(model.createdAt?.timeAgo())
         }
     }

@@ -239,12 +239,18 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                                     createdAt
                                     databaseId
                                     id
-                                    viewerCanDelete
-                                    viewerCanReact
-                                    viewerCanUpdate
                                     path
                                     position
                                     url
+                                    authorAssociation
+                                    updatedAt
+                                    viewerCanReact
+                                    viewerCanDelete
+                                    viewerCanUpdate
+                                    viewerDidAuthor
+                                    reactionGroups {
+                                        ...Reactions
+                                    }
                                 }
                             }
                         }

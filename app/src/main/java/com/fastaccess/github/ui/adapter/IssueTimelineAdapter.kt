@@ -8,10 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.ReviewViewHolder
+import com.fastaccess.github.ui.adapter.viewholder.*
 import io.noties.markwon.Markwon
 
 /**
@@ -36,6 +33,7 @@ class IssueTimelineAdapter(
             when {
                 it.comment != null -> COMMENT
                 it.review?.comment != null -> REVIEW_THREAD
+                it.commitThread != null -> COMMIT_THREAD
                 else -> CONTENT
             }
         } ?: super.getItemViewType(position)
@@ -57,7 +55,14 @@ class IssueTimelineAdapter(
                 itemView.setOnClickListener {
                     val position = adapterPosition
                     if (position == RecyclerView.NO_POSITION) return@setOnClickListener
-                    getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
+                    getItemByPosition(position)?.review?.comment?.let { commentClickListener.invoke(position, it) }
+                }
+            }
+            COMMIT_THREAD -> CommitThreadViewHolder(parent, markwon, theme, notifyCallback, deleteCommentListener, editCommentListener).apply {
+                itemView.setOnClickListener {
+                    val position = adapterPosition
+                    if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                    getItemByPosition(position)?.commitThread?.comment?.let { commentClickListener.invoke(position, it) }
                 }
             }
             CONTENT -> IssueContentViewHolder(parent)
@@ -72,6 +77,7 @@ class IssueTimelineAdapter(
         when (holder) {
             is CommentViewHolder -> holder.bind(getItem(position).comment)
             is ReviewViewHolder -> holder.bind(getItem(position).review)
+            is CommitThreadViewHolder -> holder.bind(getItem(position).commitThread)
             is IssueContentViewHolder -> holder.bind(getItem(position))
         }
     }
@@ -90,6 +96,7 @@ class IssueTimelineAdapter(
         private const val COMMENT = 2
         private const val CONTENT = 3
         private const val REVIEW_THREAD = 4
+        private const val COMMIT_THREAD = 5
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TimelineModel?>() {
             override fun areItemsTheSame(
