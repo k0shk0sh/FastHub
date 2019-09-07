@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CardViewStyle"
     android:layout_width="match_parent"
@@ -15,36 +16,136 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/fileName"
+        <LinearLayout
+            android:id="@+id/reviewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_eye"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:ellipsize="middle"
-            android:gravity="start|center"
-            android:maxLines="2"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="/app/src/main/java/blah/blah/blah/blah/MainActivity.kt" />
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/diffHunk"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:orientation="horizontal">
+
+                <com.fastaccess.github.ui.widget.AvatarImageView
+                    android:id="@+id/reviewUserIcon"
+                    android:layout_width="@dimen/small_icon_zie"
+                    android:layout_height="@dimen/small_icon_zie"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_xs_large"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/ic_ring" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/reviewAuthor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        app:autoSizeMaxTextSize="14sp"
+                        app:autoSizeMinTextSize="10sp"
+                        app:autoSizeStepGranularity="1dp"
+                        app:autoSizeTextType="uniform"
+                        tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/reviewAssociation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        app:autoSizeMaxTextSize="14sp"
+                        app:autoSizeMinTextSize="10sp"
+                        app:autoSizeStepGranularity="1dp"
+                        app:autoSizeTextType="uniform"
+                        tools:text="Owner" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/reviewMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_overflow" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/reviewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:breakStrategy="simple"
+                android:hyphenationFrequency="none"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textIsSelectable="true"
+                tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
+
+            <com.fastaccess.github.ui.widget.AdaptiveEmoticonLayout
+                android:id="@+id/reviewAdaptiveEmoticon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:background="?dividerColor" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="5"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            tools:text="long text....." />
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?dividerColor" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_eye"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:ellipsize="middle"
+                android:gravity="start|center"
+                android:maxLines="2"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                tools:text="/app/src/main/java/blah/blah/blah/blah/MainActivity.kt" />
 
-        <include layout="@layout/comment_small_row_item" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/diffHunk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="5"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="long text....." />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?dividerColor" />
+
+            <include layout="@layout/comment_small_row_item" />
+        </LinearLayout>
 
     </LinearLayout>
 

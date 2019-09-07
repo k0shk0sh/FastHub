@@ -408,6 +408,13 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                             createdAt
                             state
                             resourcePath
+                            viewerCanReact
+                            viewerCanDelete
+                            viewerCanUpdate
+                            viewerDidAuthor
+                            reactionGroups {
+                                ...Reactions
+                            }
                             comments(first: 1) {
                                 nodes {
                                     id

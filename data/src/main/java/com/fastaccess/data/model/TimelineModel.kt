@@ -211,7 +211,13 @@ data class ReviewModel(
     @SerializedName("authorAssociation") var authorAssociation: String? = null,
     @SerializedName("state") var state: String? = null,
     @SerializedName("createdAt") var createdAt: Date? = null,
-    @SerializedName("comment") var comment: CommentModel? = null
+    @SerializedName("comment") var comment: CommentModel? = null,
+    @SerializedName("viewerCanReact") var viewerCanReact: Boolean? = null,
+    @SerializedName("viewerCanDelete") var viewerCanDelete: Boolean? = null,
+    @SerializedName("viewerCanUpdate") var viewerCanUpdate: Boolean? = null,
+    @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = null,
+    @SerializedName("viewerCanMinimize") var viewerCanMinimize: Boolean? = null,
+    @SerializedName("reactionGroups") var reactionGroups: List<ReactionGroupModel>? = null
 )
 
 data class CommitThreadModel(

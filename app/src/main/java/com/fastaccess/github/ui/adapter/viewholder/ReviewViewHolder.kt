@@ -40,14 +40,20 @@ class ReviewViewHolder(
 
     @SuppressLint("SetTextI18n", "DefaultLocale")
     override fun bind(item: ReviewModel?) {
-        val review = item ?: run {
+        val _review = item ?: run {
             itemView.isVisible = false
             return
         }
         itemView.apply {
-            itemView.commentLayout.isVisible = review.comment != null
-            review.comment?.let { model ->
+            itemView.commentLayout.isVisible = _review.comment != null
+            _review.comment?.let { model ->
                 fileName.text = model.path
+                val showReview = !_review.body.isNullOrBlank()
+                reviewLayout.isVisible = showReview
+                if (showReview) {
+                    initReview(_review)
+                }
+
                 if (!model.diffHunk.isNullOrEmpty()) {
                     diffHunk.text = DiffLineSpan.getSpannable(
                         model.diffHunk,
@@ -105,6 +111,58 @@ class ReviewViewHolder(
                 adaptiveEmoticon.init(requireNotNull(model.id), model.reactionGroups) {
                     callback.invoke(adapterPosition)
                 }
+            }
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private fun initReview(model: ReviewModel) {
+        itemView.apply {
+            reviewUserIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
+            reviewAuthor.text = model.author?.login ?: ""
+            reviewAssociation.text = if (CommentAuthorAssociation.NONE.value == model.authorAssociation) {
+                model.createdAt?.timeAgo()
+            } else {
+                SpannableBuilder.builder()
+                    .bold(model.authorAssociation?.toLowerCase()?.replace("_", "") ?: "")
+                    .space()
+                    .append(model.createdAt?.timeAgo())
+            }
+
+            reviewDescription.post {
+                reviewDescription.setSpannableFactory(NoCopySpannableFactory.getInstance())
+                val bodyMd = model.body
+                markwon.setMarkdown(reviewDescription, if (!bodyMd.isNullOrEmpty()) bodyMd else resources.getString(R.string.no_description_provided))
+            }
+
+            reviewDescription.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP && !description.hasSelection()) {
+                    itemView.callOnClick()
+                }
+                return@setOnTouchListener false
+            }
+
+            val canAlter = model.viewerCanUpdate == true || model.viewerCanDelete == true
+            reviewMenu.isVisible = canAlter
+            if (canAlter) {
+                reviewMenu.popMenu(R.menu.comment_menu, { menu ->
+                    menu.findItem(R.id.edit)?.isVisible = model.viewerCanUpdate == true
+                    menu.findItem(R.id.delete)?.isVisible = model.viewerCanDelete == true
+                }) { itemId ->
+                    if (itemId == R.id.delete) {
+                        context.showYesNoDialog(R.string.delete) {
+                            it.isTrue {
+                                deleteCommentListener.invoke(adapterPosition)
+                            }
+                        }
+                    } else if (itemId == R.id.edit) {
+                        editCommentListener.invoke(adapterPosition)
+                    }
+                }
+            }
+
+            adaptiveEmoticon.init(requireNotNull(model.id), model.reactionGroups) {
+                callback.invoke(adapterPosition)
             }
         }
     }

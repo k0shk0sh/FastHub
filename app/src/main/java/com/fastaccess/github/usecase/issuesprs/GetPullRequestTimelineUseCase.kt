@@ -132,7 +132,13 @@ class GetPullRequestTimelineUseCase @Inject constructor(
                     it.isViewerCanUpdate, it.isViewerDidAuthor, false,
                     it.path, it.originalPosition, it.isOutdated, it.diffHunk
                 )
-            }?.firstOrNull()
+            }?.firstOrNull(),
+            node.isViewerCanReact,
+            node.isViewerCanDelete,
+            node.isViewerCanUpdate,
+            node.isViewerDidAuthor,
+            false,
+            node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }
         )
     )
 
