@@ -32,7 +32,7 @@ class IssueTimelineAdapter(
         return getItem(position)?.let {
             when {
                 it.comment != null -> COMMENT
-                it.review?.comment != null -> REVIEW_THREAD
+                !it.review?.body.isNullOrEmpty() || it.review?.comment != null -> REVIEW_THREAD
                 it.commitThread != null -> COMMIT_THREAD
                 else -> CONTENT
             }
