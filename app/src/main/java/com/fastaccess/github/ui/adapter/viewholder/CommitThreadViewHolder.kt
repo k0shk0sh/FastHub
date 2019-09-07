@@ -6,7 +6,6 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
-import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.CommitThreadModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.isTrue
@@ -29,8 +28,8 @@ class CommitThreadViewHolder(
     private val markwon: Markwon,
     private val theme: Int,
     private val callback: (position: Int) -> Unit,
-    private val deleteCommentListener: (position: Int, comment: CommentModel) -> Unit,
-    private val editCommentListener: (position: Int, comment: CommentModel) -> Unit
+    private val deleteCommentListener: (position: Int) -> Unit,
+    private val editCommentListener: (position: Int) -> Unit
 ) : BaseViewHolder<CommitThreadModel?>(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.commit_with_comment_row_item, parent, false)
@@ -80,11 +79,11 @@ class CommitThreadViewHolder(
                         if (itemId == R.id.delete) {
                             context.showYesNoDialog(R.string.delete) {
                                 it.isTrue {
-                                    deleteCommentListener.invoke(adapterPosition, model)
+                                    deleteCommentListener.invoke(adapterPosition)
                                 }
                             }
                         } else if (itemId == R.id.edit) {
-                            editCommentListener.invoke(adapterPosition, model)
+                            editCommentListener.invoke(adapterPosition)
                         }
                     }
                 }

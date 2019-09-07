@@ -8,7 +8,6 @@ import android.text.Editable
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.CommentModel
@@ -18,8 +17,6 @@ import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
-import com.fastaccess.data.persistence.models.IssueModel
-import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.extensions.*
@@ -31,12 +28,12 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.lockunlock.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
+import com.fastaccess.github.usecase.issuesprs.TimelineType
 import com.fastaccess.github.utils.EDITOR_DEEPLINK
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
 import com.fastaccess.github.utils.extensions.isConnected
-import com.fastaccess.github.utils.extensions.popMenu
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
@@ -140,10 +137,17 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                     val model = data?.getParcelableExtra<EditIssuePrBundleModel>(EXTRA) ?: return
                     editIssuerPr(model.title, model.description)
                 }
-                EDIT_COMMENT_REQUEST_CODE -> {
+                EDIT_COMMENT_REQUEST_CODE, EDIT_REVIEW_COMMENT_REQUEST_CODE, EDIT_COMMIT_COMMENT_REQUEST_CODE -> {
                     val comment = data?.getStringExtra(EXTRA)
                     val commentId = data?.getIntExtra(EXTRA_TWO, 0)
-                    onEditComment(comment, commentId)
+                    onEditComment(
+                        comment, commentId, when (requestCode) {
+                            EDIT_COMMENT_REQUEST_CODE -> TimelineType.ISSUE
+                            EDIT_REVIEW_COMMENT_REQUEST_CODE -> TimelineType.REVIEW
+                            EDIT_COMMIT_COMMENT_REQUEST_CODE -> TimelineType.COMMIT
+                            else -> TimelineType.ISSUE
+                        }
+                    )
                 }
                 else -> Timber.e("nothing yet for requestCode($requestCode)")
             }
@@ -337,13 +341,63 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         )
     }
 
-    protected open fun onEditCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment -> }
-    protected open fun onDeleteCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment -> }
-    protected open fun onEditComment(comment: String?, commentId: Int?) = Unit
+    protected open fun onEditCommentClicked(): (position: Int, timeline: TimelineModel) -> Unit = { position, timeline ->
+        val databaseId = when {
+            timeline.comment != null -> timeline.comment?.databaseId
+            timeline.commitThread != null -> timeline.commitThread?.comment?.databaseId
+            timeline.review != null -> timeline.review?.comment?.databaseId
+            else -> 0
+        }
+        val body = when {
+            timeline.comment != null -> timeline.comment?.body
+            timeline.commitThread != null -> timeline.commitThread?.comment?.body
+            timeline.review != null -> timeline.review?.comment?.body
+            else -> null
+        }
+        val requestCode = when {
+            timeline.comment != null -> EDIT_COMMENT_REQUEST_CODE
+            timeline.commitThread != null -> EDIT_COMMIT_COMMENT_REQUEST_CODE
+            timeline.review != null -> EDIT_REVIEW_COMMENT_REQUEST_CODE
+            else -> 0
+        }
+        if (databaseId != 0) {
+            routeForResult(
+                EDITOR_DEEPLINK, requestCode, bundleOf(
+                    EXTRA to body,
+                    EXTRA_TWO to databaseId
+                )
+            )
+        }
+    }
+
+    protected open fun onDeleteCommentClicked(): (position: Int, timeline: TimelineModel) -> Unit = { position, timeline ->
+        val databaseId = when {
+            timeline.comment != null -> timeline.comment?.databaseId
+            timeline.commitThread != null -> timeline.commitThread?.comment?.databaseId
+            timeline.review != null -> timeline.review?.comment?.databaseId
+            else -> 0
+        }
+        val type = when {
+            timeline.comment != null -> TimelineType.ISSUE
+            timeline.commitThread != null -> TimelineType.COMMIT
+            timeline.review != null -> TimelineType.REVIEW
+            else -> TimelineType.ISSUE
+        }
+        if (databaseId != null && databaseId != 0) {
+            deleteComment(
+                login, repo, databaseId.toLong(), type
+            )
+        }
+    }
+
+    protected open fun deleteComment(login: String, repo: String, commentId: Long, type: TimelineType) = Unit
+    protected open fun onEditComment(comment: String?, commentId: Int?, type: TimelineType = TimelineType.ISSUE) = Unit
 
     companion object {
         const val COMMENT_REQUEST_CODE = 1001
         const val EDIT_ISSUE_REQUEST_CODE = 1002
         const val EDIT_COMMENT_REQUEST_CODE = 1003
+        const val EDIT_REVIEW_COMMENT_REQUEST_CODE = 1004
+        const val EDIT_COMMIT_COMMENT_REQUEST_CODE = 1005
     }
 }

@@ -17,9 +17,9 @@ import io.noties.markwon.Markwon
 class IssueTimelineAdapter(
     private val markwon: Markwon,
     private val theme: Int,
-    private val commentClickListener: (position: Int, comment: CommentModel) -> Unit,
-    private val deleteCommentListener: (position: Int, comment: CommentModel) -> Unit,
-    private val editCommentListener: (position: Int, comment: CommentModel) -> Unit
+    private val commentClickListener: (position: Int, model: CommentModel) -> Unit,
+    private val deleteCommentListener: (position: Int, model: TimelineModel) -> Unit,
+    private val editCommentListener: (position: Int, model: TimelineModel) -> Unit
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val notifyCallback by lazy {
@@ -44,25 +44,37 @@ class IssueTimelineAdapter(
         viewType: Int
     ): RecyclerView.ViewHolder {
         return when (viewType) {
-            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback, deleteCommentListener, editCommentListener).apply {
+            COMMENT -> CommentViewHolder(parent, markwon, theme, notifyCallback, { position ->
+                getItemByPosition(position)?.let { deleteCommentListener.invoke(position, it) }
+            }, { position ->
+                getItemByPosition(position)?.let { editCommentListener.invoke(position, it) }
+            }).apply {
                 itemView.setOnClickListener {
                     val position = adapterPosition
                     if (position == RecyclerView.NO_POSITION) return@setOnClickListener
                     getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
                 }
             }
-            REVIEW_THREAD -> ReviewViewHolder(parent, markwon, theme, notifyCallback, deleteCommentListener, editCommentListener).apply {
+            REVIEW_THREAD -> ReviewViewHolder(parent, markwon, theme, notifyCallback, { position ->
+                getItemByPosition(position)?.let { deleteCommentListener.invoke(position, it) }
+            }, { position ->
+                getItemByPosition(position)?.let { editCommentListener.invoke(position, it) }
+            }).apply {
                 itemView.setOnClickListener {
                     val position = adapterPosition
                     if (position == RecyclerView.NO_POSITION) return@setOnClickListener
-                    getItemByPosition(position)?.review?.comment?.let { commentClickListener.invoke(position, it) }
+                    getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
                 }
             }
-            COMMIT_THREAD -> CommitThreadViewHolder(parent, markwon, theme, notifyCallback, deleteCommentListener, editCommentListener).apply {
+            COMMIT_THREAD -> CommitThreadViewHolder(parent, markwon, theme, notifyCallback, { position ->
+                getItemByPosition(position)?.let { deleteCommentListener.invoke(position, it) }
+            }, { position ->
+                getItemByPosition(position)?.let { editCommentListener.invoke(position, it) }
+            }).apply {
                 itemView.setOnClickListener {
                     val position = adapterPosition
                     if (position == RecyclerView.NO_POSITION) return@setOnClickListener
-                    getItemByPosition(position)?.commitThread?.comment?.let { commentClickListener.invoke(position, it) }
+                    getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
                 }
             }
             CONTENT -> IssueContentViewHolder(parent)

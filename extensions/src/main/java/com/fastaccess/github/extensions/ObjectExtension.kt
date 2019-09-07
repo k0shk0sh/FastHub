@@ -3,6 +3,7 @@ package com.fastaccess.github.extensions
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Kosh on 19.05.18.
@@ -50,3 +51,5 @@ fun getDateByDays(days: Int): String = DatePrettifier.getDateByDays(days)
 fun <T> ArrayList<T>.addIfNotNull(t: T?) {
     t?.let(::add)
 }
+
+fun <T> List<T>.toArrayList() = ArrayList<T>(this)

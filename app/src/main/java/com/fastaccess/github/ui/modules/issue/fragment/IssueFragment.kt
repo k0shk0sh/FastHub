@@ -7,7 +7,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.persistence.models.LoginModel
@@ -16,12 +15,11 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.extensions.routeForResult
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
-import com.fastaccess.github.utils.EDITOR_DEEPLINK
+import com.fastaccess.github.usecase.issuesprs.TimelineType
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
 import com.fastaccess.github.utils.EXTRA_TWO
@@ -168,21 +166,13 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
         recyclerView.removeEmptyView()
     }
 
-    override fun onEditCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment ->
-        routeForResult(
-            EDITOR_DEEPLINK, EDIT_COMMENT_REQUEST_CODE, bundleOf(
-                EXTRA to comment.body,
-                EXTRA_TWO to comment.databaseId
-            )
-        )
-    }
 
-    override fun onDeleteCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment ->
-        viewModel.deleteComment(login, repo, comment.databaseId?.toLong() ?: 0L)
-    }
-
-    override fun onEditComment(comment: String?, commentId: Int?) {
+    override fun onEditComment(comment: String?, commentId: Int?, type: TimelineType) {
         viewModel.editComment(login, repo, comment, commentId?.toLong())
+    }
+
+    override fun deleteComment(login: String, repo: String, commentId: Long, type: TimelineType) {
+        viewModel.deleteComment(login, repo, commentId)
     }
 
     companion object {

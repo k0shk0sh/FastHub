@@ -9,10 +9,10 @@ import com.fastaccess.data.repository.PullRequestRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.filterNull
 import com.fastaccess.github.extensions.map
+import com.fastaccess.github.extensions.toArrayList
 import com.fastaccess.github.usecase.issuesprs.*
 import github.type.LockReason
 import io.reactivex.Observable
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -86,7 +86,7 @@ class PullRequestTimelineViewModel @Inject constructor(
             .doOnNext {
                 this.pageInfo = it.first
                 list.addAll(it.second)
-                timeline.postValue(ArrayList(list))
+                timeline.postValue(list.toArrayList())
             }
     }
 
@@ -146,7 +146,7 @@ class PullRequestTimelineViewModel @Inject constructor(
 
     fun addTimeline(it: TimelineModel) {
         list.add(it)
-        timeline.postValue(ArrayList(list))
+        timeline.postValue(list.toArrayList())
     }
 
     fun hasNext() = pageInfo?.hasNextPage ?: false
@@ -175,21 +175,23 @@ class PullRequestTimelineViewModel @Inject constructor(
     fun deleteComment(
         login: String,
         repo: String,
-        commentId: Long
+        commentId: Long,
+        type: TimelineType = TimelineType.ISSUE
     ) {
         deleteCommentUseCase.commentId = commentId
         deleteCommentUseCase.login = login
         deleteCommentUseCase.repo = repo
+        deleteCommentUseCase.type = type
         justSubscribe(deleteCommentUseCase.buildObservable()
             .map {
-                val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
+                val index = getIndexOfComment(type, commentId)
                 if (index != -1) {
                     list.removeAt(index)
                 }
                 return@map list
             }
             .doOnNext { list ->
-                timeline.postValue(ArrayList(list))
+                timeline.postValue(list.toArrayList())
             })
     }
 
@@ -197,26 +199,42 @@ class PullRequestTimelineViewModel @Inject constructor(
         login: String,
         repo: String,
         comment: String?,
-        commentId: Long?
+        commentId: Long?,
+        type: TimelineType = TimelineType.ISSUE
     ) {
         if (!comment.isNullOrBlank() && commentId != null) {
             editCommentUseCase.comment = comment
             editCommentUseCase.login = login
             editCommentUseCase.repo = repo
             editCommentUseCase.commentId = commentId
+            editCommentUseCase.type = type
             justSubscribe(editCommentUseCase.buildObservable()
                 .map {
-                    val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
+                    val index = getIndexOfComment(type, commentId)
                     val item = list.getOrNull(index) ?: return@map list
-                    item.comment?.body = comment
+                    when (type) {
+                        TimelineType.ISSUE -> item.comment?.body = comment
+                        TimelineType.REVIEW -> item.review?.comment?.body = comment
+                        TimelineType.COMMIT -> item.commitThread?.comment?.body = comment
+                        else -> {
+                        }
+                    }
                     list[index] = item
-                    Timber.e("${list[index]}")
                     return@map list
                 }
                 .doOnNext { list ->
-                    timeline.postValue(ArrayList(list))
+                    timeline.postValue(list.toArrayList())
                     forceAdapterUpdate.postValue(true)
                 })
+        }
+    }
+
+    private fun getIndexOfComment(type: TimelineType, commentId: Long?): Int = list.indexOfFirst {
+        when (type) {
+            TimelineType.ISSUE -> it.comment?.databaseId?.toLong() == commentId
+            TimelineType.REVIEW -> it.review?.comment?.databaseId?.toLong() == commentId
+            TimelineType.COMMIT -> it.commitThread?.comment?.databaseId?.toLong() == commentId
+            else -> false
         }
     }
 }

@@ -27,8 +27,8 @@ class CommentViewHolder(
     private val markwon: Markwon,
     private val theme: Int,
     private val callback: (position: Int) -> Unit,
-    private val deleteCommentListener: (position: Int, comment: CommentModel) -> Unit,
-    private val editCommentListener: (position: Int, comment: CommentModel) -> Unit
+    private val deleteCommentListener: (position: Int) -> Unit,
+    private val editCommentListener: (position: Int) -> Unit
 ) : BaseViewHolder<CommentModel?>(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.comment_row_item, parent, false)
@@ -75,11 +75,11 @@ class CommentViewHolder(
                     if (itemId == R.id.delete) {
                         context.showYesNoDialog(R.string.delete) {
                             it.isTrue {
-                                deleteCommentListener.invoke(adapterPosition, model)
+                                deleteCommentListener.invoke(adapterPosition)
                             }
                         }
                     } else if (itemId == R.id.edit) {
-                        editCommentListener.invoke(adapterPosition, model)
+                        editCommentListener.invoke(adapterPosition)
                     }
                 }
             }
