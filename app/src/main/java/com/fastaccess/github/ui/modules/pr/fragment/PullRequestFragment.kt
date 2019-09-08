@@ -19,6 +19,8 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
 import com.fastaccess.github.ui.modules.pr.fragment.viewmodel.PullRequestTimelineViewModel
+import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog
+import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog.QuickMessageCallback
 import com.fastaccess.github.usecase.issuesprs.TimelineType
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.EXTRA_THREE
@@ -35,13 +37,12 @@ import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.pr_header_row_item.*
 import kotlinx.android.synthetic.main.pr_view_layout.*
 import kotlinx.android.synthetic.main.recyclerview_fastscroll_empty_state_layout.*
-import kotlinx.android.synthetic.main.title_toolbar_layout.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 28.01.19.
  */
-class PullRequestFragment : BaseIssuePrTimelineFragment() {
+class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var markwon: Markwon
@@ -82,6 +83,11 @@ class PullRequestFragment : BaseIssuePrTimelineFragment() {
     override fun lockUnlockIssuePr() = viewModel.lockUnlockIssue(login, repo, number)
     override fun closeOpenIssuePr() = viewModel.closeOpenIssue(login, repo, number)
 
+    override fun onMessageEntered(msg: String, bundle: Bundle?) {
+        val commentId = bundle?.getLong(EXTRA_TWO) ?: return
+        viewModel.deleteComment(login, repo, commentId, TimelineType.REVIEW_BODY, number, msg)
+    }
+
     private fun observeChanges() {
         viewModel.getPullRequest(login, repo, number).observeNotNull(this) {
             initIssue(it.first, it.second)
@@ -114,9 +120,6 @@ class PullRequestFragment : BaseIssuePrTimelineFragment() {
         issueHeaderWrapper.isVisible = true
         val theme = preference.theme
         title.text = model.title
-        toolbar.title = SpannableBuilder.builder()
-            .append(getString(R.string.pull_request))
-            .bold("#${model.number}")
 
         opener.text = if (model.merged == true) {
             SpannableBuilder.builder()
@@ -199,11 +202,20 @@ class PullRequestFragment : BaseIssuePrTimelineFragment() {
     }
 
     override fun deleteComment(login: String, repo: String, commentId: Long, type: TimelineType) {
-        viewModel.deleteComment(login, repo, commentId, type)
+        if (type == TimelineType.REVIEW_BODY) {
+            QuickMessageBottomSheetDialog.show(
+                childFragmentManager, bundleOf(
+                    EXTRA to getString(R.string.dismiss_review),
+                    EXTRA_TWO to commentId
+                )
+            )
+        } else {
+            viewModel.deleteComment(login, repo, commentId, type, number)
+        }
     }
 
     override fun onEditComment(comment: String?, commentId: Int?, type: TimelineType) {
-        viewModel.editComment(login, repo, comment, commentId?.toLong(), type)
+        viewModel.editComment(login, repo, comment, commentId?.toLong(), type, number)
     }
 
     companion object {

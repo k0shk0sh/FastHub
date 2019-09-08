@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar_center_title_round_background_layout"/>
+    <include layout="@layout/appbar_center_title_round_background_layout" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -23,20 +22,20 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_xs_large"
-                android:text="@string/by"/>
+                android:text="@string/by"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_xs_large"
+                android:paddingEnd="@dimen/spacing_xs_large"
                 app:checkedChip="@+id/created"
                 app:singleSelection="true">
 
@@ -45,21 +44,21 @@
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/created"/>
+                    android:text="@string/created" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/assigned"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/assigned"/>
+                    android:text="@string/assigned" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/mentioned"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mentioned"/>
+                    android:text="@string/mentioned" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/reviewRequest"
@@ -67,25 +66,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/review_requests"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </com.google.android.material.chip.ChipGroup>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_xs_large"
-                android:text="@string/type"/>
+                android:text="@string/type"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_xs_large"
+                android:paddingEnd="@dimen/spacing_xs_large"
                 app:checkedChip="@+id/open"
                 app:singleSelection="true">
 
@@ -94,33 +93,33 @@
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/open"/>
+                    android:text="@string/open" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/closed"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/closed"/>
+                    android:text="@string/closed" />
 
             </com.google.android.material.chip.ChipGroup>
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_xs_large"
-                android:text="@string/visibility"/>
+                android:text="@string/visibility"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/visibility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_xs_large"
+                android:paddingEnd="@dimen/spacing_xs_large"
                 app:checkedChip="@+id/bothVisibility"
                 app:singleSelection="true">
 
@@ -129,41 +128,41 @@
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/both_label"/>
+                    android:text="@string/both_label" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/publicRepos"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/public_label"/>
+                    android:text="@string/public_label" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/privateRepos"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/private_label"/>
+                    android:text="@string/private_label" />
 
             </com.google.android.material.chip.ChipGroup>
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_xs_large"
-                android:text="@string/sort"/>
+                android:text="@string/sort"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/sort"
                 style="@style/ChipStyleCheckable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_xs_large"
+                android:paddingEnd="@dimen/spacing_xs_large"
                 app:checkedChip="@+id/newest"
                 app:singleSelection="true">
 
@@ -172,42 +171,42 @@
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/newest"/>
+                    android:text="@string/newest" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/oldest"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/oldest"/>
+                    android:text="@string/oldest" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/mostCommented"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/most_commented"/>
+                    android:text="@string/most_commented" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/leastCommented"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/least_commented"/>
+                    android:text="@string/least_commented" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/recentlyUpdated"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/recently_updated"/>
+                    android:text="@string/recently_updated" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/leastRecentlyUpdated"
                     style="@style/ChipStyleCheckable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/least_recent_updated"/>
+                    android:text="@string/least_recent_updated" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -220,7 +219,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/spacing_xs_large"
                 android:text="@string/submit"
-                app:icon="@drawable/ic_done"/>
+                app:icon="@drawable/ic_done" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -13,6 +13,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.getDrawableCompat
+import com.fastaccess.github.extensions.hideKeyboard
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.show
 import com.fastaccess.github.platform.mentions.MentionsPresenter
@@ -57,6 +58,7 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
         editText.showKeyboard()
         editText.setSelection(editText.asString().length)
         setupToolbar(R.string.markdown, R.menu.submit_menu) { item ->
+            activity?.hideKeyboard()
             val intent = Intent().apply {
                 val bundle = arguments  ?: bundleOf()
                 bundle.putString(EXTRA, editText.asString())

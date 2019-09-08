@@ -176,17 +176,27 @@ class PullRequestTimelineViewModel @Inject constructor(
         login: String,
         repo: String,
         commentId: Long,
-        type: TimelineType = TimelineType.ISSUE
+        type: TimelineType = TimelineType.ISSUE,
+        number: Int,
+        msg: String? = null
     ) {
         deleteCommentUseCase.commentId = commentId
         deleteCommentUseCase.login = login
         deleteCommentUseCase.repo = repo
         deleteCommentUseCase.type = type
+        deleteCommentUseCase.number = number
+        deleteCommentUseCase.msg = msg
         justSubscribe(deleteCommentUseCase.buildObservable()
             .map {
                 val index = getIndexOfComment(type, commentId)
                 if (index != -1) {
-                    list.removeAt(index)
+                    if (type == TimelineType.REVIEW) {
+                        val item = list.getOrNull(index) ?: return@map list
+                        item.review?.comment = null
+                        list[index] = item
+                    } else {
+                        list.removeAt(index)
+                    }
                 }
                 return@map list
             }
@@ -200,7 +210,8 @@ class PullRequestTimelineViewModel @Inject constructor(
         repo: String,
         comment: String?,
         commentId: Long?,
-        type: TimelineType = TimelineType.ISSUE
+        type: TimelineType = TimelineType.ISSUE,
+        number: Int
     ) {
         if (!comment.isNullOrBlank() && commentId != null) {
             editCommentUseCase.comment = comment
@@ -208,6 +219,7 @@ class PullRequestTimelineViewModel @Inject constructor(
             editCommentUseCase.repo = repo
             editCommentUseCase.commentId = commentId
             editCommentUseCase.type = type
+            editCommentUseCase.number = number
             justSubscribe(editCommentUseCase.buildObservable()
                 .map {
                     val index = getIndexOfComment(type, commentId)
@@ -215,6 +227,7 @@ class PullRequestTimelineViewModel @Inject constructor(
                     when (type) {
                         TimelineType.ISSUE -> item.comment?.body = comment
                         TimelineType.REVIEW -> item.review?.comment?.body = comment
+                        TimelineType.REVIEW_BODY -> item.review?.body = comment
                         TimelineType.COMMIT -> item.commitThread?.comment?.body = comment
                         else -> {
                         }
@@ -230,8 +243,9 @@ class PullRequestTimelineViewModel @Inject constructor(
     }
 
     private fun getIndexOfComment(type: TimelineType, commentId: Long?): Int = list.indexOfFirst {
-        when (type) {
+        return@indexOfFirst when (type) {
             TimelineType.ISSUE -> it.comment?.databaseId?.toLong() == commentId
+            TimelineType.REVIEW_BODY -> it.review?.databaseId?.toLong() == commentId
             TimelineType.REVIEW -> it.review?.comment?.databaseId?.toLong() == commentId
             TimelineType.COMMIT -> it.commitThread?.comment?.databaseId?.toLong() == commentId
             else -> false

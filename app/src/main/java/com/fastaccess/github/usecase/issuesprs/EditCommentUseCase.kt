@@ -19,11 +19,13 @@ class EditCommentUseCase @Inject constructor(
     var login: String = ""
     var commentId: Long = 0
     var comment: String = ""
+    var number: Int = 0
     var type: TimelineType = TimelineType.ISSUE
 
     override fun buildObservable(): Observable<*> = when (type) {
         TimelineType.ISSUE -> issueService.editIssueComment(login, repo, commentId, CommentRequestModel(comment))
         TimelineType.REVIEW -> reviewService.editComment(login, repo, commentId, CommentRequestModel(comment))
+        TimelineType.REVIEW_BODY -> reviewService.editReview(login, repo, number, commentId, CommentRequestModel(comment))
         TimelineType.COMMIT -> commitService.editCommitComment(login, repo, commentId, CommentRequestModel(comment))
         TimelineType.GIST -> TODO()
     }

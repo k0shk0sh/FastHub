@@ -84,9 +84,16 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
     ) {
         if (isPr()) {
             setupToolbar("", R.menu.issue_menu)// todo
+            toolbar.title = SpannableBuilder.builder()
+                .append(getString(R.string.pull_request))
+                .bold("#$number")
         } else {
             setupToolbar("", R.menu.issue_menu)
+            toolbar.title = SpannableBuilder.builder()
+                .append(getString(R.string.issue))
+                .bold("#$number")
         }
+        toolbar.subtitle = "$login/$repo"
         swipeRefresh.appBarLayout = appBar
         appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
             val scrollTop = toolbar.menu?.findItem(R.id.scrollTop)
@@ -116,6 +123,11 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         setupEditText()
     }
 
+    override fun onResume() {
+        activity?.hideKeyboard()
+        super.onResume()
+    }
+
     override fun onDestroyView() {
         mentionsPresenter.onDispose()
         super.onDestroyView()
@@ -137,13 +149,15 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
                     val model = data?.getParcelableExtra<EditIssuePrBundleModel>(EXTRA) ?: return
                     editIssuerPr(model.title, model.description)
                 }
-                EDIT_COMMENT_REQUEST_CODE, EDIT_REVIEW_COMMENT_REQUEST_CODE, EDIT_COMMIT_COMMENT_REQUEST_CODE -> {
+                EDIT_COMMENT_REQUEST_CODE, EDIT_REVIEW_COMMENT_REQUEST_CODE,
+                EDIT_REVIEW_BODY_REQUEST_CODE, EDIT_COMMIT_COMMENT_REQUEST_CODE -> {
                     val comment = data?.getStringExtra(EXTRA)
                     val commentId = data?.getIntExtra(EXTRA_TWO, 0)
                     onEditComment(
                         comment, commentId, when (requestCode) {
                             EDIT_COMMENT_REQUEST_CODE -> TimelineType.ISSUE
                             EDIT_REVIEW_COMMENT_REQUEST_CODE -> TimelineType.REVIEW
+                            EDIT_REVIEW_BODY_REQUEST_CODE -> TimelineType.REVIEW_BODY
                             EDIT_COMMIT_COMMENT_REQUEST_CODE -> TimelineType.COMMIT
                             else -> TimelineType.ISSUE
                         }
@@ -194,31 +208,6 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         }
     }
 
-    protected fun setupEditText() {
-        Autocomplete.on<String>(commentText)
-            .with(CharPolicy('@'))
-            .with(mentionsPresenter)
-            .with(requireContext().getDrawableCompat(R.drawable.popup_window_background))
-            .with(object : AutocompleteCallback<String?> {
-                override fun onPopupItemClicked(
-                    editable: Editable?,
-                    item: String?
-                ): Boolean = MarkdownProvider.replaceMention(editable, item)
-
-                override fun onPopupVisibilityChanged(shown: Boolean) {}
-            })
-            .build()
-        sendComment.setOnClickListener {
-            val comment = commentText.text?.toString()
-            if (!comment.isNullOrEmpty()) {
-                sendComment(comment)
-            }
-        }
-        toggleFullScreen.setOnClickListener {
-            routeForResult(EDITOR_DEEPLINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
-        }
-    }
-
     protected fun menuClick(
         url: String?,
         labels: List<LabelModel>?,
@@ -262,21 +251,6 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
             return@setOnMenuItemClickListener true
         }
     }
-
-    private fun startEditingIssue(
-        title: String?,
-        body: String?,
-        isOwner: Boolean
-    ) {
-        EditIssuePrActivity.startForResult(
-            this, EditIssuePrBundleModel(
-                login, repo, number, title, body, false, isOwner = isOwner
-            ), EDIT_ISSUE_REQUEST_CODE
-        )
-    }
-
-    protected open fun lockUnlockIssuePr() = Unit
-    protected open fun closeOpenIssuePr() = Unit
 
     protected fun initAssignees(assigneesList: List<ShortUserModel>?) {
         assigneesLayout.isVisible = !assigneesList.isNullOrEmpty()
@@ -345,19 +319,31 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         val databaseId = when {
             timeline.comment != null -> timeline.comment?.databaseId
             timeline.commitThread != null -> timeline.commitThread?.comment?.databaseId
-            timeline.review != null -> timeline.review?.comment?.databaseId
+            timeline.review != null -> if (timeline.review?.isReviewBody == true) {
+                timeline.review?.databaseId
+            } else {
+                timeline.review?.comment?.databaseId
+            }
             else -> 0
         }
         val body = when {
             timeline.comment != null -> timeline.comment?.body
             timeline.commitThread != null -> timeline.commitThread?.comment?.body
-            timeline.review != null -> timeline.review?.comment?.body
+            timeline.review != null -> if (timeline.review?.isReviewBody == true) {
+                timeline.review?.body
+            } else {
+                timeline.review?.comment?.body
+            }
             else -> null
         }
         val requestCode = when {
             timeline.comment != null -> EDIT_COMMENT_REQUEST_CODE
             timeline.commitThread != null -> EDIT_COMMIT_COMMENT_REQUEST_CODE
-            timeline.review != null -> EDIT_REVIEW_COMMENT_REQUEST_CODE
+            timeline.review != null -> if (timeline.review?.isReviewBody == true) {
+                EDIT_REVIEW_BODY_REQUEST_CODE
+            } else {
+                EDIT_REVIEW_COMMENT_REQUEST_CODE
+            }
             else -> 0
         }
         if (databaseId != 0) {
@@ -374,13 +360,21 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
         val databaseId = when {
             timeline.comment != null -> timeline.comment?.databaseId
             timeline.commitThread != null -> timeline.commitThread?.comment?.databaseId
-            timeline.review != null -> timeline.review?.comment?.databaseId
+            timeline.review != null -> if (timeline.review?.isReviewBody == true) {
+                timeline.review?.databaseId
+            } else {
+                timeline.review?.comment?.databaseId
+            }
             else -> 0
         }
         val type = when {
             timeline.comment != null -> TimelineType.ISSUE
             timeline.commitThread != null -> TimelineType.COMMIT
-            timeline.review != null -> TimelineType.REVIEW
+            timeline.review != null -> if (timeline.review?.isReviewBody == true) {
+                TimelineType.REVIEW_BODY
+            } else {
+                TimelineType.REVIEW
+            }
             else -> TimelineType.ISSUE
         }
         if (databaseId != null && databaseId != 0) {
@@ -392,12 +386,52 @@ abstract class BaseIssuePrTimelineFragment : BaseFragment(),
 
     protected open fun deleteComment(login: String, repo: String, commentId: Long, type: TimelineType) = Unit
     protected open fun onEditComment(comment: String?, commentId: Int?, type: TimelineType = TimelineType.ISSUE) = Unit
+    protected open fun lockUnlockIssuePr() = Unit
+    protected open fun closeOpenIssuePr() = Unit
+
+    private fun setupEditText() {
+        Autocomplete.on<String>(commentText)
+            .with(CharPolicy('@'))
+            .with(mentionsPresenter)
+            .with(requireContext().getDrawableCompat(R.drawable.popup_window_background))
+            .with(object : AutocompleteCallback<String?> {
+                override fun onPopupItemClicked(
+                    editable: Editable?,
+                    item: String?
+                ): Boolean = MarkdownProvider.replaceMention(editable, item)
+
+                override fun onPopupVisibilityChanged(shown: Boolean) {}
+            })
+            .build()
+        sendComment.setOnClickListener {
+            val comment = commentText.text?.toString()
+            if (!comment.isNullOrEmpty()) {
+                sendComment(comment)
+            }
+        }
+        toggleFullScreen.setOnClickListener {
+            routeForResult(EDITOR_DEEPLINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
+        }
+    }
+
+    private fun startEditingIssue(
+        title: String?,
+        body: String?,
+        isOwner: Boolean
+    ) {
+        EditIssuePrActivity.startForResult(
+            this, EditIssuePrBundleModel(
+                login, repo, number, title, body, false, isOwner = isOwner
+            ), EDIT_ISSUE_REQUEST_CODE
+        )
+    }
 
     companion object {
         const val COMMENT_REQUEST_CODE = 1001
         const val EDIT_ISSUE_REQUEST_CODE = 1002
         const val EDIT_COMMENT_REQUEST_CODE = 1003
         const val EDIT_REVIEW_COMMENT_REQUEST_CODE = 1004
-        const val EDIT_COMMIT_COMMENT_REQUEST_CODE = 1005
+        const val EDIT_REVIEW_BODY_REQUEST_CODE = 1005
+        const val EDIT_COMMIT_COMMENT_REQUEST_CODE = 1006
     }
 }

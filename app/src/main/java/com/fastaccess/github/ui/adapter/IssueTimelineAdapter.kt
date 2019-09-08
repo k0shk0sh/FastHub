@@ -55,10 +55,16 @@ class IssueTimelineAdapter(
                     getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
                 }
             }
-            REVIEW_THREAD -> ReviewViewHolder(parent, markwon, theme, notifyCallback, { position ->
-                getItemByPosition(position)?.let { deleteCommentListener.invoke(position, it) }
-            }, { position ->
-                getItemByPosition(position)?.let { editCommentListener.invoke(position, it) }
+            REVIEW_THREAD -> ReviewViewHolder(parent, markwon, theme, notifyCallback, { position, isReviewBody ->
+                getItemByPosition(position)?.let {
+                    it.review?.isReviewBody = isReviewBody
+                    deleteCommentListener.invoke(position, it)
+                }
+            }, { position, isReviewBody ->
+                getItemByPosition(position)?.let {
+                    it.review?.isReviewBody = isReviewBody
+                    editCommentListener.invoke(position, it)
+                }
             }).apply {
                 itemView.setOnClickListener {
                     val position = adapterPosition

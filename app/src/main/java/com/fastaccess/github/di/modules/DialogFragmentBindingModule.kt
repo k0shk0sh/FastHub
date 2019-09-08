@@ -6,6 +6,7 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabel
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.CreateMilestoneDialogFragment
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
+import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
@@ -26,4 +27,5 @@ abstract class DialogFragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterSearchBottomSheet(): FilterSearchBottomSheet
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterTrendingBottomSheet(): FilterTrendingBottomSheet
     @PerFragment @ContributesAndroidInjector abstract fun provideCreateLinkDialogFragment(): CreateLinkDialogFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideQuickMessageBottomSheetDialog(): QuickMessageBottomSheetDialog
 }

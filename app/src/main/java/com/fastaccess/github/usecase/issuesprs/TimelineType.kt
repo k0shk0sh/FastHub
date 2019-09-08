@@ -1,5 +1,5 @@
 package com.fastaccess.github.usecase.issuesprs
 
 enum class TimelineType {
-    ISSUE, REVIEW, GIST, COMMIT
+    ISSUE, REVIEW, REVIEW_BODY, GIST, COMMIT
 }

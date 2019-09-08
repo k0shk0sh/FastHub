@@ -217,7 +217,8 @@ data class ReviewModel(
     @SerializedName("viewerCanUpdate") var viewerCanUpdate: Boolean? = null,
     @SerializedName("viewerDidAuthor") var viewerDidAuthor: Boolean? = null,
     @SerializedName("viewerCanMinimize") var viewerCanMinimize: Boolean? = null,
-    @SerializedName("reactionGroups") var reactionGroups: List<ReactionGroupModel>? = null
+    @SerializedName("reactionGroups") var reactionGroups: List<ReactionGroupModel>? = null,
+    @SerializedName("isReviewBody") var isReviewBody: Boolean? = null
 )
 
 data class CommitThreadModel(

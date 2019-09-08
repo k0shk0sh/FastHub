@@ -43,6 +43,7 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasS
     abstract fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?)
     abstract fun viewModel(): BaseViewModel?
     protected open fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {}
+    protected open fun isFullScreen(): Boolean = false
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -54,9 +55,6 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasS
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) { // expose so its easier to find
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -120,11 +118,14 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasS
     }
 
     private fun onGlobalLayoutChanged(view: View) {
-        val parent = dialog?.findViewById<ViewGroup>(R.id.design_bottom_sheet);
+        val parent = dialog?.findViewById<ViewGroup>(R.id.design_bottom_sheet)
         if (parent != null) {
             val toggleArrow = view.findViewById<ImageView?>(R.id.toggleArrow)
             parent.setBackgroundColor(Color.TRANSPARENT)
             bottomSheetBehavior = BottomSheetBehavior.from(parent)
+            if (isFullScreen()) {
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            }
             bottomSheetBehavior?.setBottomSheetCallback({ newState ->
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) dialog?.cancel()
             })

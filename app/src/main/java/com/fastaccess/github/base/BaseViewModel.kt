@@ -3,14 +3,15 @@ package com.fastaccess.github.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fastaccess.data.model.FastHubErrors
+import com.fastaccess.domain.response.GithubErrorResponse
 import com.fastaccess.github.R
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.json.JSONObject
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 import java.util.concurrent.TimeoutException
 import javax.inject.Inject
@@ -34,7 +35,12 @@ abstract class BaseViewModel : ViewModel() {
         hideProgress()
         if (throwable is HttpException) {
             val response = throwable.response()
-            val message: String? = JSONObject(response?.errorBody()?.string() ?: "").getString("message")
+            val errorBody: GithubErrorResponse? = gson.fromJson(response?.errorBody()?.string(), GithubErrorResponse::class.java)
+            if (errorBody?.message?.equals("Validation Failed", true) == true) {
+                errorBody.message = errorBody.errors?.firstOrNull()
+            }
+            val message = errorBody?.message ?: response?.message()
+            Timber.e("$errorBody")
             val code = response?.code()
             if (code == 401) { // OTP
                 val twoFactor = response.headers()["X-GitHub-OTP"]
@@ -42,14 +48,21 @@ abstract class BaseViewModel : ViewModel() {
                     error.postValue(
                         FastHubErrors(
                             FastHubErrors.ErrorType.TWO_FACTOR, message = message
-                                ?: response.message()
                         )
                     )
                 } else {
                     error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, resId = R.string.failed_login, message = message))
                 }
             } else {
-                error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, resId = R.string.network_error, message = message))
+                error.postValue(
+                    FastHubErrors(
+                        FastHubErrors.ErrorType.OTHER, resId = if (message.isNullOrEmpty()) {
+                            R.string.network_error
+                        } else {
+                            null
+                        }, message = message
+                    )
+                )
             }
             return
         }

@@ -620,4 +620,6 @@
     <string name="approved_with_count">Approved: %d</string>
     <string name="commented_with_count">Commented: %d</string>
     <string name="commits_with_count">Commits: %d</string>
+    <string name="message">Message</string>
+    <string name="dismiss_review">Dismiss Review</string>
 </resources>

@@ -44,6 +44,15 @@ class MainScreenAdapter(
         }
     }
 
+
+    override fun getItemCount(): Int {
+        val count = super.getItemCount()
+        if (count > 24) {
+            return 24
+        }
+        return count
+    }
+
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
         position: Int

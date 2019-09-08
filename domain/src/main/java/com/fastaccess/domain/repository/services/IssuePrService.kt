@@ -37,7 +37,7 @@ interface IssuePrService {
         @Path("repo") repo: String,
         @Path("number") number: Int,
         @Body body: CommentRequestModel
-    ): Observable<Response<Void>>
+    ): Observable<Response<Unit>>
 
     @PATCH("repos/{owner}/{repo}/issues/comments/{id}")
     fun editIssueComment(
@@ -45,14 +45,14 @@ interface IssuePrService {
         @Path("repo") repo: String,
         @Path("id") id: Long,
         @Body body: CommentRequestModel
-    ): Observable<Response<Void>>
+    ): Observable<Response<Unit>>
 
     @DELETE("repos/{owner}/{repo}/issues/comments/{id}")
     fun deleteIssueComment(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Path("id") id: Long
-    ): Observable<Response<Void>>
+    ): Observable<Response<Unit>>
 
     @POST("repos/{owner}/{repo}/issues/{number}/labels")
     fun addLabelsToIssue(

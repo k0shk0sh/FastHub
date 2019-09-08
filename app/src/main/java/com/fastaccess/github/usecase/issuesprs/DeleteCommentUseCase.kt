@@ -4,8 +4,10 @@ import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.repository.services.CommitService
 import com.fastaccess.domain.repository.services.IssuePrService
 import com.fastaccess.domain.repository.services.ReviewService
+import com.fastaccess.domain.response.body.DismissReviewRequestModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class DeleteCommentUseCase @Inject constructor(
@@ -14,6 +16,8 @@ class DeleteCommentUseCase @Inject constructor(
     private val commitService: CommitService,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
+    var msg: String? = null
+    var number: Int = 0
     var repo: String = ""
     var login: String = ""
     var commentId: Long = 0
@@ -22,6 +26,14 @@ class DeleteCommentUseCase @Inject constructor(
         TimelineType.ISSUE -> issueService.deleteIssueComment(login, repo, commentId)
         TimelineType.REVIEW -> reviewService.deleteComment(login, repo, commentId)
         TimelineType.COMMIT -> commitService.deleteComment(login, repo, commentId)
+        TimelineType.REVIEW_BODY -> reviewService.dismissReview(login, repo, number, commentId, DismissReviewRequestModel(msg ?: ""))
+            .flatMap {
+                return@flatMap if (it.code() != 200) {
+                    Observable.error(HttpException(it))
+                } else {
+                    Observable.just(it)
+                }
+            }
         TimelineType.GIST -> TODO()
     }
         .subscribeOn(schedulerProvider.ioThread())

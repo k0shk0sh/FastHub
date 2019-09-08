@@ -16,6 +16,7 @@ import com.fastaccess.github.ui.adapter.base.BaseViewHolder
 import com.fastaccess.github.utils.extensions.popMenu
 import com.fastaccess.markdown.spans.DiffLineSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
+import github.type.PullRequestReviewState
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_small_row_item.view.*
@@ -31,8 +32,8 @@ class ReviewViewHolder(
     private val markwon: Markwon,
     private val theme: Int,
     private val callback: (position: Int) -> Unit,
-    private val deleteCommentListener: (position: Int) -> Unit,
-    private val editCommentListener: (position: Int) -> Unit
+    private val deleteCommentListener: (position: Int, isReviewBody: Boolean) -> Unit,
+    private val editCommentListener: (position: Int, isReviewBody: Boolean) -> Unit
 ) : BaseViewHolder<ReviewModel?>(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.review_with_comment_row_item, parent, false)
@@ -46,14 +47,13 @@ class ReviewViewHolder(
         }
         itemView.apply {
             itemView.commentLayout.isVisible = _review.comment != null
+            val showReview = !_review.body.isNullOrBlank()
+            if (showReview) {
+                initReview(_review)
+            }
+            reviewLayout.isVisible = showReview
             _review.comment?.let { model ->
                 fileName.text = model.path
-                val showReview = !_review.body.isNullOrBlank()
-                reviewLayout.isVisible = showReview
-                if (showReview) {
-                    initReview(_review)
-                }
-
                 if (!model.diffHunk.isNullOrEmpty()) {
                     diffHunk.text = DiffLineSpan.getSpannable(
                         model.diffHunk,
@@ -68,11 +68,18 @@ class ReviewViewHolder(
                 userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
                 author.text = model.author?.login ?: ""
                 association.text = if (CommentAuthorAssociation.NONE == model.authorAssociation) {
-                    model.updatedAt?.timeAgo()
+                    if (!showReview) {
+                        SpannableBuilder.builder()
+                            .bold(_review.state?.replace("_", "")?.toLowerCase())
+                            .append(", ")
+                            .append(model.createdAt?.timeAgo())
+                    } else {
+                        model.createdAt?.timeAgo()
+                    }
                 } else {
                     SpannableBuilder.builder()
                         .bold(model.authorAssociation?.value?.toLowerCase()?.replace("_", "") ?: "")
-                        .space()
+                        .append(", ")
                         .append(model.updatedAt?.timeAgo())
                 }
 
@@ -99,11 +106,11 @@ class ReviewViewHolder(
                         if (itemId == R.id.delete) {
                             context.showYesNoDialog(R.string.delete) {
                                 it.isTrue {
-                                    deleteCommentListener.invoke(adapterPosition)
+                                    deleteCommentListener.invoke(adapterPosition, false)
                                 }
                             }
                         } else if (itemId == R.id.edit) {
-                            editCommentListener.invoke(adapterPosition)
+                            editCommentListener.invoke(adapterPosition, false)
                         }
                     }
                 }
@@ -112,6 +119,8 @@ class ReviewViewHolder(
                     callback.invoke(adapterPosition)
                 }
             }
+            divider.isVisible = _review.comment != null
+            reviewCommentLayout.isVisible = _review.comment != null
         }
     }
 
@@ -121,11 +130,16 @@ class ReviewViewHolder(
             reviewUserIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
             reviewAuthor.text = model.author?.login ?: ""
             reviewAssociation.text = if (CommentAuthorAssociation.NONE.value == model.authorAssociation) {
-                model.createdAt?.timeAgo()
+                SpannableBuilder.builder()
+                    .bold(model.state?.replace("_", "")?.toLowerCase())
+                    .append(", ")
+                    .append(model.createdAt?.timeAgo())
             } else {
                 SpannableBuilder.builder()
-                    .bold(model.authorAssociation?.toLowerCase()?.replace("_", "") ?: "")
-                    .space()
+                    .bold(model.state?.replace("_", "")?.toLowerCase())
+                    .append(", ")
+                    .append(model.authorAssociation?.toLowerCase()?.replace("_", "") ?: "")
+                    .append(", ")
                     .append(model.createdAt?.timeAgo())
             }
 
@@ -147,16 +161,16 @@ class ReviewViewHolder(
             if (canAlter) {
                 reviewMenu.popMenu(R.menu.comment_menu, { menu ->
                     menu.findItem(R.id.edit)?.isVisible = model.viewerCanUpdate == true
-                    menu.findItem(R.id.delete)?.isVisible = model.viewerCanDelete == true
+                    menu.findItem(R.id.delete)?.let {
+                        it.isVisible = model.viewerCanDelete == true &&
+                            model.state != PullRequestReviewState.COMMENTED.rawValue()
+                        it.title = context.getString(R.string.dismiss_review)
+                    }
                 }) { itemId ->
                     if (itemId == R.id.delete) {
-                        context.showYesNoDialog(R.string.delete) {
-                            it.isTrue {
-                                deleteCommentListener.invoke(adapterPosition)
-                            }
-                        }
+                        deleteCommentListener.invoke(adapterPosition, true)
                     } else if (itemId == R.id.edit) {
-                        editCommentListener.invoke(adapterPosition)
+                        editCommentListener.invoke(adapterPosition, true)
                     }
                 }
             }
