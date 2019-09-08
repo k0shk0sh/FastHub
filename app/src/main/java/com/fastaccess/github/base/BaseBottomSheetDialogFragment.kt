@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fastaccess.github.R
@@ -22,8 +21,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -31,9 +30,9 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2018-11-25.
  */
-abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasSupportFragmentInjector {
+abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasAndroidInjector {
 
-    @Inject lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    @Inject lateinit var childFragmentInjector: DispatchingAndroidInjector<Any>
 
     private var disposal = CompositeDisposable()
     private var activityCallback: ActivityCallback? = null
@@ -143,6 +142,5 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasS
         }
     }
 
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment>? = this.childFragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> = this.childFragmentInjector
 }

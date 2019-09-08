@@ -4,11 +4,10 @@ ext {
     rxAndroid = '2.0.1'
     room = '2.1.0-beta01'
     paging = '2.1.0'
-    androidX = '1.0.0'
     lifecycle = '2.2.0-alpha01'
     navigation = '1.0.0'
     workManager = '1.0.1'
-    constraintLayout = '2.0.0-beta1'
+    constraintLayout = '2.0.0-beta2'
     dagger2 = '2.24'
     butterKnife = '8.8.1'
     javaxAnnotation = '10.0-b28'
@@ -24,7 +23,7 @@ ext {
     assertJ = '3.12.2'
     apollo = '1.0.1'
     deepLinkDispatch = '4.1.0'
-    markwonVersion = '4.1.0'
+    markwonVersion = '4.1.1'
 
 
     kotlin = [
@@ -32,20 +31,18 @@ ext {
     ]
 
     supportLibraries = [
-            "androidx.appcompat:appcompat:$androidX",
-            "androidx.coordinatorlayout:coordinatorlayout:$androidX",
-            "com.google.android.material:material:1.0.0-rc01",
-            "androidx.drawerlayout:drawerlayout:$androidX",
-            "androidx.recyclerview:recyclerview-selection:$androidX",
-            "androidx.cardview:cardview:$androidX",
-            "androidx.recyclerview:recyclerview:$androidX",
-            "androidx.annotation:annotation:$androidX",
-            "androidx.core:core:$androidX",
-            "androidx.fragment:fragment:$androidX",
-            "androidx.swiperefreshlayout:swiperefreshlayout:$androidX",
-            "androidx.browser:browser:$androidX",
-            "androidx.webkit:webkit:$androidX",
-            "androidx.browser:browser:$androidX",
+            "androidx.appcompat:appcompat:1.1.0",
+            "androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01",
+            'com.google.android.material:material:1.1.0-alpha10',
+            "androidx.drawerlayout:drawerlayout:1.1.0-alpha03",
+            "androidx.recyclerview:recyclerview-selection:1.1.0-alpha06",
+            "androidx.recyclerview:recyclerview:1.1.0-beta04",
+            "androidx.annotation:annotation:1.1.0",
+            'androidx.core:core:1.2.0-alpha04',
+            "androidx.fragment:fragment:1.2.0-alpha03",
+            "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02",
+            "androidx.browser:browser:1.2.0-alpha07",
+            "androidx.webkit:webkit:1.1.0-alpha02",
             "androidx.constraintlayout:constraintlayout:$constraintLayout",
             "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
             "android.arch.navigation:navigation-ui:$navigation",
@@ -68,11 +65,11 @@ ext {
     ]
 
     networking = [
-            "com.squareup.okhttp3:okhttp:4.0.0",
-            "com.squareup.okhttp3:logging-interceptor:4.0.0",
-            "com.squareup.retrofit2:retrofit:2.6.0",
-            "com.squareup.retrofit2:adapter-rxjava2:2.6.0",
-            "com.squareup.retrofit2:converter-gson:2.6.0",
+            'com.squareup.okhttp3:okhttp:4.1.1',
+            'com.squareup.okhttp3:logging-interceptor:4.1.1',
+            'com.squareup.retrofit2:retrofit:2.6.1',
+            'com.squareup.retrofit2:adapter-rxjava2:2.6.1',
+            'com.squareup.retrofit2:converter-gson:2.6.1',
             "com.google.code.gson:gson:$gson",
             "com.github.bumptech.glide:glide:$glide",
             "com.jakewharton.timber:timber:$timber",
@@ -83,44 +80,43 @@ ext {
     rxJava = [
             "io.reactivex.rxjava2:rxjava:$rxJava2",
             "io.reactivex.rxjava2:rxkotlin:$rxKotlin",
-            "io.reactivex.rxjava2:rxkotlin:$rxKotlin",
             "io.reactivex.rxjava2:rxandroid:$rxAndroid"
     ]
 
     dagger = [
-            "com.google.dagger:dagger:2.23.2",
-            "com.google.dagger:dagger-android-support:2.23.2",
+            'com.google.dagger:dagger:2.24',
+            'com.google.dagger:dagger-android-support:2.24',
             "org.glassfish:javax.annotation:$javaxAnnotation"
     ]
 
     archs = [
-            "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02",
-            "androidx.lifecycle:lifecycle-livedata:2.2.0-alpha02",
-            "androidx.lifecycle:lifecycle-reactivestreams:2.2.0-alpha02",
+            'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha04',
+            'androidx.lifecycle:lifecycle-livedata:2.2.0-alpha04',
+            'androidx.lifecycle:lifecycle-reactivestreams:2.2.0-alpha04',
             "androidx.paging:paging-common:$paging",
             "androidx.paging:paging-runtime:$paging",
             "androidx.room:room-common:2.1.0",
             "androidx.room:room-rxjava2:2.1.0",
             "androidx.room:room-compiler:2.1.0",
-            'androidx.core:core-ktx:1.2.0-alpha02',
-            'androidx.fragment:fragment-ktx:1.2.0-alpha01',
-            'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02',
-            'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0-alpha02',
-            "android.arch.work:work-runtime:$workManager",
+            'androidx.core:core-ktx:1.2.0-alpha04',
+            'androidx.fragment:fragment-ktx:1.2.0-alpha03',
+            'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha04',
+            'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0-alpha04',
+            "android.arch.work:work-runtime:${workManager}",
             "android.arch.work:work-rxjava2:$workManager"
     ]
 
     firebase = [
-            'com.google.firebase:firebase-core:17.0.0',
-            'com.google.firebase:firebase-database:18.0.0',
+            'com.google.firebase:firebase-core:17.2.0',
+            'com.google.firebase:firebase-database:19.0.0',
             'com.crashlytics.sdk.android:crashlytics:2.10.1',
-            'com.google.firebase:firebase-messaging:19.0.1',
+            'com.google.firebase:firebase-messaging:20.0.0',
             "com.github.b3er.rxfirebase:firebase-database:11.2.0",
             "com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0"
     ]
 
     markdown = [
-            "io.noties.markwon:core:$markwonVersion",
+            "io.noties.markwon:core:${markwonVersion}",
             "io.noties.markwon:ext-latex:$markwonVersion",
             "io.noties.markwon:ext-strikethrough:$markwonVersion",
             "io.noties.markwon:ext-tables:$markwonVersion",
@@ -140,8 +136,8 @@ ext {
 
 
     processing = [
-            "com.google.dagger:dagger-android-processor:2.23.2",
-            "com.google.dagger:dagger-compiler:2.23.2",
+            'com.google.dagger:dagger-android-processor:2.24',
+            'com.google.dagger:dagger-compiler:2.24',
             "com.github.bumptech.glide:compiler:$glide",
             "androidx.room:room-runtime:2.1.0",
             "com.evernote:android-state-processor:$androidState",
@@ -151,14 +147,14 @@ ext {
 
     testing = [
             "junit:junit:$junit",
-            "org.assertj:assertj-core:$assertJ",
+            "org.assertj:assertj-core:3.13.2",
             "org.mockito:mockito-core:$mockito",
             "com.nhaarman:mockito-kotlin:$mockitoKotlin",
 //            "android.arch.work:work-testing:$workManager"
     ]
 
     developmentDependencies = [
-            "com.github.whataa:pandora:2.0.5"
+            "com.github.whataa:pandora:androidx_v2.0.5"
     ]
 
     releaseDevelopmentDependencies = [

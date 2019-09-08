@@ -99,8 +99,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     dexOptions {
@@ -137,7 +141,7 @@ dependencies {
     implementation dependency.dagger
     implementation dependency.archs
     implementation dependency.firebase
-    api 'com.google.guava:guava:28.0-jre' // for the sake of listenablefuture
+    api 'com.google.guava:guava:28.1-jre' // for the sake of listenablefuture
     debugImplementation dependency.developmentDependencies
     releaseImplementation dependency.releaseDevelopmentDependencies
 
