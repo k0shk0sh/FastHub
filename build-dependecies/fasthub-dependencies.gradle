@@ -24,6 +24,7 @@ ext {
     apollo = '1.0.1'
     deepLinkDispatch = '4.1.0'
     markwonVersion = '4.1.1'
+    androidX = '1.0.0'
 
 
     kotlin = [
@@ -31,18 +32,20 @@ ext {
     ]
 
     supportLibraries = [
-            "androidx.appcompat:appcompat:1.1.0",
-            "androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01",
-            'com.google.android.material:material:1.1.0-alpha10',
-            "androidx.drawerlayout:drawerlayout:1.1.0-alpha03",
-            "androidx.recyclerview:recyclerview-selection:1.1.0-alpha06",
-            "androidx.recyclerview:recyclerview:1.1.0-beta04",
-            "androidx.annotation:annotation:1.1.0",
-            'androidx.core:core:1.2.0-alpha04',
-            "androidx.fragment:fragment:1.2.0-alpha03",
-            "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02",
-            "androidx.browser:browser:1.2.0-alpha07",
-            "androidx.webkit:webkit:1.1.0-alpha02",
+            "androidx.appcompat:appcompat:$androidX",
+            "androidx.coordinatorlayout:coordinatorlayout:$androidX",
+            "com.google.android.material:material:$androidX",
+            "androidx.drawerlayout:drawerlayout:$androidX",
+            "androidx.recyclerview:recyclerview-selection:$androidX",
+            "androidx.cardview:cardview:$androidX",
+            "androidx.recyclerview:recyclerview:$androidX",
+            "androidx.annotation:annotation:$androidX",
+            "androidx.core:core:$androidX",
+            "androidx.fragment:fragment:$androidX",
+            "androidx.swiperefreshlayout:swiperefreshlayout:$androidX",
+            "androidx.browser:browser:$androidX",
+            "androidx.webkit:webkit:$androidX",
+            "androidx.browser:browser:$androidX",
             "androidx.constraintlayout:constraintlayout:$constraintLayout",
             "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
             "android.arch.navigation:navigation-ui:$navigation",
