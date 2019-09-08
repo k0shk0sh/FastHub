@@ -27,15 +27,15 @@ class DeleteCommentUseCase @Inject constructor(
         TimelineType.REVIEW -> reviewService.deleteComment(login, repo, commentId)
         TimelineType.COMMIT -> commitService.deleteComment(login, repo, commentId)
         TimelineType.REVIEW_BODY -> reviewService.dismissReview(login, repo, number, commentId, DismissReviewRequestModel(msg ?: ""))
-            .flatMap {
-                return@flatMap if (it.code() != 200) {
-                    Observable.error(HttpException(it))
-                } else {
-                    Observable.just(it)
-                }
-            }
         TimelineType.GIST -> TODO()
     }
+        .flatMap {
+            return@flatMap if (it.code() != 200) {
+                Observable.error(HttpException(it))
+            } else {
+                Observable.just(it)
+            }
+        }
         .subscribeOn(schedulerProvider.ioThread())
         .observeOn(schedulerProvider.uiThread())
 }

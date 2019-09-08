@@ -31,7 +31,7 @@ interface ReviewService {
         @Path("repo") repo: String,
         @Path("id") id: Long,
         @Body body: CommentRequestModel
-    ): Observable<Unit>
+    ):  Observable<Response<Unit>>
 
     @DELETE("repos/{owner}/{repo}/pulls/comments/{id}")
     fun deleteComment(

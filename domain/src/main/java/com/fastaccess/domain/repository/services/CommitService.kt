@@ -20,7 +20,7 @@ interface CommitService {
         @Path("repo") repo: String,
         @Path("id") id: Long,
         @Body body: CommentRequestModel
-    ): Observable<CommentResponse>
+    ): Observable<Response<Unit>>
 
 
     @DELETE("repos/{owner}/{repo}/comments/{id}") fun deleteComment(

@@ -7,6 +7,7 @@ import com.fastaccess.domain.repository.services.ReviewService
 import com.fastaccess.domain.response.body.CommentRequestModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class EditCommentUseCase @Inject constructor(
@@ -29,6 +30,13 @@ class EditCommentUseCase @Inject constructor(
         TimelineType.COMMIT -> commitService.editCommitComment(login, repo, commentId, CommentRequestModel(comment))
         TimelineType.GIST -> TODO()
     }
+        .flatMap {
+            return@flatMap if (it.code() != 200) {
+                Observable.error(HttpException(it))
+            } else {
+                Observable.just(it)
+            }
+        }
         .subscribeOn(schedulerProvider.ioThread())
         .observeOn(schedulerProvider.uiThread())
 }
