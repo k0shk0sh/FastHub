@@ -175,7 +175,7 @@ class ReviewViewHolder(
                 }
             }
 
-            adaptiveEmoticon.init(requireNotNull(model.id), model.reactionGroups) {
+            reviewAdaptiveEmoticon.init(requireNotNull(model.id), model.reactionGroups) {
                 callback.invoke(adapterPosition)
             }
         }
