@@ -12,6 +12,7 @@ import com.fastaccess.github.ui.modules.editor.EditorFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
 import com.fastaccess.github.ui.modules.pr.fragment.PullRequestFragment
+import com.fastaccess.github.ui.modules.pr.reviews.ListReviewsFragment
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.GrammarLocatorDef
@@ -102,4 +103,9 @@ class CommentModule {
 @Module(includes = [FragmentModule::class])
 class PullRequestModule {
     @PerFragment @Provides fun provideEditorContext(fragment: PullRequestFragment) = fragment.requireContext()
+}
+
+@Module(includes = [FragmentModule::class])
+class ListReviewsModule {
+    @PerFragment @Provides fun provideEditorContext(fragment: ListReviewsFragment) = fragment.requireContext()
 }

@@ -130,6 +130,10 @@
             android:name=".ui.modules.comment.CommentActivity"
             android:parentActivityName=".ui.modules.main.MainActivity" />
 
+        <activity
+            android:name=".ui.modules.pr.reviews.ListReviewsActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity" />
+
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"

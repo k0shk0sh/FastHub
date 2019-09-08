@@ -23,7 +23,6 @@ ext {
     mockitoKotlin = '1.5.0'
     assertJ = '3.12.2'
     apollo = '1.0.1'
-    pandora = 'v1.2.2'
     deepLinkDispatch = '4.1.0'
     markwonVersion = '4.1.0'
 
@@ -159,10 +158,10 @@ ext {
     ]
 
     developmentDependencies = [
-            "com.github.whataa:pandora:$pandora"
+            "com.github.whataa:pandora:2.0.5"
     ]
 
     releaseDevelopmentDependencies = [
-            "com.github.whataa:pandora-no-op:$pandora"
+            "com.github.whataa:pandora-no-op:2.0.3"
     ]
 }

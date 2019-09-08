@@ -9,6 +9,7 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.MainActivity
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeActivity
 import com.fastaccess.github.ui.modules.pr.PullRequestActivity
+import com.fastaccess.github.ui.modules.pr.reviews.ListReviewsActivity
 import com.fastaccess.github.ui.modules.profile.ProfileActivity
 import com.fastaccess.github.ui.modules.trending.TrendingActivity
 import dagger.Module
@@ -36,4 +37,5 @@ abstract class ActivityBindingModule {
     @PerActivity @ContributesAndroidInjector abstract fun editIssuePrActivity(): EditIssuePrActivity
     @PerActivity @ContributesAndroidInjector abstract fun commentActivity(): CommentActivity
     @PerActivity @ContributesAndroidInjector abstract fun pullRequestActivity(): PullRequestActivity
+    @PerActivity @ContributesAndroidInjector abstract fun listReviewActivity(): ListReviewsActivity
 }
