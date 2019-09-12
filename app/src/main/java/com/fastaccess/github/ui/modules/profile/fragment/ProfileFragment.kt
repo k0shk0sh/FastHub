@@ -6,7 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel

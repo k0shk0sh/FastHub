@@ -7,7 +7,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import androidx.transition.Slide
 import com.fastaccess.data.model.FastHubErrors
 import com.fastaccess.data.model.ValidationError.FieldType.*

@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.SuggestionsModel
 import com.fastaccess.github.R

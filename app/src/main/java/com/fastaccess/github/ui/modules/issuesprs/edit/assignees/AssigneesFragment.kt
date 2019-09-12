@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.evernote.android.state.State
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
@@ -15,6 +14,7 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.AssigneesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.viewmodel.AssigneesViewModel
 import com.fastaccess.github.utils.EXTRA

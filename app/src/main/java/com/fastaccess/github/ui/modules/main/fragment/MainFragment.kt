@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.persistence.models.LoginModel

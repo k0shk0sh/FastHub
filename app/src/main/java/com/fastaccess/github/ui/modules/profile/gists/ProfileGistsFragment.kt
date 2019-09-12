@@ -3,7 +3,7 @@ package com.fastaccess.github.ui.modules.profile.gists
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
@@ -15,7 +15,6 @@ import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsView
 import com.fastaccess.github.utils.EXTRA
 import com.fastaccess.github.utils.extensions.addDivider
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.extensions.isConnected
 import com.fastaccess.github.utils.extensions.isConnected
 import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*

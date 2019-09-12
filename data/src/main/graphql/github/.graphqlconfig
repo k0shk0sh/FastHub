@@ -1,14 +1,12 @@
 {
-  "name": "Github GraphQL Schema",
-  "schemaPath": "data/src/main/graphql/github/schema.json",
+  "schemaPath": "./schema.json",
   "extensions": {
     "endpoints": {
-      "Default GraphQL Endpoint": {
+      "Default (http://localhost:8080/graphql)": {
         "url": "http://localhost:8080/graphql",
         "headers": {
           "user-agent": "JS GraphQL"
-        },
-        "introspect": false
+        }
       }
     }
   }

@@ -6,7 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.PullRequestModel

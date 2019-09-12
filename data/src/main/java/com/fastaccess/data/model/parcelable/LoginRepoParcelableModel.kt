@@ -16,7 +16,7 @@ data class LoginRepoParcelableModel<T : Parcelable>(
     constructor(source: Parcel) : this(
         source.readString() ?: "",
         source.readString() ?: "",
-        arrayListOf<T>().apply {
+        listOf<T>().apply {
             source.readList(this, this.javaClass.classLoader)
         },
         source.readInt()
