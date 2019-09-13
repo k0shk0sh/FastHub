@@ -44,7 +44,9 @@ class CommitThreadViewHolder(
         itemView.apply {
             itemView.commentLayout.isVisible = review.comment != null
             review.comment?.let { model ->
-                fileName.text = "${model.path}#${model.originalPosition}"
+                if (model.path != null && model.originalPosition != null) {
+                    fileName.text = "${model.path}#${model.originalPosition}"
+                }
                 userIcon.loadAvatar(model.author?.avatarUrl, model.author?.url ?: "")
                 author.text = model.author?.login ?: ""
                 association.text = if (CommentAuthorAssociation.NONE == model.authorAssociation) {
