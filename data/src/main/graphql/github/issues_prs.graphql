@@ -504,3 +504,23 @@ query getMilestones($login: String!, $repo: String!, $page: String) {
         }
     }
 }
+
+query getPullRequestCommits($login: String!, $repo: String!, $number: Int!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                changedFiles
+                additions
+                deletions
+                state
+                commits(first: 30, after: $page) {
+                    totalCount
+                    pageInfo { ... PageInfoFragment }
+                    nodes {
+                        commit { ... FullCommitFragment }
+                    }
+                }
+            }
+        }
+    }
+}

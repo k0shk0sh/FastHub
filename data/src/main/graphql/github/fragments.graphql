@@ -89,6 +89,35 @@ fragment CommitFragment on Commit {
     }
 }
 
+fragment FullCommitFragment on Commit {
+    abbreviatedOid
+    id
+    oid
+    commitUrl
+    additions
+    deletions
+    changedFiles
+    author {
+        avatarUrl
+        name
+        user {
+            login
+            avatarUrl
+            url
+        }
+    }
+    committedDate
+    committedViaWeb
+    status {
+        state
+    }
+    signature {
+        isValid
+        state
+    }
+    messageHeadline
+}
+
 fragment FullIssue on Issue {
     id
     databaseId
@@ -414,4 +443,11 @@ fragment Transferred on TransferredEvent {
         number
         url
     }
+}
+
+fragment PageInfoFragment on PageInfo {
+    endCursor
+    hasNextPage
+    hasPreviousPage
+    startCursor
 }
