@@ -3,9 +3,9 @@ package com.fastaccess.github.platform.works
 import android.app.Application
 import androidx.work.*
 import com.fastaccess.data.repository.NotificationRepository
-import com.fastaccess.domain.repository.services.NotificationService
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.domain.services.NotificationService
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_TWO
 import io.reactivex.Single
 import javax.inject.Inject
 

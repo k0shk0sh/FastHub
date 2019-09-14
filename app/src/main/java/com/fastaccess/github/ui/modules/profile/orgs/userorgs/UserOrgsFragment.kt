@@ -3,18 +3,15 @@ package com.fastaccess.github.ui.modules.profile.orgs.userorgs
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.addDivider
+import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.OrganizationsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.viewmodel.UserOrgsViewModel
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,7 +19,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2018-11-26.
  */
-class UserOrgsFragment : BaseFragment() {
+class UserOrgsFragment : com.fastaccess.github.base.BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(UserOrgsViewModel::class.java) }
     private val adapter by lazy {
@@ -31,7 +28,7 @@ class UserOrgsFragment : BaseFragment() {
         }
     }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.rounded_toolbar_fragment_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {

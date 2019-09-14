@@ -7,12 +7,11 @@ import com.fastaccess.data.model.CountModel
 import com.fastaccess.data.model.RepoLanguageModel
 import com.fastaccess.data.persistence.dao.UserDao
 import com.fastaccess.data.persistence.models.*
-import com.fastaccess.domain.repository.services.UserService
+import com.fastaccess.domain.services.UserService
 import github.GetProfileQuery
 import io.reactivex.Observable
 import retrofit2.Response
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by Kosh on 10.06.18.

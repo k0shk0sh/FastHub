@@ -11,24 +11,21 @@ import com.evernote.android.state.State
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.show
 import com.fastaccess.github.ui.adapter.LabelsAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.viewmodel.LabelsViewModel
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 2018-11-26.
  */
-class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback {
+class LabelsFragment : com.fastaccess.github.base.BaseFragment(), CreateLabelFragment.OnCreateLabelCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @State var selection = hashSetOf<LabelModel>()
     @State var deselection = hashSetOf<LabelModel>()
@@ -57,7 +54,7 @@ class LabelsFragment : BaseFragment(), CreateLabelFragment.OnCreateLabelCallback
         callback = null
     }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.rounded_toolbar_fragment_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {

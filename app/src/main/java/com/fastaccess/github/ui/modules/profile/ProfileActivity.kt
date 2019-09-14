@@ -2,17 +2,16 @@ package com.fastaccess.github.ui.modules.profile
 
 import android.os.Bundle
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.replace
 import com.fastaccess.github.platform.deeplink.WebDeepLink
 import com.fastaccess.github.ui.modules.profile.fragment.ProfileFragment
-import com.fastaccess.github.extensions.replace
 
 /**
  * Created by Kosh on 18.08.18.
  */
 @WebDeepLink("/{login}", "/users/{login}")
-class ProfileActivity : BaseActivity() {
+class ProfileActivity : com.fastaccess.github.base.BaseActivity() {
     override fun layoutRes(): Int = R.layout.activity_main
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {

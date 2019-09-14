@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.works.MarkAsReadNotificationWorker
@@ -16,22 +15,20 @@ import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.viewmodel.UnreadNotificationsViewModel
 import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 21.10.18.
  */
-class UnreadNotificationsFragment : BaseFragment() {
+class UnreadNotificationsFragment : com.fastaccess.github.base.BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(UnreadNotificationsViewModel::class.java) }
     private val adapter by lazy { UnreadNotificationsAdapter() }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.simple_refresh_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
@@ -73,7 +70,8 @@ class UnreadNotificationsFragment : BaseFragment() {
                 viewModel.markAllAsRead()
             }, {
                 it.printStackTrace()
-            }))
+            })
+        )
     }
 
     private fun listenToChanges() {

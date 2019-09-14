@@ -4,16 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
 import github.type.LockReason
-import kotlinx.android.synthetic.main.appbar_center_title_round_background_layout.*
 import kotlinx.android.synthetic.main.lock_unlock_issue_pr_layout.*
 
 /**
  * Created by Kosh on 23.02.19.
  */
-class LockUnlockFragment : BaseFragment() {
+class LockUnlockFragment : com.fastaccess.github.base.BaseFragment() {
 
     private var callback: OnLockReasonSelected? = null
 
@@ -33,7 +30,7 @@ class LockUnlockFragment : BaseFragment() {
     }
 
     override fun layoutRes(): Int = R.layout.lock_unlock_issue_pr_layout
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         toolbarTitle.text = getString(R.string.lock_issue)

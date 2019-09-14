@@ -8,7 +8,7 @@
     <include layout="@layout/appbar_tabs_center_title_layout"/>
 
     <com.fastaccess.github.ui.widget.ViewPagerView
-        android:id="@+id/pager"
+        android:id="@id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/scroll_behaviour"/>

@@ -6,25 +6,24 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.hideKeyboard
+import com.fastaccess.github.base.extensions.theme
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_THREE
+import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.timeAgo
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
 import com.fastaccess.github.usecase.issuesprs.TimelineType
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_THREE
-import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.hideKeyboard
-import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.CommentAuthorAssociation
 import github.type.IssueState
@@ -36,7 +35,6 @@ import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_view_layout.*
 import kotlinx.android.synthetic.main.recyclerview_fastscroll_empty_state_layout.*
-import kotlinx.android.synthetic.main.title_toolbar_layout.*
 import javax.inject.Inject
 
 /**
@@ -56,7 +54,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
     }
 
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun isPr(): Boolean = false
     override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
     override fun onMilestoneAdd(timeline: TimelineModel) = viewModel.addTimeline(timeline)

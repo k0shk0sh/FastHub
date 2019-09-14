@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.persistence.models.LoginModel
@@ -12,26 +11,24 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.extensions.otpCode
+import com.fastaccess.github.base.extensions.setBottomSheetCallback
+import com.fastaccess.github.base.extensions.token
+import com.fastaccess.github.base.utils.NOTIFICATION_LINK
+import com.fastaccess.github.base.utils.SEARCH_LINK
 import com.fastaccess.github.extensions.getDrawable
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.platform.extension.onClick
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
-import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
-import com.fastaccess.github.utils.NOTIFICATION_LINK
-import com.fastaccess.github.utils.SEARCH_LINK
-import com.fastaccess.github.utils.TRENDING_LINK
-import com.fastaccess.github.utils.extensions.isConnected
-import com.fastaccess.github.utils.extensions.otpCode
-import com.fastaccess.github.utils.extensions.setBottomSheetCallback
-import com.fastaccess.github.utils.extensions.token
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.appbar_logo_center_title_layout.*
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 import javax.inject.Inject
@@ -116,16 +113,16 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
             }
             return@setNavigationItemSelectedListener true
         }
-        starred.setOnClickListener { onUserRetrieved { route(it?.toStarred()) } }
-        repos.setOnClickListener { onUserRetrieved { route(it?.toRepos()) } }
-        gists.setOnClickListener { onUserRetrieved { route(it?.toGists()) } }
-        orgs.setOnClickListener {
-            MultiPurposeBottomSheetDialog.show(
-                childFragmentManager,
-                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS
-            )
-        }
-        trending.setOnClickListener { route(TRENDING_LINK) }
+//        starred.setOnClickListener { onUserRetrieved { route(it?.toStarred()) } }
+//        repos.setOnClickListener { onUserRetrieved { route(it?.toRepos()) } }
+//        gists.setOnClickListener { onUserRetrieved { route(it?.toGists()) } }
+//        orgs.setOnClickListener {
+//            MultiPurposeBottomSheetDialog.show(
+//                childFragmentManager,
+//                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS
+//            )
+//        }
+//        trending.setOnClickListener { route(TRENDING_LINK) }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {

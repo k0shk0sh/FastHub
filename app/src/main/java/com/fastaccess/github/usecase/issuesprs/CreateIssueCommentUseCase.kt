@@ -7,7 +7,7 @@ import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.repository.services.IssuePrService
+import com.fastaccess.domain.services.IssuePrService
 import com.fastaccess.domain.response.body.CommentRequestModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.toReactionGroup

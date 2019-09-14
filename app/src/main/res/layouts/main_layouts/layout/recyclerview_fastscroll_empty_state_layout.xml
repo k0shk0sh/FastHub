@@ -9,7 +9,7 @@
     tools:showIn="@layout/issue_pr_fragment_layout">
 
     <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"

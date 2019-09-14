@@ -10,8 +10,9 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.asString
+import com.fastaccess.github.base.extensions.showKeyboard
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.hideKeyboard
 import com.fastaccess.github.extensions.isTrue
@@ -19,9 +20,6 @@ import com.fastaccess.github.extensions.show
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.modules.editor.dialog.CreateLinkDialogFragment
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.asString
-import com.fastaccess.github.utils.extensions.showKeyboard
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.widget.MarkdownLayout
 import com.otaliastudios.autocomplete.Autocomplete
@@ -35,7 +33,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2019-07-20.
  */
-class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener,
+class EditorFragment : com.fastaccess.github.base.BaseFragment(), IconDialogFragment.IconDialogClickListener,
                        MarkdownLayout.MarkdownLayoutCallback,
                        CreateLinkDialogFragment.OnLinkSelected {
 
@@ -44,7 +42,7 @@ class EditorFragment : BaseFragment(), IconDialogFragment.IconDialogClickListene
     @Inject lateinit var mentionsPresenter: MentionsPresenter
     @Inject lateinit var markwonAdapterBuilder: MarkwonAdapter.Builder
 
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun layoutRes(): Int = R.layout.editor_fragment_layout
 
     override fun onFragmentCreatedWithUser(

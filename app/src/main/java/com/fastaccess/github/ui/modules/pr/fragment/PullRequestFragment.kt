@@ -12,7 +12,10 @@ import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.hideKeyboard
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_THREE
+import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.timeAgo
@@ -22,11 +25,6 @@ import com.fastaccess.github.ui.modules.pr.fragment.viewmodel.PullRequestTimelin
 import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog
 import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog.QuickMessageCallback
 import com.fastaccess.github.usecase.issuesprs.TimelineType
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_THREE
-import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.hideKeyboard
-import com.fastaccess.github.utils.extensions.theme
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.CommentAuthorAssociation
 import github.type.LockReason
@@ -38,6 +36,7 @@ import kotlinx.android.synthetic.main.pr_header_row_item.*
 import kotlinx.android.synthetic.main.pr_view_layout.*
 import kotlinx.android.synthetic.main.recyclerview_fastscroll_empty_state_layout.*
 import javax.inject.Inject
+import com.fastaccess.github.base.extensions.*
 
 /**
  * Created by Kosh on 28.01.19.
@@ -55,7 +54,7 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
     }
 
     override fun layoutRes(): Int = R.layout.pr_fragment_layout
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun isPr(): Boolean = true
     override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
     override fun onMilestoneAdd(timeline: TimelineModel) = viewModel.addTimeline(timeline)

@@ -10,8 +10,6 @@ import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.model.parcelable.FilterTrendingModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseBottomSheetDialogFragment
-import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.show
 import com.fastaccess.github.ui.modules.issuesprs.edit.lockunlock.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
@@ -22,13 +20,13 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.UserOrgsFragment
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_TWO
 
 /**
  * Created by Kosh on 2018-11-25.
  */
-class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
+class MultiPurposeBottomSheetDialog : com.fastaccess.github.base.BaseBottomSheetDialogFragment() {
 
     override fun layoutRes(): Int = R.layout.fragment_activity_layout
     private val type by lazy { arguments?.getSerializable(EXTRA) as? BottomSheetFragmentType? }
@@ -59,7 +57,7 @@ class MultiPurposeBottomSheetDialog : BaseBottomSheetDialogFragment() {
         }
     }
 
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
 
     companion object {
         fun show(fragmentManager: FragmentManager, type: BottomSheetFragmentType, parcelable: Parcelable? = null) {

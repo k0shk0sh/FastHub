@@ -6,17 +6,21 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
-import com.fastaccess.data.repository.LoginLocalRepository
+import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BasePagerFragment
-import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.extensions.*
-import com.fastaccess.github.ui.adapter.PagerAdapter
+import com.fastaccess.github.base.PagerAdapter
+import com.fastaccess.github.base.extensions.addDivider
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_TWO
+import com.fastaccess.github.extensions.getDrawable
+import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.timeAgo
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.ProfileOrgsAdapter
 import com.fastaccess.github.ui.adapter.ProfilePinnedReposAdapter
 import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment
@@ -27,12 +31,7 @@ import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
 import com.fastaccess.github.ui.widget.recyclerview.lm.SafeGridLayoutManager
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.isConnected
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.appbar_center_title_layout_bottomsheet.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
 import javax.inject.Inject
@@ -40,21 +39,23 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 18.08.18.
  */
-class ProfileFragment : BasePagerFragment() {
+class ProfileFragment : com.fastaccess.github.base.BasePagerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var loginRepositoryProvider: LoginLocalRepository
+    @Inject lateinit var loginRepositoryProvider: LoginRepository
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java) }
     private val behaviour by lazy { AnchorSheetBehavior.from(bottomSheet) }
     private val adapter by lazy {
-        PagerAdapter(childFragmentManager, arrayListOf(
-            ViewPagerModel(getString(R.string.feeds), ProfileFeedFragment.newInstance(loginBundle), FragmentType.FEEDS),
-            ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle), FragmentType.REPOS),
-            ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle), FragmentType.STARRED),
-            ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle), FragmentType.GISTS),
-            ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true), FragmentType.FOLLOWERS),
-            ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
-        ))
+        PagerAdapter(
+            childFragmentManager, arrayListOf(
+                ViewPagerModel(getString(R.string.feeds), ProfileFeedFragment.newInstance(loginBundle), FragmentType.FEEDS),
+                ViewPagerModel(getString(R.string.repos), ProfileReposFragment.newInstance(loginBundle), FragmentType.REPOS),
+                ViewPagerModel(getString(R.string.starred), ProfileStarredReposFragment.newInstance(loginBundle), FragmentType.STARRED),
+                ViewPagerModel(getString(R.string.gists), ProfileGistsFragment.newInstance(loginBundle), FragmentType.GISTS),
+                ViewPagerModel(getString(R.string.followers), ProfileFollowersFragment.newInstance(loginBundle, true), FragmentType.FOLLOWERS),
+                ViewPagerModel(getString(R.string.following), ProfileFollowersFragment.newInstance(loginBundle, false), FragmentType.FOLLOWINGS)
+            )
+        )
     }
     private val pinnedReposAdapter by lazy { ProfilePinnedReposAdapter(arrayListOf()) }
     private val orgsAdapter by lazy { ProfileOrgsAdapter(arrayListOf()) }
@@ -65,9 +66,9 @@ class ProfileFragment : BasePagerFragment() {
         return@lazy tabPosition
     }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.profile_fragment_layout
-    override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
+    override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? com.fastaccess.github.base.BaseFragment)?.onScrollToTop() ?: Unit
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.profile)

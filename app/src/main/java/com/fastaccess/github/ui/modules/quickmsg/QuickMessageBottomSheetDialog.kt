@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseBottomSheetDialogFragment
-import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.asString
-import kotlinx.android.synthetic.main.appbar_center_title_round_background_layout.*
+import com.fastaccess.github.base.extensions.asString
+import com.fastaccess.github.base.utils.EXTRA
 import kotlinx.android.synthetic.main.quick_input_layout.*
 
-class QuickMessageBottomSheetDialog : BaseBottomSheetDialogFragment() {
+class QuickMessageBottomSheetDialog : com.fastaccess.github.base.BaseBottomSheetDialogFragment() {
 
     private var callback: QuickMessageCallback? = null
 
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun layoutRes(): Int = R.layout.quick_input_layout
     override fun isFullScreen(): Boolean = true
 

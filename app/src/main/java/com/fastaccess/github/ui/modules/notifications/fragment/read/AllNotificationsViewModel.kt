@@ -13,7 +13,7 @@ import javax.inject.Inject
 class AllNotificationsViewModel @Inject constructor(
     provider: NotificationRepository,
     private val usecase: NotificationUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     val data: LiveData<List<GroupedNotificationsModel>> = provider.getAllNotifications()
 

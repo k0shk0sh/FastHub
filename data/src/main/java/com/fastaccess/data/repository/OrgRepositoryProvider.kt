@@ -19,7 +19,7 @@ import javax.inject.Inject
 class OrgRepositoryProvider @Inject constructor(
     private val dao: OrgsDao,
     private val apolloClient: ApolloClient,
-    private val loginRepositoryProvider: LoginLocalRepository
+    private val loginRepositoryProvider: LoginRepository
 ) : OrgRepository {
 
     /**

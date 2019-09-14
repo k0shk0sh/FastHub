@@ -37,7 +37,6 @@ android {
     }
 
     def conf = rootProject.ext.android
-
     compileSdkVersion conf.compileSdkVersion
 
     defaultConfig {
@@ -53,13 +52,7 @@ android {
                 includeCompileClasspath = true
             }
         }
-        buildConfigString "REST_URL", "https://api.github.com/"
-        buildConfigString "GRAPHQL_REST_URL", "https://api.github.com/graphql"
-        buildConfigString "IMGUR_URL", "https://api.imgur.com/3/"
-        buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
-        buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
-        buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
-        buildConfigString "IMGUR_SECRET", (buildProperties.secrets['imgur_secret'] | buildProperties.notThere['imgur_secret']).string
+
     }
 
     buildTypes {
@@ -122,10 +115,15 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 dependencies {
 
     def dependency = rootProject.ext
 
+    implementation project(':base')
     implementation project(':data')
     implementation project(':domain')
     implementation project(':resources')

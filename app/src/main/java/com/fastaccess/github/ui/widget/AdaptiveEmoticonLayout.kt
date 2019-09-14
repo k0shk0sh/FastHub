@@ -14,7 +14,7 @@ import com.fastaccess.data.model.getEmoji
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.platform.works.ReactionWorker
-import com.fastaccess.github.utils.extensions.popupEmoji
+import com.fastaccess.github.base.extensions.popupEmoji
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.add_reactions_layout.view.*
 

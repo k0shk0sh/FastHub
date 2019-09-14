@@ -17,7 +17,7 @@ class LabelsViewModel @Inject constructor(
     private val usecase: GetLabelsUseCase,
     private val createLabelUseCase: CreateLabelUseCase,
     private val putLabelsUseCase: PutLabelsUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     private val list = ArrayList<LabelModel>()

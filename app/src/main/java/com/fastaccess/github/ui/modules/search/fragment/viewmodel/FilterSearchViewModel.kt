@@ -25,7 +25,7 @@ class FilterSearchViewModel @Inject constructor(
     private val filterSearchReposUseCase: FilterSearchReposUseCase,
     private val filterSearchUsersUseCase: FilterSearchUsersUseCase,
     private val suggestionRepositoryProvider: SuggestionRepository
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     var filterModel = FilterSearchModel()

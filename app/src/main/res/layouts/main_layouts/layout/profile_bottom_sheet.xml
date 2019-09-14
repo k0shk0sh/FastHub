@@ -48,7 +48,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager"
+        android:id="@id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:windowBackground"

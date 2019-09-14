@@ -18,7 +18,11 @@ import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EDITOR_DEEPLINK
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_THREE
+import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.modules.comment.CommentActivity
@@ -29,11 +33,6 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.lockunlock.LockUnlockFrag
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.usecase.issuesprs.TimelineType
-import com.fastaccess.github.utils.EDITOR_DEEPLINK
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_THREE
-import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.isConnected
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
@@ -44,18 +43,16 @@ import com.otaliastudios.autocomplete.CharPolicy
 import github.type.IssueState
 import github.type.LockReason
 import kotlinx.android.synthetic.main.comment_box_layout.*
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_view_layout.*
 import kotlinx.android.synthetic.main.recyclerview_fastscroll_empty_state_layout.*
-import kotlinx.android.synthetic.main.title_toolbar_layout.*
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 2019-08-17.
  */
-abstract class BaseIssuePrTimelineFragment : BaseFragment(),
+abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFragment(),
     LockUnlockFragment.OnLockReasonSelected,
     LabelsFragment.OnLabelSelected,
     AssigneesFragment.OnAssigneesSelected,

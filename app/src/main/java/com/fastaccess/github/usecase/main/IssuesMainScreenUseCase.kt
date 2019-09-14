@@ -3,7 +3,7 @@ package com.fastaccess.github.usecase.main
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
-import com.fastaccess.data.repository.LoginLocalRepository
+import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.data.repository.MyIssuesPullsRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
@@ -16,7 +16,7 @@ import javax.inject.Inject
  * Created by Kosh on 16.06.18.
  */
 class IssuesMainScreenUseCase @Inject constructor(
-    private val loginRepository: LoginLocalRepository,
+    private val loginRepository: LoginRepository,
     private val myIssues: MyIssuesPullsRepository,
     private val apolloClient: ApolloClient,
     private val schedulerProvider: SchedulerProvider

@@ -4,14 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.fastaccess.data.persistence.dao.FeedDao
 import com.fastaccess.data.persistence.models.FeedModel
-import com.fastaccess.domain.repository.services.UserService
+import com.fastaccess.domain.services.UserService
 import com.fastaccess.domain.response.FeedResponse
 import com.fastaccess.domain.response.PageableResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by Kosh on 26.06.18.
@@ -19,7 +18,7 @@ import javax.inject.Singleton
 class FeedsRepositoryProvider @Inject constructor(
     private val feedsDao: FeedDao,
     private val userService: UserService,
-    private val loginRepositoryProvider: LoginLocalRepository,
+    private val loginRepositoryProvider: LoginRepository,
     private val gson: Gson
 ) : FeedsRepository {
 

@@ -5,7 +5,7 @@ import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepository
-import com.fastaccess.data.repository.LoginLocalRepository
+import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.filterNull
 import com.fastaccess.github.extensions.map
@@ -24,12 +24,12 @@ class IssueTimelineViewModel @Inject constructor(
     private val issueRepositoryProvider: IssueRepository,
     private val closeOpenIssuePrUseCase: CloseOpenIssuePrUseCase,
     private val lockUnlockIssuePrUseCase: LockUnlockIssuePrUseCase,
-    private val loginRepositoryProvider: LoginLocalRepository,
+    private val loginRepositoryProvider: LoginRepository,
     private val createIssueCommentUseCase: CreateIssueCommentUseCase,
     private val editIssuePrUseCase: EditIssuePrUseCase,
     private val deleteCommentUseCase: DeleteCommentUseCase,
     private val editCommentUseCase: EditCommentUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     private val list = arrayListOf<TimelineModel>()

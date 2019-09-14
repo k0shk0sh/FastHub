@@ -7,27 +7,25 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import androidx.transition.Slide
 import com.fastaccess.data.model.FastHubErrors
 import com.fastaccess.data.model.ValidationError.FieldType.*
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.asString
+import com.fastaccess.github.base.extensions.beginDelayedTransition
+import com.fastaccess.github.base.extensions.hideKeyboard
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.extensions.isTrue
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_TWO
-import com.fastaccess.github.utils.extensions.asString
-import com.fastaccess.github.utils.extensions.beginDelayedTransition
-import com.fastaccess.github.utils.extensions.hideKeyboard
 import kotlinx.android.synthetic.main.login_form_layout.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 18.05.18.
  */
-class AuthLoginFragment : BaseFragment() {
+class AuthLoginFragment : com.fastaccess.github.base.BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private var callback: LoginChooserCallback? = null
 
@@ -45,7 +43,7 @@ class AuthLoginFragment : BaseFragment() {
         super.onDetach()
     }
 
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) = Unit
     override fun layoutRes(): Int = R.layout.login_form_layout
 

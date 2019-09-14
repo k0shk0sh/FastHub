@@ -11,17 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.asString
+import com.fastaccess.github.base.extensions.beginDelayedTransition
+import com.fastaccess.github.base.utils.EDITOR_DEEPLINK
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.extensions.routeForResult
-import com.fastaccess.github.utils.EDITOR_DEEPLINK
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.asString
-import com.fastaccess.github.utils.extensions.beginDelayedTransition
 import io.noties.markwon.Markwon
-import kotlinx.android.synthetic.main.appbar_center_title_layout.*
 import kotlinx.android.synthetic.main.edit_issue_pr_fragment_layout.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,7 +26,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2019-07-27.
  */
-class EditIssuePrFragment : BaseFragment() {
+class EditIssuePrFragment : com.fastaccess.github.base.BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var markwon: Markwon
@@ -39,7 +36,7 @@ class EditIssuePrFragment : BaseFragment() {
         arguments?.getParcelable(EXTRA) as? EditIssuePrBundleModel ?: throw NullPointerException("EditIssuePrBundleModel is null")
     }
 
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun layoutRes(): Int = R.layout.edit_issue_pr_fragment_layout
 
     override fun onFragmentCreatedWithUser(

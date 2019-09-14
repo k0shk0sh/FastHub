@@ -5,16 +5,15 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.base.utils.EXTRA_FIVE
+import com.fastaccess.github.base.utils.EXTRA_FOUR
+import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.extensions.replace
-import com.fastaccess.github.utils.EXTRA_FIVE
-import com.fastaccess.github.utils.EXTRA_FOUR
-import com.fastaccess.github.utils.EXTRA_THREE
 
 /**
  * Created by Kosh on 2019-08-18.
  */
-class CommentActivity : BaseActivity() {
+class CommentActivity : com.fastaccess.github.base.BaseActivity() {
     override fun layoutRes(): Int = R.layout.fragment_activity_layout
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {

@@ -6,7 +6,6 @@ import androidx.paging.PagedList
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.persistence.models.ProfileGistModel
 import com.fastaccess.data.repository.UserGistsRepository
-import com.fastaccess.github.base.BaseViewModel
 import javax.inject.Inject
 
 /**
@@ -14,15 +13,15 @@ import javax.inject.Inject
  */
 class ProfileGistsViewModel @Inject constructor(
     private val reposProvider: UserGistsRepository
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
 
     fun getGists(login: String): LiveData<PagedList<ProfileGistModel>> {
         val dataSourceFactory = reposProvider.getGists(login)
         val config = PagedList.Config.Builder()
-            .setPrefetchDistance(com.fastaccess.github.utils.PRE_FETCH_SIZE)
-            .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
+            .setPrefetchDistance(com.fastaccess.github.base.utils.PRE_FETCH_SIZE)
+            .setPageSize(com.fastaccess.github.base.utils.PAGE_SIZE)
             .build()
         return LivePagedListBuilder(dataSourceFactory, config)
             .build()

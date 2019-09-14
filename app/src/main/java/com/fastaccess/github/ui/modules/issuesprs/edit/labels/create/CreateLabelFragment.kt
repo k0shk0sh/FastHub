@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.View
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseDialogFragment
+import com.fastaccess.github.base.extensions.asString
 import com.fastaccess.github.ui.adapter.LabelColorAdapter
-import com.fastaccess.github.utils.extensions.asString
 import kotlinx.android.synthetic.main.add_label_layout.*
 
 /**
  * Created by Kosh on 07.03.19.
  */
-class CreateLabelFragment : BaseDialogFragment() {
+class CreateLabelFragment : com.fastaccess.github.base.BaseDialogFragment() {
 
     private var callback: OnCreateLabelCallback? = null
 

@@ -16,7 +16,7 @@ class ProfileViewModel @Inject constructor(
     private val unblockUserUseCase: BlockUnblockUserUseCase,
     private val blockedUseCase: IsUserBlockedUseCase,
     private val followUnfollowUserUseCase: FollowUnfollowUserUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     var isFirstLaunch = true
     val isBlocked = MutableLiveData<Boolean>()

@@ -146,6 +146,22 @@ fun Context.route(
     }
 }
 
+fun Activity.routeClearTop(
+    url: String,
+    bundle: Bundle? = null,
+    finish: Boolean = true
+) {
+    runCatching {
+        this.startActivity(Intent(Intent.ACTION_VIEW).apply {
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            setPackage(getPackageInfo()?.packageName ?: packageName)
+            data = Uri.parse(url)
+            bundle?.let { putExtras(it) }
+        })
+        if (finish) finish()
+    }
+}
+
 
 fun Fragment.route(
     url: String?,

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AssigneesViewModel @Inject constructor(
     private val usecase: GetAssigneesUseCase,
     private val addAssigneesUseCase: AddAssigneesUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     private val list = ArrayList<ShortUserModel>()

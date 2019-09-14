@@ -9,13 +9,12 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseDialogFragment
+import com.fastaccess.github.base.extensions.asString
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.asString
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.android.synthetic.main.create_link_dialog_layout.*
 import javax.inject.Inject
@@ -23,7 +22,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2019-07-29.
  */
-class CreateLinkDialogFragment : BaseDialogFragment() {
+class CreateLinkDialogFragment : com.fastaccess.github.base.BaseDialogFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(UploadPictureViewModel::class.java) }

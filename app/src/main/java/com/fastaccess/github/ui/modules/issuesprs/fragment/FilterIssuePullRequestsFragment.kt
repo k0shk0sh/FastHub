@@ -9,8 +9,8 @@ import com.fastaccess.data.model.ActivityType
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.route
@@ -18,10 +18,6 @@ import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel.FilterIssuePullRequestsViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.appbar_center_title_layout.*
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.issues_prs_fragment_layout.*
 import javax.inject.Inject
@@ -29,7 +25,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 20.10.18.
  */
-class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomSheet.FilterIssuesPrsCallback {
+class FilterIssuePullRequestsFragment : com.fastaccess.github.base.BaseFragment(), FilterIssuesPrsBottomSheet.FilterIssuesPrsCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterIssuePullRequestsViewModel::class.java) }
     private val adapter by lazy {
@@ -39,7 +35,7 @@ class FilterIssuePullRequestsFragment : BaseFragment(), FilterIssuesPrsBottomShe
     }
     private val fragmentType by lazy { arguments?.getSerializable(EXTRA) as? FragmentType }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.issues_prs_fragment_layout
 
     override fun onFragmentCreatedWithUser(

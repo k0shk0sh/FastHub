@@ -8,12 +8,12 @@
     app:layout_behavior="@string/scroll_behaviour">
 
     <com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+        android:id="@id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"

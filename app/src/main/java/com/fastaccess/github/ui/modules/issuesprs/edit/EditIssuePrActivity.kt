@@ -6,15 +6,14 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.replace
-import com.fastaccess.github.utils.EXTRA
 
 /**
  * Created by Kosh on 2019-07-27.
  */
-class EditIssuePrActivity : BaseActivity() {
+class EditIssuePrActivity : com.fastaccess.github.base.BaseActivity() {
 
     override fun layoutRes(): Int = R.layout.fragment_activity_layout
 

@@ -12,7 +12,7 @@ import javax.inject.Inject
 class EditIssuePrViewModel @Inject constructor(
     private val getFileContentUseCase: GetFileContentUseCase,
     private val createIssueUseCase: CreateIssueUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     val templateLiveData = MutableLiveData<String>()
     val issueUrlLiveData = MutableLiveData<String>()

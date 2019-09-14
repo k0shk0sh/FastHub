@@ -30,9 +30,9 @@ class MainFragmentViewModel @Inject constructor(
     private val myIssuesPullsRepo: MyIssuesPullsRepository,
     private val notificationRepositoryProvider: NotificationRepository,
     private val fasthubDatabase: FastHubDatabase,
-    private val loginProvider: LoginLocalRepository,
+    private val loginProvider: LoginRepository,
     private val schedulerProvider: SchedulerProvider
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     val login = loginProvider.getLogin()
 

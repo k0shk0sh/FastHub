@@ -10,24 +10,20 @@ import com.evernote.android.state.State
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.AssigneesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.viewmodel.AssigneesViewModel
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.appbar_center_title_round_background_layout.*
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 2018-11-26.
  */
-class AssigneesFragment : BaseFragment() {
+class AssigneesFragment : com.fastaccess.github.base.BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @State var selection = hashSetOf<ShortUserModel>()
     @State var deselection = hashSetOf<ShortUserModel>()
@@ -56,7 +52,7 @@ class AssigneesFragment : BaseFragment() {
         callback = null
     }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.rounded_toolbar_fragment_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {

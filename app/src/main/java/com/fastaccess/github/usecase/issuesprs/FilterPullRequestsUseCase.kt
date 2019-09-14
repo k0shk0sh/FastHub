@@ -6,8 +6,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
-import com.fastaccess.data.repository.LoginLocalRepository
-import com.fastaccess.data.repository.LoginRepositoryProvider
+import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import github.SearchPullRequestsQuery
@@ -18,7 +17,7 @@ import javax.inject.Inject
  * Created by Kosh on 20.01.19.
  */
 class FilterPullRequestsUseCase @Inject constructor(
-    private val loginRepository: LoginLocalRepository,
+    private val loginRepository: LoginRepository,
     private val apolloClient: ApolloClient,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {

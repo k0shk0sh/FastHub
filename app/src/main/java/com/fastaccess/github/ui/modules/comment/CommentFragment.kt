@@ -7,12 +7,10 @@ import android.text.Editable
 import android.view.View
 import androidx.core.os.bundleOf
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.utils.*
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.routeForResult
 import com.fastaccess.github.platform.mentions.MentionsPresenter
-import com.fastaccess.github.utils.*
 import com.fastaccess.markdown.MarkdownProvider
 import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
@@ -27,12 +25,12 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2019-08-18.
  */
-class CommentFragment : BaseFragment() {
+class CommentFragment : com.fastaccess.github.base.BaseFragment() {
 
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var mentionsPresenter: MentionsPresenter
 
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun layoutRes(): Int = R.layout.comment_fragment_layout
 
     override fun onFragmentCreatedWithUser(

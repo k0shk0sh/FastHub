@@ -9,29 +9,31 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.github.BuildConfig
+import com.fastaccess.domain.BuildConfig
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseActivity
+import com.fastaccess.github.base.extensions.*
+import com.fastaccess.github.base.utils.REDIRECT_URL
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.deeplink.AppDeepLink
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
 import com.fastaccess.github.ui.modules.main.MainActivity
-import com.fastaccess.github.utils.REDIRECT_URL
-import com.fastaccess.github.utils.extensions.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 18.05.18.
  */
-class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
+@AppDeepLink("login")
+class LoginChooserActivity : com.fastaccess.github.base.BaseActivity(), LoginChooserCallback {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(LoginChooserViewModel::class.java) }
 
+    override fun hasTheme(): Boolean = true
     override fun layoutRes(): Int = R.layout.login_chooser_activity_layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,17 +76,19 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
             .enableUrlBarHiding()
             .build()
 
-        tabIntent.launchUrl(this, Uri.Builder()
-            .scheme("https")
-            .authority("github.com")
-            .appendPath("login")
-            .appendPath("oauth")
-            .appendPath("authorize")
-            .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
-            .appendQueryParameter("redirect_uri", REDIRECT_URL)
-            .appendQueryParameter("scope", "user,repo,gist,notifications,read:org")
-            .appendQueryParameter("state", BuildConfig.APPLICATION_ID)
-            .build())
+        tabIntent.launchUrl(
+            this, Uri.Builder()
+                .scheme("https")
+                .authority("github.com")
+                .appendPath("login")
+                .appendPath("oauth")
+                .appendPath("authorize")
+                .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
+                .appendQueryParameter("redirect_uri", REDIRECT_URL)
+                .appendQueryParameter("scope", "user,repo,gist,notifications,read:org")
+                .appendQueryParameter("state", com.fastaccess.github.BuildConfig.APPLICATION_ID)
+                .build()
+        )
     }
 
     override fun popStack() = supportFragmentManager.popBackStack()
@@ -118,6 +122,8 @@ class LoginChooserActivity : BaseActivity(), LoginChooserCallback {
         })
         finishAffinity()
     }
+
+    override fun isLoginActivity(): Boolean = true
 
     private fun handleIntent(intent: Intent?) {
         if (!viewModel.loggedInUser.hasActiveObservers()) {

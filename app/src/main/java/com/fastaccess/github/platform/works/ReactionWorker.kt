@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.work.*
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.EXTRA_THREE
-import com.fastaccess.github.utils.EXTRA_TWO
+import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_THREE
+import com.fastaccess.github.base.utils.EXTRA_TWO
 import github.AddReactionMutation
 import github.RemoveReactionMutation
 import github.type.ReactionContent

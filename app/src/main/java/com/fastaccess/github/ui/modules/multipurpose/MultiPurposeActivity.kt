@@ -17,7 +17,7 @@ import com.fastaccess.github.extensions.replace
  * Created by Kosh on 20.10.18.
  */
 @AppDeepLink("/me/{what}")
-class MultiPurposeActivity : BaseActivity() {
+class MultiPurposeActivity : com.fastaccess.github.base.BaseActivity() {
 
     @State var activityType: ActivityType? = null
 

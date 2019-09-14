@@ -3,7 +3,7 @@ package com.fastaccess.github.ui.modules.editor.dialog
 import androidx.lifecycle.MutableLiveData
 import com.fastaccess.data.model.FastHubErrors
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.repository.services.ImgurService
+import com.fastaccess.domain.services.ImgurService
 import com.fastaccess.github.base.BaseViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class UploadPictureViewModel @Inject constructor(
     private val service: ImgurService,
     private val scheduler: SchedulerProvider
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     val uploadedFileLiveData = MutableLiveData<String>()
 

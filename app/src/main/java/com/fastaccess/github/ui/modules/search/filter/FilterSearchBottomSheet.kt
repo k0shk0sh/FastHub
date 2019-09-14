@@ -10,18 +10,15 @@ import com.fastaccess.data.model.parcelable.FilterByRepo
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseBottomSheetDialogFragment
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.utils.EXTRA
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.filter_search_layout.*
 
 /**
  * Created by Kosh on 19.01.19.
  */
-class FilterSearchBottomSheet : BaseFragment() {
+class FilterSearchBottomSheet : com.fastaccess.github.base.BaseFragment() {
 
     @State lateinit var model: FilterSearchModel
     private var callback: FilterSearchCallback? = null
@@ -42,7 +39,7 @@ class FilterSearchBottomSheet : BaseFragment() {
     }
 
     override fun layoutRes(): Int = R.layout.filter_search_layout
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             model = (arguments?.getParcelable(EXTRA) as? FilterSearchModel) ?: FilterSearchModel()
@@ -52,7 +49,7 @@ class FilterSearchBottomSheet : BaseFragment() {
             model.filterByRepo.name = limitByEditText.text?.toString()
             model.filterByRepo.language = languageEditText.text?.toString()
             callback?.onFilterApplied(model)
-            (parentFragment as? BaseBottomSheetDialogFragment)?.dismiss()
+            (parentFragment as? com.fastaccess.github.base.BaseBottomSheetDialogFragment)?.dismiss()
         }
         initState()
     }

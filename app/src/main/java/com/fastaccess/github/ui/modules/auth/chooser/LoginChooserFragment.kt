@@ -7,21 +7,19 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.beginDelayedTransition
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.LoggedInUsersAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
-import com.fastaccess.github.utils.extensions.beginDelayedTransition
 import kotlinx.android.synthetic.main.login_chooser_fragment_layout.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 19.05.18.
  */
-class LoginChooserFragment : BaseFragment() {
+class LoginChooserFragment : com.fastaccess.github.base.BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var schedulerProvider: SchedulerProvider
 
@@ -49,7 +47,7 @@ class LoginChooserFragment : BaseFragment() {
         super.onDetach()
     }
 
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun layoutRes() = R.layout.login_chooser_fragment_layout
     override fun onFragmentCreatedWithUser(
         view: View,

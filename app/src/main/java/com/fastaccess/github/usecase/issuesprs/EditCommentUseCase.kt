@@ -1,9 +1,9 @@
 package com.fastaccess.github.usecase.issuesprs
 
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.repository.services.CommitService
-import com.fastaccess.domain.repository.services.IssuePrService
-import com.fastaccess.domain.repository.services.ReviewService
+import com.fastaccess.domain.services.CommitService
+import com.fastaccess.domain.services.IssuePrService
+import com.fastaccess.domain.services.ReviewService
 import com.fastaccess.domain.response.body.CommentRequestModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable

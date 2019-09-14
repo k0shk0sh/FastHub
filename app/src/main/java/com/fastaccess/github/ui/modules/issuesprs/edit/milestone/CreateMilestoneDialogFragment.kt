@@ -7,17 +7,16 @@ import android.view.View
 import com.fastaccess.datetimepicker.DatePickerFragmentDialog
 import com.fastaccess.datetimepicker.callback.DatePickerCallback
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseDialogFragment
+import com.fastaccess.github.base.extensions.asString
 import com.fastaccess.github.extensions.DatePrettifier
 import com.fastaccess.github.extensions.show
-import com.fastaccess.github.utils.extensions.asString
 import kotlinx.android.synthetic.main.add_milestone_layout.*
 import java.util.*
 
 /**
  * Created by Kosh on 30.03.19.
  */
-class CreateMilestoneDialogFragment : BaseDialogFragment(), DatePickerCallback {
+class CreateMilestoneDialogFragment : com.fastaccess.github.base.BaseDialogFragment(), DatePickerCallback {
     private var callback: OnAddNewMilestone? = null
 
     override fun layoutRes(): Int = R.layout.add_milestone_layout

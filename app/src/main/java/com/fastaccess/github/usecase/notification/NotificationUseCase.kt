@@ -3,7 +3,7 @@ package com.fastaccess.github.usecase.notification
 import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.data.repository.NotificationRepository
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.repository.services.NotificationService
+import com.fastaccess.domain.services.NotificationService
 import com.fastaccess.domain.response.NotificationResponse
 import com.fastaccess.domain.response.PageableResponse
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase

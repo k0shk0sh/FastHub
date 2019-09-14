@@ -6,10 +6,10 @@ import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.domain.response.enums.EventsType
 import com.fastaccess.github.extensions.route
-import com.fastaccess.github.utils.FEEDS_LINK
-import com.fastaccess.github.utils.FILTER_ISSUE_LINK
-import com.fastaccess.github.utils.FILTER_PR_LINK
-import com.fastaccess.github.utils.NOTIFICATION_LINK
+import com.fastaccess.github.base.utils.FEEDS_LINK
+import com.fastaccess.github.base.utils.FILTER_ISSUE_LINK
+import com.fastaccess.github.base.utils.FILTER_PR_LINK
+import com.fastaccess.github.base.utils.NOTIFICATION_LINK
 import timber.log.Timber
 
 /**

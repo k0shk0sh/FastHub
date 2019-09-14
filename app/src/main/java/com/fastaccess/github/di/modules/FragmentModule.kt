@@ -14,7 +14,7 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
 import com.fastaccess.github.ui.modules.pr.fragment.PullRequestFragment
 import com.fastaccess.github.ui.modules.pr.reviews.ListReviewsFragment
 import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
-import com.fastaccess.github.utils.extensions.theme
+import com.fastaccess.github.base.extensions.theme
 import com.fastaccess.markdown.GrammarLocatorDef
 import dagger.Module
 import dagger.Provides

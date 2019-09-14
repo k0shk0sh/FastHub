@@ -8,8 +8,7 @@ import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.di.modules.AuthenticationInterceptor
+import com.fastaccess.domain.di.AuthenticationInterceptor
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginUseCase
 import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
@@ -27,7 +26,7 @@ class LoginViewModel @Inject constructor(
     private val interceptor: AuthenticationInterceptor,
     private val fasthubDatabase: FastHubDatabase,
     private val schedulerProvider: SchedulerProvider
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     val validationLiveData = MutableLiveData<ValidationError>()
     val loggedInUser = MutableLiveData<LoginModel>()

@@ -6,24 +6,20 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.addDivider
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.show
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MilestonesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.viewmodel.MilestoneViewModel
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.appbar_center_title_round_background_layout.*
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import java.util.*
 import javax.inject.Inject
@@ -31,7 +27,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 2018-11-26.
  */
-class MilestoneFragment : BaseFragment(), CreateMilestoneDialogFragment.OnAddNewMilestone {
+class MilestoneFragment : com.fastaccess.github.base.BaseFragment(), CreateMilestoneDialogFragment.OnAddNewMilestone {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MilestoneViewModel::class.java) }
@@ -67,7 +63,7 @@ class MilestoneFragment : BaseFragment(), CreateMilestoneDialogFragment.OnAddNew
         callback = null
     }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.rounded_toolbar_fragment_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {

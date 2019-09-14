@@ -2,7 +2,7 @@ package com.fastaccess.github.usecase.issuesprs
 
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.repository.services.RepoService
+import com.fastaccess.domain.services.RepoService
 import com.fastaccess.domain.response.LabelResponse
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable

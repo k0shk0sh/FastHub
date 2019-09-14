@@ -3,11 +3,10 @@ package com.fastaccess.data.repository
 import androidx.lifecycle.LiveData
 import com.fastaccess.data.persistence.dao.LoginDao
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.domain.repository.LoginRemoteRepository
-import com.fastaccess.domain.repository.services.LoginService
 import com.fastaccess.domain.response.AccessTokenResponse
 import com.fastaccess.domain.response.AuthBodyModel
 import com.fastaccess.domain.response.UserResponse
+import com.fastaccess.domain.services.LoginService
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class LoginRepositoryProvider @Inject constructor(
     private val loginDao: LoginDao,
     private val loginService: LoginService
-) : LoginLocalRepository, LoginRemoteRepository {
+) : LoginRepository {
     override fun getLogin(): Maybe<LoginModel?> = loginDao.getLogin()
     override fun getLoginBlocking(): LoginModel? = loginDao.getLoginBlocking()
     override fun getAllLiveData(): LiveData<LoginModel?> = loginDao.getAllLiveData()
@@ -52,7 +51,17 @@ class LoginRepositoryProvider @Inject constructor(
 
 }
 
-interface LoginLocalRepository {
+interface LoginRepository {
+    fun loginAccessToken(): Observable<UserResponse>
+    fun login(authModel: AuthBodyModel): Observable<AccessTokenResponse>
+    fun getAccessToken(
+        code: String,
+        clientId: String,
+        clientSecret: String,
+        state: String,
+        redirectUrl: String
+    ): Observable<AccessTokenResponse>
+
     fun getLogin(): Maybe<LoginModel?>
     fun getLoginBlocking(): LoginModel?
     fun getAllLiveData(): LiveData<LoginModel?>

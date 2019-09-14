@@ -12,7 +12,7 @@ import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.showYesNoDialog
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.utils.extensions.popMenu
+import com.fastaccess.github.base.extensions.popMenu
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_small_row_item.view.*

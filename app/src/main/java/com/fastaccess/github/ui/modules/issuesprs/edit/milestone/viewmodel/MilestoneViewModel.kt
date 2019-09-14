@@ -20,7 +20,7 @@ class MilestoneViewModel @Inject constructor(
     private val usecase: GetMilestonesUseCase,
     private val createMilestoneUseCase: CreateMilestoneUseCase,
     private val milestoneIssuePrUseCase: MilestoneIssuePrUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     private val list = ArrayList<MilestoneModel>()

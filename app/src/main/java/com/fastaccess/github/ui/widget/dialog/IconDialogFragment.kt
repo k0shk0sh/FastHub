@@ -6,16 +6,15 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseDialogFragment
+import com.fastaccess.github.base.utils.*
 import com.fastaccess.github.extensions.show
-import com.fastaccess.github.utils.*
 import kotlinx.android.synthetic.main.icon_dialog_layout.*
 
 
 /**
  * Created by Kosh on 26.01.19.
  */
-class IconDialogFragment : BaseDialogFragment() {
+class IconDialogFragment : com.fastaccess.github.base.BaseDialogFragment() {
     override fun layoutRes(): Int = R.layout.icon_dialog_layout
 
     private var callback: IconDialogClickListener? = null

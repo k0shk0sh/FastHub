@@ -7,16 +7,13 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseBottomSheetDialogFragment
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA
 import kotlinx.android.synthetic.main.filter_issue_pr_layout.*
 
 /**
  * Created by Kosh on 19.01.19.
  */
-class FilterIssuesPrsBottomSheet : BaseFragment() {
+class FilterIssuesPrsBottomSheet : com.fastaccess.github.base.BaseFragment() {
 
     private val model by lazy { (arguments?.getParcelable(EXTRA) as? FilterIssuesPrsModel) ?: FilterIssuesPrsModel() }
     private var callback: FilterIssuesPrsCallback? = null
@@ -37,7 +34,7 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
     }
 
     override fun layoutRes(): Int = R.layout.filter_issue_pr_layout
-    override fun viewModel(): BaseViewModel? = null
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.filter)
         reviewRequest.isVisible = model.isPr
@@ -50,7 +47,7 @@ class FilterIssuesPrsBottomSheet : BaseFragment() {
 
         submit.setOnClickListener {
             callback?.onFilterApplied(model)
-            (parentFragment as? BaseBottomSheetDialogFragment)?.dismiss()
+            (parentFragment as? com.fastaccess.github.base.BaseBottomSheetDialogFragment)?.dismiss()
         }
     }
 

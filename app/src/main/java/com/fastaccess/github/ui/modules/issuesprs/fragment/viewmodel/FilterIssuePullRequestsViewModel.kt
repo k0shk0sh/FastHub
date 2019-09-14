@@ -16,7 +16,7 @@ import javax.inject.Inject
 class FilterIssuePullRequestsViewModel @Inject constructor(
     private val filterIssuesUseCase: FilterIssuesUseCase,
     private val filterPullRequestsUseCase: FilterPullRequestsUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     var filterModel = FilterIssuesPrsModel()

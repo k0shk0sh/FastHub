@@ -5,7 +5,6 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.data.repository.FeedsRepository
-import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.feed.FeedsUseCase
 import javax.inject.Inject
 
@@ -15,7 +14,7 @@ import javax.inject.Inject
 class FeedsViewModel @Inject constructor(
     private val provider: FeedsRepository,
     private val usecase: FeedsUseCase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     private var currentPage = 0
     private var isLastPage = false
@@ -23,8 +22,8 @@ class FeedsViewModel @Inject constructor(
     fun feeds(): LiveData<PagedList<FeedModel>> {
         val dataSourceFactory = provider.getReceivedEventAsLiveData()
         val config = PagedList.Config.Builder()
-            .setPrefetchDistance(com.fastaccess.github.utils.PRE_FETCH_SIZE)
-            .setPageSize(com.fastaccess.github.utils.PAGE_SIZE)
+            .setPrefetchDistance(com.fastaccess.github.base.utils.PRE_FETCH_SIZE)
+            .setPageSize(com.fastaccess.github.base.utils.PAGE_SIZE)
             .build()
         return LivePagedListBuilder(dataSourceFactory, config)
             .build()

@@ -4,12 +4,11 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.models.LoginModel
-import com.fastaccess.data.repository.LoginLocalRepository
-import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.di.modules.AuthenticationInterceptor
+import com.fastaccess.data.repository.LoginRepository
+import com.fastaccess.domain.di.AuthenticationInterceptor
 import com.fastaccess.github.usecase.auth.GetAccessTokenUseCase
 import com.fastaccess.github.usecase.auth.LoginWithAccessTokenUseCase
-import com.fastaccess.github.utils.REDIRECT_URL
+import com.fastaccess.github.base.utils.REDIRECT_URL
 import io.reactivex.Completable
 import javax.inject.Inject
 
@@ -20,9 +19,9 @@ class LoginChooserViewModel @Inject constructor(
     private val accessTokenUseCase: GetAccessTokenUseCase,
     private val loginWithAccessTokenUseCase: LoginWithAccessTokenUseCase,
     private val interceptor: AuthenticationInterceptor,
-    private val loginRepositoryProvider: LoginLocalRepository,
+    private val loginRepositoryProvider: LoginRepository,
     private val fastHubDatabase: FastHubDatabase
-) : BaseViewModel() {
+) : com.fastaccess.github.base.BaseViewModel() {
 
     val loggedInUser = MutableLiveData<LoginModel>()
     val loggedInUsers = MutableLiveData<List<LoginModel?>>()

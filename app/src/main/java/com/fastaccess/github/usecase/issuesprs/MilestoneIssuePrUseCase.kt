@@ -4,9 +4,9 @@ import com.fastaccess.data.model.MilestoneDemilestonedEventModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.data.repository.IssueRepository
-import com.fastaccess.data.repository.LoginLocalRepository
+import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.repository.services.IssuePrService
+import com.fastaccess.domain.services.IssuePrService
 import com.fastaccess.domain.response.IssueRequestModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.me
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class MilestoneIssuePrUseCase @Inject constructor(
     private val issueRepositoryProvider: IssueRepository,
     private val issuePrService: IssuePrService,
-    private val loginRepositoryProvider: LoginLocalRepository,
+    private val loginRepositoryProvider: LoginRepository,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 

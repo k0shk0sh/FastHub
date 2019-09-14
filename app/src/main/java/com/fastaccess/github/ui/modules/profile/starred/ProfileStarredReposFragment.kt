@@ -6,31 +6,28 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.addDivider
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.ui.adapter.ProfileStarredReposAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.starred.viewmodel.ProfileStarredReposViewModel
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 13.10.18.
  */
-class ProfileStarredReposFragment : BaseFragment() {
+class ProfileStarredReposFragment : com.fastaccess.github.base.BaseFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileStarredReposViewModel::class.java) }
     private val loginBundle: String by lazy { arguments?.getString(EXTRA) ?: "" }
     private val adapter by lazy { ProfileStarredReposAdapter() }
 
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun layoutRes(): Int = R.layout.simple_refresh_list_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {

@@ -8,16 +8,18 @@ import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.SuggestionsModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.addDivider
+import com.fastaccess.github.base.extensions.asString
+import com.fastaccess.github.base.extensions.hideKeyboard
+import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.observeNull
 import com.fastaccess.github.extensions.route
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.SearchReposAdapter
 import com.fastaccess.github.ui.adapter.ShortUsersAdapter
@@ -25,11 +27,6 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_SEARCH
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.asString
-import com.fastaccess.github.utils.extensions.hideKeyboard
-import com.fastaccess.github.utils.extensions.isConnected
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.search_fragment_layout.*
 import javax.inject.Inject
@@ -37,7 +34,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 20.01.19.
  */
-class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallback {
+class SearchFragment : com.fastaccess.github.base.BaseFragment(), FilterSearchBottomSheet.FilterSearchCallback {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(FilterSearchViewModel::class.java) }
@@ -54,7 +51,7 @@ class SearchFragment : BaseFragment(), FilterSearchBottomSheet.FilterSearchCallb
     }
 
     override fun layoutRes(): Int = R.layout.search_fragment_layout
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         recyclerView.addDivider()

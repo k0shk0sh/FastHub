@@ -3,8 +3,12 @@ package com.fastaccess.github.di.components
 import android.app.Application
 import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.db.FastHubLoginDatabase
+import com.fastaccess.di.RepositoryModule
+import com.fastaccess.domain.di.NetworkModule
 import com.fastaccess.github.App
-import com.fastaccess.github.di.modules.*
+import com.fastaccess.github.di.modules.ActivityBindingModule
+import com.fastaccess.github.di.modules.ApplicationModule
+import com.fastaccess.github.di.modules.FastHubDatabaseModule
 import com.fastaccess.github.platform.workmanager.DaggerWorkerFactory
 import dagger.BindsInstance
 import dagger.Component

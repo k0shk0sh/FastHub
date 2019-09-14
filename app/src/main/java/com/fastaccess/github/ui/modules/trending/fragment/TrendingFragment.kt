@@ -4,23 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.parcelable.FilterTrendingModel
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.addDivider
+import com.fastaccess.github.base.extensions.isConnected
+import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.TrendingsAdapter
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
 import com.fastaccess.github.ui.modules.trending.fragment.viewmodel.TrendingViewModel
-import com.fastaccess.github.utils.EXTRA
-import com.fastaccess.github.utils.extensions.addDivider
-import com.fastaccess.github.utils.extensions.isConnected
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.appbar_center_title_layout.*
-import kotlinx.android.synthetic.main.empty_state_layout.*
 import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.trending_fragment_layout.*
 import javax.inject.Inject
@@ -28,7 +24,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 23.01.19.
  */
-class TrendingFragment : BaseFragment(), FilterTrendingBottomSheet.FilterTrendingCallback {
+class TrendingFragment : com.fastaccess.github.base.BaseFragment(), FilterTrendingBottomSheet.FilterTrendingCallback {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var gson: Gson
@@ -37,7 +33,7 @@ class TrendingFragment : BaseFragment(), FilterTrendingBottomSheet.FilterTrendin
     private val adapter by lazy { TrendingsAdapter() }
 
     override fun layoutRes(): Int = R.layout.trending_fragment_layout
-    override fun viewModel(): BaseViewModel? = viewModel
+    override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.trending)
