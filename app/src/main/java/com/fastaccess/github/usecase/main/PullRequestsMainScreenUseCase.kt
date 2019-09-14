@@ -34,8 +34,6 @@ class PullRequestsMainScreenUseCase @Inject constructor(
                             .build()
                     )
                 )
-                    .subscribeOn(schedulerProvider.ioThread())
-                    .observeOn(schedulerProvider.uiThread())
                     .map { it.data()?.user?.pullRequests?.nodes }
                     .map { value ->
                         myIssues.deleteAllPrs()
@@ -47,5 +45,6 @@ class PullRequestsMainScreenUseCase @Inject constructor(
                         }.toList())
                     }
             } ?: Observable.empty()
-        }
+        }.subscribeOn(schedulerProvider.ioThread())
+        .observeOn(schedulerProvider.uiThread())
 }

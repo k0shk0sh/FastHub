@@ -35,8 +35,6 @@ class IssuesMainScreenUseCase @Inject constructor(
                             .build()
                     )
                 )
-                    .subscribeOn(schedulerProvider.ioThread())
-                    .observeOn(schedulerProvider.uiThread())
                     .map { it.data()?.user?.issues?.nodes }
                     .map { value ->
                         myIssues.deleteAllIssues()
@@ -48,5 +46,6 @@ class IssuesMainScreenUseCase @Inject constructor(
                         }.toList())
                     }
             } ?: Observable.empty()
-        }
+        }.subscribeOn(schedulerProvider.ioThread())
+        .observeOn(schedulerProvider.uiThread())
 }

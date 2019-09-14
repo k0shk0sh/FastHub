@@ -3,9 +3,9 @@ package com.fastaccess.github.usecase.notification
 import com.fastaccess.data.persistence.models.NotificationModel
 import com.fastaccess.data.repository.NotificationRepository
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.services.NotificationService
 import com.fastaccess.domain.response.NotificationResponse
 import com.fastaccess.domain.response.PageableResponse
+import com.fastaccess.domain.services.NotificationService
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.google.gson.Gson
 import io.reactivex.Observable
@@ -38,8 +38,6 @@ class NotificationUseCase @Inject constructor(
             }
         }
         return observable
-            .subscribeOn(schedulerProvider.ioThread())
-            .observeOn(schedulerProvider.uiThread())
             .map { it ->
                 it.items?.let { items ->
                     if (all == true) {
@@ -55,5 +53,7 @@ class NotificationUseCase @Inject constructor(
                 }
                 return@map it
             }
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
     }
 }

@@ -54,14 +54,16 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideFilterIssuePullRequestsFragment(): FilterIssuePullRequestsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideSearchFragment(): SearchFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideTrendingFragment(): TrendingFragment
-    @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class]) abstract fun provideIssueFragment(): IssueFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideLockUnlockFragment(): LockUnlockFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideLabelsFragment(): LabelsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideAssigneesFragment(): AssigneesFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideMilestoneFragment(): MilestoneFragment
+
+    @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class]) abstract fun provideIssueFragment(): IssueFragment
     @PerFragment @ContributesAndroidInjector(modules = [EditorModule::class]) abstract fun provideEditorFragment(): EditorFragment
     @PerFragment @ContributesAndroidInjector(modules = [EditIssuePrModule::class]) abstract fun provideEditIssuePrFragment(): EditIssuePrFragment
     @PerFragment @ContributesAndroidInjector(modules = [CommentModule::class]) abstract fun provideCommentFragment(): CommentFragment
     @PerFragment @ContributesAndroidInjector(modules = [PullRequestModule::class]) abstract fun providePullRequestFragment(): PullRequestFragment
     @PerFragment @ContributesAndroidInjector(modules = [ListReviewsModule::class]) abstract fun provideListReviewsFragment(): ListReviewsFragment
+
 }
