@@ -1,3 +1,5 @@
 include ':app', ':data', ':domain', ':resources', ':extensions', ':markdown', ':editor'
 include ':commits'
 include ':base'
+include ':dagger'
+include ':reactions'

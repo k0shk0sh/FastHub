@@ -1,6 +1,6 @@
 package com.fastaccess.github.di.modules
 
-import com.fastaccess.github.di.scopes.PerFragment
+import com.fastaccess.fasthub.dagger.scopes.PerFragment
 import com.fastaccess.github.ui.modules.editor.dialog.CreateLinkDialogFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.CreateMilestoneDialogFragment

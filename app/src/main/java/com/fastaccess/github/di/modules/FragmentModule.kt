@@ -5,7 +5,7 @@ import android.content.Context
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.engine.ThemeEngine
-import com.fastaccess.github.di.scopes.PerFragment
+import com.fastaccess.fasthub.dagger.scopes.PerFragment
 import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.github.ui.modules.comment.CommentFragment
 import com.fastaccess.github.ui.modules.editor.EditorFragment

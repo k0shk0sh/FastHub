@@ -1,6 +1,6 @@
 package com.fastaccess.github.di.modules
 
-import com.fastaccess.github.di.scopes.PerFragment
+import com.fastaccess.fasthub.dagger.scopes.PerFragment
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
 import com.fastaccess.github.ui.modules.comment.CommentFragment

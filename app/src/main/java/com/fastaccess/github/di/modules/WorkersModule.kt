@@ -1,9 +1,9 @@
 package com.fastaccess.github.di.modules
 
 import androidx.work.RxWorker
-import com.fastaccess.github.di.annotations.WorkerKey
+import com.fastaccess.fasthub.dagger.annotations.WorkerKey
 import com.fastaccess.github.platform.works.MarkAsReadNotificationWorker
-import com.fastaccess.github.platform.works.ReactionWorker
+import com.fastaccess.fasthub.reactions.ReactionWorker
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

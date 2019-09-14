@@ -2,7 +2,7 @@ package com.fastaccess.github.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.di.annotations.ViewModelKey
+import com.fastaccess.fasthub.dagger.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel

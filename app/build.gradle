@@ -120,6 +120,8 @@ dependencies {
     def dependency = rootProject.ext
 
     implementation project(':base')
+    implementation project(':dagger')
+    implementation project(':reactions')
     implementation project(':data')
     implementation project(':domain')
     implementation project(':resources')

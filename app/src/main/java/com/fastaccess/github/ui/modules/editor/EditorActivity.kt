@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.fastaccess.github.R
 import com.fastaccess.github.base.utils.EDITOR_PATH
 import com.fastaccess.github.extensions.replace
-import com.fastaccess.github.platform.deeplink.AppDeepLink
+import com.fastaccess.github.base.deeplink.AppDeepLink
 
 /**
  * Created by Kosh on 2019-04-11.

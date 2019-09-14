@@ -4,8 +4,7 @@ import android.os.Bundle
 import com.evernote.android.state.State
 import com.fastaccess.data.model.ActivityType
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseActivity
-import com.fastaccess.github.platform.deeplink.AppDeepLink
+import com.fastaccess.github.base.deeplink.AppDeepLink
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
 import com.fastaccess.github.ui.modules.issuesprs.fragment.FilterIssuePullRequestsFragment
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment

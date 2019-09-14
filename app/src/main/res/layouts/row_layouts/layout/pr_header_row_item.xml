@@ -205,7 +205,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </LinearLayout>
 
-    <com.fastaccess.github.ui.widget.AdaptiveEmoticonLayout
+    <com.fastaccess.fasthub.reactions.AdaptiveEmoticonLayout
         android:id="@+id/adaptiveEmoticon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

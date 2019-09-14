@@ -93,7 +93,7 @@
                 android:textIsSelectable="true"
                 tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
 
-            <com.fastaccess.github.ui.widget.AdaptiveEmoticonLayout
+            <com.fastaccess.fasthub.reactions.AdaptiveEmoticonLayout
                 android:id="@+id/reviewAdaptiveEmoticon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -8,8 +8,8 @@ import com.fastaccess.data.persistence.db.FastHubDatabase
 import com.fastaccess.data.persistence.db.FastHubLoginDatabase
 import com.fastaccess.data.persistence.db.LOGIN_DATABASE_NAME
 import com.fastaccess.data.storage.FastHubSharedPreference
-import com.fastaccess.github.di.annotations.ForApplication
-import com.fastaccess.github.di.annotations.ForDB
+import com.fastaccess.fasthub.dagger.annotations.ForApplication
+import com.fastaccess.fasthub.dagger.annotations.ForDB
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
