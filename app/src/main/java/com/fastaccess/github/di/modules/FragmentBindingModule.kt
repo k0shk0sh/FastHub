@@ -1,5 +1,7 @@
 package com.fastaccess.github.di.modules
 
+import com.fastaccess.fasthub.commit.list.CommitListFragment
+import com.fastaccess.fasthub.commit.list.CommitPagerFragment
 import com.fastaccess.fasthub.dagger.scopes.PerFragment
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
@@ -58,6 +60,8 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideLabelsFragment(): LabelsFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideAssigneesFragment(): AssigneesFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideMilestoneFragment(): MilestoneFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideCommitListFragment(): CommitListFragment
+    @PerFragment @ContributesAndroidInjector abstract fun provideCommitPagerFragment(): CommitPagerFragment
 
     @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class]) abstract fun provideIssueFragment(): IssueFragment
     @PerFragment @ContributesAndroidInjector(modules = [EditorModule::class]) abstract fun provideEditorFragment(): EditorFragment

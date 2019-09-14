@@ -81,19 +81,19 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
     ) {
         if (isPr()) {
             setupToolbar("", R.menu.issue_menu)// todo
-            toolbar.title = SpannableBuilder.builder()
+            toolbar?.title = SpannableBuilder.builder()
                 .append(getString(R.string.pull_request))
                 .bold("#$number")
         } else {
             setupToolbar("", R.menu.issue_menu)
-            toolbar.title = SpannableBuilder.builder()
+            toolbar?.title = SpannableBuilder.builder()
                 .append(getString(R.string.issue))
                 .bold("#$number")
         }
-        toolbar.subtitle = "$login/$repo"
+        toolbar?.subtitle = "$login/$repo"
         swipeRefresh.appBarLayout = appBar
-        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
-            val scrollTop = toolbar.menu?.findItem(R.id.scrollTop)
+        appBar?.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
+            val scrollTop = toolbar?.menu?.findItem(R.id.scrollTop)
             val isVisible = p1 < 0
             if (isVisible && scrollTop?.isVisible == false) {
                 scrollTop.isVisible = true
@@ -213,15 +213,15 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
         body: String?,
         isOwner: Boolean
     ) {
-        toolbar.setOnMenuItemClickListener { item ->
+        toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.scrollTop -> {
-                    appBar.setExpanded(true, true)
+                    appBar?.setExpanded(true, true)
                     recyclerView.scrollToPosition(0)
                 }
                 R.id.refresh -> {
                     reload(true)
-                    appBar.setExpanded(true, true)
+                    appBar?.setExpanded(true, true)
                     recyclerView.scrollToPosition(0)
                 }
                 R.id.closeIssue -> closeOpenIssuePr()
@@ -289,7 +289,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
         isMerged: Boolean? = null,
         state: String? = null
     ) {
-        toolbar.menu.let {
+        toolbar?.menu?.let {
             it.findItem(R.id.edit).isVisible = viewerDidAuthor == true || canUpdate
             it.findItem(R.id.assignees).isVisible = isOwner
             it.findItem(R.id.milestone).isVisible = isOwner

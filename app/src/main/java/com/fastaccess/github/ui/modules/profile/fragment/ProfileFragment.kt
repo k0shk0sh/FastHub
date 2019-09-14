@@ -16,6 +16,7 @@ import com.fastaccess.github.base.extensions.addDivider
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_TWO
+import com.fastaccess.github.base.widget.recyclerview.lm.SafeGridLayoutManager
 import com.fastaccess.github.extensions.getDrawable
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
@@ -30,7 +31,6 @@ import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
-import com.fastaccess.github.base.widget.recyclerview.lm.SafeGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*
@@ -73,7 +73,7 @@ class ProfileFragment : com.fastaccess.github.base.BasePagerFragment() {
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.profile)
         username.text = loginBundle
-        toolbar.navigationIcon = getDrawable(R.drawable.ic_back)
+        toolbar?.navigationIcon = getDrawable(R.drawable.ic_back)
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 viewModel.getUserFromRemote(loginBundle)

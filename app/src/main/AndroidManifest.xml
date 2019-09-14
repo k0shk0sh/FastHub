@@ -134,6 +134,10 @@
             android:name=".ui.modules.pr.reviews.ListReviewsActivity"
             android:parentActivityName=".ui.modules.main.MainActivity" />
 
+        <activity
+            android:name="com.fastaccess.fasthub.commit.list.CommitsListActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity" />
+
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"

@@ -68,21 +68,25 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         /**
          * Called when the bottom sheet changes its state.
          *
-         * @param bottomSheet The bottom sheet view.
-         * @param newState    The new state. This will be one of {@link #STATE_DRAGGING},
-         *                    {@link #STATE_SETTLING}, {@link #STATE_EXPANDED},
-         *                    {@link #STATE_COLLAPSED}, or {@link #STATE_HIDDEN}.
+         * @param bottomSheet
+         *         The bottom sheet view.
+         * @param newState
+         *         The new state. This will be one of {@link #STATE_DRAGGING},
+         *         {@link #STATE_SETTLING}, {@link #STATE_EXPANDED},
+         *         {@link #STATE_COLLAPSED}, or {@link #STATE_HIDDEN}.
          */
         public abstract void onStateChanged(@NonNull View bottomSheet, @State int newState);
 
         /**
          * Called when the bottom sheet is being dragged.
          *
-         * @param bottomSheet The bottom sheet view.
-         * @param slideOffset The new offset of this bottom sheet within [-1,1] range. Offset
-         *                    increases as this bottom sheet is moving upward. From 0 to 1 the sheet
-         *                    is between collapsed and expanded states and from -1 to 0 it is
-         *                    between hidden and collapsed states.
+         * @param bottomSheet
+         *         The bottom sheet view.
+         * @param slideOffset
+         *         The new offset of this bottom sheet within [-1,1] range. Offset
+         *         increases as this bottom sheet is moving upward. From 0 to 1 the sheet
+         *         is between collapsed and expanded states and from -1 to 0 it is
+         *         between hidden and collapsed states.
          */
         public abstract void onSlide(@NonNull View bottomSheet, float slideOffset);
     }
@@ -208,8 +212,10 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     /**
      * Default constructor for inflating AnchorSheetBehavior from layout.
      *
-     * @param context The {@link Context}.
-     * @param attrs   The {@link AttributeSet}.
+     * @param context
+     *         The {@link Context}.
+     * @param attrs
+     *         The {@link AttributeSet}.
      */
     public AnchorSheetBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -500,7 +506,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     /**
      * Sets the height of the bottom sheet when it is collapsed.
      *
-     * @param peekHeight The height of the collapsed bottom sheet in pixels.
+     * @param peekHeight
+     *         The height of the collapsed bottom sheet in pixels.
      * @attr ref R.styleable#AnchorBehavior_Params_behavior_peekHeight
      */
     public final void setPeekHeight(int peekHeight) {
@@ -528,7 +535,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Gets the height of the bottom sheet when it is collapsed.
      *
      * @return The height of the collapsed bottom sheet in pixels, or {@link #PEEK_HEIGHT_AUTO}
-     *         if the sheet is configured to peek automatically at 16:9 ratio keyline
+     * if the sheet is configured to peek automatically at 16:9 ratio keyline
      * @attr ref R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
      */
     public final int getPeekHeight() {
@@ -573,7 +580,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Set the offset for the anchor state. Number between 0..1
      * i.e: Anchor the panel at 1/3 of the screen: setAnchorOffset(0.25)
      *
-     * @param threshold {@link Float} from 0..1
+     * @param threshold
+     *         {@link Float} from 0..1
      */
     public void setAnchorOffset(float threshold) {
         this.mAnchorThreshold = threshold;
@@ -583,7 +591,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     /**
      * Sets whether this bottom sheet can hide when it is swiped down.
      *
-     * @param hideable {@code true} to make this bottom sheet hideable.
+     * @param hideable
+     *         {@code true} to make this bottom sheet hideable.
      * @attr ref R.styleable#BottomSheetBehavior_Layout_behavior_hideable
      */
     public void setHideable(boolean hideable) {
@@ -604,7 +613,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Sets whether this bottom sheet should skip the collapsed state when it is being hidden
      * after it is expanded once. Setting this to true has no effect unless the sheet is hideable.
      *
-     * @param skipCollapsed True if the bottom sheet should skip the collapsed state.
+     * @param skipCollapsed
+     *         True if the bottom sheet should skip the collapsed state.
      * @attr ref R.styleable#BottomSheetBehavior_Layout_behavior_skipCollapsed
      */
     public void setSkipCollapsed(boolean skipCollapsed) {
@@ -625,7 +635,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     /**
      * Sets a callback to be notified of bottom sheet events.
      *
-     * @param callback The callback to notify when bottom sheet events occur.
+     * @param callback
+     *         The callback to notify when bottom sheet events occur.
      */
     public void setAnchorSheetCallback(AnchorSheetCallback callback) {
         mCallback = callback;
@@ -635,8 +646,9 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Sets the state of the bottom sheet. The bottom sheet will transition to that state with
      * animation.
      *
-     * @param state One of {@link #STATE_COLLAPSED}, {@link #STATE_EXPANDED}, or
-     *              {@link #STATE_HIDDEN}.
+     * @param state
+     *         One of {@link #STATE_COLLAPSED}, {@link #STATE_EXPANDED}, or
+     *         {@link #STATE_HIDDEN}.
      */
     public final void setState(@State final int state) {
         if (state == mState) {
@@ -886,9 +898,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
     }
 
-    protected static class SavedState extends AbsSavedState {
-        @State
-        final int state;
+    static class SavedState extends AbsSavedState {
+        @State final int state;
 
         public SavedState(Parcel source) {
             this(source, null);
@@ -932,7 +943,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     /**
      * A utility function to get the {@link AnchorSheetBehavior} associated with the {@code view}.
      *
-     * @param view The {@link View} with {@link AnchorSheetBehavior}.
+     * @param view
+     *         The {@link View} with {@link AnchorSheetBehavior}.
      * @return The {@link AnchorSheetBehavior} associated with the {@code view}.
      */
     @SuppressWarnings("unchecked")

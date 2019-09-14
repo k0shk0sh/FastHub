@@ -5,11 +5,11 @@ import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.MainScreenModelRowType
 import com.fastaccess.data.persistence.models.FeedModel
 import com.fastaccess.domain.response.enums.EventsType
-import com.fastaccess.github.extensions.route
 import com.fastaccess.github.base.utils.FEEDS_LINK
 import com.fastaccess.github.base.utils.FILTER_ISSUE_LINK
 import com.fastaccess.github.base.utils.FILTER_PR_LINK
 import com.fastaccess.github.base.utils.NOTIFICATION_LINK
+import com.fastaccess.github.extensions.route
 import timber.log.Timber
 
 /**
@@ -39,6 +39,7 @@ fun FeedModel.onClick(fragment: Fragment) {
         EventsType.PullRequestEvent -> fragment.route("${payload?.pullRequest?.htmlUrl}")
         EventsType.PullRequestReviewCommentEvent -> fragment.route("${payload?.pullRequest?.htmlUrl}")
         EventsType.PullRequestReviewEvent -> fragment.route("${payload?.pullRequest?.htmlUrl}")
+        EventsType.PushEvent -> fragment.route("${payload?.commits?.getOrNull(0)?.url}")
         else -> fragment.route(actor?.url) // TODO(handle click)
     }
 }

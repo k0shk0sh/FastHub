@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.asString
@@ -18,6 +17,7 @@ import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.extensions.routeForResult
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.edit_issue_pr_fragment_layout.*
 import timber.log.Timber
@@ -46,12 +46,12 @@ class EditIssuePrFragment : com.fastaccess.github.base.BaseFragment() {
 
         observeChanges()
 
-        toolbar.title = if (model.isCreate) getString(R.string.create_issue) else getString(R.string.edit)
-        toolbar.subtitle = "${model.login}/${model.repo}/${getString(R.string.issue)}${if (model.isCreate) "" else "#${model.number}"}"
+        toolbar?.title = if (model.isCreate) getString(R.string.create_issue) else getString(R.string.edit)
+        toolbar?.subtitle = "${model.login}/${model.repo}/${getString(R.string.issue)}${if (model.isCreate) "" else "#${model.number}"}"
         setToolbarNavigationIcon(R.drawable.ic_clear)
-        toolbar.inflateMenu(R.menu.submit_menu)
-        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-        toolbar.setOnMenuItemClickListener {
+        toolbar?.inflateMenu(R.menu.submit_menu)
+        toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        toolbar?.setOnMenuItemClickListener {
             if (viewModel.progress.value == true) return@setOnMenuItemClickListener true
             val title = titleEditText.asString()
             val description = model.description
@@ -114,7 +114,7 @@ class EditIssuePrFragment : com.fastaccess.github.base.BaseFragment() {
         viewModel.progress.observeNotNull(this) {
             container.beginDelayedTransition()
             progressBar.isVisible = it
-            toolbar.menu?.findItem(R.id.submit)?.isVisible = !it
+            toolbar?.menu?.findItem(R.id.submit)?.isVisible = !it
         }
         viewModel.templateLiveData.observeNotNull(this) {
             if (model.description.isNullOrEmpty()) {

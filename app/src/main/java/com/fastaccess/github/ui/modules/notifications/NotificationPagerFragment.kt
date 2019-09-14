@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.github.R
+import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.PagerAdapter
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsFragment
@@ -20,8 +21,7 @@ import kotlinx.android.synthetic.main.toolbar_fragment_pager_layout.*
 class NotificationPagerFragment : com.fastaccess.github.base.BasePagerFragment() {
     override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
     override fun layoutRes(): Int = R.layout.toolbar_fragment_pager_layout
-    override fun onPageSelected(page: Int) =
-        (pager.adapter?.instantiateItem(pager, page) as? com.fastaccess.github.base.BaseFragment)?.onScrollToTop() ?: Unit
+    override fun onPageSelected(page: Int) = (pager.adapter?.instantiateItem(pager, page) as? BaseFragment)?.onScrollToTop() ?: Unit
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         setupToolbar(R.string.notifications, R.menu.notification_menu) { item: MenuItem ->
@@ -47,10 +47,10 @@ class NotificationPagerFragment : com.fastaccess.github.base.BasePagerFragment()
         pager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                toolbar.menu?.findItem(R.id.markAllAsRead)?.isVisible = position == 0
+                toolbar?.menu?.findItem(R.id.markAllAsRead)?.isVisible = position == 0
             }
         })
-        toolbar.menu?.findItem(R.id.markAllAsRead)?.isVisible = pager.currentItem == 0
+        toolbar?.menu?.findItem(R.id.markAllAsRead)?.isVisible = pager.currentItem == 0
     }
 
     companion object {

@@ -33,7 +33,7 @@ class LockUnlockFragment : com.fastaccess.github.base.BaseFragment() {
     override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = null
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-        toolbarTitle.text = getString(R.string.lock_issue)
+        toolbarTitle?.text = getString(R.string.lock_issue)
         submit.setOnClickListener {
             callback?.onLockReasonSelected(when (reason.checkedChipId) {
                 R.id.spam -> LockReason.SPAM

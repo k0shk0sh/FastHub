@@ -204,9 +204,9 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
 
     protected fun setToolbarNavigationIcon(resId: Int) = view?.findViewById<Toolbar?>(R.id.toolbar)?.setNavigationIcon(resId) ?: Unit
 
-    protected val appBar by lazy { view?.findViewById<AppBarLayout>(R.id.appBar) ?: throw IllegalAccessError("error") }
-    protected val toolbar by lazy { view?.findViewById<Toolbar>(R.id.toolbar) ?: throw IllegalAccessError("error") }
+    protected val appBar by lazy { view?.findViewById<AppBarLayout>(R.id.appBar) }
+    protected val toolbar by lazy { view?.findViewById<Toolbar>(R.id.toolbar) }
+    protected val toolbarTitle by lazy { view?.findViewById<TextView>(R.id.toolbarTitle) }
     protected val emptyLayout by lazy { view?.findViewById<View>(R.id.emptyLayout) ?: throw IllegalAccessError("error") }
-    protected val toolbarTitle by lazy { view?.findViewById<TextView>(R.id.toolbarTitle) ?: throw IllegalAccessError("error") }
     protected val tabs by lazy { view?.findViewById<TabLayout>(R.id.tabs) ?: throw IllegalAccessError("error") }
 }

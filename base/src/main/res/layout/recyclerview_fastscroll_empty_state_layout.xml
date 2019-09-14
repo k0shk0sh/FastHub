@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground"
-    app:layout_behavior="@string/scroll_behaviour"
-    tools:showIn="@layout/issue_pr_fragment_layout">
+    app:layout_behavior="@string/scroll_behaviour">
 
     <com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
         android:id="@id/recyclerView"

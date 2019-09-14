@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.widget
+package com.fastaccess.github.base.widget
 
 import android.R.attr.enabled
 import android.annotation.SuppressLint

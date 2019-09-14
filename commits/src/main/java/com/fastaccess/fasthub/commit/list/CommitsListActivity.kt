@@ -1,26 +1,38 @@
 package com.fastaccess.fasthub.commit.list
 
 import android.os.Bundle
-import com.airbnb.deeplinkdispatch.DeepLinkHandler
+import com.fastaccess.fasthub.commit.R
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.base.deeplink.WebDeepLink
+import com.fastaccess.github.extensions.replace
 
 @WebDeepLink(
     "/{login}/{repo}/commits",
-    "/{login}/{repo}/pull/{number}/commits"
+    "/{login}/{repo}/pull/{number}/commits",
+    "/repos/{login}/{repo}/commits/{oid}"
 )
 class CommitsListActivity : BaseActivity() {
 
-    private val isPullRequest by lazy { intent?.getStringExtra(DeepLinkHandler.EXTRA_URI)?.contains("/pull/", true) }
-    private val login by lazy { intent.getStringExtra("login") }
-    private val repo by lazy { intent.getStringExtra("repo") }
-    private val number by lazy { intent.getIntExtra("number", 0) }
+    private val login by lazy { intent?.getStringExtra("login") }
+    private val repo by lazy { intent?.getStringExtra("repo") }
+    private val number by lazy { intent?.getIntExtra("number", 0) ?: 0 }
+    private val oid by lazy { intent?.getStringExtra("oid") }
 
-    override fun layoutRes(): Int = 0
+    override fun layoutRes(): Int = R.layout.fragment_activity_layout
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-
+            val login = login
+            val repo = repo
+            if (!login.isNullOrEmpty() && !repo.isNullOrEmpty()) {
+                if (number > 0) {
+                    replace(R.id.container, CommitPagerFragment.newInstance(login, repo, number))
+                } else {
+                    replace(R.id.container, CommitListFragment.newInstance(login, repo, number))
+                }
+            } else {
+                finish()
+            }
         }
     }
 }

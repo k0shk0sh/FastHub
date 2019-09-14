@@ -13,10 +13,12 @@ data class ViewPagerModel(
 )
 
 enum class FragmentType(val tabName: String? = null) {
-    FEEDS(""), REPOS("repositories"), STARRED("stars"),
-    GISTS("gists"), FOLLOWERS("followers"),
-    FOLLOWINGS("following"), UNREAD_NOTIFICATIONS("unread_notification"),
-    ALL_NOTIFICATIONS("all_notification"), FILTER_ISSUES("filter_issues"), FILTER_PRS("filter_prs");
+    FEEDS(""), REPOS("repositories"),
+    STARRED("stars"), GISTS("gists"),
+    FOLLOWERS("followers"), FOLLOWINGS("following"),
+    UNREAD_NOTIFICATIONS("unread_notification"), ALL_NOTIFICATIONS("all_notification"),
+    FILTER_ISSUES("filter_issues"), FILTER_PRS("filter_prs"),
+    COMMITS(""), FILES("");
 
     companion object {
         fun getTypeSafely(tabName: String): FragmentType? = try {

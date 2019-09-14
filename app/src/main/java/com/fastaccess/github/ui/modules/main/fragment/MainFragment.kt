@@ -54,7 +54,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
             isConnected().isTrue { viewModel.load() }
         }
         setupToolbar(R.string.app_name)
-        toolbar.navigationIcon = null
+        toolbar?.navigationIcon = null
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 viewModel.load()

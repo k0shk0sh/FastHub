@@ -75,7 +75,7 @@ class AssigneesFragment : com.fastaccess.github.base.BaseFragment() {
                 }
             }
         }
-        toolbar.menu?.findItem(R.id.add)?.isVisible = false
+        toolbar?.menu?.findItem(R.id.add)?.isVisible = false
         recyclerView.adapter = adapter
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)

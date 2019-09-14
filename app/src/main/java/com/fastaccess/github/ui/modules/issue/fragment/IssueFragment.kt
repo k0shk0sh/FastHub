@@ -114,7 +114,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
         issueHeaderWrapper.isVisible = true
         val theme = preference.theme
         title.text = model.title
-        toolbar.title = SpannableBuilder.builder()
+        toolbar?.title = SpannableBuilder.builder()
             .append(getString(R.string.issue))
             .bold("#${model.number}")
 
