@@ -9,10 +9,10 @@ import com.fastaccess.data.persistence.models.MyIssuesPullsModel
  */
 @Dao interface MyIssuesPullsDao {
 
-    @Query("SELECT * FROM ${MyIssuesPullsModel.TABLE_NAME} WHERE `isPr` == 0 LIMIT 5")
+    @Query("SELECT * FROM ${MyIssuesPullsModel.TABLE_NAME} WHERE `isPr` == 0 ORDER BY `state` = 'OPEN' DESC, `state` = 'CLOSED' DESC LIMIT 5")
     fun getMainScreenIssues(): LiveData<List<MyIssuesPullsModel>>
 
-    @Query("SELECT * FROM ${MyIssuesPullsModel.TABLE_NAME} WHERE `isPr` == 1 LIMIT 5")
+    @Query("SELECT * FROM ${MyIssuesPullsModel.TABLE_NAME} WHERE `isPr` == 1 ORDER BY `state` = 'OPEN' DESC, `state` = 'MERGED' DESC, `state` = 'CLOSED' DESC LIMIT 5")
     fun getMainScreenPulls(): LiveData<List<MyIssuesPullsModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
