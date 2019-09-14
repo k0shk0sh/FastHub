@@ -1,6 +1,5 @@
 package com.fastaccess.github.ui.modules.auth
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +11,7 @@ import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.domain.BuildConfig
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.*
+import com.fastaccess.github.base.utils.LOGIN_PATH
 import com.fastaccess.github.base.utils.REDIRECT_URL
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
@@ -26,7 +26,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 18.05.18.
  */
-@AppDeepLink("login")
+@AppDeepLink("/$LOGIN_PATH")
 class LoginChooserActivity : com.fastaccess.github.base.BaseActivity(), LoginChooserCallback {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -130,14 +130,5 @@ class LoginChooserActivity : com.fastaccess.github.base.BaseActivity(), LoginCho
             viewModel.loggedInUser.observeNotNull(this) { onUserLoggedIn(it) }
         }
         intent?.data?.let { viewModel.handleBrowserLogin(it) }
-    }
-
-    companion object {
-        fun startActivity(activity: Activity, finish: Boolean = true) {
-            val intent = Intent(activity, LoginChooserActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            activity.startActivity(intent)
-            if (finish) activity.finishAffinity()
-        }
     }
 }

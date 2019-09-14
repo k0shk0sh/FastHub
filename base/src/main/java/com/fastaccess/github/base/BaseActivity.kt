@@ -10,8 +10,8 @@ import com.fastaccess.github.base.extensions.materialize
 import com.fastaccess.github.base.extensions.otpCode
 import com.fastaccess.github.base.extensions.theme
 import com.fastaccess.github.base.extensions.token
-import com.fastaccess.github.base.utils.IN_APP_LINK
 import com.fastaccess.github.base.utils.IS_ENTERPRISE
+import com.fastaccess.github.base.utils.LOGIN_DEEP_LINK
 import com.fastaccess.github.extensions.routeClearTop
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
@@ -28,7 +28,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback, AuthC
 
     @LayoutRes abstract fun layoutRes(): Int
 
-    open fun hasTheme(): Boolean = true
+    open fun hasTheme(): Boolean = false
     abstract fun onActivityCreatedWithUser(savedInstanceState: Bundle?)
     override fun isLoggedIn() = !preference.token.isNullOrEmpty()
     override fun isEnterprise(): Boolean = intent?.extras?.getBoolean(IS_ENTERPRISE) ?: false
@@ -50,7 +50,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), ActivityCallback, AuthC
             interceptor.otp = preference.otpCode
             onActivityCreatedWithUser(savedInstanceState)
         } else {
-            routeClearTop("$IN_APP_LINK/login")
+            routeClearTop(LOGIN_DEEP_LINK)
             onActivityCreated(savedInstanceState)
         }
 

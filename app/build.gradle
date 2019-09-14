@@ -115,10 +115,6 @@ android {
     }
 }
 
-androidExtensions {
-    experimental = true
-}
-
 dependencies {
 
     def dependency = rootProject.ext

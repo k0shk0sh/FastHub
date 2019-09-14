@@ -13,7 +13,7 @@ import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.asString
 import com.fastaccess.github.base.extensions.beginDelayedTransition
-import com.fastaccess.github.base.utils.EDITOR_DEEPLINK
+import com.fastaccess.github.base.utils.EDITOR_DEEP_LINK
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.route
@@ -86,7 +86,7 @@ class EditIssuePrFragment : com.fastaccess.github.base.BaseFragment() {
         }
         descriptionEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                routeForResult(EDITOR_DEEPLINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to model.description))
+                routeForResult(EDITOR_DEEP_LINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to model.description))
                 return@setOnTouchListener true
             }
             return@setOnTouchListener false

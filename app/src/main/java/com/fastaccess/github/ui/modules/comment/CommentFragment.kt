@@ -75,7 +75,7 @@ class CommentFragment : com.fastaccess.github.base.BaseFragment() {
             }
         }
         toggleFullScreen.setOnClickListener {
-            routeForResult(EDITOR_DEEPLINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
+            routeForResult(EDITOR_DEEP_LINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
         }
     }
 

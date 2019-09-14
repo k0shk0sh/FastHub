@@ -15,18 +15,17 @@ import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.extensions.otpCode
 import com.fastaccess.github.base.extensions.setBottomSheetCallback
 import com.fastaccess.github.base.extensions.token
+import com.fastaccess.github.base.utils.LOGIN_DEEP_LINK
 import com.fastaccess.github.base.utils.NOTIFICATION_LINK
 import com.fastaccess.github.base.utils.SEARCH_LINK
-import com.fastaccess.github.extensions.getDrawable
-import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.extensions.route
+import com.fastaccess.github.base.utils.TRENDING_LINK
+import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.extension.onClick
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
-import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
+import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
@@ -108,27 +107,26 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
                     childFragmentManager, R.drawable.ic_info_outline, getString(R.string.logout),
                     getString(R.string.confirm_message), getString(R.string.logout), getString(R.string.cancel)
                 )
-                R.id.add_account -> LoginChooserActivity.startActivity(requireActivity(), false)
+                R.id.add_account -> activity?.routeClearTop(LOGIN_DEEP_LINK, null, false)
                 R.id.reportBug -> EditIssuePrActivity.start(requireContext(), EditIssuePrBundleModel("k0shk0sh", "FastHub", 0, isCreate = true))
             }
             return@setNavigationItemSelectedListener true
         }
-//        starred.setOnClickListener { onUserRetrieved { route(it?.toStarred()) } }
-//        repos.setOnClickListener { onUserRetrieved { route(it?.toRepos()) } }
-//        gists.setOnClickListener { onUserRetrieved { route(it?.toGists()) } }
-//        orgs.setOnClickListener {
-//            MultiPurposeBottomSheetDialog.show(
-//                childFragmentManager,
-//                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS
-//            )
-//        }
-//        trending.setOnClickListener { route(TRENDING_LINK) }
+        starred.setOnClickListener { onUserRetrieved { route(it?.toStarred()) } }
+        repos.setOnClickListener { onUserRetrieved { route(it?.toRepos()) } }
+        gists.setOnClickListener { onUserRetrieved { route(it?.toGists()) } }
+        orgs.setOnClickListener {
+            MultiPurposeBottomSheetDialog.show(
+                childFragmentManager,
+                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.ORGANIZATIONS
+            )
+        }
+        trending.setOnClickListener { route(TRENDING_LINK) }
     }
 
     private fun onUserRetrieved(action: (user: LoginModel?) -> Unit) {
         addDisposal(
-            viewModel.login
-                .subscribe({ action(it) }, ::print)
+            viewModel.login.subscribe({ action(it) }, ::print)
         )
     }
 
@@ -143,7 +141,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
             if (it) {
                 preference.token = null
                 preference.otpCode = null
-                LoginChooserActivity.startActivity(requireActivity())
+                activity?.routeClearTop(LOGIN_DEEP_LINK)
             }
         }
         viewModel.unreadNotificationLiveData.observeNotNull(this) {

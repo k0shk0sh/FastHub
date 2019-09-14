@@ -19,7 +19,7 @@ import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.isConnected
-import com.fastaccess.github.base.utils.EDITOR_DEEPLINK
+import com.fastaccess.github.base.utils.EDITOR_DEEP_LINK
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.base.utils.EXTRA_TWO
@@ -345,7 +345,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
         }
         if (databaseId != 0) {
             routeForResult(
-                EDITOR_DEEPLINK, requestCode, bundleOf(
+                EDITOR_DEEP_LINK, requestCode, bundleOf(
                     EXTRA to body,
                     EXTRA_TWO to databaseId
                 )
@@ -407,7 +407,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
             }
         }
         toggleFullScreen.setOnClickListener {
-            routeForResult(EDITOR_DEEPLINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
+            routeForResult(EDITOR_DEEP_LINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
         }
     }
 

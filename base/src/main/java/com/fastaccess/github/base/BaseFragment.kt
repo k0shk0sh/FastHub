@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.transition.TransitionManager
@@ -91,10 +90,10 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
             onFragmentCreated(view, savedInstanceState)
         }
 
-        viewModel()?.progress?.observe(this, Observer {
+        viewModel()?.progress?.observeNotNull(this) {
             val refresh = this@BaseFragment.view?.findViewById<SwipeRefreshLayout?>(R.id.swipeRefresh)
-            refresh?.isRefreshing = it == true
-        })
+            refresh?.isRefreshing = it
+        }
 
         viewModel()?.error?.observeNotNull(this) {
             this@BaseFragment.view?.let { view -> showSnackBar(view, resId = it.resId, message = it.message) }
