@@ -11,7 +11,7 @@ import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.replaceAllNewLines
 import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
+import com.fastaccess.github.base.widget.recyclerview.SwipeToDeleteCallback
 import kotlinx.android.synthetic.main.notification_main_screen_row_item.view.*
 
 /**

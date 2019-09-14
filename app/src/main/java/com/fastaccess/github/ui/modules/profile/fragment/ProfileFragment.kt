@@ -30,7 +30,7 @@ import com.fastaccess.github.ui.modules.profile.gists.ProfileGistsFragment
 import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.widget.AnchorSheetBehavior
-import com.fastaccess.github.ui.widget.recyclerview.lm.SafeGridLayoutManager
+import com.fastaccess.github.base.widget.recyclerview.lm.SafeGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.profile_fragment_layout.*

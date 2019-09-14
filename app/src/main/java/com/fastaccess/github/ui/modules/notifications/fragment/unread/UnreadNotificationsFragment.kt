@@ -14,7 +14,7 @@ import com.fastaccess.github.ui.adapter.UnreadNotificationsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.viewmodel.UnreadNotificationsViewModel
-import com.fastaccess.github.ui.widget.recyclerview.SwipeToDeleteCallback
+import com.fastaccess.github.base.widget.recyclerview.SwipeToDeleteCallback
 import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
 import javax.inject.Inject
 

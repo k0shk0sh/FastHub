@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.widget.recyclerview.lm
+package com.fastaccess.github.base.widget.recyclerview.lm
 
 import android.content.Context
 import android.util.AttributeSet

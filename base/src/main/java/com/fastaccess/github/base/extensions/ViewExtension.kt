@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.annotation.MenuRes
 import androidx.core.view.ViewCompat
@@ -17,8 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.TransitionManager
-import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.github.base.R
+import com.fastaccess.github.base.widget.recyclerview.decoration.InsetDividerDecoration
+import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
@@ -89,21 +89,21 @@ fun View.showHideFabAnimation(
 fun RecyclerView.addKeyLineDivider() {
     if (canAddDivider()) {
         val resources = resources
-//        addItemDecoration(
-//            InsetDividerDecoration(
-//                resources.getDimensionPixelSize(R.dimen.divider_height),
-//                resources.getDimensionPixelSize(R.dimen.keyline_2), context.getColorAttr(R.attr.dividerColor)
-//            )
-//        )
+        addItemDecoration(
+            InsetDividerDecoration(
+                resources.getDimensionPixelSize(R.dimen.divider_height),
+                resources.getDimensionPixelSize(R.dimen.keyline_2), context.getColorAttr(R.attr.dividerColor)
+            )
+        )
     }
 }
 
 fun RecyclerView.addDivider() {
     if (canAddDivider()) {
         val resources = resources
-//        addItemDecoration(
-//            InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0, context.getColorAttr(R.attr.dividerColor))
-//        )
+        addItemDecoration(
+            InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0, context.getColorAttr(R.attr.dividerColor))
+        )
     }
 }
 
@@ -156,23 +156,6 @@ fun View.showKeyboard() {
 fun View.hideKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)
-}
-
-fun View.popupEmoji(
-    id: String,
-    list: List<ReactionGroupModel>?,
-    callback: (() -> Unit)?
-) {
-    val popupWindow = PopupWindow(context)
-//    val view = View.inflate(context, R.layout.reaction_group_chip_widget, null)
-//    view.reactionGroup.setup(id, list, popupWindow, callback)
-//    popupWindow.contentView = view
-//    popupWindow.setBackgroundDrawable(context.getDrawableCompat(R.drawable.popup_window_background))
-//    popupWindow.elevation = resources.getDimension(R.dimen.spacing_normal)
-//    popupWindow.isOutsideTouchable = true
-//    popupWindow.isFocusable = true
-//    popupWindow.isTouchable = true
-//    popupWindow.showAsDropDown(this)
 }
 
 fun View.popMenu(

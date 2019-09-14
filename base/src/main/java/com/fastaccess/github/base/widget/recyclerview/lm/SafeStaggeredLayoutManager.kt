@@ -1,23 +1,21 @@
-package com.fastaccess.github.ui.widget.recyclerview.lm
+package com.fastaccess.github.base.widget.recyclerview.lm
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 /**
  * Created by Kosh on 31.10.18.
  */
-class SafeLinearLayoutManager : LinearLayoutManager {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, orientation: Int, reverseLayout: Boolean) : super(context, orientation, reverseLayout)
+class SafeStaggeredLayoutManager : StaggeredGridLayoutManager {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(spanCount: Int, orientation: Int) : super(spanCount, orientation)
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
         try {
             super.onLayoutChildren(recycler, state)
         } catch (ignored: Exception) {
-            ignored.printStackTrace()
         }
     }
 
@@ -25,7 +23,6 @@ class SafeLinearLayoutManager : LinearLayoutManager {
         try {
             super.onMeasure(recycler, state, widthSpec, heightSpec)
         } catch (ignored: Exception) {
-            ignored.printStackTrace()
         }
     }
 }

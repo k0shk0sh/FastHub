@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.model.ReactionContent
 import com.fastaccess.data.model.ReactionGroupModel
 import com.fastaccess.data.model.getEmoji
-import com.fastaccess.github.base.extensions.popupEmoji
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.reactions.R
 import com.google.android.material.chip.Chip

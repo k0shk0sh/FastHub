@@ -2,7 +2,7 @@ package com.fastaccess.github.ui.adapter.base
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.fastaccess.github.ui.widget.recyclerview.decoration.InsetDividerDecoration
+import com.fastaccess.github.base.widget.recyclerview.decoration.InsetDividerDecoration
 
 /**
  * Created by Kosh on 23.06.18.

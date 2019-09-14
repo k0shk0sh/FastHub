@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.widget.recyclerview
+package com.fastaccess.github.base.widget.recyclerview
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.fastaccess.github.R
+import com.fastaccess.github.base.R
 import com.google.android.material.appbar.AppBarLayout
 
-open class RecyclerViewFastScroller : FrameLayout {
+class RecyclerViewFastScroller : FrameLayout {
 
     private lateinit var scrollerView: ImageView
     private var scrollerHeight: Int = 0

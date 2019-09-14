@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.widget.recyclerview.decoration
+package com.fastaccess.github.base.widget.recyclerview.decoration
 
 import android.graphics.Canvas
 import android.graphics.Paint

@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.widget.recyclerview
+package com.fastaccess.github.base.widget.recyclerview
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +14,7 @@ class EndlessRecyclerViewScrollListener(private val onLoadMore: (totalCount: Int
 
     private fun init(recyclerView: RecyclerView) {
         this.layoutManager = recyclerView.layoutManager
-        val lm = layoutManager ?: return
-        when (lm) {
+        when (val lm = layoutManager ?: return) {
             is GridLayoutManager -> init(lm)
             is StaggeredGridLayoutManager -> init(lm)
         }

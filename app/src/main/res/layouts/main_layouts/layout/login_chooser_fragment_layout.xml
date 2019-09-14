@@ -65,7 +65,7 @@
                             android:tint="@color/black"/>
                     </LinearLayout>
 
-                    <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                    <com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
                         android:id="@+id/recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

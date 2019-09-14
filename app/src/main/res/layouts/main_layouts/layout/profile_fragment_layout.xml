@@ -296,7 +296,7 @@
                             android:textAllCaps="true"
                             android:textStyle="bold" />
 
-                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        <com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/organizationList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -338,7 +338,7 @@
                             android:textAllCaps="true"
                             android:textStyle="bold" />
 
-                        <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                        <com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
                             android:id="@+id/pinnedList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

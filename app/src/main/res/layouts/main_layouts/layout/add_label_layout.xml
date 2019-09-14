@@ -57,7 +57,7 @@
                         android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+                <com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

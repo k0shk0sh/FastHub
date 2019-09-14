@@ -80,7 +80,7 @@
                 android:padding="@dimen/spacing_xs_large"
                 android:text="@string/language"/>
 
-            <com.fastaccess.github.ui.widget.recyclerview.BaseRecyclerView
+            <com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
                 android:id="@+id/languageRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
