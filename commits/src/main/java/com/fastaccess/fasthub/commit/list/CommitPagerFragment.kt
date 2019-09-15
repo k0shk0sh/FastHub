@@ -13,13 +13,12 @@ import com.fastaccess.github.base.PagerAdapter
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.base.utils.EXTRA_TWO
-import kotlinx.android.synthetic.main.toolbar_fragment_pager_layout.*
 
 class CommitPagerFragment : BasePagerFragment() {
 
-    private val login by lazy { arguments?.getString("login") }
-    private val repo by lazy { arguments?.getString("repo") }
-    private val number by lazy { arguments?.getInt("number", 0) ?: 0 }
+    private val login by lazy { arguments?.getString(EXTRA) }
+    private val repo by lazy { arguments?.getString(EXTRA_TWO) }
+    private val number by lazy { arguments?.getInt(EXTRA_THREE, 0) ?: 0 }
 
 
     override fun viewModel(): BaseViewModel? = null

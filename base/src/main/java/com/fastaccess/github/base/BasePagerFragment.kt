@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayout
  * Created by Kosh on 07.10.18.
  */
 
-abstract class BasePagerFragment : com.fastaccess.github.base.BaseFragment(), UpdateTabCount {
+abstract class BasePagerFragment : BaseFragment(), UpdateTabCount {
     abstract fun onPageSelected(page: Int)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

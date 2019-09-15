@@ -15,7 +15,7 @@ import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.ProfileFeedsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.feeds.viewmodel.ProfileFeedsViewModel
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+
 import javax.inject.Inject
 
 /**

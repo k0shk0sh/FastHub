@@ -1,12 +1,12 @@
-package com.fastaccess.github.ui.widget
+package com.fastaccess.github.base.widget
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import com.fastaccess.github.R
+import com.bumptech.glide.Glide
+import com.fastaccess.github.base.R
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.route
-import com.fastaccess.github.platform.glide.GlideApp
 
 
 /**
@@ -34,7 +34,7 @@ class AvatarImageView constructor(
             scaleType = ScaleType.CENTER_CROP
         } else {
             val drawable = context.getDrawableCompat(R.drawable.ic_profile)
-            GlideApp.with(this)
+            Glide.with(this)
                 .load(url)
                 .circleCrop()
                 .fallback(drawable)

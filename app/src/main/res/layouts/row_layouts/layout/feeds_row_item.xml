@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_xs_large">
 
-                <com.fastaccess.github.ui.widget.AvatarImageView
+                <com.fastaccess.github.base.widget.AvatarImageView
                     android:id="@+id/userIcon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"

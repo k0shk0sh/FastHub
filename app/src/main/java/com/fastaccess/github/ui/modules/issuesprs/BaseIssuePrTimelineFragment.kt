@@ -45,7 +45,7 @@ import github.type.LockReason
 import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_view_layout.*
-import kotlinx.android.synthetic.main.recyclerview_fastscroll_empty_state_layout.*
+
 import timber.log.Timber
 import javax.inject.Inject
 

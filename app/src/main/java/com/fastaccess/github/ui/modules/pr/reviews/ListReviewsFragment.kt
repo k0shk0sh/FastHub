@@ -8,7 +8,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+
 import javax.inject.Inject
 
 class ListReviewsFragment : com.fastaccess.github.base.BaseFragment() {

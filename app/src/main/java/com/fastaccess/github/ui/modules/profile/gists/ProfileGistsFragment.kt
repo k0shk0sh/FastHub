@@ -14,7 +14,7 @@ import com.fastaccess.github.ui.adapter.ProfileGistsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsViewModel
 import com.fastaccess.github.extensions.observeNotNull
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+
 import javax.inject.Inject
 
 /**

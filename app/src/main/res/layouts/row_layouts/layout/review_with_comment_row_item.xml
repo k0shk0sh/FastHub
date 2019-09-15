@@ -29,7 +29,7 @@
                 android:layout_marginBottom="@dimen/spacing_normal"
                 android:orientation="horizontal">
 
-                <com.fastaccess.github.ui.widget.AvatarImageView
+                <com.fastaccess.github.base.widget.AvatarImageView
                     android:id="@+id/reviewUserIcon"
                     android:layout_width="@dimen/small_icon_zie"
                     android:layout_height="@dimen/small_icon_zie"

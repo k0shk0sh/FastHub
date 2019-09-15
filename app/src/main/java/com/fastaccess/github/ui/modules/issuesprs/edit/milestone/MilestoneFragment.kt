@@ -20,7 +20,7 @@ import com.fastaccess.github.extensions.show
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MilestonesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.viewmodel.MilestoneViewModel
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+
 import java.util.*
 import javax.inject.Inject
 
@@ -82,7 +82,7 @@ class MilestoneFragment : com.fastaccess.github.base.BaseFragment(), CreateMiles
                 }
             }
         }
-        toolbar.menu?.findItem(R.id.submit)?.isVisible = false
+        toolbar?.menu?.findItem(R.id.submit)?.isVisible = false
         recyclerView.addDivider()
         recyclerView.adapter = adapter
         recyclerView.setEmptyView(emptyLayout)

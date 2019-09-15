@@ -16,6 +16,9 @@ import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.base.callback.UpdateTabCount
+import com.fastaccess.github.base.widget.ParentSwipeRefreshLayout
+import com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
+import com.fastaccess.github.base.widget.recyclerview.RecyclerViewFastScroller
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.markdown.spans.LabelSpan
@@ -209,4 +212,8 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     protected val toolbarTitle by lazy { view?.findViewById<TextView>(R.id.toolbarTitle) }
     protected val emptyLayout by lazy { view?.findViewById<View>(R.id.emptyLayout) ?: throw IllegalAccessError("error") }
     protected val tabs by lazy { view?.findViewById<TabLayout>(R.id.tabs) ?: throw IllegalAccessError("error") }
+    protected val pager by lazy { view?.findViewById<ViewPager>(R.id.pager) ?: throw IllegalAccessError("error") }
+    protected val recyclerView by lazy { view?.findViewById<BaseRecyclerView>(R.id.recyclerView) ?: throw IllegalAccessError("error") }
+    protected val fastScroller by lazy { view?.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) ?: throw IllegalAccessError("error") }
+    protected val swipeRefresh by lazy { view?.findViewById<ParentSwipeRefreshLayout>(R.id.swipeRefresh) ?: throw IllegalAccessError("error") }
 }

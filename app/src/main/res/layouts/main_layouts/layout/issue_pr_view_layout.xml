@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fastaccess.github.base.widget.ParentSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/swipeRefresh"
@@ -50,4 +50,4 @@
         <include layout="@layout/recyclerview_fastscroll_empty_state_layout" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout>
+</com.fastaccess.github.base.widget.ParentSwipeRefreshLayout>

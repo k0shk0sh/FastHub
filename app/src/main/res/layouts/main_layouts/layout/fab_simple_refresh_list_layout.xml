@@ -7,7 +7,7 @@
     android:background="?android:windowBackground"
     app:layout_behavior="@string/scroll_behaviour">
 
-    <com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout
+    <com.fastaccess.github.base.widget.ParentSwipeRefreshLayout
         android:id="@id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,7 +19,7 @@
             android:clipToPadding="false"
             android:paddingBottom="@dimen/fab_spacing"
             app:layoutManager="@string/llm"/>
-    </com.fastaccess.github.ui.widget.ParentSwipeRefreshLayout>
+    </com.fastaccess.github.base.widget.ParentSwipeRefreshLayout>
 
     <com.fastaccess.github.base.widget.recyclerview.RecyclerViewFastScroller
         android:id="@+id/fastScroller"

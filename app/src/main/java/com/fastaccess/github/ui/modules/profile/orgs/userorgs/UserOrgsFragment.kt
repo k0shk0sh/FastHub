@@ -12,7 +12,7 @@ import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.OrganizationsAdapter
 import com.fastaccess.github.ui.adapter.base.CurrentState
 import com.fastaccess.github.ui.modules.profile.orgs.userorgs.viewmodel.UserOrgsViewModel
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+
 import timber.log.Timber
 import javax.inject.Inject
 

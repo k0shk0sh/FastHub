@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="card_background" format="color|reference"/>
-    <attr name="icon_color" format="color|reference"/>
-    <attr name="timeLineBackground" format="reference"/>
-    <attr name="patch_deletion" format="color"/>
-    <attr name="patch_addition" format="color"/>
-    <attr name="patch_ref" format="color"/>
-    <attr name="dividerColor" format="color|reference"/>
-    <attr name="comment_box_style" format="reference"/>
-    <attr name="chip_background" format="color|reference"/>
+    <attr name="card_background" format="color|reference" />
+    <attr name="icon_color" format="color|reference" />
+    <attr name="timeLineBackground" format="reference" />
+    <attr name="patch_deletion" format="color" />
+    <attr name="patch_addition" format="color" />
+    <attr name="patch_ref" format="color" />
+    <attr name="dividerColor" format="color|reference" />
+    <attr name="comment_box_style" format="reference" />
+    <attr name="chip_background" format="color|reference" />
 
     <!-- TODO: This is a temporary fix for this issue: https://issuetracker.google.com/issues/136103084 -->
-    <attr name="flow_horizontalSeparator"/>
-    <attr name="flow_verticalSeparator"/>
-    <attr name="motionProgress"/>
-    <attr name="waveDecay"/>
-    <attr name="motionPathRotate"/>
-    <attr name="duration"/>
+    <attr name="flow_horizontalSeparator" />
+    <attr name="flow_verticalSeparator" />
+    <attr name="motionProgress" />
+    <attr name="waveDecay" />
+    <attr name="motionPathRotate" />
+    <attr name="duration" />
 </resources>

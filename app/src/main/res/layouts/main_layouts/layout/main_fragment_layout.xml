@@ -98,7 +98,7 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        <com.fastaccess.github.base.widget.ParentSwipeRefreshLayout
             android:id="@id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -110,7 +110,7 @@
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/spacing_anti"
                 app:layoutManager="@string/llm" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </com.fastaccess.github.base.widget.ParentSwipeRefreshLayout>
     </LinearLayout>
 
     <include layout="@layout/bottm_bar_menu_layout" />

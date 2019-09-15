@@ -8,7 +8,7 @@
 
     <include layout="@layout/appbar_center_title_layout_bottomsheet" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.fastaccess.github.base.widget.ParentSwipeRefreshLayout
         android:id="@id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +27,7 @@
                 android:paddingTop="@dimen/spacing_xs_large"
                 android:paddingBottom="?actionBarSize">
 
-                <com.fastaccess.github.ui.widget.AvatarImageView
+                <com.fastaccess.github.base.widget.AvatarImageView
                     android:id="@+id/userImageView"
                     android:layout_width="@dimen/header_icon_zie"
                     android:layout_height="@dimen/header_icon_zie"
@@ -351,7 +351,7 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.fastaccess.github.base.widget.ParentSwipeRefreshLayout>
 
     <include layout="@layout/profile_bottom_sheet" />
 

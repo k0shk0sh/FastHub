@@ -17,7 +17,7 @@ import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.AssigneesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.viewmodel.AssigneesViewModel
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+
 import javax.inject.Inject
 
 /**

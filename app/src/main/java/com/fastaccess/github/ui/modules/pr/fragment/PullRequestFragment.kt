@@ -6,19 +6,21 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.hideKeyboard
+import com.fastaccess.github.base.extensions.theme
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.route
 import com.fastaccess.github.extensions.timeAgo
+import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
 import com.fastaccess.github.ui.modules.pr.fragment.viewmodel.PullRequestTimelineViewModel
@@ -34,9 +36,7 @@ import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.pr_header_row_item.*
 import kotlinx.android.synthetic.main.pr_view_layout.*
-import kotlinx.android.synthetic.main.recyclerview_fastscroll_empty_state_layout.*
 import javax.inject.Inject
-import com.fastaccess.github.base.extensions.*
 
 /**
  * Created by Kosh on 28.01.19.
@@ -198,6 +198,9 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
         approved.text = getString(R.string.approved_with_count, model.dashboard?.approvedReviews ?: 0)
         commented.text = getString(R.string.commented_with_count, model.dashboard?.commentedReviews ?: 0)
         changes.text = getString(R.string.changes_with_count, model.dashboard?.changeRequestedReviews ?: 0)
+        commitsCard.setOnClickListener {
+            it.context.route("${model.url}/commits")
+        }
     }
 
     override fun deleteComment(login: String, repo: String, commentId: Long, type: TimelineType) {

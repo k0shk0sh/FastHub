@@ -13,7 +13,6 @@ import com.fastaccess.github.base.PagerAdapter
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.UnreadNotificationsFragment
-import kotlinx.android.synthetic.main.toolbar_fragment_pager_layout.*
 
 /**
  * Created by Kosh on 04.11.18.

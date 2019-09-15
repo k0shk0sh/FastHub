@@ -19,7 +19,7 @@ import com.fastaccess.github.extensions.show
 import com.fastaccess.github.ui.adapter.LabelsAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.viewmodel.LabelsViewModel
-import kotlinx.android.synthetic.main.simple_refresh_list_layout.*
+
 import javax.inject.Inject
 
 /**

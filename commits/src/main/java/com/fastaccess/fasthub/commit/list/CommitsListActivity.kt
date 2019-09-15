@@ -8,6 +8,7 @@ import com.fastaccess.github.extensions.replace
 
 @WebDeepLink(
     "/{login}/{repo}/commits",
+    "/{login}/{repo}/commits/{branch}",
     "/{login}/{repo}/pull/{number}/commits",
     "/repos/{login}/{repo}/commits/{oid}"
 )
@@ -15,8 +16,9 @@ class CommitsListActivity : BaseActivity() {
 
     private val login by lazy { intent?.getStringExtra("login") }
     private val repo by lazy { intent?.getStringExtra("repo") }
-    private val number by lazy { intent?.getIntExtra("number", 0) ?: 0 }
+    private val number by lazy { intent?.getStringExtra("number")?.toIntOrNull() ?: 0 }
     private val oid by lazy { intent?.getStringExtra("oid") }
+    private val branch by lazy { intent?.getStringExtra("branch") }
 
     override fun layoutRes(): Int = R.layout.fragment_activity_layout
 

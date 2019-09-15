@@ -12,9 +12,9 @@ import com.fastaccess.github.base.utils.EXTRA_TWO
 
 class CommitListFragment : BaseFragment() {
 
-    private val login by lazy { arguments?.getString("login") }
-    private val repo by lazy { arguments?.getString("repo") }
-    private val number by lazy { arguments?.getInt("number", 0) ?: 0 }
+    private val login by lazy { arguments?.getString(EXTRA) }
+    private val repo by lazy { arguments?.getString(EXTRA_TWO) }
+    private val number by lazy { arguments?.getInt(EXTRA_THREE, 0) ?: 0 }
     private val isPr by lazy { number > 0 }
 
     override fun layoutRes(): Int = if (isPr) {
@@ -25,7 +25,13 @@ class CommitListFragment : BaseFragment() {
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
         toolbar?.let {
-            setupToolbar(R.string.commits)
+            setupToolbar(
+                "$login/$repo/${if (number > 0) {
+                    "$number/${getString(R.string.commits)}"
+                } else {
+                    getString(R.string.commits)
+                }}"
+            )
         }
     }
 
