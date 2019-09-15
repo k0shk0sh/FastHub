@@ -6,7 +6,8 @@ import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepository
 import com.fastaccess.data.repository.LoginRepository
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.editor.usecase.DeleteCommentUseCase
+import com.fastaccess.github.editor.usecase.EditCommentUseCase
 import com.fastaccess.github.extensions.filterNull
 import com.fastaccess.github.extensions.map
 import com.fastaccess.github.usecase.issuesprs.*

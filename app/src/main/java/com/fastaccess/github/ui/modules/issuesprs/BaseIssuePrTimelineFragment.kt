@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.TimelineType
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
@@ -33,7 +34,6 @@ import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.lockunlock.LockUnlockFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.MilestoneFragment
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import com.fastaccess.github.usecase.issuesprs.TimelineType
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder

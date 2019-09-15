@@ -9,5 +9,5 @@ import dagger.Provides
 
 @Module(includes = [MarkdownModule::class, MentionsModule::class])
 class CommitModule {
-    @PerFragment @Provides fun provideIssueContext(fragment: CommitFragment) = fragment.requireContext()
+    @PerFragment @Provides fun provideCommitContext(fragment: CommitFragment) = fragment.requireContext()
 }

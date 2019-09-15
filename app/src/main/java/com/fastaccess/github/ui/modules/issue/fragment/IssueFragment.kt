@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.TimelineType
 import com.fastaccess.data.persistence.models.IssueModel
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
@@ -24,7 +25,6 @@ import com.fastaccess.github.extensions.timeAgo
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
-import com.fastaccess.github.usecase.issuesprs.TimelineType
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.CommentAuthorAssociation
 import github.type.IssueState

@@ -52,6 +52,7 @@ dependencies {
     implementation project(':markdown')
     implementation project(':editor')
     implementation project(':dagger')
+    implementation project(':reactions')
     implementation dependency.kotlin
     implementation dependency.supportLibraries
     implementation dependency.extrasLibraries

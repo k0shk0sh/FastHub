@@ -4,9 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.TimelineType
 import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.data.repository.PullRequestRepository
-import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.editor.usecase.DeleteCommentUseCase
+import com.fastaccess.github.editor.usecase.EditCommentUseCase
 import com.fastaccess.github.extensions.filterNull
 import com.fastaccess.github.extensions.map
 import com.fastaccess.github.extensions.toArrayList

@@ -11,7 +11,7 @@ import com.fastaccess.data.model.FullCommitModel
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.fasthub.commit.R
-import com.fastaccess.fasthub.commit.list.CommitListFragment
+import com.fastaccess.fasthub.commit.view.comment.CommitCommentsFragment
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -56,8 +56,8 @@ class CommitFragment : BasePagerFragment() {
             initHeader(it)
             pager.adapter = PagerAdapter(
                 childFragmentManager, arrayListOf(
-                    ViewPagerModel(getString(R.string.commits), CommitListFragment.newInstance(login, repo, 0), FragmentType.FILES),
-                    ViewPagerModel(getString(R.string.files), CommitListFragment.newInstance(login, repo, 0), FragmentType.COMMENTS) // TODO
+                    ViewPagerModel(getString(R.string.files), CommitCommentsFragment.newInstance(sha, login, repo), FragmentType.FILES),
+                    ViewPagerModel(getString(R.string.comment), CommitCommentsFragment.newInstance(sha, login, repo), FragmentType.COMMENTS)
                 )
             )
             tabs.setupWithViewPager(pager)

@@ -27,7 +27,7 @@ import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
 import com.fastaccess.github.ui.modules.pr.fragment.viewmodel.PullRequestTimelineViewModel
 import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog
 import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog.QuickMessageCallback
-import com.fastaccess.github.usecase.issuesprs.TimelineType
+import com.fastaccess.data.model.TimelineType
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.CommentAuthorAssociation
 import github.type.LockReason

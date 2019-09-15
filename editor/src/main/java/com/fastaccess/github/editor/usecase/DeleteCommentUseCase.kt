@@ -1,5 +1,6 @@
-package com.fastaccess.github.usecase.issuesprs
+package com.fastaccess.github.editor.usecase
 
+import com.fastaccess.data.model.TimelineType
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.response.body.DismissReviewRequestModel
 import com.fastaccess.domain.services.CommitService

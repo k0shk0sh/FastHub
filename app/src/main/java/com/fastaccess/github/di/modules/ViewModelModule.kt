@@ -3,6 +3,7 @@ package com.fastaccess.github.di.modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.fasthub.commit.view.CommitViewModel
+import com.fastaccess.fasthub.commit.view.comment.CommitCommentsViewModel
 import com.fastaccess.fasthub.dagger.annotations.ViewModelKey
 import com.fastaccess.github.editor.dialog.UploadPictureViewModel
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
@@ -112,4 +113,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(CommitViewModel::class)
     abstract fun bindCommitViewModel(viewModel: CommitViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(CommitCommentsViewModel::class)
+    abstract fun bindCommitCommentsViewModel(viewModel: CommitCommentsViewModel): ViewModel
 }
