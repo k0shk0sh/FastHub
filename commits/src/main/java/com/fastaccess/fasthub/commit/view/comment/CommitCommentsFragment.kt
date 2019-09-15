@@ -154,6 +154,7 @@ class CommitCommentsFragment : BaseFragment() {
                 commentText.hideKeyboard()
             }
             view?.let { view -> showSnackBar(view, R.string.comments_added_successfully) }
+            viewModel.loadData(sha, login, repo, true)
         }
 
         viewModel.commentProgress.observeNotNull(this) {

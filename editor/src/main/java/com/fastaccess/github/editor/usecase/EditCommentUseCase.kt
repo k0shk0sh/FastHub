@@ -32,10 +32,10 @@ class EditCommentUseCase @Inject constructor(
         TimelineType.GIST -> TODO()
     }
         .flatMap {
-            return@flatMap if (it.code() != 200 || it.code() != 204) {
-                Observable.error(HttpException(it))
-            } else {
+            return@flatMap if (it.code() == 200 || it.code() == 204) {
                 Observable.just(it)
+            } else {
+                Observable.error(HttpException(it))
             }
         }
         .subscribeOn(schedulerProvider.ioThread())
