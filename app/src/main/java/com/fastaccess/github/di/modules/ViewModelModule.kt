@@ -2,11 +2,12 @@ package com.fastaccess.github.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.fastaccess.fasthub.commit.view.CommitViewModel
 import com.fastaccess.fasthub.dagger.annotations.ViewModelKey
+import com.fastaccess.github.editor.dialog.UploadPictureViewModel
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
-import com.fastaccess.github.editor.dialog.UploadPictureViewModel
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrViewModel
@@ -108,4 +109,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(PullRequestTimelineViewModel::class)
     abstract fun bindPullRequestTimelineViewModel(viewModel: PullRequestTimelineViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(CommitViewModel::class)
+    abstract fun bindCommitViewModel(viewModel: CommitViewModel): ViewModel
 }

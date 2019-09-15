@@ -18,7 +18,7 @@ enum class FragmentType(val tabName: String? = null) {
     FOLLOWERS("followers"), FOLLOWINGS("following"),
     UNREAD_NOTIFICATIONS("unread_notification"), ALL_NOTIFICATIONS("all_notification"),
     FILTER_ISSUES("filter_issues"), FILTER_PRS("filter_prs"),
-    COMMITS(""), FILES("");
+    COMMITS(""), FILES(""), COMMENTS("");
 
     companion object {
         fun getTypeSafely(tabName: String): FragmentType? = try {

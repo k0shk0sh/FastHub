@@ -116,6 +116,7 @@ fragment FullCommit on Commit {
         state
     }
     messageHeadline
+    messageBody
 }
 
 fragment FullIssue on Issue {
@@ -301,6 +302,32 @@ fragment Comment on IssueComment {
     viewerDidAuthor
     viewerCanMinimize
     viewerCannotUpdateReasons
+    reactionGroups {
+        ... Reactions
+    }
+}
+
+fragment FullCommitComment on CommitComment {
+    author {
+        login
+        avatarUrl
+        url
+    }
+    createdAt
+    authorAssociation
+    bodyHTML
+    body
+    id
+    databaseId
+    updatedAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    viewerCanMinimize
+    viewerCannotUpdateReasons
+    path
+    position
     reactionGroups {
         ... Reactions
     }

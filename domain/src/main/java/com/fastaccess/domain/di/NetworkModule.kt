@@ -13,6 +13,7 @@ import dagger.Module
 import dagger.Provides
 import github.type.CustomType
 import okhttp3.*
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -197,7 +198,7 @@ private class PaginationInterceptor : Interceptor {
                     }
                 }
                 json += String.format("\"items\":%s}", response.body?.string())
-                return response.newBuilder().body(ResponseBody.create(response.body?.contentType(), json)).build()
+                return response.newBuilder().body(json.toResponseBody(response.body?.contentType())).build()
             } else if (response.header("link") != null) {
                 val link = response.header("link")
                 var pagination = ""
@@ -211,10 +212,7 @@ private class PaginationInterceptor : Interceptor {
                 if (pagination.isNotEmpty()) {
                     val body = response.body?.string()
                     return response.newBuilder().body(
-                        ResponseBody.create(
-                            response.body?.contentType(),
-                            "{" + pagination + body?.substring(1, body.length)
-                        )
+                        ("{" + pagination + body?.substring(1, body.length)).toResponseBody(response.body?.contentType())
                     ).build()
                 }
             }
@@ -241,8 +239,7 @@ private class GithubResponseConverter(
             }
         } catch (ignored: OutOfMemoryError) {
             null
-        } as Converter<ResponseBody, *>?
-
+        }
     }
 
     override fun requestBodyConverter(
@@ -275,12 +272,9 @@ private class ObjectApolloAdapter : CustomTypeAdapter<Any> {
 private class DateApolloAdapter : CustomTypeAdapter<Date> {
     override fun encode(value: Date): CustomTypeValue<*> = CustomTypeValue.fromRawValue(value)
     override fun decode(value: CustomTypeValue<*>): Date {
-        return try {
+        return kotlin.runCatching {
             val date = value.value as String
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(date) // because Github API is the best of all. /shrug
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Date()
-        }
+        }.getOrDefault(Date())
     }
 }

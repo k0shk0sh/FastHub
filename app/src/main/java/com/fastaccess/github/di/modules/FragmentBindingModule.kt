@@ -2,6 +2,7 @@ package com.fastaccess.github.di.modules
 
 import com.fastaccess.fasthub.commit.list.CommitListFragment
 import com.fastaccess.fasthub.commit.list.CommitPagerFragment
+import com.fastaccess.fasthub.commit.view.CommitFragment
 import com.fastaccess.fasthub.commit.view.di.CommitModule
 import com.fastaccess.fasthub.dagger.scopes.PerFragment
 import com.fastaccess.github.editor.EditorFragment
@@ -37,7 +38,6 @@ import com.fastaccess.github.ui.modules.trending.fragment.TrendingFragment
 import com.fastaccess.markdown.di.MarkdownModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import github.fragment.CommitFragment
 
 /**
  * Created by Kosh on 19.05.18.

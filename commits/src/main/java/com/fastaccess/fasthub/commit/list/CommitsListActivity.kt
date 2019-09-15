@@ -2,6 +2,7 @@ package com.fastaccess.fasthub.commit.list
 
 import android.os.Bundle
 import com.fastaccess.fasthub.commit.R
+import com.fastaccess.fasthub.commit.view.CommitFragment
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.base.deeplink.WebDeepLink
 import com.fastaccess.github.extensions.replace
@@ -29,14 +30,27 @@ class CommitsListActivity : BaseActivity() {
             val login = login
             val repo = repo
             if (!login.isNullOrEmpty() && !repo.isNullOrEmpty()) {
+                val oid = oid
                 if (number > 0) {
-                    replace(R.id.container, CommitPagerFragment.newInstance(login, repo, number))
+                    if (oid.isNullOrEmpty()) {
+                        replace(R.id.container, CommitPagerFragment.newInstance(login, repo, number))
+                    } else {
+                        showCommitFragment(oid, login, repo)
+                    }
                 } else {
-                    replace(R.id.container, CommitListFragment.newInstance(login, repo, number))
+                    if (oid.isNullOrEmpty()) {
+                        replace(R.id.container, CommitListFragment.newInstance(login, repo, number))
+                    } else {
+                        showCommitFragment(oid, login, repo)
+                    }
                 }
             } else {
                 finish()
             }
         }
+    }
+
+    private fun showCommitFragment(oid: String, login: String, repo: String) {
+        replace(R.id.container, CommitFragment.newInstance(oid, login, repo))
     }
 }

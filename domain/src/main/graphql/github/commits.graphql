@@ -27,3 +27,20 @@ query getCommit($login: String!, $repo: String!, $sha: String!) {
         }
     }
 }
+
+query getCommitComments($login: String!, $repo: String!, $sha: String!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+           commitOb: object(expression: $sha) {
+                ... on Commit {
+                    id
+                    comments(first: 30, after: $page) {
+                        totalCount
+                        pageInfo { ... PageInfoFragment }
+                        nodes { ... FullCommitComment }
+                    }
+                }
+            }
+        }
+    }
+}

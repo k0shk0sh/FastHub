@@ -8,11 +8,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.FastHubObserver
 import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.github.editor.usecase.FilterSearchUsersUseCase
 import com.fastaccess.github.extensions.isTrue
 import com.otaliastudios.autocomplete.RecyclerViewPresenter
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -27,24 +27,26 @@ class MentionsPresenter @Inject constructor(
     schedulerProvider: SchedulerProvider
 ) : RecyclerViewPresenter<String>(c) {
 
+    private var disposable: Disposable? = null
     private val localList = ArrayList<String>()
     private val publishSubject by lazy { PublishSubject.create<String>() }
 
     init {
-        publishSubject.debounce(400, TimeUnit.MILLISECONDS)
-            .switchMap {
-                searchUsersUseCase.keyword = it
+        disposable = publishSubject.debounce(400, TimeUnit.MILLISECONDS)
+            .switchMap { query ->
+                searchUsersUseCase.keyword = query
                 return@switchMap searchUsersUseCase.buildObservable()
                     .map { result -> result.second.map { it.login ?: it.name ?: "" } }
             }
-            .doOnNext {
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
+            .subscribe({
                 Timber.e("result($it)")
                 localList.clear()
                 setUsers(it)
-            }
-            .subscribeOn(schedulerProvider.ioThread())
-            .observeOn(schedulerProvider.uiThread())
-            .subscribe(FastHubObserver())
+            }, {
+                it.printStackTrace()
+            })
     }
 
     private val adapter by lazy { MentionsAdapter(this, arrayListOf()) }
@@ -69,7 +71,11 @@ class MentionsPresenter @Inject constructor(
 
     fun onClick(item: String) = dispatchClick(item)
 
-    fun onDispose() = searchUsersUseCase.dispose()
+    fun onDispose() {
+        if (disposable?.isDisposed == false) {
+            disposable?.dispose()
+        }
+    }
 
     override fun getPopupDimensions(): PopupDimensions {
         return super.getPopupDimensions().apply {
