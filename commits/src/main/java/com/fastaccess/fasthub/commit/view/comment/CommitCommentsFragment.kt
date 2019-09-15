@@ -7,6 +7,7 @@ import android.text.Editable
 import android.view.View
 import android.widget.EditText
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.FragmentType
@@ -15,6 +16,7 @@ import com.fastaccess.fasthub.commit.R
 import com.fastaccess.fasthub.commit.adapter.CommitCommentsAdapter
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.hideKeyboard
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.extensions.theme
 import com.fastaccess.github.base.utils.EDITOR_DEEP_LINK
@@ -92,9 +94,9 @@ class CommitCommentsFragment : BaseFragment() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 COMMENT_REQUEST_CODE -> {
-                    view?.findViewById<EditText?>(R.id.commentText)?.let { commentText ->
+                    parentFragment?.view?.findViewById<EditText?>(R.id.commentText)?.let { commentText ->
                         commentText.setText(data?.getStringExtra(EXTRA))
-                        view?.findViewById<View?>(R.id.sendComment)?.callOnClick()
+                        parentFragment?.view?.findViewById<View?>(R.id.sendComment)?.callOnClick()
                     }
                 }
                 EDIT_COMMENT_REQUEST_CODE -> {
@@ -108,7 +110,7 @@ class CommitCommentsFragment : BaseFragment() {
     }
 
     private fun setupEditText() {
-        val commentText = view?.findViewById<EditText>(R.id.commentText) ?: return
+        val commentText = parentFragment?.view?.findViewById<EditText>(R.id.commentText) ?: return
         Autocomplete.on<String>(commentText)
             .with(CharPolicy('@'))
             .with(mentionsPresenter)
@@ -122,19 +124,18 @@ class CommitCommentsFragment : BaseFragment() {
                 override fun onPopupVisibilityChanged(shown: Boolean) {}
             })
             .build()
-        view?.findViewById<View?>(R.id.sendComment)?.setOnClickListener {
+        parentFragment?.view?.findViewById<View?>(R.id.sendComment)?.setOnClickListener {
             val comment = commentText.text?.toString()
             if (!comment.isNullOrEmpty()) {
                 viewModel.addComment(login, repo, sha, comment)
             }
         }
-        view?.findViewById<View?>(R.id.toggleFullScreen)?.setOnClickListener {
+        parentFragment?.view?.findViewById<View?>(R.id.toggleFullScreen)?.setOnClickListener {
             routeForResult(EDITOR_DEEP_LINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
         }
     }
 
     private fun listenToChanges() {
-
         viewModel.data.observeNotNull(this) {
             adapter.submitList(it)
         }
@@ -148,7 +149,16 @@ class CommitCommentsFragment : BaseFragment() {
         }
 
         viewModel.commentAddedLiveData.observeNotNull(this) {
+            parentFragment?.view?.findViewById<EditText?>(R.id.commentText)?.let { commentText ->
+                commentText.setText("")
+                commentText.hideKeyboard()
+            }
             view?.let { view -> showSnackBar(view, R.string.comments_added_successfully) }
+        }
+
+        viewModel.commentProgress.observeNotNull(this) {
+            parentFragment?.view?.findViewById<View?>(R.id.commentProgress)?.isVisible = it
+            parentFragment?.view?.findViewById<View?>(R.id.sendComment)?.isVisible = !it
         }
     }
 

@@ -27,6 +27,7 @@ class CommitCommentsViewModel @Inject constructor(
     private var pageInfo: PageInfoModel? = null
     private val list = arrayListOf<CommentModel>()
 
+    val commentProgress = MutableLiveData<Boolean>()
     val data = MutableLiveData<List<CommentModel>>()
     val commentAddedLiveData = MutableLiveData<Boolean>()
 
@@ -79,6 +80,7 @@ class CommitCommentsViewModel @Inject constructor(
         editCommentUseCase.commentId = commentId.toLong()
         editCommentUseCase.repo = repo
         editCommentUseCase.login = login
+        editCommentUseCase.type = TimelineType.COMMIT
         justSubscribe(deleteCommentUseCase.buildObservable()
             .map {
                 val index = list.indexOfFirst { it.databaseId == commentId }
@@ -96,10 +98,20 @@ class CommitCommentsViewModel @Inject constructor(
         createCommitCommentUseCase.repo = repo
         createCommitCommentUseCase.login = login
         createCommitCommentUseCase.sha = sha
-        justSubscribe(createCommitCommentUseCase.buildObservable()
+        add(createCommitCommentUseCase.buildObservable()
+            .doOnSubscribe { commentProgress.postValue(true) }
             .doOnNext {
+                commentProgress.postValue(false)
                 commentAddedLiveData.postValue(true)
+            }
+            .subscribe({
+                commentProgress.postValue(false)
+            }, {
+                commentProgress.postValue(false)
+                handleError(it)
+                it.printStackTrace()
             })
+        )
     }
 
     private fun onRequestFinished(pair: Pair<PageInfoModel, ResponseWithCounterModel<CommentModel>>) {

@@ -25,6 +25,7 @@ import com.fastaccess.github.extensions.timeAgo
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.commits_header_layout.*
+import kotlinx.android.synthetic.main.single_commit_pager_layout.*
 import javax.inject.Inject
 
 class CommitFragment : BasePagerFragment() {
@@ -49,6 +50,10 @@ class CommitFragment : BasePagerFragment() {
         if (viewModel.commitLiveData.value == null) {
             viewModel.loadCommit(login, repo, sha)
         }
+    }
+
+    override fun onPagerChangedPosition(position: Int) {
+        commentLayout.isVisible = position != 0
     }
 
     private fun observeChanges() {

@@ -17,7 +17,9 @@ abstract class BasePagerFragment : BaseFragment(), UpdateTabCount {
         tab?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(p0: TabLayout.Tab?) = this@BasePagerFragment.onPageSelected(p0?.position ?: 0)
             override fun onTabUnselected(p0: TabLayout.Tab?) = Unit
-            override fun onTabSelected(p0: TabLayout.Tab?) = Unit
+            override fun onTabSelected(p0: TabLayout.Tab?) = onPagerChangedPosition(p0?.position ?: 0)
         })
     }
+
+    protected open fun onPagerChangedPosition(position: Int) = Unit
 }
