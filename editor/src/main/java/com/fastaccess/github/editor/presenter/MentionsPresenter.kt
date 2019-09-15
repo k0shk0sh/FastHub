@@ -1,4 +1,4 @@
-package com.fastaccess.github.platform.mentions
+package com.fastaccess.github.editor.presenter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,11 +7,15 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.fastaccess.data.repository.SchedulerProvider
+import com.fastaccess.domain.FastHubObserver
+import com.fastaccess.github.base.adapter.BaseViewHolder
+import com.fastaccess.github.editor.usecase.FilterSearchUsersUseCase
 import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
-import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
 import com.otaliastudios.autocomplete.RecyclerViewPresenter
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -19,10 +23,29 @@ import javax.inject.Inject
  */
 class MentionsPresenter @Inject constructor(
     c: Context,
-    private val searchUsersUseCase: FilterSearchUsersUseCase
+    private val searchUsersUseCase: FilterSearchUsersUseCase,
+    schedulerProvider: SchedulerProvider
 ) : RecyclerViewPresenter<String>(c) {
 
     private val localList = ArrayList<String>()
+    private val publishSubject by lazy { PublishSubject.create<String>() }
+
+    init {
+        publishSubject.debounce(400, TimeUnit.MILLISECONDS)
+            .switchMap {
+                searchUsersUseCase.keyword = it
+                return@switchMap searchUsersUseCase.buildObservable()
+                    .map { result -> result.second.map { it.login ?: it.name ?: "" } }
+            }
+            .doOnNext {
+                Timber.e("result($it)")
+                localList.clear()
+                setUsers(it)
+            }
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
+            .subscribe(FastHubObserver())
+    }
 
     private val adapter by lazy { MentionsAdapter(this, arrayListOf()) }
     var isMatchParent = false
@@ -33,18 +56,9 @@ class MentionsPresenter @Inject constructor(
         Timber.e("$query")
         if (!query.isNullOrEmpty()) {
             if (localList.firstOrNull { it.contains(query) } != null) {
-                Timber.e("current list has the query($query)")
-//                searchUsersUseCase.dispose()
                 return
             }
-            searchUsersUseCase.keyword = query.toString()
-            searchUsersUseCase.executeSafely(searchUsersUseCase.buildObservable()
-                .map { result -> result.second.map { it.login ?: it.name ?: "" } }
-                .doOnNext {
-                    Timber.e("result($it)")
-                    localList.clear()
-                    setUsers(it)
-                })
+            publishSubject.onNext(query.toString())
         }
     }
 

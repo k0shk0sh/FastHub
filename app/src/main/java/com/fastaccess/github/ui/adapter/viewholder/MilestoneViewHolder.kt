@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.DatePrettifier
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import kotlinx.android.synthetic.main.milestone_row_item.view.*
 
 /**

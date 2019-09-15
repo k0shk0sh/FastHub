@@ -1,10 +1,9 @@
-package com.fastaccess.github.ui.modules.editor
+package com.fastaccess.github.editor
 
 import android.os.Bundle
-import com.fastaccess.github.R
+import com.fastaccess.github.base.deeplink.AppDeepLink
 import com.fastaccess.github.base.utils.EDITOR_PATH
 import com.fastaccess.github.extensions.replace
-import com.fastaccess.github.base.deeplink.AppDeepLink
 
 /**
  * Created by Kosh on 2019-04-11.
@@ -15,7 +14,10 @@ class EditorActivity : com.fastaccess.github.base.BaseActivity() {
 
     override fun onActivityCreatedWithUser(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            replace(R.id.container, EditorFragment.newInstance(intent?.extras), EditorFragment.TAG)
+            replace(R.id.container,
+                EditorFragment.newInstance(intent?.extras),
+                EditorFragment.TAG
+            )
         }
     }
 

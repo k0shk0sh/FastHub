@@ -1,4 +1,4 @@
-package com.fastaccess.github.platform.viewmodel
+package com.fastaccess.github.base.viewmodel
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner

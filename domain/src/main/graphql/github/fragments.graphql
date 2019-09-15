@@ -89,7 +89,7 @@ fragment CommitFragment on Commit {
     }
 }
 
-fragment FullCommitFragment on Commit {
+fragment FullCommit on Commit {
     abbreviatedOid
     id
     oid

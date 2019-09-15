@@ -1,4 +1,4 @@
-package com.fastaccess.github.usecase.search
+package com.fastaccess.github.editor.usecase
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input

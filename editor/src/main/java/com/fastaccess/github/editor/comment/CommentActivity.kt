@@ -1,13 +1,13 @@
-package com.fastaccess.github.ui.modules.comment
+package com.fastaccess.github.editor.comment
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.fastaccess.github.R
 import com.fastaccess.github.base.utils.EXTRA_FIVE
 import com.fastaccess.github.base.utils.EXTRA_FOUR
 import com.fastaccess.github.base.utils.EXTRA_THREE
+import com.fastaccess.github.editor.R
 import com.fastaccess.github.extensions.replace
 
 /**

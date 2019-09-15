@@ -1,10 +1,9 @@
-package com.fastaccess.github.ui.modules.editor.dialog
+package com.fastaccess.github.editor.dialog
 
 import androidx.lifecycle.MutableLiveData
 import com.fastaccess.data.model.FastHubErrors
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.services.ImgurService
-import com.fastaccess.github.base.BaseViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File

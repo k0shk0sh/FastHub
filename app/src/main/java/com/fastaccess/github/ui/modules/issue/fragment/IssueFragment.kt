@@ -3,6 +3,7 @@ package com.fastaccess.github.ui.modules.issue.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +17,10 @@ import com.fastaccess.github.base.extensions.theme
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.base.utils.EXTRA_TWO
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.IssueTimelineAdapter
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
@@ -31,10 +32,8 @@ import github.type.LockReason
 import io.noties.markwon.Markwon
 import io.noties.markwon.recycler.MarkwonAdapter
 import io.noties.markwon.utils.NoCopySpannableFactory
-import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
 import kotlinx.android.synthetic.main.issue_pr_view_layout.*
-
 import javax.inject.Inject
 
 /**
@@ -93,11 +92,13 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
             mentionsPresenter.setUsers(it)
         }
         viewModel.commentProgress.observeNotNull(this) {
-            commentProgress.isVisible = it
-            sendComment.isVisible = !it
+            view?.findViewById<View?>(R.id.commentProgress)?.isVisible = it
+            view?.findViewById<View?>(R.id.sendComment)?.isVisible = !it
             if (!it) {
-                commentText.setText("")
-                commentText.hideKeyboard()
+                view?.findViewById<EditText?>(R.id.commentText)?.let { commentText ->
+                    commentText.setText("")
+                    commentText.hideKeyboard()
+                }
                 recyclerView.scrollToPosition(adapter.itemCount)
             }
         }

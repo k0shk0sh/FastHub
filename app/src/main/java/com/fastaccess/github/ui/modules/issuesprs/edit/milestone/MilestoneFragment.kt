@@ -17,7 +17,7 @@ import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.show
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MilestonesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.viewmodel.MilestoneViewModel
 

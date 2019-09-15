@@ -19,7 +19,7 @@ import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.observeNull
 import com.fastaccess.github.extensions.route
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.adapter.SearchReposAdapter
 import com.fastaccess.github.ui.adapter.ShortUsersAdapter
@@ -27,7 +27,6 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog.BottomSheetFragmentType.FILTER_SEARCH
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.search.fragment.viewmodel.FilterSearchViewModel
-import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.search_fragment_layout.*
 import javax.inject.Inject
 

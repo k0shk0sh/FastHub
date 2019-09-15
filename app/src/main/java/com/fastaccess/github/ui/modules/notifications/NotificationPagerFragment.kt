@@ -9,7 +9,7 @@ import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
-import com.fastaccess.github.base.PagerAdapter
+import com.fastaccess.github.base.adapter.PagerAdapter
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.UnreadNotificationsFragment

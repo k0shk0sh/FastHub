@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.fastaccess.data.model.FragmentType
+import com.fastaccess.github.base.adapter.PagerAdapter
 import com.fastaccess.github.base.callback.UpdateTabCount
 import com.fastaccess.github.base.widget.ParentSwipeRefreshLayout
 import com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView

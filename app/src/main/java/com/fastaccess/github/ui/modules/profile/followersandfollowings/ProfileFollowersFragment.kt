@@ -12,9 +12,9 @@ import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.route
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.ProfileFollowingFollowersAdapter
-import com.fastaccess.github.ui.adapter.base.CurrentState
+import com.fastaccess.github.base.adapter.CurrentState
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.viewmodel.FollowersFollowingViewModel
 
 import javax.inject.Inject

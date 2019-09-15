@@ -10,9 +10,9 @@ import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.extension.onClick
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.ProfileFeedsAdapter
-import com.fastaccess.github.ui.adapter.base.CurrentState
+import com.fastaccess.github.base.adapter.CurrentState
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import javax.inject.Inject
 

@@ -16,7 +16,7 @@ import com.fastaccess.github.base.utils.REDIRECT_URL
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.base.deeplink.AppDeepLink
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment

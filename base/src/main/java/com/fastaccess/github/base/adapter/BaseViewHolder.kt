@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.adapter.base
+package com.fastaccess.github.base.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

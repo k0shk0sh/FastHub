@@ -11,7 +11,7 @@ import com.fastaccess.github.R
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.showYesNoDialog
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.github.base.extensions.popMenu
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory

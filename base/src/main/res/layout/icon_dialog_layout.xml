@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,55 +19,55 @@
             android:background="@drawable/dialog_background"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing_xs_large"
-            android:paddingTop="@dimen/spacing_xs_large">
+            android:paddingTop="@dimen/spacing_xs_large"
+            android:paddingBottom="@dimen/spacing_xs_large">
 
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/dialogTitle"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_s_large"
                 android:gravity="center_horizontal"
-                android:paddingEnd="@dimen/spacing_xs_large"
                 android:paddingStart="@dimen/spacing_xs_large"
-                tools:text="@string/app_name_full"/>
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                tools:text="@string/app_name_full" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/dialogDescription"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xs_large"
                 android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_xs_large"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="2dp"
-                android:paddingEnd="@dimen/spacing_xs_large"
                 android:paddingStart="@dimen/spacing_xs_large"
-                tools:text="Paradise is not the boundless mind of the guru.Apolloniatess sunt decors de lotus pulchritudine."/>
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="Paradise is not the boundless mind of the guru.Apolloniatess sunt decors de lotus pulchritudine." />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/dialogPositiveBtn"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:minWidth="150dp"
-                tools:text="@string/yes"/>
+                tools:text="@string/yes" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/dialogNegativeBtn"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:gravity="center"
                 android:minWidth="150dp"
                 android:padding="@dimen/spacing_normal"
-                tools:text="@string/no"/>
+                tools:text="@string/no" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -78,6 +77,6 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/circle_shape"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_info_outline"/>
+            tools:src="@drawable/ic_info_outline" />
     </FrameLayout>
 </androidx.core.widget.NestedScrollView>

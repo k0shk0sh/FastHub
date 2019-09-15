@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.fastaccess.data.persistence.models.OrganizationModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.formatNumber
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import kotlinx.android.synthetic.main.organization_row_item.view.*
 
 /**

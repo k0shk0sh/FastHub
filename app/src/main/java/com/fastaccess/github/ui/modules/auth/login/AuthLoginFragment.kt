@@ -17,7 +17,7 @@ import com.fastaccess.github.base.extensions.hideKeyboard
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import kotlinx.android.synthetic.main.login_form_layout.*
 import javax.inject.Inject

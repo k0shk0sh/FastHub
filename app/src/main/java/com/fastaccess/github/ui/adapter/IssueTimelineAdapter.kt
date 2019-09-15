@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
+import com.fastaccess.github.base.adapter.LoadingViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.*
 import io.noties.markwon.Markwon
 

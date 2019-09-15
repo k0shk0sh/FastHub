@@ -1,4 +1,4 @@
-package com.fastaccess.github.base
+package com.fastaccess.github.base.adapter
 
 import android.annotation.SuppressLint
 import androidx.fragment.app.FragmentManager

@@ -11,7 +11,7 @@ import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.data.persistence.models.UserModel
 import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.github.R
-import com.fastaccess.github.base.PagerAdapter
+import com.fastaccess.github.base.adapter.PagerAdapter
 import com.fastaccess.github.base.extensions.addDivider
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
@@ -21,7 +21,7 @@ import com.fastaccess.github.extensions.getDrawable
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.ProfileOrgsAdapter
 import com.fastaccess.github.ui.adapter.ProfilePinnedReposAdapter
 import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment

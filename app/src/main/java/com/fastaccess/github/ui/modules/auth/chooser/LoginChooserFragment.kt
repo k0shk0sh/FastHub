@@ -9,7 +9,7 @@ import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.beginDelayedTransition
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.LoggedInUsersAdapter
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback

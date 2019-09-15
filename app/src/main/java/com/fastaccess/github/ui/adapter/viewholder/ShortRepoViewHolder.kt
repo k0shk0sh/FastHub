@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.model.ShortRepoModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.formatNumber
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.markdown.widget.SpannableBuilder
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.github.extensions.getColorCompat

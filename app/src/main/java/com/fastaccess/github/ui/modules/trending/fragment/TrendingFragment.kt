@@ -11,13 +11,12 @@ import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.TrendingsAdapter
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
 import com.fastaccess.github.ui.modules.trending.fragment.viewmodel.TrendingViewModel
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.trending_fragment_layout.*
 import javax.inject.Inject
 

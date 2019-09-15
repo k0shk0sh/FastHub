@@ -12,7 +12,7 @@ import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.showYesNoDialog
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.github.base.extensions.popMenu
 import com.fastaccess.markdown.spans.DiffLineSpan
 import com.fastaccess.markdown.widget.SpannableBuilder

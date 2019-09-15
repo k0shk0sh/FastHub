@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.ActivityType
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.parcelable.FilterIssuesPrsModel
@@ -18,7 +18,6 @@ import com.fastaccess.github.ui.adapter.MyIssuesPrsAdapter
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
 import com.fastaccess.github.ui.modules.issuesprs.fragment.viewmodel.FilterIssuePullRequestsViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import kotlinx.android.synthetic.main.fab_simple_refresh_list_layout.*
 import kotlinx.android.synthetic.main.issues_prs_fragment_layout.*
 import javax.inject.Inject
 

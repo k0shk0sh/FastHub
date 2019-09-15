@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.editor.dialog
+package com.fastaccess.github.editor.dialog
 
 import android.app.Activity
 import android.content.Context
@@ -9,12 +9,12 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.asString
 import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
+import com.fastaccess.github.editor.R
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
 import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.android.synthetic.main.create_link_dialog_layout.*
 import javax.inject.Inject

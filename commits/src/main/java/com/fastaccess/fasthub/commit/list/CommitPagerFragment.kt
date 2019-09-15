@@ -9,7 +9,7 @@ import com.fastaccess.fasthub.commit.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.base.PagerAdapter
+import com.fastaccess.github.base.adapter.PagerAdapter
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.base.utils.EXTRA_TWO

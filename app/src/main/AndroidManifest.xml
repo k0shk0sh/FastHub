@@ -61,7 +61,7 @@
         <activity android:name=".ui.modules.issue.IssueActivity" />
 
         <activity
-            android:name=".ui.modules.editor.EditorActivity"
+            android:name=".editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/markdown"
             android:windowSoftInputMode="adjustResize" />
@@ -127,7 +127,7 @@
             android:parentActivityName=".ui.modules.main.MainActivity" />
 
         <activity
-            android:name=".ui.modules.comment.CommentActivity"
+            android:name=".editor.comment.CommentActivity"
             android:parentActivityName=".ui.modules.main.MainActivity" />
 
         <activity

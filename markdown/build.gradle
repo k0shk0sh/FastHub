@@ -44,14 +44,17 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(':data')
     implementation project(':domain')
     implementation project(':resources')
     implementation project(':extensions')
+    implementation project(':dagger')
     implementation dependency.supportLibraries
     implementation dependency.kotlin
     implementation dependency.extrasLibraries
     implementation dependency.rxJava
     implementation dependency.archs
+    implementation dependency.dagger
     implementation dependency.networking
     api dependency.markdown
 

@@ -13,6 +13,22 @@ android {
         targetSdkVersion conf.targetSdkVersion
         versionCode conf.versionCode
         versionName conf.versionName
+        multiDexEnabled
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     buildTypes {
@@ -21,19 +37,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     def dependency = rootProject.ext
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':base')
+    implementation project(':data')
+    implementation project(':domain')
     implementation project(':resources')
     implementation project(':extensions')
-    implementation dependency.kotlin
+    implementation project(':dagger')
+    implementation project(':markdown')
     implementation dependency.supportLibraries
+    implementation dependency.kotlin
     implementation dependency.extrasLibraries
-    implementation dependency.networking
     implementation dependency.rxJava
+    implementation dependency.archs
+    implementation dependency.dagger
+    implementation dependency.networking
 
     testImplementation dependency.testing
+
+    kapt dependency.processing
 }

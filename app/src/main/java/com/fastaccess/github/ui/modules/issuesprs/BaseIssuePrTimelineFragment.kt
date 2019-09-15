@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
+import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -23,9 +24,9 @@ import com.fastaccess.github.base.utils.EDITOR_DEEP_LINK
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.base.utils.EXTRA_TWO
+import com.fastaccess.github.editor.comment.CommentActivity
+import com.fastaccess.github.editor.presenter.MentionsPresenter
 import com.fastaccess.github.extensions.*
-import com.fastaccess.github.platform.mentions.MentionsPresenter
-import com.fastaccess.github.ui.modules.comment.CommentActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.assignees.AssigneesFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.LabelsFragment
@@ -42,10 +43,7 @@ import com.otaliastudios.autocomplete.AutocompleteCallback
 import com.otaliastudios.autocomplete.CharPolicy
 import github.type.IssueState
 import github.type.LockReason
-import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.issue_header_row_item.*
-import kotlinx.android.synthetic.main.issue_pr_view_layout.*
-
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -139,8 +137,10 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 COMMENT_REQUEST_CODE -> {
-                    commentText.setText(data?.getStringExtra(EXTRA))
-                    sendComment.callOnClick()
+                    view?.findViewById<EditText?>(R.id.commentText)?.let { commentText ->
+                        commentText.setText(data?.getStringExtra(EXTRA))
+                        view?.findViewById<View?>(R.id.sendComment)?.callOnClick()
+                    }
                 }
                 EDIT_ISSUE_REQUEST_CODE -> {
                     val model = data?.getParcelableExtra<EditIssuePrBundleModel>(EXTRA) ?: return
@@ -387,6 +387,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
     protected open fun closeOpenIssuePr() = Unit
 
     private fun setupEditText() {
+        val commentText = view?.findViewById<EditText>(R.id.commentText) ?: return
         Autocomplete.on<String>(commentText)
             .with(CharPolicy('@'))
             .with(mentionsPresenter)
@@ -400,13 +401,13 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
                 override fun onPopupVisibilityChanged(shown: Boolean) {}
             })
             .build()
-        sendComment.setOnClickListener {
+        view?.findViewById<View?>(R.id.sendComment)?.setOnClickListener {
             val comment = commentText.text?.toString()
             if (!comment.isNullOrEmpty()) {
                 sendComment(comment)
             }
         }
-        toggleFullScreen.setOnClickListener {
+        view?.findViewById<View?>(R.id.toggleFullScreen)?.setOnClickListener {
             routeForResult(EDITOR_DEEP_LINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
         }
     }

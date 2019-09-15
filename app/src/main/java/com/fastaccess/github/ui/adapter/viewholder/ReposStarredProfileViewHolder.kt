@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.ProfileStarredRepoModel
 import com.fastaccess.github.R
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.markdown.widget.SpannableBuilder
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.github.extensions.formatNumber

@@ -11,6 +11,14 @@ import java.util.List;
 
 public final class CommitDeepLinkModuleLoader implements Parser {
   public static final List<DeepLinkEntry> REGISTRY = Collections.unmodifiableList(Arrays.asList(
+    new DeepLinkEntry("http://api.github.com/{login}/{repo}/pull/{number}/commits/{oid}", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
+    new DeepLinkEntry("http://github.com/{login}/{repo}/pull/{number}/commits/{oid}", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
+    new DeepLinkEntry("https://api.github.com/{login}/{repo}/pull/{number}/commits/{oid}", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
+    new DeepLinkEntry("https://github.com/{login}/{repo}/pull/{number}/commits/{oid}", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
+    new DeepLinkEntry("http://api.github.com/repos/{login}/{repo}/commits/", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
+    new DeepLinkEntry("http://github.com/repos/{login}/{repo}/commits/", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
+    new DeepLinkEntry("https://api.github.com/repos/{login}/{repo}/commits/", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
+    new DeepLinkEntry("https://github.com/repos/{login}/{repo}/commits/", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
     new DeepLinkEntry("http://api.github.com/repos/{login}/{repo}/commits/{oid}", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
     new DeepLinkEntry("http://api.github.com/{login}/{repo}/pull/{number}/commits", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),
     new DeepLinkEntry("http://github.com/repos/{login}/{repo}/commits/{oid}", DeepLinkEntry.Type.CLASS, CommitsListActivity.class, null),

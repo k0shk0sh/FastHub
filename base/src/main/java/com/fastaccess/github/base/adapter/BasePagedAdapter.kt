@@ -1,10 +1,8 @@
-package com.fastaccess.github.ui.adapter.base
+package com.fastaccess.github.base.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.fastaccess.github.ui.adapter.viewholder.LoadingViewHolder
-
 /**
  * Created by Kosh on 12.10.18.
  */

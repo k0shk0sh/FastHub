@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.getColorCompat
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import github.type.PullRequestState
 import kotlinx.android.synthetic.main.issues_prs_main_screen_row_item.view.*
 

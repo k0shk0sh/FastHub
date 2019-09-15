@@ -2,11 +2,15 @@ package com.fastaccess.github.di.modules
 
 import com.fastaccess.fasthub.commit.list.CommitListFragment
 import com.fastaccess.fasthub.commit.list.CommitPagerFragment
+import com.fastaccess.fasthub.commit.view.di.CommitModule
 import com.fastaccess.fasthub.dagger.scopes.PerFragment
+import com.fastaccess.github.editor.EditorFragment
+import com.fastaccess.github.editor.comment.CommentFragment
+import com.fastaccess.github.editor.di.CommentModule
+import com.fastaccess.github.editor.di.EditorModule
+import com.fastaccess.github.editor.di.MentionsModule
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
-import com.fastaccess.github.ui.modules.comment.CommentFragment
-import com.fastaccess.github.ui.modules.editor.EditorFragment
 import com.fastaccess.github.ui.modules.feed.fragment.FeedsFragment
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
@@ -30,8 +34,10 @@ import com.fastaccess.github.ui.modules.profile.repos.ProfileReposFragment
 import com.fastaccess.github.ui.modules.profile.starred.ProfileStarredReposFragment
 import com.fastaccess.github.ui.modules.search.fragment.SearchFragment
 import com.fastaccess.github.ui.modules.trending.fragment.TrendingFragment
+import com.fastaccess.markdown.di.MarkdownModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import github.fragment.CommitFragment
 
 /**
  * Created by Kosh on 19.05.18.
@@ -62,12 +68,20 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector abstract fun provideMilestoneFragment(): MilestoneFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideCommitListFragment(): CommitListFragment
     @PerFragment @ContributesAndroidInjector abstract fun provideCommitPagerFragment(): CommitPagerFragment
-
-    @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class]) abstract fun provideIssueFragment(): IssueFragment
     @PerFragment @ContributesAndroidInjector(modules = [EditorModule::class]) abstract fun provideEditorFragment(): EditorFragment
-    @PerFragment @ContributesAndroidInjector(modules = [EditIssuePrModule::class]) abstract fun provideEditIssuePrFragment(): EditIssuePrFragment
     @PerFragment @ContributesAndroidInjector(modules = [CommentModule::class]) abstract fun provideCommentFragment(): CommentFragment
-    @PerFragment @ContributesAndroidInjector(modules = [PullRequestModule::class]) abstract fun providePullRequestFragment(): PullRequestFragment
-    @PerFragment @ContributesAndroidInjector(modules = [ListReviewsModule::class]) abstract fun provideListReviewsFragment(): ListReviewsFragment
+    @PerFragment @ContributesAndroidInjector(modules = [CommitModule::class]) abstract fun provideCommitFragment(): CommitFragment
+
+    @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class, MarkdownModule::class, MentionsModule::class])
+    abstract fun provideIssueFragment(): IssueFragment
+
+    @PerFragment @ContributesAndroidInjector(modules = [EditIssuePrModule::class, MarkdownModule::class, MentionsModule::class])
+    abstract fun provideEditIssuePrFragment(): EditIssuePrFragment
+
+    @PerFragment @ContributesAndroidInjector(modules = [PullRequestModule::class, MarkdownModule::class, MentionsModule::class])
+    abstract fun providePullRequestFragment(): PullRequestFragment
+
+    @PerFragment @ContributesAndroidInjector(modules = [ListReviewsModule::class, MarkdownModule::class, MentionsModule::class])
+    abstract fun provideListReviewsFragment(): ListReviewsFragment
 
 }

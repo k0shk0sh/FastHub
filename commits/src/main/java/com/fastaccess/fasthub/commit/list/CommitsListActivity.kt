@@ -9,8 +9,10 @@ import com.fastaccess.github.extensions.replace
 @WebDeepLink(
     "/{login}/{repo}/commits",
     "/{login}/{repo}/commits/{branch}",
+    "/repos/{login}/{repo}/commits/",
+    "/repos/{login}/{repo}/commits/{oid}",
     "/{login}/{repo}/pull/{number}/commits",
-    "/repos/{login}/{repo}/commits/{oid}"
+    "/{login}/{repo}/pull/{number}/commits/{oid}"
 )
 class CommitsListActivity : BaseActivity() {
 

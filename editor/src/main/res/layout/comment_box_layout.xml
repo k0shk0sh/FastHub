@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:orientation="horizontal"
-    tools:showIn="@layout/issue_pr_fragment_layout">
+    android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/toggleFullScreen"

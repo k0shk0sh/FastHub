@@ -1,12 +1,12 @@
-package com.fastaccess.github.ui.widget.dialog
+package com.fastaccess.github.base.dialog
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseDialogFragment
+import com.fastaccess.github.base.R
 import com.fastaccess.github.base.utils.*
 import com.fastaccess.github.extensions.show
 import kotlinx.android.synthetic.main.icon_dialog_layout.*

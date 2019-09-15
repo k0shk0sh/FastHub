@@ -1,10 +1,10 @@
 package com.fastaccess.github.usecase.issuesprs
 
 import com.fastaccess.data.repository.SchedulerProvider
+import com.fastaccess.domain.response.body.CommentRequestModel
 import com.fastaccess.domain.services.CommitService
 import com.fastaccess.domain.services.IssuePrService
 import com.fastaccess.domain.services.ReviewService
-import com.fastaccess.domain.response.body.CommentRequestModel
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable
 import retrofit2.HttpException
@@ -31,7 +31,7 @@ class EditCommentUseCase @Inject constructor(
         TimelineType.GIST -> TODO()
     }
         .flatMap {
-            return@flatMap if (it.code() != 200) {
+            return@flatMap if (it.code() != 200 || it.code() != 204) {
                 Observable.error(HttpException(it))
             } else {
                 Observable.just(it)

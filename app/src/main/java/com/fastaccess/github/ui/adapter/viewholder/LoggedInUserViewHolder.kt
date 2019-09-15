@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.github.R
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import kotlinx.android.synthetic.main.profile_follower_following_row_item.view.*
 
 /**

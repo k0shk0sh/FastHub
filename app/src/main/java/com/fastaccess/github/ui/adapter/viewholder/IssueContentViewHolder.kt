@@ -10,7 +10,7 @@ import com.fastaccess.data.model.*
 import com.fastaccess.github.R
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.PullRequestReviewState

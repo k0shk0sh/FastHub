@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.comment
+package com.fastaccess.github.editor.comment
 
 import android.app.Activity
 import android.content.Intent
@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import androidx.core.os.bundleOf
-import com.fastaccess.github.R
 import com.fastaccess.github.base.utils.*
+import com.fastaccess.github.editor.R
+import com.fastaccess.github.editor.presenter.MentionsPresenter
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.routeForResult
-import com.fastaccess.github.platform.mentions.MentionsPresenter
 import com.fastaccess.markdown.MarkdownProvider
 import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
@@ -19,6 +19,7 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_box_layout.*
 import kotlinx.android.synthetic.main.comment_fragment_layout.*
+
 import timber.log.Timber
 import javax.inject.Inject
 

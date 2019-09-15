@@ -8,11 +8,10 @@ import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.parcelable.FilterSearchModel
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.SuggestionRepository
-import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.usecase.issuesprs.FilterIssuesUseCase
 import com.fastaccess.github.usecase.issuesprs.FilterPullRequestsUseCase
 import com.fastaccess.github.usecase.search.FilterSearchReposUseCase
-import com.fastaccess.github.usecase.search.FilterSearchUsersUseCase
+import com.fastaccess.github.editor.usecase.FilterSearchUsersUseCase
 import io.reactivex.internal.observers.EmptyCompletableObserver
 import javax.inject.Inject
 

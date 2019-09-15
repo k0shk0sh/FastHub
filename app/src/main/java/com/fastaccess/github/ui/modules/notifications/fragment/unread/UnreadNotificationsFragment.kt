@@ -3,7 +3,7 @@ package com.fastaccess.github.ui.modules.notifications.fragment.unread
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.isConnected
@@ -11,7 +11,7 @@ import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.platform.works.MarkAsReadNotificationWorker
 import com.fastaccess.github.ui.adapter.UnreadNotificationsAdapter
-import com.fastaccess.github.ui.adapter.base.CurrentState
+import com.fastaccess.github.base.adapter.CurrentState
 import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.viewmodel.UnreadNotificationsViewModel
 import com.fastaccess.github.base.widget.recyclerview.SwipeToDeleteCallback

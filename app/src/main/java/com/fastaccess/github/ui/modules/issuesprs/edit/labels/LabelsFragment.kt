@@ -6,7 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.evernote.android.state.State
 import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel

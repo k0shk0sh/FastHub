@@ -4,8 +4,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.persistence.models.OrganizationModel
-import com.fastaccess.github.ui.adapter.base.BasePagedAdapter
-import com.fastaccess.github.ui.adapter.base.BaseViewHolder
+import com.fastaccess.github.base.adapter.BasePagedAdapter
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.github.ui.adapter.viewholder.OrganizationViewHolder
 
 /**

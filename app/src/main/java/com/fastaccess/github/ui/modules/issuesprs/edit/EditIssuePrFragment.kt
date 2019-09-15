@@ -17,7 +17,7 @@ import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.extensions.routeForResult
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.edit_issue_pr_fragment_layout.*
 import timber.log.Timber

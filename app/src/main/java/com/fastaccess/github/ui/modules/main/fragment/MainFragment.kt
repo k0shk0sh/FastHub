@@ -21,12 +21,12 @@ import com.fastaccess.github.base.utils.SEARCH_LINK
 import com.fastaccess.github.base.utils.TRENDING_LINK
 import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.extension.onClick
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
+import com.fastaccess.github.base.dialog.IconDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*

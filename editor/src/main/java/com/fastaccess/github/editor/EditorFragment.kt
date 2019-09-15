@@ -1,4 +1,4 @@
-package com.fastaccess.github.ui.modules.editor
+package com.fastaccess.github.editor
 
 import android.app.Activity
 import android.content.Intent
@@ -9,17 +9,16 @@ import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.fastaccess.data.storage.FastHubSharedPreference
-import com.fastaccess.github.R
+import com.fastaccess.github.base.dialog.IconDialogFragment
 import com.fastaccess.github.base.extensions.asString
 import com.fastaccess.github.base.extensions.showKeyboard
 import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.editor.presenter.MentionsPresenter
 import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.hideKeyboard
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.show
-import com.fastaccess.github.platform.mentions.MentionsPresenter
-import com.fastaccess.github.ui.modules.editor.dialog.CreateLinkDialogFragment
-import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
+import com.fastaccess.github.editor.dialog.CreateLinkDialogFragment
 import com.fastaccess.markdown.MarkdownProvider
 import com.fastaccess.markdown.widget.MarkdownLayout
 import com.otaliastudios.autocomplete.Autocomplete
@@ -34,8 +33,8 @@ import javax.inject.Inject
  * Created by Kosh on 2019-07-20.
  */
 class EditorFragment : com.fastaccess.github.base.BaseFragment(), IconDialogFragment.IconDialogClickListener,
-                       MarkdownLayout.MarkdownLayoutCallback,
-                       CreateLinkDialogFragment.OnLinkSelected {
+    MarkdownLayout.MarkdownLayoutCallback,
+    CreateLinkDialogFragment.OnLinkSelected {
 
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
@@ -58,7 +57,7 @@ class EditorFragment : com.fastaccess.github.base.BaseFragment(), IconDialogFrag
         setupToolbar(R.string.markdown, R.menu.submit_menu) { item ->
             activity?.hideKeyboard()
             val intent = Intent().apply {
-                val bundle = arguments  ?: bundleOf()
+                val bundle = arguments ?: bundleOf()
                 bundle.putString(EXTRA, editText.asString())
                 putExtras(bundle)
             }

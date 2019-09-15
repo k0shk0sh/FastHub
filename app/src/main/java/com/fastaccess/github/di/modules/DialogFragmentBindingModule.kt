@@ -1,7 +1,7 @@
 package com.fastaccess.github.di.modules
 
 import com.fastaccess.fasthub.dagger.scopes.PerFragment
-import com.fastaccess.github.ui.modules.editor.dialog.CreateLinkDialogFragment
+import com.fastaccess.github.editor.dialog.CreateLinkDialogFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.labels.create.CreateLabelFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.CreateMilestoneDialogFragment
 import com.fastaccess.github.ui.modules.issuesprs.filter.FilterIssuesPrsBottomSheet
@@ -9,7 +9,7 @@ import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDial
 import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog
 import com.fastaccess.github.ui.modules.search.filter.FilterSearchBottomSheet
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
-import com.fastaccess.github.ui.widget.dialog.IconDialogFragment
+import com.fastaccess.github.base.dialog.IconDialogFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

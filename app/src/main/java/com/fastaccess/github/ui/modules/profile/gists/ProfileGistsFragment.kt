@@ -3,7 +3,7 @@ package com.fastaccess.github.ui.modules.profile.gists
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.fastaccess.github.platform.viewmodel.ViewModelProviders
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.addDivider
@@ -11,7 +11,7 @@ import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.ui.adapter.ProfileGistsAdapter
-import com.fastaccess.github.ui.adapter.base.CurrentState
+import com.fastaccess.github.base.adapter.CurrentState
 import com.fastaccess.github.ui.modules.profile.gists.viewmodel.ProfileGistsViewModel
 import com.fastaccess.github.extensions.observeNotNull
 

@@ -6,7 +6,7 @@ import com.fastaccess.fasthub.dagger.annotations.ViewModelKey
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
 import com.fastaccess.github.ui.modules.auth.login.LoginViewModel
-import com.fastaccess.github.ui.modules.editor.dialog.UploadPictureViewModel
+import com.fastaccess.github.editor.dialog.UploadPictureViewModel
 import com.fastaccess.github.ui.modules.feed.fragment.viewmodel.FeedsViewModel
 import com.fastaccess.github.ui.modules.issue.fragment.viewmodel.IssueTimelineViewModel
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrViewModel
