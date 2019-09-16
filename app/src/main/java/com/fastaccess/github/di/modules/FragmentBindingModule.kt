@@ -6,6 +6,8 @@ import com.fastaccess.fasthub.commit.view.CommitFragment
 import com.fastaccess.fasthub.commit.view.comment.CommitCommentsFragment
 import com.fastaccess.fasthub.commit.view.comment.di.CommitCommentsModule
 import com.fastaccess.fasthub.commit.view.di.CommitModule
+import com.fastaccess.fasthub.commit.view.files.CommitFilesFragment
+import com.fastaccess.fasthub.commit.view.files.di.CommitFilesModule
 import com.fastaccess.fasthub.dagger.scopes.PerFragment
 import com.fastaccess.github.editor.EditorFragment
 import com.fastaccess.github.editor.comment.CommentFragment
@@ -74,6 +76,7 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector(modules = [CommentModule::class]) abstract fun provideCommentFragment(): CommentFragment
     @PerFragment @ContributesAndroidInjector(modules = [CommitModule::class]) abstract fun provideCommitFragment(): CommitFragment
     @PerFragment @ContributesAndroidInjector(modules = [CommitCommentsModule::class]) abstract fun provideCommitCommentsFragment(): CommitCommentsFragment
+    @PerFragment @ContributesAndroidInjector(modules = [CommitFilesModule::class]) abstract fun provideCommitFilesFragment(): CommitFilesFragment
 
     @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class, MarkdownModule::class, MentionsModule::class])
     abstract fun provideIssueFragment(): IssueFragment
