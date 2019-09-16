@@ -112,9 +112,8 @@
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:drawableTop="@drawable/ic_file_multi"
-                android:drawablePadding="@dimen/spacing_xs_large"
+                android:drawablePadding="@dimen/spacing_normal"
                 android:gravity="center"
-                android:padding="@dimen/spacing_normal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 tools:text="100,00" />
 
@@ -133,9 +132,8 @@
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:drawableTop="@drawable/ic_add"
-                android:drawablePadding="@dimen/spacing_xs_large"
+                android:drawablePadding="@dimen/spacing_normal"
                 android:gravity="center"
-                android:padding="@dimen/spacing_normal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 tools:text="100,00" />
 
@@ -154,9 +152,8 @@
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:drawableTop="@drawable/ic_clear"
-                android:drawablePadding="@dimen/spacing_xs_large"
+                android:drawablePadding="@dimen/spacing_normal"
                 android:gravity="center"
-                android:padding="@dimen/spacing_normal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 tools:text="100,00" />
         </LinearLayout>
