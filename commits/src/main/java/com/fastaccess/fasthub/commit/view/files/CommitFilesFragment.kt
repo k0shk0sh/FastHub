@@ -42,7 +42,7 @@ class CommitFilesFragment : BaseFragment() {
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 recyclerView.resetScrollState()
-                viewModel.loadFiles(sha, login, repo)
+                viewModel.loadFiles(login, repo, sha)
             } else {
                 swipeRefresh.isRefreshing = false
             }

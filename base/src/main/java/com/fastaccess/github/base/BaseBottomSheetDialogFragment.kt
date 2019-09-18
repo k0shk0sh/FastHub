@@ -13,7 +13,11 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.Toolbar
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager
 import com.fastaccess.github.base.extensions.setBottomSheetCallback
+import com.fastaccess.github.base.widget.ParentSwipeRefreshLayout
+import com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
+import com.fastaccess.github.base.widget.recyclerview.RecyclerViewFastScroller
 import com.fastaccess.github.extensions.observeNotNull
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -35,7 +39,7 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasA
     @Inject lateinit var childFragmentInjector: DispatchingAndroidInjector<Any>
 
     private var disposal = CompositeDisposable()
-    private var activityCallback: com.fastaccess.github.base.ActivityCallback? = null
+    private var activityCallback: ActivityCallback? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
     @LayoutRes abstract fun layoutRes(): Int
@@ -48,8 +52,8 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasA
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
         activityCallback = when {
-            parentFragment is com.fastaccess.github.base.ActivityCallback -> parentFragment as com.fastaccess.github.base.ActivityCallback
-            context is com.fastaccess.github.base.ActivityCallback -> context
+            parentFragment is ActivityCallback -> parentFragment as ActivityCallback
+            context is ActivityCallback -> context
             else -> null
         }
     }
@@ -149,4 +153,8 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), HasA
     protected val emptyLayout by lazy { view?.findViewById<View>(R.id.emptyLayout) ?: throw IllegalAccessError("error") }
     protected val toolbarTitle by lazy { view?.findViewById<TextView>(R.id.toolbarTitle) ?: throw IllegalAccessError("error") }
     protected val tabs by lazy { view?.findViewById<TabLayout>(R.id.tabs) ?: throw IllegalAccessError("error") }
+    protected val pager by lazy { view?.findViewById<ViewPager>(R.id.pager) ?: throw IllegalAccessError("error") }
+    protected val recyclerView by lazy { view?.findViewById<BaseRecyclerView>(R.id.recyclerView) ?: throw IllegalAccessError("error") }
+    protected val fastScroller by lazy { view?.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) ?: throw IllegalAccessError("error") }
+    protected val swipeRefresh by lazy { view?.findViewById<ParentSwipeRefreshLayout>(R.id.swipeRefresh) ?: throw IllegalAccessError("error") }
 }

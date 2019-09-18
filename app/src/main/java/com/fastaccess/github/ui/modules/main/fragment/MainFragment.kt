@@ -8,9 +8,11 @@ import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.storage.FastHubSharedPreference
+import com.fastaccess.fasthub.commit.dialog.CommitListCallback
 import com.fastaccess.github.R
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.dialog.IconDialogFragment
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.extensions.otpCode
 import com.fastaccess.github.base.extensions.setBottomSheetCallback
@@ -19,14 +21,13 @@ import com.fastaccess.github.base.utils.LOGIN_DEEP_LINK
 import com.fastaccess.github.base.utils.NOTIFICATION_LINK
 import com.fastaccess.github.base.utils.SEARCH_LINK
 import com.fastaccess.github.base.utils.TRENDING_LINK
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.extensions.*
 import com.fastaccess.github.platform.extension.onClick
-import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import com.fastaccess.github.base.dialog.IconDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
@@ -35,7 +36,7 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 12.06.18.
  */
-class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener {
+class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener, CommitListCallback {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var preference: FastHubSharedPreference
@@ -89,6 +90,10 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener 
 
     override fun onClick(positive: Boolean) {
         positive.isTrue { viewModel.logout() }
+    }
+
+    override fun onCommitClicked(url: String) {
+        route(url)
     }
 
     private fun initClicks() {

@@ -4,24 +4,25 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.FragmentType
+import com.fastaccess.fasthub.commit.dialog.CommitListCallback
 import com.fastaccess.github.R
+import com.fastaccess.github.base.adapter.CurrentState
 import com.fastaccess.github.base.extensions.addDivider
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
+import com.fastaccess.github.extensions.route
 import com.fastaccess.github.platform.extension.onClick
-import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.ProfileFeedsAdapter
-import com.fastaccess.github.base.adapter.CurrentState
 import com.fastaccess.github.ui.modules.profile.feeds.viewmodel.ProfileFeedsViewModel
-
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 20.10.18.
  */
-class ProfileFeedFragment : com.fastaccess.github.base.BaseFragment() {
+class ProfileFeedFragment : com.fastaccess.github.base.BaseFragment(), CommitListCallback {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ProfileFeedsViewModel::class.java) }
@@ -51,6 +52,10 @@ class ProfileFeedFragment : com.fastaccess.github.base.BaseFragment() {
         }
         recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadFeeds(loginBundle) } }
         listenToChanges()
+    }
+
+    override fun onCommitClicked(url: String) {
+        route(url)
     }
 
     private fun listenToChanges() {
