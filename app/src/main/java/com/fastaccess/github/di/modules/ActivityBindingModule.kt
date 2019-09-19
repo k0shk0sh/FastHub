@@ -2,9 +2,10 @@ package com.fastaccess.github.di.modules
 
 import com.fastaccess.fasthub.commit.list.CommitsListActivity
 import com.fastaccess.fasthub.dagger.scopes.PerActivity
-import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
-import com.fastaccess.github.editor.comment.CommentActivity
+import com.fastaccess.fasthub.diff.DiffViewerActivity
 import com.fastaccess.github.editor.EditorActivity
+import com.fastaccess.github.editor.comment.CommentActivity
+import com.fastaccess.github.ui.modules.auth.LoginChooserActivity
 import com.fastaccess.github.ui.modules.issue.IssueActivity
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.MainActivity
@@ -40,4 +41,5 @@ abstract class ActivityBindingModule {
     @PerActivity @ContributesAndroidInjector abstract fun pullRequestActivity(): PullRequestActivity
     @PerActivity @ContributesAndroidInjector abstract fun listReviewActivity(): ListReviewsActivity
     @PerActivity @ContributesAndroidInjector abstract fun commitsListActivity(): CommitsListActivity
+    @PerActivity @ContributesAndroidInjector abstract fun diffViewerActivity(): DiffViewerActivity
 }

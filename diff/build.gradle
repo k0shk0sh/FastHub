@@ -49,11 +49,7 @@ dependencies {
     implementation project(':domain')
     implementation project(':resources')
     implementation project(':extensions')
-    implementation project(':markdown')
-    implementation project(':editor')
     implementation project(':dagger')
-    implementation project(':reactions')
-    implementation project(':diff')
     implementation dependency.kotlin
     implementation dependency.supportLibraries
     implementation dependency.extrasLibraries
@@ -62,7 +58,6 @@ dependencies {
     implementation dependency.extrasLibraries
     implementation dependency.dagger
     implementation dependency.archs
-    implementation dependency.firebase
 
     kapt dependency.processing
 

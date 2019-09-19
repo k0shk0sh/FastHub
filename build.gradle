@@ -5,7 +5,9 @@ configurations {
     ktlint
 }
 
-buildscript {
+buildscript { 
+    ext.kotlin_version = '1.3.50'
+
     ext {
         kotlin = '1.3.50'
         kotlin_version = '1.3.50'
@@ -27,7 +29,7 @@ buildscript {
         classpath 'com.apollographql.apollo:apollo-gradle-plugin:1.0.1'
         classpath 'gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:2.3.0'
         classpath "com.github.ben-manes:gradle-versions-plugin:0.21.0"
-    }
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" }
 }
 
 allprojects {

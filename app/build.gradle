@@ -129,6 +129,7 @@ dependencies {
     implementation project(':markdown')
     implementation project(':editor')
     implementation project(':commits')
+    implementation project(':diff')
     implementation dependency.kotlin
     implementation dependency.supportLibraries
     implementation dependency.extrasLibraries

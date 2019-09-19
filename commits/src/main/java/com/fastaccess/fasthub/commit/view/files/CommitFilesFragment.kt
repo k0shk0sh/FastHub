@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.fasthub.commit.R
 import com.fastaccess.fasthub.commit.adapter.CommitFilesAdapter
+import com.fastaccess.fasthub.diff.DiffViewerActivity
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.base.extensions.isConnected
@@ -27,7 +28,7 @@ class CommitFilesFragment : BaseFragment() {
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(CommitFilesViewModel::class.java) }
     private val adapter by lazy {
         CommitFilesAdapter { position, commitFilesModel ->
-            // TODO(open file)
+            DiffViewerActivity.startActivity(requireContext(), commitFilesModel.patch ?: "")
         }
     }
 

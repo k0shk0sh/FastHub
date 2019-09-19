@@ -10,13 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.domain.BuildConfig
 import com.fastaccess.github.R
+import com.fastaccess.github.base.deeplink.AppDeepLink
 import com.fastaccess.github.base.extensions.*
 import com.fastaccess.github.base.utils.LOGIN_PATH
 import com.fastaccess.github.base.utils.REDIRECT_URL
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.base.deeplink.AppDeepLink
-import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.modules.auth.callback.LoginChooserCallback
 import com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment
 import com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment
