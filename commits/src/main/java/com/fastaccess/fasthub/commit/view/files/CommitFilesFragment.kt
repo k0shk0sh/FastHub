@@ -56,7 +56,7 @@ class CommitFilesFragment : BaseFragment() {
             }
         }
 
-        if (savedInstanceState == null && viewModel.filesLiveData.value == null) {
+        if (savedInstanceState == null || viewModel.filesLiveData.value == null) {
             if (isPr) {
                 viewModel.loadFiles(login, repo, number, true)
             } else {

@@ -36,15 +36,11 @@ class ProfileReposViewModel @Inject constructor(
         }
         val pageInfo = pageInfo
         if (!reload && (pageInfo != null && !pageInfo.hasNextPage)) return
-        add(
-            callApi(reposProvider.getReposFromRemote(login, if (hasNext()) pageInfo?.endCursor else null))
-                .subscribe({
-                    this.pageInfo = it.pageInfo
-                    postCounter(it.totalCount)
-                }, {
-                    it.printStackTrace()
-                })
-        )
+        justSubscribe(reposProvider.getReposFromRemote(login, if (hasNext()) pageInfo?.endCursor else null)
+            .doOnNext {
+                this.pageInfo = it.pageInfo
+                postCounter(it.totalCount)
+            })
     }
 
     fun hasNext() = pageInfo?.hasNextPage == true

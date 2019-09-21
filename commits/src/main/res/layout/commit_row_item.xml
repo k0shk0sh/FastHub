@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LayoutPadding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_xs_large">
+
+                <com.fastaccess.github.base.widget.AvatarImageView
+                    android:id="@+id/userIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/ic_ring" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/stateIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/circle_shape_cardview"
+                    android:padding="@dimen/spacing_micro"
+                    tools:src="@drawable/ic_issue_closed_small" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/association"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    tools:text="Owner" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:ellipsize="marquee"
+            android:maxLines="4"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textIsSelectable="true"
+            tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
+
+    </LinearLayout>
+
+</FrameLayout>

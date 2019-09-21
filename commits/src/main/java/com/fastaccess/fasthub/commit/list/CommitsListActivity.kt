@@ -10,6 +10,7 @@ import com.fastaccess.github.extensions.replace
 @WebDeepLink(
     "/{login}/{repo}/commits",
     "/{login}/{repo}/commits/{branch}",
+    "/{login}/{repo}/commit/{oid}",
     "/repos/{login}/{repo}/commits/",
     "/repos/{login}/{repo}/commits/{oid}",
     "/{login}/{repo}/pull/{number}/commits",

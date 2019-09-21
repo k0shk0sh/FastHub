@@ -31,7 +31,7 @@ class CommitPagerFragment : BasePagerFragment() {
         pager.adapter = PagerAdapter(
             childFragmentManager, arrayListOf(
                 ViewPagerModel(getString(R.string.commits), CommitListFragment.newInstance(login, repo, number), FragmentType.COMMITS),
-                ViewPagerModel(getString(R.string.files), CommitFilesFragment.newInstance(null, login, repo, number), FragmentType.FILES) // TODO
+                ViewPagerModel(getString(R.string.files), CommitFilesFragment.newInstance(null, login, repo, number), FragmentType.FILES)
             )
         )
         tabs.setupWithViewPager(pager)

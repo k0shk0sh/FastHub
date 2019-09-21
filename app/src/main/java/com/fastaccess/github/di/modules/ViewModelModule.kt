@@ -2,6 +2,7 @@ package com.fastaccess.github.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.fastaccess.fasthub.commit.list.CommitListViewModel
 import com.fastaccess.fasthub.commit.view.CommitViewModel
 import com.fastaccess.fasthub.commit.view.comment.CommitCommentsViewModel
 import com.fastaccess.fasthub.commit.view.files.CommitFilesViewModel
@@ -120,4 +121,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(CommitFilesViewModel::class)
     abstract fun bindCommitFilesViewModel(viewModel: CommitFilesViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(CommitListViewModel::class)
+    abstract fun bindCommitListViewModel(viewModel: CommitListViewModel): ViewModel
 }
