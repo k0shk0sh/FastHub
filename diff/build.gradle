@@ -50,6 +50,7 @@ dependencies {
     implementation project(':resources')
     implementation project(':extensions')
     implementation project(':dagger')
+    implementation project(':markdown')
     implementation dependency.kotlin
     implementation dependency.supportLibraries
     implementation dependency.extrasLibraries

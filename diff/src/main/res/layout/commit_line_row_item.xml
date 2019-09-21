@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/spacing_micro"
+    android:paddingBottom="@dimen/spacing_micro">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/leftLinNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:fontFamily="monospace"
+            android:textColor="?android:textColorSecondary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            tools:text="1" />
+
+        <View
+            android:layout_width="@dimen/spacing_normal"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rightLinNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:fontFamily="monospace"
+            android:textColor="?android:textColorSecondary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            tools:text="1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_micro"
+            android:fontFamily="monospace"
+            android:scrollbars="horizontal"
+            android:scrollHorizontally="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="?android:textColorPrimary"
+            tools:text="Per guest prepare a handfull teaspoons of soy sauce with squeezed sausages for dessert." />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/hasComment"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/spacing_micro"
+        android:layout_marginBottom="@dimen/spacing_micro"
+        android:background="?colorAccent"
+        android:visibility="gone" />
+</LinearLayout>

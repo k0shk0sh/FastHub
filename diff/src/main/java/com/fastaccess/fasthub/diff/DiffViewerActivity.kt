@@ -5,12 +5,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import com.fastaccess.data.model.CommitLinesModel
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.fasthub.dagger.annotations.ForActivity
+import com.fastaccess.fasthub.diff.adapter.CommitLinesAdapter
 import com.fastaccess.github.base.BaseActivity
 import com.fastaccess.github.base.utils.EXTRA
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.diff_patch_viewer_layout.*
+import javax.inject.Inject
 
 class DiffViewerActivity : BaseActivity() {
+
+    @Inject lateinit var schedulerProvider: SchedulerProvider
+
+    private var disposable: Disposable? = null
+    private val adapter by lazy {
+        CommitLinesAdapter {
+            //TODO
+        }
+    }
 
     override fun layoutRes(): Int = R.layout.diff_patch_viewer_layout
 
@@ -22,9 +37,28 @@ class DiffViewerActivity : BaseActivity() {
             setNavigationIcon(R.drawable.ic_clear)
             setSupportActionBar(this)
         }
-        intent?.getStringExtra(EXTRA)?.let {
-            webview.loadDiff(it)
+        diffRecyclerView.adapter = adapter
+        intent?.getStringExtra(EXTRA)?.let { patch ->
+            val observable = Observable.fromPublisher<List<CommitLinesModel>> { s ->
+                runCatching { CommitLineBuilder.buildLines(patch) }
+                    .onSuccess { s.onNext(it) }
+                    .onFailure { s.onError(it) }
+                s.onComplete()
+            }
+            disposable = observable.subscribeOn(schedulerProvider.ioThread())
+                .observeOn(schedulerProvider.uiThread())
+                .subscribe({
+                    adapter.submitList(it)
+                }, {
+                    it.printStackTrace()
+                    finish()
+                })
         } ?: run { finish() }
+    }
+
+    override fun onDestroy() {
+        disposable?.dispose()
+        super.onDestroy()
     }
 
     companion object {

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/appbar_center_title_layout" />
-
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -15,9 +16,14 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-    <com.fastaccess.fasthub.diff.DiffWebView
-        android:id="@+id/webview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/diffRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/spacing_xs_large"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="40"
+        tools:listitem="@layout/commit_line_row_item" />
 
 </LinearLayout>
