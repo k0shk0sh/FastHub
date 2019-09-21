@@ -6,6 +6,7 @@ import androidx.core.os.bundleOf
 import com.fastaccess.data.model.FragmentType
 import com.fastaccess.data.model.ViewPagerModel
 import com.fastaccess.fasthub.commit.R
+import com.fastaccess.fasthub.commit.view.files.CommitFilesFragment
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BasePagerFragment
 import com.fastaccess.github.base.BaseViewModel
@@ -16,8 +17,8 @@ import com.fastaccess.github.base.utils.EXTRA_TWO
 
 class CommitPagerFragment : BasePagerFragment() {
 
-    private val login by lazy { arguments?.getString(EXTRA) }
-    private val repo by lazy { arguments?.getString(EXTRA_TWO) }
+    private val login by lazy { arguments?.getString(EXTRA) ?: throw IllegalAccessError("no login") }
+    private val repo by lazy { arguments?.getString(EXTRA_TWO) ?: throw IllegalAccessError("no repo") }
     private val number by lazy { arguments?.getInt(EXTRA_THREE, 0) ?: 0 }
 
 
@@ -30,7 +31,7 @@ class CommitPagerFragment : BasePagerFragment() {
         pager.adapter = PagerAdapter(
             childFragmentManager, arrayListOf(
                 ViewPagerModel(getString(R.string.commits), CommitListFragment.newInstance(login, repo, number), FragmentType.COMMITS),
-                ViewPagerModel(getString(R.string.files), CommitListFragment.newInstance(login, repo, number), FragmentType.FILES) // TODO
+                ViewPagerModel(getString(R.string.files), CommitFilesFragment.newInstance(null, login, repo, number), FragmentType.FILES) // TODO
             )
         )
         tabs.setupWithViewPager(pager)

@@ -37,10 +37,8 @@ class FeedsViewModel @Inject constructor(
         currentPage++
         if (!reload && isLastPage) return
         usecase.page = currentPage
-        add(callApi(usecase.buildObservable())
-            .subscribe({
-                isLastPage = it.last == currentPage
-            }, ::println))
+        justSubscribe(usecase.buildObservable()
+            .doOnNext { isLastPage = it.last == currentPage })
     }
 
     fun hasNext() = isLastPage

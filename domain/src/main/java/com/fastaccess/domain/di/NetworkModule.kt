@@ -130,6 +130,8 @@ class NetworkModule {
     @Singleton @Provides fun provideRepoService(retrofit: Retrofit): RepoService = retrofit.create(RepoService::class.java)
     @Singleton @Provides fun provideReviewService(retrofit: Retrofit): ReviewService = retrofit.create(ReviewService::class.java)
     @Singleton @Provides fun provideCommitService(retrofit: Retrofit): CommitService = retrofit.create(CommitService::class.java)
+    @Singleton @Provides fun providePullRequestService(retrofit: Retrofit): PullRequestService = retrofit.create(PullRequestService::class.java)
+
     @Singleton @Provides fun provideImgurService(
         retrofit: Retrofit.Builder,
         @Named("imgurClient") okHttpClient: OkHttpClient

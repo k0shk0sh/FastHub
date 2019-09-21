@@ -12,9 +12,11 @@ import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.utils.EXTRA_FOUR
 import com.fastaccess.github.base.utils.EXTRA_THREE
 import com.fastaccess.github.base.utils.EXTRA_TWO
 import com.fastaccess.github.base.viewmodel.ViewModelProviders
+import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import javax.inject.Inject
 
@@ -25,6 +27,8 @@ class CommitFilesFragment : BaseFragment() {
     private val sha by lazy { arguments?.getString(EXTRA) ?: throw NullPointerException("sha is null") }
     private val login by lazy { arguments?.getString(EXTRA_TWO) ?: throw NullPointerException("login is null") }
     private val repo by lazy { arguments?.getString(EXTRA_THREE) ?: throw NullPointerException("repo is null") }
+    private val number by lazy { arguments?.getInt(EXTRA_FOUR) ?: 0 }
+    private val isPr by lazy { number > 0 }
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(CommitFilesViewModel::class.java) }
     private val adapter by lazy {
         CommitFilesAdapter { position, commitFilesModel ->
@@ -36,21 +40,32 @@ class CommitFilesFragment : BaseFragment() {
     override fun viewModel(): BaseViewModel? = viewModel
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
-
         recyclerView.adapter = adapter
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 recyclerView.resetScrollState()
-                viewModel.loadFiles(login, repo, sha)
+                if (isPr) {
+                    viewModel.loadFiles(login, repo, number, true)
+                } else {
+                    viewModel.loadFiles(login, repo, sha)
+                }
             } else {
                 swipeRefresh.isRefreshing = false
             }
         }
 
         if (savedInstanceState == null && viewModel.filesLiveData.value == null) {
-            viewModel.loadFiles(login, repo, sha)
+            if (isPr) {
+                viewModel.loadFiles(login, repo, number, true)
+            } else {
+                viewModel.loadFiles(login, repo, sha)
+            }
+        }
+
+        if (isPr) {
+            recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.loadFiles(login, repo, number) } }
         }
 
         observeChanges()
@@ -67,18 +82,17 @@ class CommitFilesFragment : BaseFragment() {
     }
 
     companion object {
-        const val COMMENT_REQUEST_CODE = 1001
-        const val EDIT_COMMENT_REQUEST_CODE = 1003
-
         fun newInstance(
-            sha: String,
+            sha: String? = null,
             login: String,
-            repo: String
+            repo: String,
+            number: Int = 0
         ) = CommitFilesFragment().apply {
             arguments = bundleOf(
                 EXTRA to sha,
                 EXTRA_TWO to login,
-                EXTRA_THREE to repo
+                EXTRA_THREE to repo,
+                EXTRA_FOUR to number
             )
         }
     }
