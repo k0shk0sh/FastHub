@@ -32,7 +32,14 @@ class CommitFilesFragment : BaseFragment() {
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(CommitFilesViewModel::class.java) }
     private val adapter by lazy {
         CommitFilesAdapter { position, commitFilesModel ->
-            DiffViewerActivity.startActivity(requireContext(), commitFilesModel.patch ?: "")
+            DiffViewerActivity.startActivity(
+                requireContext(),
+                commitFilesModel.patch ?: "",
+                commitFilesModel.filename ?: "",
+                commitFilesModel.additions ?: 0,
+                commitFilesModel.deletions ?: 0,
+                commitFilesModel.changes ?: 0
+            )
         }
     }
 

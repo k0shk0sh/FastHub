@@ -1,20 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar_center_title_layout" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone" />
+        android:background="?android:windowBackground"
+        android:theme="?android:toolbarStyle"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="?android:windowBackground"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:scrimAnimationDuration="0"
+            app:titleEnabled="false">
+
+            <LinearLayout
+                style="@style/LayoutPadding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?actionBarSize"
+                android:orientation="vertical"
+                app:layout_collapseMode="none">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/filename"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    tools:text="@string/app_animation_summary" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/changes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/spacing_xs_large"
+                            android:layout_marginEnd="@dimen/spacing_xs_large"
+                            android:drawableTop="@drawable/ic_edit"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            tools:text="100,00" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:background="?dividerColor" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/additions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/spacing_xs_large"
+                            android:layout_marginEnd="@dimen/spacing_xs_large"
+                            android:drawableTop="@drawable/ic_add"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            tools:text="100,00" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:background="?dividerColor" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/deletion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/spacing_xs_large"
+                            android:layout_marginEnd="@dimen/spacing_xs_large"
+                            android:drawableTop="@drawable/ic_clear"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            tools:text="100,00" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <include layout="@layout/title_toolbar_layout" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/diffRecyclerView"
@@ -23,7 +121,8 @@
         android:paddingStart="@dimen/spacing_xs_large"
         android:paddingEnd="@dimen/spacing_xs_large"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/scroll_behaviour"
         tools:itemCount="40"
         tools:listitem="@layout/commit_line_row_item" />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

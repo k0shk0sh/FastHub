@@ -130,6 +130,7 @@ dependencies {
     implementation project(':editor')
     implementation project(':commits')
     implementation project(':diff')
+    implementation project(':reviews')
     implementation dependency.kotlin
     implementation dependency.supportLibraries
     implementation dependency.extrasLibraries
