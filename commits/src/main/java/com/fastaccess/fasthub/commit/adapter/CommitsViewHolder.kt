@@ -28,6 +28,11 @@ class CommitsViewHolder(parent: ViewGroup) : BaseViewHolder<FullCommitModel>(
                 stateIcon.setImageResource(icon)
                 stateIcon.isVisible = true
             }
+            if (item.isVerified == true) {
+                association.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_verified_small, 0, 0, 0)
+            } else {
+                association.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+            }
             author.text = item.author?.login
             association.text = item.authoredDate?.timeAgo()
             if (!item.messageHeadline.isNullOrEmpty()) {
