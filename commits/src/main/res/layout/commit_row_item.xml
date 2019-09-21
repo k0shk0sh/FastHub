@@ -63,6 +63,8 @@
                     android:id="@+id/association"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:gravity="start|center"
                     android:maxLines="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     tools:text="Owner" />
