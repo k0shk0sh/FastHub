@@ -30,7 +30,6 @@ import com.fastaccess.github.ui.modules.notifications.NotificationPagerFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.read.AllNotificationsFragment
 import com.fastaccess.github.ui.modules.notifications.fragment.unread.UnreadNotificationsFragment
 import com.fastaccess.github.ui.modules.pr.fragment.PullRequestFragment
-import com.fastaccess.github.ui.modules.pr.reviews.ListReviewsFragment
 import com.fastaccess.github.ui.modules.profile.feeds.ProfileFeedFragment
 import com.fastaccess.github.ui.modules.profile.followersandfollowings.ProfileFollowersFragment
 import com.fastaccess.github.ui.modules.profile.fragment.ProfileFragment
@@ -81,6 +80,6 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class]) abstract fun provideIssueFragment(): IssueFragment
     @PerFragment @ContributesAndroidInjector(modules = [EditIssuePrModule::class]) abstract fun provideEditIssuePrFragment(): EditIssuePrFragment
     @PerFragment @ContributesAndroidInjector(modules = [PullRequestModule::class]) abstract fun providePullRequestFragment(): PullRequestFragment
-    @PerFragment @ContributesAndroidInjector(modules = [ListReviewsModule::class]) abstract fun provideListReviewsFragment(): ListReviewsFragment
+    @PerFragment @ContributesAndroidInjector(modules = [ReviewsModule::class]) abstract fun provideListReviewsFragment(): ReviewsFragment
 
 }

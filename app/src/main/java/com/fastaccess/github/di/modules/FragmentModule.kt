@@ -5,7 +5,6 @@ import com.fastaccess.github.editor.di.MentionsModule
 import com.fastaccess.github.ui.modules.issue.fragment.IssueFragment
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrFragment
 import com.fastaccess.github.ui.modules.pr.fragment.PullRequestFragment
-import com.fastaccess.github.ui.modules.pr.reviews.ListReviewsFragment
 import com.fastaccess.markdown.di.MarkdownModule
 import dagger.Module
 import dagger.Provides
@@ -27,9 +26,4 @@ class EditIssuePrModule {
 @Module(includes = [MarkdownModule::class, MentionsModule::class])
 class PullRequestModule {
     @PerFragment @Provides fun provideEditorContext(fragment: PullRequestFragment) = fragment.requireContext()
-}
-
-@Module(includes = [MarkdownModule::class, MentionsModule::class])
-class ListReviewsModule {
-    @PerFragment @Provides fun provideEditorContext(fragment: ListReviewsFragment) = fragment.requireContext()
 }

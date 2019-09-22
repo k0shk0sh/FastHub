@@ -1,4 +1,4 @@
-package com.fastaccess.github.usecase.issuesprs
+package com.fastaccess.github.editor.usecase
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
@@ -7,8 +7,8 @@ import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.services.IssuePrService
 import com.fastaccess.domain.response.body.CommentRequestModel
+import com.fastaccess.domain.services.IssuePrService
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.toReactionGroup
 import github.GetLastIssueCommentQuery

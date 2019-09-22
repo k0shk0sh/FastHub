@@ -230,6 +230,7 @@
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_weight="1"
+            android:clickable="true"
             android:foreground="?selectableItemBackground"
             android:minHeight="150dp"
             app:cardCornerRadius="@dimen/spacing_normal"
@@ -294,6 +295,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/reviewsCard"
             style="@style/CardViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -302,6 +304,7 @@
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_weight="1"
+            android:clickable="true"
             android:minHeight="150dp"
             app:cardCornerRadius="@dimen/spacing_normal"
             app:cardElevation="@dimen/spacing_micro">

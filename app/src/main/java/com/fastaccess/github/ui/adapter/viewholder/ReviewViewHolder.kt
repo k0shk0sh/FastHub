@@ -8,12 +8,12 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
 import com.fastaccess.data.model.ReviewModel
 import com.fastaccess.github.R
+import com.fastaccess.github.base.adapter.BaseViewHolder
+import com.fastaccess.github.base.extensions.popMenu
 import com.fastaccess.github.extensions.getColorAttr
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.showYesNoDialog
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.base.adapter.BaseViewHolder
-import com.fastaccess.github.base.extensions.popMenu
 import com.fastaccess.markdown.spans.DiffLineSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.PullRequestReviewState
@@ -150,7 +150,7 @@ class ReviewViewHolder(
             }
 
             reviewDescription.setOnTouchListener { v, event ->
-                if (event.action == MotionEvent.ACTION_UP && !description.hasSelection()) {
+                if (event.action == MotionEvent.ACTION_UP && !reviewDescription.hasSelection()) {
                     itemView.callOnClick()
                 }
                 return@setOnTouchListener false

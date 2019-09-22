@@ -12,6 +12,7 @@ import com.fastaccess.data.model.TimelineType
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.data.storage.FastHubSharedPreference
+import com.fastaccess.fasthub.reviews.PullRequestReviewsActivity
 import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.hideKeyboard
 import com.fastaccess.github.base.extensions.theme
@@ -203,6 +204,9 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
         changes.text = getString(R.string.changes_with_count, model.dashboard?.changeRequestedReviews ?: 0)
         commitsCard.setOnClickListener {
             it.context.route("${model.url}/commits")
+        }
+        reviewsCard.setOnClickListener {
+            route(PullRequestReviewsActivity.getUrl(login, repo, number))
         }
     }
 
