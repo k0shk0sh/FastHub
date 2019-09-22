@@ -41,13 +41,9 @@ class GetReviewsUseCase @Inject constructor(
             )
             val timelineModel = arrayListOf<TimelineModel>()
 
-            val comments = response.nodes?.flatMap { it.comments.nodes?.asIterable() ?: emptyList() } ?: emptyList()
-            val reviews = response.nodes?.flatMap { it.comments.nodes?.asIterable() ?: emptyList() }
-                ?.distinctBy { it.pullRequestReview?.id }
-                ?.mapNotNull { it.pullRequestReview }
-                ?.sortedBy { it.createdAt }
-                ?.map { node ->
-                    ReviewModel(
+            response.nodes?.forEach {
+                it.comments.nodes?.firstOrNull()?.pullRequestReview?.let { node ->
+                    timelineModel.add(TimelineModel(review = ReviewModel(
                         node.id,
                         node.databaseId,
                         ShortUserModel(
@@ -67,32 +63,39 @@ class GetReviewsUseCase @Inject constructor(
                         node.isViewerDidAuthor,
                         false,
                         node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }
-                    )
-                } ?: arrayListOf()
-
-            reviews.forEach { review ->
-                timelineModel.add(TimelineModel(review = review))
-                timelineModel.addAll(comments.filter { it.pullRequestReview?.id == review.id }
-                    .sortedBy { it.createdAt }
-                    .map {
+                    )))
+                }
+                timelineModel.addAll(it.comments.nodes
+                    ?.mapIndexedNotNull { index, node1 ->
                         TimelineModel(
                             comment = CommentModel(
-                                it.id,
-                                it.databaseId,
+                                node1.id,
+                                node1.databaseId,
                                 ShortUserModel(
-                                    it.author?.login,
-                                    it.author?.login,
-                                    it.author?.url?.toString(),
-                                    avatarUrl = it.author?.avatarUrl?.toString()
+                                    node1.author?.login,
+                                    node1.author?.login,
+                                    node1.author?.url?.toString(),
+                                    avatarUrl = node1.author?.avatarUrl?.toString()
                                 ),
-                                it.body, CommentAuthorAssociation.fromName(it.authorAssociation.rawValue()),
-                                it.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
-                                it.updatedAt, it.updatedAt, it.isViewerCanReact, it.isViewerCanDelete,
-                                it.isViewerCanUpdate, it.isViewerDidAuthor, false,
-                                it.path, it.originalPosition, it.isOutdated, it.diffHunk
+                                node1.body,
+                                CommentAuthorAssociation.fromName(node1.authorAssociation.rawValue()),
+                                node1.reactionGroups?.map { it.fragments.reactions.toReactionGroup() },
+                                node1.updatedAt,
+                                node1.updatedAt,
+                                node1.isViewerCanReact,
+                                node1.isViewerCanDelete,
+                                node1.isViewerCanUpdate,
+                                node1.isViewerDidAuthor,
+                                false,
+                                if (index == 0) node1.path else null,
+                                if (index == 0) node1.originalPosition else null,
+                                node1.isOutdated,
+                                if (index == 0) node1.diffHunk else
+                                    null
                             )
                         )
-                    })
+                    } ?: arrayListOf()
+                )
             }
             return@map Pair(pageInfo, timelineModel)
         }

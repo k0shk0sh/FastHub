@@ -22,10 +22,10 @@ import javax.inject.Inject
  * Created by Kosh on 2019-07-18.
  */
 class MentionsPresenter @Inject constructor(
-    c: Context,
+    context: Context,
     private val searchUsersUseCase: FilterSearchUsersUseCase,
     schedulerProvider: SchedulerProvider
-) : RecyclerViewPresenter<String>(c) {
+) : RecyclerViewPresenter<String>(context) {
 
     private var disposable: Disposable? = null
     private val localList = ArrayList<String>()

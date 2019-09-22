@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spacing_xs_large"
-    android:layout_marginTop="@dimen/spacing_micro"
+    android:layout_marginTop="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/spacing_xs_large"
-    android:layout_marginBottom="@dimen/spacing_micro"
+    android:layout_marginBottom="@dimen/spacing_normal"
     android:foreground="?selectableItemBackground">
 
     <LinearLayout
@@ -20,7 +20,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
             android:orientation="horizontal">
 
             <com.fastaccess.github.base.widget.AvatarImageView
@@ -76,30 +75,30 @@
                 android:src="@drawable/ic_overflow" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reviewDescription"
+        <LinearLayout
+            android:id="@+id/descriptionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:breakStrategy="simple"
-            android:hyphenationFrequency="none"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textIsSelectable="true"
-            tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
-
-        <com.fastaccess.fasthub.reactions.AdaptiveEmoticonLayout
-            android:id="@+id/reviewAdaptiveEmoticon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:background="?dividerColor" />
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/reviewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:breakStrategy="simple"
+                android:hyphenationFrequency="none"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textIsSelectable="true"
+                tools:text="Place the truffels in an ice blender, and toss immediately with tangy lime.immediately with tangy lime" />
+
+            <com.fastaccess.fasthub.reactions.AdaptiveEmoticonLayout
+                android:id="@+id/reviewAdaptiveEmoticon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal" />
+        </LinearLayout>
 
     </LinearLayout>
 

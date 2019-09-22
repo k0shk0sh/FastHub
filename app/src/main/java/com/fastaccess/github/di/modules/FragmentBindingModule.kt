@@ -80,6 +80,4 @@ abstract class FragmentBindingModule {
     @PerFragment @ContributesAndroidInjector(modules = [IssueModule::class]) abstract fun provideIssueFragment(): IssueFragment
     @PerFragment @ContributesAndroidInjector(modules = [EditIssuePrModule::class]) abstract fun provideEditIssuePrFragment(): EditIssuePrFragment
     @PerFragment @ContributesAndroidInjector(modules = [PullRequestModule::class]) abstract fun providePullRequestFragment(): PullRequestFragment
-    @PerFragment @ContributesAndroidInjector(modules = [ReviewsModule::class]) abstract fun provideListReviewsFragment(): ReviewsFragment
-
 }

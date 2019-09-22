@@ -34,17 +34,17 @@ class ReviewCommentViewHolder(
     @SuppressLint("DefaultLocale")
     override fun bind(item: CommentModel) {
         itemView.apply {
-            fileName.text = item.path
             if (!item.diffHunk.isNullOrEmpty()) {
+                fileName.text = item.path
                 diffHunk.text = DiffLineSpan.getSpannable(
                     item.diffHunk,
                     context.getColorAttr(R.attr.patch_addition), context.getColorAttr(R.attr.patch_deletion),
                     context.getColorAttr(R.attr.patch_ref),
                     truncate = true
                 )
-                diffHunk.isVisible = true
+                reviewCommentLayout.isVisible = true
             } else {
-                diffHunk.isVisible = false
+                reviewCommentLayout.isVisible = false
             }
             userIcon.loadAvatar(item.author?.avatarUrl, item.author?.url ?: "")
             author.text = item.author?.login ?: ""

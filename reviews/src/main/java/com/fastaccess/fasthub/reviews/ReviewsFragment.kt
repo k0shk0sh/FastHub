@@ -1,7 +1,9 @@
 package com.fastaccess.fasthub.reviews
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
+import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.CommentModel
@@ -16,9 +18,14 @@ import com.fastaccess.github.base.utils.*
 import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.editor.comment.CommentActivity
 import com.fastaccess.github.editor.presenter.MentionsPresenter
+import com.fastaccess.github.extensions.getDrawableCompat
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.routeForResult
+import com.fastaccess.markdown.MarkdownProvider
+import com.otaliastudios.autocomplete.Autocomplete
+import com.otaliastudios.autocomplete.AutocompleteCallback
+import com.otaliastudios.autocomplete.CharPolicy
 import io.noties.markwon.Markwon
 import javax.inject.Inject
 
@@ -43,6 +50,7 @@ class ReviewsFragment : BaseFragment() {
     override fun layoutRes(): Int = R.layout.reviews_fragment_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
+        setupToolbar(R.string.reviews)
         recyclerView.adapter = adapter
         recyclerView.setEmptyView(emptyLayout)
         fastScroller.attachRecyclerView(recyclerView)
@@ -60,7 +68,7 @@ class ReviewsFragment : BaseFragment() {
         }
 
         recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.load(login, repo, number) } }
-
+        setupEditText()
         observeChanges()
     }
 
@@ -89,6 +97,32 @@ class ReviewsFragment : BaseFragment() {
     private fun observeChanges() {
         viewModel.timeline.observeNotNull(this) {
             adapter.submitList(it)
+        }
+    }
+
+    private fun setupEditText() {
+        val commentText = view?.findViewById<EditText>(R.id.commentText) ?: return
+        Autocomplete.on<String>(commentText)
+            .with(CharPolicy('@'))
+            .with(mentionsPresenter)
+            .with(requireContext().getDrawableCompat(R.drawable.popup_window_background))
+            .with(object : AutocompleteCallback<String?> {
+                override fun onPopupItemClicked(
+                    editable: Editable?,
+                    item: String?
+                ): Boolean = MarkdownProvider.replaceMention(editable, item)
+
+                override fun onPopupVisibilityChanged(shown: Boolean) {}
+            })
+            .build()
+        view?.findViewById<View?>(R.id.sendComment)?.setOnClickListener {
+            val comment = commentText.text?.toString()
+            if (!comment.isNullOrEmpty()) {
+                viewModel.createComment(login, repo, number, comment)
+            }
+        }
+        view?.findViewById<View?>(R.id.toggleFullScreen)?.setOnClickListener {
+            routeForResult(EDITOR_DEEP_LINK, COMMENT_REQUEST_CODE, bundleOf(EXTRA to commentText.text?.toString()))
         }
     }
 

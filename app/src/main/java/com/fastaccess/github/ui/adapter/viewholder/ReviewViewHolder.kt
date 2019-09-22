@@ -70,7 +70,7 @@ class ReviewViewHolder(
                 association.text = if (CommentAuthorAssociation.NONE == model.authorAssociation) {
                     if (!showReview) {
                         SpannableBuilder.builder()
-                            .bold(_review.state?.replace("_", "")?.toLowerCase())
+                            .bold(_review.state?.replace("_", " ")?.toLowerCase())
                             .append(", ")
                             .append(model.createdAt?.timeAgo())
                     } else {
@@ -131,12 +131,12 @@ class ReviewViewHolder(
             reviewAuthor.text = model.author?.login ?: ""
             reviewAssociation.text = if (CommentAuthorAssociation.NONE.value == model.authorAssociation) {
                 SpannableBuilder.builder()
-                    .bold(model.state?.replace("_", "")?.toLowerCase())
+                    .bold(model.state?.replace("_", " ")?.toLowerCase())
                     .append(", ")
                     .append(model.createdAt?.timeAgo())
             } else {
                 SpannableBuilder.builder()
-                    .bold(model.state?.replace("_", "")?.toLowerCase())
+                    .bold(model.state?.replace("_", " ")?.toLowerCase())
                     .append(", ")
                     .append(model.authorAssociation?.toLowerCase()?.replace("_", "") ?: "")
                     .append(", ")
