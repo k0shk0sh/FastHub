@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.CommentModel
+import com.fastaccess.data.model.ReviewModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.github.base.adapter.LoadingViewHolder
-import com.fastaccess.github.ui.adapter.viewholder.*
+import com.fastaccess.github.ui.adapter.viewholder.CommentViewHolder
+import com.fastaccess.github.ui.adapter.viewholder.CommitThreadViewHolder
+import com.fastaccess.github.ui.adapter.viewholder.IssueContentViewHolder
+import com.fastaccess.github.ui.adapter.viewholder.ReviewViewHolder
 import io.noties.markwon.Markwon
 
 /**
@@ -20,7 +24,8 @@ class IssueTimelineAdapter(
     private val theme: Int,
     private val commentClickListener: (position: Int, model: CommentModel) -> Unit,
     private val deleteCommentListener: (position: Int, model: TimelineModel) -> Unit,
-    private val editCommentListener: (position: Int, model: TimelineModel) -> Unit
+    private val editCommentListener: (position: Int, model: TimelineModel) -> Unit,
+    private val reviewClickListener: ((model: ReviewModel) -> Unit)? = null
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val notifyCallback by lazy {
@@ -70,7 +75,7 @@ class IssueTimelineAdapter(
                 itemView.setOnClickListener {
                     val position = adapterPosition
                     if (position == RecyclerView.NO_POSITION) return@setOnClickListener
-                    getItemByPosition(position)?.comment?.let { commentClickListener.invoke(position, it) }
+                    getItemByPosition(position)?.review?.let { reviewClickListener?.invoke(it) }
                 }
             }
             COMMIT_THREAD -> CommitThreadViewHolder(parent, markwon, theme, notifyCallback, { position ->

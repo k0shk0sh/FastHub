@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.fasthub.reviews.usecase.GetReviewUseCase
 import com.fastaccess.fasthub.reviews.usecase.GetReviewsUseCase
 import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.editor.usecase.CreateIssueCommentUseCase
@@ -13,6 +14,7 @@ import javax.inject.Inject
 
 class ReviewsViewModel @Inject constructor(
     private val timelineUseCase: GetReviewsUseCase,
+    private val getReviewUseCase: GetReviewUseCase,
     private val editCommentUseCase: EditCommentUseCase,
     private val deleteCommentUseCase: DeleteCommentUseCase,
     private val createCommentUsecase: CreateIssueCommentUseCase
@@ -37,6 +39,27 @@ class ReviewsViewModel @Inject constructor(
         timelineUseCase.number = number
         timelineUseCase.page = Input.optional(cursor)
         justSubscribe(timelineUseCase.buildObservable()
+            .doOnNext {
+                this.pageInfo = it.first
+                list.addAll(it.second)
+                timeline.postValue(ArrayList(list))
+            })
+    }
+
+    fun load(
+        id: String,
+        reload: Boolean = false
+    ) {
+        if (reload) {
+            pageInfo = null
+            list.clear()
+        }
+        val pageInfo = pageInfo
+        if (!reload && (pageInfo != null && !pageInfo.hasNextPage)) return
+        val cursor = if (hasNext()) pageInfo?.endCursor else null
+        getReviewUseCase.id = id
+        getReviewUseCase.page = Input.optional(cursor)
+        justSubscribe(getReviewUseCase.buildObservable()
             .doOnNext {
                 this.pageInfo = it.first
                 list.addAll(it.second)

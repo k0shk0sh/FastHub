@@ -50,6 +50,7 @@ class ReviewsFragment : BaseFragment() {
     override fun layoutRes(): Int = R.layout.reviews_fragment_layout
 
     override fun onFragmentCreatedWithUser(view: View, savedInstanceState: Bundle?) {
+        val reviewId = id
         setupToolbar(R.string.reviews)
         recyclerView.adapter = adapter
         recyclerView.setEmptyView(emptyLayout)
@@ -57,17 +58,33 @@ class ReviewsFragment : BaseFragment() {
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 recyclerView.resetScrollState()
-                viewModel.load(login, repo, number, true)
+                if (reviewId.isNullOrEmpty()) {
+                    viewModel.load(login, repo, number, true)
+                } else {
+                    viewModel.load(reviewId, true)
+                }
             } else {
                 swipeRefresh.isRefreshing = false
             }
         }
 
         if (savedInstanceState == null || viewModel.timeline.value == null) {
-            viewModel.load(login, repo, number, true)
+            if (reviewId.isNullOrEmpty()) {
+                viewModel.load(login, repo, number, true)
+            } else {
+                viewModel.load(reviewId, true)
+            }
         }
 
-        recyclerView.addOnLoadMore { isConnected().isTrue { viewModel.load(login, repo, number) } }
+        recyclerView.addOnLoadMore {
+            isConnected().isTrue {
+                if (reviewId.isNullOrEmpty()) {
+                    viewModel.load(login, repo, number)
+                } else {
+                    viewModel.load(reviewId)
+                }
+            }
+        }
         setupEditText()
         observeChanges()
     }

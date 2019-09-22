@@ -536,6 +536,7 @@ query getPullRequestReview($id: ID!, $page: String){
             }
             comments(first: 30, after: $page) {
                 totalCount
+                pageInfo { ... PageInfoFragment }
                 nodes { ... PullRequestReviewCommentFragment }
             }
         }

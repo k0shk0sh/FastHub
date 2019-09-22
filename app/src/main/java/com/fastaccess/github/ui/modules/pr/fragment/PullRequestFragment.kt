@@ -51,7 +51,12 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(PullRequestTimelineViewModel::class.java) }
 
     override val adapter by lazy {
-        IssueTimelineAdapter(markwon, preference.theme, onCommentClicked(), onDeleteCommentClicked(), onEditCommentClicked())
+        IssueTimelineAdapter(
+            markwon, preference.theme, onCommentClicked(),
+            onDeleteCommentClicked(),
+            onEditCommentClicked(),
+            { model -> route(PullRequestReviewsActivity.getUrl(login, repo, number, model.id)) }
+        )
     }
 
     override fun layoutRes(): Int = R.layout.pr_fragment_layout
