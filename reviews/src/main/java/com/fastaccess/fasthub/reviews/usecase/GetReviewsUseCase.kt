@@ -41,29 +41,34 @@ class GetReviewsUseCase @Inject constructor(
             )
             val timelineModel = arrayListOf<TimelineModel>()
 
+            var previousNode: GetPullRequestReviewsQuery.PullRequestReview? = null
+
             response.nodes?.forEach {
                 it.comments.nodes?.firstOrNull()?.pullRequestReview?.let { node ->
-                    timelineModel.add(TimelineModel(review = ReviewModel(
-                        node.id,
-                        node.databaseId,
-                        ShortUserModel(
-                            node.author?.login,
-                            node.author?.login,
-                            node.author?.url?.toString(),
-                            avatarUrl = node.author?.avatarUrl?.toString()
-                        ),
-                        node.body,
-                        node.authorAssociation.rawValue(),
-                        node.state.rawValue(),
-                        node.createdAt,
-                        null,
-                        node.isViewerCanReact,
-                        node.isViewerCanDelete,
-                        node.isViewerCanUpdate,
-                        node.isViewerDidAuthor,
-                        false,
-                        node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }
-                    )))
+                    if (previousNode == null || (previousNode?.author != node.author && previousNode?.state != node.state)) {
+                        previousNode = node
+                        timelineModel.add(TimelineModel(review = ReviewModel(
+                            node.id,
+                            node.databaseId,
+                            ShortUserModel(
+                                node.author?.login,
+                                node.author?.login,
+                                node.author?.url?.toString(),
+                                avatarUrl = node.author?.avatarUrl?.toString()
+                            ),
+                            node.body,
+                            node.authorAssociation.rawValue(),
+                            node.state.rawValue(),
+                            node.createdAt,
+                            null,
+                            node.isViewerCanReact,
+                            node.isViewerCanDelete,
+                            node.isViewerCanUpdate,
+                            node.isViewerDidAuthor,
+                            false,
+                            node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }
+                        )))
+                    }
                 }
                 timelineModel.addAll(it.comments.nodes
                     ?.mapIndexedNotNull { index, node1 ->
