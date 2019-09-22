@@ -34,7 +34,8 @@ data class TimelineModel(
     @SerializedName("reviewRequestRemoved") var reviewRequestRemoved: ReviewRequestRemovedModel? = null,
     @SerializedName("pullRequestCommit") var pullRequestCommit: PullRequestCommitModel? = null,
     @SerializedName("review") var review: ReviewModel? = null,
-    @SerializedName("commitThread") var commitThread: CommitThreadModel? = null
+    @SerializedName("commitThread") var commitThread: CommitThreadModel? = null,
+    @SerializedName("divider") var divider: Boolean = false
 )
 
 data class CommitModel(

@@ -1,11 +1,13 @@
 package com.fastaccess.fasthub.reviews.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.fasthub.reviews.R
 import io.noties.markwon.Markwon
 
 class ReviewsAdapter(
@@ -41,7 +43,7 @@ class ReviewsAdapter(
                 getItem(position)?.comment?.let { commentClickListener.invoke(position, it) }
             }
         }
-        else -> throw IllegalArgumentException("not supported")
+        else -> object : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.space_row_item, parent, false)) {}
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

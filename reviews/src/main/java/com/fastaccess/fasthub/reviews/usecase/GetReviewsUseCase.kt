@@ -39,8 +39,8 @@ class GetReviewsUseCase @Inject constructor(
                 pageInfoFragment.startCursor, pageInfoFragment.endCursor,
                 pageInfoFragment.isHasNextPage, pageInfoFragment.isHasPreviousPage
             )
-            val timelineModel = arrayListOf<TimelineModel>()
 
+            val timelineModel = arrayListOf<TimelineModel>()
             var previousNode: GetPullRequestReviewsQuery.PullRequestReview? = null
 
             response.nodes?.forEach {
@@ -101,6 +101,7 @@ class GetReviewsUseCase @Inject constructor(
                         )
                     } ?: arrayListOf()
                 )
+                timelineModel.add(TimelineModel(divider = true))
             }
             return@map Pair(pageInfo, timelineModel)
         }
