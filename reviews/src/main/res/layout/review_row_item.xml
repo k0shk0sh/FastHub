@@ -8,7 +8,7 @@
     android:layout_marginStart="@dimen/spacing_xs_large"
     android:layout_marginTop="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/spacing_xs_large"
-    android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginBottom="@dimen/spacing_xs_large"
     android:foreground="?selectableItemBackground">
 
     <LinearLayout

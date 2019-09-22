@@ -477,3 +477,74 @@ fragment PageInfoFragment on PageInfo {
     hasPreviousPage
     startCursor
 }
+
+fragment PullRequestReviewCommentFragment on PullRequestReviewComment {
+    id
+    databaseId
+    author {
+        login
+        avatarUrl
+        url
+    }
+    body
+    originalPosition
+    path
+    outdated
+    authorAssociation
+    updatedAt
+    createdAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    diffHunk
+    reactionGroups {
+        ...Reactions
+    }
+}
+
+fragment PullRequestReviewCommentWithReview on PullRequestReviewComment {
+    id
+    databaseId
+    author {
+        login
+        avatarUrl
+        url
+    }
+    body
+    originalPosition
+    path
+    outdated
+    authorAssociation
+    updatedAt
+    createdAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    diffHunk
+    reactionGroups {
+        ...Reactions
+    }
+    pullRequestReview {
+        id
+        databaseId
+        authorAssociation
+        author {
+            login
+            avatarUrl
+            url
+        }
+        body
+        createdAt
+        state
+        resourcePath
+        viewerCanReact
+        viewerCanDelete
+        viewerCanUpdate
+        viewerDidAuthor
+        reactionGroups {
+            ...Reactions
+        }
+    }
+}

@@ -17,14 +17,11 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
     <LinearLayout
         android:id="@+id/commentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:orientation="vertical">
 
         <View
             android:layout_width="match_parent"

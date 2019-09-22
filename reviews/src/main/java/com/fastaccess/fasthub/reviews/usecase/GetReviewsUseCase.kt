@@ -8,6 +8,7 @@ import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.toReactionGroup
 import github.GetPullRequestReviewsQuery
+import github.fragment.PullRequestReviewCommentWithReview
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -41,10 +42,11 @@ class GetReviewsUseCase @Inject constructor(
             )
 
             val timelineModel = arrayListOf<TimelineModel>()
-            var previousNode: GetPullRequestReviewsQuery.PullRequestReview? = null
+            var previousNode: PullRequestReviewCommentWithReview.PullRequestReview? = null
 
             response.nodes?.forEach {
-                it.comments.nodes?.firstOrNull()?.pullRequestReview?.let { node ->
+                val review = it.comments.nodes?.firstOrNull()?.fragments?.pullRequestReviewCommentWithReview?.pullRequestReview
+                review?.let { node ->
                     if (previousNode == null || (previousNode?.author != node.author && previousNode?.state != node.state)) {
                         previousNode = node
                         timelineModel.add(TimelineModel(review = ReviewModel(
@@ -71,7 +73,8 @@ class GetReviewsUseCase @Inject constructor(
                     }
                 }
                 timelineModel.addAll(it.comments.nodes
-                    ?.mapIndexedNotNull { index, node1 ->
+                    ?.mapNotNull { it.fragments.pullRequestReviewCommentWithReview }
+                    ?.mapIndexed { index, node1 ->
                         TimelineModel(
                             comment = CommentModel(
                                 node1.id,

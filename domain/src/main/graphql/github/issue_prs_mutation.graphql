@@ -21,3 +21,23 @@ mutation unlock($subjectId: ID!) {
         clientMutationId
     }
 }
+
+mutation addComment($id: ID!, $body: String!) {
+    addComment(input:{subjectId: $id, body: $body}){
+        subject {
+            ... on IssueComment { ... Comment }
+        }
+    }
+}
+
+mutation addReviewComment($id: ID!, $body: String!) {
+    addPullRequestReviewComment(input:{pullRequestReviewId: $id, body: $body}){
+        comment { ... PullRequestReviewCommentFragment }
+    }
+}
+
+mutation updateIssuePullRequestComment($id: ID!, $body: String!) {
+    updateIssueComment(input:{id: $id, body: $body}){
+        issueComment { ... Comment }
+    }
+}

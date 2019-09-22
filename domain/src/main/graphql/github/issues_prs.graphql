@@ -416,29 +416,7 @@ query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $pa
                                 ...Reactions
                             }
                             comments(first: 1) {
-                                nodes {
-                                    id
-                                    databaseId
-                                    author {
-                                        login
-                                        avatarUrl
-                                        url
-                                    }
-                                    body
-                                    originalPosition
-                                    path
-                                    outdated
-                                    authorAssociation
-                                    updatedAt
-                                    viewerCanReact
-                                    viewerCanDelete
-                                    viewerCanUpdate
-                                    viewerDidAuthor
-                                    diffHunk
-                                    reactionGroups {
-                                        ...Reactions
-                                    }
-                                }
+                                nodes { ... PullRequestReviewCommentFragment }
                             }
                         }
                     }
@@ -521,51 +499,7 @@ query getPullRequestReviews($login: String!, $repo: String!, $number: Int!, $pag
                         viewerCanUnresolve
                         comments(first: 100) {
                             totalCount
-                            nodes {
-                                id
-                                databaseId
-                                author {
-                                    login
-                                    avatarUrl
-                                    url
-                                }
-                                body
-                                originalPosition
-                                path
-                                outdated
-                                authorAssociation
-                                updatedAt
-                                createdAt
-                                viewerCanReact
-                                viewerCanDelete
-                                viewerCanUpdate
-                                viewerDidAuthor
-                                diffHunk
-                                reactionGroups {
-                                    ...Reactions
-                                }
-                                pullRequestReview {
-                                    id
-                                    databaseId
-                                    authorAssociation
-                                    author {
-                                        login
-                                        avatarUrl
-                                        url
-                                    }
-                                    body
-                                    createdAt
-                                    state
-                                    resourcePath
-                                    viewerCanReact
-                                    viewerCanDelete
-                                    viewerCanUpdate
-                                    viewerDidAuthor
-                                    reactionGroups {
-                                        ...Reactions
-                                    }
-                                }
-                            }
+                            nodes { ... PullRequestReviewCommentWithReview}
                         }
                     }
                 }
@@ -602,29 +536,7 @@ query getPullRequestReview($id: ID!, $page: String){
             }
             comments(first: 30, after: $page) {
                 totalCount
-                nodes {
-                    id
-                    databaseId
-                    author {
-                        login
-                        avatarUrl
-                        url
-                    }
-                    body
-                    originalPosition
-                    path
-                    outdated
-                    authorAssociation
-                    updatedAt
-                    viewerCanReact
-                    viewerCanDelete
-                    viewerCanUpdate
-                    viewerDidAuthor
-                    diffHunk
-                    reactionGroups {
-                        ...Reactions
-                    }
-                }
+                nodes { ... PullRequestReviewCommentFragment }
             }
         }
     }

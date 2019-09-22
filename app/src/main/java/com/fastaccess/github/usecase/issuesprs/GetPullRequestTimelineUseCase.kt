@@ -121,7 +121,9 @@ class GetPullRequestTimelineUseCase @Inject constructor(
             node.authorAssociation.rawValue(),
             node.state.rawValue(),
             node.createdAt,
-            node.comments.nodes?.map {
+            node.comments.nodes
+                ?.map { it.fragments.pullRequestReviewCommentFragment }
+                ?.map {
                 CommentModel(
                     it.id,
                     it.databaseId,
