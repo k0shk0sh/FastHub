@@ -39,6 +39,7 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
     private var activityCallback: ActivityCallback? = null
     private var disposal = CompositeDisposable()
 
+    abstract fun viewModel(): BaseViewModel?
     @LayoutRes abstract fun layoutRes(): Int
 
     abstract fun onFragmentCreatedWithUser(
@@ -51,8 +52,6 @@ abstract class BaseFragment : DaggerFragment(), ActivityCallback, UpdateTabCount
         savedInstanceState: Bundle?
     ) {
     }
-
-    abstract fun viewModel(): BaseViewModel?
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

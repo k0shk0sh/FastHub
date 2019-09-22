@@ -504,3 +504,128 @@ query getMilestones($login: String!, $repo: String!, $page: String) {
         }
     }
 }
+
+query getPullRequestReviews($login: String!, $repo: String!, $number: Int!, $page: String){
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                locked
+                merged
+                reviewThreads(first: 30, after: $page) {
+                    totalCount
+                    pageInfo { ... PageInfoFragment }
+                    nodes {
+                        id
+                        isResolved
+                        viewerCanResolve
+                        viewerCanUnresolve
+                        comments(first: 100) {
+                            totalCount
+                            nodes {
+                                id
+                                databaseId
+                                author {
+                                    login
+                                    avatarUrl
+                                    url
+                                }
+                                body
+                                originalPosition
+                                path
+                                outdated
+                                authorAssociation
+                                updatedAt
+                                createdAt
+                                viewerCanReact
+                                viewerCanDelete
+                                viewerCanUpdate
+                                viewerDidAuthor
+                                diffHunk
+                                reactionGroups {
+                                    ...Reactions
+                                }
+                                pullRequestReview {
+                                    id
+                                    databaseId
+                                    authorAssociation
+                                    author {
+                                        login
+                                        avatarUrl
+                                        url
+                                    }
+                                    body
+                                    createdAt
+                                    state
+                                    resourcePath
+                                    viewerCanReact
+                                    viewerCanDelete
+                                    viewerCanUpdate
+                                    viewerDidAuthor
+                                    reactionGroups {
+                                        ...Reactions
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getPullRequestReview($id: ID!, $page: String){
+    node(id: $id){
+        ... on PullRequestReview {
+            id
+            databaseId
+            authorAssociation
+            author {
+                login
+                avatarUrl
+                url
+            }
+            body
+            createdAt
+            state
+            resourcePath
+            viewerCanReact
+            viewerCanDelete
+            viewerCanUpdate
+            viewerDidAuthor
+            reactionGroups {
+                ...Reactions
+            }
+            pullRequest {
+                locked
+                merged
+            }
+            comments(first: 30, after: $page) {
+                totalCount
+                nodes {
+                    id
+                    databaseId
+                    author {
+                        login
+                        avatarUrl
+                        url
+                    }
+                    body
+                    originalPosition
+                    path
+                    outdated
+                    authorAssociation
+                    updatedAt
+                    viewerCanReact
+                    viewerCanDelete
+                    viewerCanUpdate
+                    viewerDidAuthor
+                    diffHunk
+                    reactionGroups {
+                        ...Reactions
+                    }
+                }
+            }
+        }
+    }
+}

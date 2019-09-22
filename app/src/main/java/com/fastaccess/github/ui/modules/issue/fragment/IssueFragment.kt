@@ -112,6 +112,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
         model: IssueModel,
         me: LoginModel?
     ) {
+        view?.findViewById<View>(R.id.commentLayout)?.isVisible = model.locked == false
         issueHeaderWrapper.isVisible = true
         val theme = preference.theme
         title.text = model.title

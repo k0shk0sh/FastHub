@@ -7,6 +7,7 @@ import com.fastaccess.fasthub.commit.view.CommitViewModel
 import com.fastaccess.fasthub.commit.view.comment.CommitCommentsViewModel
 import com.fastaccess.fasthub.commit.view.files.CommitFilesViewModel
 import com.fastaccess.fasthub.dagger.annotations.ViewModelKey
+import com.fastaccess.fasthub.reviews.ReviewsViewModel
 import com.fastaccess.github.editor.dialog.UploadPictureViewModel
 import com.fastaccess.github.platform.viewmodel.FastHubViewModelFactory
 import com.fastaccess.github.ui.modules.auth.LoginChooserViewModel
@@ -124,4 +125,7 @@ abstract class ViewModelModule {
 
     @Binds @IntoMap @ViewModelKey(CommitListViewModel::class)
     abstract fun bindCommitListViewModel(viewModel: CommitListViewModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(ReviewsViewModel::class)
+    abstract fun bindReviewsViewModel(viewModel: ReviewsViewModel): ViewModel
 }

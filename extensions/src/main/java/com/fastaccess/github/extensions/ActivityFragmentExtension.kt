@@ -177,3 +177,13 @@ fun Fragment.routeForResult(
     data = Uri.parse(url)
     bundle?.let { putExtras(it) }
 }, requestCode)
+
+fun Activity.getEncodedFragmentFromDeepLink(): String? {
+    val uri = intent?.getStringExtra(DeepLink.URI)
+    if (uri.isNullOrEmpty()) {
+        return null
+    }
+    return runCatching { Uri.parse(uri).encodedFragment }
+        .onFailure { it.printStackTrace() }
+        .getOrNull()
+}

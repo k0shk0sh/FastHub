@@ -1,6 +1,7 @@
 package com.fastaccess.fasthub.commit.list
 
 import android.os.Bundle
+import com.airbnb.deeplinkdispatch.DeepLink
 import com.fastaccess.fasthub.commit.R
 import com.fastaccess.fasthub.commit.view.CommitFragment
 import com.fastaccess.github.base.BaseActivity
@@ -14,7 +15,8 @@ import com.fastaccess.github.extensions.replace
     "/repos/{login}/{repo}/commits/",
     "/repos/{login}/{repo}/commits/{oid}",
     "/{login}/{repo}/pull/{number}/commits",
-    "/{login}/{repo}/pull/{number}/commits/{oid}"
+    "/{login}/{repo}/pull/{number}/commits/{oid}",
+    "/{login}/{repo}/pull/{number}/files"
 )
 class CommitsListActivity : BaseActivity() {
 
@@ -23,6 +25,7 @@ class CommitsListActivity : BaseActivity() {
     private val number by lazy { intent?.getStringExtra("number")?.toIntOrNull() ?: 0 }
     private val oid by lazy { intent?.getStringExtra("oid") }
     private val branch by lazy { intent?.getStringExtra("branch") }
+    private val page by lazy { if (intent.getStringExtra(DeepLink.URI)?.contains("/files") == true) 1 else 0 }
 
     override fun layoutRes(): Int = R.layout.fragment_activity_layout
 
@@ -34,7 +37,7 @@ class CommitsListActivity : BaseActivity() {
                 val oid = oid
                 if (number > 0) {
                     if (oid.isNullOrEmpty()) {
-                        replace(R.id.container, CommitPagerFragment.newInstance(login, repo, number))
+                        replace(R.id.container, CommitPagerFragment.newInstance(login, repo, number, page))
                     } else {
                         showCommitFragment(oid, login, repo)
                     }

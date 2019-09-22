@@ -142,6 +142,10 @@
             android:name="com.fastaccess.fasthub.diff.DiffViewerActivity"
             android:parentActivityName=".ui.modules.main.MainActivity" />
 
+        <activity
+            android:name="com.fastaccess.fasthub.reviews.PullRequestReviewsActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity" />
+
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"

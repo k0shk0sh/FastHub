@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.TimelineType
 import com.fastaccess.data.persistence.models.LoginModel
 import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.data.storage.FastHubSharedPreference
@@ -27,7 +28,6 @@ import com.fastaccess.github.ui.modules.issuesprs.BaseIssuePrTimelineFragment
 import com.fastaccess.github.ui.modules.pr.fragment.viewmodel.PullRequestTimelineViewModel
 import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog
 import com.fastaccess.github.ui.modules.quickmsg.QuickMessageBottomSheetDialog.QuickMessageCallback
-import com.fastaccess.data.model.TimelineType
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.CommentAuthorAssociation
 import github.type.LockReason
@@ -118,6 +118,7 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
         model: PullRequestModel,
         me: LoginModel?
     ) {
+        view?.findViewById<View>(R.id.commentLayout)?.isVisible = model.locked == false
         issueHeaderWrapper.isVisible = true
         val theme = preference.theme
         title.text = model.title
