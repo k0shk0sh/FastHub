@@ -18,8 +18,6 @@ class BlockUnblockUserUseCase @Inject constructor(
 
     override fun buildObservable(): Observable<Boolean> = login?.let { login ->
         userRepository.blockUnblockUser(login, block)
-            .subscribeOn(schedulerProvider.ioThread())
-            .observeOn(schedulerProvider.uiThread())
             .map {
                 val isSuccess = it.isSuccessful && it.code() == 204
                 if (isSuccess) {
@@ -27,5 +25,7 @@ class BlockUnblockUserUseCase @Inject constructor(
                 }
                 return@map isSuccess
             }
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
     } ?: Observable.empty()
 }

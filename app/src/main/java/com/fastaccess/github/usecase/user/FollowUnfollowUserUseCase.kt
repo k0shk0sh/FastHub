@@ -1,5 +1,6 @@
 package com.fastaccess.github.usecase.user
 
+import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.data.repository.UserRepository
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable
@@ -8,7 +9,10 @@ import javax.inject.Inject
 /**
  * Created by Kosh on 10.06.18.
  */
-class FollowUnfollowUserUseCase @Inject constructor(private val userRepository: UserRepository) : BaseObservableUseCase() {
+class FollowUnfollowUserUseCase @Inject constructor(
+    private val userRepository: UserRepository,
+    private val schedulerProvider: SchedulerProvider
+) : BaseObservableUseCase() {
     var login: String? = null
     var follow: Boolean = false
 
@@ -25,5 +29,7 @@ class FollowUnfollowUserUseCase @Inject constructor(private val userRepository: 
                 }
                 return@map isSuccess
             }
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
     } ?: Observable.empty()
 }

@@ -17,8 +17,8 @@ class IsUserBlockedUseCase @Inject constructor(
 
     override fun buildObservable(): Observable<Boolean> = login?.let { login ->
         userRepository.isUserBlocked(login)
+            .map { it.isSuccessful && it.code() == 204 }
             .subscribeOn(schedulerProvider.ioThread())
             .observeOn(schedulerProvider.uiThread())
-            .map { it.isSuccessful && it.code() == 204 }
     } ?: Observable.empty()
 }
