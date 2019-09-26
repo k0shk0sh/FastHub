@@ -510,34 +510,19 @@ query getPullRequestReviews($login: String!, $repo: String!, $number: Int!, $pag
 
 query getPullRequestReview($id: ID!, $page: String){
     node(id: $id){
-        ... on PullRequestReview {
-            id
-            databaseId
-            authorAssociation
-            author {
-                login
-                avatarUrl
-                url
-            }
-            body
-            createdAt
-            state
-            resourcePath
-            viewerCanReact
-            viewerCanDelete
-            viewerCanUpdate
-            viewerDidAuthor
-            reactionGroups {
-                ...Reactions
-            }
+        ... on PullRequestReviewThread {
             pullRequest {
                 locked
                 merged
             }
+            id
+            isResolved
+            viewerCanResolve
+            viewerCanUnresolve
             comments(first: 30, after: $page) {
                 totalCount
                 pageInfo { ... PageInfoFragment }
-                nodes { ... PullRequestReviewCommentFragment }
+                nodes { ... PullRequestReviewCommentWithReview }
             }
         }
     }

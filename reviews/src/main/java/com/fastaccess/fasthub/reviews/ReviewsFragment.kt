@@ -5,6 +5,7 @@ import android.text.Editable
 import android.view.View
 import android.widget.EditText
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
@@ -18,10 +19,7 @@ import com.fastaccess.github.base.utils.*
 import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.editor.comment.CommentActivity
 import com.fastaccess.github.editor.presenter.MentionsPresenter
-import com.fastaccess.github.extensions.getDrawableCompat
-import com.fastaccess.github.extensions.isTrue
-import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.extensions.routeForResult
+import com.fastaccess.github.extensions.*
 import com.fastaccess.markdown.MarkdownProvider
 import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
@@ -43,7 +41,9 @@ class ReviewsFragment : BaseFragment() {
     private val number by lazy { arguments?.getInt(EXTRA_THREE, 0) ?: throw NullPointerException("no number") }
     private val id by lazy { arguments?.getString(EXTRA_FOUR) }
     private val adapter by lazy {
-        ReviewsAdapter(markwon, preference.theme, onCommentClicked(), onDeleteComment(), onEditCommentClicked())
+        ReviewsAdapter(markwon, preference.theme, onCommentClicked(), onDeleteComment(), onEditCommentClicked()) {
+            route(PullRequestReviewsActivity.getUrl(login, repo, number, it))
+        }
     }
 
     override fun viewModel(): BaseViewModel? = viewModel
@@ -85,11 +85,15 @@ class ReviewsFragment : BaseFragment() {
                 }
             }
         }
-        setupEditText()
+        if (!id.isNullOrEmpty()) {
+            setupEditText()
+        } else {
+            view.findViewById<View?>(R.id.commentLayout)?.isVisible = false
+        }
         observeChanges()
     }
 
-    private fun onCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { position, comment ->
+    private fun onCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { _, comment ->
         CommentActivity.startActivity(
             this, COMMENT_REQUEST_CODE, comment.body ?: "",
             comment.author?.login ?: comment.author?.name, comment.author?.avatarUrl

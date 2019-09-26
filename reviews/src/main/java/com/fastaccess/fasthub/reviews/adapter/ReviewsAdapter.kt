@@ -1,13 +1,11 @@
 package com.fastaccess.fasthub.reviews.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fastaccess.data.model.CommentModel
 import com.fastaccess.data.model.TimelineModel
-import com.fastaccess.fasthub.reviews.R
 import io.noties.markwon.Markwon
 
 class ReviewsAdapter(
@@ -15,7 +13,8 @@ class ReviewsAdapter(
     private val theme: Int,
     private val commentClickListener: (position: Int, model: CommentModel) -> Unit,
     private val deleteCommentListener: (position: Int, model: CommentModel) -> Unit,
-    private val editCommentListener: (position: Int, model: TimelineModel) -> Unit
+    private val editCommentListener: (position: Int, model: TimelineModel) -> Unit,
+    private val routToReview: (id: String) -> Unit
 ) : ListAdapter<TimelineModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val notifyCallback by lazy {
@@ -43,7 +42,12 @@ class ReviewsAdapter(
                 getItem(position)?.comment?.let { commentClickListener.invoke(position, it) }
             }
         }
-        else -> object : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.space_row_item, parent, false)) {}
+        ADD_COMMENT -> AddCommentViewHolder(parent).apply {
+            itemView.setOnClickListener {
+                getItem(adapterPosition)?.dividerId?.let(routToReview)
+            }
+        }
+        else -> throw IllegalArgumentException("woops $viewType is unknown")
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -58,6 +62,7 @@ class ReviewsAdapter(
             when {
                 it.review != null -> REVIEW
                 it.comment != null -> COMMENT
+                it.dividerId != null -> ADD_COMMENT
                 else -> -1
             }
         } ?: super.getItemViewType(position)
@@ -66,6 +71,7 @@ class ReviewsAdapter(
     companion object {
         private const val REVIEW = 1
         private const val COMMENT = 2
+        private const val ADD_COMMENT = 3
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TimelineModel?>() {
             override fun areItemsTheSame(

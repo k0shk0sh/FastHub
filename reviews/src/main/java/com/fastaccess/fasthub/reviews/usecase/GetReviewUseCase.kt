@@ -29,7 +29,7 @@ class GetReviewUseCase @Inject constructor(
         )
     )
         .filter { !it.hasErrors() && it.data() != null }
-        .map { it.data()?.node as GetPullRequestReviewQuery.AsPullRequestReview }
+        .map { it.data()?.node as GetPullRequestReviewQuery.AsPullRequestReviewThread }
         .map { response ->
             val pageInfoFragment = response.comments.pageInfo.fragments.pageInfoFragment
             val pageInfo = PageInfoModel(
@@ -37,31 +37,32 @@ class GetReviewUseCase @Inject constructor(
                 pageInfoFragment.isHasNextPage, pageInfoFragment.isHasPreviousPage
             )
             val timelineModel = arrayListOf<TimelineModel>()
-            if (!page.defined) {
+            val node = response.comments.nodes?.firstOrNull()?.fragments?.pullRequestReviewCommentWithReview?.pullRequestReview
+            if (!page.defined && node != null) {
                 timelineModel.add(TimelineModel(review = ReviewModel(
-                    response.id,
-                    response.databaseId,
+                    node.id,
+                    node.databaseId,
                     ShortUserModel(
-                        response.author?.login,
-                        response.author?.login,
-                        response.author?.url?.toString(),
-                        avatarUrl = response.author?.avatarUrl?.toString()
+                        node.author?.login,
+                        node.author?.login,
+                        node.author?.url?.toString(),
+                        avatarUrl = node.author?.avatarUrl?.toString()
                     ),
-                    response.body,
-                    response.authorAssociation.rawValue(),
-                    response.state.rawValue(),
-                    response.createdAt,
+                    node.body,
+                    node.authorAssociation.rawValue(),
+                    node.state.rawValue(),
+                    node.createdAt,
                     null,
-                    response.isViewerCanReact,
-                    response.isViewerCanDelete,
-                    response.isViewerCanUpdate,
-                    response.isViewerDidAuthor,
+                    node.isViewerCanReact,
+                    node.isViewerCanDelete,
+                    node.isViewerCanUpdate,
+                    node.isViewerDidAuthor,
                     false,
-                    response.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }
+                    node.reactionGroups?.map { it.fragments.reactions.toReactionGroup() }
                 )))
             }
-            timelineModel.addAll(response.comments.nodes?.mapIndexedNotNull { index, node ->
-                val node1 = node.fragments.pullRequestReviewCommentFragment
+            timelineModel.addAll(response.comments.nodes?.mapIndexedNotNull { index, value ->
+                val node1 = value.fragments.pullRequestReviewCommentWithReview
                 TimelineModel(
                     comment = CommentModel(
                         node1.id,
@@ -85,8 +86,7 @@ class GetReviewUseCase @Inject constructor(
                         if (index == 0) node1.path else null,
                         if (index == 0) node1.originalPosition else null,
                         node1.isOutdated,
-                        if (index == 0) node1.diffHunk else
-                            null
+                        if (index == 0) node1.diffHunk else null
                     )
                 )
             } ?: arrayListOf())

@@ -104,7 +104,7 @@ class GetReviewsUseCase @Inject constructor(
                         )
                     } ?: arrayListOf()
                 )
-                timelineModel.add(TimelineModel(divider = true))
+                timelineModel.add(TimelineModel(dividerId = it.id))
             }
             return@map Pair(pageInfo, timelineModel)
         }
