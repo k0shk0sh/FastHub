@@ -55,7 +55,7 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
             markwon, preference.theme, onCommentClicked(),
             onDeleteCommentClicked(),
             onEditCommentClicked(),
-            { model -> route(PullRequestReviewsActivity.getUrl(login, repo, number, model.id)) }
+            { model -> route(PullRequestReviewsActivity.getUrl(login, repo, number)) }
         )
     }
 
@@ -126,7 +126,6 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
     ) {
         view?.findViewById<View>(R.id.commentLayout)?.isVisible = model.locked == false
         issueHeaderWrapper.isVisible = true
-        val theme = preference.theme
         title.text = model.title
 
         opener.text = if (model.merged == true) {
@@ -176,12 +175,10 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
 
         state.text = model.state?.toLowerCase()
         state.setChipBackgroundColorResource(
-            if (PullRequestState.OPEN.rawValue().equals(model.state, true)) {
-                R.color.material_green_500
-            } else if (PullRequestState.CLOSED.rawValue().equals(model.state, true)) {
-                R.color.material_red_500
-            } else {
-                R.color.material_blue_700
+            when {
+                PullRequestState.OPEN.rawValue().equals(model.state, true) -> R.color.material_green_500
+                PullRequestState.CLOSED.rawValue().equals(model.state, true) -> R.color.material_red_500
+                else -> R.color.material_blue_700
             }
         )
 
