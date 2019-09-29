@@ -1,9 +1,6 @@
 package com.fastaccess.github.editor.usecase
 
-import com.fastaccess.data.model.CommentAuthorAssociation
-import com.fastaccess.data.model.CommentModel
-import com.fastaccess.data.model.ShortUserModel
-import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.*
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.response.body.CommentRequestModel
 import com.fastaccess.domain.services.ReviewService
@@ -33,7 +30,7 @@ class CreateReviewCommentUseCase @Inject constructor(
                     response.nodeId, response.id, ShortUserModel(
                         response.user?.login, response.user?.login, response.user?.url, avatarUrl = response.user?.avatarUrl
                     ),
-                    response.body, association, emptyList(), response.createdAt,
+                    response.body, association, emptyReactionsList(), response.createdAt,
                     response.UpdatedAt, true, canAlter, canAlter, true,
                     canAlter, response.path, response.position?.toInt()
                 )

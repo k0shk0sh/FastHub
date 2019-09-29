@@ -23,6 +23,10 @@ fun ReactionContent?.getEmoji(): String = when (this ?: ReactionContent.`$UNKNOW
     ReactionContent.`$UNKNOWN` -> ""
 }
 
+fun emptyReactionsList(): List<ReactionGroupModel> {
+    return ReactionContent.values().map { ReactionGroupModel(it, Date(), CountModel(0), false) }
+}
+
 enum class ReactionContent(val value: String) {
     /**
      * Represents the 👍 emoji.

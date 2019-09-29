@@ -117,7 +117,7 @@ class ReviewsFragment : BaseFragment() {
     }
 
     private fun onCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { _, comment ->
-        if (id.isNullOrEmpty()) {
+        if (!id.isNullOrEmpty()) {
             CommentActivity.startActivity(
                 this, COMMENT_REQUEST_CODE, comment.body ?: "",
                 comment.author?.login ?: comment.author?.name, comment.author?.avatarUrl
