@@ -108,8 +108,9 @@ class ReviewsFragment : BaseFragment() {
                 }
                 EDIT_COMMENT_REQUEST_CODE -> {
                     val comment = data?.getStringExtra(EXTRA)
+                    val isReview = data?.getBooleanExtra(EXTRA_THREE, false) ?: false
                     val commentId = data?.getIntExtra(EXTRA_TWO, 0)
-                    viewModel.editComment(login, repo, comment ?: "", commentId?.toLong() ?: 0)
+                    viewModel.editComment(login, repo, number, comment ?: "", commentId?.toLong() ?: 0, isReview)
                 }
                 else -> Timber.e("nothing yet for requestCode($requestCode)")
             }
@@ -132,10 +133,12 @@ class ReviewsFragment : BaseFragment() {
     private fun onEditCommentClicked(): (position: Int, comment: TimelineModel) -> Unit = { _, comment ->
         val databaseId = if (comment.review != null) comment.review?.databaseId else comment.comment?.databaseId
         val body = if (comment.review != null) comment.review?.body else comment.comment?.body
+        val isReview = comment.review != null
         routeForResult(
             EDITOR_DEEP_LINK, EDIT_COMMENT_REQUEST_CODE, bundleOf(
                 EXTRA to body,
-                EXTRA_TWO to databaseId
+                EXTRA_TWO to databaseId,
+                EXTRA_THREE to isReview
             )
         )
     }

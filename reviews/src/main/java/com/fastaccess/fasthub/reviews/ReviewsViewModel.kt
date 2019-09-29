@@ -93,20 +93,31 @@ class ReviewsViewModel @Inject constructor(
     fun editComment(
         login: String,
         repo: String,
+        number: Int,
         comment: String?,
-        commentId: Long?
+        commentId: Long?,
+        isReview: Boolean
     ) {
         if (!comment.isNullOrBlank() && commentId != null) {
             editCommentUseCase.comment = comment
             editCommentUseCase.login = login
             editCommentUseCase.repo = repo
             editCommentUseCase.commentId = commentId
-            editCommentUseCase.type = TimelineType.REVIEW
+            editCommentUseCase.number = number
+            editCommentUseCase.type = if (isReview) TimelineType.REVIEW_BODY else TimelineType.REVIEW
             justSubscribe(editCommentUseCase.buildObservable()
                 .map {
-                    val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
+                    val index = if (isReview) {
+                        list.indexOfFirst { it.review?.databaseId == commentId.toInt() }
+                    } else {
+                        list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
+                    }
                     val item = list.getOrNull(index) ?: return@map list
-                    item.comment?.body = comment
+                    if (isReview) {
+                        item.review?.body = comment
+                    } else {
+                        item.comment?.body = comment
+                    }
                     list[index] = item
                     return@map list
                 }
