@@ -31,7 +31,10 @@
                     android:background="@color/transparent"
                     android:gravity="top|start"
                     android:hint="@string/type_here"
-                    android:inputType="textMultiLine|textCapSentences" />
+                    android:inputType="textMultiLine|textCapSentences">
+
+                    <requestFocus />
+                </androidx.appcompat.widget.AppCompatEditText>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/preview"
