@@ -4,10 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
+import com.fastaccess.data.model.TimelineType
 import com.fastaccess.fasthub.reviews.usecase.GetReviewUseCase
 import com.fastaccess.fasthub.reviews.usecase.GetReviewsUseCase
 import com.fastaccess.github.base.BaseViewModel
-import com.fastaccess.github.editor.usecase.CreateIssueCommentUseCase
+import com.fastaccess.github.editor.usecase.CreateReviewCommentUseCase
 import com.fastaccess.github.editor.usecase.DeleteCommentUseCase
 import com.fastaccess.github.editor.usecase.EditCommentUseCase
 import javax.inject.Inject
@@ -17,7 +18,7 @@ class ReviewsViewModel @Inject constructor(
     private val getReviewUseCase: GetReviewUseCase,
     private val editCommentUseCase: EditCommentUseCase,
     private val deleteCommentUseCase: DeleteCommentUseCase,
-    private val createCommentUsecase: CreateIssueCommentUseCase
+    private val createCommentUsecase: CreateReviewCommentUseCase
 ) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
@@ -75,6 +76,7 @@ class ReviewsViewModel @Inject constructor(
         deleteCommentUseCase.commentId = commentId
         deleteCommentUseCase.login = login
         deleteCommentUseCase.repo = repo
+        deleteCommentUseCase.type = TimelineType.REVIEW
         justSubscribe(deleteCommentUseCase.buildObservable()
             .map {
                 val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
@@ -99,6 +101,7 @@ class ReviewsViewModel @Inject constructor(
             editCommentUseCase.login = login
             editCommentUseCase.repo = repo
             editCommentUseCase.commentId = commentId
+            editCommentUseCase.type = TimelineType.REVIEW
             justSubscribe(editCommentUseCase.buildObservable()
                 .map {
                     val index = list.indexOfFirst { it.comment?.databaseId?.toLong() == commentId }
@@ -123,10 +126,13 @@ class ReviewsViewModel @Inject constructor(
         createCommentUsecase.repo = repo
         createCommentUsecase.number = number
         createCommentUsecase.body = comment
+        createCommentUsecase.commentId = list.firstOrNull { it.comment != null }?.comment?.databaseId ?: return
         add(createCommentUsecase.buildObservable()
             .doOnSubscribe { commentProgress.postValue(true) }
             .subscribe({
-                addTimeline(it)
+                if (it.comment != null) {
+                    addTimeline(it)
+                }
                 commentProgress.postValue(false)
             }, {
                 commentProgress.postValue(false)

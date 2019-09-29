@@ -1,5 +1,6 @@
 package com.fastaccess.domain.services
 
+import com.fastaccess.domain.response.CommentResponse
 import com.fastaccess.domain.response.body.CommentRequestModel
 import com.fastaccess.domain.response.body.DismissReviewRequestModel
 import io.reactivex.Observable
@@ -8,13 +9,14 @@ import retrofit2.http.*
 
 interface ReviewService {
 
-    @POST("/repos/{owner}/{repo}/pulls/{number}/comments")
+    @POST("/repos/{owner}/{repo}/pulls/{number}/comments/{commentId}/replies")
     fun submitComment(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
-        @Path("number") number: Long,
+        @Path("number") number: Int,
+        @Path("commentId") commentId: Int,
         @Body body: CommentRequestModel
-    ): Observable<Unit>
+    ): Observable<CommentResponse>
 
     @PUT("/repos/{owner}/{repo}/pulls/{number}/reviews/{reviewId}")
     fun editReview(
@@ -31,7 +33,7 @@ interface ReviewService {
         @Path("repo") repo: String,
         @Path("id") id: Long,
         @Body body: CommentRequestModel
-    ):  Observable<Response<Unit>>
+    ): Observable<Response<Unit>>
 
     @DELETE("repos/{owner}/{repo}/pulls/comments/{id}")
     fun deleteComment(

@@ -1,5 +1,6 @@
 package com.fastaccess.domain.services
 
+import com.fastaccess.domain.response.CommentResponse
 import com.fastaccess.domain.response.IssueRequestModel
 import com.fastaccess.domain.response.IssueResponse
 import com.fastaccess.domain.response.LabelResponse
@@ -37,7 +38,7 @@ interface IssuePrService {
         @Path("repo") repo: String,
         @Path("number") number: Int,
         @Body body: CommentRequestModel
-    ): Observable<Response<Unit>>
+    ): Observable<CommentResponse>
 
     @PATCH("repos/{owner}/{repo}/issues/comments/{id}")
     fun editIssueComment(

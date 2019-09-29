@@ -30,8 +30,8 @@ mutation addComment($id: ID!, $body: String!) {
     }
 }
 
-mutation addReviewComment($id: ID!, $body: String!) {
-    addPullRequestReviewComment(input:{pullRequestReviewId: $id, body: $body}){
+mutation addReviewComment($id: ID!, $path: String!, $position: Int!, $body: String!) {
+    addPullRequestReviewComment(input:{pullRequestReviewId: $id, path: $path, position: $position, body: $body}){
         comment { ... PullRequestReviewCommentFragment }
     }
 }
@@ -39,5 +39,11 @@ mutation addReviewComment($id: ID!, $body: String!) {
 mutation updateIssuePullRequestComment($id: ID!, $body: String!) {
     updateIssueComment(input:{id: $id, body: $body}){
         issueComment { ... Comment }
+    }
+}
+
+mutation  updateReviewCommnet($id: ID!, $body: String!) {
+    updatePullRequestReviewComment(input:{pullRequestReviewCommentId: $id, body: $body}){
+        pullRequestReviewComment { ... PullRequestReviewCommentFragment }
     }
 }

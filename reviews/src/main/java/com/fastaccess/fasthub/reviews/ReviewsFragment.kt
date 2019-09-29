@@ -1,5 +1,7 @@
 package com.fastaccess.fasthub.reviews
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -13,6 +15,7 @@ import com.fastaccess.data.storage.FastHubSharedPreference
 import com.fastaccess.fasthub.reviews.adapter.ReviewsAdapter
 import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.BaseViewModel
+import com.fastaccess.github.base.extensions.hideKeyboard
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.extensions.theme
 import com.fastaccess.github.base.utils.*
@@ -25,6 +28,7 @@ import com.otaliastudios.autocomplete.Autocomplete
 import com.otaliastudios.autocomplete.AutocompleteCallback
 import com.otaliastudios.autocomplete.CharPolicy
 import io.noties.markwon.Markwon
+import timber.log.Timber
 import javax.inject.Inject
 
 class ReviewsFragment : BaseFragment() {
@@ -33,7 +37,6 @@ class ReviewsFragment : BaseFragment() {
     @Inject lateinit var markwon: Markwon
     @Inject lateinit var preference: FastHubSharedPreference
     @Inject lateinit var mentionsPresenter: MentionsPresenter
-
 
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(ReviewsViewModel::class.java) }
     private val login by lazy { arguments?.getString(EXTRA) ?: throw NullPointerException("no login") }
@@ -93,14 +96,40 @@ class ReviewsFragment : BaseFragment() {
         observeChanges()
     }
 
-    private fun onCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { _, comment ->
-        CommentActivity.startActivity(
-            this, COMMENT_REQUEST_CODE, comment.body ?: "",
-            comment.author?.login ?: comment.author?.name, comment.author?.avatarUrl
-        )
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                COMMENT_REQUEST_CODE -> {
+                    view?.findViewById<EditText?>(R.id.commentText)?.let { commentText ->
+                        commentText.setText(data?.getStringExtra(EXTRA))
+                        view?.findViewById<View?>(R.id.sendComment)?.callOnClick()
+                    }
+                }
+                EDIT_COMMENT_REQUEST_CODE -> {
+                    val comment = data?.getStringExtra(EXTRA)
+                    val commentId = data?.getIntExtra(EXTRA_TWO, 0)
+                    viewModel.editComment(login, repo, comment ?: "", commentId?.toLong() ?: 0)
+                }
+                else -> Timber.e("nothing yet for requestCode($requestCode)")
+            }
+        }
     }
 
-    private fun onEditCommentClicked(): (position: Int, comment: TimelineModel) -> Unit = { position, comment ->
+    private fun onCommentClicked(): (position: Int, comment: CommentModel) -> Unit = { _, comment ->
+        if (id.isNullOrEmpty()) {
+            CommentActivity.startActivity(
+                this, COMMENT_REQUEST_CODE, comment.body ?: "",
+                comment.author?.login ?: comment.author?.name, comment.author?.avatarUrl
+            )
+        } else {
+            viewModel.timeline.value?.firstOrNull { it.dividerId != null }?.dividerId?.let {
+                route(PullRequestReviewsActivity.getUrl(login, repo, number, it))
+            }
+        }
+    }
+
+    private fun onEditCommentClicked(): (position: Int, comment: TimelineModel) -> Unit = { _, comment ->
         val databaseId = if (comment.review != null) comment.review?.databaseId else comment.comment?.databaseId
         val body = if (comment.review != null) comment.review?.body else comment.comment?.body
         routeForResult(
@@ -111,13 +140,23 @@ class ReviewsFragment : BaseFragment() {
         )
     }
 
-    private fun onDeleteComment(): (position: Int, comment: CommentModel) -> Unit = { position, comment ->
+    private fun onDeleteComment(): (position: Int, comment: CommentModel) -> Unit = { _, comment ->
         viewModel.deleteComment(login, repo, comment.databaseId?.toLong() ?: 0)
     }
 
     private fun observeChanges() {
         viewModel.timeline.observeNotNull(this) {
             adapter.submitList(it)
+        }
+        viewModel.commentProgress.observeNotNull(this) {
+            view?.findViewById<View?>(R.id.commentProgress)?.isVisible = it
+            view?.findViewById<View?>(R.id.sendComment)?.isVisible = !it
+            if (!it) {
+                view?.findViewById<EditText?>(R.id.commentText)?.let { commentText ->
+                    commentText.setText("")
+                    commentText.hideKeyboard()
+                }
+            }
         }
     }
 

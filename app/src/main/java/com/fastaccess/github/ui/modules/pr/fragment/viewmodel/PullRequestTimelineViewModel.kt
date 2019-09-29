@@ -5,8 +5,11 @@ import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.TimelineType
+import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.data.repository.PullRequestRepository
+import com.fastaccess.data.repository.SchedulerProvider
+import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.editor.usecase.CreateIssueCommentUseCase
 import com.fastaccess.github.editor.usecase.DeleteCommentUseCase
 import com.fastaccess.github.editor.usecase.EditCommentUseCase
@@ -15,6 +18,7 @@ import com.fastaccess.github.extensions.map
 import com.fastaccess.github.extensions.toArrayList
 import com.fastaccess.github.usecase.issuesprs.*
 import github.type.LockReason
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -31,8 +35,9 @@ class PullRequestTimelineViewModel @Inject constructor(
     private val createIssueCommentUseCase: CreateIssueCommentUseCase,
     private val editIssuePrUseCase: EditIssuePrUseCase,
     private val deleteCommentUseCase: DeleteCommentUseCase,
-    private val editCommentUseCase: EditCommentUseCase
-) : com.fastaccess.github.base.BaseViewModel() {
+    private val editCommentUseCase: EditCommentUseCase,
+    private val schedulerProvider: SchedulerProvider
+) : BaseViewModel() {
 
     private var pageInfo: PageInfoModel? = null
     private val list = arrayListOf<TimelineModel>()
@@ -244,6 +249,13 @@ class PullRequestTimelineViewModel @Inject constructor(
                 })
         }
     }
+
+    fun hasCommentableReviews(pullRequest: PullRequestModel): Maybe<Boolean> = Maybe.create<Boolean> { emitter ->
+        emitter.onSuccess(list.any { timelineModel ->
+            return@any timelineModel.review?.comment?.path != null
+        })
+        emitter.onComplete()
+    }.subscribeOn(schedulerProvider.ioThread()).observeOn(schedulerProvider.uiThread())
 
     private fun getIndexOfComment(type: TimelineType, commentId: Long?): Int = list.indexOfFirst {
         return@indexOfFirst when (type) {

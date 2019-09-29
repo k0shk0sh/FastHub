@@ -137,7 +137,10 @@ data class CommentResponse(
     @SerializedName("line") var line: Long? = null,
     @SerializedName("position") var position: Long? = null,
     @SerializedName("created_at") var createdAt: Date? = null,
-    @SerializedName("updated_at") var UpdatedAt: Date? = null
+    @SerializedName("updated_at") var UpdatedAt: Date? = null,
+    @SerializedName("user") var user: UserResponse? = null,
+    @SerializedName("node_id") var nodeId: String? = null,
+    @SerializedName("author_association") var authorAssociation: String? = null
 )
 
 data class LabelResponse(

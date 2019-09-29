@@ -30,7 +30,9 @@ class PutLabelsUseCase @Inject constructor(
             .subscribeOn(schedulerProvider.ioThread())
             .observeOn(schedulerProvider.uiThread())
             .flatMap { Observable.fromIterable(toRemove) }
-            .flatMap { issueService.removeLabelsToIssue(login, repo, number, it) }
+            .flatMap { issueService.removeLabelsToIssue(login, repo, number, it)
+                .subscribeOn(schedulerProvider.ioThread())
+                .observeOn(schedulerProvider.uiThread())}
             .map { true }
     }
 }

@@ -6,16 +6,13 @@ import com.fastaccess.data.model.ShortUserModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.response.body.CommentRequestModel
-import com.fastaccess.domain.services.IssuePrService
+import com.fastaccess.domain.services.ReviewService
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import io.reactivex.Observable
 import javax.inject.Inject
 
-/**
- * Created by Kosh on 16.02.19.
- */
-class CreateIssueCommentUseCase @Inject constructor(
-    private val repoService: IssuePrService,
+class CreateReviewCommentUseCase @Inject constructor(
+    private val service: ReviewService,
     private val schedulerProvider: SchedulerProvider
 ) : BaseObservableUseCase() {
 
@@ -23,8 +20,9 @@ class CreateIssueCommentUseCase @Inject constructor(
     var login: String = ""
     var number: Int = 0
     var body: String = ""
+    var commentId: Int = 0
 
-    override fun buildObservable(): Observable<TimelineModel> = repoService.createIssueComment(login, repo, number, CommentRequestModel(body))
+    override fun buildObservable(): Observable<TimelineModel> = service.submitComment(login, repo, number, commentId, CommentRequestModel(body))
         .subscribeOn(schedulerProvider.ioThread())
         .observeOn(schedulerProvider.uiThread())
         .map { response ->

@@ -37,6 +37,7 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.pr_header_row_item.*
 import kotlinx.android.synthetic.main.pr_view_layout.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -208,7 +209,10 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
             it.context.route("${model.url}/commits")
         }
         reviewsCard.setOnClickListener {
-            route(PullRequestReviewsActivity.getUrl(login, repo, number))
+            addDisposal(
+                viewModel.hasCommentableReviews(model)
+                    .subscribe { if (it) route(PullRequestReviewsActivity.getUrl(login, repo, number)) else Timber.e("no reviews") }
+            )
         }
     }
 

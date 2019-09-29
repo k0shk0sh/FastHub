@@ -16,16 +16,12 @@ class SafeLinearLayoutManager : LinearLayoutManager {
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
         try {
             super.onLayoutChildren(recycler, state)
-        } catch (ignored: Exception) {
-            ignored.printStackTrace()
-        }
+        } catch (ignored: Exception) { }
     }
 
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
         try {
             super.onMeasure(recycler, state, widthSpec, heightSpec)
-        } catch (ignored: Exception) {
-            ignored.printStackTrace()
-        }
+        } catch (ignored: Exception) { }
     }
 }

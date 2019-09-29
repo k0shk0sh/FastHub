@@ -42,37 +42,61 @@ class ReactionsChipGroup : ChipGroup {
     ) {
         thumbsUp.text = "${ReactionContent.THUMBS_UP.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.THUMBS_UP }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
         thumbsDown.text = "${ReactionContent.THUMBS_DOWN.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
         confused.text = "${ReactionContent.CONFUSED.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.CONFUSED }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
         laugh.text = "${ReactionContent.LAUGH.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.LAUGH }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
         hooray.text = "${ReactionContent.HOORAY.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.HOORAY }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
         heart.text = "${ReactionContent.HEART.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.HEART }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
         rocket.text = "${ReactionContent.ROCKET.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.ROCKET }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
         eyes.text = "${ReactionContent.EYES.getEmoji()} ${reactionGroups
             ?.firstOrNull { it.content == ReactionContent.EYES }
-            ?.users?.totalCount}"
+            ?.users?.totalCount ?: 0}"
 
-        thumbsUp.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP }, popupWindow, callback) }
-        thumbsDown.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN }, popupWindow, callback) }
-        confused.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.CONFUSED }, popupWindow, callback) }
-        laugh.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH }, popupWindow, callback) }
-        hooray.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY }, popupWindow, callback) }
-        heart.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.HEART }, popupWindow, callback) }
-        rocket.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.ROCKET }, popupWindow, callback) }
-        eyes.setOnClickListener { react(id, reactionGroups?.firstOrNull { it.content == ReactionContent.EYES }, popupWindow, callback) }
+        thumbsUp.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_UP } ?: ReactionGroupModel(ReactionContent.THUMBS_UP)
+            react(id, model, popupWindow, callback)
+        }
+        thumbsDown.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.THUMBS_DOWN } ?: ReactionGroupModel(ReactionContent.THUMBS_DOWN)
+            react(id, model, popupWindow, callback)
+        }
+        confused.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.CONFUSED } ?: ReactionGroupModel(ReactionContent.CONFUSED)
+            react(id, model, popupWindow, callback)
+        }
+        laugh.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.LAUGH } ?: ReactionGroupModel(ReactionContent.LAUGH)
+            react(id, model, popupWindow, callback)
+        }
+        hooray.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.HOORAY } ?: ReactionGroupModel(ReactionContent.HOORAY)
+            react(id, model, popupWindow, callback)
+        }
+        heart.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.HEART } ?: ReactionGroupModel(ReactionContent.HEART)
+            react(id, model, popupWindow, callback)
+        }
+        rocket.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.ROCKET } ?: ReactionGroupModel(ReactionContent.ROCKET)
+            react(id, model, popupWindow, callback)
+        }
+        eyes.setOnClickListener {
+            val model = reactionGroups?.firstOrNull { it.content == ReactionContent.EYES } ?: ReactionGroupModel(ReactionContent.EYES)
+            react(id, model, popupWindow, callback)
+        }
     }
 
     private fun react(
