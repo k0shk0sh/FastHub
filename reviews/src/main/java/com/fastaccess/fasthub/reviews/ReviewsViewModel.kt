@@ -26,6 +26,7 @@ class ReviewsViewModel @Inject constructor(
 
     val commentProgress = MutableLiveData<Boolean>()
     val timeline = MutableLiveData<ArrayList<TimelineModel>>()
+    val notifyAdapterChange = MutableLiveData<Boolean>()
 
     fun load(login: String, repo: String, number: Int, reload: Boolean = false) {
         if (reload) {
@@ -123,6 +124,7 @@ class ReviewsViewModel @Inject constructor(
                 }
                 .doOnNext { list ->
                     timeline.postValue(ArrayList(list))
+                    notifyAdapterChange.postValue(true)
                 })
         }
     }

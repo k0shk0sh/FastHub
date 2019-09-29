@@ -161,6 +161,9 @@ class ReviewsFragment : BaseFragment() {
                 }
             }
         }
+        viewModel.notifyAdapterChange.observeNotNull(this) {
+            if (it) adapter.notifyDataSetChanged()
+        }
     }
 
     private fun setupEditText() {
