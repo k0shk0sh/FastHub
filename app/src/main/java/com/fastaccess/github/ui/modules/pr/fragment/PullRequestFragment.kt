@@ -186,13 +186,19 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
         adaptiveEmoticon.init(requireNotNull(model.id), model.reactionGroups) {
             adaptiveEmoticon.initReactions(model.reactionGroups)
         }
-        val isAuthor = login == me?.login || model.authorAssociation?.equals(CommentAuthorAssociation.OWNER.rawValue(), true) == true ||
-            model.authorAssociation?.equals(CommentAuthorAssociation.COLLABORATOR.rawValue(), true) == true
-        menuClick(model.url, model.labels, model.assignees, model.title, model.body, isAuthor)
+        val isAuthor = model.viewerCanUpdate == true
         initLabels(model.labels)
         initAssignees(model.assignees)
         initMilestone(model.milestone)
-        initToolbarMenu(isAuthor, model.viewerCanUpdate == true, model.viewerDidAuthor, model.locked, state = model.state)
+        initToolbarMenu(
+            isAuthor,
+            model.viewerCanUpdate == true,
+            model.viewerDidAuthor,
+            model.locked,
+            model.merged == true,
+            model.state
+        )
+        menuClick(model.url, model.labels, model.assignees, model.title, model.body, isAuthor)
         initDashboard(model)
         recyclerView.removeEmptyView()
     }

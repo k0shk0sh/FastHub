@@ -45,6 +45,11 @@
                 android:id="@+id/assignees"
                 android:icon="@drawable/ic_profile"
                 android:title="@string/assignees" />
+            <item
+                android:id="@+id/merge"
+                android:icon="@drawable/ic_merge"
+                android:title="@string/merge"
+                android:visible="false" />
         </menu>
     </item>
 

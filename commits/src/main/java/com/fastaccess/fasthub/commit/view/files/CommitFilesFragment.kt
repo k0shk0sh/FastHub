@@ -28,7 +28,7 @@ class CommitFilesFragment : BaseFragment() {
     private val login by lazy { arguments?.getString(EXTRA_TWO) ?: throw NullPointerException("login is null") }
     private val repo by lazy { arguments?.getString(EXTRA_THREE) ?: throw NullPointerException("repo is null") }
     private val number by lazy { arguments?.getInt(EXTRA_FOUR) ?: 0 }
-    private val isPr by lazy { number > 0 }
+    private val isPr get() = number > 0
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(CommitFilesViewModel::class.java) }
     private val adapter by lazy {
         CommitFilesAdapter { position, commitFilesModel ->

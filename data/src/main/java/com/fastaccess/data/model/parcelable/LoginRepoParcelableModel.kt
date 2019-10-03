@@ -10,25 +10,30 @@ data class LoginRepoParcelableModel<T : Parcelable>(
     val login: String,
     val repo: String,
     val items: List<T>? = null,
-    val number: Int? = null
-) : Parcelable {
+    val number: Int? = null,
+    val isPr: Boolean? = false
 
-    constructor(source: Parcel) : this(
-        source.readString() ?: "",
-        source.readString() ?: "",
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
         listOf<T>().apply {
-            source.readList(this, this.javaClass.classLoader)
+            parcel.readList(this, this.javaClass.classLoader)
         },
-        source.readInt()
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     )
 
-    override fun describeContents() = 0
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(login)
+        parcel.writeString(repo)
+        parcel.writeTypedList(items)
+        parcel.writeValue(number)
+        parcel.writeValue(isPr)
+    }
 
-    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeString(login)
-        writeString(repo)
-        writeTypedList(items)
-        writeInt(number ?: -1)
+    override fun describeContents(): Int {
+        return 0
     }
 
     companion object {

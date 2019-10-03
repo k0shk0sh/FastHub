@@ -5,7 +5,6 @@ import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
-import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.extensions.DatePrettifier
 import com.fastaccess.github.usecase.issuesprs.CreateMilestoneUseCase
 import com.fastaccess.github.usecase.issuesprs.GetMilestonesUseCase
@@ -50,18 +49,31 @@ class MilestoneViewModel @Inject constructor(
 
     fun hasNext() = pageInfo?.hasNextPage == true
 
-    fun onSubmit(login: String, repo: String, number: Int, milestone: MilestoneModel) {
+    fun onSubmit(
+        login: String,
+        repo: String,
+        number: Int,
+        milestone: MilestoneModel,
+        isPr: Boolean
+    ) {
         milestoneIssuePrUseCase.login = login
         milestoneIssuePrUseCase.repo = repo
         milestoneIssuePrUseCase.number = number
         milestoneIssuePrUseCase.milestone = milestone.number ?: -1
+        milestoneIssuePrUseCase.isPr = isPr
         justSubscribe(milestoneIssuePrUseCase.buildObservable()
             .doOnNext {
                 response.postValue(it)
             })
     }
 
-    fun addMilestone(title: String, dueOn: Date, description: String?, login: String?, repo: String?) {
+    fun addMilestone(
+        title: String,
+        dueOn: Date,
+        description: String?,
+        login: String?,
+        repo: String?
+    ) {
         createMilestoneUseCase.login = login ?: ""
         createMilestoneUseCase.repo = repo ?: ""
         createMilestoneUseCase.title = title

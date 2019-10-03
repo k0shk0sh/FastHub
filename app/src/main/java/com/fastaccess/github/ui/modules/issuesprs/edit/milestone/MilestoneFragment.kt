@@ -11,23 +11,23 @@ import com.fastaccess.data.model.parcelable.LabelModel
 import com.fastaccess.data.model.parcelable.LoginRepoParcelableModel
 import com.fastaccess.data.model.parcelable.MilestoneModel
 import com.fastaccess.github.R
+import com.fastaccess.github.base.BaseFragment
 import com.fastaccess.github.base.extensions.addDivider
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
 import com.fastaccess.github.extensions.show
-import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.MilestonesAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.milestone.viewmodel.MilestoneViewModel
-
 import java.util.*
 import javax.inject.Inject
 
 /**
  * Created by Kosh on 2018-11-26.
  */
-class MilestoneFragment : com.fastaccess.github.base.BaseFragment(), CreateMilestoneDialogFragment.OnAddNewMilestone {
+class MilestoneFragment : BaseFragment(), CreateMilestoneDialogFragment.OnAddNewMilestone {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MilestoneViewModel::class.java) }
@@ -41,8 +41,7 @@ class MilestoneFragment : com.fastaccess.github.base.BaseFragment(), CreateMiles
                 dismiss()
                 return@MilestonesAdapter
             }
-
-            viewModel.onSubmit(login, repo, number, it)
+            viewModel.onSubmit(login, repo, number, it, model?.isPr == true)
         }
     }
 
@@ -115,7 +114,9 @@ class MilestoneFragment : com.fastaccess.github.base.BaseFragment(), CreateMiles
     }
 
     companion object {
-        fun newInstance(model: LoginRepoParcelableModel<LabelModel>?) = MilestoneFragment().apply {
+        fun newInstance(
+            model: LoginRepoParcelableModel<LabelModel>?
+        ) = MilestoneFragment().apply {
             arguments = bundleOf(EXTRA to model)
         }
     }

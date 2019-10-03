@@ -6,10 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal">
+    android:padding="@dimen/spacing_xs_large">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"

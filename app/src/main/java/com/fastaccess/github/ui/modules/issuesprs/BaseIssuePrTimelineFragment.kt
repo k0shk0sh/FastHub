@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.view.View
 import android.widget.EditText
@@ -77,13 +78,12 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
         view: View,
         savedInstanceState: Bundle?
     ) {
+        setupToolbar("", R.menu.issue_menu)
         if (isPr()) {
-            setupToolbar("", R.menu.issue_menu)// todo
             toolbar?.title = SpannableBuilder.builder()
                 .append(getString(R.string.pull_request))
                 .bold("#$number")
         } else {
-            setupToolbar("", R.menu.issue_menu)
             toolbar?.title = SpannableBuilder.builder()
                 .append(getString(R.string.issue))
                 .bold("#$number")
@@ -241,9 +241,12 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
                 )
                 R.id.milestone -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,
-                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(login, repo, assignees, number)
+                    MultiPurposeBottomSheetDialog.BottomSheetFragmentType.MILESTONE, LoginRepoParcelableModel(
+                        login, repo, null as? List<Parcelable>, number, isPr()
+                    )
                 )
                 R.id.edit -> startEditingIssue(title, body, isOwner)
+                R.id.merge -> onMergePullRequest()
             }
             return@setOnMenuItemClickListener true
         }
@@ -297,10 +300,11 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
             it.findItem(R.id.closeIssue).isVisible = isOwner
             it.findItem(R.id.lockIssue).isVisible = isOwner
             it.findItem(R.id.closeIssue).title = if (!IssueState.OPEN.rawValue().equals(state, true)) {
-                getString(R.string.re_open_issue)
+                getString(R.string.re_open)
             } else {
-                getString(R.string.close_issue)
+                getString(R.string.close)
             }
+            it.findItem(R.id.merge).isVisible = isOwner && isMerged == false
             it.findItem(R.id.lockIssue).title = if (isLocked == true) getString(R.string.unlock_issue) else getString(R.string.lock_issue)
         }
     }
@@ -385,6 +389,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
     protected open fun onEditComment(comment: String?, commentId: Int?, type: TimelineType = TimelineType.ISSUE) = Unit
     protected open fun lockUnlockIssuePr() = Unit
     protected open fun closeOpenIssuePr() = Unit
+    protected open fun onMergePullRequest() = Unit
 
     private fun setupEditText() {
         val commentText = view?.findViewById<EditText>(R.id.commentText) ?: return

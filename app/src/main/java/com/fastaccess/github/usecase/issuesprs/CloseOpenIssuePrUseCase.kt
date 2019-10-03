@@ -6,8 +6,8 @@ import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.data.repository.IssueRepository
 import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.data.repository.SchedulerProvider
-import com.fastaccess.domain.services.IssuePrService
 import com.fastaccess.domain.response.IssueRequestModel
+import com.fastaccess.domain.services.IssuePrService
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.me
 import io.reactivex.Observable
@@ -27,6 +27,7 @@ class CloseOpenIssuePrUseCase @Inject constructor(
     var repo: String = ""
     var login: String = ""
     var number: Int = -1
+    var isPr: Boolean = false
 
     override fun buildObservable(): Observable<TimelineModel> = issueRepositoryProvider.getIssueByNumberMaybe("$login/$repo", number)
         .subscribeOn(schedulerProvider.ioThread())
