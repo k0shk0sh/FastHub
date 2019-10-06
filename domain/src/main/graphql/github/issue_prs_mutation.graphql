@@ -10,15 +10,19 @@ mutation removeReaction($subjectId: ID!, $reaction: ReactionContent!) {
     }
 }
 
-mutation lock($subjectId: ID!, $lockReason: LockReason) {
+mutation lock($subjectId: ID!, $lockReason: LockReason!) {
     lockLockable(input: {lockableId: $subjectId, lockReason: $lockReason}) {
-        clientMutationId
+        lockedRecord {
+            __typename
+        }
     }
 }
 
 mutation unlock($subjectId: ID!) {
     unlockLockable(input: {lockableId: $subjectId}) {
-        clientMutationId
+        unlockedRecord {
+            __typename
+        }
     }
 }
 

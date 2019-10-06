@@ -67,7 +67,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
     abstract fun reload(refresh: Boolean = false)
     abstract fun isPr(): Boolean
     abstract fun sendComment(comment: String)
-    abstract fun lockIssuePr(lockReason: LockReason?)
+    abstract fun lockIssuePr(lockReason: LockReason?, isLock: Boolean = true)
     abstract fun onMilestoneAdd(timeline: TimelineModel)
     abstract fun editIssuerPr(
         title: String? = null,
@@ -229,7 +229,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
                 R.id.lockIssue -> if (item.title == getString(R.string.lock_issue)) {
                     MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LOCK_UNLOCK)
                 } else {
-                    lockIssuePr(null)
+                    lockIssuePr(null, false)
                 }
                 R.id.labels -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,

@@ -1,7 +1,6 @@
 package com.fastaccess.github.usecase.issuesprs
 
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.model.LockUnlockEventModel
 import com.fastaccess.data.model.TimelineModel
@@ -41,8 +40,9 @@ class LockUnlockIssuePrUseCase @Inject constructor(
             .subscribeOn(schedulerProvider.ioThread())
             .observeOn(schedulerProvider.uiThread())
             .flatMapObservable { issue ->
+                val lockReason = lockReason
                 if (lockReason != null) {
-                    Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, Input.optional(lockReason))))
+                    Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, lockReason)))
                 } else {
                     Rx2Apollo.from(apolloClient.mutate(UnlockMutation(issue.id)))
                 }
@@ -65,8 +65,9 @@ class LockUnlockIssuePrUseCase @Inject constructor(
             .subscribeOn(schedulerProvider.ioThread())
             .observeOn(schedulerProvider.uiThread())
             .flatMapObservable { issue ->
+                val lockReason = lockReason
                 if (lockReason != null) {
-                    Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, Input.optional(lockReason))))
+                    Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, lockReason)))
                 } else {
                     Rx2Apollo.from(apolloClient.mutate(UnlockMutation(issue.id)))
                 }
