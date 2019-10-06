@@ -10,7 +10,7 @@
     <color name="light_primary">#FAFAFA</color>
     <color name="light_primary_dark">#FAFAFA</color>
 
-    <style name="ThemeLight" parent="ThemeLight.Base"/>
+    <style name="ThemeLight" parent="ThemeLight.Base" />
 
     <style name="ThemeLight.Base" parent="Theme.Light.NoActionBar">
         <item name="chip_background">@color/lightWindowBackground</item>
@@ -44,6 +44,7 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
         <item name="android:navigationBarColor">@color/lightWindowBackground</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="DialogThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">

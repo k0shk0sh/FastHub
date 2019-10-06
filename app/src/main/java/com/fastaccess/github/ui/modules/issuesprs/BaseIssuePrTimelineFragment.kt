@@ -93,6 +93,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
         appBar?.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, p1 ->
             val scrollTop = toolbar?.menu?.findItem(R.id.scrollTop)
             val isVisible = p1 < 0
+            onAppBarScrollChanged(isVisible)
             if (isVisible && scrollTop?.isVisible == false) {
                 scrollTop.isVisible = true
             } else if (!isVisible && scrollTop?.isVisible == true) {
@@ -389,6 +390,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
     protected open fun onEditComment(comment: String?, commentId: Int?, type: TimelineType = TimelineType.ISSUE) = Unit
     protected open fun closeOpenIssuePr() = Unit
     protected open fun onMergePullRequest() = Unit
+    protected open fun onAppBarScrollChanged(show:Boolean) = Unit
 
     private fun setupEditText() {
         val commentText = view?.findViewById<EditText>(R.id.commentText) ?: return

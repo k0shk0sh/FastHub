@@ -622,4 +622,5 @@
     <string name="commits_with_count">Commits: %d</string>
     <string name="message">Message</string>
     <string name="dismiss_review">Dismiss Review</string>
+    <string name="review">Review</string>
 </resources>

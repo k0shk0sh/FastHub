@@ -200,6 +200,7 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
         menuClick(model.url, model.labels, model.assignees, model.title, model.body, isAuthor)
         initDashboard(model)
         recyclerView.removeEmptyView()
+        reviewFab.show()
     }
 
     private fun initDashboard(model: PullRequestModel) {
@@ -236,6 +237,15 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
 
     override fun onEditComment(comment: String?, commentId: Int?, type: TimelineType) {
         viewModel.editComment(login, repo, comment, commentId?.toLong(), type, number)
+    }
+
+    override fun onAppBarScrollChanged(show: Boolean) {
+        if (!reviewFab.isVisible) return
+        if (show) {
+            reviewFab.shrink()
+        } else {
+            reviewFab.extend()
+        }
     }
 
     companion object {
