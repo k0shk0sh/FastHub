@@ -13,8 +13,8 @@ ext {
     javaxAnnotation = '10.0-b28'
     okHttp = '3.11.0'
     retrofit2 = '2.5.0'
-    gson = '2.8.5'
-    glide = '4.9.0'
+    gson = '2.8.6'
+    glide = '4.10.0'
     timber = '4.7.1'
     androidState = '1.4.1'
     junit = '4.13-beta-3'
@@ -24,7 +24,6 @@ ext {
     apollo = '1.0.1'
     deepLinkDispatch = '4.1.0'
     markwonVersion = '4.1.1'
-    androidX = '1.0.0'
 
 
     kotlin = [
@@ -32,26 +31,25 @@ ext {
     ]
 
     supportLibraries = [
-            "androidx.appcompat:appcompat:$androidX",
-            "androidx.coordinatorlayout:coordinatorlayout:$androidX",
-            "com.google.android.material:material:$androidX",
-            "androidx.drawerlayout:drawerlayout:$androidX",
-            "androidx.recyclerview:recyclerview-selection:$androidX",
-            "androidx.cardview:cardview:$androidX",
-            "androidx.recyclerview:recyclerview:$androidX",
-            "androidx.annotation:annotation:$androidX",
-            "androidx.core:core:$androidX",
-            "androidx.fragment:fragment:$androidX",
-            "androidx.swiperefreshlayout:swiperefreshlayout:$androidX",
-            "androidx.browser:browser:$androidX",
-            "androidx.webkit:webkit:$androidX",
-            "androidx.browser:browser:$androidX",
+            'androidx.appcompat:appcompat:1.1.0',
+            'androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01',
+            "com.google.android.material:material:1.1.0-beta01",
+            "androidx.drawerlayout:drawerlayout:1.0.0",
+            "androidx.recyclerview:recyclerview-selection:1.0.0",
+            'androidx.recyclerview:recyclerview:1.1.0-beta04',
+            'androidx.annotation:annotation:1.1.0',
+            'androidx.core:core:1.1.0',
+            'androidx.fragment:fragment:1.2.0-alpha04',
+            "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0",
+            "androidx.browser:browser:1.0.0",
+            "androidx.webkit:webkit:1.0.0",
+            "androidx.browser:browser:1.0.0",
             "androidx.constraintlayout:constraintlayout:$constraintLayout",
             "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
             "android.arch.navigation:navigation-ui:$navigation",
             "android.arch.navigation:navigation-runtime:$navigation",
             "android.arch.navigation:navigation-runtime-ktx:$navigation",
-            "android.arch.navigation:navigation-fragment:$navigation",
+            "android.arch.navigation:navigation-fragment:${navigation}",
             "android.arch.navigation:navigation-fragment-ktx:$navigation",
     ]
 
@@ -64,15 +62,15 @@ ext {
             'org.jsoup:jsoup:1.12.1',
             'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2',
             'com.otaliastudios:autocomplete:1.1.0',
-            'com.github.dhaval2404:imagepicker:1.3'
+            'com.github.dhaval2404:imagepicker:1.4'
     ]
 
     networking = [
-            'com.squareup.okhttp3:okhttp:4.1.1',
-            'com.squareup.okhttp3:logging-interceptor:4.1.1',
-            'com.squareup.retrofit2:retrofit:2.6.1',
-            'com.squareup.retrofit2:adapter-rxjava2:2.6.1',
-            'com.squareup.retrofit2:converter-gson:2.6.1',
+            'com.squareup.okhttp3:okhttp:4.2.1',
+            'com.squareup.okhttp3:logging-interceptor:4.2.1',
+            'com.squareup.retrofit2:retrofit:2.6.2',
+            'com.squareup.retrofit2:adapter-rxjava2:2.6.2',
+            'com.squareup.retrofit2:converter-gson:2.6.2',
             "com.google.code.gson:gson:$gson",
             "com.github.bumptech.glide:glide:$glide",
             "com.jakewharton.timber:timber:$timber",
@@ -93,25 +91,25 @@ ext {
     ]
 
     archs = [
-            'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha04',
-            'androidx.lifecycle:lifecycle-livedata:2.2.0-alpha04',
-            'androidx.lifecycle:lifecycle-reactivestreams:2.2.0-alpha04',
+            'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha05',
+            'androidx.lifecycle:lifecycle-livedata:2.2.0-alpha05',
+            'androidx.lifecycle:lifecycle-reactivestreams:2.2.0-alpha05',
             "androidx.paging:paging-common:$paging",
             "androidx.paging:paging-runtime:$paging",
             "androidx.room:room-common:2.1.0",
             "androidx.room:room-rxjava2:2.1.0",
             "androidx.room:room-compiler:2.1.0",
             'androidx.core:core-ktx:1.2.0-alpha04',
-            'androidx.fragment:fragment-ktx:1.2.0-alpha03',
-            'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha04',
-            'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0-alpha04',
+            'androidx.fragment:fragment-ktx:1.2.0-alpha04',
+            'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha05',
+            'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0-alpha05',
             "android.arch.work:work-runtime:${workManager}",
             "android.arch.work:work-rxjava2:$workManager"
     ]
 
     firebase = [
             'com.google.firebase:firebase-core:17.2.0',
-            'com.google.firebase:firebase-database:19.0.0',
+            'com.google.firebase:firebase-database:19.1.0',
             'com.crashlytics.sdk.android:crashlytics:2.10.1',
             'com.google.firebase:firebase-messaging:20.0.0',
             "com.github.b3er.rxfirebase:firebase-database:11.2.0",
