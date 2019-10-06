@@ -7,6 +7,7 @@ import com.fastaccess.data.model.LockUnlockEventModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.repository.IssueRepository
 import com.fastaccess.data.repository.LoginRepository
+import com.fastaccess.data.repository.PullRequestRepository
 import com.fastaccess.data.repository.SchedulerProvider
 import com.fastaccess.domain.usecase.base.BaseObservableUseCase
 import com.fastaccess.extension.me
@@ -22,6 +23,7 @@ import javax.inject.Inject
  */
 class LockUnlockIssuePrUseCase @Inject constructor(
     private val issueRepositoryProvider: IssueRepository,
+    private val pullRequestRepository: PullRequestRepository,
     private val apolloClient: ApolloClient,
     private val loginRepositoryProvider: LoginRepository,
     private val schedulerProvider: SchedulerProvider
@@ -32,28 +34,55 @@ class LockUnlockIssuePrUseCase @Inject constructor(
     var number: Int = -1
     var lockReason: LockReason? = null
     var lock: Boolean = false
+    var isPr: Boolean = false
 
-    override fun buildObservable(): Observable<TimelineModel> = issueRepositoryProvider.getIssueByNumberMaybe("$login/$repo", number)
-        .subscribeOn(schedulerProvider.ioThread())
-        .observeOn(schedulerProvider.uiThread())
-        .flatMapObservable { issue ->
-            if (lockReason == null) {
-                Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, Input.optional(lockReason))))
-            } else {
-                Rx2Apollo.from(apolloClient.mutate(UnlockMutation(issue.id)))
-            }
-                .subscribeOn(schedulerProvider.ioThread())
-                .observeOn(schedulerProvider.uiThread())
-                .map {
-                    issue.locked = lock == true
-                    issue.activeLockReason = lockReason?.rawValue()
-                    issueRepositoryProvider.upsert(issue)
-                    val me = loginRepositoryProvider.getLoginBlocking()?.me()
-                    return@map if (lock) {
-                        TimelineModel(lockUnlockEventModel = LockUnlockEventModel(Date(), me, lockReason?.rawValue(), null, true))
-                    } else {
-                        TimelineModel(lockUnlockEventModel = LockUnlockEventModel(Date(), me, null, null, false))
-                    }
+    override fun buildObservable(): Observable<TimelineModel> = if (isPr) {
+        pullRequestRepository.getPullRequestByNumberMaybe("$login/$repo", number)
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
+            .flatMapObservable { issue ->
+                if (lockReason != null) {
+                    Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, Input.optional(lockReason))))
+                } else {
+                    Rx2Apollo.from(apolloClient.mutate(UnlockMutation(issue.id)))
                 }
-        }
+                    .subscribeOn(schedulerProvider.ioThread())
+                    .observeOn(schedulerProvider.uiThread())
+                    .map {
+                        issue.locked = lock == true
+                        issue.activeLockReason = lockReason?.rawValue()
+                        pullRequestRepository.upsert(issue)
+                        val me = loginRepositoryProvider.getLoginBlocking()?.me()
+                        return@map if (lock) {
+                            TimelineModel(lockUnlockEventModel = LockUnlockEventModel(Date(), me, lockReason?.rawValue(), null, true))
+                        } else {
+                            TimelineModel(lockUnlockEventModel = LockUnlockEventModel(Date(), me, null, null, false))
+                        }
+                    }
+            }
+    } else {
+        issueRepositoryProvider.getIssueByNumberMaybe("$login/$repo", number)
+            .subscribeOn(schedulerProvider.ioThread())
+            .observeOn(schedulerProvider.uiThread())
+            .flatMapObservable { issue ->
+                if (lockReason != null) {
+                    Rx2Apollo.from(apolloClient.mutate(LockMutation(issue.id, Input.optional(lockReason))))
+                } else {
+                    Rx2Apollo.from(apolloClient.mutate(UnlockMutation(issue.id)))
+                }
+                    .subscribeOn(schedulerProvider.ioThread())
+                    .observeOn(schedulerProvider.uiThread())
+                    .map {
+                        issue.locked = lock == true
+                        issue.activeLockReason = lockReason?.rawValue()
+                        issueRepositoryProvider.upsert(issue)
+                        val me = loginRepositoryProvider.getLoginBlocking()?.me()
+                        return@map if (lock) {
+                            TimelineModel(lockUnlockEventModel = LockUnlockEventModel(Date(), me, lockReason?.rawValue(), null, true))
+                        } else {
+                            TimelineModel(lockUnlockEventModel = LockUnlockEventModel(Date(), me, null, null, false))
+                        }
+                    }
+            }
+    }
 }

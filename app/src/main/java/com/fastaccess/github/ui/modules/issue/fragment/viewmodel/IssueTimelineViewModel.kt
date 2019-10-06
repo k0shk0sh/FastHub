@@ -110,14 +110,13 @@ class IssueTimelineViewModel @Inject constructor(
         login: String,
         repo: String,
         number: Int,
-        lockReason: LockReason? = null,
-        lock: Boolean = false
+        lockReason: LockReason? = null
     ) {
         lockUnlockIssuePrUseCase.repo = repo
         lockUnlockIssuePrUseCase.login = login
         lockUnlockIssuePrUseCase.number = number
         lockUnlockIssuePrUseCase.lockReason = lockReason
-        lockUnlockIssuePrUseCase.lock = lock
+        lockUnlockIssuePrUseCase.lock = lockReason != null
         justSubscribe(lockUnlockIssuePrUseCase.buildObservable()
             .doOnNext {
                 addTimeline(it)

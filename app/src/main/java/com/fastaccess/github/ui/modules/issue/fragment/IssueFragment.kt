@@ -55,7 +55,7 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
     override fun layoutRes(): Int = R.layout.issue_pr_fragment_layout
     override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun isPr(): Boolean = false
-    override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
+    override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason)
     override fun onMilestoneAdd(timeline: TimelineModel) = viewModel.addTimeline(timeline)
     override fun reload(refresh: Boolean) = viewModel.loadData(login, repo, number, refresh)
     override fun sendComment(comment: String) = viewModel.createComment(login, repo, number, comment)
@@ -78,7 +78,6 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
         description: String?
     ) = viewModel.editIssue(login, repo, number, title, description)
 
-    override fun lockUnlockIssuePr() = viewModel.lockUnlockIssue(login, repo, number)
     override fun closeOpenIssuePr() = viewModel.closeOpenIssue(login, repo, number)
 
     private fun observeChanges() {

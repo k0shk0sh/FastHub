@@ -229,7 +229,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
                 R.id.lockIssue -> if (item.title == getString(R.string.lock_issue)) {
                     MultiPurposeBottomSheetDialog.show(childFragmentManager, MultiPurposeBottomSheetDialog.BottomSheetFragmentType.LOCK_UNLOCK)
                 } else {
-                    lockUnlockIssuePr()
+                    lockIssuePr(null)
                 }
                 R.id.labels -> MultiPurposeBottomSheetDialog.show(
                     childFragmentManager,
@@ -387,7 +387,6 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
 
     protected open fun deleteComment(login: String, repo: String, commentId: Long, type: TimelineType) = Unit
     protected open fun onEditComment(comment: String?, commentId: Int?, type: TimelineType = TimelineType.ISSUE) = Unit
-    protected open fun lockUnlockIssuePr() = Unit
     protected open fun closeOpenIssuePr() = Unit
     protected open fun onMergePullRequest() = Unit
 

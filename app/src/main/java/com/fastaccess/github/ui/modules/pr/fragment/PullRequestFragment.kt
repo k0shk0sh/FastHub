@@ -63,7 +63,7 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
     override fun layoutRes(): Int = R.layout.pr_fragment_layout
     override fun viewModel(): com.fastaccess.github.base.BaseViewModel? = viewModel
     override fun isPr(): Boolean = true
-    override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason, true)
+    override fun lockIssuePr(lockReason: LockReason?) = viewModel.lockUnlockIssue(login, repo, number, lockReason)
     override fun onMilestoneAdd(timeline: TimelineModel) = viewModel.addTimeline(timeline)
     override fun reload(refresh: Boolean) = viewModel.loadData(login, repo, number, refresh)
     override fun sendComment(comment: String) = viewModel.createComment(login, repo, number, comment)
@@ -86,7 +86,6 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
         description: String?
     ) = viewModel.editIssue(login, repo, number, title, description)
 
-    override fun lockUnlockIssuePr() = viewModel.lockUnlockIssue(login, repo, number)
     override fun closeOpenIssuePr() = viewModel.closeOpenIssue(login, repo, number)
 
     override fun onMessageEntered(msg: String, bundle: Bundle?) {

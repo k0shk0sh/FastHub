@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.model.*
 import com.fastaccess.github.R
+import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.github.extensions.route
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.base.adapter.BaseViewHolder
 import com.fastaccess.markdown.spans.LabelSpan
 import com.fastaccess.markdown.widget.SpannableBuilder
 import github.type.PullRequestReviewState
@@ -337,7 +337,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
         itemView.apply {
             stateIcon.setImageResource(
                 when {
-                    PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false) -> R.drawable.ic_issue_merged
+                    PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, true) -> R.drawable.ic_issue_merged
                     model.isClosed == true -> R.drawable.ic_issue_closed
                     else -> R.drawable.ic_issue_opened
                 }
@@ -347,7 +347,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                 .bold(model.actor?.login)
                 .space()
             when {
-                PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, false) -> builder
+                PullRequestState.MERGED.rawValue().equals(model.pullRequest?.state, true) -> builder
                     .append("merged this ")
                     .append("${model.createdAt?.timeAgo()}")
                 model.isClosed == true -> builder

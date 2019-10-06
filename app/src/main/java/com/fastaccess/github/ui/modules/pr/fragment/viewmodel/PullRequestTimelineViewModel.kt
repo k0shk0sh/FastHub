@@ -103,6 +103,7 @@ class PullRequestTimelineViewModel @Inject constructor(
         repo: String,
         number: Int
     ) {
+        closeOpenIssuePrUseCase.isPr = true
         closeOpenIssuePrUseCase.repo = repo
         closeOpenIssuePrUseCase.login = login
         closeOpenIssuePrUseCase.number = number
@@ -116,14 +117,14 @@ class PullRequestTimelineViewModel @Inject constructor(
         login: String,
         repo: String,
         number: Int,
-        lockReason: LockReason? = null,
-        lock: Boolean = false
+        lockReason: LockReason? = null
     ) {
         lockUnlockIssuePrUseCase.repo = repo
         lockUnlockIssuePrUseCase.login = login
         lockUnlockIssuePrUseCase.number = number
         lockUnlockIssuePrUseCase.lockReason = lockReason
-        lockUnlockIssuePrUseCase.lock = lock
+        lockUnlockIssuePrUseCase.lock = lockReason != null
+        lockUnlockIssuePrUseCase.isPr = true
         justSubscribe(lockUnlockIssuePrUseCase.buildObservable()
             .doOnNext {
                 addTimeline(it)
@@ -177,6 +178,7 @@ class PullRequestTimelineViewModel @Inject constructor(
         editIssuePrUseCase.number = number
         editIssuePrUseCase.title = title
         editIssuePrUseCase.description = description
+        editIssuePrUseCase.isPr = true
         justSubscribe(editIssuePrUseCase.buildObservable())
     }
 
