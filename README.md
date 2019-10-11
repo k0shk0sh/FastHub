@@ -190,10 +190,10 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 ## FastHub Logo
 
 **FastHub** logo is designed by **Cookicons**.  
-[Google+](https://plus.google.com/+CookiconsDesign) | [Twitter](https://twitter.com/mcookie)  
+[Twitter](https://twitter.com/mcookie)  
 Designer website [Cookicons](https://cookicons.co/).  
 
 **OLD FastHub** logo was designed by **Kevin Aguilar**.  
-[Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
+[Twitter](https://twitter.com/kevttob)  
 Designer at [Kevin Aguilar](http://kevaguilar.com/).  
 Laus Deo Semper
