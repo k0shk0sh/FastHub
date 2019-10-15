@@ -9,12 +9,4 @@
     <attr name="dividerColor" format="color|reference" />
     <attr name="comment_box_style" format="reference" />
     <attr name="chip_background" format="color|reference" />
-
-    <!-- TODO: This is a temporary fix for this issue: https://issuetracker.google.com/issues/136103084 -->
-    <attr name="flow_horizontalSeparator" />
-    <attr name="flow_verticalSeparator" />
-    <attr name="motionProgress" />
-    <attr name="waveDecay" />
-    <attr name="motionPathRotate" />
-    <attr name="duration" />
 </resources>

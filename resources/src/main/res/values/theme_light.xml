@@ -10,6 +10,7 @@
     <color name="light_primary">#FAFAFA</color>
     <color name="light_primary_dark">#FAFAFA</color>
 
+
     <style name="ThemeLight" parent="ThemeLight.Base" />
 
     <style name="ThemeLight.Base" parent="Theme.Light.NoActionBar">
@@ -22,10 +23,6 @@
         <item name="patch_deletion">@color/light_patch_deletion_color</item>
         <item name="patch_ref">@color/light_patch_ref_color</item>
         <item name="dividerColor">@color/lightDivider</item>
-        <item name="android:windowBackground">@color/lightWindowBackground</item>
-        <item name="colorPrimary">@color/light_primary</item>
-        <item name="colorPrimaryDark">@color/light_primary_dark</item>
-        <item name="colorAccent">@color/light_accent</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="actionModeBackground">?colorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
@@ -45,6 +42,23 @@
         <item name="android:navigationBarColor">@color/lightWindowBackground</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorPrimaryVariant">@color/light_primary_dark</item>
+        <item name="colorSecondary">@color/light_accent</item>
+        <item name="colorSecondaryVariant">#FF1E59FC</item>
+
+        <item name="android:colorBackground">@color/lightWindowBackground</item>
+        <item name="android:windowBackground">@color/lightWindowBackground</item>
+        <item name="colorSurface">@color/lightWindowBackground</item>
+        <item name="colorError">@color/material_red_700</item>
+
+        <item name="colorOnPrimary">#212121</item>
+        <item name="colorOnSecondary">#212121</item>
+        <item name="colorOnBackground">#212121</item>
+        <item name="colorOnSurface">#212121</item>
+        <item name="colorOnError">@color/white</item>
     </style>
 
     <style name="DialogThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">

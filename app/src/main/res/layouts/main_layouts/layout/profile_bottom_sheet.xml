@@ -15,14 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/top_round_corner_background"
-        android:theme="?android:toolbarStyle">
+        android:theme="?android:toolbarStyle"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toggleArrow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_normal"
-            android:elevation="0dp"
             android:src="@drawable/ic_bottom_sheet_rectangle" />
 
         <androidx.appcompat.widget.Toolbar
@@ -40,8 +40,7 @@
                 android:layout_height="?actionBarSize"
                 android:background="@color/transparent"
                 app:tabGravity="center"
-                app:tabMode="scrollable"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
+                app:tabMode="scrollable" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

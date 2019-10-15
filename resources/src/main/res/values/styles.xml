@@ -8,21 +8,27 @@
         <item name="behavior_peekHeight">220dp</item>
     </style>
 
-    <style name="ChipStyleDisabled">
+    <style name="ChipStyleDisabled"  parent="Widget.MaterialComponents.Chip.Entry">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?colorPrimary</item>
         <item name="android:enabled">false</item>
+        <item name="android:checkable">false</item>
+        <item name="closeIcon">@null</item>
     </style>
 
-    <style name="ChipStyle">
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Entry">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?chip_background</item>
         <item name="android:elevation">@dimen/spacing_micro</item>
+        <item name="android:checkable">false</item>
+        <item name="closeIcon">@null</item>
     </style>
 
-    <style name="ChipStyleNoElevation">
+    <style name="ChipStyleNoElevation" parent="Widget.MaterialComponents.Chip.Entry">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="chipBackgroundColor">?chip_background</item>
+        <item name="android:checkable">false</item>
+        <item name="closeIcon">@null</item>
     </style>
 
     <style name="ChipStyleChoiceNoDrawable" parent="Widget.MaterialComponents.Chip.Choice">
