@@ -123,7 +123,7 @@ dependencies {
     implementation project(':dagger')
     implementation project(':reactions')
     implementation project(':data')
-    implementation project(':domain')
+    implementation project(':network')
     implementation project(':resources')
     implementation project(':extensions')
     implementation project(':markdown')

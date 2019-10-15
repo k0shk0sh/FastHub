@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/bottomSheet"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
@@ -16,14 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/top_round_corner_background"
-        android:theme="?android:toolbarStyle"
-        app:liftOnScroll="true">
+        android:theme="?android:toolbarStyle">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toggleArrow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_normal"
+            android:elevation="0dp"
             android:src="@drawable/ic_bottom_sheet_rectangle" />
 
         <androidx.appcompat.widget.Toolbar
@@ -42,7 +41,7 @@
                 android:background="@color/transparent"
                 app:tabGravity="center"
                 app:tabMode="scrollable"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"/>
+                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -53,6 +52,6 @@
         android:layout_height="match_parent"
         android:background="?android:windowBackground"
         android:nestedScrollingEnabled="true"
-        app:layout_behavior="@string/scroll_behaviour"/>
+        app:layout_behavior="@string/scroll_behaviour" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

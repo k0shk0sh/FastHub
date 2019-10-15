@@ -5,7 +5,6 @@ import com.apollographql.apollo.api.Input
 import com.fastaccess.data.model.PageInfoModel
 import com.fastaccess.data.model.TimelineModel
 import com.fastaccess.data.model.TimelineType
-import com.fastaccess.data.persistence.models.PullRequestModel
 import com.fastaccess.data.repository.LoginRepository
 import com.fastaccess.data.repository.PullRequestRepository
 import com.fastaccess.data.repository.SchedulerProvider
@@ -253,7 +252,7 @@ class PullRequestTimelineViewModel @Inject constructor(
         }
     }
 
-    fun hasCommentableReviews(pullRequest: PullRequestModel): Maybe<Boolean> = Maybe.create<Boolean> { emitter ->
+    fun hasCommentableReviews(): Maybe<Boolean> = Maybe.create<Boolean> { emitter ->
         emitter.onSuccess(list.any { timelineModel ->
             return@any timelineModel.review?.comment?.path != null
         })

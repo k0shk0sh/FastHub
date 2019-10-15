@@ -216,7 +216,7 @@ class PullRequestFragment : BaseIssuePrTimelineFragment(), QuickMessageCallback 
         }
         reviewsCard.setOnClickListener {
             addDisposal(
-                viewModel.hasCommentableReviews(model)
+                viewModel.hasCommentableReviews()
                     .subscribe { if (it) route(PullRequestReviewsActivity.getUrl(login, repo, number)) else Timber.e("no reviews") }
             )
         }

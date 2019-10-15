@@ -40,7 +40,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':domain')
+    implementation project(':network')
     implementation project(':resources')
     implementation project(':extensions')
     implementation dependency.kotlin

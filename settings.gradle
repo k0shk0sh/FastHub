@@ -1,4 +1,4 @@
-include ':app', ':data', ':domain', ':resources', ':extensions', ':markdown', ':editor', ':diff', ':reviews'
+include ':app', ':data', ':network', ':resources', ':extensions', ':markdown', ':editor', ':diff', ':reviews'
 include ':commits'
 include ':base'
 include ':dagger'
