@@ -196,4 +196,7 @@ Designer website [Cookicons](https://cookicons.co/).
 **OLD FastHub** logo was designed by **Kevin Aguilar**.  
 [Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
 Designer at [Kevin Aguilar](http://kevaguilar.com/).  
+Cicho jak wampir siedzę w twojej szafie gdy spisz czekan az zasniesz zeby z nienacka wcisnać pale Ci w pysk
+
+
 Laus Deo Semper
