@@ -11,6 +11,7 @@ import com.fastaccess.github.base.utils.FILTER_ISSUE_LINK
 import com.fastaccess.github.base.utils.FILTER_PR_LINK
 import com.fastaccess.github.base.utils.NOTIFICATION_LINK
 import com.fastaccess.github.extensions.route
+import com.fastaccess.github.ui.modules.profile.ProfileActivity
 import timber.log.Timber
 
 /**
@@ -51,6 +52,12 @@ fun FeedModel.onClick(fragment: Fragment) {
             }
 
         }
-        else -> fragment.route(actor?.url) // TODO(handle click)
+        else -> {
+
+            if(fragment.activity != null && ( ( fragment.activity as Any ) !is ProfileActivity ) ) {
+                fragment.route(actor?.url)
+            }
+
+        }// TODO(handle click)
     }
 }
