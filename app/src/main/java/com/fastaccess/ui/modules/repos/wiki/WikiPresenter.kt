@@ -101,7 +101,7 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                 val wikiContent = wikiWrapper.select(firebaseWikiConfigModel.wikiContent)
                 val wikiBody = wikiContent?.select(firebaseWikiConfigModel.wikiBody)?.html()
                 val rightBarList = wikiContent?.select(firebaseWikiConfigModel.sideBarUl)?.select(firebaseWikiConfigModel.sideBarList)
-                val headerHtml = "<div class='gh-header-meta'><h1>$header</h1><br/><p>$subHeaderText</p></div>"
+                val headerHtml = "<div class='gh-header-meta'><h1>$header</h1><p>$subHeaderText</p></div>"
                 val content = "$headerHtml $wikiBody"
                 s.onNext(WikiContentModel(content, null, rightBarList?.map {
                     WikiSideBarModel(
