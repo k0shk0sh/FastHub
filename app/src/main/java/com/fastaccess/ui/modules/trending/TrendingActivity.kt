@@ -26,6 +26,7 @@ import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
 import com.fastaccess.ui.widgets.FontEditText
+import java.util.*
 
 
 /**
@@ -44,7 +45,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     @BindView(R.id.searchEditText) lateinit var searchEditText: FontEditText
 
 
-    @State var selectedTitle: String = "All Language"
+    @State var selectedTitle: String = "All"
 
     @OnTextChanged(value = [R.id.searchEditText], callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) fun onTextChange(s: Editable) {
         val text = s.toString()
@@ -103,11 +104,11 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navMenu.itemIconTintList = null
-        trendingFragment = supportFragmentManager.findFragmentById(R.id.trendingFragment) as TrendingFragment?
-        navMenu.setNavigationItemSelectedListener({ item ->
+        trendingFragment = supportFragmentManager.findFragmentById(R.id.trendingFragment) as? TrendingFragment
+        navMenu.setNavigationItemSelectedListener { item ->
             closeDrawerLayout()
             onItemClicked(item)
-        })
+        }
         setupIntent(savedInstanceState)
         if (savedInstanceState == null) {
             presenter.onLoadLanguage()
@@ -136,8 +137,10 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
                 true
             }
             R.id.share -> {
-                ActivityHelper.shareUrl(this, "${LinkParserHelper.PROTOCOL_HTTPS}://${LinkParserHelper.HOST_DEFAULT}" +
-                        "/trending/$selectedTitle")
+                ActivityHelper.shareUrl(
+                    this, "${LinkParserHelper.PROTOCOL_HTTPS}://${LinkParserHelper.HOST_DEFAULT}" +
+                            "/trending/$selectedTitle"
+                )
                 return true
             }
             android.R.id.home -> {
@@ -151,9 +154,9 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     override fun onAppend(title: String, color: Int) {
         navMenu.menu.add(R.id.languageGroup, title.hashCode(), Menu.NONE, title)
-                .setCheckable(true)
-                .setIcon(createOvalShape(color))
-                .isChecked = title.toLowerCase() == selectedTitle.toLowerCase()
+            .setCheckable(true)
+            .setIcon(createOvalShape(color))
+            .isChecked = title.toLowerCase() == selectedTitle.toLowerCase()
     }
 
     override fun onClearMenu() {
@@ -162,7 +165,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     private fun onItemClicked(item: MenuItem?): Boolean {
         selectedTitle = when (item?.title.toString()) {
-            "All Language" -> ""
+            "All" -> ""
             else -> item?.title.toString()
         }
         Logger.e(selectedTitle)
@@ -194,15 +197,15 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
             if (intent != null && intent.extras != null) {
                 val bundle = intent.extras
                 if (bundle != null) {
-                    val lang: String = bundle.getString(BundleConstant.EXTRA)
+                    val lang: String = bundle.getString(BundleConstant.EXTRA) ?: "All"
                     val query: String? = bundle.getString(BundleConstant.EXTRA_TWO)
-                    if (!lang.isEmpty()) {
+                    if (lang.isNotEmpty()) {
                         selectedTitle = lang
                     }
                     if (query.isNullOrEmpty()) {
                         daily.isSelected = true
                     } else {
-                        when (query?.toLowerCase()) {
+                        when (query.toLowerCase(Locale.getDefault())) {
                             "daily" -> daily.isSelected = true
                             "weekly" -> weekly.isSelected = true
                             "monthly" -> monthly.isSelected = true
@@ -229,10 +232,12 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     companion object {
         fun getTrendingIntent(context: Context, lang: String?, query: String?): Intent {
             val intent = Intent(context, TrendingActivity::class.java)
-            intent.putExtras(Bundler.start()
+            intent.putExtras(
+                Bundler.start()
                     .put(BundleConstant.EXTRA, lang)
                     .put(BundleConstant.EXTRA_TWO, query)
-                    .end())
+                    .end()
+            )
             return intent
         }
     }

@@ -28,10 +28,10 @@ class AuthenticationInterceptor : Interceptor {
         val authToken = if (token.isNullOrBlank()) if (isEnterprise) PrefGetter.getEnterpriseToken() else PrefGetter.getToken() else token
         val otpCode = if (otp.isNullOrBlank()) if (isEnterprise) PrefGetter.getEnterpriseOtpCode() else PrefGetter.getOtpCode() else otp
         if (!authToken.isNullOrBlank()) {
-            builder.header("Authorization", if (authToken!!.startsWith("Basic")) authToken else "token " + authToken)
+            builder.header("Authorization", if (authToken.startsWith("Basic")) authToken else "token $authToken")
         }
         if (!otpCode.isNullOrBlank()) {
-            builder.addHeader("X-GitHub-OTP", otpCode!!.trim())
+            builder.addHeader("X-GitHub-OTP", otpCode.trim())
         }
         if (!isScrapping) builder.addHeader("User-Agent", "FastHub")
         val request = builder.build()

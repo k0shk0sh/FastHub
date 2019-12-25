@@ -108,9 +108,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @StringRes private int getPrettifiedErrorMessage(@Nullable Throwable throwable) {
         int resId = R.string.network_error;
-        if (throwable instanceof HttpException) {
-            resId = R.string.network_error;
-        } else if (throwable instanceof IOException) {
+        if (throwable instanceof IOException) {
             resId = R.string.request_error;
         } else if (throwable instanceof TimeoutException) {
             resId = R.string.unexpected_error;
@@ -119,12 +117,12 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     public void onCheckGitHubStatus() {
-        manageObservable(RestProvider.gitHubStatus()
-                .doOnNext(gitHubStatusModel -> {
-                    if (!"good".equalsIgnoreCase(gitHubStatusModel.getStatus())) {
-                        sendToView(v -> v.showErrorMessage("Github Status:\n" + gitHubStatusModel.getBody()));
-                    }
-                }));
+//        manageObservable(RestProvider.gitHubStatus()
+//                .doOnNext(gitHubStatusModel -> {
+//                    if (!"good".equalsIgnoreCase(gitHubStatusModel.getStatus())) {
+//                        sendToView(v -> v.showErrorMessage("Github Status:\n" + gitHubStatusModel.getBody()));
+//                    }
+//                }));
     }
 
     public boolean isEnterprise() {

@@ -94,7 +94,7 @@ public class AvatarLayout extends FrameLayout {
                 .dontAnimate()
                 .into(avatar);
     }
-    
+
     private void setBackground() {
         if (PrefGetter.isRectAvatar()) {
             setBackgroundResource(R.drawable.rect_shape);

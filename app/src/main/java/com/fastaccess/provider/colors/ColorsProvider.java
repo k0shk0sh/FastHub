@@ -1,5 +1,6 @@
 package com.fastaccess.provider.colors;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
@@ -39,7 +40,7 @@ public class ColorsProvider {
 
     private static Map<String, LanguageColorModel> colors = new LinkedHashMap<>();
 
-    public static void load() {
+    @SuppressLint("CheckResult") public static void load() {
         if (colors.isEmpty()) {
             RxHelper.safeObservable(Observable
                     .create(observableEmitter -> {
@@ -68,7 +69,7 @@ public class ColorsProvider {
                 .filter(value -> value != null && !InputHelper.isEmpty(value.getKey()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toCollection(ArrayList::new)));
-        lang.add(0, "All Languages");
+        lang.add(0, "All");
         lang.addAll(1, POPULAR_LANG);
         return lang;
     }
