@@ -3,8 +3,8 @@ package com.fastaccess.ui.modules.repos.projects.crud
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v7.widget.Toolbar
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,7 +100,7 @@ class ProjectCurdDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresent
     }
 
     companion object {
-        val TAG = ProjectCurdDialogFragment::class.java.simpleName!!
+        val TAG = ProjectCurdDialogFragment::class.java.simpleName
 
         fun newInstance(text: String? = null, isCard: Boolean = false, position: Int = -1): ProjectCurdDialogFragment {
             val fragment = ProjectCurdDialogFragment()

@@ -1,19 +1,21 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.TooltipCompat;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.TooltipCompat;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.signature.ObjectKey;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -90,7 +92,7 @@ public class AvatarLayout extends FrameLayout {
                 .load(url)
                 .fallback(ContextCompat.getDrawable(getContext(), R.drawable.ic_fasthub_mascot))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .signature(new StringSignature(reload ? String.valueOf(System.currentTimeMillis()) : "0"))
+                .signature(new ObjectKey(reload ? String.valueOf(System.currentTimeMillis()) : "0"))
                 .dontAnimate()
                 .into(avatar);
     }

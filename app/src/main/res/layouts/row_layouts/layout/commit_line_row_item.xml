@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/leftLinNo"
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_width="@dimen/spacing_normal"
             android:layout_height="wrap_content"/>
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rightLinNo"
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
             android:text="?android:textColorSecondary"
             tools:text="1"/>
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView"
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="match_parent"

@@ -1,6 +1,6 @@
 package com.fastaccess.data.dao.types;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 import com.fastaccess.R;
 

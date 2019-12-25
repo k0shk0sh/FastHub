@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.notification.all;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.fastaccess.R;

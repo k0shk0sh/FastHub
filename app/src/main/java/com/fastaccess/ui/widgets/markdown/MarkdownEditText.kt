@@ -37,7 +37,7 @@ class MarkdownEditText : FontEditText {
                     if (inMentionMode != -1) {
                         val complete = mention.adapter.getItem(position).toString() + " "
                         val end = selectionEnd
-                        text.replace(inMentionMode, end, complete, 0, complete.length)
+                        text?.replace(inMentionMode, end, complete, 0, complete.length)
                         inMentionMode = -1
                     }
                 } catch (ignored: Exception) {
@@ -56,17 +56,6 @@ class MarkdownEditText : FontEditText {
                 mention(it)
             }
         }
-    }
-
-    @SuppressLint("SetTextI18n") override fun setText(text: CharSequence, type: TextView.BufferType) {
-        try {
-            super.setText(text, type)
-        } catch (e: Exception) {
-            setText("I tried, but your OEM just sucks because they modify the framework components and therefore causing the app to crash!" + "" +
-                    ".\nFastHub")
-            Crashlytics.logException(e)
-        }
-
     }
 
     fun mention(charSequence: CharSequence) {
@@ -105,9 +94,16 @@ class MarkdownEditText : FontEditText {
 
     private fun updateMentionList(mentioning: String) {
         participants?.let {
-            val mentions = it.filter { it.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()) }
-            val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
-                    android.R.id.text1, mentions.subList(0, Math.min(mentions.size, 3)))
+            val mentions = it.filter {
+                it.toLowerCase(Locale.getDefault())
+                    .startsWith(
+                        mentioning.replace("@", "").toLowerCase(Locale.getDefault())
+                    )
+            }
+            val adapter = ArrayAdapter<String>(
+                context, android.R.layout.simple_list_item_1,
+                android.R.id.text1, mentions.subList(0, Math.min(mentions.size, 3))
+            )
             mention?.setAdapter(adapter)
         }
     }

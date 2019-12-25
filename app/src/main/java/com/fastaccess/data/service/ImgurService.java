@@ -1,6 +1,6 @@
 package com.fastaccess.data.service;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.ImgurReponseModel;
 

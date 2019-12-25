@@ -21,7 +21,7 @@
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                         android:paddingBottom="@dimen/spacing_micro"
                         android:paddingTop="@dimen/spacing_micro">
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
@@ -133,7 +133,7 @@
                         android:paddingBottom="@dimen/spacing_micro"
                         android:paddingTop="@dimen/spacing_micro">
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
@@ -198,7 +198,7 @@
                         android:paddingBottom="@dimen/spacing_micro"
                         android:paddingTop="@dimen/spacing_micro">
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"

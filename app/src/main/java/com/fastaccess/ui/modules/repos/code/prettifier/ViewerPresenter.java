@@ -2,8 +2,8 @@ package com.fastaccess.ui.modules.repos.code.prettifier;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.webkit.MimeTypeMap;
 
 import com.fastaccess.R;

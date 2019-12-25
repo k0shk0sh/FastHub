@@ -1,6 +1,6 @@
 package com.fastaccess.provider.rest.jsoup;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.data.service.ScrapService;

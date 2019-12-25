@@ -5,9 +5,9 @@ import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.ColorInt
-import android.support.design.widget.NavigationView
-import android.support.v4.widget.DrawerLayout
+import androidx.annotation.ColorInt
+import com.google.android.material.navigation.NavigationView
+import androidx.drawerlayout.widget.DrawerLayout
 import android.text.Editable
 import android.view.Gravity
 import android.view.Menu

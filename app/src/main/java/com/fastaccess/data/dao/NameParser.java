@@ -1,7 +1,7 @@
 package com.fastaccess.data.dao;
 
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;

@@ -1,7 +1,7 @@
 package com.fastaccess.ui.modules.trending.fragment
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.View
 import butterknife.BindView
 import com.evernote.android.state.State

@@ -3,8 +3,8 @@ package com.fastaccess.ui.modules.reviews
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import android.widget.TextView
 import butterknife.BindView
@@ -37,7 +37,7 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
 
     private var commentCallback: ReviewCommentListener? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         commentCallback = if (parentFragment is ReviewCommentListener) {
             parentFragment as ReviewCommentListener
@@ -58,43 +58,47 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
             val fragment = CommentEditorFragment()
             fragment.arguments = Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).end()
             childFragmentManager.beginTransaction()
-                    .replace(R.id.commentFragmentContainer, fragment, "CommentEditorFragment")
-                    .commitNow()
+                .replace(R.id.commentFragmentContainer, fragment, "CommentEditorFragment")
+                .commitNow()
         }
-        val item = arguments!!.getParcelable<CommitLinesModel>(BundleConstant.ITEM)
-        lineNo.text = SpannableBuilder.builder()
+        arguments?.getParcelable<CommitLinesModel>(BundleConstant.ITEM)?.let { item ->
+            lineNo.text = SpannableBuilder.builder()
                 .append(if (item.leftLineNo >= 0) String.format("%s.", item.leftLineNo) else "")
                 .append(if (item.rightLineNo >= 0) String.format("%s.", item.rightLineNo) else "")
-        lineNo.visibility = if (InputHelper.isEmpty(lineNo)) View.GONE else View.VISIBLE
+            lineNo.visibility = if (InputHelper.isEmpty(lineNo)) View.GONE else View.VISIBLE
 
-        val context = context ?: return
-        when (item.color) {
-            CommitLinesModel.ADDITION -> textView.setBackgroundColor(ViewHelper.getPatchAdditionColor(context))
-            CommitLinesModel.DELETION -> textView.setBackgroundColor(ViewHelper.getPatchDeletionColor(context))
-            CommitLinesModel.PATCH -> textView.setBackgroundColor(ViewHelper.getPatchRefColor(context))
-            else -> textView.setBackgroundColor(Color.TRANSPARENT)
-        }
-        if (item.noNewLine) {
-            textView.text = SpannableBuilder.builder().append(item.text.replace(spacePattern, " ")).append(" ")
-                    .append(ContextCompat.getDrawable(context, R.drawable.ic_newline))
-        } else {
-            textView.text = item.text.replace(spacePattern, " ")
-        }
-        toolbar.setTitle(R.string.add_comment)
-        toolbar.setNavigationIcon(R.drawable.ic_clear)
-        toolbar.setNavigationOnClickListener { dismiss() }
-        toolbar.inflateMenu(R.menu.add_menu)
-        toolbar.setOnMenuItemClickListener {
-            if (commentEditorFragment?.getEditText()?.text.isNullOrEmpty()) {
-                commentEditorFragment?.getEditText()?.error = getString(R.string.required_field)
-            } else {
-                commentEditorFragment?.getEditText()?.error = null
-                commentCallback?.onCommentAdded(InputHelper.toString(commentEditorFragment?.getEditText()?.text),
-                        item, arguments!!.getBundle(BundleConstant.EXTRA))
-                dismiss()
+            val context = context ?: return
+            when (item.color) {
+                CommitLinesModel.ADDITION -> textView.setBackgroundColor(ViewHelper.getPatchAdditionColor(context))
+                CommitLinesModel.DELETION -> textView.setBackgroundColor(ViewHelper.getPatchDeletionColor(context))
+                CommitLinesModel.PATCH -> textView.setBackgroundColor(ViewHelper.getPatchRefColor(context))
+                else -> textView.setBackgroundColor(Color.TRANSPARENT)
             }
-            return@setOnMenuItemClickListener true
+            if (item.noNewLine) {
+                textView.text = SpannableBuilder.builder().append(item.text.replace(spacePattern, " ")).append(" ")
+                    .append(ContextCompat.getDrawable(context, R.drawable.ic_newline))
+            } else {
+                textView.text = item.text.replace(spacePattern, " ")
+            }
+            toolbar.setTitle(R.string.add_comment)
+            toolbar.setNavigationIcon(R.drawable.ic_clear)
+            toolbar.setNavigationOnClickListener { dismiss() }
+            toolbar.inflateMenu(R.menu.add_menu)
+            toolbar.setOnMenuItemClickListener {
+                if (commentEditorFragment?.getEditText()?.text.isNullOrEmpty()) {
+                    commentEditorFragment?.getEditText()?.error = getString(R.string.required_field)
+                } else {
+                    commentEditorFragment?.getEditText()?.error = null
+                    commentCallback?.onCommentAdded(
+                        InputHelper.toString(commentEditorFragment?.getEditText()?.text),
+                        item, arguments!!.getBundle(BundleConstant.EXTRA)
+                    )
+                    dismiss()
+                }
+                return@setOnMenuItemClickListener true
+            }
         }
+
     }
 
     override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
@@ -103,9 +107,9 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
         fun newInstance(commitLinesModel: CommitLinesModel, bundle: Bundle? = null): AddReviewDialogFragment {
             val dialog = AddReviewDialogFragment()
             dialog.arguments = Bundler.start()
-                    .put(BundleConstant.ITEM, commitLinesModel)
-                    .put(BundleConstant.EXTRA, bundle)
-                    .end()
+                .put(BundleConstant.ITEM, commitLinesModel)
+                .put(BundleConstant.EXTRA, bundle)
+                .end()
             return dialog
         }
     }

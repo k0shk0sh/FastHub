@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView
     android:id="@+id/parentView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="?card_background"
@@ -165,7 +165,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/organizationsCaption"
@@ -180,7 +180,7 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/orgsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
                     app:spanCount="3"
                     tools:listitem="@layout/profile_org_row_item"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/pinnedReposTextView"
@@ -218,7 +218,7 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/pinnedReposCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                     app:layoutManager="@string/grid_layout_manager"
                     app:spanCount="@integer/small_spans"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/contributionsCaption"
@@ -255,7 +255,7 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/contributionCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -280,7 +280,7 @@
                     app:lastWeeks="53"
                     app:textColor="?android:textColorPrimary"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
@@ -300,4 +300,4 @@
     </FrameLayout>
 
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

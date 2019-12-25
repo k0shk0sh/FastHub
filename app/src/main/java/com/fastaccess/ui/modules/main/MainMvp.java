@@ -1,10 +1,10 @@
 package com.fastaccess.ui.modules.main;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
 

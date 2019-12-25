@@ -3,7 +3,7 @@ package com.fastaccess.provider.timeline.handler.drawable;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 

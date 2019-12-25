@@ -1,7 +1,7 @@
 package com.fastaccess.ui.adapter.viewholder
 
-import android.support.transition.ChangeBounds
-import android.support.transition.TransitionManager
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver

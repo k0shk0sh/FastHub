@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.main.orgs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.PrefGetter;

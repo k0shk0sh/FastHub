@@ -1,7 +1,7 @@
 package com.fastaccess.ui.modules.settings.category;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.evernote.android.state.State;
 import com.fastaccess.R;

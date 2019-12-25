@@ -1,6 +1,6 @@
 package com.fastaccess.helper;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Kosh on 18 Apr 2017, 10:57 PM

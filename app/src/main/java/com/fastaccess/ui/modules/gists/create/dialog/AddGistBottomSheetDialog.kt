@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.design.widget.TextInputLayout
-import android.support.v4.app.FragmentManager
-import android.support.v7.widget.Toolbar
+import com.google.android.material.textfield.TextInputLayout
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

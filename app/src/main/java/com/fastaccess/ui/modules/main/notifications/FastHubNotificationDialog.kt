@@ -1,7 +1,7 @@
 package com.fastaccess.ui.modules.main.notifications
 
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import android.text.Html
 import android.view.View
 import butterknife.OnClick

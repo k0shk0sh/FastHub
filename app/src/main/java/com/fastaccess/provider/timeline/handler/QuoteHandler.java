@@ -1,6 +1,6 @@
 package com.fastaccess.provider.timeline.handler;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
 
 import com.zzhoujay.markdown.style.MarkDownQuoteSpan;

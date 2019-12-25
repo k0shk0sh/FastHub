@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
 

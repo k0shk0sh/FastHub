@@ -1,6 +1,6 @@
 package com.prettifier.pretty.helper;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.App;

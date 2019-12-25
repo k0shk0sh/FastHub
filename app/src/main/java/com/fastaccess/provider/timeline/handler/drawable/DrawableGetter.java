@@ -2,13 +2,15 @@ package com.fastaccess.provider.timeline.handler.drawable;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.widget.TextView;
 
-import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.fastaccess.App;
+import com.fastaccess.GlideApp;
 import com.fastaccess.R;
 
 import java.lang.ref.WeakReference;
@@ -35,12 +37,12 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
         final UrlDrawable urlDrawable = new UrlDrawable();
         if (container != null && container.get() != null) {
             Context context = container.get().getContext();
-            final GenericRequestBuilder load = Glide.with(context)
+            final RequestBuilder load = Glide.with(context)
                     .load(url)
                     .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_image))
-                    .dontAnimate();
+                    .dontAnimate()
+                    .override(width, width / 2);
             final GlideDrawableTarget target = new GlideDrawableTarget(urlDrawable, container, width);
-            load.override(width, width / 2);
             load.into(target);
             cachedTargets.add(target);
         }
@@ -60,7 +62,7 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
     public void clear(@NonNull DrawableGetter drawableGetter) {
         if (drawableGetter.cachedTargets != null) {
             for (GlideDrawableTarget target : drawableGetter.cachedTargets) {
-                Glide.clear(target);
+                GlideApp.with(App.getInstance()).clear(target);
             }
         }
     }
