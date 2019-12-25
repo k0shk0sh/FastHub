@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.apollographql.android'
 apply plugin: 'com.novoda.build-properties'
-apply plugin: 'jacoco-android'
 apply plugin: 'io.fabric'
 
 buildProperties {
@@ -25,7 +25,6 @@ android {
         }
     }
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
@@ -90,7 +89,8 @@ android {
     }
 
     configurations {
-        all*.exclude module: 'annotations'
+        all*.exclude module: 'annotation'
+        all*.exclude group: 'org.jetbrains', module: 'annotations-java5'
     }
 
     packagingOptions { exclude 'META-INF/rxjava.properties' }
@@ -161,31 +161,25 @@ dependencies {
     implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0') { transitive = false }
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') { transitive = true }
     implementation "com.github.miguelbcr:RxBillingService:0.0.3"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlin_version}"
-    implementation 'org.jsoup:jsoup:1.10.3'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation 'org.jsoup:jsoup:1.12.1'
     implementation "com.evernote:android-state:${state_version}"
     implementation "petrov.kristiyan:colorpicker-library:1.1.4"
-    implementation 'com.apollographql.apollo:apollo-rx2-support:0.4.1'
+    implementation 'com.apollographql.apollo:apollo-rx2-support:1.2.2'
+    implementation("com.apollographql.apollo:apollo-runtime:1.2.2")
     implementation 'com.jaredrummler:android-device-names:1.1.5'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation 'com.airbnb.android:lottie:2.2.5'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
+
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     kapt "org.projectlombok:lombok:${lombokVersion}"
     kapt "com.evernote:android-state-processor:${state_version}"
     kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     kapt "io.requery:requery-processor:${requery}"
-//    testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
-    testImplementation "junit:junit:${junitVersion}"
-    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
-    testImplementation "org.assertj:assertj-core:${assertjVersion}"
-    androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
-    androidTestImplementation "org.mockito:mockito-core:${mockitoVersion}"
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test:rules:1.0.1'
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${espresseVersion}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

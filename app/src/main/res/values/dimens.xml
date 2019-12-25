@@ -23,5 +23,5 @@
     <dimen name="avatar_margin_end">16dp</dimen>
     <integer name="micro_spans">1</integer>
     <integer name="small_spans">1</integer>
-    <item name="drawable_callback" type="id">drawable_callback</item>
+    <item name="drawable_callback" type="id"/>
 </resources>
