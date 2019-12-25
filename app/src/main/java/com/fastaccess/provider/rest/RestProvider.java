@@ -4,11 +4,14 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
@@ -91,31 +94,36 @@ public class RestProvider {
     }
 
     public static void downloadFile(@NonNull Context context, @NonNull String url) {
-        if (InputHelper.isEmpty(url)) return;
-        boolean isEnterprise = LinkParserHelper.isEnterprise(url);
-        Uri uri = Uri.parse(url);
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        String authToken = isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken();
-        if (!TextUtils.isEmpty(authToken)) {
-            request.addRequestHeader("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
-        }
-        File direct = new File(Environment.getExternalStorageDirectory() + File.separator + context.getString(R.string.app_name));
-        if (!direct.isDirectory() || !direct.exists()) {
-            boolean isCreated = direct.mkdirs();
-            if (!isCreated) {
-                Toast.makeText(App.getInstance(), "Unable to create directory to download file", Toast.LENGTH_SHORT).show();
-                return;
+        try {
+            if (InputHelper.isEmpty(url)) return;
+            boolean isEnterprise = LinkParserHelper.isEnterprise(url);
+            Uri uri = Uri.parse(url);
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            String authToken = isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken();
+            if (!TextUtils.isEmpty(authToken)) {
+                request.addRequestHeader("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
             }
-        }
-        String fileName = new File(url).getName();
-        request.setDestinationInExternalPublicDir(context.getString(R.string.app_name), fileName);
-        request.setTitle(fileName);
-        request.setDescription(context.getString(R.string.downloading_file));
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        if (downloadManager != null) {
-            downloadManager.enqueue(request);
+            File direct =
+                    new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + context.getString(R.string.app_name));
+            if (!direct.isDirectory() || !direct.exists()) {
+                boolean isCreated = direct.mkdirs();
+                if (!isCreated) {
+                    Toast.makeText(App.getInstance(), "Unable to create directory to download file", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            String fileName = new File(url).getName();
+            request.setDestinationInExternalPublicDir(context.getString(R.string.app_name), fileName);
+            request.setTitle(fileName);
+            request.setDescription(context.getString(R.string.downloading_file));
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            if (downloadManager != null) {
+                downloadManager.enqueue(request);
+            }
+        } catch (Exception e) {
+            Crashlytics.logException(e);
         }
     }
 
