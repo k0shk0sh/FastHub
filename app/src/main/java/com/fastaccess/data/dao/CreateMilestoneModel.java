@@ -14,5 +14,5 @@ import lombok.Setter;
 public class CreateMilestoneModel {
     private String title;
     private String description;
-    @SerializedName("due_one") private String dueOn;
+    @SerializedName("due_on") private String dueOn;
 }
