@@ -1,8 +1,8 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.ui.base.mvp.BaseMvp;

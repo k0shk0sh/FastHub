@@ -7,16 +7,18 @@ import com.fastaccess.helper.parcelableCreator
 /**
  * Created by Kosh on 13 Jun 2017, 8:06 PM
  */
-data class WikiContentModel(val content: String? = null, private val footer: String? = null,
-                            val sidebar: List<WikiSideBarModel>) : KotlinParcelable {
+data class WikiContentModel(
+    val content: String? = null, private val footer: String? = null,
+    val sidebar: List<WikiSideBarModel>
+) : KotlinParcelable {
     companion object {
         @JvmField val CREATOR = parcelableCreator(::WikiContentModel)
     }
 
     constructor(source: Parcel) : this(
-            source.readString(),
-            source.readString(),
-            source.createTypedArrayList(WikiSideBarModel.CREATOR)
+        source.readString(),
+        source.readString(),
+        source.createTypedArrayList(WikiSideBarModel.CREATOR) ?: arrayListOf()
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {

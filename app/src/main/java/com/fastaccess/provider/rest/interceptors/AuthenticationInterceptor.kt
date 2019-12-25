@@ -24,7 +24,7 @@ class AuthenticationInterceptor : Interceptor {
     @Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val builder = original.newBuilder()
-        val isEnterprise = LinkParserHelper.isEnterprise(original.url().host())
+        val isEnterprise = LinkParserHelper.isEnterprise(original.url.host)
         val authToken = if (token.isNullOrBlank()) if (isEnterprise) PrefGetter.getEnterpriseToken() else PrefGetter.getToken() else token
         val otpCode = if (otp.isNullOrBlank()) if (isEnterprise) PrefGetter.getEnterpriseOtpCode() else PrefGetter.getOtpCode() else otp
         if (!authToken.isNullOrBlank()) {

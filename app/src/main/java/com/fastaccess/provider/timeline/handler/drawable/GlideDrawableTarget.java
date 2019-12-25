@@ -1,17 +1,21 @@
 package com.fastaccess.provider.timeline.handler.drawable;
 
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.fastaccess.R;
 
 import java.lang.ref.WeakReference;
 
-class GlideDrawableTarget extends SimpleTarget<GlideDrawable> {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+class GlideDrawableTarget extends SimpleTarget<Drawable> {
     private final UrlDrawable urlDrawable;
     private final WeakReference<TextView> container;
     private final int width;
@@ -22,7 +26,7 @@ class GlideDrawableTarget extends SimpleTarget<GlideDrawable> {
         this.width = width;
     }
 
-    @Override public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+    @Override public void onResourceReady(final @NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
         if (container != null && container.get() != null) {
             TextView textView = container.get();
             textView.post(() -> {
@@ -41,10 +45,10 @@ class GlideDrawableTarget extends SimpleTarget<GlideDrawable> {
                 resource.setBounds(rect);
                 urlDrawable.setBounds(rect);
                 urlDrawable.setDrawable(resource);
-                if (resource.isAnimated()) {
+                if (resource instanceof GifDrawable) {
                     urlDrawable.setCallback((Drawable.Callback) textView.getTag(R.id.drawable_callback));
-                    resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
-                    resource.start();
+                    ((GifDrawable) resource).setLoopCount(GifDrawable.LOOP_FOREVER);
+                    ((GifDrawable) resource).start();
                 }
                 textView.setText(textView.getText());
                 textView.invalidate();

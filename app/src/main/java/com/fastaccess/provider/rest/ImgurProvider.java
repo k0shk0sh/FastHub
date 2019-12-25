@@ -1,6 +1,6 @@
 package com.fastaccess.provider.rest;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.data.service.ImgurService;

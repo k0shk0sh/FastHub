@@ -10,19 +10,19 @@
     android:padding="@dimen/spacing_xs_large">
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/commit_message"
             android:inputType="textMultiLine|textCapSentences"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         android:layout_gravity="center"
         android:paddingTop="@dimen/spacing_normal">
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/mergeMethod"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="0dp"

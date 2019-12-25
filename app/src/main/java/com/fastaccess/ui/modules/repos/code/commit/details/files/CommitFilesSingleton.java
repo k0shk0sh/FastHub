@@ -1,7 +1,7 @@
 package com.fastaccess.ui.modules.repos.code.commit.details.files;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.CommitFileListModel;
 

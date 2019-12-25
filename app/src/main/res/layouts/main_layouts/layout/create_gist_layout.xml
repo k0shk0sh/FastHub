@@ -11,7 +11,7 @@
 
     <include layout="@layout/appbar_elevation_dark"/>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_xs_large"
@@ -22,21 +22,21 @@
         app:contentPaddingRight="@dimen/spacing_xs_large"
         app:contentPaddingTop="@dimen/spacing_normal">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/description"
                 android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="3"/>
 
-        </android.support.design.widget.TextInputLayout>
-    </android.support.v7.widget.CardView>
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.cardview.widget.CardView>
 
     <FrameLayout
         android:id="@+id/addFile"
@@ -90,7 +90,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/createSecretGist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                 android:src="@drawable/ic_incognito"
                 android:tint="@color/white"/>
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/createPublicGist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 package com.fastaccess.data.dao.types;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;

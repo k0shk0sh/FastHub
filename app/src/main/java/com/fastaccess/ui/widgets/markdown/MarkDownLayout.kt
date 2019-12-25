@@ -2,9 +2,9 @@ package com.fastaccess.ui.widgets.markdown
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.design.widget.Snackbar
-import android.support.transition.TransitionManager
-import android.support.v4.app.FragmentManager
+import com.google.android.material.snackbar.Snackbar
+import androidx.transition.TransitionManager
+import androidx.fragment.app.FragmentManager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText

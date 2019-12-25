@@ -1,9 +1,9 @@
 package com.fastaccess.ui.base.mvp.presenter;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
@@ -21,7 +21,6 @@ import java.util.concurrent.TimeoutException;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import retrofit2.HttpException;
 
 
 /**

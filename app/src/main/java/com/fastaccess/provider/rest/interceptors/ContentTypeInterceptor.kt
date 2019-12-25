@@ -13,7 +13,7 @@ class ContentTypeInterceptor : Interceptor {
         return chain.proceed(request.newBuilder()
                 .addHeader("Accept", "application/vnd.github.v3+json")
                 .addHeader("Content-type", "application/vnd.github.v3+json")
-                .method(request.method(), request.body())
+                .method(request.method, request.body)
                 .build())
     }
 }

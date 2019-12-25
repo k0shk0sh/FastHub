@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.filter.issues;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;

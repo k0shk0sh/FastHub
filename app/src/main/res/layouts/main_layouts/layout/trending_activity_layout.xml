@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -27,12 +27,12 @@
                 app:layout_behavior="@string/scroll_behavior"
                 tools:layout="@layout/micro_grid_refresh_list" />
 
-        </android.support.design.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include layout="@layout/add_banner_layout" />
     </LinearLayout>
 
-    <android.support.design.widget.NavigationView
+    <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
@@ -147,7 +147,7 @@
                 android:layout_height="@dimen/divider_height"
                 android:background="?dividerColor" />
 
-            <android.support.design.widget.NavigationView
+            <com.google.android.material.navigation.NavigationView
                 android:id="@+id/navMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -159,8 +159,8 @@
                 app:menu="@menu/dynamic_trending_menu" />
         </LinearLayout>
 
-    </android.support.design.widget.NavigationView>
+    </com.google.android.material.navigation.NavigationView>
 
     <include layout="@layout/nav_menu_layout" />
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -1,6 +1,6 @@
 package com.fastaccess.data.service;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.Pageable;

@@ -1,8 +1,8 @@
 package com.fastaccess.ui.modules.main.donation;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
+import androidx.annotation.NonNull;
+import com.google.android.material.appbar.AppBarLayout;
 import android.view.View;
 
 import com.fastaccess.App;

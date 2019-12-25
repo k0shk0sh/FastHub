@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.user;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.provider.rest.RestProvider;

@@ -1,7 +1,7 @@
 package com.fastaccess.provider.timeline.handler;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 
 import com.fastaccess.helper.Logger;

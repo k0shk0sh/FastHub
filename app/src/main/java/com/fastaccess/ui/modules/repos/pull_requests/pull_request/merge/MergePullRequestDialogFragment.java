@@ -2,10 +2,10 @@ package com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.AppCompatSpinner;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.widget.AppCompatSpinner;
 import android.view.View;
 
 import com.fastaccess.R;

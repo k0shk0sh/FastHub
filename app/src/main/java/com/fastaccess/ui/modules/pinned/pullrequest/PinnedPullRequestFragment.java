@@ -1,8 +1,8 @@
 package com.fastaccess.ui.modules.pinned.pullrequest;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;

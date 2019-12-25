@@ -9,23 +9,26 @@ import com.fastaccess.helper.writeBoolean
 /**
  * Created by Hashemsergani on 01/09/2017.
  */
-data class EditRepoFileModel(val login: String,
-                             val repoId: String,
-                             val path: String?,
-                             val ref: String,
-                             val sha: String?,
-                             val contentUrl: String?,
-                             val fileName: String?,
-                             val isEdit: Boolean) : KotlinParcelable {
+data class EditRepoFileModel(
+    val login: String,
+    val repoId: String,
+    val path: String?,
+    val ref: String,
+    val sha: String?,
+    val contentUrl: String?,
+    val fileName: String?,
+    val isEdit: Boolean
+) : KotlinParcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readBoolean())
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readBoolean()
+    )
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(login)

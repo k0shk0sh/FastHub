@@ -7,7 +7,7 @@
 
     <include layout="@layout/appbar_elevation_dark"/>
 
-    <android.support.v7.widget.AppCompatSpinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/reviewMethod"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"

@@ -2,7 +2,7 @@ package com.fastaccess.ui.modules.main.drawer
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.NavigationView
+import com.google.android.material.navigation.NavigationView
 import android.view.MenuItem
 import android.view.View
 import com.fastaccess.R
