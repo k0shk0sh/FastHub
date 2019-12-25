@@ -8,7 +8,7 @@ import com.fastaccess.helper.parcelableCreator
  * Created by Kosh on 13 Jun 2017, 8:06 PM
  */
 data class WikiContentModel(val content: String? = null, private val footer: String? = null,
-                            val sidebar: ArrayList<WikiSideBarModel>) : KotlinParcelable {
+                            val sidebar: List<WikiSideBarModel>) : KotlinParcelable {
     companion object {
         @JvmField val CREATOR = parcelableCreator(::WikiContentModel)
     }

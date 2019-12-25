@@ -46,9 +46,8 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
             callApi(lang, since)
         } else {
             if (config == null) {
-                manageDisposable(RxHelper.getSingle(
-                    RxFirebaseDatabase.data(FirebaseDatabase.getInstance().reference.child("github_trending"))
-                )
+                manageDisposable(RxHelper.getSingle(RxFirebaseDatabase.data(FirebaseDatabase.getInstance().reference.child("github_trending")))
+                    .doOnSubscribe { sendToView { it.showProgress(0) } }
                     .map {
                         firebaseTrendingConfigModel = FirebaseTrendingConfigModel
                             .map(it.value as? HashMap<String, String>)
