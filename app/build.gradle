@@ -11,7 +11,7 @@ buildProperties {
         file rootProject.file('debug_gradle.properties')
     }
     secrets {
-        file rootProject.file('gradle.properties')
+        file rootProject.file('release_gradle.properties')
     }
 }
 
