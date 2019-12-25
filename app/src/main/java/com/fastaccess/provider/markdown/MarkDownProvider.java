@@ -1,7 +1,7 @@
 package com.fastaccess.provider.markdown;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.Html;
 import android.view.ViewTreeObserver;
 import android.webkit.MimeTypeMap;
@@ -41,7 +41,8 @@ public class MarkDownProvider {
     };
 
     private static final String[] ARCHIVE_EXTENSIONS = {
-            ".zip", ".7z", ".rar", ".tar.gz", ".tgz", ".tar.Z", ".tar.bz2", ".tbz2", ".tar.lzma", ".tlz", ".apk", ".jar", ".dmg", ".pdf", ".ico"
+            ".zip", ".7z", ".rar", ".tar.gz", ".tgz", ".tar.Z", ".tar.bz2", ".tbz2", ".tar.lzma", ".tlz", ".apk", ".jar",
+            ".dmg", ".pdf", ".ico", ".docx", ".doc", ".xlsx", ".hwp", ".pptx", ".show", ".mp3", ".ogg", ".ipynb"
     };
 
     private MarkDownProvider() {}

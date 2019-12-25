@@ -2,7 +2,7 @@ package com.fastaccess.data.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.User;
 import com.google.gson.annotations.SerializedName;

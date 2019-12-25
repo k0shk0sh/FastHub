@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.trending
 
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.fastaccess.ui.base.mvp.BaseMvp
 
 /**

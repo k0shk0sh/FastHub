@@ -1,4 +1,33 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+<!-- PREVIOUSLY UN-TRANSLATED TERMS, NOW TRANSLATED ACCORDING TO ISSUE #1329  -->
+<string name="pro_features_list" translatable="false"><![CDATA[Obten las características PRO de FastHub, incluyen:\n
+        • Todos los Temas PRO\n
+        • Revisión de PRs y comentarios en línea (PRs y Commits)\n
+        • Commit desde FastHub (Editar, Crear y borrar archivos)\n
+        • Soporta dos métodos extra para Merging (Rebase y Squash)\n
+        • Login a ilimitadas cuentas\n
+        • Editar y agregar Gists ilimitados\n
+        • Project Board Columns & Cards (Editar, crear y borrar)\n
+        • Fijar Issues, PRs y Gists\n
+        • Nuevas características PRO (pronto...)
+    ]]></string>
+    <string name="enterprise_pro_description" translatable="false"><![CDATA[
+            • Login a ilimitadas cuentas Enterprise y GitHub\n
+            • Acceso al contenido de GitHub juto con tu cuenta Enterprise
+    ]]></string>
+    <string name="purchase" translatable="false">Comprar</string>
+    <string name="get_all" translatable="false">Comprar todo (7.00USD)</string>
+    <string name="fasthub_premium_features" translatable="false">Características Premium FastHub</string>
+    
+    <string name="purchase_all" formatted="false" translatable="false">Comprar todo por %price%</string>
+    <string name="unlock" translatable="false">Desbloquear</string>
+    <string name="unlock_everything" translatable="false">Desbloquear todo</string>
+    <string name="feeds" translatable="false">Actividad reciente</string>
+    <string name="logo_designer" formatted="true" translatable="false">Diseño del logo (%s)</string>
+
+    <!-- END OF PREVIOUSLY UN-TRANSLATED TERMS, NOW TRANSLATED ACCORDING TO ISSUE #1329 -->
+
     <string name="in_progress">Cargando, por favor espere…</string>
     <string name="action">Acción</string>
     <string name="settings">Configuración</string>
@@ -32,13 +61,14 @@
     <string name="no_readme_found">No se encontró léeme</string>
     <string name="downloading">Descargando…</string>
     <string name="downloading_file">Descargando archivo…</string>
-    <string name="released">Released</string>
+    <string name="released">Lanzado</string>
     <string name="drafted">En borrador</string>
-    <string name="releases">Releases</string>
+    <string name="releases">Lanzamientos</string>
     <string name="no_body">Sin body</string>
     <string name="contributors">Colaboradores</string>
-    <string name="contributions">Colaboraciones</string>
+    <string name="contributions">Contribuciones</string>
     <string name="by">por</string>
+    <string name="english_please">Por favor, envía el mensaje en inglés.</string>
     <string name="close_issue">Cerrar Issue</string>
     <string name="re_open_issue">Reabrir Issue</string>
     <string name="re_open">Reabrir</string>
@@ -114,6 +144,7 @@
     <string name="notifications">Notificaciones</string>
     <string name="unread_notification">Tienes notificaciones sin leer</string>
     <string name="open">Abrir</string>
+	<string name="open_new_window">Abrir en nueva ventana</string>
     <string name="notification_type">Tipo de notificaciones</string>
     <string name="labels">Etiquetas</string>
     <string name="no_labels">Sin etiquetas</string>
@@ -126,12 +157,12 @@
     <string name="support_development_enable_ads">Ayuda a los desarrolladores, permite la publicidad</string>
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
-    <string name="twoFactor">Código de autenticación de dos factores</string>
+    <string name="twoFactor">Autenticación por dos factores</string>
     <string name="login">Iniciar sesión</string>
     <string name="gist_description">Descripción del Gist </string>
     <string name="avatar_click_hint">Siempre que haya una imagen de perfil, puedes clickear en ella para abrir el perfil del usuario</string>
     <string name="feeds_fork_hint">Mantén presionado en un \'fork\' para abrir el repositorio original ó la división.</string>
-    <string name="click_here_to_download_release_hint">Descargar releases</string>
+    <string name="click_here_to_download_release_hint">Descargar versiones lanzadas</string>
     <string name="options">Opciones</string>
     <string name="click_file_option_hint">Descargar archivo o compartir directorio</string>
     <string name="comment_hint">Toca un comentario para etiquetar a su autor o para editar tu comentario.
@@ -148,8 +179,8 @@
     <string name="click_to_toggle_highlighting">Encender/apagar resaltado de sintáxis.
         \nDesplaza los íconos del editor para más opciones.</string>
     <string name="creation_date">Fecha de creación</string>
-    <string name="creation_date_hint">Cuando fue creado el archivo</string>
-    <string name="last_updated_hint">Cuando fue modificado por última vez</string>
+    <string name="creation_date_hint">Cuándo fue creado el archivo</string>
+    <string name="last_updated_hint">Cuándo fue modificado por última vez</string>
     <string name="mark_all_as_read">Marcar todas como leídas</string>
     <string name="all_notifications">Todas las notificaciones</string>
     <string name="unread">No leídas</string>
@@ -225,8 +256,7 @@
     <string name="notification_settings">Notificación</string>
     <string name="turn_off">Apagar</string>
     <string name="unauthorized_user">Usuario sin autorización</string>
-    <string name="two_factors_otp_error">Se requiere OTP de dos factores</string>
-    <string name="no_issue">Sin issues</string>
+    <string name="two_factors_otp_error">Se requiere OTP de dos factores(2FA)</string>
     <string name="copy">Copiar</string>
     <string name="success_copied">Copiado</string>
     <string name="commit_message">Mensaje del commit</string>
@@ -246,14 +276,14 @@
     <string name="website">Sitio web</string>
     <string name="support_development">Ayuda al desarrollo</string>
     <string name="success_purchase_message">¡Gracias por ser extremadamente genial!</string>
-    <string name="change_theme_warning">Si el tema no se aplicó apropiadamente, por favor \'mata\' la aplicación y abrela nuevamente.</string>
+    <string name="change_theme_warning">Si el tema no se aplicó apropiadamente, por favor \'mata\' la aplicación y ábrela nuevamente.</string>
     <string name="pin">Fijar</string>
     <string name="pinned">Fijados</string>
     <string name="unpin">Desfijar</string>
     <string name="empty_pinned_repos">No hay repositorios fijados todavía. Fija alguno para verlo aquí.</string>
-    <string name="yes">Si</string>
+    <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="no_feeds">No hay noticias</string>
+    <string name="no_feeds">No hay actividad</string>
     <string name="no_gists">No hay gists</string>
     <string name="no_comments">No hay comentarios</string>
     <string name="no_notifications">No hay notificaciones</string>
@@ -263,12 +293,9 @@
     <string name="no_starred_repos">No hay repositorios con estrella</string>
     <string name="no_commits">No hay commits</string>
     <string name="no_contributors">No hay colaboradores</string>
-    <string name="no_releases">No hay releases</string>
-    <string name="no_closed_issues">No hay issues cerrados</string>
-    <string name="no_opened_issues">No hay issues abiertos</string>
+    <string name="no_releases">No hay versiones lanzadas</string>
     <string name="no_events">No hay eventos</string>
-    <string name="no_open_pull_requests">No hay pull requests abiertos</string>
-    <string name="no_closed_pull_request">No hay pull requests cerrados</string>
+    <string name="no_pull_requests">No hay pull requests</string>
     <string name="no_search_results">Búsqueda sin resultados</string>
     <string name="read_write_permission_explanation">Por favor acepta los permisos para que FastHub almacene archivos en tu dispositivo para poder verlos</string>
     <string name="public_gists">Gists publicos</string>
@@ -279,8 +306,8 @@
     <string name="changelog">Historial de cambios</string>
     <string name="notifications_hint">Toca para abrir la lista de notificaciones o desliza para descartar</string>
     <string name="home_long_click_hint">Mantén presionado para navegar a la pantalla principal desde cualquier lugar</string>
-    <string name="created">Creado</string>
-    <string name="assigned">Asignado</string>
+    <string name="created">Creados</string>
+    <string name="assigned">Asignados</string>
     <string name="mentioned">Mencionado</string>
     <string name="name">Nombre</string>
     <string name="color">Color</string>
@@ -293,6 +320,7 @@
     <string name="no_members">No hay miembros</string>
     <string name="no_teams">No hay equipos</string>
     <string name="no_orgs">No hay organizaciones</string>
+    <string name="no_orgs_dialog_title">No encuentras tus organizaciones\?</string>
     <string name="mark_as_read">Marcar como leído</string>
     <string name="animations">Animaciones</string>
     <string name="dialog_animation_summary">Activar animaciones</string>
@@ -372,21 +400,12 @@
     <string name="enable_signature_box_summary">Habilitar un checkbox para poner o quitar la firma en el editor de mensajes</string>
     <string name="tags">Etiquetas</string>
     <string name="add_comment">Agregar comentario</string>
-    <string name="banners">Introducing Banners</string>
-    <string name="banners_info">Con FastHub 2.5.0, ahora puedes expresarte mejor con banners para tu página de perfil.\n\n
-		Cualquiera usando FastHub, podrá ver tu cabecera y tu verás las cabeceras de otros también! Si quisieras
-		crear un banner para ti, hazlo de 1280x384 o múltiplo, de otro modo quedará cortado\n\n
-		Puedes agregar o modificar tu banner en cualquier momento creando un Gist "header.fst" con un archivo conteniendo
-		un vínculo directo a la imagen de la cabecera.\n\n
-		O más fácilmente ¡usá el selector de imagen incorporado!
-    </string>
-    <string name="edit_banner">ELIGE UN BANNER</string>
     <string name="image_error">Error cargando imagen, por favor intenta nuevamente.</string>
     <string name="trending">Tendencias</string>
     <string name="not_really_working">Ordenar por emojies no funciona debido a una limitación de GitHub</string>
     <string name="scroll_up">Sube</string>
     <string name="scroll_down">Baja</string>
-    <string name="participated">Participado</string>
+    <string name="participated">Participando</string>
     <string name="todo_checked">Por hacer tildado</string>
     <string name="todo_unchecked">Por hacer destildado</string>
     <string name="divider">Divisor</string>
@@ -400,7 +419,82 @@
     <string name="assignee_added">Asignado exitosamente</string>
     <string name="reviewer_added">Revisor agregado con éxito</string>
     <string name="milestone_added">Milestone agregado con éxito</string>
-    <string name="feed">Noticias</string>
+    <string name="feed">Actividad</string>
     <string name="premium_theme">Tema Premium </string>
-    <string name="choose_code_theme">Elige el código del tema</string>
+    <string name="choose_code_theme">Código del tema</string>
+    <string name="enterprise_login_warning">Por favor, inicia sesión con tu cuenta de GitHub para acceder a todo el contenido
+        de su API, de otro modo tu sesión expirará cada vez que accedas a cualquier sección que no pertenezca a tu cuenta Enterprise.</string>
+    <string name="add_account">Agregar cuenta</string>
+    <string name="choose_account">Elegir cuenta</string>
+    <string name="not_match">No concuerda</string>
+    <string name="warning">Aviso</string>
+    <string name="owner">Propietario</string>
+    <string name="original_poster">Creador del hilo (OP)</string>
+    <string name="cancel_reviews">Cancelar revisiones</string>
+    <string name="colored_navbar_summary">Deshabilitar barra de navegación coloreada en los Temas</string>
+    <string name="colored_navbar_title">Barra de navegación sin color</string>
+    <string name="sound_chooser_summary">Elegir sonido de notificación personalizado</string>
+    <string name="sound_chooser_title">Elegir sonido de notificación</string>
+    <string name="disable_auto_gif_summary">Deshabilita la autoreproducción de GIFs</string>
+    <string name="disable_auto_gif_title">Deshabilitar reproducción de GIFs</string>
+    <string name="request_changes">cambios solicitados</string>
+    <string name="google_play_service_error">No se puede acceder a los servicios Google Play</string>
+    <string name="edit_gist">Editar Gist</string>
+    <string name="content">Contenido</string>
+    <string name="expand">expandir</string>
+    <string name="copy_sha">Copiar SHA-1</string>
+    <string name="view_as_code">Ver como código</string>
+    <string name="app_animation_title">Deshabilitar animaciones</string>
+    <string name="app_animation_summary">Deshabilita animaciones en toda la App.</string>
+    <string name="can_not_merge_pr">Este PR no se puede unir (merge) ahora.</string>
+    <string name="projects">Proyectos</string>
+    <string name="no_projects">No hay proyectos</string>
+    <string name="no_cards">No hay cartas</string>
+    <string name="card_added_by"  formatted="false">Agregado por %s %s</string>
+    <string name="too_large_changes">Muchas diferencias para mostrar. Por favor, ver vía navegador web</string>
+    <string name="project">Proyecto</string>
+    <string name="please_read">POR FAVOR, LEER!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• ¿Por qué no puedo ver mis <b>Organizaciones</b> <i>Publicas</i> o <i>Privadas</i>?</h5>
+        <p>Abre https://github.com/settings/applications y busca FastHub, ábrelo, ve hacia abajo hasta "Organization access" y clickea el botón "Grant".
+        Alternativamente, puedes iniciar sesión usando un <b>Access Token</b> lo cual es más fácil.</p>
+
+        <h5>• Intenté iniciar sesión con un Access Token y un One-Time Password (OTP) pero no tuve suerte. ¿Qué anda mal?</h5>
+        <p>No puedes iniciar sesión usando un Access Token y OTP al mismo tiempo. Debido a la limitada vida de esas contraseñas, tendrás que repetir el inicio de sesión cada pocos segundos.</p>
+
+        <h5>• ¿Por qué no se muestran las Wikis de mis repositorios Privados y de Empresas?</h5>
+        <p>Como FastHub desecha las Wiki de GitHub, la aplicación no puede obtener los token necesarios por los repositorios privados.</p>
+
+        <h5>• Inicié sesión con mi cuenta de Empresa. ¿Por qué no puedo interactuar con otra cosa que no sea de esta cuenta?</h5>
+        <p>Bueno, lógicamente, no puedes acceder a nada por fuera de tu Empresa. FastHub intenta solicitar tantos permisos como le es posible, pero no puede hacer nada más al respecto en
+        la mayoría de los casos, ya que tus credenciales no están en el servidor de GitHub. Pero en <b>algunos</b> casos tu token OAuth de la cuenta de GitHub puede hacer el trabajo.</p>
+
+        <h5>• ¿Por qué tengo problemas editando Issues y Pull Requests?</h5>
+        <p> Si no puedes editar Issues y PRs en un repositorio de una organización Publica, por favor, contacta a tu organización para darle acceso a FastHub.
+        Alternativamente, puedes iniciar sesión con un Access Token.</p>
+
+        <h5>• Estoy teniendo problemas! / Quiero sugerirles cosas!</h5>
+        <p>Ve a https://github.com/k0shk0sh/FastHub/issues/new y crea un nuevo issue por cualquier bug o solicitud de característica.
+        Pedimos que busques por issues similares antes de abrir uno nuevo. Cualquier ticket duplicado será etiquetado y borrado inmediatamente.</p>
+
+        <h5>• Cómo puedo obtener un PROMO CODE?</h5>
+        <p>Este programa ya no existe.</p>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Comentario agregado con éxito</string>
+    <string name="clear_search_keywords">Limpiar el historial de búsqueda</string>
+    <string name="restore_purchases">Restaurar compras</string>
+    <string name="include_forks">Incluir Forks</string>
+    <string name="comment_is_too_far_to_paginate">El comentario es muy largo para paginarlo</string>
+    <string name="search_results_warning">Muchas respuestas \nMostrando la máxima cantidad que soporta la API</string>
+    <string name="disable_loading_image_title">Deshabilitar descarga de imágenes</string>
+    <string name="disable_loading_image_summary">Deshabilita la descarga de imágenes mientras se usan datos móviles.</string>
+    <string name="report_issue_warning">Este issue será enviado al repositorio GitHub de FastHub</string>
+    <string name="block">Bloquear</string>
+    <string name="unblock">Desbloquear</string>
+    <string name="user_blocked">Usuario bloqueado</string>
+    <string name="user_unblocked">Usuario desbloqueado</string>
+    <string name="clear_image_cache">Borrar caché de imágenes</string>
+    <string name="restart_app_message">Por favor, reinicia la aplicación</string>
 </resources>

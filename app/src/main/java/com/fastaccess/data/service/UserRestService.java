@@ -1,6 +1,6 @@
 package com.fastaccess.data.service;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Event;
@@ -14,6 +14,7 @@ import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -66,4 +67,16 @@ public interface UserRestService {
     Observable<Response<Boolean>> unfollowUser(@Path("username") @NonNull String username);
 
     @GET Observable<String> getContributions(@Url String url);
+
+    @GET("user/blocks/{username}")
+    @Headers("Accept: application/vnd.github.giant-sentry-fist-preview+json")
+    Observable<Response<Boolean>> isUserBlocked(@Path("username") @NonNull String username);
+
+    @PUT("user/blocks/{username}")
+    @Headers("Accept: application/vnd.github.giant-sentry-fist-preview+json")
+    Observable<Response<Boolean>> blockUser(@Path("username") @NonNull String username);
+
+    @DELETE("user/blocks/{username}")
+    @Headers("Accept: application/vnd.github.giant-sentry-fist-preview+json")
+    Observable<Response<Boolean>> unBlockUser(@Path("username") @NonNull String username);
 }

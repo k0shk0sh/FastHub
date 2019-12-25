@@ -2,12 +2,13 @@ package com.fastaccess.ui.modules.filter.issues;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,19 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     private LabelsAdapter labelsAdapter;
     private UsersAdapter assigneesAdapter;
     private PopupWindow popupWindow;
+
+
+    public static Intent getIntent(@NonNull Context context, @NonNull String login, @NonNull String repoId, @NonNull String criteria) {
+        Intent intent = new Intent(context, FilterIssuesActivity.class);
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA_FOUR, criteria)
+                .put(BundleConstant.EXTRA_TWO, true)
+                .put(BundleConstant.EXTRA_THREE, true)
+                .end());
+        return intent;
+    }
 
     public static void startActivity(@NonNull Activity context, @NonNull String login, @NonNull String repoId,
                                      boolean isIssue, boolean isOpen, boolean isEnterprise) {

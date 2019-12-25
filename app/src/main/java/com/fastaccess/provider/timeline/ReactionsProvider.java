@@ -1,9 +1,9 @@
 package com.fastaccess.provider.timeline;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.IdRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.PostReactionModel;
 import com.fastaccess.data.dao.ReactionsModel;

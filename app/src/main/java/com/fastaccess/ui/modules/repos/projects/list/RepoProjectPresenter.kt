@@ -40,7 +40,7 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
     override fun onFragmentCreate(bundle: Bundle?) {
         bundle?.let {
             repoId = it.getString(BundleConstant.ID)
-            login = it.getString(BundleConstant.EXTRA)
+            login = it.getString(BundleConstant.EXTRA) ?: ""
         }
     }
 
@@ -74,145 +74,151 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
         if (repoId != null && !repoId.isNullOrBlank()) {
             if (parameter == IssueState.open) {
                 val query = RepoProjectsOpenQuery.builder()
-                        .name(repoId)
-                        .owner(login)
-                        .page(getPage())
-                        .build()
+                    .name(repoId)
+                    .owner(login)
+                    .page(getPage())
+                    .build()
                 makeRestCall(Rx2Apollo.from(apollo.query(query))
-                        .flatMap {
-                            val list = arrayListOf<RepoProjectsOpenQuery.Node>()
-                            it.data()?.repository()?.let {
-                                it.projects().let {
-                                    lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
-                                    pages.clear()
-                                    count = it.totalCount()
-                                    it.edges()?.let {
-                                        pages.addAll(it.map { it.cursor() })
-                                    }
-                                    it.nodes()?.let {
-                                        list.addAll(it)
-                                    }
+                    .flatMap { response ->
+                        val list = arrayListOf<RepoProjectsOpenQuery.Node>()
+                        response.data()?.repository()?.let { repos ->
+                            repos.projects().let {
+                                lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
+                                pages.clear()
+                                count = it.totalCount()
+                                it.edges()?.let {
+                                    pages.addAll(it.map { it.cursor() })
+                                }
+                                it.nodes()?.let {
+                                    list.addAll(it)
                                 }
                             }
-                            return@flatMap Observable.just(list)
-                        },
-                        {
-                            sendToView({ v ->
-                                v.onNotifyAdapter(it, page)
-                                if (page == 1) v.onChangeTotalCount(count)
-                            })
-                        })
+                        }
+                        return@flatMap Observable.just(list)
+                    }
+                ) {
+                    sendToView { v ->
+                        v.onNotifyAdapter(it, page)
+                        if (page == 1) v.onChangeTotalCount(count)
+                    }
+                }
             } else {
                 val query = RepoProjectsClosedQuery.builder()
-                        .name(repoId)
-                        .owner(login)
-                        .page(getPage())
-                        .build()
+                    .name(repoId)
+                    .owner(login)
+                    .page(getPage())
+                    .build()
                 makeRestCall(Rx2Apollo.from(apollo.query(query))
-                        .flatMap {
-                            val list = arrayListOf<RepoProjectsOpenQuery.Node>()
-                            it.data()?.repository()?.let {
-                                it.projects().let {
-                                    lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
-                                    pages.clear()
-                                    count = it.totalCount()
-                                    it.edges()?.let {
-                                        pages.addAll(it.map { it.cursor() })
+                    .flatMap { response ->
+                        val list = arrayListOf<RepoProjectsOpenQuery.Node>()
+                        response.data()?.repository()?.let { repository ->
+                            repository.projects().let { projects1 ->
+                                lastPage = if (projects1.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
+                                pages.clear()
+                                count = projects1.totalCount()
+                                projects1.edges()?.let { edges ->
+                                    pages.addAll(edges.map { it.cursor() })
+                                }
+                                projects1.nodes()?.let { nodesList ->
+                                    val toConvert = arrayListOf<RepoProjectsOpenQuery.Node>()
+                                    nodesList.onEach {
+                                        val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
+                                        val node = RepoProjectsOpenQuery.Node(
+                                            it.__typename(), it.name(), it.number(), it.body(),
+                                            it.createdAt(), it.id(), it.viewerCanUpdate(), columns, it.databaseId()
+                                        )
+                                        toConvert.add(node)
                                     }
-                                    it.nodes()?.let {
-                                        val toConvert = arrayListOf<RepoProjectsOpenQuery.Node>()
-                                        it.onEach {
-                                            val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
-                                            val node = RepoProjectsOpenQuery.Node(it.__typename(), it.name(), it.number(), it.body(),
-                                                    it.createdAt(), it.id(), it.viewerCanUpdate(), columns, it.databaseId())
-                                            toConvert.add(node)
-                                        }
-                                        list.addAll(toConvert)
-                                    }
+                                    list.addAll(toConvert)
                                 }
                             }
-                            return@flatMap Observable.just(list)
-                        },
-                        {
-                            sendToView({ v ->
-                                v.onNotifyAdapter(it, page)
-                                if (page == 1) v.onChangeTotalCount(count)
-                            })
-                        })
+                        }
+                        return@flatMap Observable.just(list)
+                    }
+                ) {
+                    sendToView { v ->
+                        v.onNotifyAdapter(it, page)
+                        if (page == 1) v.onChangeTotalCount(count)
+                    }
+                }
             }
         } else {
             if (parameter == IssueState.open) {
                 val query = OrgProjectsOpenQuery.builder()
-                        .owner(login)
-                        .page(getPage())
-                        .build()
+                    .owner(login)
+                    .page(getPage())
+                    .build()
                 makeRestCall(Rx2Apollo.from(apollo.query(query))
-                        .flatMap {
-                            val list = arrayListOf<RepoProjectsOpenQuery.Node>()
-                            it.data()?.organization()?.let {
-                                it.projects().let {
-                                    lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
-                                    pages.clear()
-                                    count = it.totalCount()
-                                    it.edges()?.let {
-                                        pages.addAll(it.map { it.cursor() })
+                    .flatMap {
+                        val list = arrayListOf<RepoProjectsOpenQuery.Node>()
+                        it.data()?.organization()?.let {
+                            it.projects().let {
+                                lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
+                                pages.clear()
+                                count = it.totalCount()
+                                it.edges()?.let {
+                                    pages.addAll(it.map { it.cursor() })
+                                }
+                                it.nodes()?.let {
+                                    val toConvert = arrayListOf<RepoProjectsOpenQuery.Node>()
+                                    it.onEach {
+                                        val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
+                                        val node = RepoProjectsOpenQuery.Node(
+                                            it.__typename(), it.name(), it.number(), it.body(),
+                                            it.createdAt(), it.id(), it.viewerCanUpdate(), columns, it.databaseId()
+                                        )
+                                        toConvert.add(node)
                                     }
-                                    it.nodes()?.let {
-                                        val toConvert = arrayListOf<RepoProjectsOpenQuery.Node>()
-                                        it.onEach {
-                                            val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
-                                            val node = RepoProjectsOpenQuery.Node(it.__typename(), it.name(), it.number(), it.body(),
-                                                    it.createdAt(), it.id(), it.viewerCanUpdate(), columns, it.databaseId())
-                                            toConvert.add(node)
-                                        }
-                                        list.addAll(toConvert)
-                                    }
+                                    list.addAll(toConvert)
                                 }
                             }
-                            return@flatMap Observable.just(list)
-                        },
-                        {
-                            sendToView({ v ->
-                                v.onNotifyAdapter(it, page)
-                                if (page == 1) v.onChangeTotalCount(count)
-                            })
-                        })
+                        }
+                        return@flatMap Observable.just(list)
+                    }
+                ) {
+                    sendToView { v ->
+                        v.onNotifyAdapter(it, page)
+                        if (page == 1) v.onChangeTotalCount(count)
+                    }
+                }
             } else {
                 val query = OrgProjectsClosedQuery.builder()
-                        .owner(login)
-                        .page(getPage())
-                        .build()
+                    .owner(login)
+                    .page(getPage())
+                    .build()
                 makeRestCall(Rx2Apollo.from(apollo.query(query))
-                        .flatMap {
-                            val list = arrayListOf<RepoProjectsOpenQuery.Node>()
-                            it.data()?.organization()?.let {
-                                it.projects().let {
-                                    lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
-                                    pages.clear()
-                                    count = it.totalCount()
-                                    it.edges()?.let {
-                                        pages.addAll(it.map { it.cursor() })
+                    .flatMap {
+                        val list = arrayListOf<RepoProjectsOpenQuery.Node>()
+                        it.data()?.organization()?.let {
+                            it.projects().let {
+                                lastPage = if (it.pageInfo().hasNextPage()) Int.MAX_VALUE else 0
+                                pages.clear()
+                                count = it.totalCount()
+                                it.edges()?.let {
+                                    pages.addAll(it.map { it.cursor() })
+                                }
+                                it.nodes()?.let {
+                                    val toConvert = arrayListOf<RepoProjectsOpenQuery.Node>()
+                                    it.onEach {
+                                        val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
+                                        val node = RepoProjectsOpenQuery.Node(
+                                            it.__typename(), it.name(), it.number(), it.body(),
+                                            it.createdAt(), it.id(), it.viewerCanUpdate(), columns, it.databaseId()
+                                        )
+                                        toConvert.add(node)
                                     }
-                                    it.nodes()?.let {
-                                        val toConvert = arrayListOf<RepoProjectsOpenQuery.Node>()
-                                        it.onEach {
-                                            val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
-                                            val node = RepoProjectsOpenQuery.Node(it.__typename(), it.name(), it.number(), it.body(),
-                                                    it.createdAt(), it.id(), it.viewerCanUpdate(), columns, it.databaseId())
-                                            toConvert.add(node)
-                                        }
-                                        list.addAll(toConvert)
-                                    }
+                                    list.addAll(toConvert)
                                 }
                             }
-                            return@flatMap Observable.just(list)
-                        },
-                        {
-                            sendToView({ v ->
-                                v.onNotifyAdapter(it, page)
-                                if (page == 1) v.onChangeTotalCount(count)
-                            })
-                        })
+                        }
+                        return@flatMap Observable.just(list)
+                    }
+                ) {
+                    sendToView { v ->
+                        v.onNotifyAdapter(it, page)
+                        if (page == 1) v.onChangeTotalCount(count)
+                    }
+                }
             }
         }
         return true

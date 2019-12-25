@@ -35,4 +35,11 @@
         android:key="clear_search"
         android:title="@string/clear_search_keywords"/>
 
+
+    <Preference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_trash"
+        android:key="clear_image_cache"
+        android:title="@string/clear_image_cache"/>
+
 </PreferenceScreen>

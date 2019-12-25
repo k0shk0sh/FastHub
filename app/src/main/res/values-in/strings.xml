@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <!-- Tolong gunakan PUEBI untuk berkontribusi di terjemahan ini.
          Jika Anda butuh seseorang untuk meninjau perubahan Anda, silakan menyebutkan nama pengguna
          yang berkaitan dengan terjemahan Bahasa Indonesia ini di berkas language_contributors.md
@@ -228,7 +229,6 @@
     <string name="turn_off">Matikan</string>
     <string name="unauthorized_user">Pengguna tidak sah</string>
     <string name="two_factors_otp_error">Dua faktor OTP diperlukan</string>
-    <string name="no_issue">Tidak ada isu</string>
     <string name="copy">Salin</string>
     <string name="success_copied">Disalin</string>
     <string name="commit_message">Pesan komit</string>
@@ -266,11 +266,8 @@
     <string name="no_commits">Tidak ada komit</string>
     <string name="no_contributors">Tidak ada kontributor</string>
     <string name="no_releases">Tidak ada rilis</string>
-    <string name="no_closed_issues">Tidak ada isu tertutup</string>
-    <string name="no_opened_issues">Tidak ada isu terbuka</string>
     <string name="no_events">Tidak ada peristiwa</string>
-    <string name="no_open_pull_requests">Tidak ada pull request terbuka</string>
-    <string name="no_closed_pull_request">Tidak ada pull request tertutup</string>
+    <string name="no_pull_requests">Tidak ada pull request</string>
     <string name="no_search_results">Tidak ada hasil pencarian</string>
     <string name="read_write_permission_explanation">Tolong menerima perintah izin dari FastHub untuk menyimpan berkas di
         perangkat Anda sehingga FastHub dapat meninjau mereka</string>
@@ -372,15 +369,6 @@
     <string name="enable_signature_box_summary">Aktifkan kotak centang untuk toggle tanda tangan di editor teks</string>
     <string name="tags">Tag</string>
     <string name="add_comment">Tambah komentar</string>
-    <string name="banners">Memperkenalkan Banner</string>
-    <string name="banners_info">Dengan FastHub 2.5.0, Anda dapat lebih mengekspresikan diri dengan banner 
-        untuk halaman profil Anda.\n\nSiapa pun yang menggunakan FastHub, akan melihat header Anda dan Anda
-        juga akan melihat header orang lain juga! Jika Anda ingin membuat banner untuk diri sendiri, buatlah
-        dengan ukuran 1280x384px, jika tidak, itu akan dipotong.\n\n Anda bisa menambahkan atau mengganti
-        banner Anda kapan saja, dengan membuat gist "header.fst" dengan berkas yang berisi tautan langsung
-        ke gambar header.\n\nAtau bisa lebih sederhana lagi, cukup gunakan pemilih gambar yang sudah terpasang!
-    </string>
-    <string name="edit_banner">PILIH BANNER</string>
     <string name="image_error">Gagal memuat gambar, silakan coba lagi nanti.</string>
     <string name="trending">Tren</string>
     <string name="not_really_working">Urutan berdasarkan emoji tidak benar-benar bekerja karena dibatasi oleh GitHub</string>

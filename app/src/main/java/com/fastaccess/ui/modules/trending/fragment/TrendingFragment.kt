@@ -1,17 +1,19 @@
 package com.fastaccess.ui.modules.trending.fragment
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.View
 import butterknife.BindView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.TrendingModel
+import com.fastaccess.helper.Logger
 import com.fastaccess.ui.adapter.TrendingAdapter
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+import kotlin.math.sin
 
 /**
  * Created by Kosh on 30 May 2017, 11:37 PM
@@ -43,13 +45,14 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
         fastScroller.attachRecyclerView(recycler)
     }
 
-    override fun onNotifyAdapter(items: TrendingModel) {
-        adapter.addItem(items)
+    override fun onNotifyAdapter(items: List<TrendingModel>) {
+        adapter.insertItems(items)
     }
 
     override fun onSetQuery(lang: String, since: String) {
         this.lang = lang
         this.since = since
+        Logger.e(lang, since)
         adapter.clear()
         presenter.onCallApi(lang, since)
     }

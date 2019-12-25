@@ -2,11 +2,11 @@ package com.fastaccess.ui.widgets.recyclerview;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -35,7 +35,14 @@ class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         int dataSize = state.getItemCount();
         int position = parent.getChildAdapterPosition(view);
-        if (parent.getLayoutManager() instanceof LinearLayoutManager) {
+        if (parent.getLayoutManager() instanceof GridLayoutManager) {
+            GridLayoutManager grid = (GridLayoutManager) parent.getLayoutManager();
+            if ((dataSize - position) <= grid.getSpanCount()) {
+                outRect.set(0, 0, 0, bottomPadding);
+            } else {
+                outRect.set(0, 0, 0, 0);
+            }
+        } else if (parent.getLayoutManager() instanceof LinearLayoutManager) {
             if (dataSize > 0 && position == dataSize - 1) {
                 outRect.set(0, 0, 0, bottomPadding);
             } else {
@@ -43,13 +50,6 @@ class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
             }
         } else if (parent.getLayoutManager() instanceof StaggeredGridLayoutManager) {
             StaggeredGridLayoutManager grid = (StaggeredGridLayoutManager) parent.getLayoutManager();
-            if ((dataSize - position) <= grid.getSpanCount()) {
-                outRect.set(0, 0, 0, bottomPadding);
-            } else {
-                outRect.set(0, 0, 0, 0);
-            }
-        } else if (parent.getLayoutManager() instanceof GridLayoutManager) {
-            GridLayoutManager grid = (GridLayoutManager) parent.getLayoutManager();
             if ((dataSize - position) <= grid.getSpanCount()) {
                 outRect.set(0, 0, 0, bottomPadding);
             } else {

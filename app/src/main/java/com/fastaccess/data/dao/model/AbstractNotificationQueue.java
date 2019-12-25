@@ -2,14 +2,13 @@ package com.fastaccess.data.dao.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.requery.BlockingEntityStore;

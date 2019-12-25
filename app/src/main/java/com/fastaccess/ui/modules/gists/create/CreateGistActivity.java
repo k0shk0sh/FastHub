@@ -3,10 +3,10 @@ package com.fastaccess.ui.modules.gists.create;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.fragment.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +16,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -68,6 +69,10 @@ public class CreateGistActivity extends BaseActivity<CreateGistMvp.View, CreateG
     }
 
     @OnClick(value = {R.id.createPublicGist, R.id.createSecretGist}) void onClick(View view) {
+        if (view.getId() == R.id.createSecretGist) {
+            ActivityHelper.startCustomTab(this, "https://blog.github.com/2018-02-18-deprecation-notice-removing-anonymous-gist-creation/");
+            return;
+        }
         getPresenter().onSubmit(InputHelper.toString(description),
                 getFilesFragment().getFiles(), view.getId() == R.id.createPublicGist);
     }

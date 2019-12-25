@@ -1,5 +1,10 @@
+#### FastHub is currently under a huge refactoring, please make sure to submit an issue only if necessary. 
+##### Any Pull requests that are not directed to v5 branch will be ignored. You could follow the development on this [PR](https://github.com/k0shk0sh/FastHub/pull/2599)
+
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
 [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
@@ -95,7 +100,7 @@ _Ads currently not available._
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `Collections`
 - [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding
 - [**Android State**](https://github.com/evernote/android-state) for saving instance states
-- [**Lombok**](https://projectlombok.github.io) for getters and setters
+- [**Lombok**](https://projectlombok.org/) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs
 - [**Glide**](https://github.com/bumptech/glide) for loading images
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
@@ -103,6 +108,7 @@ _Ads currently not available._
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
 - [**Fabric**](https://fabric.io/kits/android/crashlytics) analytics & crash reporting.
+- [**Lottie**](https://github.com/airbnb/lottie-android) for animations
 - **Android Support Libraries**, the almighty ;-)
 
 ## Contribution
@@ -164,12 +170,6 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
   <summary>I'm having this issue! / I want this and that!</summary>
   <p>Head to https://github.com/k0shk0sh/FastHub/issues/new and create new issue for bugs or feature requests. I really encourage you to search before opening a ticket. Any duplicate request will result in it being closed immediately.</p>
 </details>
-
-<details>
-  <summary>How do I get PROMO CODE?</summary>
-  <p>Please refer to the in-app FAQ for details.</p>
-</details>
-
 
 ## License
 

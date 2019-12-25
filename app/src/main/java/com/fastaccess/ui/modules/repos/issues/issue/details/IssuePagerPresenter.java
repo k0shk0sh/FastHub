@@ -2,8 +2,8 @@ package com.fastaccess.ui.modules.repos.issues.issue.details;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.annimon.stream.Collectors;
@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.LockIssuePrModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.NotificationSubscriptionBodyModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
@@ -131,7 +132,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             if (proceedCloseIssue) {
                 onOpenCloseIssue();
             } else if (proceedLockUnlock) {
-                onLockUnlockIssue();
+                onLockUnlockIssue(null);
             }
         }
     }
@@ -155,15 +156,21 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         }
     }
 
-    @Override public void onLockUnlockIssue() {
+    @Override public void onLockUnlockIssue(String reason) {
         Issue currentIssue = getIssue();
         if (currentIssue == null) return;
-        String login = currentIssue.getUser().getLogin();
-        String repoId = currentIssue.getRepoId();
+        String login = getLogin();
+        String repoId = getRepoId();
         int number = currentIssue.getNumber();
+        LockIssuePrModel model = null;
+        if (!isLocked() && !InputHelper.isEmpty(reason)) {
+            model = new LockIssuePrModel(true, reason);
+        }
         IssueService issueService = RestProvider.getIssueService(isEnterprise());
         Observable<Response<Boolean>> observable = RxHelper
-                .getObservable(isLocked() ? issueService.unlockIssue(login, repoId, number) : issueService.lockIssue(login, repoId, number));
+                .getObservable(model == null
+                               ? issueService.unlockIssue(login, repoId, number) :
+                               issueService.lockIssue(model, login, repoId, number));
         makeRestCall(observable, booleanResponse -> {
             int code = booleanResponse.code();
             if (code == 204) {

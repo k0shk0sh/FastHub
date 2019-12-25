@@ -1,10 +1,13 @@
 package com.fastaccess.ui.widgets.markdown
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
+import com.crashlytics.android.Crashlytics
 import com.fastaccess.ui.widgets.FontEditText
 import java.util.*
 
@@ -34,7 +37,7 @@ class MarkdownEditText : FontEditText {
                     if (inMentionMode != -1) {
                         val complete = mention.adapter.getItem(position).toString() + " "
                         val end = selectionEnd
-                        text.replace(inMentionMode, end, complete, 0, complete.length)
+                        text?.replace(inMentionMode, end, complete, 0, complete.length)
                         inMentionMode = -1
                     }
                 } catch (ignored: Exception) {
@@ -91,9 +94,16 @@ class MarkdownEditText : FontEditText {
 
     private fun updateMentionList(mentioning: String) {
         participants?.let {
-            val mentions = it.filter { it.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()) }
-            val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
-                    android.R.id.text1, mentions.subList(0, Math.min(mentions.size, 3)))
+            val mentions = it.filter {
+                it.toLowerCase(Locale.getDefault())
+                    .startsWith(
+                        mentioning.replace("@", "").toLowerCase(Locale.getDefault())
+                    )
+            }
+            val adapter = ArrayAdapter<String>(
+                context, android.R.layout.simple_list_item_1,
+                android.R.id.text1, mentions.subList(0, Math.min(mentions.size, 3))
+            )
             mention?.setAdapter(adapter)
         }
     }

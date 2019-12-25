@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.annimon.stream.Objects;
@@ -179,11 +179,13 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     }
 
     @Override public void onBackPressed() {
-        int position = adapter.getItemCount() > 2 ? adapter.getItemCount() - 2 : adapter.getItemCount() - 1;
-        if (position > 0 && position <= adapter.getItemCount()) {
-            if (position == 1) position = 0;
-            RepoFile repoFilesModel = adapter.getItem(position);
-            onItemClicked(repoFilesModel, position);
+        if (getRepoFilesView().isRefreshing()) return;
+        if (adapter.getItemCount() > 1) {
+            adapter.removeItem(adapter.getItemCount() - 1);
+            RepoFile model = adapter.getItem(adapter.getItemCount() - 1);
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
+                    Objects.toString(model.getPath(), ""), ref, false, null);
+            recycler.scrollToPosition(adapter.getItemCount() - 1);
         } else {
             onBackClicked();
         }
@@ -272,12 +274,16 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == EditRepoFileActivity.Companion.getEDIT_RQ()) {
+        if (resultCode == Activity.RESULT_OK && requestCode == EditRepoFileActivity.EDIT_RQ) {
             getRepoFilesView().onRefresh();
         }
     }
 
     private void showReload() {
         hideProgress();
+    }
+
+    @NonNull public String getRef() {
+        return !InputHelper.isEmpty(ref) ? ref : "master";
     }
 }

@@ -1,9 +1,9 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.transition.ChangeBounds;
-import android.support.transition.TransitionManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,14 +162,14 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
                         owner.setVisibility(View.VISIBLE);
                         owner.setText(R.string.original_poster);
                     } else {
-                        owner.setText(null);
+                        owner.setText("");
                         owner.setVisibility(View.GONE);
                     }
                 }
             }
         } else {
             avatar.setUrl(null, null, false, false);
-            name.setText(null);
+            name.setText("");
         }
         if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
             pathText.setVisibility(View.VISIBLE);

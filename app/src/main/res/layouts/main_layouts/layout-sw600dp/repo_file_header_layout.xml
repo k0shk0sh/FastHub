@@ -57,14 +57,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/avatar_margin_end"
-            android:layout_marginStart="@dimen/avatar_margin"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/home"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_home"/>
 
-        <android.support.v7.widget.RecyclerView
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_arrow_right"/>
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -94,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/download"
+            android:contentDescription="@string/add"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_add"
             android:visibility="gone"
@@ -106,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/download"
+            android:contentDescription="@string/search"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_search"/>
     </LinearLayout>

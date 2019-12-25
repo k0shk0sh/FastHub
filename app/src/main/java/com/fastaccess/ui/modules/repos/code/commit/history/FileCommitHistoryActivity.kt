@@ -35,22 +35,28 @@ class FileCommitHistoryActivity : BaseActivity<BaseMvp.FAView, BasePresenter<Bas
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null && intent != null) {
-            repoId = intent.extras.getString(BundleConstant.ID)
-            login = intent.extras.getString(BundleConstant.EXTRA)
+            val bundle = intent.extras ?: kotlin.run {
+                finish()
+                return
+            }
+            repoId = bundle.getString(BundleConstant.ID)
+            login = bundle.getString(BundleConstant.EXTRA)
             supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.container, RepoCommitsFragment.newInstance(intent.extras!!), RepoCommitsFragment::class.java.simpleName)
-                    .commit()
+                .beginTransaction()
+                .replace(R.id.container, RepoCommitsFragment.newInstance(bundle), RepoCommitsFragment::class.java.simpleName)
+                .commit()
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == android.R.id.home) {
-            repoId?.let {
-                val intent = RepoPagerActivity.createIntent(this, it, login!!)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            val repoId = repoId
+            val login = login
+            if (!repoId.isNullOrEmpty() && !login.isNullOrEmpty()) {
                 val bundle = intent.extras
-                bundle.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise)
-                intent.putExtras(bundle)
+                val intent = RepoPagerActivity.createIntent(this, repoId, login)
+                bundle?.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                bundle?.let { intent.putExtras(it) }
                 startActivity(intent)
                 finish()
             }
@@ -60,16 +66,20 @@ class FileCommitHistoryActivity : BaseActivity<BaseMvp.FAView, BasePresenter<Bas
     }
 
     companion object {
-        fun startActivity(context: Context, login: String, repoId: String, branch: String, path: String,
-                          enterprise: Boolean) {
+        fun startActivity(
+            context: Context, login: String, repoId: String, branch: String, path: String,
+            enterprise: Boolean
+        ) {
             val intent = Intent(context, FileCommitHistoryActivity::class.java)
-            intent.putExtras(Bundler.start()
+            intent.putExtras(
+                Bundler.start()
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.EXTRA_TWO, branch)
                     .put(BundleConstant.EXTRA_THREE, path)
                     .put(BundleConstant.IS_ENTERPRISE, enterprise)
-                    .end())
+                    .end()
+            )
             context.startActivity(intent)
         }
     }

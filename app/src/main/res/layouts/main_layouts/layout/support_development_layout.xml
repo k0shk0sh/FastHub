@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?android:toolbarStyle">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
             app:expandedTitleGravity="bottom|center"
@@ -20,15 +20,15 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title="@string/support_development">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:theme="?android:toolbarStyle"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_back"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         app:behavior_overlapTop="64dp"
         app:layout_behavior="@string/scroll_behavior">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_xs_large"
@@ -53,7 +53,7 @@
                 android:visibility="invisible"
                 tools:visibility="visible">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/two"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,9 +76,9 @@
                         android:text="@string/support_with_2_00"
                         app:drawableColor="@color/material_red_700"/>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/five"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,9 +101,9 @@
                         android:text="@string/support_with_5_00"
                         app:drawableColor="@color/material_red_700"/>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/ten"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -126,9 +126,9 @@
                         android:text="@string/support_with_10_00"
                         app:drawableColor="@color/material_red_700"/>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/twenty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -151,10 +151,10 @@
                         android:text="@string/support_with_20_00"
                         app:drawableColor="@color/material_red_700"/>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>
 
@@ -175,4 +175,4 @@
             android:text="@string/fasthub_premium_features"/>
 
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Зареждане, моля изчакай…</string>
     <string name="action">Действие</string>
     <string name="settings">Настройки</string>
@@ -228,7 +229,6 @@
     <string name="turn_off">Изключване</string>
     <string name="unauthorized_user">Неоторизиран потребител</string>
     <string name="two_factors_otp_error">Необходима е еднократна парола за двуфакторно удостоверяване</string>
-    <string name="no_issue">Няма issue</string>
     <string name="copy">Копирай URL</string>
     <string name="success_copied">Копирано</string>
     <string name="commit_message">Commit съобщение</string>
@@ -267,11 +267,8 @@
     <string name="no_commits">Няма commits</string>
     <string name="no_contributors">Няма сътрудници</string>
     <string name="no_releases">Няма releases</string>
-    <string name="no_closed_issues">Няма затворени issues</string>
-    <string name="no_opened_issues">Няма отворени issues</string>
     <string name="no_events">Няма събития</string>
-    <string name="no_open_pull_requests">Няма отворени pull requests</string>
-    <string name="no_closed_pull_request">Няма затворени pull requests</string>
+    <string name="no_pull_requests">Няма pull requests</string>
     <string name="no_search_results">Няма резултати от търсене</string>
     <string name="read_write_permission_explanation">Моля приеми изискваните разрешения, за да може FastHub да
         съхранява файлове на устройството ти, които да можеш да преглеждаш</string>
@@ -377,16 +374,6 @@
     <string name="enable_signature_box_summary">Активиране на отметка за подпис в текстовия редактор</string>
     <string name="tags">Тагове</string>
     <string name="add_comment">Добави коментар</string>
-    <string name="banners">Представяне на банери</string>
-    <string name="banners_info">С FastHub 2.5.0, можеш да изразиш себе си по-добре като използваш банери
-        на профилната си страница.\n\nВсеки, който използва приложението FastHub, може да види заглавието,
-        което си сложил/а. Ще можеш да виждаш заглавията и на другите хора. Ако искаш да създадеш собствен
-        банер, направи го с размери 1280x384 или кратни такива, в противен случай може да бъде отрязан.\n\n
-        Можеш да добавиш или смениш банера си по всяко време, като създадеш gist с име "header.fst" с файл
-        съдържащ директна връзка към заглавно изображение.\n\nИли пък за по-лесно, направо използвай вграденият
-        диалог за избор на изображения.
-    </string>    
-    <string name="edit_banner">ИЗБЕРИ БАНЕР</string>
     <string name="image_error">Грешка при зареждане на изображение, моля опитай пак.</string>
     <string name="trending">Тенденции</string>
     <string name="not_really_working">Сортиране по емотикони не работи поради ограничения в GitHub</string>
@@ -426,4 +413,65 @@
     <string name="sound_chooser_title">Избор на звук за известия</string>
     <string name="disable_auto_gif_summary">Изключване на автомтично пускане на GIF анимации</string>
     <string name="disable_auto_gif_title">Изключване на GIF анимации</string>
+    <string name="request_changes">изисквай промени</string>
+    <string name="google_play_service_error">Google Play Services не са достъпни</string>
+    <string name="edit_gist">Редактиране на Gist</string>
+    <string name="content">Съдържание</string>
+    <string name="expand">разшири</string>
+    <string name="copy_sha">Копирай SHA-1</string>
+    <string name="view_as_code">Виж като код</string>
+    <string name="app_animation_title">Изкл. на анимации в приложението</string>
+    <string name="app_animation_summary">Изкл. на анимации навсякъде</string>
+    <string name="can_not_merge_pr">Този PR не може да бъде слят сега.</string>
+    <string name="projects">Проекти</string>
+    <string name="no_projects">Няма проекти</string>
+    <string name="no_cards">Няма карти</string>
+    <string name="card_added_by">Добавено от %s %s</string>
+    <string name="too_large_changes">Има твърде много разлики, за да бъдат показани всички. Моля, използвай браузър.</string>
+    <string name="project">Проекти</string>
+    <string name="please_read">МОЛЯ ПРОЧЕТИ!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Защо не мога да видя нито <i>Private</i>, нито <i>Public</i> <b>Организациите</b> си?</h5>
+        <p>Отвори https://github.com/settings/applications и потърси FastHub, отвори го, приплъзни надолу до "Organization access" и избери "Grant" бутона.
+        Или пък можеш да се впишеш използвайки <b>Access Token</b>, което ще улесни процеса.</p>
+
+        <h5>• Опитах да се впиша чрез Access Token и еднократна парола (OTP), но без късмет! Къде е проблема?</h5>
+        <p>Не можеш да се впишеш използвайки Access Token и OTP едновременно. Поради краткотрайността на тези пароли, ще трябва да опиташ да се впишеш отново на всеки няколко секунди.</p>
+
+        <h5>• Защо не се показват Wiki страниците на Private и Enterprise хранилищата?</h5>
+        <p>Тъй като FastHub скрапва Wiki страниците от GitHub, приложението не може да получи token за сесия, изискван за достъп до Private хранилища.</p>
+
+        <h5>• Вписах се в Enterprise акаунта си. Защо не мога да взаимодействам с нищо друго, освен моята Enterprise GitHub среда?</h5>
+        <p>Всъщност, логически е заложено да не се достъпва нищо друго, освен Enterprise средата. FastHub се опитва да изисква колкото се може повече permissions, но в повечето случаи не може да направи нищо повече от това, тъй като удостоверяващата информация се съхранява на GitHub сървъра. Но, в <b>някои</b> случаи използването на OAuth token към GitHub акаунта може да свърши работа.</p>
+
+        <h5>• Защо има проблеми при редактиране на Issues или Pull Requests (PRs)?</h5>
+        <p>Ако не можеш да редактираш Issues или PRs в хранилище от Public организация, моля свържи се с организацията, за да настрои подходящ достъп на FastHub. Другият вариант е да опиташ да се впишеш с Access Token.</p>
+
+        <h5>• Имам проблеми! / Искам да предложа някои неща!</h5>
+        <p>Отиди на https://github.com/k0shk0sh/FastHub/issues/new и отвори ново issue за бъгова или feature requests. Но първо един съвет - потърси
+        дали няма подобни, вече отворени, issues по темата. Всеки дублиран ticket, бива маркиран и затворен веднага.</p>
+
+        <h5>• Как мога да получа ПРОМО код?</h5>
+        <p>Промо програмата вече не съществува.</p>
+    ]]></string>
+    <string name="faq">ЧЗВ</string>
+    <string name="comments_added_successfully">Коментарите са добавени успешно</string>
+    <string name="clear_search_keywords">Изчистване на история на търсенето</string>
+    <string name="restore_purchases">Възстановяване на покупки</string>
+    <string name="include_forks">Включване на Forks</string>
+    <string name="comment_is_too_far_to_paginate">Коментарът е твърде далеч, за да бъде странициран.</string>
+    <string name="search_results_warning">Твърде много отговори \nПоказване на максимума, който API-то позволява</string>
+    <string name="disable_loading_image_title">Изкл. на изображение при зареждане</string>
+    <string name="disable_loading_image_summary">Изкл. на изображение при зареждане, докато си на платен мобилен план</string>
+    <string name="report_issue_warning">Това issue ще бъде изпратено в хранилището на FastHub в GitHub</string>
+    <string name="block">Блокиране</string>
+    <string name="unblock">Отблокиране</string>
+    <string name="user_blocked">Потребител блокиран</string>
+    <string name="user_unblocked">Потребител отблокиран</string>
+    <string name="clear_image_cache">Изчистване на кеш от Изображения</string>
+    <string name="restart_app_message">Моля рестартирай приложението</string>
+    <string name="menu_label">Меню</string>
+    <string name="commit_file_required">Няма файлови промени</string>
+    <string name="send_feedback">Обратна връзка</string>
 </resources>

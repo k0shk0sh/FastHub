@@ -3,8 +3,8 @@ package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.PopupMenu;

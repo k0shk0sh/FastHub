@@ -18,18 +18,20 @@ object FabricProvider {
 
     fun initFabric(context: Context) {
         val fabric = Fabric.Builder(context)
-                .kits(Crashlytics.Builder()
-                        .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                        .build())
-                .debuggable(BuildConfig.DEBUG)
-                .build()
+            .kits(
+                Crashlytics.Builder()
+                    .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                    .build()
+            )
+            .debuggable(BuildConfig.DEBUG)
+            .build()
         Fabric.with(fabric)
     }
 
-    fun logPurchase(productKey: String, price: Long? = null, priceText: String? = null) {
+    fun logPurchase(productKey: String?, price: Long? = null, priceText: String? = null) {
         val purchaseEvent = PurchaseEvent()
-                .putItemName(productKey)
-                .putSuccess(true)
+            .putItemName(productKey)
+            .putSuccess(true)
 
         priceText?.let {
             purchaseEvent.putItemType(priceText)

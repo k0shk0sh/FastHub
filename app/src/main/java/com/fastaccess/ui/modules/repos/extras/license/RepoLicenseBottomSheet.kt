@@ -1,10 +1,10 @@
 package com.fastaccess.ui.modules.repos.extras.license
 
 import android.os.Bundle
-import android.support.annotation.StringRes
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.StringRes
 import butterknife.BindView
 import com.evernote.android.state.State
 import com.fastaccess.R
@@ -18,7 +18,7 @@ import com.prettifier.pretty.PrettifyWebView
  * Created by Kosh on 30 Jun 2017, 12:38 PM
  */
 class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.View, RepoLicensePresenter>(), RepoLicenseMvp.View,
-        PrettifyWebView.OnContentChangedListener {
+    PrettifyWebView.OnContentChangedListener {
 
     @State var content: String? = null
 
@@ -32,10 +32,11 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
 
     override fun onLicenseLoaded(license: String) {
         this.content = license
-        if (!license.isNullOrBlank()) {
+        if (license.isNotEmpty()) {
             loader.isIndeterminate = false
-            val licenseText = license.replace("<pre>", "<pre style='overflow: hidden;word-wrap:break-word;word-break:break-all;" +
-                    "white-space:pre-line;'>")
+            val licenseText = license.replace(
+                "<pre>", "<pre style='overflow: hidden;word-wrap:break-word;word-break:break-all;white-space:pre-line;'>"
+            )
             webView.setGithubContent("<div class='markdown-body'>$licenseText</div>", null, false)
         } else {
             hideProgress()
@@ -46,9 +47,9 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let {
-            val login = it.getString(BundleConstant.EXTRA)
-            val repo = it.getString(BundleConstant.ID)
+        val login = arguments?.getString(BundleConstant.EXTRA)
+        val repo = arguments?.getString(BundleConstant.ID)
+        if (!login.isNullOrEmpty() && !repo.isNullOrEmpty()) {
             val licenseTitle = arguments?.getString(BundleConstant.EXTRA_TWO)
             licenseName.text = licenseTitle
             if (content.isNullOrBlank() && !presenter.isApiCalled) {
@@ -103,10 +104,10 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
         fun newInstance(login: String, repo: String, license: String): RepoLicenseBottomSheet {
             val view = RepoLicenseBottomSheet()
             view.arguments = Bundler.start()
-                    .put(BundleConstant.ID, repo)
-                    .put(BundleConstant.EXTRA, login)
-                    .put(BundleConstant.EXTRA_TWO, license)
-                    .end()
+                .put(BundleConstant.ID, repo)
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.EXTRA_TWO, license)
+                .end()
             return view
         }
     }

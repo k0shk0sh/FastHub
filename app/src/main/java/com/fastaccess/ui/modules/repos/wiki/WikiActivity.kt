@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import androidx.drawerlayout.widget.DrawerLayout
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -16,9 +16,9 @@ import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.NameParser
 import com.fastaccess.data.dao.wiki.WikiContentModel
+import com.fastaccess.helper.ActivityHelper
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
-import com.fastaccess.helper.Logger
 import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.repos.RepoPagerActivity
@@ -52,25 +52,19 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
             loadMenu()
         }
         if (wiki.content != null) {
-            val baseUrl = Uri.Builder().scheme("https")
-                    .authority(LinkParserHelper.HOST_DEFAULT)
-                    .appendPath(presenter.login)
-                    .appendPath(presenter.repoId)
-                    .appendPath("wiki")
-                    .build()
-                    .toString()
-            Logger.e(baseUrl)
+            val baseUrl = Uri.Builder().scheme(LinkParserHelper.PROTOCOL_HTTPS)
+                .authority(LinkParserHelper.HOST_DEFAULT)
+                .appendPath(presenter.login)
+                .appendPath(presenter.repoId)
+                .appendPath("wiki")
+                .build()
+                .toString()
             webView.setWikiContent(wiki.content, baseUrl)
         }
     }
 
-    private fun loadMenu() {
-        navMenu.menu.clear()
-        wiki.sidebar.onEach {
-            navMenu.menu.add(R.id.languageGroup, it.title?.hashCode()!!, Menu.NONE, it.title)
-                    .setCheckable(true)
-                    .isChecked = it.title.toLowerCase() == selectedTitle.toLowerCase()
-        }
+    override fun onSetPage(page: String) {
+        selectedTitle = page
     }
 
     override fun canBack(): Boolean = true
@@ -93,18 +87,6 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
         setTaskName("${presenter.login}/${presenter.repoId} - Wiki - $selectedTitle")
     }
 
-    private fun onSidebarClicked(item: MenuItem) {
-        this.selectedTitle = item.title.toString()
-        setTaskName("${presenter.login}/${presenter.repoId} - Wiki - $selectedTitle")
-        closeDrawerLayout()
-        wiki.sidebar.first { it.title?.toLowerCase() == item.title.toString().toLowerCase() }
-                .let { presenter.onSidebarClicked(it) }
-    }
-
-    private fun closeDrawerLayout() {
-        drawerLayout.closeDrawer(Gravity.END)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.trending_menu, menu)
         menu?.findItem(R.id.menu)?.setIcon(R.drawable.ic_menu)
@@ -115,6 +97,13 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
         when (item?.itemId) {
             R.id.menu -> {
                 drawerLayout.openDrawer(Gravity.END)
+                return true
+            }
+            R.id.share -> {
+                ActivityHelper.shareUrl(
+                    this, "${LinkParserHelper.PROTOCOL_HTTPS}://${LinkParserHelper.HOST_DEFAULT}/" +
+                            "${presenter.login}/${presenter.repoId}/wiki/$selectedTitle"
+                )
                 return true
             }
             android.R.id.home -> {
@@ -157,6 +146,31 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
         stateLayout.hideProgress()
     }
 
+    override fun showPrivateRepoError() {
+        onLoadContent(WikiContentModel("<h3>${getString(R.string.private_wiki_error_msg)}</h3>", null, listOf()))
+    }
+
+    private fun onSidebarClicked(item: MenuItem) {
+        this.selectedTitle = item.title.toString()
+        setTaskName("${presenter.login}/${presenter.repoId} - Wiki - $selectedTitle")
+        closeDrawerLayout()
+        wiki.sidebar.first { it.title?.toLowerCase() == item.title.toString().toLowerCase() }
+            .let { presenter.onSidebarClicked(it) }
+    }
+
+    private fun closeDrawerLayout() {
+        drawerLayout.closeDrawer(Gravity.END)
+    }
+
+    private fun loadMenu() {
+        navMenu.menu.clear()
+        wiki.sidebar.onEach {
+            navMenu.menu.add(R.id.languageGroup, it.title?.hashCode()!!, Menu.NONE, it.title)
+                .setCheckable(true)
+                .isChecked = it.title.toLowerCase() == selectedTitle.toLowerCase()
+        }
+    }
+
     companion object {
         fun getWiki(context: Context, repoId: String?, username: String?): Intent {
             return getWiki(context, repoId, username, null)
@@ -164,11 +178,13 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
 
         fun getWiki(context: Context, repoId: String?, username: String?, page: String?): Intent {
             val intent = Intent(context, WikiActivity::class.java)
-            intent.putExtras(Bundler.start()
+            intent.putExtras(
+                Bundler.start()
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.EXTRA, username)
                     .put(BundleConstant.EXTRA_TWO, page)
-                    .end())
+                    .end()
+            )
             return intent
         }
     }

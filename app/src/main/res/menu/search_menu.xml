@@ -6,11 +6,11 @@
         android:id="@+id/notifications"
         android:icon="@drawable/ic_notifications_none"
         android:title="@string/notifications"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 </menu>

@@ -8,11 +8,11 @@
     android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentInsetEnd="0dp"
@@ -71,11 +71,11 @@
                     android:contentDescription="@string/submit"
                     android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_send"/>
+                    android:src="@drawable/ic_done"/>
 
             </LinearLayout>
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.repos.extras.labels.create;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.fastaccess.data.dao.LabelModel;

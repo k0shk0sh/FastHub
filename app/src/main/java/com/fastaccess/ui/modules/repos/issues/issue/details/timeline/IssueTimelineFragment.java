@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import android.view.View;
 
 import com.evernote.android.state.State;
@@ -289,15 +289,14 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void addComment(@Nullable TimelineModel timelineModel, int index) {
-        Logger.e(index);
-        Logger.e();
         if (timelineModel != null) {
             adapter.addItem(timelineModel, 1);
             recycler.smoothScrollToPosition(1);
         } else if (index != -1) {
             recycler.smoothScrollToPosition(index + 1);
-        } else {
-            showMessage(R.string.error, R.string.comment_is_too_far_to_paginate);
+            if ((index + 1) > adapter.getItemCount()) {
+                showMessage(R.string.error, R.string.comment_is_too_far_to_paginate);
+            }
         }
     }
 

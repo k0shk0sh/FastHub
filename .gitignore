@@ -3,9 +3,10 @@
 /local.properties
 .DS_Store
 /build
-/gradle.properties
+/release_gradle.properties
 /.idea/
 /app/google-services.json
 /app/build/
 /app/src/main/res/values/secrets.xml
 /app/fastaccess-key
+/changelog_generator

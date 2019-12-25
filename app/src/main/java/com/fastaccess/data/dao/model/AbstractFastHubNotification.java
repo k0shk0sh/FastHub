@@ -2,13 +2,12 @@ package com.fastaccess.data.dao.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.App;
 
 import java.util.Date;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.requery.Column;
@@ -33,11 +32,11 @@ import lombok.NoArgsConstructor;
     @io.requery.Nullable String title;
     @io.requery.Nullable NotificationType type;
 
-    public static void update(@Nonnull FastHubNotification notification) {
+    public static void update(@NonNull FastHubNotification notification) {
         App.getInstance().getDataStore().toBlocking().update(notification);
     }
 
-    public static void save(@Nonnull FastHubNotification notification) {
+    public static void save(@NonNull FastHubNotification notification) {
         App.getInstance().getDataStore().toBlocking().insert(notification);
     }
 
@@ -51,7 +50,7 @@ import lombok.NoArgsConstructor;
                 .firstOrNull();
     }
 
-    @Nonnull public static Observable<FastHubNotification> getNotifications() {
+    @NonNull public static Observable<FastHubNotification> getNotifications() {
         return App.getInstance().getDataStore()
                 .select(FastHubNotification.class)
                 .orderBy(FastHubNotification.DATE.desc())

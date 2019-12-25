@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         tools:ignore="UselessParent">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/colorImage"
             android:layout_width="@dimen/icon_size"
             android:layout_height="30dp"/>

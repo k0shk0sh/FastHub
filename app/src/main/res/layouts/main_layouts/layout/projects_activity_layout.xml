@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<androidx.drawerlayout.widget.DrawerLayout
     android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,4 +37,5 @@
     </LinearLayout>
 
     <include layout="@layout/nav_menu_layout"/>
-</android.support.v4.widget.DrawerLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

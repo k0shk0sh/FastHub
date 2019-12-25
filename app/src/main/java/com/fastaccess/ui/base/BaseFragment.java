@@ -3,11 +3,11 @@ package com.fastaccess.ui.base;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v7.view.ContextThemeWrapper;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +96,7 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void hideProgress() {
-        callback.hideProgress();
+        if (callback != null) callback.hideProgress();
     }
 
     @Override public void showMessage(@StringRes int titleRes, @StringRes int msgRes) {

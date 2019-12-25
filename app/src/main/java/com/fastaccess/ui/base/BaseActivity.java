@@ -4,17 +4,18 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,18 +35,19 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.CachedComments;
 import com.fastaccess.provider.theme.ThemeEngine;
+import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.main.drawer.MainDrawerFragment;
 import com.fastaccess.ui.modules.main.notifications.FastHubNotificationDialog;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity;
@@ -55,7 +57,6 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRe
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -73,15 +74,14 @@ import io.reactivex.Observable;
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
-        BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements BaseMvp.FAView {
 
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) protected AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
-    @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
+    @Nullable @BindView(R.id.drawerViewPager) ViewPager drawerViewPager;
     @State String schemeUrl;
 
     @State Bundle presenterStateBundle = new Bundle();
@@ -110,7 +110,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
-        Logger.e(FirebaseInstanceId.getInstance().getToken());
         if (layout() != 0) {
             setContentView(layout());
             ButterKnife.bind(this);
@@ -131,8 +130,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         initPresenterBundle(savedInstanceState);
         setupToolbarAndStatusBar(toolbar);
         initEnterpriseExtra(savedInstanceState);
-        mainNavDrawer = new MainNavDrawer(this, extraNav, accountsNav);
-        setupNavigationView();
+        mainNavDrawer = new MainNavDrawer(this, extraNav);
         setupDrawer();
     }
 
@@ -221,12 +219,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }));
     }
 
-    @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        closeDrawer();
-        mainNavDrawer.onMainNavItemClick(item);
-        return false;
-    }
-
     @Override public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             closeDrawer();
@@ -300,15 +292,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void selectHome(boolean hideRepo) {
-        if (extraNav != null) {
+        Menu menu = getMainDrawerMenu();
+        if (menu != null) {
             if (hideRepo) {
-                extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
-                extraNav.getMenu().findItem(R.id.mainView).setVisible(true);
+                menu.findItem(R.id.navToRepo).setVisible(false);
+                menu.findItem(R.id.mainView).setVisible(true);
                 return;
             }
-            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
-            extraNav.getMenu().findItem(R.id.mainView).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.mainView).setChecked(true);
+            menu.findItem(R.id.navToRepo).setVisible(false);
+            menu.findItem(R.id.mainView).setCheckable(true);
+            menu.findItem(R.id.mainView).setChecked(true);
         }
     }
 
@@ -329,24 +322,26 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         selectMenuItem(R.id.trending);
     }
 
-    protected void onOpenOrgsDialog() {
+    public void onOpenOrgsDialog() {
         OrgListDialogFragment.newInstance().show(getSupportFragmentManager(), "OrgListDialogFragment");
     }
 
     protected void showNavToRepoItem() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(true);
+        Menu menu = getMainDrawerMenu();
+        if (menu != null) {
+            menu.findItem(R.id.navToRepo).setVisible(true);
         }
     }
 
     protected void selectMenuItem(@IdRes int id) {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(id).setCheckable(true);
-            extraNav.getMenu().findItem(id).setChecked(true);
+        Menu menu = getMainDrawerMenu();
+        if (menu != null) {
+            menu.findItem(id).setCheckable(true);
+            menu.findItem(id).setChecked(true);
         }
     }
 
-    protected void onNavToRepoClicked() {}
+    public void onNavToRepoClicked() {}
 
     private void setupToolbarAndStatusBar(@Nullable Toolbar toolbar) {
         changeStatusBarColor(isTransparent());
@@ -396,14 +391,17 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void setupNavigationView() {
-        if (extraNav != null) {
-            extraNav.setNavigationItemSelectedListener(this);
+        if (mainNavDrawer != null) {
+            mainNavDrawer.setupView();
         }
-        mainNavDrawer.setupViewDrawer();
     }
 
-    protected void closeDrawer() {
-        if (drawer != null) drawer.closeDrawer(GravityCompat.START);
+    public void closeDrawer() {
+        if (drawer != null) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        }
     }
 
     private void setupDrawer() {
@@ -449,7 +447,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (backPressTimer + 2000 > System.currentTimeMillis()) {
             return true;
         } else {
-            Toast.makeText(App.getInstance(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.press_again_to_exit, R.string.press_again_to_exit);
         }
         backPressTimer = System.currentTimeMillis();
         return false;
@@ -469,7 +467,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         return navIcon;
     }
 
-    protected void onRestartApp() {
+    public void onRestartApp() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -539,5 +537,18 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     private boolean showInAppNotifications() {
         return FastHubNotification.hasNotifications();
+    }
+
+    private Menu getMainDrawerMenu() {
+        if (drawerViewPager != null) {
+            FragmentsPagerAdapter adapter = (FragmentsPagerAdapter) drawerViewPager.getAdapter();
+            if (adapter != null) {
+                MainDrawerFragment fragment = (MainDrawerFragment) adapter.instantiateItem(drawerViewPager, 0);
+                if (fragment != null) {
+                    return fragment.getMenu();
+                }
+            }
+        }
+        return null;
     }
 }

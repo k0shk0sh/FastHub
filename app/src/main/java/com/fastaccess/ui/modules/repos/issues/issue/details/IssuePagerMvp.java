@@ -2,8 +2,8 @@ package com.fastaccess.ui.modules.repos.issues.issue.details;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -13,6 +13,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
+import com.fastaccess.ui.modules.repos.extras.locking.LockIssuePrCallback;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public interface IssuePagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
             AssigneesMvp.SelectedAssigneesListener, IssuePrCallback<Issue>,
-            CommentEditorFragment.CommentListener {
+            CommentEditorFragment.CommentListener, LockIssuePrCallback {
         void onSetupIssue(boolean isUpdate);
 
         void showSuccessIssueActionMsg(boolean isClose);
@@ -62,7 +63,7 @@ public interface IssuePagerMvp {
 
         void onOpenCloseIssue();
 
-        void onLockUnlockIssue();
+        void onLockUnlockIssue(String reason);
 
         void onPutMilestones(@NonNull MilestoneModel milestone);
 

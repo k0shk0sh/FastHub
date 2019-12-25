@@ -78,6 +78,8 @@
   public *;
 }
 
+-keep class com.google.android.gms.** { *; }
+
 -dontwarn com.github.b3er.**
 -dontwarn com.memoizrlabs.**
 -dontwarn java.lang.FunctionalInterface
@@ -132,3 +134,7 @@
 -dontwarn retrofit.appengine.UrlFetchClient
 -dontwarn icepick.**
 -dontwarn com.fastaccess.ui.modules.repos.**
+-dontwarn org.apache.xerces.parsers.**
+-dontwarn oracle.xml.**
+-dontwarn org.jdom.**
+-dontwarn okhttp3.internal.**

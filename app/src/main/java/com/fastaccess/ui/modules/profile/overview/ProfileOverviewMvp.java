@@ -1,9 +1,8 @@
 package com.fastaccess.ui.modules.profile.overview;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -30,11 +29,7 @@ public interface ProfileOverviewMvp {
 
         void onInitOrgs(@Nullable List<User> orgs);
 
-        void onHeaderLoaded(@Nullable Bitmap bitmap);
-
         void onUserNotFound();
-
-        void onImagePosted(@Nullable String link);
 
         void onInitPinnedRepos(@NonNull List<GetPinnedReposQuery.Node> nodes);
     }

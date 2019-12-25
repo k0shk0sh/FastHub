@@ -2,9 +2,9 @@ package com.fastaccess.ui.modules.repos.extras.branches.pager
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import butterknife.BindView
 import com.fastaccess.R
@@ -59,8 +59,13 @@ class BranchesPagerFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<B
         arguments?.let {
             val login = it.getString(BundleConstant.EXTRA)
             val repoId = it.getString(BundleConstant.ID)
-            pager.adapter = FragmentsPagerAdapter(childFragmentManager, FragmentPagerAdapterModel.buildForBranches(context!!, repoId, login))
-            tabs.setupWithViewPager(pager)
+            if (!login.isNullOrEmpty() && !repoId.isNullOrEmpty()) {
+                pager.adapter = FragmentsPagerAdapter(
+                    childFragmentManager, FragmentPagerAdapterModel
+                        .buildForBranches(requireContext(), repoId, login)
+                )
+                tabs.setupWithViewPager(pager)
+            }
         }
     }
 
@@ -68,9 +73,9 @@ class BranchesPagerFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<B
         fun newInstance(login: String, repoId: String): BranchesPagerFragment {
             val fragment = BranchesPagerFragment()
             fragment.arguments = Bundler.start()
-                    .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.EXTRA, login)
-                    .end()
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA, login)
+                .end()
             return fragment
         }
     }

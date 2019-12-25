@@ -1,7 +1,7 @@
 package com.fastaccess.ui.modules.pinned.gist;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.ui.base.mvp.BaseMvp;

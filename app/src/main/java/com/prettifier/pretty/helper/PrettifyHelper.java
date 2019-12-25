@@ -1,6 +1,6 @@
 package com.prettifier.pretty.helper;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Kosh on 25 Dec 2016, 9:12 PM

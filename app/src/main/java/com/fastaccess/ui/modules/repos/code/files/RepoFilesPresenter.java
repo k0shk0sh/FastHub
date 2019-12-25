@@ -1,8 +1,8 @@
 package com.fastaccess.ui.modules.repos.code.files;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -98,7 +98,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
     }
 
     @Override public void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @NonNull String path,
-                                               @NonNull String ref, boolean clear, @NonNull RepoFile toAppend) {
+                                               @NonNull String ref, boolean clear, @Nullable RepoFile toAppend) {
         if (clear) pathsModel.clear();
         this.login = login;
         this.repoId = repoId;
@@ -121,8 +121,8 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         return pathsModel.getPaths(url, ref);
     }
 
-    @Override public void onDeleteFile(@NonNull String message, @NonNull RepoFile item) {
-        CommitRequestModel body = new CommitRequestModel(message, null, item.getSha());
+    @Override public void onDeleteFile(@NonNull String message, @NonNull RepoFile item, @NonNull String branch) {
+        CommitRequestModel body = new CommitRequestModel(message, null, item.getSha(), branch);
         makeRestCall(RestProvider.getContentService(isEnterprise())
                         .deleteFile(login, repoId, item.getPath(), ref, body),
                 gitCommitModel -> sendToView(SwipeRefreshLayout.OnRefreshListener::onRefresh));

@@ -1,8 +1,8 @@
 package com.fastaccess;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
-import android.support.v7.preference.PreferenceManager;
+import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.DeviceNameGetter;
@@ -72,7 +72,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 17);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 18);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

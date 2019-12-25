@@ -1,10 +1,10 @@
 package com.fastaccess.ui.modules.repos.code.prettifier;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.AppBarLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import com.google.android.material.appbar.AppBarLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
