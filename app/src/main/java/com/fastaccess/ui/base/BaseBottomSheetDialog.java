@@ -19,6 +19,8 @@ import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.helper.ViewHelper;
 
+import org.jetbrains.annotations.NotNull;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -53,7 +55,7 @@ import butterknife.Unbinder;
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @Override public void onSaveInstanceState(Bundle outState) {
+    @Override public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         StateSaver.saveInstanceState(this, outState);
     }
@@ -66,7 +68,7 @@ import butterknife.Unbinder;
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final Context contextThemeWrapper = new ContextThemeWrapper(getContext(), getContext().getTheme());
+        final Context contextThemeWrapper = new ContextThemeWrapper(getContext(), requireContext().getTheme());
         LayoutInflater themeAwareInflater = inflater.cloneInContext(contextThemeWrapper);
         View view = themeAwareInflater.inflate(layoutRes(), container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -98,7 +100,7 @@ import butterknife.Unbinder;
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.setOnShowListener(dialogInterface -> {
-            if (ViewHelper.isTablet(getActivity())) {
+            if (ViewHelper.isTablet(requireContext())) {
                 if (dialog.getWindow() != null) {
                     dialog.getWindow().setLayout(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
