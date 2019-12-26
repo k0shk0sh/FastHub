@@ -104,17 +104,8 @@ public class RestProvider {
             if (!TextUtils.isEmpty(authToken)) {
                 request.addRequestHeader("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
             }
-            File direct =
-                    new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + context.getString(R.string.app_name));
-            if (!direct.isDirectory() || !direct.exists()) {
-                boolean isCreated = direct.mkdirs();
-                if (!isCreated) {
-                    Toast.makeText(App.getInstance(), "Unable to create directory to download file", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
             String fileName = new File(url).getName();
-            request.setDestinationInExternalPublicDir(context.getString(R.string.app_name), fileName);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
             request.setTitle(fileName);
             request.setDescription(context.getString(R.string.downloading_file));
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
@@ -123,6 +114,7 @@ public class RestProvider {
                 downloadManager.enqueue(request);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Crashlytics.logException(e);
         }
     }
