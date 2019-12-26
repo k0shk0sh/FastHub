@@ -2,8 +2,8 @@ package com.fastaccess.ui.modules.repos.projects.list
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.annotation.StringRes
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.View
 import butterknife.BindView
 import com.fastaccess.R
@@ -33,7 +33,7 @@ class RepoProjectFragment : BaseFragment<RepoProjectMvp.View, RepoProjectPresent
     private val adapter by lazy { ProjectsAdapter(presenter.getProjects()) }
     private var badgeListener: RepoPagerMvp.TabsBadgeListener? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is RepoPagerMvp.TabsBadgeListener) {
             badgeListener = parentFragment as RepoPagerMvp.TabsBadgeListener

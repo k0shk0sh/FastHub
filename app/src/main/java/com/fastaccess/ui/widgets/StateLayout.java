@@ -2,9 +2,9 @@ package com.fastaccess.ui.widgets;
 
 import android.content.Context;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.widget.NestedScrollView;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.widget.NestedScrollView;
 import android.util.AttributeSet;
 
 import com.evernote.android.state.State;

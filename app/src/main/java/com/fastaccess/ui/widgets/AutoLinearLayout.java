@@ -2,7 +2,7 @@ package com.fastaccess.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.view.GravityCompat;
+import androidx.core.view.GravityCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;

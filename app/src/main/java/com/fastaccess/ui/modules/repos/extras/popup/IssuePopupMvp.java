@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.repos.extras.popup;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
 

@@ -3,7 +3,7 @@ package com.fastaccess.ui.modules.profile.org.project
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout
 import butterknife.BindView
 import com.evernote.android.state.State
 import com.fastaccess.R
@@ -39,13 +39,15 @@ class OrgProjectActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
         appBar.elevation = 0f
         appBar.stateListAnimator = null
         if (savedInstanceState == null) {
-            org = intent.extras.getString(BundleConstant.ITEM)
+            org = intent.extras?.getString(BundleConstant.ITEM)
             val org = org
             if (org != null) {
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, RepoProjectsFragmentPager.newInstance(org),
-                                RepoProjectsFragmentPager.TAG)
-                        .commit()
+                    .replace(
+                        R.id.container, RepoProjectsFragmentPager.newInstance(org),
+                        RepoProjectsFragmentPager.TAG
+                    )
+                    .commit()
             }
         }
         toolbar?.apply { subtitle = org }
@@ -54,9 +56,11 @@ class OrgProjectActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
     companion object {
         fun startActivity(context: Context, org: String, isEnterprise: Boolean) {
             val intent = Intent(context, OrgProjectActivity::class.java)
-            intent.putExtras(Bundler.start().put(BundleConstant.ITEM, org)
+            intent.putExtras(
+                Bundler.start().put(BundleConstant.ITEM, org)
                     .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
-                    .end())
+                    .end()
+            )
             context.startActivity(intent)
         }
     }

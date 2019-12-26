@@ -15,7 +15,7 @@ class LockIssuePrBottomSheetDialog : BaseBottomSheetDialog() {
 
     private var lockIssuePrCallback: LockIssuePrCallback? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         lockIssuePrCallback = when {
             parentFragment is LockIssuePrCallback -> parentFragment as LockIssuePrCallback

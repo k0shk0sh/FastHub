@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,7 +25,7 @@
                 android:paddingBottom="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
@@ -57,7 +57,7 @@
                 android:paddingBottom="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
@@ -89,7 +89,7 @@
                 android:paddingBottom="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
@@ -121,7 +121,7 @@
                 android:paddingBottom="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
@@ -158,7 +158,7 @@
                 android:paddingBottom="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
@@ -199,7 +199,7 @@
                 android:paddingBottom="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_xs_large">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
@@ -227,4 +227,4 @@
                 tools:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

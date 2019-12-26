@@ -1,9 +1,9 @@
 package com.fastaccess.ui.base.mvp.presenter;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
@@ -21,7 +21,6 @@ import java.util.concurrent.TimeoutException;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import retrofit2.HttpException;
 
 
 /**
@@ -108,9 +107,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @StringRes private int getPrettifiedErrorMessage(@Nullable Throwable throwable) {
         int resId = R.string.network_error;
-        if (throwable instanceof HttpException) {
-            resId = R.string.network_error;
-        } else if (throwable instanceof IOException) {
+        if (throwable instanceof IOException) {
             resId = R.string.request_error;
         } else if (throwable instanceof TimeoutException) {
             resId = R.string.unexpected_error;
@@ -119,12 +116,12 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     public void onCheckGitHubStatus() {
-        manageObservable(RestProvider.gitHubStatus()
-                .doOnNext(gitHubStatusModel -> {
-                    if (!"good".equalsIgnoreCase(gitHubStatusModel.getStatus())) {
-                        sendToView(v -> v.showErrorMessage("Github Status:\n" + gitHubStatusModel.getBody()));
-                    }
-                }));
+//        manageObservable(RestProvider.gitHubStatus()
+//                .doOnNext(gitHubStatusModel -> {
+//                    if (!"good".equalsIgnoreCase(gitHubStatusModel.getStatus())) {
+//                        sendToView(v -> v.showErrorMessage("Github Status:\n" + gitHubStatusModel.getBody()));
+//                    }
+//                }));
     }
 
     public boolean isEnterprise() {

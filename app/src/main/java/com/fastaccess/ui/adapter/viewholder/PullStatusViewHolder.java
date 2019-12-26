@@ -1,7 +1,7 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;

@@ -30,8 +30,6 @@ class PlayStoreWarningActivity : BaseActivity<BaseMvp.FAView, BasePresenter<Base
 
     override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
 
-    override fun onBackPressed() {}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val textView = findViewById<TextView>(R.id.description)

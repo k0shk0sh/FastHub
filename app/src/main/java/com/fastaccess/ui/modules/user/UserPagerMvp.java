@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.user;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;

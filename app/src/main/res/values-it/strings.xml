@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="in_progress">Caricamento, attendi per favore…</string>
     <string name="action">Azione</string>
     <string name="settings">Impostazioni</string>
@@ -432,27 +431,27 @@
     <string name="projects">Progetti</string>
     <string name="no_projects">Nessun Progetto</string>
     <string name="no_cards">Nessuna Card</string>
-    <string name="card_added_by">Aggiunto da %s %s</string>
+    <string name="card_added_by" formatted="false">Aggiunto da %s %s</string>
     <string name="too_large_changes">Troppe differenze da visualizzare. Perfavore, visualizzarli tramite un browser.</string>
     <string name="project">Progetto</string>
     <string name="please_read">PERFAVORE LEGGERE!</string>
     <string name="fasthub_faq_description">
 <![CDATA[
-<h5>• Perchè non posso visualizzare le mie <b>Organizzazioni</b> <i>Private</i> o <i>Pubbliche</i>?</h5>
+<h5>• Perché non posso visualizzare le mie <b>Organizzazioni</b> <i>Private</i> o <i>Pubbliche</i>?</h5>
 <p>Apri https://github.com/settings/applications e cerca FastHub, aprilo e scorri fino a Accesso organizzazione("Organization access") e cliccare il pulsante Permetti("Grant")
 Alternativamente puoi accedere utilizzando il <b>Token di Accesso</b> che faciliterà il processo..</p>
 
-<h5>• Ho provato ad accedere con un Token di accesso e una Password One-Time (OTP) senza alcun successo. Cosa c\'è di sbagliato?</h5>
+<h5>• Ho provato ad accedere con un Token di accesso e una Password One-Time (OTP) senza alcun successo. Cosa c\è di sbagliato?</h5>
 <p>Non puoi accedere con il Token si accesso e con OTP tutto insieme. A causa del limitato tempo di vita do queste password, devi ripetere ogni procedura di accesso ogni qualche secondo.</p>
 
 <h5>• Perché non sono le mie Wiki nei repository privati ed Enterprise mostrati?</h5>
-<p>Mentre FastHub ritrae le pagine Wiki di GitHub, l'applicazione non è in grado di ottenere alcun token di sessione richiesto dai repository privati.</p>
+<p>Mentre FastHub ritrae le pagine Wiki di GitHub, lapplicazione non è in grado di ottenere alcun token di sessione richiesto dai repository privati.</p>
 
-<h5>• Ho effettuato l'accesso al mio account aziendale. Perché non posso interagire con qualcosa di diverso dal mio Enterprise GitHub?</h5>
+<h5>• Ho effettuato laccesso al mio account aziendale. Perché non posso interagire con qualcosa di diverso dal mio Enterprise GitHub?</h5>
 <p>Bene, logicamente, non puoi accedere ad altro che non sia la tua Enterprise. FastHub tenta di richiedere il maggior numero possibile di autorizzazioni, ma non può fare altro nella maggior parte dei casi, poiché le credenziali non sono sul server di GitHub. Ma in <b>alcuni</b> casi il token OAuth del tuo account GitHub farà tutto.</p>
 
 <h5>• Perché ho problemi con la modifica di Problemi/Pull Requests (PRs)?</h5>
-<p>Se non si è in grado di modificare Problemi/PR nel repository di un'organizzazione pubblica, contattare la propria organizzazione per concedere l'accesso a FastHub. In alternativa puoi accedere con un token di accesso.</p>
+<p>Se non si è in grado di modificare Problemi/PR nel repository di unorganizzazione pubblica, contattare la propria organizzazione per concedere laccesso a FastHub. In alternativa puoi accedere con un token di accesso.</p>
 
 <h5>• Sto avendo problemi! / Voglio suggerirti alcune cose!</h5>
 <p>Vai a https://github.com/k0shk0sh/FastHub/issues/new e crea un nuovo problema per eventuali bug e richieste di funzionalità. Ti incoraggio davvero a cercare problemi simili prima di aprirne uno nuovo. Qualsiasi ticket duplicato sarà etichettato come duplicato e chiuso immediatamente.</p>

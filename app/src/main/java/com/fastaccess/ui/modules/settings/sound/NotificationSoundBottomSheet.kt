@@ -33,7 +33,7 @@ class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<Notificati
 
     private var listener: NotificationSoundMvp.NotificationSoundListener? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = if (parentFragment is NotificationSoundMvp.NotificationSoundListener) {
             parentFragment as NotificationSoundMvp.NotificationSoundListener
@@ -85,11 +85,15 @@ class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<Notificati
         radioGroup.setOnCheckedChangeListener { radioGroup, id ->
             if (!canPlaySound) return@setOnCheckedChangeListener
             val sound = radioGroup.getChildAt(id).tag as NotificationSoundModel
-            if (mediaPlayer.isPlaying) mediaPlayer.stop()
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.stop()
+            }
             mediaPlayer.reset()
-            mediaPlayer.setDataSource(context, sound.uri)
-            mediaPlayer.prepare()
-            mediaPlayer.start()
+            sound.uri?.let {
+                mediaPlayer.setDataSource(requireContext(), it)
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+            }
         }
     }
 

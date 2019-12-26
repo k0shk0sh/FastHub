@@ -28,21 +28,21 @@
                 android:padding="@dimen/spacing_normal"
                 android:src="@drawable/ic_title"/>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/title"
                     android:inputType="textCapSentences"
                     android:maxLines="1"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -59,7 +59,7 @@
                 android:padding="@dimen/spacing_normal"
                 android:src="@drawable/ic_insert_link"/>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/link"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,14 +67,14 @@
                 app:hintTextAppearance="@style/TextAppearance.AppCompat.Title"
                 app:passwordToggleEnabled="false">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/link"
                     android:inputType="textWebEditText"
                     android:maxLines="1"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </LinearLayout>
 

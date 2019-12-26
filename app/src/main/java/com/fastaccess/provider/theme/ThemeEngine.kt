@@ -3,7 +3,7 @@ package com.fastaccess.provider.theme
 import android.app.Activity
 import android.app.ActivityManager
 import android.graphics.BitmapFactory
-import android.support.annotation.StyleRes
+import androidx.annotation.StyleRes
 import com.danielstone.materialaboutlibrary.MaterialAboutActivity
 import com.fastaccess.R
 import com.fastaccess.helper.Logger

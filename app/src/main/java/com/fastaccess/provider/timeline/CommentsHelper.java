@@ -1,8 +1,8 @@
 package com.fastaccess.provider.timeline;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 

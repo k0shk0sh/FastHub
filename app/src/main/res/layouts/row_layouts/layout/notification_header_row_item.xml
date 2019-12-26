@@ -16,7 +16,7 @@
         android:textColor="?colorAccent"
         tools:text="k0shk0sh/FastHub"/>
 
-    <android.support.v7.widget.AppCompatImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/markAsRead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
