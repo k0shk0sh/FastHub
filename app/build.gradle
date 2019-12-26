@@ -174,6 +174,8 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation 'com.airbnb.android:lottie:3.0.7'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
+    debugImplementation 'com.github.whataa:pandora:2.0.6'
+    releaseImplementation 'com.github.whataa:pandora-no-op:2.0.3'
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 

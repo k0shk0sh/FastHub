@@ -11,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import tech.linjiang.pandora.Pandora;
 
 /**
  * Created by Kosh on 02 Jun 2017, 12:47 PM
@@ -27,6 +28,7 @@ public class JsoupProvider {
                 client.addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
             }
+            client.addInterceptor(Pandora.get().getInterceptor());
             client.addInterceptor(new AuthenticationInterceptor(true));
             okHttpClient = client.build();
         }

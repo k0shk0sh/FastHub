@@ -51,6 +51,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import tech.linjiang.pandora.Pandora;
 
 /**
  * Created by Kosh on 08 Feb 2017, 8:37 PM
@@ -79,6 +80,7 @@ public class RestProvider {
             client.addInterceptor(new AuthenticationInterceptor());
             client.addInterceptor(new PaginationInterceptor());
             client.addInterceptor(new ContentTypeInterceptor());
+            client.addInterceptor(Pandora.get().getInterceptor());
             okHttpClient = client.build();
         }
         return okHttpClient;
