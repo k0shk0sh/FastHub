@@ -6,12 +6,14 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.os.Parcelable;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.AppCompatTextView;
+
 import android.util.AttributeSet;
 import android.view.Gravity;
 
@@ -59,12 +61,18 @@ public class FontTextView extends AppCompatTextView {
         this.selected = selected;
     }
 
-    @SuppressLint("SetTextI18n") public void setText(CharSequence text, BufferType type) {
+    @Override public void setTextCursorDrawable(@Nullable Drawable textCursorDrawable) {
         try {
-            super.setText(text, type);
+            super.setTextCursorDrawable(textCursorDrawable);
         } catch (Exception e) {
-            setText("I tried, but your OEM just sucks because they modify the framework components and therefore causing the app to crash!" + "" +
-                    ".\nFastHub");
+            Crashlytics.logException(e);
+        }
+    }
+
+    @Override public void setTextCursorDrawable(int textCursorDrawable) {
+        try {
+            super.setTextCursorDrawable(textCursorDrawable);
+        } catch (Exception e) {
             Crashlytics.logException(e);
         }
     }
