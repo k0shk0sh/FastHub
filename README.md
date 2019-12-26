@@ -1,7 +1,7 @@
 #### FastHub is currently under a huge refactoring, please make sure to submit an issue only if necessary. 
 ##### You could follow the development on V5 in this [PR](https://github.com/k0shk0sh/FastHub/pull/2599)
 
-[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
+[![Build Status](https://app.bitrise.io/app/abd1afbd2a03e0e4/status.svg?token=txykViMUFzx1WkvjixD01A&branch=development)](https://app.bitrise.io/app/abd1afbd2a03e0e4)
 [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
