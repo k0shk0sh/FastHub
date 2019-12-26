@@ -426,7 +426,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     private void hideShowFab() {
-        if (getPresenter().isLocked() && !getPresenter().isOwner()) {
+        if (getPresenter().isLocked() && !getPresenter().isOwner() && !getPresenter().isCollaborator()) {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
             return;
         }

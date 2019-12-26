@@ -574,7 +574,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     private void hideShowFab() {
-        if (getPresenter().isLocked() && !getPresenter().isOwner()) {
+        if (getPresenter().isLocked() && !getPresenter().isOwner() && !getPresenter().isCollaborator()) {
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                     .hide(commentEditorFragment).commit();
