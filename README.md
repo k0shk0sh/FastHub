@@ -1,7 +1,7 @@
 #### FastHub is currently under a huge refactoring, please make sure to submit an issue only if necessary. 
-##### Any Pull requests that are not directed to v5 branch will be ignored. You could follow the development on this [PR](https://github.com/k0shk0sh/FastHub/pull/2599)
+##### You could follow the development on V5 in this [PR](https://github.com/k0shk0sh/FastHub/pull/2599)
 
-[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
+[![Build Status](https://app.bitrise.io/app/abd1afbd2a03e0e4/status.svg?token=txykViMUFzx1WkvjixD01A&branch=development)](https://app.bitrise.io/app/abd1afbd2a03e0e4)
 [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -190,10 +190,10 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 ## FastHub Logo
 
 **FastHub** logo is designed by **Cookicons**.  
-[Google+](https://plus.google.com/+CookiconsDesign) | [Twitter](https://twitter.com/mcookie)  
+[Twitter](https://twitter.com/mcookie)  
 Designer website [Cookicons](https://cookicons.co/).  
 
 **OLD FastHub** logo was designed by **Kevin Aguilar**.  
-[Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
+[Twitter](https://twitter.com/kevttob)  
 Designer at [Kevin Aguilar](http://kevaguilar.com/).  
 Laus Deo Semper
