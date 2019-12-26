@@ -19,6 +19,8 @@ import com.fastaccess.ui.modules.main.donation.CheckPurchaseActivity
 import com.fastaccess.ui.modules.main.playstore.PlayStoreWarningActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity
+import com.fastaccess.ui.modules.repos.RepoPagerActivity
+import com.fastaccess.ui.modules.repos.RepoPagerMvp
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity
 import com.fastaccess.ui.modules.trending.TrendingActivity
 import com.fastaccess.ui.modules.user.UserPagerActivity
@@ -65,7 +67,9 @@ class MainDrawerFragment : BaseFragment<MainMvp.View, BasePresenter<MainMvp.View
                     item.itemId == R.id.orgs -> activity.onOpenOrgsDialog()
                     item.itemId == R.id.notifications -> activity.startActivity(Intent(activity, NotificationActivity::class.java))
                     item.itemId == R.id.trending -> activity.startActivity(Intent(activity, TrendingActivity::class.java))
-                    item.itemId == R.id.reportBug -> activity.startActivity(CreateIssueActivity.startForResult(activity))
+                    item.itemId == R.id.openFatHub -> activity.startActivity(
+                        RepoPagerActivity.createIntent(activity, "FastHub", "k0shk0sh", RepoPagerMvp.ISSUES)
+                    )
                     item.itemId == R.id.faq -> activity.startActivity(Intent(activity, PlayStoreWarningActivity::class.java))
                     item.itemId == R.id.restorePurchase -> activity.startActivity(Intent(activity, CheckPurchaseActivity::class.java))
                 }

@@ -52,9 +52,9 @@
         android:id="@+id/group_three"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/reportBug"
-            android:icon="@drawable/ic_feedback"
-            android:title="@string/send_feedback"/>
+            android:id="@+id/openFatHub"
+            android:icon="@drawable/ic_fasthub_mascot"
+            android:title="@string/app_name"/>
         <item
             android:id="@+id/faq"
             android:icon="@drawable/ic_info"
