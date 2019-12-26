@@ -16,6 +16,8 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
@@ -40,7 +42,7 @@ public class MergePullRequestDialogFragment extends BaseDialogFragment<MergePull
         return view;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof MergePullReqeustMvp.MergeCallback) {
             mergeCallback = (MergePullReqeustMvp.MergeCallback) context;

@@ -18,6 +18,8 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRe
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by Kosh on 04 Mar 2017, 10:58 PM
  */
@@ -37,7 +39,7 @@ public class MilestoneDialogFragment extends BaseDialogFragment implements Miles
         return view;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof IssuePagerMvp.View) {
             issueCallback = (IssuePagerMvp.View) context;

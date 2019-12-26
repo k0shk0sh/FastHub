@@ -19,6 +19,8 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.FontButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 import butterknife.BindView;
@@ -48,7 +50,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (getParentFragment() instanceof EditorLinkImageMvp.EditorLinkCallback) {
             callback = (EditorLinkImageMvp.EditorLinkCallback) getParentFragment();

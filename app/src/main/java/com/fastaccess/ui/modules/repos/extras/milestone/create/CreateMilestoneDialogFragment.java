@@ -20,6 +20,8 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.base.BaseDialogFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import butterknife.BindView;
 import butterknife.OnTouch;
 
@@ -48,7 +50,7 @@ public class CreateMilestoneDialogFragment extends BaseDialogFragment<CreateMile
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (getParentFragment() instanceof CreateMilestoneMvp.OnMilestoneAdded) {
             onMilestoneAdded = (CreateMilestoneMvp.OnMilestoneAdded) getParentFragment();

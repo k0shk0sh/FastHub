@@ -20,6 +20,8 @@ import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
         fastScroller.attachRecyclerView(recycler);
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (getParentFragment() != null && getParentFragment() instanceof onSimpleItemSelection) {
             onSimpleItemSelection = (onSimpleItemSelection) getParentFragment();
