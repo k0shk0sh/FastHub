@@ -1,6 +1,7 @@
 package com.fastaccess.ui.base.mvp.presenter;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -8,6 +9,10 @@ import androidx.annotation.StringRes;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
+import com.fastaccess.data.dao.GithubStatus;
+import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.ObjectsCompat;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -116,12 +121,17 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     public void onCheckGitHubStatus() {
-//        manageObservable(RestProvider.gitHubStatus()
-//                .doOnNext(gitHubStatusModel -> {
-//                    if (!"good".equalsIgnoreCase(gitHubStatusModel.getStatus())) {
-//                        sendToView(v -> v.showErrorMessage("Github Status:\n" + gitHubStatusModel.getBody()));
-//                    }
-//                }));
+        manageObservable(RestProvider.gitHubStatus()
+                .filter(ObjectsCompat::nonNull)
+                .doOnNext(gitHubStatusModel -> {
+                    Logger.e(gitHubStatusModel);
+                    GithubStatus status = gitHubStatusModel.getStatus();
+                    String description = status != null ? status.getDescription() : null;
+                    String indicatorStatus = status != null ? status.getIndicator() : null;
+                    if (!InputHelper.isEmpty(description) && !"none".equalsIgnoreCase(indicatorStatus)) {
+                        sendToView(v -> v.showErrorMessage("Github Status:(" + indicatorStatus + ")\n" + description));
+                    }
+                }));
     }
 
     public boolean isEnterprise() {

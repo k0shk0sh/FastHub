@@ -4,15 +4,9 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
@@ -44,6 +38,8 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.lang.reflect.Modifier;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -210,7 +206,7 @@ public class RestProvider {
 
     @NonNull public static Observable<GitHubStatusModel> gitHubStatus() {
         return new Retrofit.Builder()
-                .baseUrl("https://status.github.com/")
+                .baseUrl("https://kctbh9vrtdwd.statuspage.io/")
                 .client(provideOkHttpClient())
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
