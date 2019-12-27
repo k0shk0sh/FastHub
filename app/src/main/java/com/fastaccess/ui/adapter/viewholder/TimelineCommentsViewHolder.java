@@ -137,6 +137,14 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         thumbsUpReaction.setOnLongClickListener(this);
         hurrayReaction.setOnLongClickListener(this);
         heartReaction.setOnLongClickListener(this);
+        rocketReaction.setOnLongClickListener(this);
+        rocketReaction.setOnClickListener(this);
+        rocket.setOnLongClickListener(this);
+        rocket.setOnClickListener(this);
+        eyeReaction.setOnLongClickListener(this);
+        eyeReaction.setOnClickListener(this);
+        eyes.setOnLongClickListener(this);
+        eyes.setOnClickListener(this);
     }
 
     public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuesTimelineAdapter adapter,
