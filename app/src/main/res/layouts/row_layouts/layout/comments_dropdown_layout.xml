@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/commentOptions"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/commentOptions"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginTop="@dimen/spacing_normal"
+    android:layout_marginBottom="@dimen/spacing_normal"
     android:background="?card_background"
     android:elevation="2dp"
     android:orientation="horizontal"
     android:outlineProvider="background"
-    android:paddingBottom="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_xs_large"
     tools:ignore="RtlSymmetry"
     tools:showIn="@layout/comments_row_item">
 
@@ -21,8 +20,8 @@
         android:id="@+id/emojiesList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:scrollbarStyle="insideOverlay">
 
         <LinearLayout
@@ -38,7 +37,7 @@
                 android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
-                tools:text="100"/>
+                tools:text="100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/thumbsDown"
@@ -49,7 +48,7 @@
                 android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
-                tools:text="100"/>
+                tools:text="100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/laugh"
@@ -60,7 +59,7 @@
                 android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
-                tools:text="100"/>
+                tools:text="100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/hurray"
@@ -71,7 +70,7 @@
                 android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
-                tools:text="100"/>
+                tools:text="100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/sad"
@@ -82,7 +81,7 @@
                 android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
-                tools:text="100"/>
+                tools:text="100" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/heart"
@@ -90,9 +89,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
-                tools:text="100"/>
+                tools:text="100" />
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/rocket"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:gravity="center"
+                tools:text="100" />
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/eyes"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:gravity="center"
+                tools:text="100" />
 
         </LinearLayout>
     </HorizontalScrollView>

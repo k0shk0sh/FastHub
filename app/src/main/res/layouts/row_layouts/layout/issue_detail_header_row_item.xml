@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,13 +8,13 @@
     <com.fastaccess.ui.widgets.ForegroundRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_normal"
-        android:layout_marginEnd="@dimen/grid_spacing"
         android:layout_marginStart="@dimen/grid_spacing"
         android:layout_marginTop="@dimen/grid_spacing"
+        android:layout_marginEnd="@dimen/grid_spacing"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:background="?card_background"
-        android:paddingBottom="@dimen/spacing_normal"
         android:paddingTop="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/spacing_normal"
         tools:ignore="RtlSymmetry">
 
         <LinearLayout
@@ -35,8 +34,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/avatar_margin_end"
-                    android:layout_marginStart="@dimen/avatar_margin"/>
+                    android:layout_marginStart="@dimen/avatar_margin"
+                    android:layout_marginEnd="@dimen/avatar_margin_end" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -61,7 +60,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textColor="?android:textColorPrimary"
-                            tools:text="When one acquires"/>
+                            tools:text="When one acquires" />
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/date"
@@ -71,7 +70,7 @@
                             android:layout_gravity="center"
                             android:maxLines="1"
                             android:textColor="?android:attr/textColorSecondary"
-                            tools:text="50 minutes"/>
+                            tools:text="50 minutes" />
 
                     </LinearLayout>
 
@@ -85,7 +84,7 @@
                         android:textColor="?android:attr/textColorSecondary"
                         android:visibility="gone"
                         tools:text="@string/owner"
-                        tools:visibility="visible"/>
+                        tools:visibility="visible" />
                 </LinearLayout>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
@@ -96,7 +95,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/options"
                     android:padding="@dimen/spacing_micro"
-                    android:src="@drawable/ic_add_emoji"/>
+                    android:src="@drawable/ic_add_emoji" />
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/commentMenu"
@@ -106,33 +105,33 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/options"
                     android:padding="@dimen/spacing_micro"
-                    android:src="@drawable/ic_overflow"/>
+                    android:src="@drawable/ic_overflow" />
             </LinearLayout>
 
-            <include layout="@layout/comments_dropdown_layout"/>
+            <include layout="@layout/comments_dropdown_layout" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_micro"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:layout_marginTop="@dimen/spacing_micro"
-                android:textIsSelectable="true"/>
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:layout_marginBottom="@dimen/spacing_micro"
+                android:textIsSelectable="true" />
 
             <HorizontalScrollView
                 android:id="@+id/reactionsList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
-                android:paddingBottom="@dimen/spacing_normal"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
                 android:scrollbarStyle="insideOverlay"
-                tools:visibility="visible"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -147,7 +146,7 @@
                         android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:gravity="center"
-                        tools:text="100"/>
+                        tools:text="100" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/thumbsDownReaction"
@@ -158,7 +157,7 @@
                         android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:gravity="center"
-                        tools:text="100"/>
+                        tools:text="100" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/laughReaction"
@@ -169,7 +168,7 @@
                         android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:gravity="center"
-                        tools:text="100"/>
+                        tools:text="100" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/hurrayReaction"
@@ -180,7 +179,7 @@
                         android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:gravity="center"
-                        tools:text="100"/>
+                        tools:text="100" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/sadReaction"
@@ -191,7 +190,7 @@
                         android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:gravity="center"
-                        tools:text="100"/>
+                        tools:text="100" />
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/heartReaction"
@@ -199,9 +198,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:gravity="center"
-                        tools:text="100"/>
+                        tools:text="100" />
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/rocketReaction"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        tools:text="100" />
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/eyeReaction"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        tools:text="100" />
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -214,13 +236,13 @@
         android:id="@+id/labelsHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_normal"
-        android:layout_marginEnd="@dimen/grid_spacing"
         android:layout_marginStart="@dimen/grid_spacing"
         android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/grid_spacing"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:background="?card_background"
-        android:paddingBottom="@dimen/spacing_normal"
         android:paddingTop="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/spacing_normal"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -229,7 +251,7 @@
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"/>
+            android:gravity="center" />
     </LinearLayout>
 
 </LinearLayout>

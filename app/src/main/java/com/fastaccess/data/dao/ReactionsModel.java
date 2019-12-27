@@ -2,10 +2,13 @@ package com.fastaccess.data.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.User;
 import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +27,14 @@ import github.PullRequestTimelineQuery;
     public long id;
     public String url;
     public int total_count;
-    @SerializedName("+1") public int plusOne;
-    @SerializedName("-1") public int minusOne;
+    @SerializedName(value = "+1", alternate = "thumbs_up") public int plusOne;
+    @SerializedName(value = "-1", alternate = "thumbs_down") public int minusOne;
     public int laugh;
     public int hooray;
     public int confused;
     public int heart;
+    public int rocket;
+    public int eyes;
     public String content;
     public User user;
     public boolean viewerHasReacted;
@@ -37,7 +42,7 @@ import github.PullRequestTimelineQuery;
 
     public ReactionsModel() {}
 
-    @Override public String toString() {
+    @NotNull @Override public String toString() {
         return "ReactionsModel{" +
                 "id=" + id +
                 ", url='" + url + '\'' +
@@ -48,6 +53,8 @@ import github.PullRequestTimelineQuery;
                 ", hooray=" + hooray +
                 ", confused=" + confused +
                 ", heart=" + heart +
+                ", rocket=" + rocket +
+                ", eyes=" + eyes +
                 '}';
     }
 
@@ -63,6 +70,8 @@ import github.PullRequestTimelineQuery;
         dest.writeInt(this.hooray);
         dest.writeInt(this.confused);
         dest.writeInt(this.heart);
+        dest.writeInt(this.rocket);
+        dest.writeInt(this.eyes);
         dest.writeString(this.content);
         dest.writeParcelable(this.user, flags);
         dest.writeByte(this.isCallingApi ? (byte) 1 : (byte) 0);
@@ -78,6 +87,8 @@ import github.PullRequestTimelineQuery;
         this.hooray = in.readInt();
         this.confused = in.readInt();
         this.heart = in.readInt();
+        this.rocket = in.readInt();
+        this.eyes = in.readInt();
         this.content = in.readString();
         this.user = in.readParcelable(User.class.getClassLoader());
         this.isCallingApi = in.readByte() != 0;
@@ -88,46 +99,4 @@ import github.PullRequestTimelineQuery;
 
         @Override public ReactionsModel[] newArray(int size) {return new ReactionsModel[size];}
     };
-
-    @NonNull public static List<ReactionsModel> getReactionGroup(@Nullable List<PullRequestTimelineQuery.ReactionGroup> reactions) {
-        List<ReactionsModel> models = new ArrayList<>();
-        if (reactions != null && !reactions.isEmpty()) {
-            for (PullRequestTimelineQuery.ReactionGroup reaction : reactions) {
-                ReactionsModel model = new ReactionsModel();
-                model.setContent(reaction.content().name());
-                model.setViewerHasReacted(reaction.viewerHasReacted());
-                model.setTotal_count(reaction.users().totalCount());
-                models.add(model);
-            }
-        }
-        return models;
-    }
-
-    @NonNull public static List<ReactionsModel> getReaction(@Nullable List<PullRequestTimelineQuery.ReactionGroup1> reactions) {
-        List<ReactionsModel> models = new ArrayList<>();
-        if (reactions != null && !reactions.isEmpty()) {
-            for (PullRequestTimelineQuery.ReactionGroup1 reaction : reactions) {
-                ReactionsModel model = new ReactionsModel();
-                model.setContent(reaction.content().name());
-                model.setViewerHasReacted(reaction.viewerHasReacted());
-                model.setTotal_count(reaction.users().totalCount());
-                models.add(model);
-            }
-        }
-        return models;
-    }
-
-    @NonNull public static List<ReactionsModel> getReaction2(@Nullable List<PullRequestTimelineQuery.ReactionGroup2> reactions) {
-        List<ReactionsModel> models = new ArrayList<>();
-        if (reactions != null && !reactions.isEmpty()) {
-            for (PullRequestTimelineQuery.ReactionGroup2 reaction : reactions) {
-                ReactionsModel model = new ReactionsModel();
-                model.setContent(reaction.content().name());
-                model.setViewerHasReacted(reaction.viewerHasReacted());
-                model.setTotal_count(reaction.users().totalCount());
-                models.add(model);
-            }
-        }
-        return models;
-    }
 }

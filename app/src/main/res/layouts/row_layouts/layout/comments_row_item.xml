@@ -203,6 +203,29 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_gravity="center"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/rocketReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_gravity="center"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/eyeReaction"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_micro"
                     android:layout_gravity="center"
                     android:background="?android:selectableItemBackgroundBorderless"
                     android:gravity="center"
