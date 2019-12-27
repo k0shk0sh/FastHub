@@ -71,7 +71,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             this.appendNewLine(builder);
             this.appendNewLine(builder);
         } else {
-            StringBuffer text = node.getText();
+            CharSequence text = node.getText();
             builder.append(" ");
             builder.append(replace(text.toString()));
             builder.append(" ");

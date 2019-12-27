@@ -1,11 +1,14 @@
 package com.fastaccess.provider.timeline.handler.drawable;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.crashlytics.android.Crashlytics;
 
 class UrlDrawable extends BitmapDrawable implements Drawable.Callback {
     private Drawable drawable;
@@ -14,7 +17,12 @@ class UrlDrawable extends BitmapDrawable implements Drawable.Callback {
 
     @Override public void draw(Canvas canvas) {
         if (drawable != null) {
-            drawable.draw(canvas);
+            try {
+                drawable.draw(canvas);
+            } catch (Exception e) {
+                Crashlytics.logException(e);
+                e.printStackTrace();
+            }
             if (drawable instanceof GifDrawable) {
                 if (!((GifDrawable) drawable).isRunning()) {
                     ((GifDrawable) drawable).start();

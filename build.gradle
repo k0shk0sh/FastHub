@@ -3,11 +3,10 @@ buildscript {
     ext {
         butterKnifeVersion = '10.2.1'
         state_version = '1.4.1'
-        lombokVersion = '1.16.20'
+        lombokVersion = '1.18.10'
         supportVersion = "27.1.0"
-        gms = "12.0.0"
         thirtyinchVersion = '0.9.6'
-        retrofit = '2.3.0'
+        retrofit = '2.7.0'
         junitVersion = '4.12'
         mockitoVersion = '1.10.19'
         assertjVersion = '2.5.0'

@@ -8,10 +8,10 @@ apply plugin: 'io.fabric'
 
 buildProperties {
     notThere {
-        file rootProject.file('debug_gradle.properties')
+        using rootProject.file('debug_gradle.properties')
     }
     secrets {
-        file rootProject.file('release_gradle.properties')
+        using rootProject.file('release_gradle.properties')
     }
 }
 
@@ -29,8 +29,8 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 469
-        versionName "4.6.9"
+        versionCode 470
+        versionName "4.7.0"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
         buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
@@ -38,7 +38,6 @@ android {
         buildConfigField "String", "REST_URL", '"https://api.github.com/"'
         buildConfigField "String", "IMGUR_URL", '"https://api.imgur.com/3/"'
         multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath true
@@ -54,14 +53,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            if (!rootProject.file('gradle.properties').exists()) {
-                signingConfig signingConfigs.signing
-            }
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             ext.alwaysUpdateBuildId = false
         }
-
     }
 
     sourceSets {
@@ -99,14 +94,6 @@ android {
         jumboMode true
         javaMaxHeapSize "4g"
     }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-}
-
-kapt {
-    generateStubs = true
 }
 
 repositories {
@@ -139,7 +126,7 @@ dependencies {
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.15'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
     implementation 'com.annimon:stream:1.1.9'
     implementation 'com.github.GrenderG:Toasty:1.1.3'
     implementation 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
@@ -156,7 +143,8 @@ dependencies {
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}"
     implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
-    implementation "com.google.firebase:firebase-core:17.2.1"
+    implementation "com.google.firebase:firebase-analytics:17.2.1"
+    implementation "com.google.firebase:firebase-inappmessaging:19.0.2"
     implementation "com.google.firebase:firebase-messaging:20.1.0"
     implementation "com.google.firebase:firebase-database:19.2.0"
     implementation "com.google.android.gms:play-services-base:17.1.0"
@@ -170,10 +158,11 @@ dependencies {
     implementation "petrov.kristiyan:colorpicker-library:1.1.4"
     implementation 'com.apollographql.apollo:apollo-rx2-support:1.2.2'
     implementation("com.apollographql.apollo:apollo-runtime:1.2.2")
-    implementation 'com.jaredrummler:android-device-names:1.1.5'
+    implementation 'com.jaredrummler:android-device-names:1.1.9'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
-    implementation 'com.airbnb.android:lottie:3.0.7'
+    implementation 'com.airbnb.android:lottie:3.3.1'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
+    implementation 'com.google.guava:guava:27.0.1-android' /*to be removed*/
     debugImplementation 'com.github.whataa:pandora:2.0.6'
     releaseImplementation 'com.github.whataa:pandora-no-op:2.0.3'
 
@@ -185,7 +174,6 @@ dependencies {
     kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     kapt "io.requery:requery-processor:${requery}"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
-
 }
 
 apply plugin: 'com.google.gms.google-services'

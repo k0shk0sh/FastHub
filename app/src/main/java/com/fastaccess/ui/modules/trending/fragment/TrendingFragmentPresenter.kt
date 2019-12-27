@@ -42,25 +42,21 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
         disposel?.let { if (!it.isDisposed) it.dispose() }
         val config = firebaseTrendingConfigModel
 
-        if (com.fastaccess.BuildConfig.DEBUG) {
-            callApi(lang, since)
-        } else {
-            if (config == null) {
-                manageDisposable(RxHelper.getSingle(RxFirebaseDatabase.data(FirebaseDatabase.getInstance().reference.child("github_trending")))
-                    .doOnSubscribe { sendToView { it.showProgress(0) } }
-                    .map {
-                        firebaseTrendingConfigModel = FirebaseTrendingConfigModel
-                            .map(it.value as? HashMap<String, String>)
-                        return@map firebaseTrendingConfigModel
-                    }
-                    .subscribe(
-                        { callApi(lang, since) },
-                        { callApi(lang, since) }
-                    )
+        if (config == null) {
+            manageDisposable(RxHelper.getSingle(RxFirebaseDatabase.data(FirebaseDatabase.getInstance().reference.child("github_trending")))
+                .doOnSubscribe { sendToView { it.showProgress(0) } }
+                .map {
+                    firebaseTrendingConfigModel = FirebaseTrendingConfigModel
+                        .map(it.value as? HashMap<String, String>)
+                    return@map firebaseTrendingConfigModel
+                }
+                .subscribe(
+                    { callApi(lang, since) },
+                    { callApi(lang, since) }
                 )
-            } else {
-                callApi(lang, since)
-            }
+            )
+        } else {
+            callApi(lang, since)
         }
     }
 
