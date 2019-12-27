@@ -604,4 +604,5 @@
     <string name="commit_file_required">No file changes</string>
     <string name="send_feedback">Send feedback</string>
     <string name="private_wiki_error_msg">Unfortunately we cannot access private repos wiki</string>
+    <string name="file_history">File History</string>
 </resources>

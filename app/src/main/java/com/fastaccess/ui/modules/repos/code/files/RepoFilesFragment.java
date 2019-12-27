@@ -115,6 +115,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         boolean canOpen = canOpen(item);
         popup.getMenu().findItem(R.id.editFile).setVisible(isOwner && item.getType() == FilesType.file && canOpen);
         popup.getMenu().findItem(R.id.deleteFile).setVisible(isOwner && item.getType() == FilesType.file);
+        popup.getMenu().findItem(R.id.history).setVisible(true);
         popup.setOnMenuItemClickListener(item1 -> {
             switch (item1.getItemId()) {
                 case R.id.share:
@@ -147,6 +148,9 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                         PremiumActivity.Companion.startActivity(getContext());
                     }
                     break;
+                case R.id.history:
+                    getPresenter().onItemLongClick(position, v, item);
+                    break;
             }
             return true;
         });
@@ -178,7 +182,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         adapter = new RepoFilesAdapter(getPresenter().getFiles());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        fastScroller.attachRecyclerView(recycler);
+        fastScroller.setVisibility(View.GONE);
     }
 
     @Override public void showProgress(@StringRes int resId) {
