@@ -1,27 +1,20 @@
 package com.fastaccess.provider.timeline;
 
-import android.content.Context;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-
 import android.view.View;
 import android.widget.TextView;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
-import com.fastaccess.R;
 import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.types.ReactionTypes;
-import com.fastaccess.provider.tasks.git.ReactionService;
 import com.fastaccess.ui.widgets.SpannableBuilder;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Kosh on 30 Mar 2017, 6:44 PM

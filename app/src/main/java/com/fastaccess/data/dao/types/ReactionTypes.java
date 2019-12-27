@@ -35,6 +35,16 @@ public enum ReactionTypes {
         return content;
     }
 
+    public String getPostContent() {
+        if (this == PLUS_ONE) {
+            return "+1";
+        } else if (this == MINUS_ONE) {
+            return "-1";
+        } else {
+            return getContent();
+        }
+    }
+
     @IdRes public int getvId() {
         return vId;
     }
