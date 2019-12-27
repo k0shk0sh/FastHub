@@ -50,19 +50,19 @@ public class ReactionsProvider {
                     switch (reactionType) {
                         case COMMENT:
                             observable = RestProvider.getReactionsService(isEnterprise)
-                                    .postIssueCommentReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                                    .postIssueCommentReaction(new PostReactionModel(reactionTypes.getPostContent()), login, repoId, idOrNumber);
                             break;
                         case HEADER:
                             observable = RestProvider.getReactionsService(isEnterprise)
-                                    .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                                    .postIssueReaction(new PostReactionModel(reactionTypes.getPostContent()), login, repoId, idOrNumber);
                             break;
                         case REVIEW_COMMENT:
                             observable = RestProvider.getReactionsService(isEnterprise)
-                                    .postCommentReviewReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                                    .postCommentReviewReaction(new PostReactionModel(reactionTypes.getPostContent()), login, repoId, idOrNumber);
                             break;
                         case COMMIT:
                             observable = RestProvider.getReactionsService(isEnterprise)
-                                    .postCommitReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                                    .postCommitReaction(new PostReactionModel(reactionTypes.getPostContent()), login, repoId, idOrNumber);
                             break;
                     }
                     if (observable == null) return null;
