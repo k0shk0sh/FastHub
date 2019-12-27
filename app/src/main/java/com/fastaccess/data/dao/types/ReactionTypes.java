@@ -14,8 +14,8 @@ public enum ReactionTypes {
 
     HEART("heart", R.id.heart, R.id.heartReaction),
     HOORAY("hooray", R.id.hurray, R.id.hurrayReaction),
-    PLUS_ONE("+1", R.id.thumbsUp, R.id.thumbsUpReaction),
-    MINUS_ONE("-1", R.id.thumbsDown, R.id.thumbsDownReaction),
+    PLUS_ONE("thumbs_up", R.id.thumbsUp, R.id.thumbsUpReaction),
+    MINUS_ONE("thumbs_down", R.id.thumbsDown, R.id.thumbsDownReaction),
     CONFUSED("confused", R.id.sad, R.id.sadReaction),
     LAUGH("laugh", R.id.laugh, R.id.laughReaction);
 
