@@ -25,6 +25,6 @@ interface ContentService {
                    @Query("branch") branch: String,
                    @Body body: CommitRequestModel): Observable<GitCommitModel>
 
-    @GET("api/last-message.json")
+    @GET("api/v2/status.json")
     fun checkStatus(): Observable<GitHubStatusModel>
 }

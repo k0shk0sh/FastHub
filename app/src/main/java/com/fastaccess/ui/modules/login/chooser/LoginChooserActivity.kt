@@ -3,8 +3,8 @@ package com.fastaccess.ui.modules.login.chooser
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.support.transition.TransitionManager
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.transition.TransitionManager
 import android.view.View
 import android.widget.RelativeLayout
 import butterknife.BindView

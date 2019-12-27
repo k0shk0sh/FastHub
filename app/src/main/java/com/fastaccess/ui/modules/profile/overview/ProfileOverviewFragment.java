@@ -2,27 +2,20 @@ package com.fastaccess.ui.modules.profile.overview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.transition.AutoTransition;
-import android.support.transition.Transition;
-import android.support.transition.TransitionManager;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.CardView;
-import android.util.DisplayMetrics;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.transition.AutoTransition;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
+import androidx.core.widget.NestedScrollView;
+import androidx.cardview.widget.CardView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 
 import com.evernote.android.state.State;
 import com.fastaccess.R;
@@ -54,7 +47,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import github.GetPinnedReposQuery;
 
-import static android.view.Gravity.TOP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -66,10 +58,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @BindView(R.id.contributionsCaption) FontTextView contributionsCaption;
     @BindView(R.id.organizationsCaption) FontTextView organizationsCaption;
-    @BindView(R.id.headerImage) RelativeLayout headerImage;
     @BindView(R.id.userInformation) LinearLayout userInformation;
-    @BindView(R.id.chooseBanner) Button chooseBanner;
-    @BindView(R.id.banner_edit) ImageButton chooseBanner_pencil;
     @BindView(R.id.username) FontTextView username;
     @BindView(R.id.fullname) FontTextView fullname;
     @BindView(R.id.description) FontTextView description;
@@ -197,7 +186,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         } else {
             description.setVisibility(GONE);
         }
-        avatarLayout.setUrl(userModel.getAvatarUrl(), null, false, false);
+        avatarLayout.setUrl(userModel.getAvatarUrl(), null, false, false, true);
         avatarLayout.findViewById(R.id.avatar).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
@@ -276,10 +265,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         showMessage(R.string.error, R.string.no_user_found);
     }
 
-    @Override public void onImagePosted(@Nullable String link) {
-        hideProgress();
-    }
-
     @Override public void onInitPinnedRepos(@NonNull List<GetPinnedReposQuery.Node> nodes) {
         if (pinnedReposTextView == null) return;
         if (!nodes.isEmpty()) {
@@ -321,38 +306,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override public void onScrollTop(int index) {
         super.onScrollTop(index);
-    }
-
-    @Override public void onHeaderLoaded(@Nullable Bitmap bitmap) {
-        if (bitmap != null) {
-            headerImage.setBackground(new BitmapDrawable(getResources(), bitmap));
-            headerImage.setVisibility(VISIBLE);
-            DisplayMetrics metrics = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            headerImage.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Math.round(metrics.widthPixels / 3.33333f)));
-            ((ViewGroup) userInformation.getParent()).removeView(userInformation);
-            headerImage.addView(userInformation);
-            userInformation.setPaddingRelative(getResources().getDimensionPixelSize(R.dimen.spacing_xs_large), 0, 0, getResources()
-                    .getDimensionPixelSize(R.dimen.spacing_xs_large));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                username.setTextColor(getResources().getColor(android.R.color.primary_text_dark, getActivity().getTheme()));
-                userInformation.setBackground(getResources().getDrawable(R.drawable.scrim, getActivity().getTheme()));
-            } else {
-                username.setTextColor(getResources().getColor(android.R.color.primary_text_dark));
-                userInformation.setBackground(getResources().getDrawable(R.drawable.scrim));
-            }
-            chooseBanner.setVisibility(GONE);
-            if (getPresenter().getLogin().equals(Login.getUser().getLogin())) {
-                chooseBanner_pencil.setVisibility(VISIBLE);
-                chooseBanner_pencil.bringToFront();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white, getActivity().getTheme()));
-                    chooseBanner_pencil.setForegroundGravity(TOP);
-                } else {
-                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white));
-                }
-            }
-        }
     }
 
     private void onHideProgress() {

@@ -1,18 +1,14 @@
 package com.fastaccess.data.dao.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.converters.GistConverter;
-import com.fastaccess.data.dao.converters.IssueConverter;
-import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
@@ -36,17 +32,17 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
     @io.requery.Nullable long gistId;
 
     public static void pinUpin(@NonNull Gist gist) {
-        PinnedGists pinnedIssues = get(gist.getId());
+        PinnedGists pinnedIssues = get(gist.getGistId().hashCode());
         if (pinnedIssues == null) {
             PinnedGists pinned = new PinnedGists();
             pinned.setLogin(Login.getUser().getLogin());
             pinned.setGist(gist);
-            pinned.setGistId(gist.getId());
+            pinned.setGistId(gist.getGistId().hashCode());
             try {
                 App.getInstance().getDataStore().toBlocking().insert(pinned);
             } catch (Exception ignored) {}
         } else {
-            delete(gist.getId());
+            delete(gist.getGistId().hashCode());
         }
     }
 
@@ -64,18 +60,6 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
                 .value();
     }
 
-    @NonNull public static Disposable updateEntry(long gistId) {
-        return RxHelper.getObservable(Observable.fromPublisher(e -> {
-            PinnedGists pinned = get(gistId);
-            if (pinned != null) {
-                pinned.setEntryCount(pinned.getEntryCount() + 1);
-                App.getInstance().getDataStore().toBlocking().update(pinned);
-                e.onNext("");
-            }
-            e.onComplete();
-        })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
-    }
-
     @NonNull public static Single<List<Gist>> getMyPinnedGists() {
         return App.getInstance().getDataStore().select(PinnedGists.class)
                 .where(LOGIN.eq(Login.getUser().getLogin()).or(LOGIN.isNull()))
@@ -89,5 +73,4 @@ import static com.fastaccess.data.dao.model.PinnedGists.LOGIN;
     public static boolean isPinned(long gistId) {
         return get(gistId) != null;
     }
-
 }

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
@@ -86,6 +86,7 @@ public class PrefGetter {
     private static final String MARKDOWNDOWN_GUIDE = "markdowndown_guide";
     private static final String HOME_BUTTON_GUIDE = "home_button_guide";
     private static final String NAV_DRAWER_GUIDE = "nav_drawer_guide";
+    private static final String ACC_NAV_DRAWER_GUIDE = "acc_nav_drawer_guide";
     private static final String FAB_LONG_PRESS_REPO_GUIDE = "fab_long_press_repo_guide";
     private static final String WRAP_CODE = "wrap_code";
     private static final String OTP_CODE = "otp_code";
@@ -194,6 +195,12 @@ public class PrefGetter {
     public static boolean isNavDrawerHintShowed() {
         boolean isShowed = PrefHelper.getBoolean(NAV_DRAWER_GUIDE);
         PrefHelper.set(NAV_DRAWER_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isAccountNavDrawerHintShowed() {
+        boolean isShowed = PrefHelper.getBoolean(ACC_NAV_DRAWER_GUIDE);
+        PrefHelper.set(ACC_NAV_DRAWER_GUIDE, true);
         return isShowed;
     }
 

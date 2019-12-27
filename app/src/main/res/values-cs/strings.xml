@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Načítám, vyčkejte prosím…</string>
     <string name="action">Akce</string>
     <string name="settings">Nastavení</string>
@@ -226,7 +227,6 @@
     <string name="turn_off">Vypnout</string>
     <string name="unauthorized_user">Neoprávněný uživatel</string>
     <string name="two_factors_otp_error">Je zapotřebí dvou faktorové OTP</string>
-    <string name="no_issue">Žádný problém</string>
     <string name="copy">Kopírovat</string>
     <string name="success_copied">Zkopírováno</string>
     <string name="commit_message">Zpráva k příspěvku</string>
@@ -264,11 +264,8 @@
     <string name="no_commits">Žádné příspěvky</string>
     <string name="no_contributors">Žádní přispěvatelé</string>
     <string name="no_releases">Žádná vydání</string>
-    <string name="no_closed_issues">Žádné uzavřené problémy</string>
-    <string name="no_opened_issues">Žádné otevřené problémy</string>
     <string name="no_events">Žádné události</string>
-    <string name="no_open_pull_requests">Žádné otevřené požadavky</string>
-    <string name="no_closed_pull_request">Žádné uzavřené požadavky</string>
+    <string name="no_pull_requests">Žádné pull requests</string>
     <string name="no_search_results">Žádné výsledky vyhledávání</string>
     <string name="read_write_permission_explanation">Prosím, povolte oprávnění pro povolení službě FastHub
         ukládat soubory do vašeho zařízení pro jejich pozdější zobrazení</string>
@@ -371,15 +368,6 @@
     <string name="enable_signature_box_summary">Povolit zaškrtávací pole pro přepínání podpisu v textovém editoru</string>
     <string name="tags">Štítky</string>
     <string name="add_comment">Přidat komentář</string>
-    <string name="banners">Představujeme vám bannery</string>
-    <string name="banners_info">S FastHub 2.5.0 se nyní můžete lépe vyjádřit pomocí bannerů
-        pro svou profilovou stránku.\n\nKaždý, kdo používá aplikaci FastHub, uvidí vaše záhlaví a vy
-        také uvidíte záhlaví ostatních uživatelů! Chcete-li si sám vytvořit banner, udělejte ho
-        v rozlišení 1280x384 nebo dělitelný, jinak může být oříznut.\n\nBanner můžete kdykoli přidat nebo
-        změnit, a to tak, že vytvoříte gist pojmenovaný jako "header.fst" se souborem obsahujícím
-        přímý odkaz na obrázek záhlaví.\n\nNebo ještě jednoduššeji, použijte vestavěné obrázky!
-    </string>
-    <string name="edit_banner">ZVOLTE BANNER</string>
     <string name="image_error">Chyba při načítání obrázku, zkuste to znovu.</string>
     <string name="trending">Trendy</string>
     <string name="not_really_working">Řazení podle emoji není funkční kvůli omezení GitHub</string>

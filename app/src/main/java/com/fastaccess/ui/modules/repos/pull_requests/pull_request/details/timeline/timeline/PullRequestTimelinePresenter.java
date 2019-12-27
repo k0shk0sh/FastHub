@@ -3,8 +3,8 @@ package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timel
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -375,7 +375,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             List<TimelineModel> models = TimelineConverter.INSTANCE.convert(response.getItems(), comments);
                             if (page == 1 && status != null) {
                                 status.setMergable(parameter.isMergeable());
-                                if (status.getState() != null) models.add(0, new TimelineModel(status));
+                                status.setMergeableState(parameter.getMergeableState());
+                                if (status.getState() != null) {
+                                    models.add(0, new TimelineModel(status));
+                                }
                             }
                             return models;
                         } else {

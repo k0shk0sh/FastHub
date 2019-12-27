@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputLayout;
 import android.view.View;
 
 import com.fastaccess.App;
@@ -18,6 +18,8 @@ import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.FontButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -48,7 +50,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (getParentFragment() instanceof EditorLinkImageMvp.EditorLinkCallback) {
             callback = (EditorLinkImageMvp.EditorLinkCallback) getParentFragment();

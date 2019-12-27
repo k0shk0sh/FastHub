@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/navAccHolder"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navAccHolder"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
+    android:fitsSystemWindows="true"
     android:gravity="bottom"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_s_large">
+    android:minHeight="100dp"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center">
+        android:layout_gravity="center">
 
         <com.fastaccess.ui.widgets.AvatarLayout
             android:id="@+id/navAvatarLayout"
             android:layout_width="@dimen/large_icon_zie"
             android:layout_height="@dimen/large_icon_zie"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"/>
+            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_marginEnd="@dimen/spacing_xs_large" />
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/donatedIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/navAvatarLayout"
             android:layout_alignStart="@+id/navAvatarLayout"
+            android:layout_alignBottom="@+id/navAvatarLayout"
             android:layout_marginStart="@dimen/spacing_large"
             android:contentDescription="@string/success_purchase_message"
             android:src="@drawable/ic_heart_full"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -55,11 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-                android:text="@string/app_name"/>
+                android:text="@string/app_name" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/navUsername"
@@ -67,11 +67,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-                android:text="@string/app_name"/>
+                android:text="@string/app_name" />
         </LinearLayout>
 
         <com.fastaccess.ui.widgets.FontTextView
@@ -83,15 +83,7 @@
             android:rotation="270"
             android:text="PRO"
             android:textColor="?colorAccent"
-            android:visibility="gone"/>
-
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/navToggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_arrow_drop_down"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 

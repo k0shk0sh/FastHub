@@ -2,8 +2,8 @@ package com.fastaccess.data.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.annimon.stream.Stream;
 
@@ -72,5 +72,12 @@ import lombok.Setter;
         model.writeToParcel(parcel, 0);
         int size = parcel.dataSize();
         return size < 600000;
+    }
+
+    @Override public String toString() {
+        return "CommitFileChanges{" +
+                "linesModel=" + linesModel +
+                ", commitFileModel=" + commitFileModel +
+                '}';
     }
 }

@@ -1,20 +1,21 @@
-<resources>
-    <string name="in_progress">Wird geladen…</string>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+    <string name="in_progress">Wird geladen …</string>
     <string name="action">Aktionen</string>
     <string name="settings">Einstellungen</string>
     <string name="cancel">Abbrechen</string>
     <string name="ok">OK</string>
     <string name="no_data">Fehler beim Laden der Daten</string>
     <string name="search">Suchen</string>
-    <string name="please_login">Bitte melde dich an um FastHub zu nutzen</string>
-    <string name="sign_in_to_github">Melde dich mit deinem GitHub Account an um das beste aus FastHub zu holen</string>
+    <string name="please_login">Bitte melde dich an, um FastHub zu nutzen</string>
+    <string name="sign_in_to_github">Melde dich mit deiner GitHub-Kennung an, um das beste aus FastHub zu holen</string>
     <string name="failed_login">Anmeldung fehlgeschlagen</string>
     <string name="sign_in">Anmelden</string>
     <string name="share">Teilen</string>
     <string name="reload">Neu laden</string>
     <string name="profile">Profil</string>
     <string name="error">Fehler</string>
-    <string name="press_again_to_exit">Nochmal drücken zum beenden</string>
+    <string name="press_again_to_exit">Nochmals drücken zum Beenden</string>
     <string name="opened">Offen</string>
     <string name="closed">Geschlossen</string>
     <string name="repo_chooser">Repo auswählen</string>
@@ -25,15 +26,15 @@
     <string name="unfollow">Entfolgen</string>
     <string name="user">Benutzer</string>
     <string name="details">Details</string>
-    <string name="archive_file_detected_error">Archiv entdeckt. Zum öffnen des Archivs die Datei herunterladen</string>
+    <string name="archive_file_detected_error">Archiv entdeckt. Zum Öffnen des Archivs die Datei herunterladen</string>
     <string name="minimum_three_chars">Mindestens 3 Zeichen</string>
     <string name="no_file_found">Keine Datei gefunden</string>
-    <string name="no_readme_found">Keine Readme gefunden</string>
-    <string name="downloading">Wird herunterladen…</string>
-    <string name="downloading_file">Datei wird heruntergeladen…</string>
-    <string name="released">Released</string>
+    <string name="no_readme_found">Keine Readme-Datei gefunden</string>
+    <string name="downloading">Wird heruntergeladen …</string>
+    <string name="downloading_file">Datei wird heruntergeladen …</string>
+    <string name="released">Freigegeben</string>
     <string name="drafted">Entworfen</string>
-    <string name="releases">Releases</string>
+    <string name="releases">Veröffentlichungen</string>
     <string name="no_body">Kein Inhalt</string>
     <string name="contributors">Mitwirkende</string>
     <string name="by">von</string>
@@ -41,7 +42,7 @@
     <string name="re_open_issue">Issue wieder öffnen</string>
     <string name="re_open">wieder öffnen</string>
     <string name="close">Schließen</string>
-    <string name="success_re_opened">Erfolgreich wiedereröffnet</string>
+    <string name="success_re_opened">Erfolgreich wieder geöffnet</string>
     <string name="lock_issue_details">Wenn du das Issue sperrst:\n&#183;Können andere Benutzer keine Kommentare mehr schreiben.\n&#183;Du und andere berechtigte Kollaboteure können allerdings immer noch Kommentare hinterlassen, die anderen lesen können.\n&#183;Du kannst dieses Issue jederzeit wieder entsperren\n</string>
     <string name="unlock_issue_details">Wenn du das Issue entsperrst:\n&#183;Kann jeder wieder Kommentare schreiben\n&#183;Du kannst dieses Issue jederzeit wieder sperren\n</string>
     <string name="lock_issue">Issue sperren</string>
@@ -63,7 +64,7 @@
     <string name="link">Link</string>
     <string name="image">Bild</string>
     <string name="deletion">Löschung</string>
-    <string name="addition">Additionen</string>
+    <string name="addition">Neuerungen</string>
     <string name="changes">Änderungen</string>
     <string name="status">Status</string>
     <string name="confirm_message">Bist du sicher?</string>
@@ -73,7 +74,7 @@
     <string name="delete">Löschen</string>
     <string name="comments">Kommentare</string>
     <string name="comment">Kommentar</string>
-    <string name="success_merge">Erfolgreich gemerged</string>
+    <string name="success_merge">Erfolgreich zusammengeführt</string>
     <string name="file">Datei</string>
     <string name="file_menu">Dateimenü</string>
     <string name="files">Dateien</string>
@@ -83,7 +84,7 @@
     <string name="code_viewer">Code Betrachter</string>
     <string name="open_in_browser">In Browser öffnen</string>
     <string name="big_file">Große Datei</string>
-    <string name="big_file_description">Die Datei ist zu groß zum öffnen.\nWähle "OK" aus um die Datei herunterzuladen</string>
+    <string name="big_file_description">Die Datei ist zu groß zum Öffnen.\nWähle "OK" aus, um die Datei herunterzuladen</string>
     <string name="viewer">Betrachter</string>
     <string name="submit">Abschicken</string>
     <string name="type_here">Hier schreiben</string>
@@ -99,15 +100,15 @@
     <string name="required_field">Benötigtes Feld</string>
     <string name="successfully_submitted">Erfolgreich abgeschickt!</string>
     <string name="create_gist">Gist erstellen</string>
-    <string name="clear">leeren</string>
+    <string name="clear">Leeren</string>
     <string name="users">Benutzer</string>
     <string name="title">Titel</string>
     <string name="milestone">Meilenstein</string>
-    <string name="assign_myself">Mich selber zuordnen</string>
+    <string name="assign_myself">Mir zuordnen</string>
     <string name="submit_issue">Issue abschicken</string>
     <string name="error_creating_issue">Issue konnte nicht erstellt werden</string>
     <string name="create_issue">Issue erstellen</string>
-    <string name="error_highlighting_editor">Bitte Auswahl leeren um mit Bearbeitung fortzufahren</string>
+    <string name="error_highlighting_editor">Bitte Auswahl leeren, um mit der Bearbeitung fortzufahren</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="unread_notification">Du hast ungelesene Benachrichtigungen</string>
     <string name="open">Öffnen</string>
@@ -126,19 +127,19 @@
     <string name="twoFactor">Zwei-Faktor Authentifizierungscode</string>
     <string name="login">Anmelden</string>
     <string name="gist_description">Gist-Beschreibung</string>
-    <string name="avatar_click_hint">Tippe auf einen Avatar um zu dem jeweiligen Profil zu gelangen</string>
-    <string name="feeds_fork_hint">Tippe länger auf einen Fork um entweder die originale- oder die geforkte Repo anzuzeigen</string>
+    <string name="avatar_click_hint">Tippe auf einen Avatar, um zum jeweiligen Profil zu gelangen</string>
+    <string name="feeds_fork_hint">Tippe länger auf einen Fork, um entweder das originale oder das geforkte Repo anzuzeigen</string>
     <string name="click_here_to_download_release_hint">Releases herunterladen</string>
     <string name="options">Optionen</string>
     <string name="click_file_option_hint">Datei herunterladen oder Ordner teilen</string> <!-- Unsure -->
-    <string name="comment_hint">Tippe auf einen Kommentar um den jeweiligen Autor zu taggen oder deinen Kommentar zu bearbeiten
-        \nTippe länger auf dem Kommentar um ihn zu löschen</string>
+    <string name="comment_hint">Tippe auf einen Kommentar, um den jeweiligen Autor zu taggen oder deinen Kommentar zu bearbeiten
+        \nTippe länger auf den Kommentar, um ihn zu löschen</string>
     <string name="star_hint">Repo favorisieren</string>
     <string name="watch">Beobachten</string>
     <string name="watch_hint">Repo Beobachten</string>
-    <string name="pin_repo_hint">Pinne repos an um schneller auf sie zuzugreifen zu können</string>
+    <string name="pin_repo_hint">Pinne Repos an, um schneller auf sie zugreifen zu können</string>
     <string name="no_url">Keine URL gefunden</string>
-    <string name="last_updated">Zuletzt geupdatet.</string>
+    <string name="last_updated">Zuletzt aktualisiert</string>
     <string name="preview">Vorschau</string>
     <string name="view_code">Syntaxhervorhebung</string>
     <string name="click_to_toggle_highlighting">Syntaxhervorhebung umschalten
@@ -151,13 +152,13 @@
     <string name="unread">Ungelesen</string>
     <string name="all">Alle</string>
     <string name="delete_repo">Repo löschen</string>
-    <string name="delete_repo_warning">Wenn du das Repo löschst, kannst du es nicht mehr wiederherstellen</string>
+    <string name="delete_repo_warning">Wenn du das Repo löschst, kannst du es nicht mehr wiederherstellen!</string>
     <string name="thirty_minutes">30 Minuten</string>
     <string name="twenty_minutes">20 Minuten</string>
     <string name="ten_minutes">10 Minuten</string>
     <string name="five_minutes">5 Minuten</string>
-    <string name="one_minute">Minute</string>
-    <string name="one_hour">Stunde</string>
+    <string name="one_minute">1 Minute</string>
+    <string name="one_hour">1 Stunde</string>
     <string name="two_hour">2 Stunden</string>
     <string name="three_hour">3 Stunden</string>
     <string name="created_repo">Erstellt</string>
@@ -188,18 +189,18 @@
     <string name="this_value">dies</string>
     <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
-    <string name="background_job_summary">Wähle wie regelmäßig FastHub nach neuen Benachrichtigungen sucht.</string>
+    <string name="background_job_summary">Wähle, wie regelmäßig FastHub nach neuen Benachrichtigungen sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
     <string name="behavior">Verhalten &amp; Aussehen</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
-    <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub ausversehen verlässt</string>
-    <string name="back_button_title">Drücke nochmal zum beenden</string>
-    <string name="unsaved_data_warning">Alle ungespeicherten Fortschritte gehen verloren</string>
+    <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub aus Versehen verlässt</string>
+    <string name="back_button_title">Drücke nochmals zum Beenden</string>
+    <string name="unsaved_data_warning">Alle ungespeicherten Fortschritte gehen verloren!</string>
     <string name="private_repo">Privat</string>
     <string name="rect_avatar_summary">Rechteckige statt runde Avatare benutzen</string>
-    <string name="rect_avatar_title">Avataraussehen</string>
+    <string name="rect_avatar_title">Aussehen des Avatars</string>
     <string name="rate_app">Diese App bewerten</string>
     <string name="author">Autor</string>
     <string name="fork_github">Auf GitHub forken</string>
@@ -212,23 +213,22 @@
     <string name="notification_settings">Benachrichtigung</string>
     <string name="turn_off">Ausschalten</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
-    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>
-    <string name="no_issue">Kein Issue</string>
+    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor-Passwort wird benötigt</string>							   
     <string name="copy">Kopieren</string>
-    <string name="success_copied">kopiert</string>
+    <string name="success_copied">Kopiert</string>
     <string name="commit_message">Commitnachricht</string>
     <string name="network_error">Konnte nicht mit dem Server kommunizieren</string>
     <string name="unexpected_error">Konnte API nicht erreichen</string>
     <string name="request_error">Konnte Server nicht erreichen, versuche es später erneut</string>
     <string name="marking_as_read">Benachrichtigung als gelesen markieren</string>
-    <string name="forking_gist">gist forken</string>
+    <string name="forking_gist">Gist forken</string>
     <string name="login_using_your_default_browser">Mit dem Standardbrowser anmelden (OAuth)</string>
     <string name="or_character">ODER</string>
     <string name="mark_notification_title">Lesestatus deaktivieren</string>
-    <string name="mark_notification_summary">Benachrichtigung als gelesen markieren sobald sie angetippt wurde.</string>
+    <string name="mark_notification_summary">Benachrichtigung als gelesen markieren, sobald sie angetippt wurde.</string>
     <string name="theme_title">Wähle ein Design</string>
     <string name="theme_summary">Wähle das Standarddesign aus</string>
-	<string name="theme_color_summary">Wähle eine Akzentfarbe</string>
+    <string name="theme_color_summary">Wähle eine Akzentfarbe</string>
     <string name="theme_color_title">Akzentfarbe</string>
     <string name="website">Webseite</string>
     <string name="support_development">Unterstütze uns</string>
@@ -252,26 +252,26 @@
     <string name="no_contributors">Keine Mitwirkenden</string>
     <string name="no_releases">Keine Releases</string>
     <string name="no_closed_issues">Keine geschlossenen Issues</string>
-    <string name="no_opened_issues">Keine geöffneten Issues</string>
+    <string name="no_opened_issues">Keine geöffneten Issues</string>								   
     <string name="no_events">Keine Ereignisse</string>
-    <string name="no_open_pull_requests">Keine offenen Pull Requests</string>
-    <string name="no_closed_pull_request">Keine geschlossenen Pull Requests</string>
+    <string name="no_pull_requests">Keine Pull Requests</string>
+    <string name="no_closed_pull_request">Keine geschlossenen Pull Requests</string>																				
     <string name="no_search_results">Keine Suchergebnisse</string>
-    <string name="read_write_permission_explanation">Bitte erlaube FastHub Zugriff auf die SD-Karte um Dateien abzuspeichern.</string>
+    <string name="read_write_permission_explanation">Bitte erlaube FastHub Zugriff auf die SD-Karte, um Dateien abzuspeichern.</string>
     <string name="public_gists">Öffentliche Gists</string>
     <string name="enable_ads">Werbung aktivieren</string>
     <string name="no_issues">Keine Issues</string>
     <string name="no_unread_notifications">Keine ungelesenen Benachrichtigungen.</string>
     <string name="my_gists">Meine Gists</string>
     <string name="changelog">Letzte Änderungen</string>
-    <string name="notifications_hint">Tippe um die Benachrichtigungsliste zu öffnen oder wische zum verwerfen</string>
-    <string name="home_long_click_hint">Tippe hier länger drauf um zum Hauptbildschirm zu gelangen</string>
+    <string name="notifications_hint">Tippe, um die Benachrichtigungsliste zu öffnen oder wische zum Verwerfen</string>
+    <string name="home_long_click_hint">Tippe hier länger drauf, um zum Hauptbildschirm zu gelangen</string>
     <string name="created">Erstellt</string>
     <string name="assigned">Zugewiesen</string>
     <string name="mentioned">Erwähnt</string>
     <string name="name">Name</string>
     <string name="color">Farbe</string>
-    <string name="create_label">Lebel erstellen</string>
+    <string name="create_label">Label erstellen</string>
     <string name="organization">Organisation</string>
     <string name="organizations">Organisationen</string>
     <string name="people">Personen</string>
@@ -297,10 +297,10 @@
     <string name="recently_updated">Vor kurzem aktualisiert</string>
     <string name="least_recent_updated">Am wenigsten vor kurzem aktiviert</string>
     <string name="empty_search_error">Das Suchfeld darf nicht leer sein!</string>
-    <string name="long_press_repo_fab_hint">Tippe länger um ein Issue-Ticket zu erstellen</string>
-    <string name="commit_can_be_merged">Diese Pull-Request kann gemerged werden</string>
+    <string name="long_press_repo_fab_hint">Tippe länger, um ein Issue-Ticket zu erstellen</string>
+    <string name="commit_can_be_merged">Dieser Pull-Request kann zusammengeführt werden</string>
     <string name="reviewed">überprüft</string>
-    <string name="dismissed_review">Review verwerfen</string>
+    <string name="dismissed_review">Überarbeitung verwerfen</string>
     <string name="approved_these_changes">genehmige diese Änderungen</string>
     <string name="no_reactions">Keine Reaktionen</string>
     <string name="reactions">Reaktionen</string>
@@ -308,13 +308,13 @@
     <string name="wrap_code_summary">Zeilenumbruch wird automatisch aktiviert</string>
     <string name="wrap_code_title">Zeilenumbruch</string>
     <string name="open_source_libs">Open Source Bibliotheken</string>
-    <string name="enable_notification_sound_summary">Benachrichtungston bei Benachrichtigungen abspielen.</string>
-    <string name="enable_notification_sound_title">Benachrichtigunston aktivieren</string>
+    <string name="enable_notification_sound_summary">Benachrichtungston bei Benachrichtigungen abspielen</string>
+    <string name="enable_notification_sound_title">Benachrichtigungston aktivieren</string>
     <string name="login_with_personal_token">Mit persönlichem Token anmelden</string>
     <string name="personal_token">Persönlicher Token</string>
     <string name="basic_login">Normal anmelden</string>
     <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link
-\nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
     <string name="insert">Einfügen</string>
     <string name="select">Auswählen</string>
     <string name="select_picture">Bild auswählen</string>
@@ -326,7 +326,7 @@
     <string name="language">Sprache</string>
     <string name="choose_language_title">Spracheinstellung</string>
     <string name="choose_language_summary">Wähle deine bevorzugte Sprache</string>
-    <string name="un_subscribe">Deabbonieren</string>
+    <string name="un_subscribe">Abbestellen</string>
     <string name="from">von</string>
     <string name="in_value">in</string>
     <string name="subscribe">Abbonieren</string>
@@ -342,26 +342,17 @@
     <string name="successfully_invited">Erfolgreich eingeladen!</string>
     <string name="reply">Antworten</string>
     <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>
-	<string name="want_to_merge">möchte mergen</string>
+    <string name="want_to_merge">möchte mergen</string>
     <string name="watchers">Betrachter</string>
-    <string name="reviewers">Reviewer</string>
-    <string name="no_reviewers">Keine Reviewer</string>
+    <string name="reviewers">Überprüfer</string>
+    <string name="no_reviewers">Keine Überprüfer</string>
     <string name="sent_from_fasthub">Gesendet von meinem %1$s mit %2$s%3$s</string>
     <string name="enable_signature">Signatur aktivieren</string>
-    <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
+    <string name="enable_signature_summary">&quot;Gesendet von meinem…&quot;-Signatur aktivieren</string>
     <string name="enable_signature_box">Signaturbox aktivieren</string>
     <string name="enable_signature_box_summary">Aktivieren, damit Signatur im Editor angezeigt wird</string>
     <string name="tags">Tags</string>
     <string name="add_comment">Kommentar hinzufügen</string>
-    <string name="banners">Einführung von Bannern</string>
-    <string name="banners_info">Mit FastHub 2.5.0 kannst du nun dein Profil mit einem Banner 
-        gestalten und jeder FastHub User wird dein Banner sehen und umgekehrt.\n\nWenn du 
-		selber ein Banner erstellen möchtest, ist es am besten wenn du als Auflösung etwas 
-		nimmst, was sich durch 1280x384 teilen lässt, sonst wird ein Teil des Bildes abgeschnitten.\n\n\n\n
-		Du kannst dein Banner jederzeit wechseln, indem du ein Gist namens "header.fst" erstellst 
-		und als Inhalt einen Direktlink zum Banner angibst. Oder du benutzt einfach den eingebauten Bildwähler!
-    </string>
-    <string name="edit_banner">BANNER AUSWÄHLEN</string>
     <string name="image_error">Bild konnte nicht geladen werden.</string>
     <string name="trending">Im Trend</string>
     <string name="not_really_working">Leider kann derzeit nicht nach Emojis sortiert werden</string>
@@ -371,87 +362,73 @@
     <string name="todo_checked">abgehakt</string>
     <string name="todo_unchecked">ausstehend</string>
     <string name="divider">Trenner</string>
-    <string name="no_user_found">Kein User gefunden</string>
+    <string name="no_user_found">Kein Benutzer gefunden</string>
     <string name="no_trending">Nichts im Trend</string>
-    <string name="reset">Zurücksetzten</string>
+    <string name="reset">Zurücksetzen</string>
     <string name="apply">Anwenden</string>
     <string name="filter">Filter</string>
     <string name="type">Typ</string>
     <string name="sort_direction">Sortierungsrichtung</string>
     <string name="assignee_added">Assignee erfolgreich hinzugefügt</string>
-    <string name="reviewer_added">Reviewer erfolgreich hinzugefügt</string>
+    <string name="reviewer_added">Überprüfer erfolgreich hinzugefügt</string>
     <string name="milestone_added">Meilenstein erfolgreich hinzugefügt</string>
     <string name="feed">Feed</string>
     <string name="premium_theme">Premiumdesign</string>
     <string name="choose_code_theme">Farbcodepalette auswählen</string>
-    <string name="enterprise_login_warning">Bitte logge dich per OAuth ein um den ganzen Umfang der GitHub API benutzen 
-	zu können und um zufällige Logouts bezüglich Enterprise und Logintokens zu verhindern.</string>
-    <string name="add_account">Account hinzufügen</string>
-    <string name="choose_account">Account auswählen</string>
-	<string name="not_match">Keine Übereinstimmung</string>
-	<string name="warning">Warnung</string>
-	<string name="owner">Besitzer</string>
-	<string name="original_poster">Originaler Poster</string>
-    <string name="cancel_reviews">Reviews abbrechen</string>
+    <string name="enterprise_login_warning">Bitte logge dich per OAuth ein, um den ganzen Umfang der GitHub API benutzen 
+	    zu können und um zufällige Logouts bezüglich Enterprise und Logintokens zu verhindern.</string>
+    <string name="add_account">Kennung hinzufügen</string>
+    <string name="choose_account">Kennung auswählen</string>
+    <string name="not_match">Keine Übereinstimmung</string>
+    <string name="warning">Warnung</string>
+    <string name="owner">Besitzer</string>
+    <string name="original_poster">Originaler Poster</string>
+    <string name="cancel_reviews">Überprüfung abbrechen</string>
     <string name="colored_navbar_summary">Deaktiviere Tönung der Navigationsleiste in Themen</string>
-    <string name="colored_navbar_title">Deaktivieren der Navigationsleisten Tönung</string>
-    <string name="sound_chooser_summary">Eigenen Benachrichtigungs Ton auswählen</string>
-    <string name="sound_chooser_title">Benachrichtigungs Ton auswählen</string>
-    <string name="disable_auto_gif_summary">Deaktiviere automatische wiedergabe von GIFs</string>
-    <string name="disable_auto_gif_title">Deaktiviere GIF wiedergabe</string>
-	<string name="request_changes">angeforderte Änderungen</string>
-	<string name="google_play_service_error">Google Play-Dienste sind nicht verfügbar</string>
-	<string name="edit_gist">GIST bearbeiten</string>
-	<string name="content">Inhalt</string>
-	<string name="expand">erweitern</string>
-	<string name="copy_sha">SHA-1 Kopieren</string>
-	<string name="view_as_code">Als Code anzeigen</string>
-	<string name="app_animation_title">In-App-Animationen deaktivieren</string>
-	<string name="app_animation_summary">Deaktiviere in-App-Animationen überall.</string>
-	<string name="can_not_merge_pr">Dieser PR kann jetzt\jetzt nicht zusammengeführt werden.</string>
-	<string name="projects">Projekte</string>
+    <string name="colored_navbar_title">Deaktivieren der Navigationsleisten-Tönung</string>
+    <string name="sound_chooser_summary">Eigenen Benachrichtigungston auswählen</string>
+    <string name="sound_chooser_title">Benachrichtigungston auswählen</string>
+    <string name="disable_auto_gif_summary">Deaktiviere automatische Wiedergabe von GIFs</string>
+    <string name="disable_auto_gif_title">Deaktiviere GIF-Wiedergabe</string>
+    <string name="request_changes">angeforderte Änderungen</string>
+    <string name="google_play_service_error">Google Play-Dienste sind nicht verfügbar</string>
+    <string name="edit_gist">GIST bearbeiten</string>
+    <string name="content">Inhalt</string>
+    <string name="expand">erweitern</string>
+    <string name="copy_sha">SHA-1 Kopieren</string>
+    <string name="view_as_code">Als Code anzeigen</string>
+    <string name="app_animation_title">In-App-Animationen deaktivieren</string>
+    <string name="app_animation_summary">Deaktiviere in-App-Animationen überall.</string>
+    <string name="can_not_merge_pr">Diese PR kann jetzt nicht zusammengeführt werden</string>
+    <string name="projects">Projekte</string>
     <string name="no_projects">Keine Projekte</string>
-	<string name="no_cards">Keine Karten</string>
-	<string name="card_added_by">Hinzugefügt von %s %s</string>
-	<string name="too_large_changes">Zu viele Unterschiede zur Anzeige. Bitte, sehe Sie Sie dir über den Browser an</string>
-	<string name="project">Projekt</string>
-	<string name="please_read">BITTE LESEN!</string>
-	<string name="fasthub_faq_description">
+    <string name="no_cards">Keine Karten</string>
+    <string name="card_added_by">Hinzugefügt von %s %s</string>
+    <string name="too_large_changes">Zu viele Unterschiede zur Anzeige. Bitte über den Browser ansehen!</string>
+    <string name="project">Projekt</string>
+    <string name="please_read">BITTE LESEN!</string>
+    <string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Warum kann ich meine <b> Organisationen </b> entweder <i> private </i> oder <i> öffentliche </i> sehen\nicht sehen?</h5>
-        <p>Öffne https://github.com/Settings/Applications und suche nach FastHub, öffne es dann Blätter zu Organisation Zugang und klicke auf den Grant Knopf,
-        Alternativ melde dich über  einen <b> Zugang Token </b> an welches das Setup vereinfacht.</p>
+        <h5>• Warum kann ich meine <b> Organisationen </b> entweder <i> private </i> oder <i> öffentliche </i> sehen\\nicht sehen?</h5>
+        <p>Öffne https://github.com/Settings/Applications und suche nach FastHub, öffne es dann, gehe zu Organisation Zugang und klicke auf den Grant Knopf,
+        Alternativ melde dich über einen <b> Zugangsoken </b> an, welches das Setup vereinfacht.</p>
 
-        <h5>• Ich habe versuchtt mich mit einem Zugangs Token anzumelden amp; OTP aber es funtioniert nicht?</h5>
-        <p>Du kannst dich nicht mit einem zugangs token anmelden &amp; OTP alle Zusammen wegen der Lebenszeit des OTP codes, du musst dich alle paar sekunden anmelden</p>
+        <h5>• Ich habe versucht, mich mit einem Zugangstoken anzumelden &amp; OTP aber es funtioniert nicht?</h5>
+        <p>Du kannst dich nicht mit einem Zugangstoken anmelden &amp; OTP alle Zusammen wegen der Lebenszeit des OTP codes, du musst dich alle paar sekunden anmelden</p>
 
-        <h5>• Warum werden mein privates Repo &amp; Enterprise Wiki nicht angezeigt?</h5>
-        <p>Es wie FastHub die GitHub Wiki page holt &amp; Private Repos benötigen einen Sitzungs token denn FastHub nicht bekommen kann.</p>
+        <h5>• Warum wird mein privates Repo &amp; Enterprise Wiki nicht angezeigt?</h5>
+        <p>Es wie FastHub die GitHub Wiki page holt &amp; Private Repos benötigen einen Sitzungstoken, den FastHub nicht bekommen kann.</p>
 
-        <h5>• Ich habe mich mit meinen Enterprise account angemeldet kann\kann nicht mit anderen sachen interagieren außer meinem Enterprise GitHub?</h5>
-        <p>Nun, logisch, kannst du nicht auf etwas anderes als Ihr Unternehmen zugreifen. FastHub versucht, so viel möglich zu erlauben, aber kann
-        in den meisten Fällen nicht viel dafür tun, da Ihre Anmeldedaten auf den GitHub Server nicht vorhanden sind. Aber in einem <b> paar </b>
-        fällen Ihr GitHub Konto OAuth Token wird den Trick tun.</p>
+        <h5>• Ich habe mich mit meiner Enterprisekennung angemeldet kann\\kann nicht mit anderen Sachen interagieren außer meinem Enterprise GitHub?</h5>
+        <p>Logischerweise kannst du nicht auf etwas anderes als dein Unternehmen zugreifen. FastHub versucht dir möglichst viel zu ermöglichen, aber kann
+        natürlich nicht viel tun, wenn deine Anmeldedaten auf den GitHub Servern nicht vorhanden sind. In ein <b> paar </b>
+        Fällen kann es allerdings helfen, dich mit deinem OAuth Token anzumelden.</p>
 
-        <h5>• Warum habe ich Probleme bei der Bearbeitung von Problemen/PRS?</h5>
-        <p>Wenn du ein öffentliches organisations-repo bearbeiten willst, wende dich bitte an deine organisation, um Zugang zu FastHub zu gewähren oder Zugangsdaten zu verwenden!.</p>
+        <h5>• Ich habe Schwierigkeiten bei der Bearbeitung von Problemen/PRS!</h5>
+        <p>Wenn du ein öffentliches Organisations-Repo bearbeiten willst, wende dich bitte an deine Organisation, um den Zugang für FastHub genehmigen zu lassen oder verwende den entsprechenden Access Token!.</p>
 
-        <h5>• Ich habe das problem oder  Ich möchte dies &amp; das!!</h5>
-        <p>Gehe zu https://github.com/k0shk0sh/FastHub/issues/new und erstelle ein neues issue  für bugs oder Feature Requests, Ich möchte dich ermutigen
-        das du vor dem erstellen eines Tickets suchst ob es das schon existiert.Jeder doppelter Request wird dazu führen dass du sofort ausgeschlossen wirst.</p>
-
-        <h5>• Wie bekomme ich einen PROMO CODE?</h5>
-        <p>Wenn du ein Student bist musst du  mir eine e-Mail schicken,in der du mir beweist das du ein Student bist, Du brauchst die unten stehen den dokumente:</p>
-        <ul>
-        <li>Deine Universitätenausweis & deinen Personalausweis (der deinen Namen zeigt & und dein Gesicht um es zu vergleichen!)</li>
-        <li>Dein Uni-Start & Enddatum</li>
-        <li>Bewerte FastHub im Play Store</li>
-        </ul>
-        <p>Wenn du kein Student bist und du kannst es dir nicht leisten für PRO zu bezahlen, musst du:</p>
-        <ul>
-        <li>Einen Arctikel über Fasthub schreiben in Social Media wie (Medium)</li>
-        <li>Bewerte FastHub im Play Store</li>
-        </ul>
+        <h5>• Ich habe einen Fehler gefunden oder habe Verbesserungsvorschläge!</h5>
+        <p>Gehe zu https://github.com/k0shk0sh/FastHub/issues/new und erstelle ein neues Issue für Bugmeldungen oder Feature Requests. Bitte suche aber vor dem Erstellen nach bereits existierenden Tickets. Jede doppelte Anfrage wird sofort als Duplikat markiert und geschlossen.</p>
     ]]></string>
     <string name="faq">FAQ</string>
     <string name="comments_added_successfully">Kommentare erfolgreich hinzugefügt</string>
@@ -459,18 +436,18 @@
     <string name="english_please">Bitte schreibe auf Englisch.</string>
     <string name="contributions">Beiträge</string>
     <string name="open_new_window">In neuem Fenster öffnen</string>
-    <string name="dismiss_all">Alles Verwerfen</string>
+    <string name="dismiss_all">Alles verwerfen</string>
     <string name="edited">• bearbeitet</string>
-    <string name="customization">Personalisation</string>
+    <string name="customization">Personalisierungen</string>
     <string name="restore">Wiederherstellen</string>
     <string name="backup">Sichern</string>
     <string name="backed_up">Erfolgreich gesichert!</string>
-    <string name="select_backup">Backup auswählen</string>
-    <string name="permission_failed">Rechte nicht gewährt.</string>
-    <string name="backup_summary">Letztes Update: %s</string>
+    <string name="select_backup">Sicherung auswählen</string>
+    <string name="permission_failed">Keine Berechigungen.</string>
+    <string name="backup_summary">Letzte Aktualisierung: %s</string>
     <string name="now">Jetzt</string>
     <string name="no_orgs_dialog_title">Organisation(en) nicht auffindbar?</string>
-    <string name="up_to_date">Du hast die aktuellste Version!</string>
+    <string name="up_to_date">Du hast bereits die aktuellste Version!</string>
     <string name="new_version">Eine neue Version ist verfügbar.</string>
     <string name="enable_notification_title">Benachrichtigungen aktivieren</string>
     <string name="clear_search_keywords">Suchverlauf löschen</string>
@@ -480,8 +457,14 @@
     <string name="comment_is_too_far_to_paginate">Dieser Kommentar liegt zu weit zurück, um ihn anzuzeigen</string>
     <string name="disable_loading_image_title">Ladebild deaktivieren</string>
     <string name="report_issue_warning">Dieses Problem wird zum FastHub Repo in GitHub übermittelt</string>
-    <string name="disable_loading_image_summary">Bei Nutzung des mobilen Internets Ladebild deaktivieren</string>
-	<string name="block">blockieren</string>
+    <string name="disable_loading_image_summary">Bei Nutzung einer mobilen Datenverbindung Ladebild deaktivieren</string>
+    <string name="block">Blockieren</string>
+    <string name="user_blocked">Nutzer blockiert</string>
+    <string name="user_unblocked">Nutzer nicht mehr blockiert</string>
+    <string name="unblock">Nicht mehr blockieren</string>
+    <string name="clear_image_cache">Bilderzwischenspeicher leeren</string>
+    <string name="restart_app_message">Bitte die App neu starten</string>
+    <string name="menu_label">Menü</string>
+    <string name="send_feedback">Feedback senden</string>
+    <string name="commit_file_required">Keine Dateien geändert</string>
 </resources>
-
-

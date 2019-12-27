@@ -8,12 +8,12 @@
     android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?android:toolbarStyle">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="?android:toolbarStyle">
@@ -48,19 +48,22 @@
                     android:textColor="?android:textColorPrimary"
                     tools:text="Remember: shreded ramen tastes best when flattened in a sauté pan enameled with rum."/>
             </LinearLayout>
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.prettifier.pretty.PrettifyWebView
-            android:id="@+id/webView"
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:webview_background="?android:windowBackground"/>
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:paddingStart="@dimen/spacing_xs_large"
+            android:paddingTop="@dimen/spacing_normal"/>
     </LinearLayout>
 
 </LinearLayout>

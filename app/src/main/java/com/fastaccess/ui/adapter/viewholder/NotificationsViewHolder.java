@@ -1,9 +1,9 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,7 +28,6 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
-    @BindView(R.id.unsubsribe) ForegroundImageView unSubscribe;
     @BindView(R.id.markAsRead) ForegroundImageView markAsRead;
     @BindView(R.id.notificationType) ForegroundImageView notificationType;
     @BindView(R.id.repoName) FontTextView repoName;
@@ -36,7 +35,6 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
 
     private NotificationsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean showUnreadState) {
         super(itemView, adapter);
-        unSubscribe.setOnClickListener(this);
         markAsRead.setOnClickListener(this);
         this.showUnreadState = showUnreadState;
     }
@@ -53,7 +51,6 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
             int color;
             date.setText(ParseDateFormat.getTimeAgo(thread.getUpdatedAt()));
             markAsRead.setVisibility(thread.isUnread() ? View.VISIBLE : View.GONE);
-//            unSubscribe.setImageResource(thread.isIsSubscribed() ? R.drawable.ic_unsubscribe : R.drawable.ic_subscribe);
             if (thread.getSubject().getType() != null) {
                 notificationType.setImageResource(thread.getSubject().getType().getDrawableRes());
                 notificationType.setContentDescription(thread.getSubject().getType().name());

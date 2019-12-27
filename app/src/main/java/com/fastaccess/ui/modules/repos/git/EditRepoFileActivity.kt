@@ -5,9 +5,9 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.TextInputLayout
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import com.google.android.material.textfield.TextInputLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -80,6 +80,11 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.submit) {
+            val text = editText.text
+            if (presenter.fileContent == text.toString() && presenter.model?.fileName == fileName.editText?.text.toString()) {
+                showErrorMessage(getString(R.string.commit_file_required))
+                return true
+            }
             presenter.onSubmit(editText.text?.toString(), fileName.editText?.text?.toString(), description.editText?.text?.toString())
             return true
         }
@@ -129,7 +134,7 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
     }
 
     companion object {
-        val EDIT_RQ = 2017
+        const val EDIT_RQ = 2017
 
         fun startForResult(activity: Activity, model: EditRepoFileModel, isEnterprise: Boolean) {
             val bundle = Bundler.start()

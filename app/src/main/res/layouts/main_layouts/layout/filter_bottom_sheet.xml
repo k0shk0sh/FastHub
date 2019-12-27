@@ -7,19 +7,19 @@
     android:background="?android:windowBackground"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?android:toolbarStyle">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/filter_header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="?android:toolbarStyle"
             app:title="@string/filter">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/filter_sheet_search_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,8 +53,8 @@
                 android:text="@string/reset"
                 android:textColor="?android:textColorPrimary"/>
 
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,7 +72,7 @@
             android:layout_weight="1"
             android:text="@string/type"/>
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/type_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
             android:layout_weight="1"
             android:text="@string/sort"/>
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sort_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
             android:layout_weight="1"
             android:text="@string/sort_direction"/>
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sort_direction_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

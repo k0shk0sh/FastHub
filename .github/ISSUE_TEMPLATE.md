@@ -13,7 +13,7 @@
    - Make sure the issue doesn't exists, lets keep things clean & tidy here :).  
 -->
 
-**FastHub Version:**  <!-- Don't forget to mention "Enterprise" here if needed. -->  <>
+**FastHub Version:**  <!-- Don't forget to mention "Enterprise" here if needed. -->  
 **Android Version:**  
 **Device Information:**  
 - MANUFACTURER: <!-- e.g. Yota Devices Limited -->  

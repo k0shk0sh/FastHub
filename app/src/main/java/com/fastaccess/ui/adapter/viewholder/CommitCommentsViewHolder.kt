@@ -1,7 +1,7 @@
 package com.fastaccess.ui.adapter.viewholder
 
-import android.support.transition.ChangeBounds
-import android.support.transition.TransitionManager
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -74,7 +74,7 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
             name.text = author3.login
         } else {
             avatar.setUrl(null, null, false, false)
-            name.text = null
+            name.text = ""
         }
         if (!InputHelper.isEmpty(t.body)) {
             val width = adapter?.getRowWidth() ?: 0

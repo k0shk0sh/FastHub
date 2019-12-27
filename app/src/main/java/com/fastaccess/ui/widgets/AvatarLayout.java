@@ -1,18 +1,21 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.TooltipCompat;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.TooltipCompat;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.ObjectKey;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -71,6 +74,10 @@ public class AvatarLayout extends FrameLayout {
     }
 
     public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg, boolean isEnterprise) {
+        setUrl(url, login, isOrg, isEnterprise, false);
+    }
+
+    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg, boolean isEnterprise, boolean reload) {
         this.login = login;
         this.isOrg = isOrg;
         this.isEnterprise = isEnterprise;
@@ -85,10 +92,11 @@ public class AvatarLayout extends FrameLayout {
                 .load(url)
                 .fallback(ContextCompat.getDrawable(getContext(), R.drawable.ic_fasthub_mascot))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .signature(new ObjectKey(reload ? String.valueOf(System.currentTimeMillis()) : "0"))
                 .dontAnimate()
                 .into(avatar);
     }
-    
+
     private void setBackground() {
         if (PrefGetter.isRectAvatar()) {
             setBackgroundResource(R.drawable.rect_shape);

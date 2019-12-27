@@ -2,7 +2,7 @@ package com.fastaccess.data.dao.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.fastaccess.App;
@@ -42,7 +42,7 @@ import lombok.NoArgsConstructor;
     @Nullable String login;
 
     @NonNull
-    public static Disposable save(@android.support.annotation.Nullable List<Event> events, @android.support.annotation.Nullable String user) {
+    public static Disposable save(@androidx.annotation.Nullable List<Event> events, @androidx.annotation.Nullable String user) {
         return RxHelper.getSingle(Single.fromPublisher(s -> {
             try {
                 Login login = Login.getUser();

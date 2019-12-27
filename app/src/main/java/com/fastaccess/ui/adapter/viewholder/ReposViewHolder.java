@@ -1,8 +1,8 @@
 package com.fastaccess.ui.adapter.viewholder;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.format.Formatter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +94,10 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
             language.setText(repo.getLanguage());
             language.setTextColor(ColorsProvider.getColorAsColor(repo.getLanguage(), language.getContext()));
             language.setVisibility(View.VISIBLE);
+        } else {
+            language.setTextColor(Color.BLACK);
+            language.setVisibility(View.GONE);
+            language.setText("");
         }
     }
 }

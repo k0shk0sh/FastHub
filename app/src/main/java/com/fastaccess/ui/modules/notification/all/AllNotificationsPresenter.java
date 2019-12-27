@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.notification.all;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
 import android.view.View;
 
 import com.fastaccess.R;
@@ -36,11 +37,6 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 if (item.isUnread() && !PrefGetter.isMarkAsReadEnabled()) {
                     markAsRead(position, v, item);
                 }
-            } else if (v.getId() == R.id.unsubsribe) {
-                item.setUnread(false);
-                manageDisposable(item.save(item));
-                sendToView(view -> view.onUpdateReadState(new GroupedNotificationModel(item), position));
-                ReadNotificationService.unSubscribe(v.getContext(), item.getId());
             } else {
                 if (item.getSubject() != null && item.getSubject().getUrl() != null) {
                     if (item.isUnread() && !PrefGetter.isMarkAsReadEnabled()) {

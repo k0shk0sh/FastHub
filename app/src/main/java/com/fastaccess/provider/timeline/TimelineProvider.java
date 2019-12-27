@@ -2,8 +2,8 @@ package com.fastaccess.provider.timeline;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.style.BackgroundColorSpan;
 
 import com.fastaccess.R;
@@ -112,6 +112,9 @@ public class TimelineProvider {
                             .bold(issueEventModel.getMilestone().getTitle())
                             .append(" ")
                             .append("milestone");
+                } else if (event == IssueEventType.deployed) {
+                    spannableBuilder.append(" ")
+                            .bold("deployed");
                 } else {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
                 }

@@ -3,12 +3,12 @@ package com.fastaccess.ui.modules.repos.issues.issue.details;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +38,7 @@ import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.locking.LockIssuePrBottomSheetDialog;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFragment;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineFragment;
@@ -190,13 +191,17 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.lockIssue) {
-            MessageDialogView.newInstance(
-                    getPresenter().isLocked() ? getString(R.string.unlock_issue) : getString(R.string.lock_issue),
-                    getPresenter().isLocked() ? getString(R.string.unlock_issue_details) : getString(R.string.lock_issue_details),
-                    Bundler.start().put(BundleConstant.EXTRA_TWO, true)
-                            .put(BundleConstant.YES_NO_EXTRA, true)
-                            .end())
-                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            if (!getPresenter().isLocked()) {
+                LockIssuePrBottomSheetDialog.Companion
+                        .newInstance()
+                        .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            } else {
+                MessageDialogView.newInstance(getString(R.string.unlock_issue), getString(R.string.unlock_issue_details),
+                        Bundler.start().put(BundleConstant.EXTRA_TWO, true)
+                                .put(BundleConstant.YES_NO_EXTRA, true)
+                                .end())
+                        .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            }
             return true;
         } else if (item.getItemId() == R.id.labels) {
             LabelsDialogFragment.newInstance(getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null,
@@ -365,7 +370,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         getPresenter().onPutAssignees(users);
     }
 
-    @Override protected void onNavToRepoClicked() {
+    @Override public void onNavToRepoClicked() {
         Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(),
                 getPresenter().getLogin(), RepoPagerMvp.ISSUES), isEnterprise());
         startActivity(intent);
@@ -393,11 +398,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         }
     }
 
-    private IssueTimelineFragment getIssueTimelineFragment() {
-        if (pager == null || pager.getAdapter() == null) return null;
-        return (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-    }
-
     @Override public void onTagUser(@NonNull String username) {
         commentEditorFragment.onAddUserName(username);
     }
@@ -405,7 +405,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public void onCreateComment(String text, Bundle bundle) {}
 
     @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
-        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText("");
     }
 
     @NonNull @Override public ArrayList<String> getNamesToTag() {
@@ -416,8 +416,17 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         return new ArrayList<>();
     }
 
+    @Override public void onLock(@NonNull String reason) {
+        getPresenter().onLockUnlockIssue(reason);
+    }
+
+    private IssueTimelineFragment getIssueTimelineFragment() {
+        if (pager == null || pager.getAdapter() == null) return null;
+        return (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+    }
+
     private void hideShowFab() {
-        if (getPresenter().isLocked() && !getPresenter().isOwner()) {
+        if (getPresenter().isLocked() && !getPresenter().isOwner() && !getPresenter().isCollaborator()) {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
             return;
         }

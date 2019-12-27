@@ -1,10 +1,10 @@
 package com.fastaccess.ui.modules.repos.code;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
@@ -102,9 +102,11 @@ public class RepoCodePagerFragment extends BaseFragment<RepoCodePagerMvp.View, R
     }
 
     @Override public void onBackPressed() {
-        RepoFilePathFragment pathView = (RepoFilePathFragment) pager.getAdapter().instantiateItem(pager, 1);
-        if (pathView != null) {
-            pathView.onBackPressed();
+        if (pager != null && pager.getAdapter() != null) {
+            RepoFilePathFragment pathView = (RepoFilePathFragment) pager.getAdapter().instantiateItem(pager, 1);
+            if (pathView != null) {
+                pathView.onBackPressed();
+            }
         }
     }
 

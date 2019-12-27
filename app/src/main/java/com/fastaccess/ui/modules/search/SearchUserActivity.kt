@@ -30,7 +30,7 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
     @State var username = ""
     @State var searchTerm = ""
 
-    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    @OnTextChanged(value = [R.id.searchEditText], callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     fun onTextChange(str: Editable) {
         searchTerm = str.toString()
         if (searchTerm.isEmpty()) {
@@ -74,15 +74,15 @@ class SearchUserActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FA
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             val args = intent.extras
-            username = args.getString(USERNAME)
+            username = args?.getString(USERNAME) ?: ""
             if (InputHelper.isEmpty(username)) {
                 finish()
                 return
             }
-            searchTerm = args.getString(SEARCH_TERM)
+            searchTerm = args?.getString(SEARCH_TERM) ?: ""
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.containerFragment, SearchReposFragment.newInstance(), "SearchReposFragment")
-                    .commit()
+                .replace(R.id.containerFragment, SearchReposFragment.newInstance(), "SearchReposFragment")
+                .commit()
         }
         searchEditText.setText(searchTerm)
         onSearchClicked()

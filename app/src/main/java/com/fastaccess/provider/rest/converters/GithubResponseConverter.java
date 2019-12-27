@@ -1,6 +1,6 @@
 package com.fastaccess.provider.rest.converters;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
@@ -39,7 +39,7 @@ public class GithubResponseConverter extends Converter.Factory {
         return GsonConverterFactory.create(gson).requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit);
     }
 
-    private static class StringResponseConverter implements Converter<ResponseBody, String> {
+    public static class StringResponseConverter implements Converter<ResponseBody, String> {
         @Override public String convert(@NonNull ResponseBody value) throws IOException {
             return value.string();
         }

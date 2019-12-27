@@ -1,9 +1,9 @@
 package com.fastaccess.ui.modules.main.notifications
 
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
+import android.text.Html
 import android.view.View
-import butterknife.BindView
 import butterknife.OnClick
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.AbstractFastHubNotification.NotificationType
@@ -14,8 +14,7 @@ import com.fastaccess.helper.PrefGetter
 import com.fastaccess.ui.base.BaseDialogFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
-import com.fastaccess.ui.widgets.FontTextView
-import com.prettifier.pretty.PrettifyWebView
+import kotlinx.android.synthetic.main.dialog_guide_layout.*
 
 /**
  * Created by Kosh on 17.11.17.
@@ -27,8 +26,6 @@ class FastHubNotificationDialog : BaseDialogFragment<BaseMvp.FAView, BasePresent
         isCancelable = false
     }
 
-    @BindView(R.id.title) @JvmField var title: FontTextView? = null
-    @BindView(R.id.webView) @JvmField var webView: PrettifyWebView? = null
     private val model by lazy { arguments?.getParcelable<FastHubNotification>(BundleConstant.ITEM) }
 
     @OnClick(R.id.cancel) fun onCancel() {
@@ -38,7 +35,7 @@ class FastHubNotificationDialog : BaseDialogFragment<BaseMvp.FAView, BasePresent
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         model?.let {
             title?.text = it.title
-            webView?.setGithubContent(it.body, null, false, false)
+            description?.text = Html.fromHtml(it.body)
             it.isRead = true
             FastHubNotification.update(it)
         } ?: dismiss()

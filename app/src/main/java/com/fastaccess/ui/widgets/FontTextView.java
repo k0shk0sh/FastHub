@@ -1,19 +1,23 @@
 package com.fastaccess.ui.widgets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.os.Parcelable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatTextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatTextView;
+
 import android.util.AttributeSet;
 import android.view.Gravity;
 
+import com.crashlytics.android.Crashlytics;
 import com.evernote.android.state.State;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
@@ -55,6 +59,22 @@ public class FontTextView extends AppCompatTextView {
     @Override public void setSelected(boolean selected) {
         super.setSelected(selected);
         this.selected = selected;
+    }
+
+    @Override public void setTextCursorDrawable(@Nullable Drawable textCursorDrawable) {
+        try {
+            super.setTextCursorDrawable(textCursorDrawable);
+        } catch (Exception e) {
+            Crashlytics.logException(e);
+        }
+    }
+
+    @Override public void setTextCursorDrawable(int textCursorDrawable) {
+        try {
+            super.setTextCursorDrawable(textCursorDrawable);
+        } catch (Exception e) {
+            Crashlytics.logException(e);
+        }
     }
 
     private void init(@NonNull Context context, @Nullable AttributeSet attributeSet) {

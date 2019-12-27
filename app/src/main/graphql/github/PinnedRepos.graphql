@@ -5,10 +5,10 @@ query getPinnedRepos($login: String!) {
         node {
           name
           url
-          issues(states: OPEN) {
+          issues(states: [OPEN]) {
             totalCount
           }
-          pullRequests(states: OPEN) {
+          pullRequests(states: [OPEN]) {
             totalCount
           }
           stargazers {

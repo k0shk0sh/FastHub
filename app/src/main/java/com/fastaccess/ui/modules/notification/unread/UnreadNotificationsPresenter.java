@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.notification.unread;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
 import android.view.View;
 
 import com.fastaccess.R;
@@ -31,11 +32,6 @@ public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificati
         Notification item = model.getNotification();
         if (v.getId() == R.id.markAsRead) {
             if (item.isUnread()) markAsRead(position, v, item);
-        } else if (v.getId() == R.id.unsubsribe) {
-            item.setUnread(false);
-            manageDisposable(item.save(item));
-            sendToView(view -> view.onRemove(position));
-            ReadNotificationService.unSubscribe(v.getContext(), item.getId());
         } else {
             if (item.getSubject() != null && item.getSubject().getUrl() != null) {
                 if (item.isUnread() && !PrefGetter.isMarkAsReadEnabled()) {

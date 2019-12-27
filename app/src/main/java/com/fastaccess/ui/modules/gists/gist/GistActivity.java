@@ -3,13 +3,13 @@ package com.fastaccess.ui.modules.gists.gist;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -278,7 +278,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @Override public void onUpdatePinIcon(@NonNull Gist gist) {
-        pinUnpin.setImageDrawable(PinnedGists.isPinned(gist.getId())
+        pinUnpin.setImageDrawable(PinnedGists.isPinned(gist.getGistId().hashCode())
                                   ? ContextCompat.getDrawable(this, R.drawable.ic_pin_filled)
                                   : ContextCompat.getDrawable(this, R.drawable.ic_pin));
     }
@@ -307,7 +307,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
-        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText("");
     }
 
     @NonNull @Override public ArrayList<String> getNamesToTag() {

@@ -3,8 +3,8 @@ package com.fastaccess.ui.widgets.dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -19,6 +19,8 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +63,7 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
         fastScroller.attachRecyclerView(recycler);
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (getParentFragment() != null && getParentFragment() instanceof onSimpleItemSelection) {
             onSimpleItemSelection = (onSimpleItemSelection) getParentFragment();

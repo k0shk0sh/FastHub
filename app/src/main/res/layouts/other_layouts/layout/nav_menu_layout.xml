@@ -1,48 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.NavigationView
-    android:id="@+id/menusHolder"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.navigation.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/extrasNav"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:fitsSystemWindows="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingTop="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_xs_large"
+    app:headerLayout="@layout/drawer_header"
     app:itemBackground="@color/transparent"
     app:itemIconTint="@color/search_tab_highlighter"
     app:itemTextColor="@color/search_tab_highlighter">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/extrasNav"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:clickable="true"
-        android:fitsSystemWindows="true"
-        android:focusable="true"
-        app:headerLayout="@layout/drawer_header"
-        app:itemBackground="@color/transparent"
-        app:itemIconTint="@color/search_tab_highlighter"
-        app:itemTextColor="@color/search_tab_highlighter"
-        app:menu="@menu/drawer_menu"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/accountsNav"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:layout_marginTop="120dp"
-        android:background="?android:windowBackground"
-        android:clickable="true"
-        android:clipToPadding="false"
-        android:fitsSystemWindows="true"
-        android:focusable="true"
-        android:visibility="gone"
-        app:itemBackground="@color/transparent"
-        app:itemIconTint="@color/search_tab_highlighter"
-        app:itemTextColor="@color/search_tab_highlighter">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/drawerTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:windowBackground"
+            android:elevation="2dp"
+            android:outlineProvider="background"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="?colorAccent"
+            app:tabTextColor="?android:textColorTertiary" />
 
-        <include layout="@layout/accounts_menu_layout"/>
+        <com.fastaccess.ui.widgets.ViewPagerView
+            android:id="@+id/drawerViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false" />
+    </LinearLayout>
 
-    </android.support.design.widget.NavigationView>
-
-</android.support.design.widget.NavigationView>
+</com.google.android.material.navigation.NavigationView>

@@ -1,10 +1,10 @@
 package com.fastaccess.ui.modules.main.issues.pager;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -107,6 +107,16 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
                 .filter(model -> model.getTabIndex() == index)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (pager != null && pager.getAdapter() != null) {
+            MyIssuesFragment myIssuesFragment = (MyIssuesFragment) pager.getAdapter().instantiateItem(pager, pager.getCurrentItem());
+            if (myIssuesFragment != null) {
+                myIssuesFragment.onScrollTop(0);
+            }
+        }
     }
 
     private void selectTab(int position, boolean fromViewPager) {

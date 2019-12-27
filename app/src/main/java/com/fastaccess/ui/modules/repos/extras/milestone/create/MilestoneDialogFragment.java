@@ -2,8 +2,8 @@ package com.fastaccess.ui.modules.repos.extras.milestone.create;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -17,6 +17,8 @@ import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerMvp;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by Kosh on 04 Mar 2017, 10:58 PM
@@ -37,7 +39,7 @@ public class MilestoneDialogFragment extends BaseDialogFragment implements Miles
         return view;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof IssuePagerMvp.View) {
             issueCallback = (IssuePagerMvp.View) context;

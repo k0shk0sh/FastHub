@@ -25,7 +25,6 @@ class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Present
                 val lanColor = Color.parseColor(color.color)
                 sendToView { it.onAppend(t, lanColor) }
             } catch (e: Exception) {
-                e.printStackTrace()
                 sendToView { it.onAppend(t, Color.LTGRAY) }
             }
         } else {

@@ -1,5 +1,6 @@
-<resources>
-    <string name="in_progress">로딩 중, 잠시만 기다려주세요</string>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+    <string name="in_progress">로딩 중, 잠시만 기다려주세요…</string>
     <string name="action">행동</string>
     <string name="settings">설정</string>
     <string name="discard">제거</string>
@@ -8,14 +9,14 @@
     <string name="no_data">데이터 없음</string>
     <string name="search">검색</string>
     <string name="please_login">FastHub를 계속 사용하려면 로그인하세요</string>
-    <string name="sign_in_to_github">FastHub를 사용하기 위해서 GitHub에 로그인하세요</string>
+    <string name="sign_in_to_github">FastHub를 이용하려면 GitHub에 로그인하세요</string>
     <string name="failed_login">로그인 실패</string>
     <string name="sign_in">로그인</string>
     <string name="share">공유</string>
     <string name="reload">새로고침</string>
     <string name="profile">프로필</string>
     <string name="error">오류</string>
-    <string name="press_again_to_exit">종료하려면 다시 한 번 눌러주세요</string>
+    <string name="press_again_to_exit">종료하려면 다시 한 번 누르기</string>
     <string name="opened">열림</string>
     <string name="closed">닫힘</string>
     <string name="repo_chooser">저장소 선택</string>
@@ -25,11 +26,11 @@
     <string name="follow">팔로우</string>
     <string name="unfollow">언팔로우</string>
     <string name="user">사용자</string>
-    <string name="details">세부</string>
-    <string name="archive_file_detected_error">파일을 다운로드하여 해당 컨텐츠를 보세요</string>
-    <string name="minimum_three_chars">최소 글자 (3)</string>
-    <string name="no_file_found">파일을 찾을 수 없습니다</string>
-    <string name="no_readme_found">readme를 찾을 수 없습니다</string>
+    <string name="details">세부정보</string>
+    <string name="archive_file_detected_error">아카이브 파일이 발견되었습니다. 콘텐츠를 보려면 파일을 다운로드하세요.</string>
+    <string name="minimum_three_chars">최소 2글자</string>
+    <string name="no_file_found">파일 찾을 수 없음</string>
+    <string name="no_readme_found">Readme 찾을 수 없음</string>
     <string name="downloading">다운로드 중…</string>
     <string name="downloading_file">파일 다운로드 중…</string>
     <string name="released">릴리즈됨</string>
@@ -39,19 +40,19 @@
     <string name="contributors">기여자</string>
     <string name="contributions">기여</string>
     <string name="by">by</string>
-    <string name="english_please">영어로 요구 사항를 보내주세요</string>
-    <string name="close_issue">이슈 닫기</string>
-    <string name="re_open_issue">이슈 다시 열기</string>
+    <string name="english_please">영어로 요구 사항을 보내주세요.</string>
+    <string name="close_issue">Issue 닫기</string>
+    <string name="re_open_issue">Issue 다시 열기</string>
     <string name="re_open">다시 열기</string>
     <string name="close">닫기</string>
-    <string name="success_re_opened">성공적으로 다시 열었습니다</string>
-    <string name="lock_issue_details">대화 잠금은 다음을 의미합니다:\n&#183;다른 사람은 이 이슈에 새로운 댓글을 남길 수 없습니다.\n&#183;너와 이 저장소에 접근할 수 있는 공동작업자는 다른 사람이 볼 수 있는 댓글을 남길 수 있습니다\n&#183;언제든 이 이슈를 잠금해제 할 수 있습니다.\n</string>
-    <string name="unlock_issue_details">대화 잠금해제는 다음을 의미합니다:\n&#183;모두가 이 이슈에 덧글을 남길 수 있습니다.\n&#183;언제든 이 이슈를 잠글 수 있습니다.\n</string>
+    <string name="success_re_opened">성공적으로 다시 엶</string>
+    <string name="lock_issue_details">대화 잠금은 다음을 의미합니다:\n&#183;다른 사람은 이 Issue에 새로운 댓글을 남길 수 없습니다.\n&#183;당신과 이 저장소에 접근할 수 있는 공동 작업자는 다른 사람이 볼 수 있는 댓글을 남길 수 있습니다\n&#183;언제든 이 Issue를 잠금해제 할 수 있습니다.\n</string>
+    <string name="unlock_issue_details">대화 잠금 해제는 다음을 의미합니다:\n&#183;모두가 이 Issue에 댓글을 남길 수 있습니다.\n&#183;언제든 이 Issue를 잠글 수 있습니다.\n</string>
     <string name="lock_issue">대화 잠금</string>
-    <string name="unlock_issue">대화 잠금해제</string>
-    <string name="error_closing_issue">이슈 닫기 오류, 잠시 후 다시 시도해주세요</string>
-    <string name="error_re_opening_issue">이슈 다시 열기 오류, 잠시 후 다시 시도해주세요</string>
-    <string name="success_closed">이슈 닫기 성공</string>
+    <string name="unlock_issue">대화 잠금 해제</string>
+    <string name="error_closing_issue">Issue 닫기 오류, 잠시 후 다시 시도해주세요.</string>
+    <string name="error_re_opening_issue">Issue 다시 열기 오류, 잠시 후 다시 시도해주세요.</string>
+    <string name="success_closed">성공적으로 Issue 닫음</string>
     <string name="no_description_provided"><p>설명 없음</p></string>
     <string name="header_one">제목 1</string>
     <string name="header_two">제목 2</string>
@@ -59,8 +60,8 @@
     <string name="bold">굵게</string>
     <string name="italic">기울임</string>
     <string name="strike_through">취소선</string>
-    <string name="bullet">순서없는 목록</string>
-    <string name="numbered_list">순서있는 목록</string>
+    <string name="bullet">순서 없는 목록</string>
+    <string name="numbered_list">순서 있는 목록</string>
     <string name="header">제목</string>
     <string name="quote">인용구</string>
     <string name="link">링크</string>
@@ -72,11 +73,11 @@
     <string name="confirm_message">계속 하시겠습니까?</string>
     <string name="success">성공</string>
     <string name="to">to</string>
-    <string name="error_deleting_comment">댓글을 삭제하는 중에 오류가 발생했습니다</string>
+    <string name="error_deleting_comment">댓글 삭제 중 오류 발생</string>
     <string name="delete">제거</string>
     <string name="comments">댓글</string>
     <string name="comment">댓글</string>
-    <string name="success_merge">병합 성공</string>
+    <string name="success_merge">병합됨</string>
     <string name="file_menu">파일 메뉴</string>
     <string name="files">파일</string>
     <string name="download">다운로드</string>
@@ -85,67 +86,67 @@
     <string name="code_viewer">코드 뷰어</string>
     <string name="open_in_browser">브라우저로 열기</string>
     <string name="big_file">큰 파일</string>
-    <string name="big_file_description">파일이 너무 커서 열 수 없습니다.\n"예"를 눌러 다운로드하세요</string>
+    <string name="big_file_description">파일이 너무 커서 열 수 없습니다.\n"예"를 눌러 다운로드하세요.</string>
     <string name="viewer">뷰어</string>
     <string name="submit">보내기</string>
-    <string name="type_here">이곳에 입력해주세요</string>
+    <string name="type_here">여기에 입력</string>
     <string name="description">설명</string>
     <string name="file_name">파일 이름</string>
-    <string name="file_name_hint">확장명을 가진 파일 이름</string>
+    <string name="file_name_hint">확장자를 가진 파일 이름</string>
     <string name="create_secret_gist">비공개 Gist</string>
     <string name="create_public_gist">공개 Gist</string>
     <string name="submit_as">다음으로 보내기</string>
     <string name="delete_gist">삭제</string>
-    <string name="error_deleting_gist">Gist를 삭제하는 중에 오류가 발생했습니다.</string>
+    <string name="error_deleting_gist">Gist 삭제 중 오류 발생</string>
     <string name="no_files">파일 없음</string>
     <string name="required_field">필수 입력란</string>
-    <string name="successfully_submitted">제출 성공</string>
+    <string name="successfully_submitted">성공적으로 제출됨</string>
     <string name="create_gist">Gist 생성</string>
-    <string name="clear">클리어</string>
+    <string name="clear">모두 삭제</string>
     <string name="users">사용자</string>
     <string name="title">제목</string>
     <string name="file">파일</string>
-    <string name="milestone">이정표</string>
-    <string name="assign_myself">자신을 담당자에 할당</string>
-    <string name="submit_issue">이슈 보내기</string>
-    <string name="error_creating_issue">이슈를 생성하는 중에 오류가 발생했습니다</string>
-    <string name="create_issue">이슈 생성</string>
-    <string name="error_highlighting_editor">수정을 계속하려면 강조 표시를 선택 해제하세요</string>
+    <string name="milestone">마일스톤</string>
+    <string name="assign_myself">자신을 담당자로 할당</string>
+    <string name="submit_issue">Issue 보내기</string>
+    <string name="error_creating_issue">Issue 생성 중 오류 발생</string>
+    <string name="create_issue">Issue 생성</string>
+    <string name="error_highlighting_editor">수정을 계속하려면 강조 표시를 선택 해제하세요.</string>
     <string name="notifications">알림</string>
     <string name="unread_notification">읽지 않은 알림이 있습니다</string>
     <string name="open">열기</string>
     <string name="open_new_window">새로운 창 열기</string>
     <string name="notification_type">알림 종류</string>
-    <string name="labels">꼬리표</string>
-    <string name="no_labels">꼬리표 없음</string>
-    <string name="labels_added_successfully">꼬리표 추가 성공</string>
+    <string name="labels">라벨</string>
+    <string name="no_labels">라벨 없음</string>
+    <string name="labels_added_successfully">성공적으로 라벨 추가됨</string>
     <string name="submit_feedback">피드백 보내기</string>
     <string name="logout">로그아웃</string>
-    <string name="thank_you_for_feedback">피드백 감사합니다</string>
+    <string name="thank_you_for_feedback">피드백 감사합니다!</string>
     <string name="current_version">현재 버전</string>
     <string name="version">버전</string>
     <string name="support_development_enable_ads">개발을 지원하려면 광고를 활성화하세요</string>
     <string name="username">사용자 이름</string>
     <string name="password">비밀번호</string>
-    <string name="twoFactor">이중 인증 코드</string>
+    <string name="twoFactor">2차 인증 코드</string>
     <string name="login">로그인</string>
     <string name="gist_description">Gist 설명</string>
     <string name="avatar_click_hint">사용자 아바타를 클릭하여 사용자의 프로필을 열 수 있습니다</string>
-    <string name="feeds_fork_hint">포크 이벤트를 길게 클릭하여 원본 또는 분기된 저장소를 엽니 다</string>
+    <string name="feeds_fork_hint">Fork 이벤트를 길게 클릭하여 원본 또는 Fork된 저장소를 엽니다.</string>
     <string name="click_here_to_download_release_hint">Release 다운로드</string>
     <string name="options">설정</string>
     <string name="click_file_option_hint">파일 다운로드 또는 디렉토리 공유</string>
-    <string name="comment_hint">댓글을 탭하면 작성자의 태그를 지정하거나 댓글을 수정할 수 있습니다.\n길게 누르면 삭제됩니다</string>
-    <string name="star_hint">저장소 즐겨찾기/즐겨찾기해제</string>
+    <string name="comment_hint">댓글을 탭하면 작성자의 태그를 지정하거나 댓글을 수정할 수 있습니다.\n길게 누르면 삭제됩니다.</string>
+    <string name="star_hint">저장소 즐겨찾기/즐겨찾기 해제</string>
     <string name="watch">구독</string>
-    <string name="watch_hint">저장소 구독/구독해제</string>
-    <string name="pin_repo_hint">사이드바에서 더 빨리 액세스 할 수 있도록 저장소를 바로가기에 등록하세요</string>
+    <string name="watch_hint">저장소 구독/구독 해제</string>
+    <string name="pin_repo_hint">내비게이션 드로어에서 더 빨리 액세스 할 수 있도록 저장소를 고정하세요.</string>
     <string name="dismiss_all">모두 닫기</string>
-    <string name="no_url">URL을 찾을 수 없습니다</string>
+    <string name="no_url">URL을 찾을 수 없음</string>
     <string name="last_updated">마지막 업데이트</string>
     <string name="preview">미리보기</string>
-    <string name="view_code">구문 강조기</string>
-    <string name="click_to_toggle_highlighting">구문 강조기를 활성화/비활성화합니다.
+    <string name="view_code">문법 강조</string>
+    <string name="click_to_toggle_highlighting">문법 강조를 활성화/비활성화합니다.
         \n더 많은 설정을 보려면 Markdown 편집기 아이콘을 스크롤하세요.</string>
     <string name="creation_date">생성일</string>
     <string name="creation_date_hint">파일 생성 날짜</string>
@@ -165,80 +166,79 @@
     <string name="two_hour">2시간</string>
     <string name="three_hour">3시간</string>
     <string name="created_repo">생성됨</string>
-    <string name="committed">커밋됨</string>
+    <string name="committed">Commit 됨</string>
     <string name="downloaded">다운로드됨</string>
     <string name="followed">팔로우됨</string>
-    <string name="commented_on_issue">이슈 댓글</string>
+    <string name="commented_on_issue">Issue 댓글</string>
     <string name="member">구성원</string>
-    <string name="pr_comment_review">풀 리퀘스트 댓글</string>
-    <string name="pushed">푸시됨</string>
+    <string name="pr_comment_review">Pull Request 댓글</string>
+    <string name="pushed">Push됨</string>
     <string name="team_event">팀</string>
     <string name="deleted">삭제됨</string>
     <string name="unknown">알 수 없음</string>
-    <string name="commented_on_commit">커밋 댓글</string>
-    <string name="switch_branch">분기 변경</string>
+    <string name="commented_on_commit">Commit 댓글</string>
+    <string name="switch_branch">Branch 변경</string>
     <string name="assignees">담당자</string>
     <string name="edit">수정</string>
     <string name="edited">\u2022 수정됨</string>
-    <string name="update_issue">이슈 업데이트</string>
-    <string name="update_pull_request">풀 리퀘스트 업데이트</string>
-    <string name="no_milestones">이정표 없음</string>
+    <string name="update_issue">Issue 업데이트</string>
+    <string name="update_pull_request">Pull Request 업데이트</string>
+    <string name="no_milestones">마일스톤 없음</string>
     <string name="add">추가</string>
     <string name="done">완료</string>
     <string name="home">홈</string>
-    <string name="create_milestone">이정표 생성</string>
-    <string name="error_creating_milestone">이정표를 생성하는 중에 오류가 발생했습니다</string>
+    <string name="create_milestone">마일스톤 생성</string>
+    <string name="error_creating_milestone">마일스톤 생성 중 오류 발생</string>
     <string name="due_on">만기일</string>
     <string name="no_assignees">담당자 없음</string>
-    <string name="this_value">이 분기</string>
-    <string name="commits_reflected">커밋이 선택한 분기로 전환되었습니다</string>
+    <string name="this_value">이 Branch</string>
+    <string name="commits_reflected">Commit이 선택한 Branch로 전환되었습니다</string>
     <string name="general_settings">일반</string>
-    <string name="background_job_summary">FastHub이 새 알림을 확인하는 빈도를 변경합니다</string>
+    <string name="background_job_summary">FastHub이 새 알림을 확인하는 빈도를 변경</string>
     <string name="background_job_title">동기화 간격</string>
     <string name="every">항상</string>
     <string name="behavior">행동</string>
     <string name="customization">사용자 정의</string>
     <string name="recycler_view_animation_summary">목록 효과 활성화</string>
     <string name="recycler_view_animation_title">목록 효과</string>
-    <string name="back_button_summary">앱 종료 확인 다이얼로그를 비활성화합니다</string>
+    <string name="back_button_summary">앱 종료 확인 창을 비활성화합니다</string>
     <string name="back_button_title">앱 종료 확인 비활성화</string>
     <string name="restore">복원</string>
     <string name="backup">백업</string>
-    <string name="backed_up">백업 성공!</string>
+    <string name="backed_up">성공적으로 백업!</string>
     <string name="select_backup">복원할 백업 선택</string>
-    <string name="permission_failed">허락되지 않은 권한</string>
+    <string name="permission_failed">권한이 없습니다.</string>
     <string name="backup_summary">마지막 업데이트: %s</string>
     <string name="now">지금</string>
     <string name="unsaved_data_warning">저장되지 않은 변경사항을 삭제하시겠습니까?</string>
     <string name="private_repo">비공개</string>
-    <string name="rect_avatar_summary">원형 아바타 대신 둥근 사각형 아바타를 사용합니다</string>
+    <string name="rect_avatar_summary">원형 아바타 대신 둥근 사각형 아바타 사용</string>
     <string name="rect_avatar_title">둥근 사각형 아바타</string>
     <string name="rate_app">앱 평점 매기기</string>
     <string name="author">개발자</string>
-    <string name="fork_github">GitHub에서 포크하기</string>
+    <string name="fork_github">GitHub에서 Fork하기</string>
     <string name="send_email">이메일 보내기</string>
     <string name="question_concerning_fasthub">FastHub에 관한 질문</string>
-    <string name="feedback">피드백</string>
+    <string name="feedback">피드백 (오류 보고)</string>
     <string name="report_issue">오류 보고</string>
     <string name="report_issue_here">오류가 있습니까? 이곳에 입력해주세요.</string>
     <string name="about">앱 정보</string>
     <string name="notification_settings">알림</string>
     <string name="turn_off">끄기</string>
     <string name="unauthorized_user">인증되지 않은 사용자</string>
-    <string name="two_factors_otp_error">이중 인증이 필요합니다</string>
-    <string name="no_issue">이슈 없음</string>
+    <string name="two_factors_otp_error">2단계 인증 (OTP)이 필요합니다</string>
     <string name="copy">URL 복사</string>
     <string name="success_copied">복사됨</string>
-    <string name="commit_message">커밋 메시지</string>
+    <string name="commit_message">Commit 메시지</string>
     <string name="network_error">서버와 통신하는 중 오류가 발생했습니다</string>
-    <string name="unexpected_error">API를 요청하는 중에 오류가 발생했습니다</string>
+    <string name="unexpected_error">API 요청 중 예상치 못한 오류</string>
     <string name="request_error">서버 요청 오류, 잠시 후 다시 시도하세요</string>
     <string name="marking_as_read">알림을 읽음으로 표시</string>
-    <string name="forking_gist">Gist 포크</string>
-    <string name="login_using_your_default_browser">기본 브라우저로 로그인 (OAuth)</string>
+    <string name="forking_gist">Gist Fork하기</string>
+    <string name="login_using_your_default_browser">브라우저로 로그인 (OAuth)</string>
     <string name="or_character">또는</string>
     <string name="mark_notification_title">알림 읽음 비활성화</string>
-    <string name="mark_notification_summary">알림을 클릭하면 읽음으로 표시 기능 사용을 비활성화합니다</string>
+    <string name="mark_notification_summary">알림을 클릭하면 읽음으로 표시 기능 사용을 비활성화합니다.</string>
     <string name="theme_title">테마</string>
     <string name="theme_summary">기본 테마 선택</string>
     <string name="theme_color_summary">테마 강조 색상 선택</string>
@@ -246,29 +246,26 @@
     <string name="website">웹사이트</string>
     <string name="support_development">개발 지원</string>
     <string name="success_purchase_message">대단히 감사합니다!</string>
-    <string name="change_theme_warning">테마가 제대로 적용되지 않으면, 앱을 수동으로 재시작해주세요</string>
-    <string name="pin">북마크</string>
-    <string name="pinned">바로가기</string>
-    <string name="unpin">바로가기 삭제</string>
-    <string name="empty_pinned_repos">아직 바로가기 저장소가 없으므로 여기에서 볼 수 있도록 등록하세요.\nP.S: 많이 액세스할수록 저장소는 위에 배치될 것입니다.</string>
+    <string name="change_theme_warning">테마가 제대로 적용되지 않으면, 앱을 수동으로 재시작해주세요.</string>
+    <string name="pin">고정</string>
+    <string name="pinned">고정됨</string>
+    <string name="unpin">고정 해제</string>
+    <string name="empty_pinned_repos">아직 고정한 저장소가 없습니다. 여기에서 볼 수 있게 고정하세요.\nP.S: 많이 방문할수록 저장소가 위에 배치됨</string>
     <string name="yes">네</string>
     <string name="no">아니요</string>
     <string name="no_feeds">소식 없음</string>
     <string name="no_gists">Gists 없음</string>
-    <string name="no_comments">덧글 없음</string>
+    <string name="no_comments">댓글 없음</string>
     <string name="no_notifications">알림 없음</string>
-    <string name="no_followers">Follower 없음</string>
-    <string name="no_followings">Following 없음</string>
+    <string name="no_followers">팔로워 없음</string>
+    <string name="no_followings">팔로잉 없음</string>
     <string name="no_repos">저장소 없음</string>
     <string name="no_starred_repos">즐겨찾기된 저장소 없음</string>
-    <string name="no_commits">커밋 없음</string>
+    <string name="no_commits">Commit 없음</string>
     <string name="no_contributors">기여자 없음</string>
-    <string name="no_releases">릴리즈 없음</string>
-    <string name="no_closed_issues">닫힌 이슈 없음</string>
-    <string name="no_opened_issues">열린 이슈 없음</string>
+    <string name="no_releases">Release 없음</string>
     <string name="no_events">이벤트 없음</string>
-    <string name="no_open_pull_requests">열린 풀 리퀘스트 없음</string>
-    <string name="no_closed_pull_request">닫힌 풀 리퀘스트 없음</string>
+    <string name="no_pull_requests">Pull Request 없음</string>
     <string name="no_search_results">검색 결과 없음</string>
     <string name="read_write_permission_explanation">파일을 보기 위해 FastHub에서 파일을 저장하려면 권한을 허용하세요</string>
     <string name="public_gists">공개 Gist</string>
@@ -277,19 +274,19 @@
     <string name="no_unread_notifications">읽지 않은 알림 없음</string>
     <string name="my_gists">내 Gist</string>
     <string name="changelog">변경사항</string>
-    <string name="notifications_hint">클릭하여 알림 목록을 열거나 옆으로 밀어 닫으세요</string>
-    <string name="home_long_click_hint">길게 누르면 어디서나 기본 화면으로 이동합니다</string>
-    <string name="created">생성</string>
-    <string name="assigned">담당</string>
-    <string name="mentioned">언급</string>
+    <string name="notifications_hint">클릭하여 알림 목록을 열거나 옆으로 밀어 닫기</string>
+    <string name="home_long_click_hint">길게 누르면 어디서나 기본 화면으로 이동</string>
+    <string name="created">생성함</string>
+    <string name="assigned">담당함</string>
+    <string name="mentioned">언급된</string>
     <string name="name">이름</string>
     <string name="color">색상</string>
-    <string name="create_label">꼬리표 생성</string>
+    <string name="create_label">라벨 생성</string>
     <string name="organization">조직</string>
     <string name="organizations">조직</string>
     <string name="people">구성원</string>
     <string name="teams">팀</string>
-    <string name="members">Members</string>
+    <string name="members">구성원</string>
     <string name="no_members">구성원 없음</string>
     <string name="no_teams">팀 없음</string>
     <string name="no_orgs">조직 없음</string>
@@ -298,11 +295,11 @@
     <string name="animations">효과</string>
     <string name="dialog_animation_summary">팝업 효과를 활성화합니다</string>
     <string name="dialog_animation_title">팝업 효과</string>
-    <string name="milestones">이정표</string>
+    <string name="milestones">마일스톤</string>
     <string name="assignee">담당자</string>
-    <string name="checks_failed">몇몇 검사를 통과하지 못했습니다</string>
-    <string name="checks_pending">몇몇 검사가 지연되었습니다</string>
-    <string name="checks_passed">모든 검사를 통과했습니다</string>
+    <string name="checks_failed">몇 가지 검사 실패</string>
+    <string name="checks_pending">몇 가지 검사 대기 중</string>
+    <string name="checks_passed">모든 검사 통과</string>
     <string name="sort">정렬</string>
     <string name="newest">최신 순</string>
     <string name="oldest">오래된 순</string>
@@ -310,21 +307,21 @@
     <string name="least_commented">최신 댓글 순</string>
     <string name="recently_updated">최신 업데이트 순</string>
     <string name="least_recent_updated">최소 최신 업데이트 순</string>
-    <string name="up_to_date">최신 버전입니다</string>
-    <string name="new_version">새로운 버전이 있습니다</string>
+    <string name="up_to_date">최신 버전입니다!</string>
+    <string name="new_version">새로운 버전이 있습니다.</string>
     <string name="empty_search_error">검색 내용을 입력해주세요</string>
-    <string name="long_press_repo_fab_hint">길게 누르면 이슈 티켓을 즉시 생성 할 수 있습니다</string>
-    <string name="commit_can_be_merged">이 풀 리퀘스트는 합병될 수 있습니다</string>
+    <string name="long_press_repo_fab_hint">Issue 티켓을 즉시 생성하려면 길게 누르기</string>
+    <string name="commit_can_be_merged">이 Pull Request는 병합 가능합니다.</string>
     <string name="reviewed">검토됨</string>
     <string name="dismissed_review">검토 취소됨</string>
     <string name="approved_these_changes">변경 승인됨</string>
     <string name="no_reactions">반응 없음</string>
     <string name="reactions">반응</string>
     <string name="wrap_content">줄 바꿈</string>
-    <string name="wrap_code_summary">기본적으로 코드 뷰어에서 코드 줄 바꿈을 실행합니다</string>
+    <string name="wrap_code_summary">기본 값으로 코드 뷰어에서 코드 줄 바꿈</string>
     <string name="wrap_code_title">코드 줄 바꿈</string>
     <string name="open_source_libs">오픈소스 라이브러리</string>
-    <string name="enable_notification_sound_summary">알림음을 활성화합니다</string>
+    <string name="enable_notification_sound_summary">알림음을 활성화합니다.</string>
     <string name="enable_notification_sound_title">알림음 활성화</string>
     <string name="enable_notification_title">알림 활성화</string>
     <string name="login_with_personal_token">개인 토큰으로 로그인</string>
@@ -347,19 +344,19 @@
     <string name="from">from</string>
     <string name="in_value">in</string>
     <string name="subscribe">구독</string>
-    <string name="repo_issues_is_disabled">이슈가 비활성화된 저장소입니다</string>
+    <string name="repo_issues_is_disabled">Issue가 비활성화된 저장소입니다</string>
     <string name="access_token">엑세스 토큰</string>
     <string name="basic_authentication">기본 인증</string>
     <string name="choose_your_login_type">로그인 종류 선택</string>
-    <string name="files_only">In Files</string>
-    <string name="paths_only">In Paths</string>
-    <string name="review_requests">요청 검토</string>
+    <string name="files_only">파일에서만 검색</string>
+    <string name="paths_only">경로에서만 검색</string>
+    <string name="review_requests">검토 요청</string>
     <string name="join_slack">Slack 참여</string>
     <string name="join_slack_message">FastHub Slack에 참여하시겠습니까?</string>
-    <string name="successfully_invited">초대 성공</string>
+    <string name="successfully_invited">초대됨</string>
     <string name="reply">답글</string>
-    <string name="failed_selecting_image">이미지 불러오기에 실패했습니다</string>
-    <string name="want_to_merge">병합 희망</string>
+    <string name="failed_selecting_image">이미지를 불러오는 데 실패했습니다.</string>
+    <string name="want_to_merge">병합 요청</string>
     <string name="watchers">구독자</string>
     <string name="reviewers">검토자</string>
     <string name="no_reviewers">검토자 없음</string>
@@ -370,18 +367,9 @@
     <string name="enable_signature_box_summary">확인란을 사용하여 텍스트 편집기에서 서명을 활성화/비활성화 할 수 있습니다.</string>
     <string name="tags">태그</string>
     <string name="add_comment">댓글 달기</string>
-    <string name="banners">배너 소개</string>
-    <string name="banners_info">With FastHub 2.5.0, you can now better express yourself with banners
-        for your profile page.\n\nAnyone using the FastHub app, will see your header, and you\'ll
-        begin seeing other peoples headers as well! If you\'d like to create a banner for yourself,
-        make it 1280x384 or divisible, otherwise, it may get cropped.\n\nYou can add or change your
-        banner at any time, by creating a gist described "header.fst" with a file containing a
-        direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
-    </string>
-    <string name="edit_banner">배너 선택</string>
     <string name="image_error">이미지 불러오기 오류, 다시 시도하세요</string>
     <string name="trending">급상승</string>
-    <string name="not_really_working">GitHub 제한 때문에 emojies로 정렬이 작동하지 않습니다</string>
+    <string name="not_really_working">GitHub 제한 때문에 Emoji(이모티콘)로 정렬이 작동하지 않습니다</string>
     <string name="scroll_up">위로 스크롤</string>
     <string name="scroll_down">아래로 스크롤</string>
     <string name="participated">참여</string>
@@ -395,12 +383,12 @@
     <string name="filter">필터</string>
     <string name="type">종류</string>
     <string name="sort_direction">정렬 순서</string>
-    <string name="assignee_added">담당자 추가 성공</string>
-    <string name="reviewer_added">검토자 추가 성공</string>
-    <string name="milestone_added">이정표 추가 성공</string>
+    <string name="assignee_added">성공적으로 담당자 추가됨</string>
+    <string name="reviewer_added">성공적으로 검토자 추가됨</string>
+    <string name="milestone_added">성공적으로 마일스톤 추가됨</string>
     <string name="feed">소식</string>
     <string name="premium_theme">프리미엄 테마</string>
-    <string name="choose_code_theme">문법 강조기 테마</string>
+    <string name="choose_code_theme">문법 강조 테마</string>
     <string name="enterprise_login_warning">GitHub API의 모든 항목에 액세스하려면 GitHub 계정에 로그인하십시오. 
         그렇지 않으면 GitHub API로 전송 된 토큰은 엔터프라이즈 계정에서 전송되기 때문에 Enterprise GitHub가 아닌 
         다른 항목에 액세스 할 때마다 강제 로그아웃 될 수 있습니다.</string>
@@ -411,8 +399,8 @@
     <string name="owner">소유자</string>
     <string name="original_poster">원본 포스터</string>
     <string name="cancel_reviews">검토 취소</string>
-    <string name="colored_navbar_summary">테마에서 색상 네비게이션 바를 비활성화합니다</string>
-    <string name="colored_navbar_title">무색 네비게이션</string>
+    <string name="colored_navbar_summary">테마에서 색상 내비게이션 바 비활성화합니다</string>
+    <string name="colored_navbar_title">무색 내비게이션</string>
     <string name="sound_chooser_summary">알림 소리를 선택합니다</string>
     <string name="sound_chooser_title">알림 소리 선택</string>
     <string name="disable_auto_gif_summary">GIF 자동 재생 사용을 비활성화합니다</string>
@@ -425,48 +413,54 @@
     <string name="copy_sha">SHA-1 복사</string>
     <string name="view_as_code">코드로 보기</string>
     <string name="app_animation_title">앱 애니메이션</string>
-    <string name="app_animation_summary">모든 앱 애니메이션을 비활성화합니다</string>
-    <string name="can_not_merge_pr">이 풀 리퀘스트는 현재 병합될 수 없습니다</string>
+    <string name="app_animation_summary">모든 앱 애니메이션을 비활성화합니다.</string>
+    <string name="can_not_merge_pr">이 Pull Request는 현재 병합이 불가능합니다.</string>
     <string name="projects">프로젝트</string>
     <string name="no_projects">프로젝트 없음</string>
     <string name="no_cards">카드 없음</string>
     <string name="card_added_by">%s %s가 추가함</string>
-    <string name="too_large_changes">변경사항이 너무 많습니다. 브라우저로 보세요</string>
+    <string name="too_large_changes">변경사항이 너무 많습니다. 브라우저로 확인하세요</string>
     <string name="project">프로젝트</string>
-    <string name="please_read">꼭 읽어주세요</string>
+    <string name="please_read">꼭 읽어주세요!</string>
     <string name="fasthub_faq_description">
         <![CDATA[
         <h5>• 왜 <i>Private</i> 이나 <i>Public</i>으로 되어진 제 <b>Organizations</b> 을 볼 수 없나요?</h5>
-        <p>Open up https://github.com/settings/applications 를 열고 Fasthub라는 것을 찾아보세요. 그것을 선택한 후, Organization Access 부분에서 Grant를 눌러주세요. 또는 초기 로그인시 <b>엑세스 토큰</b> 으로 로그인하면 편리합니다.</p>
-        <h5>• Access Token 과 OTP 으로 로그인을 시도했는데 로그인이 되질 않아요...</h5>
+        <p>https://github.com/settings/applications 를 열고 Fasthub라는 것을 찾아보세요. 그것을 선택한 후, Organization Access 부분에서 Grant를 눌러주세요. 또는 초기 로그인시 <b>엑세스 토큰</b> 으로 로그인하면 편리합니다.</p>
+
+        <h5>• Access Token 과 OTP 으로 로그인을 시도했는데 로그인이 되질 않아요…</h5>
         <p>OTP는 일회용 코드입니다. 따리서 유효기간에 인해 엑세스 토큰 + OTP로 로그인이 불가합니다. 이렇게 로그인을 하게 되면 몇 초에 한 번씩 앱이 로그인을 하라고 합니다. 다른 방법을 사용해 주세요.</p>
+
         <h5>• 제 비공개 리포지토리와 엔터프라이즈 위키가 보이질 않아요!</h5>
-        <p>위 두 정보를 스크랩하려면 특별한 세션 토큰이 필요한데 본 앱을 이 토큰을 받을 수 없습니다. 깃허브 API의 한계이므로 API문의는 깃허브에게 해주세요. 본 앱의 개발자는 API문의를 받지 않습니다.</p>
+        <p>위 두 정보를 스크랩하려면 특별한 세션 토큰이 필요한데 본 앱을 이 토큰을 받을 수 없습니다. GitHub API의 한계이므로 API 문의는 GitHub에게 해주세요. 본 앱의 개발자는 API 문의를 받지 않습니다.</p>
+
         <h5>• 제가 엔터프라이즈 계정으로 로그인했는데 Enterprise GitHub 외의 다른 것들은 볼 수 없나요?</h5>
-        <p>결론부터 말하자면 불가능합니다. 본 앱은 여러분이 다른 것들을 볼 수 있게 해 주고 있지만, 기술적 한계로 크게 도움을 드릴 수는 없습니다. 대부분의 경우에는 여러분의 로그인 계정이 깃허브 서버에 상주하고 있기 때문입니다. 그러나 <b>소수/b>의 경우에는 여러분의 OAuth 토큰이 다른 활동을 하게 해 줄 수 있습니다.</p>
-        <h5>• Issues/PR 를 수정 하는데 문제가 있습니다.</h5>
+        <p>결론부터 말하자면 불가능합니다. 본 앱은 여러분이 다른 것들을 볼 수 있게 해 주고 있지만, 기술적 한계로 크게 도움을 드릴 수는 없습니다. 대부분의 경우에는 여러분의 로그인 계정이 GitHub 서버에 상주하고 있기 때문입니다. 그러나 <b>소수</b>의 경우에는 여러분의 OAuth 토큰이 다른 활동을 하게 해줄 수 있습니다.</p>
+
+        <h5>• Issues/PR을 수정하는 데 문제가 있습니다.</h5>
         <p>공개 Organization 리포지토리를 수정하면, 여러분의 Organization에게 문의하여 Fasthub 권환을 받거나 최초 로그인시 엑세스 토큰으로 로그인하세요.</p>
-        <h5>• 앱을 사용하는데 문제를 발견했어요! / 혹시 이러한 기능을 추가해주실 수 있나요?</h5>
-        <p>그럼요! https://github.com/k0shk0sh/FastHub/issues/new 로 간 후 새로운 티켓을 만드세요. 티켓을 만들기 전 먼저 전에 있었던 티켓 중 중복되는 것이 없는지 검색해 주세요. 중복시 티켓은 바로 닫힙니다.</p>
-        <h5>• How can I get a PROMO CODE?</h5>
-        <p>학생이라면, 저에게 증명을 해야 합니다. 아래에 있는 증명서류를 이메일로 보내주세요.</p>
-        <ul>
-        <li>GitHub 닉네임;</li>
-        <li>학생증 또는 신분중/여권 (이름과 얼굴을 보기 위함입니다. 개인정보는 제 3자에게 전달되지 않습니다.);</li>
-        <li>교육 학교의 시작일과 졸업일</li>
-        </ul>
-        <p>학생이 아니지만, PRO 버전으로 구매할 수 없는 경우, 다음을 하셔야 합니다.</p>
-        <ul>
-        <li>GitHub 닉네임;</li>
-        <li>Medium같은 곳에 FastHub에 대한 홍보글을 올려주세요;</li>
-        <li>자신이 글을 썼다는 것을 증명해 주세요.</li>
-        </ul>
-        <h5>위 조건을 만족시킨 후 본 앱의 개발자인 Kosh Sergani에게 이메일을 보내면 검토후 PROMO CODE를 보내 드립니다.</h5>\n
-        <h5>본 한국어 번역자는 이 앱의 개발에 참여하지 않았습니다. 따라서 기술적 문의는 이 앱의 개발자인 Kosh Sergani에게 해주시기 바랍니다. 본 번역이 앱 사용에 도움이 되셨기를 바랍니다. 감사합니다.</h5>
+
+        <h5>• 앱을 사용하는 데 문제를 발견했어요! / 혹시 이러한 기능을 추가해주실 수 있나요?</h5>
+        <p>그럼요! https://github.com/k0shk0sh/FastHub/issues/new 로 간 후 새로운 티켓을 만드세요. 티켓을 만들기 전 먼저 전에 있었던 티켓 중 중복되는 것이 없는지 검색해주세요. 중복시 티켓은 바로 닫힙니다. 또는 앱 드로어 (화면 왼쪽 끝에서 오른쪽으로 드래그) 에 있는 오류 보고를 클릭하여 보고하셔도 됩니다.</p>
+
+        <h5>기술적 문의는 이 앱의 개발자인 Kosh Sergani에게 해주시기 바랍니다. 본 번역이 FastHub 사용에 도움이 되셨기를 바랍니다. 감사합니다.</h5>
 	]]></string>
     <string name="faq">자주 하는 질문 (FAQ)</string>
     <string name="comments_added_successfully">댓글을 성공적으로 추가하였습니다</string>
     <string name="clear_search_keywords">검색 기록 삭제</string>
     <string name="restore_purchases">이전 구매 여부 복구</string>
     <string name="include_forks">Fork한 Repo 포함하기</string>
+    <string name="comment_is_too_far_to_paginate">댓글이 너무 많아 페이지 매김을 할 수 없습니다</string>
+    <string name="search_results_warning">응답이 너무 많음\nAPI가 허용하는 최대 응답수 표시 중</string>
+    <string name="disable_loading_image_title">이미지 로딩 중단하기</string>
+    <string name="disable_loading_image_summary">모바일 데이터 사용 중 이미지 로딩 비활성화</string>
+    <string name="report_issue_warning">이 Issue는 GitHub의 FastHub Repo에 제출됩니다</string>
+    <string name="block">차단</string>
+    <string name="unblock">차단 취소</string>
+    <string name="user_blocked">유저 차단됨</string>
+    <string name="user_unblocked">유저 차단 취소됨</string>
+    <string name="clear_image_cache">이미지 캐시 지우기</string>
+    <string name="restart_app_message">앱을 재시작 해주세요</string>
+    <string name="menu_label">메뉴</string>
+    <string name="commit_file_required">변경된 파일 없음</string>
+    <string name="send_feedback">피드백 보내기</string>
 </resources>

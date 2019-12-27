@@ -1,9 +1,9 @@
 package com.fastaccess.ui.widgets.color;
 
 import android.content.Context;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.annimon.stream.Objects;
 import com.fastaccess.helper.AppHelper;

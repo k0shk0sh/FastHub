@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="premium_theme">Aukšt. kokyb. tema</string>
     <string name="in_progress">Prašome palaukti…</string>
     <string name="action">Veiksmas</string>
@@ -226,7 +227,6 @@
     <string name="turn_off">Išjungti</string>
     <string name="unauthorized_user">Neautorizuotas naudotojas</string>
     <string name="two_factors_otp_error">Reikia 2FA OTP kodo</string>
-    <string name="no_issue">Nėra talonų(-o)</string>
     <string name="copy">Kopijuoti</string>
     <string name="success_copied">Nukopijuota</string>
     <string name="commit_message">Pakeitimo (commito) pastabos</string>
@@ -264,11 +264,8 @@
     <string name="no_commits">Nėra pakeitimų</string>
     <string name="no_contributors">Nėra bendrų autorių</string>
     <string name="no_releases">Nėra leidimų</string>
-    <string name="no_closed_issues">Nėra užvertų talonų</string>
-    <string name="no_opened_issues">Nėra atvertų talonų</string>
     <string name="no_events">Nėra įvykių</string>
-    <string name="no_open_pull_requests">Nėra atvirų PR</string>
-    <string name="no_closed_pull_request">Nėra užvertų PR</string>
+    <string name="no_pull_requests">Nėra PR</string>
     <string name="no_search_results">Paieška nieko nerado</string>
     <string name="read_write_permission_explanation">Leiskite programėlei talpinti failus, jeigu norite peržiūrėti juos</string>
     <string name="public_gists">Vieši gistai</string>
@@ -368,13 +365,6 @@
     <string name="enable_signature_box_summary">Rodyti parašą, kai rašau komentarą</string>
     <string name="tags">Etiketės</string>
     <string name="add_comment">Pridėti komentarą</string>
-    <string name="banners">Nauja funkcija: profilio viršeliai</string>
-    <string name="banners_info">Pastabos: Profilio viršelius mato tik „FastHub“ 2.5+ programėlės vartotojai.
-        Geriausias dydis viršeliui yra: 1280x384. Jeigu neturite „FastHub“ programėlės, bet vistiek
-        norite pakeisti viršelį, sukurkite gistą, kuris pavadintas „header.fst“. Jis gali nustatyti
-        jūsų viršelį. Giste turi būti nuoroda, kurioje yra patalpintas viršelis (pvz. „Imgur direct link“).
-    </string>
-    <string name="edit_banner">Pasirinkti viršelio nuotrauką</string>
     <string name="image_error">Nepavyko įkrauti paveikslėlį, dar kartą pabandykite vėliau.</string>
     <string name="trending">Populiaru</string>
     <string name="not_really_working">„GitHub“ neleidžia rūšiuoti pagal jaustukus dėl techninių limitacijų.</string>

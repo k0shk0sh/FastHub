@@ -12,20 +12,22 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.util.Pair;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.app.ShareCompat;
+import androidx.core.util.Pair;
 import android.view.View;
 import android.widget.Toast;
 
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.ui.modules.main.drawer.AccountDrawerFragment;
+import com.fastaccess.ui.modules.main.drawer.MainDrawerFragment;
 import com.fastaccess.ui.modules.parser.LinksParserActivity;
 
 import java.util.ArrayList;
@@ -175,7 +177,8 @@ public class ActivityHelper {
         List<Fragment> fragments = manager.getFragments();
         if (fragments != null && !fragments.isEmpty()) {
             for (Fragment fragment : fragments) {
-                if (fragment != null && fragment.isVisible()) {
+                if (fragment != null && fragment.isVisible() &&
+                        !(fragment instanceof MainDrawerFragment || fragment instanceof AccountDrawerFragment)) {
                     return fragment;
                 }
             }

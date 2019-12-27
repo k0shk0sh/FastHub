@@ -72,7 +72,7 @@ import lombok.NoArgsConstructor;
         })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
-    public static Disposable save(@android.support.annotation.Nullable List<Notification> models) {
+    public static Disposable save(@androidx.annotation.Nullable List<Notification> models) {
         if (models == null || models.isEmpty()) {
             return Observable.empty().subscribe();
         }
@@ -92,7 +92,7 @@ import lombok.NoArgsConstructor;
         })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
-    public static Single<Boolean> saveAsSingle(@android.support.annotation.Nullable List<Notification> models) {
+    public static Single<Boolean> saveAsSingle(@androidx.annotation.Nullable List<Notification> models) {
         if (models == null || models.isEmpty()) {
             return Single.just(true);
         }

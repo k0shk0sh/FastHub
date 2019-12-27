@@ -1,7 +1,7 @@
 package com.fastaccess.ui.modules.search.repos.files;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;

@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.user;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
@@ -14,11 +14,23 @@ public interface UserPagerMvp {
 
     interface View extends BaseMvp.FAView, ProfilePagerMvp.View, RepoPagerMvp.TabsBadgeListener {
         void onInitOrg(boolean isMember);
+
+        void onUserBlocked();
+
+        void onInvalidateMenu();
+
+        void onUserUnBlocked();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
+        void onCheckBlocking(@NonNull String login);
+
         void checkOrgMembership(@NonNull String org);
+
+        void onBlockUser(@NonNull String login);
+
+        void onUnblockUser(@NonNull String login);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.fastaccess.data.service;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CreateGistModel;
@@ -72,5 +72,7 @@ public interface GistService {
 
     @POST("gists/{gist_id}/forks")
     Observable<Response<Gist>> forkGist(@Path("gist_id") @NonNull String gistId);
+
+    @GET("/gists/starred") Observable<Pageable<Gist>> getStarredGists(@Query("page") int page);
 
 }

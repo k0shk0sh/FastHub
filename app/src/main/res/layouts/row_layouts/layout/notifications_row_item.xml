@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -30,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginEnd="@dimen/avatar_margin_end"
-                tools:src="@drawable/ic_issues"/>
+                tools:src="@drawable/ic_issues" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,7 +46,7 @@
                     android:maxLines="5"
                     android:textColor="?android:textColorPrimary"
                     android:textStyle="bold"
-                    tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+                    tools:text="When one acquires music and afterlife, one is able to capture heaven." />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -73,7 +72,7 @@
                             android:textColor="?android:textColorSecondary"
                             android:visibility="gone"
                             tools:text="50 minutes ago"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/date"
@@ -83,7 +82,7 @@
                             android:layout_gravity="center"
                             android:gravity="start|center"
                             android:textColor="?android:textColorTertiary"
-                            tools:text="50 minutes ago"/>
+                            tools:text="50 minutes ago" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -104,15 +103,6 @@
                             android:orientation="horizontal">
 
                             <com.fastaccess.ui.widgets.ForegroundImageView
-                                android:id="@+id/unsubsribe"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="?selectableItemBackgroundBorderless"
-                                android:contentDescription="@string/un_subscribe"
-                                android:padding="@dimen/spacing_micro"
-                                android:src="@drawable/ic_unsubscribe"/>
-
-                            <com.fastaccess.ui.widgets.ForegroundImageView
                                 android:id="@+id/markAsRead"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -120,7 +110,7 @@
                                 android:background="?selectableItemBackgroundBorderless"
                                 android:contentDescription="@string/un_subscribe"
                                 android:padding="@dimen/spacing_micro"
-                                android:src="@drawable/ic_done"/>
+                                android:src="@drawable/ic_done" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -131,4 +121,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

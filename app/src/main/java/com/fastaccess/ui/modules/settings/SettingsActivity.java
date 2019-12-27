@@ -3,7 +3,7 @@ package com.fastaccess.ui.modules.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.ListView;
 
 import com.fastaccess.R;

@@ -2,12 +2,12 @@ package com.fastaccess.ui.widgets.recyclerview;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -149,10 +149,10 @@ public class DynamicRecyclerView extends RecyclerView {
 
     private boolean canAddDivider() {
         if (getLayoutManager() != null) {
-            if (getLayoutManager() instanceof LinearLayoutManager) {
-                return true;
-            } else if (getLayoutManager() instanceof GridLayoutManager) {
+            if (getLayoutManager() instanceof GridLayoutManager) {
                 return ((GridLayoutManager) getLayoutManager()).getSpanCount() == 1;
+            } else if (getLayoutManager() instanceof LinearLayoutManager) {
+                return true;
             } else if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
                 return ((StaggeredGridLayoutManager) getLayoutManager()).getSpanCount() == 1;
             }

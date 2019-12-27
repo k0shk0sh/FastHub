@@ -8,13 +8,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SettingsModel;
@@ -23,6 +24,7 @@ import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.settings.sound.NotificationSoundBottomSheet;
@@ -45,6 +47,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -70,6 +74,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationSound;
     private Preference notificationSoundPath;
     private SettingsCallback settingsCallback;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -211,6 +216,16 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             notificationSoundPath.setSummary(FileHelper.getRingtoneName(getContext(), uri));
     }
 
+    @Override public void onDestroyView() {
+        disposable.clear();
+        super.onDestroyView();
+    }
+
+    @Override public void onDestroy() {
+        disposable.clear();
+        super.onDestroy();
+    }
+
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("application/json");
@@ -226,10 +241,10 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 String json = new Gson().toJson(preferences);
                 String path = FileHelper.PATH;
                 File folder = new File(path);
-                boolean mkDirs = folder.mkdirs();
+                folder.mkdirs();
                 File backup = new File(folder, "backup.json");
                 try {
-                    boolean isCreated = backup.createNewFile();
+                    backup.createNewFile();
                     try (FileOutputStream outputStream = new FileOutputStream(backup)) {
                         try (OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream)) {
                             myOutWriter.append(json);
@@ -239,6 +254,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     Log.e(getTag(), "Couldn't backup: " + e.toString());
                 }
                 PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
+                Toasty.success(App.getInstance(), getString(R.string.backed_up)).show();
             } else {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             }
@@ -275,6 +291,17 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         findPreference("clear_search").setOnPreferenceClickListener(preference -> {
             callback.showMessage(R.string.success, R.string.deleted);
             SearchHistory.deleteAll();
+            return true;
+        });
+        findPreference("clear_image_cache").setOnPreferenceClickListener(preference -> {
+            final Glide glide = Glide.get(App.getInstance());
+            disposable.add(RxHelper.getObservable(Observable.fromCallable(() -> {
+                glide.clearDiskCache();
+                return true;
+            })).subscribe(aBoolean -> {
+                glide.clearMemory();
+                Toasty.info(App.getInstance(), getString(R.string.restart_app_message), Toast.LENGTH_LONG).show();
+            }));
             return true;
         });
     }
@@ -324,7 +351,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 Map<String, ?> savedPref = gson.fromJson(json.toString(), typeOfHashMap);
                 if (savedPref != null && !savedPref.isEmpty()) {
                     for (Map.Entry<String, ?> stringEntry : savedPref.entrySet()) {
-                        PrefHelper.set(stringEntry.getKey(), stringEntry.getKey());
+                        PrefHelper.set(stringEntry.getKey(), stringEntry.getValue());
                     }
                 }
                 callback.onThemeChanged();

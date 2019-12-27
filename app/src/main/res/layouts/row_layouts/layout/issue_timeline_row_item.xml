@@ -41,7 +41,7 @@
 
     </LinearLayout>
 
-    <android.support.design.internal.ForegroundLinearLayout
+    <LinearLayout
         style="?timeLineBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                 android:maxLines="5"
                 tools:text="For a divided large loaf, add some champaign and cinnamon."/>
         </LinearLayout>
-    </android.support.design.internal.ForegroundLinearLayout>
+    </LinearLayout>
 
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

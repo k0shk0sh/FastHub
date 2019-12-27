@@ -17,11 +17,11 @@
     <group android:id="@+id/profile_group">
         <item
             android:id="@+id/profile"
-            android:icon="@drawable/ic_profile"
+            android:icon="@drawable/ic_person"
             android:title="@string/profile"/>
         <item
             android:id="@+id/orgs"
-            android:icon="@drawable/ic_people"
+            android:icon="@drawable/ic_group"
             android:title="@string/organizations"/>
         <item
             android:id="@+id/notifications"
@@ -44,7 +44,7 @@
             android:title="@string/trending"/>
         <item
             android:id="@+id/gists"
-            android:icon="@drawable/ic_gists"
+            android:icon="@drawable/ic_code"
             android:title="@string/gists"/>
     </group>
 
@@ -52,9 +52,9 @@
         android:id="@+id/group_three"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/reportBug"
-            android:icon="@drawable/ic_bug"
-            android:title="@string/report_issue"/>
+            android:id="@+id/openFatHub"
+            android:icon="@drawable/ic_fasthub_mascot"
+            android:title="@string/app_name"/>
         <item
             android:id="@+id/faq"
             android:icon="@drawable/ic_info"

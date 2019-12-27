@@ -1,7 +1,7 @@
 package com.fastaccess.data.service;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.CommentRequestModel;
@@ -9,6 +9,7 @@ import com.fastaccess.data.dao.CreateIssueModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.IssuesPageable;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.LockIssuePrModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
@@ -68,9 +69,10 @@ public interface IssueService {
                                 @Path("number") int number,
                                 @Body IssueRequestModel issue);
 
-    @Headers("Content-Length: 0")
+    @Headers("Accept: application/vnd.github.sailor-v-preview+json")
     @PUT("repos/{owner}/{repo}/issues/{number}/lock")
-    Observable<Response<Boolean>> lockIssue(@Path("owner") String owner, @Path("repo") String repo, @Path("number") int number);
+    Observable<Response<Boolean>> lockIssue(@Body LockIssuePrModel body, @Path("owner") String owner,
+                                            @Path("repo") String repo, @Path("number") int number);
 
     @DELETE("repos/{owner}/{repo}/issues/{number}/lock")
     Observable<Response<Boolean>> unlockIssue(@Path("owner") String owner, @Path("repo") String repo, @Path("number") int number);

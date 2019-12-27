@@ -5,8 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.transition.TransitionManager
-import android.support.v4.app.FragmentManager
+import androidx.transition.TransitionManager
+import androidx.fragment.app.FragmentManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -18,7 +18,6 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.timeline.CommentsHelper
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -69,7 +68,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         markdownBtnHolder.visibility = if (markdownBtnHolder.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (parentFragment is CommentListener) {
             commentListener = parentFragment as CommentListener
@@ -96,7 +95,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         }
         markdDownLayout.markdownListener = this
         if (savedInstanceState == null) {
-            commentText.setText(arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA))
+            arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA)?.let { commentText.setText(it) }
         }
     }
 

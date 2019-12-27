@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.repos.issues;
 
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;

@@ -1,4 +1,6 @@
-﻿<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+    <!--Please DO NOT translate github terms, such as Pull Request, Issues, Commits & etc.-->
     <string name="in_progress">Carregando, por favor aguarde…</string>
     <string name="action">Ação</string>
     <string name="settings">Configurações</string>
@@ -27,7 +29,7 @@
     <string name="user">Usuário</string>
     <string name="details">Detalhes</string>
     <string name="archive_file_detected_error">Arquivo arquivado detectado, por favor baixe o arquivo para ver seu conteúdo</string>
-    <string name="minimum_three_chars">Mínimo de cacracteres (3)</string>
+    <string name="minimum_three_chars">Mínimo de cacracteres (2)</string>
     <string name="no_file_found">Nenhum arquivo encontrado</string>
     <string name="no_readme_found">Arquivo readme não encontrado</string>
     <string name="downloading">Baixando…</string>
@@ -39,6 +41,7 @@
     <string name="contributors">Contribuidores</string>
     <string name="contributions">Contribuiçoes</string>
     <string name="by">por</string>
+    <string name="english_please">Por favor submeta seu request em inglês.</string>
     <string name="close_issue">Fechar Issue</string>
     <string name="re_open_issue">Reabrir Issue</string>
     <string name="re_open">Reabrir</string>
@@ -47,7 +50,7 @@
     <string name="lock_issue_details">Travar a conversa significa:\n&#183;Outros usuarios não podem adicionar novos comentários à esse issue.\n&#183;Voce e outros
         colaboradores com acesso à este repositorio ainda podem deixar comentarios que outros podem ver.\n&#183;Você sempre pode desbloquear este issue novamento no
         futuro.\n</string>
-    <string name="unlock_issue_details">Desbloquear a conversa significa:\n&#183;Todo mundo podera comentar neste issue novamente.\n&#183;Você sempre
+    <string name="unlock_issue_details">Desbloquear a conversa significa:\n&#183;Todo mundo poderá comentar neste issue novamente.\n&#183;Você sempre
         pode bloquaear este issue novamente no futuro.\n</string>
     <string name="lock_issue">Travar conversa</string>
     <string name="unlock_issue">Desbloquear conversa</string>
@@ -116,6 +119,7 @@
     <string name="notifications">Notificações</string>
     <string name="unread_notification">Você tem notificações não lidas</string>
     <string name="open">Abrir</string>
+    <string name="open_new_window">Abrir em nova janela</string>
     <string name="notification_type">Tipo de notificação</string>
     <string name="labels">Rótulos</string>
     <string name="no_labels">Sem rótulos</string>
@@ -228,7 +232,6 @@
     <string name="turn_off">Desligar</string>
     <string name="unauthorized_user">Usuário não autorizado</string>
     <string name="two_factors_otp_error">OTP de dois fatores é necessário</string>
-    <string name="no_issue">Sem issue</string>
     <string name="copy">Copiar</string>
     <string name="success_copied">Copiado</string>
     <string name="commit_message">Comitar mensagem</string>
@@ -252,7 +255,8 @@
     <string name="pin">Marcar</string>
     <string name="pinned">Marcado</string>
     <string name="unpin">Desmarcar</string>
-    <string name="empty_pinned_repos">Nenhum repositório marcado, marque alguns para vê-los aqui</string>
+    <string name="empty_pinned_repos">Nenhum repositório marcado, marque alguns para 
+    vê-los aqui</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="no_feeds">Sem feeds</string>
@@ -266,11 +270,8 @@
     <string name="no_commits">Sem commits</string>
     <string name="no_contributors">Sem contribuidores</string>
     <string name="no_releases">Sem lançamentos</string>
-    <string name="no_closed_issues">Sem issues fechados</string>
-    <string name="no_opened_issues">Sem issues abertos</string>
     <string name="no_events">Sem eventos</string>
-    <string name="no_open_pull_requests">Sem pull requests abertos</string>
-    <string name="no_closed_pull_request">Sem pull requests fechados</string>
+    <string name="no_pull_requests">Sem pull requests</string>
     <string name="no_search_results">Sem resultados para a busca</string>
     <string name="read_write_permission_explanation">Por favor aceite as permissões para permitir ao FastHub
         armazenar os arquivos no seu dispositivo para poder visualizá-los</string>
@@ -296,6 +297,7 @@
     <string name="no_members">Sem membros</string>
     <string name="no_teams">Sem equipes</string>
     <string name="no_orgs">Sem Organizações</string>
+    <string name="no_orgs_dialog_title">Não consegue encontrar suas organizações\?</string>
     <string name="mark_as_read">Marcar como lido</string>
     <string name="animations">Animações</string>
     <string name="dialog_animation_summary">Habilitar animações popup</string>
@@ -334,7 +336,8 @@
     <string name="basic_login">Entra com autenticação básica</string>
     <string name="no_orgs_description">Se você está ligado a alguma organização e não consegue vê-las aqui, por favor entre no link abaixo.
         \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Você poderia usar o token de acesso para entrar, o que vai
-        permitir acesso ao FastHub para poder ver a lista de suas organizações.</string>
+        permitir acesso ao FastHub para poder ver a lista de suas organizações.\nVocê também pode abrir https://github.com/settings/applications e procurar por 
+        FastHub, abra-o e então deslize até aceeso à Organização e toque no botão Conceder</string>
     <string name="insert">Inserir</string>
     <string name="select">Selecionar</string>
     <string name="select_picture">Selecionar Imagem</string>
@@ -373,15 +376,6 @@
     <string name="enable_signature_box_summary">Habilitar checkbox para alternar a assinatura no editor de texto</string>
     <string name="tags">Tags</string>
     <string name="add_comment">Adicionar comentário</string>
-    <string name="banners">Apresentando Banners</string>
-    <string name="banners_info">Com o FastHub 2.5.0, agora você pode se expressar melhor com banners
-        para a sua página de perfil.\n\nQualquer um usando o app FastHub, verá o seu cabeçalho, e você
-        começará a ver os cabeçalhos de outras pessoas também! Se você quiser criar um banner para si,
-        faça-o 1280x384 oi divisível, caso contrário, ele pode ser cortado.\n\nVocê pode adicionar ou mudar
-        o seu banner a qualquer momento, criando um gist descrito "header.fst" com um arquivo contendo um
-        link direto para a imagem de cabeçalho.\n\nOu ainda mais simples, use o escolhedor de imagens embutido!
-    </string>
-    <string name="edit_banner">ESCOLHER BANNER</string>
     <string name="image_error">Erro ao carregar a imagem, por favor tente novamente.</string>
     <string name="trending">Em alta</string>
     <string name="not_really_working">Organizar por emojis ainda não está funcionando devido à limitações do GitHub</string>
@@ -429,14 +423,51 @@
     <string name="view_as_code">Ver como código</string>
     <string name="app_animation_title">Animações no App</string>
     <string name="app_animation_summary">Desabilitar todas as animações no App.</string>
-    <string name="english_please">Por favor envie seu pedido em inglês.</string>
-    <string name="open_new_window">Abrir em nova janela</string>
+    <string name="can_not_merge_pr">Este PR não pode ser merged agora.</string>
     <string name="projects">Projetos</string>
-    <string name="project">Projeto</string>
-    <string name="card_added_by">Adicionado por %s %s</string>
     <string name="no_projects">Sem Projetos</string>
     <string name="no_cards">Sem Cartões</string>
+    <string name="card_added_by">Adicionado por %s %s</string>
     <string name="too_large_changes">Muitas diferenças para exibir. Por favor, veja-os via navegador</string>
-    <string name="no_orgs_dialog_title">Não encontra suas Organizações\?</string>
-    <string name="can_not_merge_pr">Este PR não pode ser merged agora.</string>
+    <string name="project">Projeto</string>
+    <string name="please_read">POR FAVOR LEIA!</string>
+    <string name="fasthub_faq_description">
+        <![CDATA[
+        <h5>• Por que não consigo visualizar minhas <b>Organizações</b> <i>Privadas</i> ou <i>Públicas</i>?</h5>
+        <p>Abra https://github.com/settings/applications e procure por FastHub, abra-o, deslize para baixo até "Acesso à organização" e toque no botão "Conceder".
+        De forma alternativa você pode entrar com o <b>Token de Acesso</b> que facilitará o processo.</p>
+        <h5>• Eu tentei entrar com um Token de Acesso e senha One-Time Password (OTP) sem sorte. O que há de errado?</h5>
+        <p>Você não consegue acessar com o Token de Acesso e com OTP junto. Devido à limitação de vida dessas senhas você terá que entrar sempre a cada alguns segundos.</p>
+        <h5>• Por que meus repositórios Enterprise e Wiki não estão sendo exibidos?</h5>
+        <p>Como o FastHub faz scrap das páginas Wiki do GitHub\'s, o aplicativo não é capaz  de obter nenhum token de sessão que é requisito para Repositórios Privados.</p>
+        <h5>• Eu entrei com minha conta Enterprise. Por que eu não consigo interagir com mais nada além do meu Github Enterprise?</h5>
+        <p>Bem, lógicamente, você não consegue acessar mais nada além da sua empresa. O FastHub tenta pedir o máximo de permissões possíveis, mas não consegue fazer nada sobre isso
+        na maioria dos casos, já que suas credenciais não estão no servidor do GitHub. Mas em <b>alguns</b> casos seu token OAuth da conta GitHUb consegue ajeitar isso.</p>
+        <h5>• Por que estou tendo problemas ao editar Issues/Pull Requests (PRs)?</h5>
+        <p>Se você não consegue editar Issues/PRs em um repositório de Organização Pública, por favor contate sua Organização para conceder acesso ao FastHub. De forma alternativa você pode entrar com um Token de Acesso.</p>
+        <h5>• Estou com problemas! / Quero sugerir algumas mudanças!</h5>
+        <p>Vá para https://github.com/k0shk0sh/FastHub/issues/new e crie um novo issue para qualquer bug e pedido de recurso. Eu realmente encorajo você a
+        procurar por issues similares antes de abrir um novo. Qualquer ticket duplicado será rotulado como duplicado e será fechado imediatamente.</p>
+        <h5>• Como consigo um PROMO CODE?</h5>
+        <p>Este programa não existe mais.</p>
+    ]]></string>
+    <string name="faq">FAQ</string>
+    <string name="comments_added_successfully">Comentários adicionados com sucesso</string>
+    <string name="clear_search_keywords">Limpar Histórico de Buscas</string>
+    <string name="restore_purchases">Restaurar Compras</string>
+    <string name="include_forks">Incluir Forks</string>
+    <string name="comment_is_too_far_to_paginate">O comentário está muito longe para ser paginado</string>
+    <string name="search_results_warning">Muitas respostas \nMostrando o máximo que a API permite</string>
+    <string name="disable_loading_image_title">Desabilitar Carregamento de Imagem</string>
+    <string name="disable_loading_image_summary">Desabilitar carregamento de imagem em rede móvel</string>
+    <string name="report_issue_warning">Este issue será submetido ao repositório do FastHub no GitHub</string>
+    <string name="block">Bloquear</string>
+    <string name="unblock">Desbloquear</string>
+    <string name="user_blocked">Usuário bloqueado</string>
+    <string name="user_unblocked">Usuário desbloqueado</string>
+    <string name="clear_image_cache">Limpar Cache de Imagens</string>
+    <string name="restart_app_message">Por favor reinicie o app</string>
+    <string name="menu_label">Menu</string>
+    <string name="commit_file_required">Sem alterações no arquivo</string>
+    <string name="send_feedback">Enviar feedback</string>
 </resources>

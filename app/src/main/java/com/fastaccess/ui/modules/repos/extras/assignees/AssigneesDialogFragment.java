@@ -2,10 +2,10 @@ package com.fastaccess.ui.modules.repos.extras.assignees;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -21,6 +21,8 @@ import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +59,7 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
         return fragment;
     }
 
-    @Override public void onAttach(Context context) {
+    @Override public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (getParentFragment() instanceof AssigneesMvp.SelectedAssigneesListener) {
             callback = (AssigneesMvp.SelectedAssigneesListener) getParentFragment();

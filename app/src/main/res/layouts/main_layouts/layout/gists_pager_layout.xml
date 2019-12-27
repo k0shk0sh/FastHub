@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -14,23 +13,21 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/appbar"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="?android:toolbarStyle">
 
-                <include layout="@layout/title_header_layout"/>
+                <include layout="@layout/title_header_layout" />
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
@@ -42,20 +39,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/open_in_browser"
+                        android:contentDescription="@string/pinned"
                         android:padding="@dimen/spacing_micro"
-                        android:src="@drawable/ic_pin"/>
-
-                    <com.fastaccess.ui.widgets.ForegroundImageView
-                        android:id="@+id/edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|end"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/open_in_browser"
-                        android:padding="@dimen/spacing_micro"
-                        android:src="@drawable/ic_edit"
-                        android:visibility="gone"/>
+                        android:src="@drawable/ic_pin" />
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/browser"
@@ -65,7 +51,7 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/open_in_browser"
                         android:padding="@dimen/spacing_micro"
-                        android:src="@drawable/ic_brower"/>
+                        android:src="@drawable/ic_brower" />
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/startGist"
@@ -77,7 +63,7 @@
                         android:contentDescription="@string/star"
                         android:padding="@dimen/spacing_micro"
 
-                        android:src="@drawable/ic_star"/>
+                        android:src="@drawable/ic_star" />
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/forkGist"
@@ -88,26 +74,37 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/fork"
                         android:padding="@dimen/spacing_micro"
+                        android:src="@drawable/ic_fork" />
 
-                        android:src="@drawable/ic_fork"/>
-                </android.support.v7.widget.Toolbar>
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/edit"
+                        android:padding="@dimen/spacing_micro"
+                        android:src="@drawable/ic_edit"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </androidx.appcompat.widget.Toolbar>
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?colorPrimary"
                     app:tabSelectedTextColor="?colorAccent"
-                    app:tabTextColor="?android:textColorTertiary"/>
-            </android.support.design.widget.AppBarLayout>
+                    app:tabTextColor="?android:textColorTertiary" />
+            </com.google.android.material.appbar.AppBarLayout>
 
             <com.fastaccess.ui.widgets.ViewPagerView
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/scroll_behavior"/>
+                app:layout_behavior="@string/scroll_behavior" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,18 +112,18 @@
                 android:layout_margin="@dimen/fab_margin"
                 android:src="@drawable/ic_comment"
                 android:tint="@color/white"
-                app:fabSize="auto"/>
+                app:fabSize="auto" />
 
-        </android.support.design.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <fragment
             android:id="@+id/commentFragment"
             android:name="com.fastaccess.ui.modules.editor.comment.CommentEditorFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/comment_box_layout"/>
+            tools:layout="@layout/comment_box_layout" />
     </LinearLayout>
 
-    <include layout="@layout/nav_menu_layout"/>
+    <include layout="@layout/nav_menu_layout" />
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.transition.TransitionManager
-import android.support.v4.app.FragmentManager
+import androidx.annotation.StringRes
+import androidx.transition.TransitionManager
+import androidx.fragment.app.FragmentManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -39,8 +39,10 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
 
     private var participants: ArrayList<String>? = null
     private val sentFromFastHub: String by lazy {
-        "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
-                "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_"
+        "\n\n_" + getString(
+            R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
+            "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)"
+        ) + "_"
     }
 
     @BindView(R.id.replyQuote) lateinit var replyQuote: LinearLayout
@@ -76,9 +78,11 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
         } else {
             quote.maxLines = 3
         }
-        quote.setCompoundDrawablesWithIntrinsicBounds(0, 0,
-                if (quote.maxLines == 3) R.drawable.ic_arrow_drop_down
-                else R.drawable.ic_arrow_drop_up, 0)
+        quote.setCompoundDrawablesWithIntrinsicBounds(
+            0, 0,
+            if (quote.maxLines == 3) R.drawable.ic_arrow_drop_down
+            else R.drawable.ic_arrow_drop_up, 0
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,10 +100,12 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun onSendResultAndFinish(commentModel: Comment, isNew: Boolean) {
         hideProgress()
         val intent = Intent()
-        intent.putExtras(Bundler.start()
+        intent.putExtras(
+            Bundler.start()
                 .put(BundleConstant.ITEM, commentModel)
                 .put(BundleConstant.EXTRA, isNew)
-                .end())
+                .end()
+        )
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
@@ -114,10 +120,12 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun onSendReviewResultAndFinish(comment: EditReviewCommentModel, isNew: Boolean) {
         hideProgress()
         val intent = Intent()
-        intent.putExtras(Bundler.start()
+        intent.putExtras(
+            Bundler.start()
                 .put(BundleConstant.ITEM, comment)
                 .put(BundleConstant.EXTRA, isNew)
-                .end())
+                .end()
+        )
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
@@ -164,13 +172,15 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun onBackPressed() {
         if (!InputHelper.isEmpty(editText)) {
             ViewHelper.hideKeyboard(editText)
-            MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
-                    Bundler.start()
-                            .put("primary_extra", getString(R.string.discard))
-                            .put("secondary_extra", getString(R.string.cancel))
-                            .put(BundleConstant.EXTRA, true)
-                            .end())
-                    .show(supportFragmentManager, MessageDialogView.TAG)
+            MessageDialogView.newInstance(
+                getString(R.string.close), getString(R.string.unsaved_data_warning),
+                Bundler.start()
+                    .put("primary_extra", getString(R.string.discard))
+                    .put("secondary_extra", getString(R.string.cancel))
+                    .put(BundleConstant.EXTRA, true)
+                    .end()
+            )
+                .show(supportFragmentManager, MessageDialogView.TAG)
             return
 
         }
@@ -203,28 +213,29 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
         val intent = intent
         if (intent != null && intent.extras != null) {
             val bundle = intent.extras
-            extraType = bundle.getString(BundleConstant.EXTRA_TYPE)
-            reviewComment = bundle.getParcelable(BundleConstant.REVIEW_EXTRA)
-            itemId = bundle.getString(BundleConstant.ID)
-            login = bundle.getString(BundleConstant.EXTRA_TWO)
+            extraType = bundle?.getString(BundleConstant.EXTRA_TYPE)
+            reviewComment = bundle?.getParcelable(BundleConstant.REVIEW_EXTRA)
+            itemId = bundle?.getString(BundleConstant.ID)
+            login = bundle?.getString(BundleConstant.EXTRA_TWO)
             if (extraType.equals(BundleConstant.ExtraType.EDIT_COMMIT_COMMENT_EXTRA, ignoreCase = true)
-                    || extraType.equals(BundleConstant.ExtraType.NEW_COMMIT_COMMENT_EXTRA, ignoreCase = true)) {
-                sha = bundle.getString(BundleConstant.EXTRA_THREE)
+                || extraType.equals(BundleConstant.ExtraType.NEW_COMMIT_COMMENT_EXTRA, ignoreCase = true)
+            ) {
+                sha = bundle?.getString(BundleConstant.EXTRA_THREE)
             } else {
-                issueNumber = bundle.getInt(BundleConstant.EXTRA_THREE)
+                issueNumber = bundle?.getInt(BundleConstant.EXTRA_THREE) ?: -1
             }
-            commentId = bundle.getLong(BundleConstant.EXTRA_FOUR)
-            val textToUpdate = bundle.getString(BundleConstant.EXTRA)
+            commentId = bundle?.getLong(BundleConstant.EXTRA_FOUR) ?: -1
+            val textToUpdate = bundle?.getString(BundleConstant.EXTRA)
             if (!InputHelper.isEmpty(textToUpdate)) {
-                editText.setText(String.format("%s", textToUpdate))
+                editText.setText(String.format("%s ", textToUpdate))
                 editText.setSelection(InputHelper.toString(editText).length)
             }
-            if (bundle.getString("message", "").isBlank()) {
+            if (bundle?.getString("message", "").isNullOrEmpty()) {
                 replyQuote.visibility = GONE
             } else {
-                MarkDownProvider.setMdText(quote, bundle.getString("message", ""))
+                MarkDownProvider.setMdText(quote, bundle?.getString("message", ""))
             }
-            participants = bundle.getStringArrayList("participants")
+            participants = bundle?.getStringArrayList("participants")
         }
     }
 }

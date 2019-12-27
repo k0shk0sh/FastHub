@@ -1,10 +1,10 @@
 package com.fastaccess.ui.modules.repos.code.releases;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -138,7 +138,11 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
     @Override public void onDownload(@NonNull Release item) {
         ArrayList<SimpleUrlsModel> models = new ArrayList<>();
         if (!InputHelper.isEmpty(item.getZipBallUrl())) {
-            models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), item.getZipBallUrl()));
+            String url = item.getZipBallUrl();
+            if (!url.endsWith(".tar.gz")) {
+                url = url + ".tar.gz";
+            }
+            models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), url));
         }
         if (!InputHelper.isEmpty(item.getTarballUrl())) {
             models.add(new SimpleUrlsModel(getString(R.string.download_as_tar), item.getTarballUrl()));
