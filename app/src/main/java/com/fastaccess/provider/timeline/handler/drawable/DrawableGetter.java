@@ -40,8 +40,8 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
             final RequestBuilder load = Glide.with(context)
                     .load(url)
                     .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_image))
-                    .dontAnimate()
-                    .override(width, width / 2);
+                    .dontAnimate();
+
             final GlideDrawableTarget target = new GlideDrawableTarget(urlDrawable, container, width);
             load.into(target);
             cachedTargets.add(target);

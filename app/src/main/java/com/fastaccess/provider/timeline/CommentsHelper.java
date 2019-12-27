@@ -1,8 +1,10 @@
 package com.fastaccess.provider.timeline;
 
 import android.content.Context;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +17,8 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.tasks.git.ReactionService;
 import com.fastaccess.ui.widgets.SpannableBuilder;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,39 +35,12 @@ public class CommentsHelper {
     private static final int THUMBS_DOWN = 0x1f44e;
     private static final int HOORAY = 0x1f389;
     private static final int HEART = 0x2764;
+    private static final int ROCKET = 0x1f680;
+    private static final int EYES = 0x1f440;
 
 
     public static boolean isOwner(@NonNull String currentLogin, @NonNull String repoOwner, @NonNull String commentUser) {
         return currentLogin.equalsIgnoreCase(repoOwner) || currentLogin.equalsIgnoreCase(commentUser);
-    }
-
-    public static void handleReactions(@NonNull Context context, @NonNull String login, @NonNull String repoId,
-                                       @IdRes int id, long commentId, boolean commit, boolean isDelete,
-                                       boolean isEnterprise) {
-        ReactionTypes type = null;
-        switch (id) {
-            case R.id.heart:
-                type = ReactionTypes.HEART;
-                break;
-            case R.id.sad:
-                type = ReactionTypes.CONFUSED;
-                break;
-            case R.id.thumbsDown:
-                type = ReactionTypes.MINUS_ONE;
-                break;
-            case R.id.thumbsUp:
-                type = ReactionTypes.PLUS_ONE;
-                break;
-            case R.id.laugh:
-                type = ReactionTypes.LAUGH;
-                break;
-            case R.id.hurray:
-                type = ReactionTypes.HOORAY;
-                break;
-        }
-        if (type != null) {
-            ReactionService.start(context, login, repoId, commentId, type, commit, isDelete, isEnterprise);
-        }
     }
 
     private static String getEmojiByUnicode(int unicode) {
@@ -76,14 +53,16 @@ public class CommentsHelper {
                 return getHeart();
             case HOORAY:
                 return getHooray();
-            case PLUS_ONE:
-                return getThumbsUp();
             case MINUS_ONE:
                 return getThumbsDown();
             case CONFUSED:
                 return getSad();
             case LAUGH:
                 return getLaugh();
+            case ROCKET:
+                return getRocket();
+            case EYES:
+                return getEyes();
             default:
                 return getThumbsUp();
         }
@@ -113,6 +92,14 @@ public class CommentsHelper {
         return getEmojiByUnicode(HEART);
     }
 
+    public static String getRocket() {
+        return getEmojiByUnicode(ROCKET);
+    }
+
+    public static String getEyes() {
+        return getEmojiByUnicode(EYES);
+    }
+
     @NonNull public static ArrayList<String> getUsers(@NonNull List<Comment> comments) {
         return Stream.of(comments)
                 .filter(comment -> comment.getUser() != null)
@@ -129,13 +116,17 @@ public class CommentsHelper {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static void appendEmojies(@NonNull ReactionsModel reaction, @NonNull TextView thumbsUp,
-                                     @NonNull TextView thumbsUpReaction, @NonNull TextView thumbsDown,
-                                     @NonNull TextView thumbsDownReaction, @NonNull TextView hurray,
-                                     @NonNull TextView hurrayReaction, @NonNull TextView sad,
-                                     @NonNull TextView sadReaction, @NonNull TextView laugh,
-                                     @NonNull TextView laughReaction, @NonNull TextView heart,
-                                     @NonNull TextView heartReaction, @NonNull View reactionsList) {
+    public static void appendEmojies(
+            @NonNull ReactionsModel reaction, @NonNull TextView thumbsUp,
+            @NonNull TextView thumbsUpReaction, @NonNull TextView thumbsDown,
+            @NonNull TextView thumbsDownReaction, @NonNull TextView hurray,
+            @NonNull TextView hurrayReaction, @NonNull TextView sad,
+            @NonNull TextView sadReaction, @NonNull TextView laugh,
+            @NonNull TextView laughReaction, @NonNull TextView heart,
+            @NonNull TextView heartReaction, @NonNull TextView rocket,
+            @NonNull TextView rocketReaction, @NonNull TextView eye,
+            @NonNull TextView eyeReaction, @NonNull View reactionsList
+    ) {
         SpannableBuilder spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getThumbsUp()).append(" ")
                 .append(String.valueOf(reaction.getPlusOne()))
@@ -173,10 +164,27 @@ public class CommentsHelper {
         laughReaction.setVisibility(reaction.getLaugh() > 0 ? View.VISIBLE : View.GONE);
         spannableBuilder = SpannableBuilder.builder()
                 .append(CommentsHelper.getHeart()).append(" ")
-                .append(String.valueOf(reaction.getHeart()));
+                .append(String.valueOf(reaction.getHeart()))
+                .append("   ");
         heart.setText(spannableBuilder);
         heartReaction.setText(spannableBuilder);
         heartReaction.setVisibility(reaction.getHeart() > 0 ? View.VISIBLE : View.GONE);
+
+        spannableBuilder = SpannableBuilder.builder()
+                .append(CommentsHelper.getRocket()).append(" ")
+                .append(String.valueOf(reaction.getRocket()))
+                .append("   ");
+        rocket.setText(spannableBuilder);
+        rocketReaction.setText(spannableBuilder);
+        rocketReaction.setVisibility(reaction.getRocket() > 0 ? View.VISIBLE : View.GONE);
+
+        spannableBuilder = SpannableBuilder.builder()
+                .append(CommentsHelper.getEyes()).append(" ")
+                .append(String.valueOf(reaction.getEyes()));
+        eye.setText(spannableBuilder);
+        eyeReaction.setText(spannableBuilder);
+        eyeReaction.setVisibility(reaction.getEyes() > 0 ? View.VISIBLE : View.GONE);
+
         if (reaction.getPlusOne() > 0 || reaction.getMinusOne() > 0
                 || reaction.getLaugh() > 0 || reaction.getHooray() > 0
                 || reaction.getConfused() > 0 || reaction.getHeart() > 0) {

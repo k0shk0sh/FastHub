@@ -43,26 +43,21 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
     }
 
     override fun onSidebarClicked(sidebar: WikiSideBarModel) {
-        if (BuildConfig.DEBUG) {
-            firebaseWikiConfigModel = FirebaseWikiConfigModel()
-            callApi(sidebar)
+        if (firebaseWikiConfigModel == null) {
+            manageDisposable(
+                RxHelper.getSingle(RxFirebaseDatabase.data(FirebaseDatabase.getInstance().reference.child("github_wiki")))
+                    .doOnSubscribe { sendToView { it.showProgress(0) } }
+                    .map {
+                        firebaseWikiConfigModel = FirebaseWikiConfigModel.map(it.value as? HashMap<String, String>)
+                        return@map firebaseWikiConfigModel
+                    }
+                    .subscribe(
+                        { callApi(sidebar) },
+                        { callApi(sidebar) }
+                    )
+            )
         } else {
-            if (firebaseWikiConfigModel == null) {
-                manageDisposable(
-                    RxHelper.getSingle(RxFirebaseDatabase.data(FirebaseDatabase.getInstance().reference.child("github_wiki")))
-                        .doOnSubscribe { sendToView { it.showProgress(0) } }
-                        .map {
-                            firebaseWikiConfigModel = FirebaseWikiConfigModel.map(it.value as? HashMap<String, String>)
-                            return@map firebaseWikiConfigModel
-                        }
-                        .subscribe(
-                            { callApi(sidebar) },
-                            { callApi(sidebar) }
-                        )
-                )
-            } else {
-                callApi(sidebar)
-            }
+            callApi(sidebar)
         }
     }
 

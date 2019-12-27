@@ -3,11 +3,18 @@ package com.fastaccess.ui.modules.main;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.fastaccess.BuildConfig;
+import com.fastaccess.helper.Logger;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -29,6 +36,8 @@ import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
 import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -72,6 +81,13 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
             }
         }
+
+        if (BuildConfig.DEBUG) {
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(o -> {
+                Logger.e(o.getId(), o.getToken());
+            });
+        }
+
         getPresenter().setEnterprise(PrefGetter.isEnterprise());
         selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
