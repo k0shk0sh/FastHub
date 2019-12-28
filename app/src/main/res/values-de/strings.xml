@@ -126,8 +126,8 @@
     <string name="download_as_tar">Quellcode (tar.gz)</string>
     <string name="download_as_zip">Quellcode (zip)</string>
     <string name="downloaded">Heruntergeladen</string>
-    <string name="downloading">Heruntergeladen…</string>
-    <string name="downloading_file">Datei wird heruntergeladen…</string>
+    <string name="downloading">Herunterladen…</string>
+    <string name="downloading_file">Datei herunterladen…</string>
     <string name="drafted">Entworfen</string>
     <string name="due_on">Fällig am</string>
     <string name="edit">Bearbeiten</string>
