@@ -116,7 +116,7 @@
     <string name="disable_auto_gif_summary">Automatische GIF-Wiedergabe deaktivieren</string>
     <string name="disable_auto_gif_title">GIF-Wiedergabe deaktivieren</string>
     <string name="disable_loading_image_summary">Bei Nutzung einer mobilen Datenverbindung Ladebild deaktivieren</string>
-    <string name="disable_loading_image_title">Bilder den deaktivieren</string>
+    <string name="disable_loading_image_title">Bilder laden deaktivieren</string>
     <string name="discard">Verwerfen</string>
     <string name="dismiss_all">Alles verwerfen</string>
     <string name="dismissed_review">Überarbeitung verwerfen</string>
