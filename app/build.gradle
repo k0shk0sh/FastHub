@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 buildProperties {
     notThere {
@@ -147,6 +148,7 @@ dependencies {
     implementation "com.google.firebase:firebase-inappmessaging:19.0.2"
     implementation "com.google.firebase:firebase-messaging:20.1.0"
     implementation "com.google.firebase:firebase-database:19.2.0"
+    implementation 'com.google.firebase:firebase-perf:19.0.4'
     implementation "com.google.android.gms:play-services-base:17.1.0"
     implementation('com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0') { transitive = false }
     implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0') { transitive = false }
