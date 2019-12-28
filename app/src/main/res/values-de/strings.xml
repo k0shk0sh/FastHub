@@ -395,7 +395,7 @@
     <string name="scroll_up">Nach oben scrollen</string>
     <string name="search">Suchen</string>
     <string name="search_menu_title">Suchen</string>
-    <string name="search_results_warning">Zu viele Antworten \nÜberschrittenes API-Limit</string>
+    <string name="search_results_warning">Zu viele Antworten\nÜberschrittenes API-Limit</string>
     <string name="select">Auswählen</string>
     <string name="select_backup">Sicherung auswählen</string>
     <string name="select_picture">Bild auswählen</string>
