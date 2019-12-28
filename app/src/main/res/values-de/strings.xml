@@ -18,9 +18,9 @@
     <string name="archive_file_detected_error">Archiv entdeckt. Zum Öffnen des Archivs die Datei herunterladen</string>
     <string name="assign_myself">Mir zuordnen</string>
     <string name="assigned">Zugewiesen</string>
-    <string name="assignee">Beauftragter</string>
-    <string name="assignee_added">Beauftragter erfolgreich hinzugefügt</string>
-    <string name="assignees">Beauftragte</string>
+    <string name="assignee">Verantwortlicher</string>
+    <string name="assignee_added">Verantwortlicher hinzugefügt</string>
+    <string name="assignees">Empfänger</string>
     <string name="author">Autor</string>
     <string name="avatar_click_hint">Auf Avatar tippen, um zum jeweiligen Profil zu gelangen</string>
     <string name="back">Zurück</string>
@@ -28,22 +28,22 @@
     <string name="back_button_title">Zum Beenden nochmal tippen</string>
     <string name="backed_up">Erfolgreich gesichert!</string>
     <string name="background_job_summary">Wie regelmäßig FastHub nach neuen Benachrichtigungen sucht auswählen.</string>
-    <string name="background_job_title">Intervall Benachrichtigung synchronisieren</string>
+    <string name="background_job_title">Synchronisationsintervall</string>
     <string name="backup">Sichern</string>
     <string name="backup_summary">Letzte Aktualisierung: %s</string>
-    <string name="basic_authentication">Standardauthentifizierung</string>
+    <string name="basic_authentication">Basis-Authentifizierung</string>
     <string name="basic_login">Normal anmelden</string>
-    <string name="behavior">Verhalten &amp; Aussehen</string>
+    <string name="behavior">Verhalten</string>
     <string name="big_file">Große Datei</string>
     <string name="big_file_description">Datei ist zu groß zum Öffnen.\n"OK" auswählen, um die Datei herunterzuladen</string>
     <string name="block">Blockieren</string>
     <string name="bold">Fett</string>
-    <string name="bullet">Aufgezählte Liste</string>
+    <string name="bullet">Aufzählung</string>
     <string name="by">von</string>
-    <string name="can_not_merge_pr">Diese PR kann jetzt nicht zusammengeführt werden</string>
+    <string name="can_not_merge_pr">Dieses Pull Request kann jetzt nicht zusammengeführt werden</string>
     <string name="cancel">Abbrechen</string>
     <string name="cancel_reviews">Überprüfung abbrechen</string>
-    <string name="card_added_by">Von %s %s hinzugefügt</string>
+    <string name="card_added_by">%s am %s hinzugefügt</string>
     <string name="change_theme_warning">Wenn das Design nicht richtig dargestellt wird, App beenden und neu starten.</string>
     <string name="changelog">Letzte Änderungen</string>
     <string name="changes">Änderungen</string>
@@ -54,11 +54,11 @@
     <string name="choose_code_theme">Farbcodepalette auswählen</string>
     <string name="choose_language_summary">Bevorzugte Sprache auswählen</string>
     <string name="choose_language_title">Spracheinstellung</string>
-    <string name="choose_your_login_type">Authentifizierungstyp auswählen</string>
+    <string name="choose_your_login_type">Anmeldemethode auswählen</string>
     <string name="clear">Leeren</string>
-    <string name="clear_image_cache">Bilderzwischenspeicher leeren</string>
+    <string name="clear_image_cache">Bilder-Cache leeren</string>
     <string name="clear_search_keywords">Suchverlauf löschen</string>
-    <string name="click_file_option_hint">Datei herunterladen oder Ordner teilen</string> <!-- Unsure -->
+    <string name="click_file_option_hint">Herunterladen oder teilen</string>
     <string name="click_here_to_download_release_hint">Releases herunterladen</string>
     <string name="click_to_toggle_highlighting">Syntaxhervorhebung umschalten\nDie Symbolleiste nach links wischen für mehr Optionen</string>
     <string name="close">Schließen</string>
@@ -66,22 +66,22 @@
     <string name="closed">Geschlossen</string>
     <string name="code_viewer">Code-Betrachter</string>
     <string name="color">Farbe</string>
-    <string name="colored_navbar_summary">Tönung der Navigationsleiste in Themen deaktivieren</string>
-    <string name="colored_navbar_title">Navigationsleisten-Tönung deaktivieren</string>
+    <string name="colored_navbar_summary">Navigationsleiste folgt nicht mehr der Themenfarbe</string>
+    <string name="colored_navbar_title">Standard-Stil der Navigationsleiste</string>
     <string name="colorpicker_dialog_cancel">ABBRECHEN</string>
     <string name="colorpicker_dialog_title">Farbe auswählen</string>
     <string name="comment">Kommentar</string>
     <string name="comment_hint">Auf einen Kommentar tippen, um den jeweiligen Autor zu markieren oder deinen Kommentar zu bearbeiten.\nLänger auf den Kommentar tippen, um ihn zu löschen.</string>
     <string name="comment_is_too_far_to_paginate">Dieser Kommentar liegt zu weit zurück, um ihn anzuzeigen</string>
-    <string name="commented_on_commit">kommentiertes Commit</string>
-    <string name="commented_on_issue">kommentiertes Problem</string>
+    <string name="commented_on_commit">Bewertungen von Commit</string>
+    <string name="commented_on_issue">Bewertungen von Problem</string>
     <string name="comments">Kommentare</string>
     <string name="comments_added_successfully">Kommentare erfolgreich hinzugefügt</string>
     <string name="commit_can_be_merged">Dieser Pull-Request kann zusammengeführt werden</string>
-    <string name="commit_file_required">Keine Dateien geändert</string>
-    <string name="commit_message">Commit-Nachricht</string>
-    <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
-    <string name="committed">Committed</string>
+    <string name="commit_file_required">Keine Dateiänderungen</string>
+    <string name="commit_message">Anweisungen senden</string>
+    <string name="commits_reflected">Commit wurde auf den ausgewählten Branch geschaltet</string>
+    <string name="committed">Eingereicht</string>
     <string name="confirm_message">Bist du sicher?</string>
     <string name="content">Inhalt</string>
     <string name="contributions">Beiträge</string>
@@ -99,7 +99,7 @@
     <string name="created_issue">Problem</string>
     <string name="created_repo">Erstellt</string>
     <string name="creation_date">Erstellungsdatum</string>
-    <string name="creation_date_hint">Wann die Datei erstellt wurde</string>
+    <string name="creation_date_hint">Erstellungszeit der Datei</string>
     <string name="current_version">Aktuelle Version</string>
     <string name="customization">Anpassung</string>
     <string name="daily">Täglich</string>
@@ -108,7 +108,7 @@
     <string name="delete_repo">Repo löschen</string>
     <string name="delete_repo_warning">Wenn du das Repo löschst, kannst du es nicht mehr wiederherstellen!</string>
     <string name="deleted">Gelöscht</string>
-    <string name="deletion">Löschung</string>
+    <string name="deletion">Löschen</string>
     <string name="description">Beschreibung</string>
     <string name="details">Details</string>
     <string name="dialog_animation_summary">Popup-Animationen aktivieren</string>
@@ -132,67 +132,68 @@
     <string name="due_on">Fällig am</string>
     <string name="edit">Bearbeiten</string>
     <string name="edit_gist">GIST bearbeiten</string>
-    <string name="edited">• bearbeitet</string>
-    <string name="empty_pinned_repos">Du hast noch keine Repos angepinnt, pinne welche an, damit sie hier erscheinen</string>
-    <string name="empty_search_error">Das Suchfeld darf nicht leer sein!</string>
-    <string name="enable_ads">Werbung aktivieren</string>
-    <string name="enable_notification_sound_summary">Benachrichtungston bei Benachrichtigungen abspielen</string>
+    <string name="edited">\u2022 geändert</string>
+    <string name="empty_pinned_repos">Keine Lesezeichen.\nHinweis: Lesezeichen sind in absteigender Reihenfolge nach Zugriffshäufigkeit sortiert.</string>
+    <string name="empty_search_error">Suchinhalt darf nicht leer sein</string>
+    <string name="enable_ads">Entwicklung unterstützen und Anzeigen ermöglichen</string>
+    <string name="enable_notification_sound_summary">Ton bei Benachrichtigung abspielen.</string>
     <string name="enable_notification_sound_title">Benachrichtigungston aktivieren</string>
     <string name="enable_notification_title">Benachrichtigungen aktivieren</string>
     <string name="enable_signature">Signatur aktivieren</string>
-    <string name="enable_signature_box">Signaturbox aktivieren</string>
-    <string name="enable_signature_box_summary">Aktivieren, damit Signatur im Editor angezeigt wird</string>
-    <string name="enable_signature_summary">Versenden per Unterschrift aktivieren</string>
-    <string name="english_please">Bitte in Englisch schreiben.</string>
-    <string name="enterprise_login_warning">Bitte per OAuth anmelden, um den ganzen Umfang der GitHubAPI benutzen zu können und um zufällige Abmeldungen bezüglich Enterprise und Logintokens zu verhindern.</string>
+    <string name="enable_signature_box">Jedes Mal auswählen, ob Sie unterschreiben wollen</string>
+    <string name="enable_signature_box_summary">Wählen Sie, ob Sie jedes Mal unter dem Editor unterschreiben wollen</string>
+    <string name="enable_signature_summary">Immer nach Unterschrift senden</string>
+    <string name="english_please">Bitte Ihr Problem auf Englisch beschreiben.</string>
+    <string name="enterprise_login_warning">Da die Github-API das Token Ihres Enterprise-Kontos verwendet.
+         Melde dich in deinem Github-Konto an, um die Funktionen der Github-API zu nutzen.
+         Andernfalls kannst du nur die Funktionen von Enterprise Github verwenden.
+	</string>
     <string name="error">Fehler</string>
-    <string name="error_closing_issue">Problem konnte nicht gesperrt werden. Später erneut versuchen.</string>
-    <string name="error_creating_issue">Problem konnte nicht erstellt werden</string>
-    <string name="error_creating_milestone">Konnte Meilenstein nicht erstellen</string>
-    <string name="error_deleting_comment">Kommentar konnte nicht gelöscht werden</string>
-    <string name="error_deleting_gist">Konnte Gist nicht löschen</string>
-    <string name="error_highlighting_editor">Bitte Auswahl leeren, um mit der Bearbeitung fortzufahren</string>
-    <string name="error_re_opening_issue">Problem konnte nicht entsperrt werden. Versuche es später noch einmal.</string>
+    <string name="error_closing_issue">Fehler beim Problem schließen aufgetreten. Später erneut versuchen.</string>
+    <string name="error_creating_issue">Fehler beim Problem erstellen aufgetreten</string>
+    <string name="error_creating_milestone">Fehler beim Meilenstein festlegen aufgetreten</string>
+    <string name="error_deleting_comment">Fehler beim Kommentar löschen aufgetreten</string>
+    <string name="error_deleting_gist">Fehler beim Gist löschen aufgetreten</string>
+    <string name="error_highlighting_editor">Bitte deaktivieren, um die Bearbeitung fortzusetzen.</string>
+    <string name="error_re_opening_issue">Fehler beim Problem öffnen aufgetreten. Später erneut versuchen.</string>
     <string name="every">Alle</string>
-    <string name="expand">erweitern</string>
+    <string name="expand">Erweitern</string>
     <string name="expand_button_title">Erweitert</string>
     <string name="failed_login">Anmeldung fehlgeschlagen</string>
-    <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>
+    <string name="failed_selecting_image">Bild laden fehlgeschlagen</string>
     <string name="fallback_menu_item_copy_link">Link kopieren</string>
     <string name="fallback_menu_item_open_in_browser">Im Browser öffnen</string>
     <string name="fallback_menu_item_share_link">Link teilen</string>
     <string name="fasthub_faq_description">
         <![CDATA[
-        <h5>• Warum kann ich meine <b> Organisationen </b> entweder <i> private </i> oder <i> öffentliche </i> sehen\\nicht sehen?</h5>
-        <p>Öffne https://github.com/Settings/Applications und suche nach FastHub, öffne es dann, gehe zu Organisation Zugang und klicke auf den Grant Knopf,
-        Alternativ melde dich über einen <b> Zugangsoken </b> an, welches das Setup vereinfacht.</p>
+        <h5>• Warum kann ich meine <i>privaten</i> oder meine <i>öffentlichen</i><b> Organisationen </b> nicht sehen?</h5>
+        <p> https://github.com/settings/applications öffen und FastHub suchen. Nach unten zu "Organisationszugriff" scrollen und auf die Schaltfläche "Grant" tippen.
+         Alternativ kannst du dich auch mit dem <b>Zugriffstoken</b> anmelden, was einfacher ist.
 
-        <h5>• Ich habe versucht, mich mit einem Zugangstoken anzumelden &amp; OTP aber es funtioniert nicht?</h5>
-        <p>Du kannst dich nicht mit einem Zugangstoken anmelden &amp; OTP alle Zusammen wegen der Lebenszeit des OTP codes, du musst dich alle paar sekunden anmelden</p>
+        <h5>• Ich habe versucht, Access Token und ein Einmalkennwort (OTP) zu verwenden, kann mich jedoch nicht anmelden. Warum?</h5>
+        <p>Du kannst dich nicht mit dem Access Token und OTP gemeinsam anmelden. Aufgrund der begrenzten Lebensdauer solcher Kennwörter musst du dich alle paar Sekunden anmelden.</p>
 
-        <h5>• Warum wird mein privates Repo &amp; Enterprise Wiki nicht angezeigt?</h5>
-        <p>Es wie FastHub die GitHub Wiki page holt &amp; Private Repos benötigen einen Sitzungstoken, den FastHub nicht bekommen kann.</p>
+        <h5>• Warum werden meine privaten und Enterprise Repositorie Wikis nicht angezeigt?</h5>
+        <p>Das liegt daran, dass FastHub die GitHub-Wiki-Seite trennt, so dass die App keine Sitzungs-Token aus privaten Repositories erhalten kann.</p>
 
-        <h5>• Ich habe mich mit meiner Enterprisekennung angemeldet kann\\kann nicht mit anderen Sachen interagieren außer meinem Enterprise GitHub?</h5>
-        <p>Logischerweise kannst du nicht auf etwas anderes als dein Unternehmen zugreifen. FastHub versucht dir möglichst viel zu ermöglichen, aber kann
-        natürlich nicht viel tun, wenn deine Anmeldedaten auf den GitHub Servern nicht vorhanden sind. In ein <b> paar </b>
-        Fällen kann es allerdings helfen, dich mit deinem OAuth Token anzumelden.</p>
+        <h5>• Ich habe mich in mein Enterprise-Konto eingeloggt. Warum kann ich nichts anderes als mein Enterprise GitHub ausführen?</h5>
+        <p>Ja, logischerweise kannst du nur auf dein Unternehmen zugreifen. Obwohl FastHub versucht, so viele Berechtigungen wie möglich anzufordern, ist dies in den meisten Fällen nicht möglich, da sich deine Anmeldeinformationen nicht auf den GitHub-Servern befinden. In <b>einigen</b> Fällen funktioniert dein GitHub-Konto-OAuth-Token.</p>
 
-        <h5>• Ich habe Schwierigkeiten bei der Bearbeitung von Problemen/PRS!</h5>
-        <p>Wenn du ein öffentliches Organisations-Repo bearbeiten willst, wende dich bitte an deine Organisation, um den Zugang für FastHub genehmigen zu lassen oder verwende den entsprechenden Access Token!.</p>
+        <h5>• Warum habe ich Probleme bei der Bearbeitung meiner Issues(Probleme)/Pull Requests (PRs)?</h5>
+        <p>Wenn du die Issues(Probleme)/(Pull Requests) PRs des Repositorys für öffentliche Organisationen nicht bearbeiten kannst, wende dich an deine Organisation, um FastHub Berechtigungen zu erteilen, oder verwende Access Token, um dich anzumelden.</p>
 
-        <h5>• Ich habe einen Fehler gefunden oder habe Verbesserungsvorschläge!</h5>
-        <p>Gehe zu https://github.com/k0shk0sh/FastHub/issues/new und erstelle ein neues Issue für Bugmeldungen oder Feature Requests. Bitte suche aber vor dem Erstellen nach bereits existierenden Tickets. Jede doppelte Anfrage wird sofort als Duplikat markiert und geschlossen.</p>
+        <h5>• Ich habe einige Fragen! / Ich möchte Ihnen was vorschlagen!</h5>
+        <p>Zu https://github.com/k0shk0sh/FastHub/issues/new, gehen um Probleme für Fehler und neue Funktionsanforderungen zu erstellen. Ich hoffe, du kannst ähnliche Probleme nachschlagen, bevor du ein Neues eröffnest. Es wird als Duplikat markiert und sofort geschlossen.</p>
     ]]></string>
     <string name="faq">FAQ</string>
-    <string name="feeds_fork_hint">Länger auf einen Fork tippen, um entweder das originale oder das geforkte Repo anzuzeigen</string>
+    <string name="feeds_fork_hint">Langes Tippen auf ein Fork-Ereignis öffnet entweder das Original oder das Fork-Repo.</string>
     <string name="file">Datei</string>
     <string name="file_history">Dateiverlauf</string>
     <string name="file_menu">Dateimenü</string>
     <string name="file_name">Dateiname</string>
     <string name="file_name_hint">Dateiname + Erweiterung</string>
     <string name="files">Dateien</string>
-    <string name="files_only">In Dateien</string>
+    <string name="files_only">Nur in Dateien</string>
     <string name="filter">Filter</string>
     <string name="five_minutes">5 Minuten</string>
     <string name="follow">Folgen</string>
@@ -232,7 +233,11 @@
     <string name="least_recent_updated">Am wenigsten vor kurzem aktiviert</string>
     <string name="link">Link</string>
     <string name="lock_issue">Problem sperren</string>
-    <string name="lock_issue_details">Wenn du das Problem sperrst:\n&#183;Können andere Benutzer keine Kommentare mehr schreiben.\n&#183;Du und andere berechtigte Kollaboteure können allerdings immer noch Kommentare hinterlassen, die anderen lesen können.\n&#183;Du kannst dieses Problem jederzeit wieder entsperren\n</string>
+    <string name="lock_issue_details">Gesperrt bedeutet:\n
+         Andere Benutzer können diesem Problem keine neuen Kommentare hinzufügen.\n
+         • Du und andere Mitarbeiter mit Schreibberechtigung können weiterhin Kommentare hinterlassen, die jeder sehen kann.\n
+         • Du kannst dieses Problem jederzeit entsperren.\n
+    </string>
     <string name="login">Anmelden</string>
     <string name="login_using_your_default_browser">Mit Standardbrowser anmelden (OAuth)</string>
     <string name="login_with_personal_token">Mit persönlichem Token anmelden</string>
@@ -264,8 +269,8 @@
     <string name="network_error">Konnte nicht mit dem Server kommunizieren</string>
     <string name="new_version">Eine neue Version ist verfügbar.</string>
     <string name="newest">Neu</string>
-    <string name="no">Nein</string> <!--Will fix this negation problem soon-->
-    <string name="no_assignees">Keine Beauftragte</string>
+    <string name="no">Nein</string>
+    <string name="no_assignees">Kein Empfänger</string>
     <string name="no_body">Kein Inhalt</string>
     <string name="no_cards">Keine Karten</string>
     <string name="no_closed_issues">Keine geschlossenen Probleme</string>
@@ -276,7 +281,7 @@
     <string name="no_data">Fehler beim Laden der Daten</string>
     <string name="no_description_provided"><p>Keine Beschreibung bereitgestellt</p></string>
     <string name="no_events">Keine Ereignisse</string>
-    <string name="no_feeds">Keine Feeds</string>
+    <string name="no_feeds">Keine Änderungen</string>
     <string name="no_file_found">Keine Datei gefunden</string>
     <string name="no_files">Keine Dateien</string>
     <string name="no_followers">Keine Anhänger</string>
@@ -289,7 +294,7 @@
     <string name="no_notifications">Keine Benachrichtigungen</string>
     <string name="no_opened_issues">Keine geöffneten Probleme</string>								   
     <string name="no_orgs">Organisation(en) nicht sichtbar?</string>
-    <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link\nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
+    <string name="no_orgs_description">Wenn du in einer Organisation bist und diese nicht sehen kannst, folge dem unteren Link\nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
     <string name="no_orgs_dialog_title">Ist deine Organisationen nicht finden?</string>
     <string name="no_projects">Keine Projekte</string>
     <string name="no_pull_requests">Keine Pull Requests</string>
@@ -321,7 +326,7 @@
     <string name="open_in_browser">In Browser öffnen</string>
     <string name="open_new_window">In neuem Fenster öffnen</string>
     <string name="open_source_libs">Open Source-Bibliotheken</string>
-    <string name="opened">Offen</string>
+    <string name="opened">Geöffnet</string>
     <string name="options">Optionen</string>
     <string name="or_character">ODER</string>
     <string name="organization">Organisation</string>
@@ -333,12 +338,12 @@
     <string name="participated">Teilnahme</string>
     <string name="password">Passwort</string>
     <string name="password_toggle_content_description">Passwort anzeigen</string>
-    <string name="paths_only">In Dateipfaden</string>
+    <string name="paths_only">Nur in Pfaden</string>
     <string name="people">Personen</string>
     <string name="permission_failed">Keine Berechigungen</string>
     <string name="personal_token">Persönlicher Token</string>
     <string name="pin">Anpinnen</string>
-    <string name="pin_repo_hint">Repos anpinnen, um schneller auf sie zugreifen zu können</string>
+    <string name="pin_repo_hint">Repos anpinnen, um schneller auf diese zugreifen zu können</string>
     <string name="pinned">Pinnwand</string>
     <string name="please_login">Bitte anmelden, um FastHub nutzen zu können</string>
     <string name="please_read">BITTE LESEN!</string>
@@ -367,7 +372,7 @@
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
     <string name="released">Freigegeben</string>
-    <string name="releases">Veröffentlichungen</string>
+    <string name="releases">Veröffentlicht</string>
     <string name="reload">Neu laden</string>
     <string name="reply">Antworten</string>
     <string name="repo_chooser">Repo auswählen</string>
@@ -383,14 +388,14 @@
     <string name="restore">Wiederherstellen</string>
     <string name="restore_purchases">Einkäufe wiederherstellen</string>
     <string name="review_requests">Anfragen überprüfen</string>
-    <string name="reviewed">überprüft</string>
-    <string name="reviewer_added">Überprüfer erfolgreich hinzugefügt</string>
-    <string name="reviewers">Überprüfer</string>
+    <string name="reviewed">Überprüft</string>
+    <string name="reviewer_added">Prüfer hinzugefügt</string>
+    <string name="reviewers">Prüfer</string>
     <string name="scroll_down">Nach unten scrollen</string>
     <string name="scroll_up">Nach oben scrollen</string>
     <string name="search">Suchen</string>
     <string name="search_menu_title">Suchen</string>
-    <string name="search_results_warning">Bitte bei deiner Suche etwas genauer sein</string>
+    <string name="search_results_warning">Zu viele Antworten \nÜberschrittenes API-Limit</string>
     <string name="select">Auswählen</string>
     <string name="select_backup">Sicherung auswählen</string>
     <string name="select_picture">Bild auswählen</string>
@@ -436,31 +441,34 @@
     <string name="theme_color_summary">Akzentfarbe auswählen</string>
     <string name="theme_color_title">Akzentfarbe</string>
     <string name="theme_summary">Standarddesign auswählen</string>
-    <string name="theme_title">Ein Design auswählen</string>
+    <string name="theme_title">Thema auswählen</string>
     <string name="thirty_minutes">30 Minuten</string>
-    <string name="this_value">dies</string>
+    <string name="this_value">dieses</string>
     <string name="three_hour">3 Stunden</string>
     <string name="title">Titel</string>
-    <string name="to">mit/an</string>
-    <string name="todo_checked">abgehakt</string>
-    <string name="todo_unchecked">ausstehend</string>
-    <string name="too_large_changes">Zu viele Unterschiede, um sie anzuzeigen. Bitte per Browser ansehen!</string>
+    <string name="to">zu</string>
+    <string name="todo_checked">Todo überprüft</string>
+    <string name="todo_unchecked">Todo wurde abgewählt</string>
+    <string name="too_large_changes">Zu viele Änderungen. Bitte in deinem Browser anzeigen.</string>
     <string name="trending">Im Trend</string>
     <string name="turn_off">Ausschalten</string>
     <string name="twenty_minutes">20 Minuten</string>
     <string name="twoFactor">Zwei-Faktor Authentifizierungs-Code</string>
-    <string name="two_factors_otp_error">Zwei Faktoren OTP ist erforderlich</string>							   
+    <string name="two_factors_otp_error">Erfordert eine 2-Schrittebestätigung</string>							   
     <string name="two_hour">2 Stunden</string>
     <string name="type">Typ</string>
     <string name="type_here">Hier schreiben</string>
     <string name="un_subscribe">Abbestellen</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
-    <string name="unblock">Nicht mehr blockieren</string>
-    <string name="unexpected_error">Konnte API nicht erreichen</string>
+    <string name="unblock">Entsperren</string>
+    <string name="unexpected_error">Beim API-Aufruf ist ein unerwarteter Fehler aufgetreten</string>
     <string name="unfollow">Nicht mehr folgen</string>
     <string name="unknown">Unbekannt</string>
     <string name="unlock_issue">Problem entsperren</string>
-    <string name="unlock_issue_details">Wenn du das Problem entsperrst:\n&#183;Kann jeder wieder Kommentare schreiben\n&#183;Du kannst dieses Problem jederzeit wieder sperren\n</string>
+    <string name="unlock_issue_details">Entsperren heißt:\n
+        • Jeder kann sich zu diesem Problem äußern\n
+        • Du kannst diese Problem jederzeit wieder sperren\n
+    </string>
     <string name="unpin">Lösen</string>
     <string name="unread">Ungelesen</string>
     <string name="unread_notification">Du hast ungelesene Benachrichtigungen</string>
@@ -479,7 +487,7 @@
     <string name="view_as_code">Als Code anzeigen</string>
     <string name="view_code">Syntaxhervorhebung</string>
     <string name="viewer">Betrachter</string>
-    <string name="want_to_merge">möchte mergen</string>
+    <string name="want_to_merge">Willst du Mergen</string>
     <string name="warning">Warnung</string>
     <string name="watch">Beobachten</string>
     <string name="watch_hint">Repo Beobachten</string>
@@ -491,3 +499,4 @@
     <string name="wrap_content">Zeilenumbruch</string>
     <string name="yes">Ja</string>
 </resources>
+
