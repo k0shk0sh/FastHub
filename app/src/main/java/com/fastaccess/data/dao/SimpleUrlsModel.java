@@ -16,10 +16,17 @@ public class SimpleUrlsModel implements Parcelable {
 
     public String item;
     public String url;
+    public String extension;
 
     public SimpleUrlsModel(String item, String url) {
         this.item = item;
         this.url = url;
+    }
+
+    public SimpleUrlsModel(String item, String url, String extension) {
+        this.item = item;
+        this.url = url;
+        this.extension = extension;
     }
 
     @Override public String toString() {

@@ -92,6 +92,10 @@ public class RestProvider {
     }
 
     public static void downloadFile(@NonNull Context context, @NonNull String url) {
+        downloadFile(context, url, null);
+    }
+
+    public static void downloadFile(@NonNull Context context, @NonNull String url, @Nullable String extension) {
         try {
             if (InputHelper.isEmpty(url)) return;
             boolean isEnterprise = LinkParserHelper.isEnterprise(url);
@@ -103,6 +107,9 @@ public class RestProvider {
                 request.addRequestHeader("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
             }
             String fileName = new File(url).getName();
+            if (!InputHelper.isEmpty(extension)) {
+                fileName += extension;
+            }
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
             request.setTitle(fileName);
             request.setDescription(context.getString(R.string.downloading_file));

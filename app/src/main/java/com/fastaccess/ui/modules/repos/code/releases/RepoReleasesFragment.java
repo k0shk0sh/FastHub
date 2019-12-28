@@ -1,10 +1,13 @@
 package com.fastaccess.ui.modules.repos.code.releases;
 
+import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -139,13 +142,11 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         ArrayList<SimpleUrlsModel> models = new ArrayList<>();
         if (!InputHelper.isEmpty(item.getZipBallUrl())) {
             String url = item.getZipBallUrl();
-            if (!url.endsWith(".tar.gz")) {
-                url = url + ".tar.gz";
-            }
-            models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), url));
+            models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), url, ".zip"));
         }
         if (!InputHelper.isEmpty(item.getTarballUrl())) {
-            models.add(new SimpleUrlsModel(getString(R.string.download_as_tar), item.getTarballUrl()));
+            String url = item.getTarballUrl();
+            models.add(new SimpleUrlsModel(getString(R.string.download_as_tar), url, ".tar.gz"));
         }
         if (item.getAssets() != null && !item.getAssets().isEmpty()) {
             ArrayList<SimpleUrlsModel> mapped = Stream.of(item.getAssets())
@@ -180,8 +181,10 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
     }
 
     @Override public void onItemSelected(SimpleUrlsModel item) {
-        if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
-            RestProvider.downloadFile(getContext(), item.getUrl());
+        Activity activity = getActivity();
+        if (activity == null) return;
+        if (ActivityHelper.checkAndRequestReadWritePermission(activity)) {
+            RestProvider.downloadFile(activity, item.getUrl(), item.extension);
         }
     }
 

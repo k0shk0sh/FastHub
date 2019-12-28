@@ -317,6 +317,10 @@
         </service>
 
         <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e" />
+
+        <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
     </application>
