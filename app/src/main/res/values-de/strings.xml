@@ -310,7 +310,7 @@
     <string name="notification_settings">Benachrichtigung</string>
     <string name="notification_type">Benachrichtigungsart</string>
     <string name="notifications">Benachrichtigungen</string>
-    <string name="notifications_hint">Tippen, um die Benachrichtigungsliste zu öffnen oder wischem zum Verwerfen</string>
+    <string name="notifications_hint">Tippen, um die Benachrichtigungsliste zu öffnen oder wischen zum Verwerfen</string>
     <string name="now">Jetzt</string>
     <string name="numbered_list">Nummerierte Liste</string>
     <string name="ok">OK</string>
