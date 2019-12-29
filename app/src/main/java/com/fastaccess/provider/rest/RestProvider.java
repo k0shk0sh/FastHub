@@ -22,7 +22,6 @@ import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.ReviewService;
 import com.fastaccess.data.service.SearchService;
-import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -178,15 +177,6 @@ public class RestProvider {
 
     @NonNull public static SearchService getSearchService(boolean enterprise) {
         return provideRetrofit(enterprise).create(SearchService.class);
-    }
-
-    @NonNull public static SlackService getSlackService() {
-        return new Retrofit.Builder()
-                .baseUrl("https://ok13pknpj4.execute-api.eu-central-1.amazonaws.com/prod/")
-                .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-                .create(SlackService.class);
     }
 
     @NonNull public static ContentService getContentService(boolean enterprise) {
