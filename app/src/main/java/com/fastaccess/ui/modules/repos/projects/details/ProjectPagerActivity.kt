@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import butterknife.BindView
-import com.airbnb.lottie.LottieAnimationView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
