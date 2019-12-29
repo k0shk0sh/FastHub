@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/viewGroup"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewGroup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
@@ -18,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bottom_border"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_normal">
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/close"
@@ -28,16 +27,16 @@
                 android:layout_gravity="start|center"
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:background="?selectableItemBackgroundBorderless"
-                android:paddingBottom="@dimen/spacing_micro"
                 android:paddingTop="@dimen/spacing_micro"
-                android:src="@drawable/ic_back"/>
+                android:paddingBottom="@dimen/spacing_micro"
+                android:src="@drawable/ic_back" />
 
             <com.fastaccess.ui.widgets.FontTextView
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/keyline_1"
-                android:text="@string/fasthub_premium_features"/>
+                android:text="@string/fasthub_premium_features" />
         </FrameLayout>
 
 
@@ -55,30 +54,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_normal">
+                    android:paddingTop="@dimen/spacing_normal"
+                    android:paddingBottom="@dimen/spacing_normal">
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:orientation="horizontal"
-                        android:paddingBottom="@dimen/spacing_micro"
-                        android:paddingTop="@dimen/spacing_micro">
+                        android:paddingTop="@dimen/spacing_micro"
+                        android:paddingBottom="@dimen/spacing_micro">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
                             android:layout_marginStart="@dimen/spacing_xs_large"
-                            android:src="@drawable/ic_group"/>
+                            android:src="@drawable/ic_group" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:paddingEnd="@dimen/spacing_xs_large"
-                            android:paddingStart="@dimen/keyline_1">
+                            android:paddingStart="@dimen/keyline_1"
+                            android:paddingEnd="@dimen/spacing_xs_large">
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Subhead"
@@ -86,15 +85,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/enterprise"
-                                android:textColor="@color/search_tab_highlighter"/>
+                                android:textColor="@color/search_tab_highlighter" />
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 android:id="@+id/enterprisePrice"
                                 style="@style/Base.TextAppearance.AppCompat.Subhead"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="$ 5.99"
-                                android:textColor="@color/material_red_700"/>
+                                android:textColor="@color/material_red_700"
+                                tools:text="$ 5.99" />
                         </LinearLayout>
 
                     </FrameLayout>
@@ -103,9 +102,9 @@
                         style="@style/Base.TextAppearance.AppCompat.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingEnd="@dimen/spacing_xs_large"
                         android:paddingStart="@dimen/keyline_1"
-                        android:text="@string/enterprise_pro_description"/>
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:text="@string/enterprise_pro_description" />
 
                     <com.fastaccess.ui.widgets.FontButton
                         android:id="@+id/buyEnterprise"
@@ -113,8 +112,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/spacing_xs_large"
                         android:layout_marginEnd="@dimen/spacing_normal"
-                        android:text="@string/purchase"/>
+                        android:drawableEnd="@drawable/ic_arrow_right"
+                        android:drawablePadding="@dimen/spacing_normal"
+                        android:drawableTint="@color/material_green_700"
+                        android:text="@string/purchase"
+                        android:textAllCaps="false"
+                        android:textColor="@color/material_green_700" />
 
                 </LinearLayout>
 
@@ -122,30 +127,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_normal">
+                    android:paddingTop="@dimen/spacing_normal"
+                    android:paddingBottom="@dimen/spacing_normal">
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
                         android:orientation="horizontal"
-                        android:paddingBottom="@dimen/spacing_micro"
-                        android:paddingTop="@dimen/spacing_micro">
+                        android:paddingTop="@dimen/spacing_micro"
+                        android:paddingBottom="@dimen/spacing_micro">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
                             android:layout_marginStart="@dimen/spacing_xs_large"
-                            android:src="@drawable/ic_repo"/>
+                            android:src="@drawable/ic_repo" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:paddingEnd="@dimen/spacing_xs_large"
-                            android:paddingStart="@dimen/keyline_1">
+                            android:paddingStart="@dimen/keyline_1"
+                            android:paddingEnd="@dimen/spacing_xs_large">
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Subhead"
@@ -153,15 +158,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/pro_features"
-                                android:textColor="@color/search_tab_highlighter"/>
+                                android:textColor="@color/search_tab_highlighter" />
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 android:id="@+id/proPrice"
                                 style="@style/Base.TextAppearance.AppCompat.Subhead"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="$ 3.99"
-                                android:textColor="@color/material_red_700"/>
+                                android:textColor="@color/material_red_700"
+                                tools:text="$ 3.99" />
                         </LinearLayout>
                     </FrameLayout>
 
@@ -169,9 +174,9 @@
                         style="@style/Base.TextAppearance.AppCompat.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingEnd="@dimen/spacing_xs_large"
                         android:paddingStart="@dimen/keyline_1"
-                        android:text="@string/pro_features_list"/>
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:text="@string/pro_features_list" />
 
                     <com.fastaccess.ui.widgets.FontButton
                         android:id="@+id/buyPro"
@@ -179,88 +184,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/spacing_xs_large"
                         android:layout_marginEnd="@dimen/spacing_normal"
-                        android:text="@string/purchase"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_normal">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
-                        android:orientation="horizontal"
-                        android:paddingBottom="@dimen/spacing_micro"
-                        android:paddingTop="@dimen/spacing_micro">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center"
-                            android:layout_marginStart="@dimen/spacing_xs_large"
-                            android:src="@drawable/ic_unlock"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center"
-                            android:paddingEnd="@dimen/spacing_xs_large"
-                            android:paddingStart="@dimen/keyline_1">
-
-                            <com.fastaccess.ui.widgets.FontTextView
-                                style="@style/TextAppearance.AppCompat.Subhead"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/unlock_everything"
-                                android:textColor="@color/search_tab_highlighter"/>
-
-                            <com.fastaccess.ui.widgets.FontTextView
-                                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$ 0.00"
-                                android:textColor="@color/material_red_700"/>
-                        </LinearLayout>
-                    </FrameLayout>
-
-                    <com.fastaccess.ui.widgets.FontEditText
-                        android:id="@+id/editText"
-                        style="@style/Base.TextAppearance.AppCompat.Small"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_xs_large"
-                        android:layout_marginStart="@dimen/keyline_1"
-                        android:hint="@string/secret_code"
-                        android:imeOptions="actionDone"
-                        android:inputType="textWebEditText"
-                        android:singleLine="true"/>
-
-                    <com.fastaccess.ui.widgets.FontButton
-                        android:id="@+id/unlock"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="@dimen/spacing_normal"
-                        android:text="@string/unlock"/>
+                        android:drawableEnd="@drawable/ic_arrow_right"
+                        android:drawablePadding="@dimen/spacing_normal"
+                        android:drawableTint="@color/material_green_700"
+                        android:text="@string/purchase"
+                        android:textAllCaps="false"
+                        android:textColor="@color/material_green_700" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
         <com.fastaccess.ui.widgets.FontButton
             android:id="@+id/buyAll"
-            style="@style/Widget.AppCompat.ButtonBar"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:text="@string/purchase_all"
-            android:textColor="@color/material_red_700"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="?colorAccent" />
 
     </LinearLayout>
 
@@ -275,27 +219,7 @@
         <ProgressBar
             style="?android:progressBarStyleLarge"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/successActivationHolder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?android:windowBackground"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/successActivationView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:lottie_autoPlay="false"
-            app:lottie_fileName="lottie/code_invite_success.json"
-            app:lottie_loop="false"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
