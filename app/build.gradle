@@ -30,8 +30,8 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 472
-        versionName "4.7.2"
+        versionCode 473
+        versionName "4.7.3"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
         buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
@@ -162,7 +162,6 @@ dependencies {
     implementation("com.apollographql.apollo:apollo-runtime:1.2.2")
     implementation 'com.jaredrummler:android-device-names:1.1.9'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
-    implementation 'com.airbnb.android:lottie:3.3.1'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
     implementation 'com.google.guava:guava:27.0.1-android' /*to be removed*/
     debugImplementation 'com.github.whataa:pandora:2.0.6'

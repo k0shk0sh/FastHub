@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import butterknife.BindView
 import com.airbnb.lottie.LottieAnimationView
 import com.evernote.android.state.State
@@ -28,7 +29,7 @@ import com.fastaccess.ui.widgets.CardsPagerTransformerBasic
 class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPresenter>(), ProjectPagerMvp.View {
 
     @BindView(R.id.pager) lateinit var pager: ViewPager
-    @BindView(R.id.loading) lateinit var loading: LottieAnimationView
+    @BindView(R.id.loading) lateinit var loading: ProgressBar
     @State var isProgressShowing = false
 
     override fun canBack(): Boolean = true
@@ -61,12 +62,10 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
     override fun showProgress(resId: Int) {
         isProgressShowing = true
         loading.visibility = View.VISIBLE
-        loading.playAnimation()
     }
 
     override fun hideProgress() {
         isProgressShowing = false
-        loading.cancelAnimation()
         loading.visibility = View.GONE
     }
 

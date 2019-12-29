@@ -5,7 +5,9 @@ import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
 import com.crashlytics.android.answers.PurchaseEvent
 import com.crashlytics.android.core.CrashlyticsCore
+import com.fastaccess.App
 import com.fastaccess.BuildConfig
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
 import java.math.BigDecimal
 import java.math.RoundingMode
