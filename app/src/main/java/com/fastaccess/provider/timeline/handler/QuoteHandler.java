@@ -1,6 +1,7 @@
 package com.fastaccess.provider.timeline.handler;
 
 import androidx.annotation.ColorInt;
+
 import android.text.SpannableStringBuilder;
 
 import com.zzhoujay.markdown.style.MarkDownQuoteSpan;
@@ -21,6 +22,10 @@ import lombok.AllArgsConstructor;
 
     @Override
     public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
-        builder.setSpan(new MarkDownQuoteSpan(color), start + 1, builder.length(), 33);
+        try {
+            builder.setSpan(new MarkDownQuoteSpan(color), start + 1, builder.length(), 33);
+        } catch (IndexOutOfBoundsException e) {
+            builder.setSpan(new MarkDownQuoteSpan(color), start, builder.length(), 33);
+        }
     }
 }

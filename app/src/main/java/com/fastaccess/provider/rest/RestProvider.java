@@ -1,7 +1,9 @@
 package com.fastaccess.provider.rest;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -23,6 +25,7 @@ import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.ReviewService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.UserRestService;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
@@ -98,6 +101,13 @@ public class RestProvider {
         try {
             if (InputHelper.isEmpty(url)) return;
             boolean isEnterprise = LinkParserHelper.isEnterprise(url);
+            if (url.endsWith(".apk")) {
+                Activity activity = ActivityHelper.getActivity(context);
+                if (activity != null) {
+                    ActivityHelper.startCustomTab(activity, url);
+                    return;
+                }
+            }
             Uri uri = Uri.parse(url);
             DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             DownloadManager.Request request = new DownloadManager.Request(uri);
