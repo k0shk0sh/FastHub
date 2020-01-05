@@ -140,7 +140,7 @@ dependencies {
     implementation dependency.dagger
     implementation dependency.archs
     implementation dependency.firebase
-    api 'com.google.guava:guava:28.1-jre' // for the sake of listenablefuture
+    api 'com.google.guava:guava:28.2-jre' // for the sake of listenablefuture
     debugImplementation dependency.developmentDependencies
     releaseImplementation dependency.releaseDevelopmentDependencies
 

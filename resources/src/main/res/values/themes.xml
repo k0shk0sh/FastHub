@@ -51,7 +51,7 @@
         <item name="tabStyle">@style/TabLayoutStyle</item>
     </style>
 
-    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+    <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabBackground">?attr/selectableItemBackground</item>
         <item name="tabTextAppearance">@style/TabTextAppearance</item>
         <item name="tabSelectedTextColor">?android:textColorPrimary</item>
