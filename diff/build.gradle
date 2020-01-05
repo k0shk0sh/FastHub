@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    def conf = rootProject.ext.android
+
+    compileSdkVersion conf.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion conf.minSdkVersion
+        targetSdkVersion conf.targetSdkVersion
+        versionCode conf.versionCode
+        versionName conf.versionName
+        multiDexEnabled
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    def dependency = rootProject.ext
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':base')
+    implementation project(':data')
+    implementation project(':network')
+    implementation project(':resources')
+    implementation project(':extensions')
+    implementation project(':dagger')
+    implementation project(':markdown')
+    implementation dependency.kotlin
+    implementation dependency.supportLibraries
+    implementation dependency.extrasLibraries
+    implementation dependency.networking
+    implementation dependency.rxJava
+    implementation dependency.extrasLibraries
+    implementation dependency.dagger
+    implementation dependency.archs
+
+    kapt dependency.processing
+
+}

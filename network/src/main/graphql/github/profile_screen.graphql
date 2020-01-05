@@ -1,0 +1,248 @@
+query getProfile($login: String!) {
+  user(login: $login) {
+    login
+    avatarUrl
+    viewerCanFollow
+    viewerIsFollowing
+    isViewer
+    isDeveloperProgramMember
+    id
+    databaseId
+    createdAt
+    bio
+    company
+    email
+    name
+    websiteUrl
+    location
+    url
+    organizations(first: 30) {
+      nodes {
+        avatarUrl
+        email
+        location
+        login
+        name
+      }
+      totalCount
+    }
+    followers(last: 0) {
+      totalCount
+    }
+    following(last: 0) {
+      totalCount
+    }
+    pinnedItems(first: 5, types: [REPOSITORY]) {
+      totalCount
+      nodes {
+        ... on Repository {
+            name
+            nameWithOwner
+            primaryLanguage {
+              name
+              color
+            }
+            stargazers(first: 0) {
+              totalCount
+            }
+            forkCount
+            issues(first: 0, states: [OPEN]) {
+              totalCount
+            }
+            pullRequests(first: 0, states: [OPEN]) {
+              totalCount
+            }
+        }
+      }
+    }
+  }
+}
+
+
+query getProfileOrgs($login: String!, $cursor: String) {
+  user(login: $login) {
+    organizations(first: 30, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        avatarUrl
+        email
+        location
+        login
+        name
+        url
+        description
+        id
+        databaseId
+        isVerified
+        viewerIsAMember
+        viewerCanCreateTeams
+        viewerCanCreateRepositories
+        viewerCanCreateProjects
+        viewerCanAdminister
+        teams(first: 0) {
+          totalCount
+        }
+        projects(first: 0) {
+          totalCount
+        }
+        membersWithRole(first: 0) {
+          totalCount
+        }
+        repositories(first: 0) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+
+
+query getProfileRepos($login: String!, $cursor: String) {
+  user(login: $login) {
+    repositories(first: 30, orderBy: {field: PUSHED_AT, direction: DESC}, after:$cursor) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      totalCount
+      totalDiskUsage
+      nodes {
+        id
+        databaseId
+        name
+        updatedAt
+        diskUsage
+        forkCount
+        isFork
+        isPrivate
+        viewerHasStarred
+        primaryLanguage {
+          name
+          color
+        }
+        stargazers(first: 0) {
+          totalCount
+        }
+        issues(first: 0, states: [OPEN]) {
+          totalCount
+        }
+        pullRequests(first: 0, states: [OPEN]) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+query getProfileStarredRepos($login: String!, $cursor: String) {
+  user(login: $login) {
+    starredRepositories(first: 30, orderBy: {field: STARRED_AT, direction: DESC}, after:$cursor) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      totalCount
+      nodes {
+        id
+        databaseId
+        name
+        nameWithOwner
+        updatedAt
+        diskUsage
+        forkCount
+        isFork
+        isPrivate
+        viewerHasStarred
+        primaryLanguage {
+          name
+          color
+        }
+        stargazers(first: 0) {
+          totalCount
+        }
+        issues(first: 0, states: [OPEN]) {
+          totalCount
+        }
+        pullRequests(first: 0, states: [OPEN]) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+query getProfileGists($login: String!, $cursor: String) {
+  user(login: $login) {
+    gists(first: 30, privacy: ALL, orderBy: {field: UPDATED_AT, direction: DESC}, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        id
+        viewerHasStarred
+        updatedAt
+        isPublic
+        name
+        description
+        owner {
+          login
+        }
+        stargazers(first: 0) {
+          totalCount
+        }
+        comments(first: 0) {
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+query getProfileFollowers($login: String!, $cursor: String) {
+  user(login: $login) {
+    followers(first: 30, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        ...ShortUserRowItem
+      }
+    }
+  }
+}
+
+query getProfileFollowing($login: String!, $cursor: String) {
+  user(login: $login) {
+    following(first: 30, after: $cursor) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      nodes {
+        ...ShortUserRowItem
+      }
+    }
+  }
+}

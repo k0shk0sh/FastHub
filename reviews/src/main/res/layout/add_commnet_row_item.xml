@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/addComment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:drawableEnd="@drawable/ic_comment"
+    android:hint="@string/add_comment"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal">
+
+</androidx.appcompat.widget.AppCompatTextView>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="amlodWindowBackground">#000</color>
+    <color name="amlodDivider">#80949494</color>
+
+    <style name="ThemeAmlod" parent="ThemeAmlod.Base"/>
+
+    <style name="ThemeAmlod.Base" parent="Theme.Dark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="chip_background">@color/amlodWindowBackground</item>
+        <item name="card_background">#050910</item>
+        <item name="comment_box_style">@style/CommentBoxDarkAmlod</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundAmlod</item>
+        <item name="patch_addition">@color/dark_patch_addition_color</item>
+        <item name="patch_deletion">@color/dark_patch_deletion_color</item>
+        <item name="patch_ref">@color/dark_patch_ref_color</item>
+        <item name="dividerColor">@color/amlodDivider</item>
+        <item name="android:windowBackground">@color/amlodWindowBackground</item>
+        <item name="colorPrimary">#040408</item>
+        <item name="colorPrimaryDark">#010102</item>
+        <item name="colorAccent">#2962FF</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:textColorPrimary">#eee</item>
+        <item name="android:textColorSecondary">#9E9E9E</item>
+        <item name="android:textColorTertiary">#ffe0e0e0</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:dialogTheme">@style/DialogThemeAmlod</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuAmlod</item>
+    </style>
+
+    <style name="PopupMenuAmlod" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/amlodWindowBackground</item>
+    </style>
+
+    <style name="DialogThemeAmlod" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">#050910</item>
+        <item name="comment_box_style">@style/CommentBoxDarkAmlod</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundAmlod</item>
+        <item name="colorPrimary">#040408</item>
+        <item name="colorPrimaryDark">#08080F</item>
+        <item name="colorAccent">#2962FF</item>
+        <item name="android:windowBackground">@color/amlodWindowBackground</item>
+    </style>
+
+    <style name="AppTheme.AboutActivity.Amlod" parent="ThemeAmlod">
+        <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
+        <item name="colorPrimary">#040408</item>
+        <item name="colorPrimaryDark">#08080F</item>
+        <item name="colorAccent">#2962FF</item>
+        <item name="mal_lightActionBar">false</item>
+        <item name="mal_color_primary">#eee</item>
+        <item name="mal_color_secondary">#ffe0e0e0</item>
+        <item name="mal_card_background">#050910</item>
+    </style>
+
+    <style name="ToolbarStyleAmlod">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">#42ffffff</item>
+        <item name="popupTheme">@style/PopupThemeAmlod</item>
+    </style>
+
+    <style name="PopupThemeAmlod" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/amlodWindowBackground</item>
+    </style>
+
+    <style name="TimeLineBackgroundAmlod">
+        <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+        <item name="android:backgroundTint">#050910</item>
+    </style>
+
+    <style name="CommentBoxDarkAmlod">
+        <item name="android:background">@drawable/ic_edittext</item>
+        <item name="android:backgroundTint">#050910</item>
+    </style>
+
+
+</resources>

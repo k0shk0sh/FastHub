@@ -1,0 +1,165 @@
+ext {
+    rxJava2 = '2.1.9'
+    rxKotlin = '2.2.0'
+    rxAndroid = '2.0.1'
+    room = '2.1.0-beta01'
+    paging = '2.1.1'
+    lifecycle = '2.2.0-alpha01'
+    navigation = '1.0.0'
+    workManager = '1.0.1'
+    constraintLayout = '2.0.0-beta4'
+    dagger2 = '2.24'
+    butterKnife = '8.8.1'
+    javaxAnnotation = '10.0-b28'
+    okHttp = '3.11.0'
+    retrofit2 = '2.5.0'
+    gson = '2.8.6'
+    glide = '4.10.0'
+    timber = '4.7.1'
+    androidState = '1.4.1'
+    junit = '4.13'
+    mockito = '2.23.4'
+    mockitoKotlin = '1.5.0'
+    assertJ = '3.12.2'
+    apollo = '1.2.2'
+    deepLinkDispatch = '4.1.0'
+    markwonVersion = '4.1.1'
+
+
+    kotlin = [
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin",
+    ]
+
+    supportLibraries = [
+            'androidx.appcompat:appcompat:1.1.0',
+            'androidx.coordinatorlayout:coordinatorlayout:1.1.0',
+            'com.google.android.material:material:1.2.0-alpha03',
+            "androidx.drawerlayout:drawerlayout:1.0.0",
+            "androidx.recyclerview:recyclerview-selection:1.0.0",
+            'androidx.recyclerview:recyclerview:1.2.0-alpha01',
+            'androidx.annotation:annotation:1.1.0',
+            'androidx.core:core:1.1.0',
+            'androidx.fragment:fragment:1.2.0-rc04',
+            "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0",
+            'androidx.browser:browser:1.2.0',
+            'androidx.webkit:webkit:1.1.0',
+            'androidx.browser:browser:1.2.0',
+            "androidx.constraintlayout:constraintlayout:$constraintLayout",
+            "androidx.constraintlayout:constraintlayout-solver:$constraintLayout",
+            "android.arch.navigation:navigation-ui:$navigation",
+            "android.arch.navigation:navigation-runtime:$navigation",
+            "android.arch.navigation:navigation-runtime-ktx:$navigation",
+            "android.arch.navigation:navigation-fragment:${navigation}",
+            "android.arch.navigation:navigation-fragment-ktx:$navigation",
+    ]
+
+    extrasLibraries = [
+            "com.airbnb:deeplinkdispatch:$deepLinkDispatch",
+            "com.evernote:android-state:$androidState",
+            'com.github.daniel-stoneuk:material-about-library:2.1.0',
+            'com.scottyab:secure-preferences-lib:0.1.7',
+            'com.airbnb.android:lottie:3.3.1',
+            'org.jsoup:jsoup:1.12.1',
+            'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2',
+            'com.otaliastudios:autocomplete:1.1.0',
+            'com.github.dhaval2404:imagepicker:1.4',
+            "com.github.roiacult:BackdropLayout:2.0"
+    ]
+
+    networking = [
+            'com.squareup.okhttp3:okhttp:4.3.0',
+            'com.squareup.okhttp3:logging-interceptor:4.3.0',
+            'com.squareup.retrofit2:retrofit:2.7.1',
+            'com.squareup.retrofit2:adapter-rxjava2:2.7.1',
+            'com.squareup.retrofit2:converter-gson:2.7.1',
+            "com.google.code.gson:gson:$gson",
+            "com.github.bumptech.glide:glide:$glide",
+            "com.jakewharton.timber:timber:$timber",
+            "com.apollographql.apollo:apollo-runtime:$apollo",
+            "com.apollographql.apollo:apollo-rx2-support:$apollo",
+    ]
+
+    rxJava = [
+            "io.reactivex.rxjava2:rxjava:$rxJava2",
+            "io.reactivex.rxjava2:rxkotlin:$rxKotlin",
+            "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+    ]
+
+    dagger = [
+            'com.google.dagger:dagger:2.25.4',
+            'com.google.dagger:dagger-android-support:2.25.4',
+            "org.glassfish:javax.annotation:$javaxAnnotation"
+    ]
+
+    archs = [
+            'androidx.lifecycle:lifecycle-extensions:2.2.0-rc03',
+            'androidx.lifecycle:lifecycle-livedata:2.2.0-rc03',
+            'androidx.lifecycle:lifecycle-reactivestreams:2.2.0-rc03',
+            "androidx.paging:paging-common:$paging",
+            "androidx.paging:paging-runtime:$paging",
+            'androidx.room:room-common:2.2.3',
+            'androidx.room:room-rxjava2:2.2.3',
+            'androidx.room:room-compiler:2.2.3',
+            'androidx.core:core-ktx:1.2.0-rc01',
+            'androidx.fragment:fragment-ktx:1.2.0-rc04',
+            'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03',
+            'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0-rc03',
+            "android.arch.work:work-runtime:${workManager}",
+            "android.arch.work:work-rxjava2:$workManager"
+    ]
+
+    firebase = [
+            'com.google.firebase:firebase-core:17.2.1',
+            'com.google.firebase:firebase-database:19.2.0',
+            'com.crashlytics.sdk.android:crashlytics:2.10.1',
+            'com.google.firebase:firebase-messaging:20.1.0',
+            "com.github.b3er.rxfirebase:firebase-database:11.2.0",
+            "com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0"
+    ]
+
+    markdown = [
+            "io.noties.markwon:core:${markwonVersion}",
+            "io.noties.markwon:ext-latex:$markwonVersion",
+            "io.noties.markwon:ext-strikethrough:$markwonVersion",
+            "io.noties.markwon:ext-tables:$markwonVersion",
+            "io.noties.markwon:ext-tasklist:$markwonVersion",
+            "io.noties.markwon:html:$markwonVersion",
+            "io.noties.markwon:image:$markwonVersion",
+            "io.noties.markwon:image-glide:$markwonVersion",
+            "io.noties.markwon:recycler:$markwonVersion",
+            "io.noties.markwon:recycler-table:$markwonVersion",
+            "io.noties.markwon:simple-ext:$markwonVersion",
+            "io.noties.markwon:syntax-highlight:$markwonVersion",
+            "io.noties.markwon:linkify:$markwonVersion",
+            "com.caverock:androidsvg:1.4",
+            "pl.droidsonroids.gif:android-gif-drawable:1.2.14",
+            "io.noties:prism4j:2.0.0"
+    ]
+
+
+    processing = [
+            'com.google.dagger:dagger-android-processor:2.25.4',
+            'com.google.dagger:dagger-compiler:2.25.4',
+            "com.github.bumptech.glide:compiler:$glide",
+            'androidx.room:room-runtime:2.2.3',
+            "com.evernote:android-state-processor:$androidState",
+            "com.airbnb:deeplinkdispatch-processor:$deepLinkDispatch",
+            "io.noties:prism4j-bundler:2.0.0"
+    ]
+
+    testing = [
+            "junit:junit:$junit",
+            'org.assertj:assertj-core:3.14.0',
+            "org.mockito:mockito-core:$mockito",
+            "com.nhaarman:mockito-kotlin:$mockitoKotlin",
+//            "android.arch.work:work-testing:$workManager"
+    ]
+
+    developmentDependencies = [
+            "com.github.whataa:pandora:androidx_v2.0.5"
+    ]
+
+    releaseDevelopmentDependencies = [
+            "com.github.whataa:pandora-no-op:2.0.3"
+    ]
+}

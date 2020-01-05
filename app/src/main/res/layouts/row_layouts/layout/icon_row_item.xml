@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.github.base.widget.AvatarImageView
+    android:id="@+id/imageIcon"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/header_icon_zie"
+    android:layout_height="@dimen/header_icon_zie"
+    android:padding="@dimen/spacing_normal"
+    tools:src="@mipmap/ic_launcher"/>

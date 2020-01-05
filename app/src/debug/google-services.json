@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "535903042804-49851187acpc331j0b2vn5lug2gf0pfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fastaccess.github.debug",
+            "certificate_hash": "5c41a4f35fd13d8d3338cb2d86d9ae6a37cdbfc9"
+          }
+        },
+        {
           "client_id": "535903042804-14481m7poceb7ojv5roddqm28pg4ch5n.apps.googleusercontent.com",
           "client_type": 3
         }

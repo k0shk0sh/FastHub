@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/grid_spacing"
+    android:foreground="?android:selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <com.fastaccess.github.base.widget.AvatarImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/large_icon_zie"
+            android:layout_height="@dimen/large_icon_zie"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:padding="@dimen/spacing_micro"
+            tools:background="@drawable/circle_shape"
+            tools:src="@drawable/ic_fasthub_mascot"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:maxLines="2"
+                tools:text="To some, a believer is a sex for loving."/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/members"
+                    style="@style/ChipStyleDisabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:chipBackgroundColor="@color/transparent"
+                    app:chipEndPadding="2dp"
+                    app:chipIcon="@drawable/ic_group"
+                    app:chipIconSize="@dimen/spacing_xs_large"
+                    app:chipStartPadding="0dp"
+                    app:textEndPadding="0dp"
+                    app:textStartPadding="@dimen/spacing_micro"
+                    tools:text="12000"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/projects"
+                    style="@style/ChipStyleDisabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:chipBackgroundColor="@color/transparent"
+                    app:chipEndPadding="2dp"
+                    app:chipIcon="@drawable/ic_project"
+                    app:chipIconSize="@dimen/spacing_xs_large"
+                    app:chipStartPadding="0dp"
+                    app:textEndPadding="0dp"
+                    app:textStartPadding="@dimen/spacing_micro"
+                    tools:text="12000"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/repos"
+                    style="@style/ChipStyleDisabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:chipBackgroundColor="@color/transparent"
+                    app:chipEndPadding="2dp"
+                    app:chipIcon="@drawable/ic_repo"
+                    app:chipIconSize="@dimen/spacing_xs_large"
+                    app:chipStartPadding="0dp"
+                    app:textEndPadding="0dp"
+                    app:textStartPadding="@dimen/spacing_micro"
+                    tools:text="12000"/>
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/teams"
+                    style="@style/ChipStyleDisabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:chipBackgroundColor="@color/transparent"
+                    app:chipEndPadding="2dp"
+                    app:chipIcon="@drawable/ic_profile"
+                    app:chipIconSize="@dimen/spacing_xs_large"
+                    app:chipStartPadding="0dp"
+                    app:textEndPadding="0dp"
+                    app:textStartPadding="@dimen/spacing_micro"
+                    tools:text="12000"/>
+
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

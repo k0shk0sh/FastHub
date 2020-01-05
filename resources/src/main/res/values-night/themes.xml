@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SplashTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowBackground">@drawable/splash_screen_drawable_dark</item>
+        <item name="icon_color">#eee</item> <!-- to display the icons properly since this theme is the default -->
+    </style>
+</resources>

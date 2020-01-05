@@ -1,0 +1,529 @@
+query getIssuesWithoutState($login: String!, $count: Int!) {
+    user(login: $login) {
+        issues(first: $count, orderBy: {field: CREATED_AT, direction: DESC}) {
+            nodes {
+                ...ShortIssueRowItem
+            }
+        }
+    }
+}
+
+query getIssues($login: String!, $state: [IssueState!], $count: Int!) {
+    user(login: $login) {
+        issues(first: $count, orderBy: {field: CREATED_AT, direction: DESC}, states: $state) {
+            nodes {
+                ...ShortIssueRowItem
+            }
+        }
+    }
+}
+
+query getPullRequests($login: String!, $count: Int!)  {
+    user(login: $login) {
+        pullRequests(first: $count, orderBy: {field: CREATED_AT, direction: DESC}) {
+            nodes {
+                ...ShortPullRequestRowItem
+            }
+        }
+    }
+}
+
+query getIssue($login: String!, $repo: String!, $number: Int!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            issue(number: $number) {
+                ... FullIssue
+            }
+        }
+    }
+}
+
+query getPullRequest($login: String!, $repo: String!, $number: Int!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                ... FullPullRequest
+            }
+        }
+    }
+}
+
+query getLastIssueComment($login: String!, $repo: String!, $number: Int!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            issue(number: $number) {
+                timelineItems(last: 1, itemTypes: [ISSUE_COMMENT]) {
+                    nodes {
+                        ... on IssueComment {
+                            ... Comment
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getLastPrComment($login: String!, $repo: String!, $number: Int!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                timelineItems(last: 1, itemTypes: [ISSUE_COMMENT]) {
+                    nodes {
+                        ... on IssueComment {
+                            ... Comment
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getIssueTimeline($login: String!, $repo: String!, $number: Int!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            issue(number: $number) {
+                timelineItems(first: 30, after: $page, itemTypes: [ISSUE_COMMENT, CLOSED_EVENT, REOPENED_EVENT, REFERENCED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT, LABELED_EVENT, UNLABELED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, RENAMED_TITLE_EVENT, LOCKED_EVENT, UNLOCKED_EVENT, TRANSFERRED_EVENT]) {
+                    totalCount
+                    pageInfo {
+                        endCursor
+                        hasNextPage
+                        hasPreviousPage
+                        startCursor
+                    }
+                    nodes {
+                        __typename
+                        ... on IssueComment {
+                            ... Comment
+                        }
+                        ... on CrossReferencedEvent {
+                            ... CrossReferenced
+                        }
+                        ... on ClosedEvent {
+                            ... Closed
+                        }
+                        ... on ReopenedEvent {
+                            ... Reopened
+                        }
+                        ... on SubscribedEvent {
+                            ... Subscribed
+                        }
+                        ... on UnsubscribedEvent {
+                            ... Unsubscribed
+                        }
+                        ... on ReferencedEvent {
+                            ... Referenced
+                        }
+                        ... on AssignedEvent {
+                            ... Assigned
+                        }
+                        ... on UnassignedEvent {
+                            ... UnAssigned
+                        }
+                        ... on LabeledEvent {
+                            ... Labeled
+                        }
+                        ... on UnlabeledEvent {
+                            ... UnLabeled
+                        }
+                        ... on MilestonedEvent {
+                            ... Milestoned
+                        }
+                        ... on DemilestonedEvent {
+                            ... Demilestoned
+                        }
+                        ... on RenamedTitleEvent {
+                            ... Renamed
+                        }
+                        ... on LockedEvent {
+                            ... Locked
+                        }
+                        ... on UnlockedEvent {
+                            ... Unlocked
+                        }
+                        ... on TransferredEvent {
+                            ... Transferred
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getPullRequestTimeline($login: String!, $repo: String!, $number: Int!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                headRefName
+                baseRefName
+                state
+                timelineItems(first: 30, after: $page, itemTypes: [ISSUE_COMMENT, CLOSED_EVENT, REOPENED_EVENT, REFERENCED_EVENT, ASSIGNED_EVENT,
+                    UNASSIGNED_EVENT, LABELED_EVENT, UNLABELED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, RENAMED_TITLE_EVENT,
+                    LOCKED_EVENT, UNLOCKED_EVENT, TRANSFERRED_EVENT, PULL_REQUEST_COMMIT_COMMENT_THREAD,
+                    PULL_REQUEST_REVIEW, PULL_REQUEST_REVIEW_THREAD, HEAD_REF_DELETED_EVENT, HEAD_REF_FORCE_PUSHED_EVENT,
+                    MERGED_EVENT, MERGED_EVENT, REVIEW_DISMISSED_EVENT, REVIEW_REQUESTED_EVENT,
+                    REVIEW_REQUEST_REMOVED_EVENT, READY_FOR_REVIEW_EVENT]) {
+                    totalCount
+                    pageInfo {
+                        endCursor
+                        hasNextPage
+                        hasPreviousPage
+                        startCursor
+                    }
+                    nodes {
+                        __typename
+                        ... on IssueComment {
+                            ... Comment
+                        }
+                        ... on CrossReferencedEvent {
+                            ... CrossReferenced
+                        }
+                        ... on ClosedEvent {
+                            ... Closed
+                        }
+                        ... on ReopenedEvent {
+                            ... Reopened
+                        }
+                        ... on SubscribedEvent {
+                            ... Subscribed
+                        }
+                        ... on UnsubscribedEvent {
+                            ... Unsubscribed
+                        }
+                        ... on ReferencedEvent {
+                            ... Referenced
+                        }
+                        ... on AssignedEvent {
+                            ... Assigned
+                        }
+                        ... on UnassignedEvent {
+                            ... UnAssigned
+                        }
+                        ... on LabeledEvent {
+                            ... Labeled
+                        }
+                        ... on UnlabeledEvent {
+                            ... UnLabeled
+                        }
+                        ... on MilestonedEvent {
+                            ... Milestoned
+                        }
+                        ... on DemilestonedEvent {
+                            ... Demilestoned
+                        }
+                        ... on RenamedTitleEvent {
+                            ... Renamed
+                        }
+                        ... on LockedEvent {
+                            ... Locked
+                        }
+                        ... on UnlockedEvent {
+                            ... Unlocked
+                        }
+                        ... on TransferredEvent {
+                            ... Transferred
+                        }
+                        ... on PullRequestCommitCommentThread {
+                            path
+                            position
+                            tComment: comments(first: 1) {
+                                nodes {
+                                    author {
+                                        avatarUrl
+                                        login
+                                        url
+                                    }
+                                    body
+                                    createdAt
+                                    databaseId
+                                    id
+                                    path
+                                    position
+                                    url
+                                    authorAssociation
+                                    updatedAt
+                                    viewerCanReact
+                                    viewerCanDelete
+                                    viewerCanUpdate
+                                    viewerDidAuthor
+                                    reactionGroups {
+                                        ...Reactions
+                                    }
+                                }
+                            }
+                        }
+                        ... on ReviewRequestedEvent {
+                            id
+                            requestedReviewer {
+                                ... on User {
+                                    userAvatar: avatarUrl
+                                    login
+                                    url
+                                }
+                                ... on Team {
+                                    teamAvatar: avatarUrl
+                                    name
+                                    url
+                                }
+                                ... on Mannequin {
+                                    monnequinAvatar: avatarUrl
+                                    login
+                                    url
+                                }
+                            }
+                            createdAt
+                            actor { ... ShortActor }
+                        }
+                        ... on ReadyForReviewEvent {
+                            actor { ... ShortActor }
+                            id
+                            url
+                            resourcePath
+                            createdAt
+                        }
+                        ... on ReviewDismissedEvent {
+                            actor { ... ShortActor }
+                            dismissalMessage
+                            previousReviewState
+                            url
+                            createdAt
+                        }
+                        ... on BaseRefChangedEvent {
+                            actor { ... ShortActor }
+                            databaseId
+                            createdAt
+                        }
+                        ... on BaseRefForcePushedEvent {
+                            actor { ... ShortActor }
+                            ref {
+                                name
+                                prefix
+                                target {
+                                    oid
+                                    abbreviatedOid
+                                    commitUrl
+                                    commitResourcePath
+                                }
+                            }
+                            afterCommit {
+                                abbreviatedOid
+                            }
+                            beforeCommit {
+                                abbreviatedOid
+                            }
+                            createdAt
+                        }
+                        ... on DeployedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            deployment {
+                                commitOid
+                                state
+                                description
+                                latestStatus {
+                                    state
+                                }
+                            }
+                            ref {
+                                name
+                                prefix
+                            }
+                        }
+                        ... on DeploymentEnvironmentChangedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            deploymentStatus {
+                                description
+                                environmentUrl
+                                logUrl
+                                state
+                            }
+                        }
+                        ... on HeadRefDeletedEvent {
+                            actor { ... ShortActor }
+                            headRefName
+                            createdAt
+                        }
+                        ... on HeadRefForcePushedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            ref {
+                                name
+                                prefix
+                            }
+                            afterCommit {
+                                abbreviatedOid
+                            }
+                            beforeCommit {
+                                abbreviatedOid
+                            }
+                        }
+                        ... on HeadRefRestoredEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                        }
+                        ... on MergedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            mergeRefName
+                            url
+                            commit {
+                                abbreviatedOid
+                                oid
+                            }
+                        }
+                        ... on ReviewRequestRemovedEvent {
+                            actor { ... ShortActor }
+                            createdAt
+                            requestedReviewer {
+                                ... on User {
+                                    userAvatar: avatarUrl
+                                    login
+                                    url
+                                }
+                                ... on Team {
+                                    teamAvatar: avatarUrl
+                                    name
+                                    url
+                                }
+                                ... on Mannequin {
+                                    monnequinAvatar: avatarUrl
+                                    login
+                                    url
+                                }
+                            }
+                        }
+                        ... on PullRequestReview {
+                            id
+                            databaseId
+                            authorAssociation
+                            author {
+                                login
+                                avatarUrl
+                                url
+                            }
+                            body
+                            createdAt
+                            state
+                            resourcePath
+                            viewerCanReact
+                            viewerCanDelete
+                            viewerCanUpdate
+                            viewerDidAuthor
+                            reactionGroups {
+                                ...Reactions
+                            }
+                            comments(first: 1) {
+                                nodes { ... PullRequestReviewCommentFragment }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getLabels($login: String!, $repo: String!, $page: String){
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            labels(first: 30, after: $page){
+                totalCount
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                }
+                nodes {
+                    ... Labels
+                }
+            }
+        }
+    }
+}
+
+query getAssignees($login: String!, $repo: String!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            assignableUsers(first: 30, after: $page) {
+                totalCount
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                }
+                nodes {
+                    ...ShortUserRowItem
+                }
+            }
+        }
+    }
+}
+
+query getMilestones($login: String!, $repo: String!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            milestones(first: 30, after: $page) {
+                totalCount
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                }
+                nodes {
+                    ... MilestoneFragment
+                }
+            }
+        }
+    }
+}
+
+query getPullRequestReviews($login: String!, $repo: String!, $number: Int!, $page: String){
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                locked
+                merged
+                reviewThreads(first: 30, after: $page) {
+                    totalCount
+                    pageInfo { ... PageInfoFragment }
+                    nodes {
+                        id
+                        isResolved
+                        viewerCanResolve
+                        viewerCanUnresolve
+                        comments(first: 100) {
+                            totalCount
+                            nodes { ... PullRequestReviewCommentWithReview}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getPullRequestReview($id: ID!, $page: String){
+    node(id: $id){
+        ... on PullRequestReviewThread {
+            pullRequest {
+                locked
+                merged
+            }
+            id
+            isResolved
+            viewerCanResolve
+            viewerCanUnresolve
+            comments(first: 30, after: $page) {
+                totalCount
+                pageInfo { ... PageInfoFragment }
+                nodes { ... PullRequestReviewCommentWithReview }
+            }
+        }
+    }
+}

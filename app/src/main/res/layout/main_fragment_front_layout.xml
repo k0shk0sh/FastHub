@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:orientation="vertical"
+    app:layout_behavior="@string/scroll_behaviour"
+    tools:showIn="@layout/main_fragment_layout">
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/trending"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:text="@string/trending"
+                android:textAllCaps="false"
+                app:chipIcon="@drawable/ic_trending"
+                app:chipStartPadding="@dimen/spacing_normal" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/orgs"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_normal"
+                android:text="@string/organizations"
+                android:textAllCaps="false"
+                app:chipIcon="@drawable/ic_group"
+                app:chipStartPadding="@dimen/spacing_normal" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pinned"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_normal"
+                android:text="@string/pinned"
+                android:textAllCaps="false"
+                app:chipIcon="@drawable/ic_pin"
+                app:chipStartPadding="@dimen/spacing_normal" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/starred"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_normal"
+                android:text="@string/starred"
+                android:textAllCaps="false"
+                app:chipIcon="@drawable/ic_star"
+                app:chipStartPadding="@dimen/spacing_normal" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/repos"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_normal"
+                android:text="@string/repos"
+                android:textAllCaps="false"
+                app:chipIcon="@drawable/ic_repo"
+                app:chipStartPadding="@dimen/spacing_normal" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/gists"
+                style="@style/ChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_xs_large"
+                android:text="@string/gists"
+                android:textAllCaps="false"
+                app:chipIcon="@drawable/ic_gists"
+                app:chipStartPadding="@dimen/spacing_normal" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <com.fastaccess.github.base.widget.ParentSwipeRefreshLayout
+        android:id="@id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.fastaccess.github.base.widget.recyclerview.BaseRecyclerView
+            android:id="@id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/spacing_anti"
+            app:layoutManager="@string/llm" />
+    </com.fastaccess.github.base.widget.ParentSwipeRefreshLayout>
+</LinearLayout>
+

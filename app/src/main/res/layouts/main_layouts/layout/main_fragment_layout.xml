@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:elevation="@dimen/spacing_micro"
+    android:outlineProvider="background">
+
+    <include layout="@layout/appbar_logo_center_title_layout" />
+
+    <com.roacult.backdrop.BackdropLayout
+        android:id="@+id/backdropContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:animationDuration="400"
+        app:back_layout="@+id/includedBack"
+        app:closeDrawable="@drawable/ic_clear"
+        app:front_layout="@+id/includedFront"
+        app:layout_behavior="@string/scroll_behaviour"
+        app:menuDrawable="@drawable/ic_menu"
+        app:toolbarId="@+id/toolbar">
+
+        <include
+            android:id="@+id/includedBack"
+            layout="@layout/bottm_bar_menu_layout" />
+
+        <include
+            android:id="@+id/includedFront"
+            layout="@layout/main_fragment_front_layout" />
+
+
+    </com.roacult.backdrop.BackdropLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

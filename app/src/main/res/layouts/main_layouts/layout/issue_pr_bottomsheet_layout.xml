@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="?actionBarSize"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    tools:showIn="@layout/issue_pr_fragment_layout">
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/rounded_toolbar_shadow_up" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_round_corner_background">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/transparent"
+            app:hideOnScroll="true"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="?android:toolbarStyle"
+            app:theme="?android:toolbarStyle" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:id="@+id/commentBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimary"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/markdownBtnHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bottom_border"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/fullScreenComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/expand"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_fullscreen" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/toggleButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?colorPrimaryDark"
+                android:contentDescription="@string/expand"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:paddingStart="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:rotation="180"
+                android:src="@drawable/arrow_toggle_drawable"
+                android:tint="?colorAccent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/commentText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="@string/comment"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="5"
+                android:paddingStart="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:scrollbars="vertical" />
+
+            <ImageButton
+                android:id="@+id/sendComment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?colorPrimaryDark"
+                android:contentDescription="@string/comment"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:paddingStart="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:src="@drawable/ic_send"
+                android:tint="?colorAccent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,13 @@
+{
+  "description": ".Box-row > p",
+  "forks": ".f6 > a[href*=/network]",
+  "language": ".f6 span[itemprop=programmingLanguage]",
+  "languageFallback": ".f6 span[itemprop=programmingLanguage]",
+  "listName": ".Box",
+  "listNameSublistTag": "article",
+  "pathUrl": "https://github.com/trending/",
+  "stars": ".f6 > a[href*=/stargazers]",
+  "title": ".Box-row > h1 > a",
+  "todayStars": ".f6 > span.float-sm-right",
+  "todayStarsFallback": ".f6 > span.float-sm-right"
+}

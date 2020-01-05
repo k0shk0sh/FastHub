@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="layout_margin">32dp</dimen>
-    <dimen name="fab_margin">24dp</dimen>
-    <integer name="micro_spans">1</integer>
-</resources>

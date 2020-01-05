@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:maxLines="2"
+            tools:text="Paradise of anger will authoratively praise"/>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/starCount"
+                style="@style/ChipStyleNoElevation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_star"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/commentCount"
+                style="@style/ChipStyleNoElevation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_comment"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/isPublic"
+                style="@style/ChipStyleNoElevation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_language"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

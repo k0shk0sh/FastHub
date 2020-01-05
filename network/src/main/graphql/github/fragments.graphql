@@ -1,0 +1,550 @@
+fragment ShortRepoRowItem on Repository {
+    id
+    databaseId
+    name
+    nameWithOwner
+    isFork
+    forkCount
+    issues(first: 0, states: [OPEN]) {
+        totalCount
+    }
+    pullRequests(first: 0, states: [OPEN]) {
+        totalCount
+    }
+    forks(first: 0) {
+        totalCount
+    }
+    isPrivate
+    stargazers(first: 1) {
+        totalCount
+    }
+    watchers(first: 1) {
+        totalCount
+    }
+}
+
+fragment ShortIssueRowItem on Issue {
+    id
+    databaseId
+    number
+    title
+    repository {
+        nameWithOwner
+    }
+    comments(first: 1) {
+        totalCount
+    }
+    issueState: state
+    url
+}
+
+fragment ShortPullRequestRowItem on PullRequest {
+    id
+    databaseId
+    number
+    title
+    repository {
+        nameWithOwner
+    }
+    comments(first: 1) {
+        totalCount
+    }
+    state
+    url
+}
+
+fragment ShortUserRowItem on User {
+    id
+    name
+    login
+    avatarUrl(size: 150)
+    location
+    bio
+    viewerCanFollow
+    viewerIsFollowing
+    url
+}
+
+fragment ShortActor on Actor {
+    login
+    avatarUrl(size: 150)
+    url
+}
+
+fragment CommitFragment on Commit {
+    author {
+        name
+        avatarUrl
+    }
+    message
+    abbreviatedOid
+    commitUrl
+    authoredDate
+    committedViaWeb
+    id
+    oid
+    status {
+        state
+    }
+}
+
+fragment FullCommit on Commit {
+    abbreviatedOid
+    id
+    oid
+    commitUrl
+    additions
+    deletions
+    changedFiles
+    author {
+        avatarUrl
+        name
+        user {
+            login
+            avatarUrl
+            url
+        }
+    }
+    committedDate
+    committedViaWeb
+    status {
+        state
+    }
+    signature {
+        isValid
+        state
+    }
+    messageHeadline
+    messageBody
+}
+
+fragment FullIssue on Issue {
+    id
+    databaseId
+    number
+    title
+    bodyHTML
+    body
+    state
+    createdAt
+    updatedAt
+    closed
+    closedAt
+    locked
+    activeLockReason
+    viewerSubscription
+    viewerDidAuthor
+    viewerCannotUpdateReasons
+    viewerCanUpdate
+    viewerCanSubscribe
+    viewerCanReact
+    url
+    userContentEdits(first: 0) {
+        totalCount
+    }
+    author {
+        avatarUrl
+        login
+        url
+    }
+    reactionGroups {
+        ... Reactions
+    }
+    createdViaEmail
+    repository {
+        nameWithOwner
+    }
+    authorAssociation
+    participants(first: 10) {
+        nodes {
+            ... ShortUserRowItem
+        }
+    }
+    labels(first: 30) {
+        nodes {
+            ... Labels
+        }
+    }
+    assignees(first: 30) {
+        nodes {
+            ... ShortUserRowItem
+        }
+    }
+    milestone {
+        ...MilestoneFragment
+    }
+}
+
+fragment FullPullRequest on PullRequest {
+    id
+    databaseId
+    number
+    title
+    bodyHTML
+    body
+    state
+    createdAt
+    updatedAt
+    closed
+    closedAt
+    locked
+    activeLockReason
+    viewerSubscription
+    viewerDidAuthor
+    viewerCannotUpdateReasons
+    viewerCanUpdate
+    viewerCanSubscribe
+    viewerCanReact
+    mergeable
+    merged
+    mergedAt
+    headRefName
+    baseRefName
+    changedFiles
+    additions
+    deletions
+    url
+    createdViaEmail
+    authorAssociation
+    commits(first: 0) {
+        totalCount
+    }
+    commentedReviews: reviews(first: 0, states: [COMMENTED]) {
+        totalCount
+    }
+    approvedReviews: reviews(first: 0, states: [APPROVED]) {
+        totalCount
+    }
+    changeRequestedReviews: reviews(first: 0, states: [CHANGES_REQUESTED]) {
+        totalCount
+    }
+    mergedBy {
+        avatarUrl
+        login
+        url
+    }
+    userContentEdits(first: 0) {
+        totalCount
+    }
+    author {
+        avatarUrl
+        login
+        url
+    }
+    reactionGroups {
+        ...Reactions
+    }
+    repository {
+        nameWithOwner
+    }
+    labels(first: 30) {
+        nodes {
+            ...Labels
+        }
+    }
+    assignees(first: 30) {
+        nodes {
+            ...ShortUserRowItem
+        }
+    }
+    milestone {
+        ...MilestoneFragment
+    }
+}
+
+fragment Reactions on ReactionGroup {
+    content
+    createdAt
+    viewerHasReacted
+    users(first: 0) {
+        totalCount
+    }
+}
+
+fragment Labels on Label {
+    color
+    description
+    name
+    id
+    url
+    createdAt
+    isDefault
+}
+
+fragment MilestoneFragment on Milestone {
+    description
+    dueOn
+    id
+    closed
+    number
+    url
+    title
+    state
+}
+
+fragment Comment on IssueComment {
+    author {
+        login
+        avatarUrl
+        url
+    }
+    createdAt
+    authorAssociation
+    bodyHTML
+    body
+    id
+    databaseId
+    updatedAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    viewerCanMinimize
+    viewerCannotUpdateReasons
+    reactionGroups {
+        ... Reactions
+    }
+}
+
+fragment FullCommitComment on CommitComment {
+    author {
+        login
+        avatarUrl
+        url
+    }
+    createdAt
+    authorAssociation
+    bodyHTML
+    body
+    id
+    databaseId
+    updatedAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    viewerCanMinimize
+    viewerCannotUpdateReasons
+    path
+    position
+    reactionGroups {
+        ... Reactions
+    }
+}
+
+fragment CrossReferenced on CrossReferencedEvent {
+    createdAt
+    isCrossRepository
+    referencedAt
+    source {
+        ... ShortPullRequestRowItem
+        ... ShortIssueRowItem
+    }
+    willCloseTarget
+    actor { ... ShortActor }
+}
+
+fragment Closed on ClosedEvent {
+    actor { ... ShortActor }
+    createdAt
+    closer {
+        ... CommitFragment
+        ... ShortPullRequestRowItem
+    }
+}
+
+fragment Reopened on ReopenedEvent {
+    actor { ... ShortActor }
+    createdAt
+}
+
+fragment Subscribed on SubscribedEvent {
+    actor { ... ShortActor }
+    createdAt
+}
+
+fragment Unsubscribed on UnsubscribedEvent {
+    actor { ... ShortActor }
+    createdAt
+}
+
+fragment Referenced on ReferencedEvent {
+    actor { ... ShortActor }
+    createdAt
+    commitRepository {
+        nameWithOwner
+    }
+    isCrossRepository
+    isDirectReference
+    commit {
+        ... CommitFragment
+    }
+    subject {
+        ... ShortPullRequestRowItem
+        ... ShortIssueRowItem
+    }
+}
+
+fragment Assigned on AssignedEvent {
+    actor { ... ShortActor }
+    createdAt
+    user {
+        login
+        avatarUrl
+    }
+}
+
+fragment UnAssigned on UnassignedEvent {
+    actor { ... ShortActor }
+    createdAt
+    user {
+        login
+        avatarUrl
+    }
+}
+
+fragment Labeled on LabeledEvent {
+    actor { ... ShortActor }
+    createdAt
+    label {
+        color
+        name
+        isDefault
+    }
+}
+
+fragment UnLabeled on UnlabeledEvent {
+    actor { ... ShortActor }
+    createdAt
+    label {
+        ... Labels
+    }
+}
+
+fragment Milestoned on MilestonedEvent {
+    actor { ... ShortActor }
+    createdAt
+    milestoneTitle
+}
+
+fragment Demilestoned on DemilestonedEvent {
+    actor { ... ShortActor }
+    createdAt
+    milestoneTitle
+}
+
+fragment Renamed on RenamedTitleEvent {
+    actor { ... ShortActor }
+    createdAt
+    currentTitle
+    previousTitle
+}
+
+fragment Locked on LockedEvent {
+    actor { ... ShortActor }
+    createdAt
+    lockReason
+    lockable {
+        activeLockReason
+    }
+}
+
+fragment Unlocked on UnlockedEvent {
+    actor { ... ShortActor }
+    createdAt
+    lockable {
+        activeLockReason
+    }
+}
+
+fragment Transferred on TransferredEvent {
+    actor { ... ShortActor }
+    createdAt
+    fromRepository {
+        id
+        nameWithOwner
+        url
+    }
+    issue {
+        number
+        url
+    }
+}
+
+fragment PageInfoFragment on PageInfo {
+    endCursor
+    hasNextPage
+    hasPreviousPage
+    startCursor
+}
+
+fragment PullRequestReviewCommentFragment on PullRequestReviewComment {
+    id
+    databaseId
+    author {
+        login
+        avatarUrl
+        url
+    }
+    body
+    originalPosition
+    path
+    outdated
+    authorAssociation
+    updatedAt
+    createdAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    diffHunk
+    reactionGroups {
+        ...Reactions
+    }
+}
+
+fragment PullRequestReviewCommentWithReview on PullRequestReviewComment {
+    id
+    databaseId
+    author {
+        login
+        avatarUrl
+        url
+    }
+    body
+    originalPosition
+    path
+    outdated
+    authorAssociation
+    updatedAt
+    createdAt
+    viewerCanReact
+    viewerCanDelete
+    viewerCanUpdate
+    viewerDidAuthor
+    diffHunk
+    reactionGroups {
+        ...Reactions
+    }
+    pullRequestReview {
+        id
+        databaseId
+        authorAssociation
+        author {
+            login
+            avatarUrl
+            url
+        }
+        body
+        createdAt
+        state
+        resourcePath
+        viewerCanReact
+        viewerCanDelete
+        viewerCanUpdate
+        viewerDidAuthor
+        reactionGroups {
+            ...Reactions
+        }
+    }
+}

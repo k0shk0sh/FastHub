@@ -1,70 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.ForegroundRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/grid_spacing"
-    android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
+    android:foreground="?selectableItemBackground"
+    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
-    tools:ignore="RtlSymmetry">
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <com.fastaccess.ui.widgets.AvatarLayout
-            android:id="@+id/avatarLayout"
-            android:layout_width="@dimen/large_icon_zie"
-            android:layout_height="@dimen/large_icon_zie"
-            android:layout_marginEnd="@dimen/avatar_margin_end"
-            android:layout_marginStart="@dimen/avatar_margin"
-            android:transitionName="@string/icon_transition"/>
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/title"
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:textColor="?android:textColorPrimary"
-                android:transitionName="@string/title_transition"
-                tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+            <FrameLayout
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_xs_large">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/description"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="match_parent"
+                <com.fastaccess.github.base.widget.AvatarImageView
+                    android:id="@+id/userIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/ic_ring" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/stateIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/circle_shape_cardview"
+                    android:padding="@dimen/spacing_micro"
+                    tools:src="@drawable/ic_issue_closed_small" />
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/feedTitle"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
                 android:maxLines="2"
-                android:textColor="?android:attr/textColorSecondary"
-                android:visibility="gone"
-                tools:text="Hello World"
-                tools:visibility="visible"/>
+                tools:text="To some, a believer is a sex for loving." />
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Caption"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dateWithIcon"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:gravity="center|start"
-                android:textColor="?android:attr/textColorTertiary"
-                tools:drawableStart="@drawable/ic_notification"
-                tools:text="50 minutes ago"/>
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:gravity="start|center"
+                android:maxLines="1"
+                tools:text="An two hour ago" />
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/feedDescription"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:ellipsize="marquee"
+            android:maxLines="2"
+            tools:text="To some, a believer is a sex for loving. hahahahahahhahahahahahahaha" />
+
     </LinearLayout>
 
 
-</com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+</FrameLayout>

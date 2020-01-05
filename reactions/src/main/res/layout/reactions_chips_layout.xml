@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_normal"
+    app:singleLine="true"
+    tools:parentTag="com.fastaccess.fasthub.reactions.ReactionsChipGroup">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/thumbsUp"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/thumbsDown"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/confused"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/laugh"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/hooray"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/heart"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/rocket"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/eyes"
+        style="@style/ChipStyleNoElevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="?colorPrimaryDark" />
+</merge>

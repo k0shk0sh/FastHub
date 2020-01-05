@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            app:startDestination="@id/loginChooserFragment">
+
+    <fragment
+        android:id="@+id/loginChooserFragment"
+        android:name="com.fastaccess.github.ui.modules.auth.chooser.LoginChooserFragment"
+        android:label="@string/login"
+        tools:layout="@layout/login_chooser_fragment_layout">
+        <action
+            android:id="@+id/action_loginChooserFragment_to_baseAuthLoginFragment"
+            app:destination="@id/baseAuthLoginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/loginChooserFragment">
+            <!--<argument-->
+            <!--android:name="type"-->
+            <!--android:defaultValue="basic"-->
+            <!--app:type="string"/>-->
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/baseAuthLoginFragment"
+        android:name="com.fastaccess.github.ui.modules.auth.login.AuthLoginFragment"
+        android:label="BaseAuthLoginFragment"
+        tools:layout="@layout/login_form_layout">
+    </fragment>
+
+
+</navigation>

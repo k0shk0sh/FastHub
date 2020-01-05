@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.novoda.build-properties'
+apply plugin: 'com.apollographql.android'
+
+
+buildProperties {
+    notThere {
+        file rootProject.file('build-dependecies/debug_keys.properties')
+    }
+    secrets {
+        file rootProject.file('build-dependecies/secret_keys.properties')
+    }
+}
+
+android {
+    def conf = rootProject.ext.android
+
+    compileSdkVersion conf.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion conf.minSdkVersion
+        targetSdkVersion conf.targetSdkVersion
+        versionCode conf.versionCode
+        versionName conf.versionName
+        multiDexEnabled
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+        buildConfigString "REST_URL", "https://api.github.com/"
+        buildConfigString "GRAPHQL_REST_URL", "https://api.github.com/graphql"
+        buildConfigString "IMGUR_URL", "https://api.imgur.com/3/"
+        buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
+        buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
+        buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
+        buildConfigString "IMGUR_SECRET", (buildProperties.secrets['imgur_secret'] | buildProperties.notThere['imgur_secret']).string
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+
+apollo {
+    customTypeMapping = [
+            "URI" : "java.net.URI",
+            "DateTime": "java.util.Date",
+            "Object": "java.lang.String"
+    ]
+    useJavaBeansSemanticNaming = true
+}
+
+dependencies {
+    def dependency = rootProject.ext
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':resources')
+    implementation dependency.kotlin
+    implementation dependency.networking
+    implementation dependency.rxJava
+    implementation dependency.dagger
+    implementation dependency.archs
+    testImplementation dependency.testing
+
+    debugImplementation dependency.developmentDependencies
+    releaseImplementation dependency.releaseDevelopmentDependencies
+
+    kapt dependency.processing
+
+}

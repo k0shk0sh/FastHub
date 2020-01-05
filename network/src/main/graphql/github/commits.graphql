@@ -1,0 +1,46 @@
+query getPullRequestCommits($login: String!, $repo: String!, $number: Int!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            pullRequest(number: $number) {
+                changedFiles
+                additions
+                deletions
+                state
+                commits(first: 30, after: $page) {
+                    totalCount
+                    pageInfo { ... PageInfoFragment }
+                    nodes {
+                        commit { ... FullCommit }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getCommit($login: String!, $repo: String!, $sha: String!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            object(expression: $sha) {
+                ... on Commit { ... FullCommit }
+            }
+        }
+    }
+}
+
+query getCommitComments($login: String!, $repo: String!, $sha: String!, $page: String) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+           commitOb: object(expression: $sha) {
+                ... on Commit {
+                    id
+                    comments(first: 30, after: $page) {
+                        totalCount
+                        pageInfo { ... PageInfoFragment }
+                        nodes { ... FullCommitComment }
+                    }
+                }
+            }
+        }
+    }
+}

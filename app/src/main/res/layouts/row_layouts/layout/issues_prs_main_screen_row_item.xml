@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_normal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <FrameLayout
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_xs_large">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/stateIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_shape_cardview"
+                android:padding="@dimen/spacing_micro"
+                tools:src="@drawable/circle_shape_green_small" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/issueTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                tools:text="To some, a believer is a sex for loving." />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/issueDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                tools:text="To some, a believer is a sex for loving." />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/commentCountBox"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_comments_number">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/commentCount"
+                style="@style/TextAppearance.AppCompat.Subhead.Inverse"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|center"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="5" />
+        </FrameLayout>
+
+    </LinearLayout>
+</FrameLayout>

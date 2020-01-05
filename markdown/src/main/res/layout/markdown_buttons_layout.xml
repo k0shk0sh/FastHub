@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <HorizontalScrollView
+        android:id="@+id/editorIconsHolder"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fadeScrollbars="true"
+        android:scrollbarFadeDuration="500"
+        android:scrollbarSize="1dp"
+        android:scrollbarStyle="outsideOverlay">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/headerOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/header_one"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_header_one" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/headerTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/header_two"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_header_two" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/headerThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/header_three"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_header_three" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/bold"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_format_bold" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/italic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/italic"
+                android:padding="@dimen/spacing_normal"
+
+                android:src="@drawable/ic_format_italic" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/strikethrough"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/strike_through"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_format_strikethrough" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bullet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/bullet"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_format_list_bulleted" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/numbered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/numbered_list"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_list_numbers" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/todo_checked"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_checkbox" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/unCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/todo_unchecked"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_checkbox_empty" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/divider"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_minus" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/inlineCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/code"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_inline_code" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/code"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_code" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/quote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/quote"
+                android:padding="@dimen/spacing_normal"
+
+                android:src="@drawable/ic_format_quote" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/link"
+                android:padding="@dimen/spacing_micro"
+
+                android:src="@drawable/ic_insert_link" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/image"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_image" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_fasthub_mascot" />
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="?dividerColor" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addEmoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/reactions"
+        android:padding="@dimen/spacing_normal"
+        android:src="@drawable/ic_add_emoji" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/preview"
+        android:padding="@dimen/spacing_normal"
+        android:src="@drawable/ic_eye" />
+</merge>

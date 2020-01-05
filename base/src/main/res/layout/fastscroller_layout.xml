@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/fast_scroller_bar"
+        android:layout_width="7dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/scrollUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:background="?selectableItemBackground"
+        android:src="@drawable/ic_arrow_drop_up"
+        android:tint="?colorAccent"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fast_scroller_handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:contentDescription="@null"
+        android:elevation="2dp"
+        android:padding="2dp"
+        android:outlineProvider="background"
+        android:src="@drawable/fastscroller_bubble"
+        tools:ignore="RtlSymmetry" />
+
+</merge>

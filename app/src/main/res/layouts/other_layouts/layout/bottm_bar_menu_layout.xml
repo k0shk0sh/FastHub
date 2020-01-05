@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:orientation="vertical">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:headerLayout="@null"
+        app:insetForeground="@color/transparent"
+        app:itemBackground="@color/transparent"
+        app:itemIconTint="?colorAccent"
+        app:itemTextColor="?colorAccent"
+        app:layout_behavior="@string/scroll_behaviour"
+        app:menu="@menu/main_menu" />
+
+</LinearLayout>

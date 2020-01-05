@@ -1,0 +1,14 @@
+query getFileContent($login: String!, $repo: String!, $path: String!) {
+    repositoryOwner(login: $login) {
+        repository(name: $repo) {
+            object(expression: $path) {
+                ... on Blob {
+                  isBinary
+                  byteSize
+                  isTruncated
+                  text
+                }
+            }
+        }
+    }
+}

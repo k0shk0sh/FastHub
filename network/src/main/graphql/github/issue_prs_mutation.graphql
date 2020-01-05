@@ -1,0 +1,53 @@
+mutation addReaction($subjectId: ID!, $reaction: ReactionContent!) {
+    addReaction(input: {subjectId: $subjectId, content: $reaction}) {
+        clientMutationId
+    }
+}
+
+mutation removeReaction($subjectId: ID!, $reaction: ReactionContent!) {
+    removeReaction(input: {subjectId: $subjectId, content: $reaction}) {
+        clientMutationId
+    }
+}
+
+mutation lock($subjectId: ID!, $lockReason: LockReason!) {
+    lockLockable(input: {lockableId: $subjectId, lockReason: $lockReason}) {
+        lockedRecord {
+            __typename
+        }
+    }
+}
+
+mutation unlock($subjectId: ID!) {
+    unlockLockable(input: {lockableId: $subjectId}) {
+        unlockedRecord {
+            __typename
+        }
+    }
+}
+
+mutation addComment($id: ID!, $body: String!) {
+    addComment(input:{subjectId: $id, body: $body}){
+        subject {
+            ... on IssueComment { ... Comment }
+        }
+    }
+}
+
+mutation addReviewComment($id: ID!, $path: String!, $position: Int!, $body: String!) {
+    addPullRequestReviewComment(input:{pullRequestReviewId: $id, path: $path, position: $position, body: $body}){
+        comment { ... PullRequestReviewCommentFragment }
+    }
+}
+
+mutation updateIssuePullRequestComment($id: ID!, $body: String!) {
+    updateIssueComment(input:{id: $id, body: $body}){
+        issueComment { ... Comment }
+    }
+}
+
+mutation  updateReviewCommnet($id: ID!, $body: String!) {
+    updatePullRequestReviewComment(input:{pullRequestReviewCommentId: $id, body: $body}){
+        pullRequestReviewComment { ... PullRequestReviewCommentFragment }
+    }
+}

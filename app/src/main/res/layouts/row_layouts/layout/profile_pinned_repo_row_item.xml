@@ -1,105 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/grid_spacing"
-    android:foreground="?android:selectableItemBackground"
+    android:foreground="?selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_normal"
-    android:paddingStart="@dimen/spacing_normal"
-    tools:ignore="RtlSymmetry">
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
-        <com.fastaccess.ui.widgets.FontTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            tools:text="Repo Name"/>
+            android:layout_gravity="top"
+            android:maxLines="2"
+            tools:text="To some, a believer is a sex for loving."/>
 
-        <com.fastaccess.ui.widgets.AutoLinearLayout
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:auto_gravity="start"
-            app:auto_orientation="horizontal">
+            android:orientation="horizontal">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/stars"
-                style="@style/TextAppearance.AppCompat.Caption"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/star"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_star_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="1000"/>
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_star"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
+            <com.google.android.material.chip.Chip
                 android:id="@+id/forks"
-                style="@style/TextAppearance.AppCompat.Caption"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_fork_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="5000"/>
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_fork"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
+            <com.google.android.material.chip.Chip
                 android:id="@+id/issues"
-                style="@style/TextAppearance.AppCompat.Caption"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_issue_opened_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="100 MB"/>
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_issue_opened"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/pullRequests"
-                style="@style/TextAppearance.AppCompat.Caption"
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pulls"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_micro"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_pull_requests_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="100 MB"/>
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_pull_requests"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipIconTint="@color/material_green_700"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:text="12000"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
+            <com.google.android.material.chip.Chip
                 android:id="@+id/language"
-                style="@style/TextAppearance.AppCompat.Caption"
+                style="@style/ChipStyleNoElevation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/spacing_micro"
-                android:drawableStart="@drawable/ic_language_small"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="TypeScript"/>
+                android:clickable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:chipBackgroundColor="@color/transparent"
+                app:chipEndPadding="2dp"
+                app:chipIcon="@drawable/ic_language"
+                app:chipIconSize="@dimen/spacing_xs_large"
+                app:chipStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:textStartPadding="@dimen/spacing_micro"
+                tools:chipIconTint="@color/material_green_700"
+                tools:text="12000"/>
 
-        </com.fastaccess.ui.widgets.AutoLinearLayout>
+        </com.google.android.material.chip.ChipGroup>
 
     </LinearLayout>
-</com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+</FrameLayout>
