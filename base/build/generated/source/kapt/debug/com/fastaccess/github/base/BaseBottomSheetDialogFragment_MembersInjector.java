@@ -2,6 +2,7 @@ package com.fastaccess.github.base;
 
 import dagger.MembersInjector;
 import dagger.android.DispatchingAndroidInjector;
+import dagger.internal.InjectedFieldSignature;
 import javax.annotation.Generated;
 import javax.inject.Provider;
 
@@ -30,6 +31,7 @@ public final class BaseBottomSheetDialogFragment_MembersInjector implements Memb
     injectChildFragmentInjector(instance, childFragmentInjectorProvider.get());
   }
 
+  @InjectedFieldSignature("com.fastaccess.github.base.BaseBottomSheetDialogFragment.childFragmentInjector")
   public static void injectChildFragmentInjector(BaseBottomSheetDialogFragment instance,
       DispatchingAndroidInjector<Object> childFragmentInjector) {
     instance.childFragmentInjector = childFragmentInjector;

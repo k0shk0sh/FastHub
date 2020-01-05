@@ -32,7 +32,7 @@ public final class ReactionWorker_Factory implements Factory<ReactionWorker> {
 
   @Override
   public ReactionWorker get() {
-    return new ReactionWorker(contextProvider.get(), workerParamsProvider.get(), apolloClientProvider.get());
+    return newInstance(contextProvider.get(), workerParamsProvider.get(), apolloClientProvider.get());
   }
 
   public static ReactionWorker_Factory create(Provider<Application> contextProvider,

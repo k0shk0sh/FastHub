@@ -2,6 +2,7 @@ package com.fastaccess.github.base;
 
 import com.google.gson.Gson;
 import dagger.MembersInjector;
+import dagger.internal.InjectedFieldSignature;
 import javax.annotation.Generated;
 import javax.inject.Provider;
 
@@ -28,6 +29,7 @@ public final class BaseViewModel_MembersInjector implements MembersInjector<Base
     injectGson(instance, gsonProvider.get());
   }
 
+  @InjectedFieldSignature("com.fastaccess.github.base.BaseViewModel.gson")
   public static void injectGson(BaseViewModel instance, Gson gson) {
     instance.gson = gson;
   }

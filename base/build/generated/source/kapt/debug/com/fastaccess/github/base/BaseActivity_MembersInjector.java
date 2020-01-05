@@ -5,6 +5,7 @@ import com.fastaccess.domain.di.AuthenticationInterceptor;
 import dagger.MembersInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.DaggerAppCompatActivity_MembersInjector;
+import dagger.internal.InjectedFieldSignature;
 import javax.annotation.Generated;
 import javax.inject.Provider;
 
@@ -45,10 +46,12 @@ public final class BaseActivity_MembersInjector implements MembersInjector<BaseA
     injectInterceptor(instance, interceptorProvider.get());
   }
 
+  @InjectedFieldSignature("com.fastaccess.github.base.BaseActivity.preference")
   public static void injectPreference(BaseActivity instance, FastHubSharedPreference preference) {
     instance.preference = preference;
   }
 
+  @InjectedFieldSignature("com.fastaccess.github.base.BaseActivity.interceptor")
   public static void injectInterceptor(BaseActivity instance,
       AuthenticationInterceptor interceptor) {
     instance.interceptor = interceptor;
