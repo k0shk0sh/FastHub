@@ -1,61 +1,37 @@
 {
   "project_info": {
-    "project_id": "this-is-a-sample",
-    "project_number": "999999999999",
-    "name": "FastHub Sample",
-    "firebase_url": "https://this-is-a-sample-do-not-use.firebaseio.com",
-    "storage_bucket": "this-is-a-sample-do-not-use.storage.firebase.com"
+    "project_number": "535903042804",
+    "firebase_url": "https://fasthub-dev-a1309.firebaseio.com",
+    "project_id": "fasthub-dev-a1309",
+    "storage_bucket": "fasthub-dev-a1309.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:999999999999:android:0000000000000000",
+        "mobilesdk_app_id": "1:535903042804:android:516309017e0298c938b2a1",
         "android_client_info": {
           "package_name": "com.fastaccess.github.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fastaccess.github.debug",
-            "certificate_hash": "0000000000000000000000000000000000000000"
-          }
-        },
-        {
-          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fastaccess.github.debug",
-            "certificate_hash": "0000000000000000000000000000000000000000"
-          }
-        },
-        {
-          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+          "client_id": "535903042804-14481m7poceb7ojv5roddqm28pg4ch5n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "000000000000000000000000000000000000000"
+          "current_key": "AIzaSyBbRQtQN1UxFRgeSSfjZwQ5TRulc2lZUzI"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+              "client_id": "535903042804-14481m7poceb7ojv5roddqm28pg4ch5n.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
