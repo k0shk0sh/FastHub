@@ -44,6 +44,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
         <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorAccent">@color/light_accent</item>
         <item name="colorPrimaryDark">@color/light_primary_dark</item>
         <item name="colorPrimaryVariant">@color/light_primary_dark</item>
         <item name="colorSecondary">@color/light_accent</item>

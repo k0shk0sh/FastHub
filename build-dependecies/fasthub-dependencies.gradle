@@ -62,7 +62,8 @@ ext {
             'org.jsoup:jsoup:1.12.1',
             'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2',
             'com.otaliastudios:autocomplete:1.1.0',
-            'com.github.dhaval2404:imagepicker:1.4'
+            'com.github.dhaval2404:imagepicker:1.4',
+            "com.github.roiacult:BackdropLayout:2.0"
     ]
 
     networking = [

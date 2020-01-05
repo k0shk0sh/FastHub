@@ -2,7 +2,6 @@ package com.fastaccess.github.ui.modules.main.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.fastaccess.data.model.MainScreenModel
 import com.fastaccess.data.model.parcelable.EditIssuePrBundleModel
@@ -15,7 +14,6 @@ import com.fastaccess.github.base.BaseViewModel
 import com.fastaccess.github.base.dialog.IconDialogFragment
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.extensions.otpCode
-import com.fastaccess.github.base.extensions.setBottomSheetCallback
 import com.fastaccess.github.base.extensions.token
 import com.fastaccess.github.base.utils.LOGIN_DEEP_LINK
 import com.fastaccess.github.base.utils.NOTIFICATION_LINK
@@ -28,8 +26,8 @@ import com.fastaccess.github.ui.adapter.MainScreenAdapter
 import com.fastaccess.github.ui.modules.issuesprs.edit.EditIssuePrActivity
 import com.fastaccess.github.ui.modules.main.fragment.viewmodel.MainFragmentViewModel
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottm_bar_menu_layout.*
+import kotlinx.android.synthetic.main.main_fragment_front_layout.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 import javax.inject.Inject
 
@@ -41,7 +39,6 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener,
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var preference: FastHubSharedPreference
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainFragmentViewModel::class.java) }
-    private val behaviour by lazy { BottomSheetBehavior.from(bottomSheet) }
     private val adapter by lazy { MainScreenAdapter(onClickListener()) }
 
     override fun layoutRes(): Int = R.layout.main_fragment_layout
@@ -64,28 +61,13 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener,
             }
         }
         recyclerView.adapter = adapter
-        bottomBar.inflateMenu(R.menu.main_bottom_bar_menu)
-        behaviour.setBottomSheetCallback({ state: Int ->
-            when (state) {
-                BottomSheetBehavior.STATE_EXPANDED -> {
-                    shadow?.isVisible = false
-                }
-                BottomSheetBehavior.STATE_COLLAPSED -> {
-                    shadow?.isVisible = true
-                }
-            }
-        })
+        toolbar?.inflateMenu(R.menu.main_bottom_bar_menu)
         listenToDataChanges()
         initClicks()
     }
 
     override fun onBackPressed(): Boolean {
-        return if (behaviour.state == BottomSheetBehavior.STATE_COLLAPSED) {
-            true
-        } else {
-            behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-            false
-        }
+        return true
     }
 
     override fun onClick(positive: Boolean) {
@@ -97,16 +79,17 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener,
     }
 
     private fun initClicks() {
-        bottomBar.setNavigationOnClickListener { addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print)) }
-        bottomBar.setOnMenuItemClickListener { item ->
+//        toolbar?.setNavigationOnClickListener { addDisposal(viewModel.login.subscribe({ route(it?.htmlUrl) }, ::print)) }
+        toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.notifications -> route(NOTIFICATION_LINK)
                 R.id.search -> route(SEARCH_LINK)
             }
             return@setOnMenuItemClickListener true
         }
+
         navigationView.setNavigationItemSelectedListener {
-            behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+            backdropContainer.close()
             when (it.itemId) {
                 R.id.logout -> IconDialogFragment.show(
                     childFragmentManager, R.drawable.ic_info_outline, getString(R.string.logout),
@@ -150,7 +133,7 @@ class MainFragment : BaseFragment(), IconDialogFragment.IconDialogClickListener,
             }
         }
         viewModel.unreadNotificationLiveData.observeNotNull(this) {
-            bottomBar.menu?.findItem(R.id.notifications)?.icon = if (it > 0) {
+            toolbar?.menu?.findItem(R.id.notifications)?.icon = if (it > 0) {
                 getDrawable(R.drawable.ic_notification_unread)
             } else {
                 getDrawable(R.drawable.ic_notifications_none)

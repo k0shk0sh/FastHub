@@ -1,53 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground"
-    android:orientation="vertical"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="71dp"
-    app:layout_behavior="@string/bottom_sheet_behavior"
-    tools:showIn="@layout/main_fragment_layout">
+    android:orientation="vertical">
 
-    <View
-        android:id="@+id/shadow"
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/toolbar_shadow_up" />
+        android:layout_height="match_parent"
+        app:headerLayout="@null"
+        app:insetForeground="@color/transparent"
+        app:itemBackground="@color/transparent"
+        app:itemIconTint="?colorAccent"
+        app:itemTextColor="?colorAccent"
+        app:layout_behavior="@string/scroll_behaviour"
+        app:menu="@menu/main_menu" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/toggleArrow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_bottom_sheet_rectangle" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:backgroundTint="?android:windowBackground"
-            app:buttonGravity="bottom"
-            app:navigationContentDescription="@string/profile"
-            app:navigationIcon="@drawable/ic_profile"
-            app:popupTheme="?android:toolbarStyle"
-            app:theme="?android:toolbarStyle" />
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?actionBarSize"
-            app:itemBackground="@color/transparent"
-            app:itemIconTint="?colorAccent"
-            app:itemTextColor="?colorAccent"
-            app:menu="@menu/main_menu" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>
