@@ -111,7 +111,7 @@ class IssueContentViewHolder(parent: ViewGroup) : BaseViewHolder<TimelineModel>(
                     model.commit?.commitUrl?.let { view.context.route(it) }
                 })
                 .space()
-                .append("${model.commit?.message} " ?: "")
+                .append("${model.commit?.message} ")
                 .append(model.commit?.authoredDate?.timeAgo())
         }
     }

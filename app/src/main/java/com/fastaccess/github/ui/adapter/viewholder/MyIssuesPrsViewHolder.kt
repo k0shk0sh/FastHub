@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.fastaccess.data.persistence.models.MyIssuesPullsModel
 import com.fastaccess.github.R
-import com.fastaccess.github.extensions.getColorCompat
 import com.fastaccess.github.base.adapter.BaseViewHolder
+import com.fastaccess.github.extensions.getColorCompat
 import github.type.PullRequestState
 import kotlinx.android.synthetic.main.issues_prs_main_screen_row_item.view.*
 
-class MyIssuesPrsViewHolder(viewGroup: ViewGroup) : BaseViewHolder<MyIssuesPullsModel?>(
+@Suppress("IMPLICIT_CAST_TO_ANY") class MyIssuesPrsViewHolder(viewGroup: ViewGroup) : BaseViewHolder<MyIssuesPullsModel?>(
     LayoutInflater.from(viewGroup.context)
         .inflate(R.layout.issues_prs_main_screen_row_item, viewGroup, false)
 ) {

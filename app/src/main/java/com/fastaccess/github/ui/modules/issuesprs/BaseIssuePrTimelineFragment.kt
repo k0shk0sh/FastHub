@@ -317,7 +317,7 @@ abstract class BaseIssuePrTimelineFragment : com.fastaccess.github.base.BaseFrag
         )
     }
 
-    protected open fun onEditCommentClicked(): (position: Int, timeline: TimelineModel) -> Unit = { position, timeline ->
+    protected open fun onEditCommentClicked(): (position: Int, timeline: TimelineModel) -> Unit = { _, timeline ->
         val databaseId = when {
             timeline.comment != null -> timeline.comment?.databaseId
             timeline.commitThread != null -> timeline.commitThread?.comment?.databaseId

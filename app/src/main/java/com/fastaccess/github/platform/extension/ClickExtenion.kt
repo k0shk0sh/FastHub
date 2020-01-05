@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.fastaccess.github.platform.extension
 
 import androidx.fragment.app.Fragment

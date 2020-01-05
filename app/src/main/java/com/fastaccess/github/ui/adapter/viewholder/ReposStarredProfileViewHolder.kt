@@ -41,7 +41,7 @@ class ReposStarredProfileViewHolder(parent: ViewGroup) : BaseViewHolder<ProfileS
             language.isVisible = !item.primaryLanguage?.name.isNullOrEmpty()
             language.text = item.primaryLanguage?.name ?: ""
             if (!item.primaryLanguage?.color.isNullOrBlank()) {
-                language.chipIconTint = ColorStateList.valueOf(Color.parseColor(item.primaryLanguage?.color)) ?: null
+                language.chipIconTint = ColorStateList.valueOf(Color.parseColor(item.primaryLanguage?.color))
             }
         }
     }

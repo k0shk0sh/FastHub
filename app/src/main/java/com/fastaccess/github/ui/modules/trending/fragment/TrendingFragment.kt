@@ -9,15 +9,16 @@ import com.fastaccess.github.R
 import com.fastaccess.github.base.extensions.addDivider
 import com.fastaccess.github.base.extensions.isConnected
 import com.fastaccess.github.base.utils.EXTRA
+import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.observeNotNull
-import com.fastaccess.github.base.viewmodel.ViewModelProviders
 import com.fastaccess.github.ui.adapter.TrendingsAdapter
 import com.fastaccess.github.ui.modules.multipurpose.MultiPurposeBottomSheetDialog
 import com.fastaccess.github.ui.modules.trending.filter.FilterTrendingBottomSheet
 import com.fastaccess.github.ui.modules.trending.fragment.viewmodel.TrendingViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.trending_fragment_layout.*
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -43,26 +44,28 @@ class TrendingFragment : com.fastaccess.github.base.BaseFragment(), FilterTrendi
         swipeRefresh.setOnRefreshListener {
             if (isConnected()) {
                 recyclerView.resetScrollState()
-                viewModel.load(viewModel.filterTrendingModel)
+                viewModel.load(viewModel.filterTrendingModel, Locale.ENGLISH)
             } else {
                 swipeRefresh.isRefreshing = false
             }
         }
         filterTrending.setOnClickListener {
             val modelCopy = viewModel.filterTrendingModel.copy()
-            MultiPurposeBottomSheetDialog.show(childFragmentManager,
-                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.TRENDING, modelCopy)
+            MultiPurposeBottomSheetDialog.show(
+                childFragmentManager,
+                MultiPurposeBottomSheetDialog.BottomSheetFragmentType.TRENDING, modelCopy
+            )
         }
         listenToChanges()
         if (savedInstanceState == null) {
             val model = arguments?.getParcelable(EXTRA) ?: FilterTrendingModel()
-            isConnected().isTrue { viewModel.load(model) }
+            isConnected().isTrue { viewModel.load(model, Locale.ENGLISH) }
         }
     }
 
     override fun onFilterApplied(model: FilterTrendingModel) {
         viewModel.filterTrendingModel = model
-        isConnected().isTrue { viewModel.load(model) }
+        isConnected().isTrue { viewModel.load(model, Locale.ENGLISH) }
     }
 
     private fun listenToChanges() {

@@ -6,8 +6,10 @@ import android.os.Parcelable
 /**
  * Created by Kosh on 24.01.19.
  */
-data class FilterTrendingModel(var lang: String = "",
-                               var since: TrendingSince = TrendingSince.DAILY) : Parcelable {
+data class FilterTrendingModel(
+    var lang: String = "",
+    var since: TrendingSince = TrendingSince.DAILY
+) : Parcelable {
 
     constructor(source: Parcel) : this(
         source.readString() ?: "",

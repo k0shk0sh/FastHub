@@ -149,7 +149,7 @@ class ReviewViewHolder(
                 markwon.setMarkdown(reviewDescription, if (!bodyMd.isNullOrEmpty()) bodyMd else resources.getString(R.string.no_description_provided))
             }
 
-            reviewDescription.setOnTouchListener { v, event ->
+            reviewDescription.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_UP && !reviewDescription.hasSelection()) {
                     itemView.callOnClick()
                 }

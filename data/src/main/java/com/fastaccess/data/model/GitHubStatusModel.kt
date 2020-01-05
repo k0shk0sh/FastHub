@@ -1,4 +1,4 @@
-package com.fastaccess.data.dao
+package com.fastaccess.data.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -10,10 +10,10 @@ apply plugin: "com.github.ben-manes.versions"
 
 buildProperties {
     notThere {
-        file rootProject.file('build-dependecies/debug_keys.properties')
+        using rootProject.file('build-dependecies/debug_keys.properties')
     }
     secrets {
-        file rootProject.file('build-dependecies/secret_keys.properties')
+        using rootProject.file('build-dependecies/secret_keys.properties')
     }
 }
 

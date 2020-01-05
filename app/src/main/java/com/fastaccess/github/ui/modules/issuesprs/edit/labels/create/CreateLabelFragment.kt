@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.fastaccess.github.R
-import com.fastaccess.github.base.BaseDialogFragment
 import com.fastaccess.github.base.extensions.asString
 import com.fastaccess.github.ui.adapter.LabelColorAdapter
 import kotlinx.android.synthetic.main.add_label_layout.*
@@ -40,7 +39,7 @@ class CreateLabelFragment : com.fastaccess.github.base.BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.adapter = adapter
-        setupToolbar(getString(R.string.create_label), R.menu.submit_menu) { item ->
+        setupToolbar(getString(R.string.create_label), R.menu.submit_menu) {
             val colorText = color.editText?.asString()
             val nameText = name.editText?.asString()
             color.error = if (colorText.isNullOrEmpty()) getString(R.string.required_field) else null

@@ -7,6 +7,7 @@ import com.fastaccess.domain.response.GithubErrorResponse
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import retrofit2.HttpException
@@ -31,7 +32,10 @@ abstract class BaseViewModel : ViewModel() {
     protected fun disposeAll() = disposable.clear()
 
     protected fun handleError(throwable: Throwable) {
+        throwable.printStackTrace()
+
         hideProgress()
+
         if (throwable is HttpException) {
             val response = throwable.response()
             val errorBody: GithubErrorResponse? = gson.fromJson(response?.errorBody()?.string(), GithubErrorResponse::class.java)
@@ -65,6 +69,7 @@ abstract class BaseViewModel : ViewModel() {
             }
             return
         }
+
         error.postValue(FastHubErrors(FastHubErrors.ErrorType.OTHER, resId = getErrorResId(throwable)))
     }
 
@@ -86,6 +91,11 @@ abstract class BaseViewModel : ViewModel() {
         .doOnError { handleError(it) }
         .doOnComplete { hideProgress() }
 
+    protected fun <T> callApi(observable: Single<T>): Single<T> = observable
+        .doOnSubscribe { showProgress() }
+        .doOnSuccess { hideProgress() }
+        .doOnError { handleError(it) }
+
     protected fun callApi(completable: Completable): Completable = completable
         .doOnSubscribe { showProgress() }
         .doOnComplete { hideProgress() }
@@ -93,6 +103,7 @@ abstract class BaseViewModel : ViewModel() {
         .doOnComplete { hideProgress() }
 
     protected fun <T> justSubscribe(observable: Observable<T>) = add(callApi(observable).subscribe({}, { it.printStackTrace() }))
+    protected fun <T> justSubscribe(observable: Single<T>) = add(callApi(observable).subscribe({}, { it.printStackTrace() }))
     protected fun justSubscribe(completable: Completable) = add(callApi(completable).subscribe({}, { it.printStackTrace() }))
 
     override fun onCleared() {

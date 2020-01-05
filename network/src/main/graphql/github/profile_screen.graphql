@@ -46,10 +46,10 @@ query getProfile($login: String!) {
               totalCount
             }
             forkCount
-            issues(first: 0, states: OPEN) {
+            issues(first: 0, states: [OPEN]) {
               totalCount
             }
-            pullRequests(first: 0, states: OPEN) {
+            pullRequests(first: 0, states: [OPEN]) {
               totalCount
             }
         }
@@ -132,10 +132,10 @@ query getProfileRepos($login: String!, $cursor: String) {
         stargazers(first: 0) {
           totalCount
         }
-        issues(first: 0, states: OPEN) {
+        issues(first: 0, states: [OPEN]) {
           totalCount
         }
-        pullRequests(first: 0, states: OPEN) {
+        pullRequests(first: 0, states: [OPEN]) {
           totalCount
         }
       }
@@ -171,10 +171,10 @@ query getProfileStarredRepos($login: String!, $cursor: String) {
         stargazers(first: 0) {
           totalCount
         }
-        issues(first: 0, states: OPEN) {
+        issues(first: 0, states: [OPEN]) {
           totalCount
         }
-        pullRequests(first: 0, states: OPEN) {
+        pullRequests(first: 0, states: [OPEN]) {
           totalCount
         }
       }

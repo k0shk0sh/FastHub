@@ -21,7 +21,7 @@ ext {
     mockito = '2.23.4'
     mockitoKotlin = '1.5.0'
     assertJ = '3.12.2'
-    apollo = '1.0.1'
+    apollo = '1.2.2'
     deepLinkDispatch = '4.1.0'
     markwonVersion = '4.1.1'
 

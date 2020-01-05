@@ -14,7 +14,7 @@ class MyIssuesPrsAdapter(
     private val onClick: (model: MyIssuesPullsModel) -> Unit
 ) : ListAdapter<MyIssuesPullsModel, MyIssuesPrsViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyIssuesPrsViewHolder = MyIssuesPrsViewHolder(parent).apply {
-        itemView?.setOnClickListener { _ ->
+        itemView.setOnClickListener { _ ->
             val position = adapterPosition
             if (position == RecyclerView.NO_POSITION) return@setOnClickListener
             kotlin.runCatching { getItem(position) }.onSuccess {

@@ -113,7 +113,6 @@ class IssueFragment : BaseIssuePrTimelineFragment() {
     ) {
         view?.findViewById<View>(R.id.commentLayout)?.isVisible = model.locked == false
         issueHeaderWrapper.isVisible = true
-        val theme = preference.theme
         title.text = model.title
         toolbar?.title = SpannableBuilder.builder()
             .append(getString(R.string.issue))

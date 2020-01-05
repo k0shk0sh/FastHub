@@ -31,7 +31,7 @@ class AppBarBottomSheetBehaviour(context: Context, attrs: AttributeSet?) : AppBa
     private fun getBottomSheetState(bottomSheet: View?): Int? {
         val view = bottomSheet ?: return null
         return try {
-            BottomSheetBehavior.from(view)?.state
+            BottomSheetBehavior.from(view).state
         } catch (e: Exception) {
             AnchorSheetBehavior.from(view)?.state
         }

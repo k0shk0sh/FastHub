@@ -8,11 +8,11 @@ import androidx.core.view.isVisible
 import com.fastaccess.data.model.CommentAuthorAssociation
 import com.fastaccess.data.model.CommitThreadModel
 import com.fastaccess.github.R
+import com.fastaccess.github.base.adapter.BaseViewHolder
+import com.fastaccess.github.base.extensions.popMenu
 import com.fastaccess.github.extensions.isTrue
 import com.fastaccess.github.extensions.showYesNoDialog
 import com.fastaccess.github.extensions.timeAgo
-import com.fastaccess.github.base.adapter.BaseViewHolder
-import com.fastaccess.github.base.extensions.popMenu
 import io.noties.markwon.Markwon
 import io.noties.markwon.utils.NoCopySpannableFactory
 import kotlinx.android.synthetic.main.comment_small_row_item.view.*
@@ -64,7 +64,7 @@ class CommitThreadViewHolder(
                     markwon.setMarkdown(description, if (!bodyMd.isNullOrEmpty()) bodyMd else resources.getString(R.string.no_description_provided))
                 }
 
-                description.setOnTouchListener { v, event ->
+                description.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_UP && !description.hasSelection()) {
                         itemView.callOnClick()
                     }

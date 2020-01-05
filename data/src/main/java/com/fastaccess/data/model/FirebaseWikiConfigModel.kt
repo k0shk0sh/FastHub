@@ -1,4 +1,4 @@
-package com.fastaccess.data.dao.wiki
+package com.fastaccess.data.model
 
 data class FirebaseWikiConfigModel(
     var sideBarListTitle: String = "a",

@@ -5,10 +5,10 @@ fragment ShortRepoRowItem on Repository {
     nameWithOwner
     isFork
     forkCount
-    issues(first: 0, states: OPEN) {
+    issues(first: 0, states: [OPEN]) {
         totalCount
     }
-    pullRequests(first: 0, states: OPEN) {
+    pullRequests(first: 0, states: [OPEN]) {
         totalCount
     }
     forks(first: 0) {
@@ -209,13 +209,13 @@ fragment FullPullRequest on PullRequest {
     commits(first: 0) {
         totalCount
     }
-    commentedReviews: reviews(first: 0, states: COMMENTED) {
+    commentedReviews: reviews(first: 0, states: [COMMENTED]) {
         totalCount
     }
-    approvedReviews: reviews(first: 0, states: APPROVED) {
+    approvedReviews: reviews(first: 0, states: [APPROVED]) {
         totalCount
     }
-    changeRequestedReviews: reviews(first: 0, states: CHANGES_REQUESTED) {
+    changeRequestedReviews: reviews(first: 0, states: [CHANGES_REQUESTED]) {
         totalCount
     }
     mergedBy {
