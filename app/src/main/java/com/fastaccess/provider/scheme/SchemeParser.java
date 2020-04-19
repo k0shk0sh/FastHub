@@ -69,9 +69,13 @@ public class SchemeParser {
 
     public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn, boolean newDocument) {
         Logger.e(data);
-        Intent intent = convert(context, data, showRepoBtn);
+        Uri uri = Uri.parse(data.toString()
+                .replace("&amp;", "&")
+                .replace("&lt", "<")
+                .replace("&gt", ">"));
+        Intent intent = convert(context, uri, showRepoBtn);
         if (intent != null) {
-            intent.putExtra(BundleConstant.SCHEME_URL, data.toString());
+            intent.putExtra(BundleConstant.SCHEME_URL, uri.toString());
             if (newDocument) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             }
@@ -82,9 +86,9 @@ public class SchemeParser {
         } else {
             Activity activity = ActivityHelper.getActivity(context);
             if (activity != null) {
-                ActivityHelper.startCustomTab(activity, data);
+                ActivityHelper.startCustomTab(activity, uri);
             } else {
-                ActivityHelper.openChooser(context, data);
+                ActivityHelper.openChooser(context, uri);
             }
         }
     }
