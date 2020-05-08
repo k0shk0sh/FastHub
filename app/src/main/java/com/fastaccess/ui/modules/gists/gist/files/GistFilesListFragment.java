@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FilesListModel;
@@ -49,6 +50,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
 
     public static GistFilesListFragment newInstance(@NonNull ArrayList<FilesListModel> files, boolean isOwner) {
         GistFilesListFragment view = new GistFilesListFragment();
+        Stream.of(files).forEach(filesListModel -> filesListModel.content = null);
         view.setArguments(Bundler.start()
                 .putParcelableArrayList(BundleConstant.ITEM, files)
                 .put(BundleConstant.EXTRA_TYPE, isOwner)
