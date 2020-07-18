@@ -233,11 +233,19 @@ public class PrettifyWebView extends NestedWebView {
     private void startActivity(@Nullable Uri url) {
         if (url == null) return;
         if (MarkDownProvider.isImage(url.toString())) {
-            Uri rawUrl = url
-                    .buildUpon()
-                    .authority("raw.githubusercontent.com")
-                    .build();
-            CodeViewerActivity.startActivity(getContext(), rawUrl.toString().replace("blob/", ""), url.toString());
+            String rawUrl;
+            if ("github.com".equals(url.getAuthority()) && "blob".equals(url.getPathSegments().get(2))) {
+                rawUrl = url
+                        .buildUpon()
+                        .authority("raw.githubusercontent.com")
+                        .build()
+                        .toString()
+                        .replace("blob/", "");
+            } else {
+                rawUrl = url.toString();
+            }
+
+            CodeViewerActivity.startActivity(getContext(), rawUrl, url.toString());
         } else {
             String lastSegment = url.getEncodedFragment();
             if (lastSegment != null || url.toString().startsWith("#") || url.toString().indexOf('#') != -1) {
