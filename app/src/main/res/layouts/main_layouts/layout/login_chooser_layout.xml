@@ -142,15 +142,21 @@
                         android:paddingTop="@dimen/spacing_normal">
 
                         <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/basicAuth"
-                            style="@style/TextAppearance.AppCompat.Title"
+                            style="@style/TextAppearance.AppCompat.Small"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?selectableItemBackground"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:gravity="center"
-                            android:padding="@dimen/spacing_xs_large"
-                            android:text="@string/basic_authentication"
-                            android:textColor="@color/material_green_700"/>
+                            android:text="@string/login_using_your_default_browser"/>
+
+                        <com.fastaccess.ui.widgets.FontButton
+                            android:id="@+id/browserLogin"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:text="@string/open_in_browser"/>
+
 
                         <com.fastaccess.ui.widgets.FontTextView
                             style="@style/TextAppearance.AppCompat.Small"
@@ -201,34 +207,6 @@
                                 android:text="@string/enterprise"
                                 android:textColor="@color/material_purple_700"/>
                         </LinearLayout>
-
-                        <com.fastaccess.ui.widgets.FontTextView
-                            style="@style/TextAppearance.AppCompat.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottom_border"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/spacing_normal"
-                            android:paddingEnd="@dimen/spacing_large"
-                            android:paddingStart="@dimen/spacing_large"
-                            android:text="@string/or_character"/>
-
-                        <com.fastaccess.ui.widgets.FontTextView
-                            style="@style/TextAppearance.AppCompat.Small"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
-                            android:gravity="center"
-                            android:text="@string/login_using_your_default_browser"/>
-
-                        <com.fastaccess.ui.widgets.FontButton
-                            android:id="@+id/browserLogin"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:text="@string/open_in_browser"/>
-
                     </LinearLayout>
                 </LinearLayout>
 
