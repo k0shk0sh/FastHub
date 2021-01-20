@@ -1,7 +1,9 @@
 package com.fastaccess.provider.rest;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -22,8 +24,8 @@ import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.ReviewService;
 import com.fastaccess.data.service.SearchService;
-import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
@@ -99,6 +101,13 @@ public class RestProvider {
         try {
             if (InputHelper.isEmpty(url)) return;
             boolean isEnterprise = LinkParserHelper.isEnterprise(url);
+            if (url.endsWith(".apk")) {
+                Activity activity = ActivityHelper.getActivity(context);
+                if (activity != null) {
+                    ActivityHelper.startCustomTab(activity, url);
+                    return;
+                }
+            }
             Uri uri = Uri.parse(url);
             DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             DownloadManager.Request request = new DownloadManager.Request(uri);
@@ -178,15 +187,6 @@ public class RestProvider {
 
     @NonNull public static SearchService getSearchService(boolean enterprise) {
         return provideRetrofit(enterprise).create(SearchService.class);
-    }
-
-    @NonNull public static SlackService getSlackService() {
-        return new Retrofit.Builder()
-                .baseUrl("https://ok13pknpj4.execute-api.eu-central-1.amazonaws.com/prod/")
-                .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-                .create(SlackService.class);
     }
 
     @NonNull public static ContentService getContentService(boolean enterprise) {

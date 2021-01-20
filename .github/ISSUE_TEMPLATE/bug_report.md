@@ -1,3 +1,12 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: "[BUG]"
+labels: ''
+assignees: ''
+
+---
+
 <!--
    - Please provide as much as detail and example as you can.
    - Add screenshots if appropriate.

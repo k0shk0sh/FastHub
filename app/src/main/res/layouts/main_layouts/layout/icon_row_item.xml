@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/spacing_large"
-        tools:src="@drawable/ic_slack"/>
+        tools:src="@drawable/ic_fasthub_mascot"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
