@@ -1,5 +1,6 @@
 package com.fastaccess.provider.tasks.git;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -26,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by Kosh on 12 Mar 2017, 2:25 PM
  */
-
+@SuppressWarnings("ResultOfMethodCallIgnored") @SuppressLint("CheckResult")
 public class GithubActionService extends IntentService {
 
     public static final int STAR_REPO = 1;
@@ -39,7 +40,6 @@ public class GithubActionService extends IntentService {
     public static final int FORK_GIST = 8;
     private NotificationCompat.Builder notification;
     private NotificationManager notificationManager;
-    private CompositeDisposable disposable = new CompositeDisposable();
 
     @IntDef({
             STAR_REPO,
@@ -116,113 +116,102 @@ public class GithubActionService extends IntentService {
     }
 
     @Override public void onDestroy() {
-        disposable.clear();
         super.onDestroy();
     }
 
     private void forkGist(@Nullable String id, boolean isEnterprise) {
         if (id != null) {
             String msg = getString(R.string.forking, getString(R.string.gist));
-            disposable.add(
-                    RestProvider.getGistService(isEnterprise)
-                            .forkGist(id)
-                            .doOnSubscribe(disposable -> showNotification(msg))
-                            .subscribeOn(Schedulers.io())
-                            .subscribe(response -> {
-                            }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+            RestProvider.getGistService(isEnterprise)
+                    .forkGist(id)
+                    .doOnSubscribe(disposable -> showNotification(msg))
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(response -> {
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void forkRepo(@Nullable String id, @Nullable String login, boolean isEnterprise) {
         if (id != null && login != null) {
             String msg = getString(R.string.forking, id);
-            disposable.add(
-                    RestProvider.getRepoService(isEnterprise)
-                            .forkRepo(login, id)
-                            .doOnSubscribe(disposable -> showNotification(msg))
-                            .subscribeOn(Schedulers.io())
-                            .subscribe(response -> {
-                            }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+            RestProvider.getRepoService(isEnterprise)
+                    .forkRepo(login, id)
+                    .doOnSubscribe(disposable -> showNotification(msg))
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(response -> {
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void starGist(@Nullable String id, boolean isEnterprise) {
         if (id != null) {
             String msg = getString(R.string.starring, getString(R.string.gist));
-            disposable.add(RestProvider.getGistService(isEnterprise)
+            RestProvider.getGistService(isEnterprise)
                     .starGist(id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void starRepo(@Nullable String id, @Nullable String login, boolean isEnterprise) {
         if (id != null && login != null) {
             String msg = getString(R.string.starring, id);
-            disposable.add(RestProvider.getRepoService(isEnterprise)
+            RestProvider.getRepoService(isEnterprise)
                     .starRepo(login, id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void unStarGist(@Nullable String id, boolean isEnterprise) {
         if (id != null) {
             String msg = getString(R.string.un_starring, getString(R.string.gist));
-            disposable.add(RestProvider.getGistService(isEnterprise)
+            RestProvider.getGistService(isEnterprise)
                     .unStarGist(id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void unStarRepo(@Nullable String id, @Nullable String login, boolean isEnterprise) {
         if (id != null && login != null) {
             String msg = getString(R.string.un_starring, id);
-            disposable.add(RestProvider.getRepoService(isEnterprise)
+            RestProvider.getRepoService(isEnterprise)
                     .unstarRepo(login, id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void unWatchRepo(@Nullable String id, @Nullable String login, boolean isEnterprise) {
         if (id != null && login != null) {
             String msg = getString(R.string.un_watching, id);
-            disposable.add(RestProvider.getRepoService(isEnterprise)
+            RestProvider.getRepoService(isEnterprise)
                     .unwatchRepo(login, id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void watchRepo(@Nullable String id, @Nullable String login, boolean isEnterprise) {
         if (id != null && login != null) {
             String msg = getString(R.string.watching, id);
-            disposable.add(RestProvider.getRepoService(isEnterprise)
+            RestProvider.getRepoService(isEnterprise)
                     .watchRepo(login, id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, throwable -> hideNotification(msg), () -> hideNotification(msg))
-            );
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
