@@ -248,7 +248,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(eventsModel.getRepo().getName())
                 .bold("#")
                 .bold(String.valueOf(pullRequest.getNumber()));
-        if (comment.getBody() != null) {
+        if (comment != null && comment.getBody() != null) {
             MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r", " "));
             description.setVisibility(View.VISIBLE);
         } else {
