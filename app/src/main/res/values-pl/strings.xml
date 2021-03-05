@@ -60,7 +60,8 @@
   <string name="clear_search_keywords">Wyczyść historię wyszukiwania</string>
   <string name="click_file_option_hint">Poblierz plik lub udostępnij folder</string>
   <string name="click_here_to_download_release_hint">Pobierz wydania</string>
-  <string name="click_to_toggle_highlighting">Włącz lub wyłącz kolorowanie składni. \nPozostałe ikony edytora plików Markdown kontrolują więcej opcji.</string>
+  <string name="click_to_toggle_highlighting">Włącz lub wyłącz kolorowanie składni.
+ \nPozostałe ikony edytora plików Markdown kontrolują więcej opcji.</string>
   <string name="close">Zamknij</string>
   <string name="close_issue">Zamknij problem</string>
   <string name="closed">Zamknięte</string>
@@ -69,7 +70,8 @@
   <string name="colored_navbar_summary">Nie pozwalaj motywom zmieniać koloru paska nawigacji</string>
   <string name="colored_navbar_title">Przezroczysty pasek nawigacji</string>
   <string name="comment">Komentarz</string>
-  <string name="comment_hint">Kliknij na komentarzu, żeby otagować jego autora lub edytować swój komentarz. \nKliknij i przytrzymaj na swoim komentarzu, żeby usunąć komentarz.</string>
+  <string name="comment_hint">Kliknij na komentarzu, żeby otagować jego autora lub edytować swój komentarz.
+ \nKliknij i przytrzymaj na swoim komentarzu, żeby usunąć komentarz.</string>
   <string name="comment_is_too_far_to_paginate">Komentarz jest za długi, żeby podzielić go na strony</string>
   <string name="commented_on_commit">Skomentowano commit</string>
   <string name="commented_on_issue">Skomentuj problem</string>
@@ -137,7 +139,9 @@
   <string name="enable_signature_box_summary">Odblokuj pole wyboru, żeby móc załączyć podpis w edytorze tekstu</string>
   <string name="enable_signature_summary">Odblokuj podpis \"wysłano przez\"</string>
   <string name="english_please">Proszę pisać w języku angielskim.</string>
-  <string name="enterprise_login_warning">Zaloguj się używając twojego loginu do konta GitHub, żeby uzyskać dostęp do wszystkiego co oferuje GitHub API, przeciwnie będzie cię wyrzucało za każdym razem jak spróbujesz uzyskać dostęp do czegokolwiek innego niż twój GitHub Enterprise, ponieważ token wysyłany do GitHub API pochodzi z twojego konta Enterprise.</string>
+  <string name="enterprise_login_warning">Zaloguj się używając twojego loginu do konta GitHub, żeby uzyskać dostęp do wszystkiego co oferuje GitHub API,
+ przeciwnie będzie cię wyrzucało za każdym razem jak spróbujesz uzyskać dostęp do czegokolwiek innego niż twój GitHub Enterprise, ponieważ token
+ wysyłany do GitHub API pochodzi z twojego konta Enterprise.</string>
   <string name="error">Błąd</string>
   <string name="error_closing_issue">Błąd podczas zamykania problemu, spróbuj ponownie.</string>
   <string name="error_creating_issue">Błąd podczas tworzenia problemu</string>
@@ -220,7 +224,9 @@
   <string name="least_recent_updated">Dawno nieaktualizowane</string>
   <string name="link">Link</string>
   <string name="lock_issue">Zablokuj rozmowę</string>
-  <string name="lock_issue_details">Blokada rozmowy oznacza, że:\n·Inni użytkownicy nie będą mogli komentować tego problemu.\n·Ty i inni współtwórcy mający dostęp do tego repozytorium nadal będziecie mogli dodawać komentarze, które inni zobaczą.\n·Zawsze możesz później odblokować rozmowy dla tego problemu.\n</string>
+  <string name="lock_issue_details">Blokada rozmowy oznacza, że:\n·Inni użytkownicy nie będą mogli komentować tego problemu.\n·Ty i inni
+ współtwórcy mający dostęp do tego repozytorium nadal będziecie mogli dodawać komentarze, które inni zobaczą.\n·Zawsze możesz później
+ odblokować rozmowy dla tego problemu.\n</string>
   <string name="login">Login</string>
   <string name="login_using_your_default_browser">Zaloguj używając domyślnej przeglądarki internetowej (OAuth)</string>
   <string name="login_with_personal_token">Zaloguj się osobistym tokenem (Personal Token)</string>
@@ -267,7 +273,10 @@
   <string name="no_milestones">Brak kamieni milowych</string>
   <string name="no_notifications">Brak powiadomień</string>
   <string name="no_orgs">Brak organizacji</string>
-  <string name="no_orgs_description">Jeśli jesteś przypisany do organizacji, ale ich tutaj nie widzisz wejdź na poniższą stronę.\n https://help.github.com/articles/about-third-party-application-restrictions\nPS: Do logowania możesz użyć tokena dostępu (Access token), który zezwoli FastHub wyświetlać twoje organizacje.\nMożesz również wejść na https://github.com/settings/applications i wyszukać FastHub, wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\".</string>
+  <string name="no_orgs_description">Jeśli jesteś przypisany do organizacji, ale ich tutaj nie widzisz wejdź na poniższą stronę.\n
+ https://help.github.com/articles/about-third-party-application-restrictions\nPS: Do logowania możesz użyć tokena dostępu (Access token),
+ który zezwoli FastHub wyświetlać twoje organizacje.\nMożesz również wejść na https://github.com/settings/applications i wyszukać FastHub,
+ wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\".</string>
   <string name="no_orgs_dialog_title">Nie możesz znaleźć swoich organizacji\?</string>
   <string name="no_projects">Brak projektów</string>
   <string name="no_pull_requests">Brak pull requestów</string>
@@ -348,7 +357,7 @@
   <string name="repo_chooser">Wybierz Repo</string>
   <string name="repo_issues_is_disabled">Problemy dla tego repo są zablokowane</string>
   <string name="report_issue">Zgłoś problem</string>
-  <string name="report_issue_here">Napotkałeś problem? Zgłoś go tutaj</string>
+  <string name="report_issue_here">Napotkałeś problem? Zgłoś go tutaj.</string>
   <string name="report_issue_warning">Problem zostnie zgłoszony do repozytorium FastHub w serwisie GitHub</string>
   <string name="request_changes">sugerowane zmiany</string>
   <string name="request_error">Brak połączenia z siecią</string>
@@ -434,7 +443,8 @@
   <string name="unfollow">Przestań obserwować</string>
   <string name="unknown">Nieznane</string>
   <string name="unlock_issue">Odblokuj rozmowę</string>
-  <string name="unlock_issue_details">Odblokowanie rozmowy oznacza, że:\n·Każdy ponownie będzie mógł komentować ten problem.\n· Zawsze możesz później zablokować rozmowy dla tego problemu.\n</string>
+  <string name="unlock_issue_details">Odblokowanie rozmowy oznacza, że:\n·Każdy ponownie będzie mógł komentować ten problem.\n·
+ Zawsze możesz później zablokować rozmowy dla tego problemu.\n</string>
   <string name="unpin">Odepnij</string>
   <string name="unread">Nowe</string>
   <string name="unread_notification">Masz nieprzeczytane powiadomienia</string>
