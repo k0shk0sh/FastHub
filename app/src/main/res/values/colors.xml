@@ -3,7 +3,7 @@
 
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#FF1F1F1</color>
     <color name="light_gray">#ffb2b2b2</color>
     <color name="carrot">@color/material_amber_800</color>
     <color name="material_amber_100">#FFECB3</color>
