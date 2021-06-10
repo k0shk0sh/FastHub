@@ -15,7 +15,7 @@
   <string name="app_language">Język</string>
   <string name="apply">Zastosuj</string>
   <string name="approved_these_changes">zaakceptował te zmiany</string>
-  <string name="archive_file_detected_error">Plik jest skompresowany, pobierz go żeby podejrzeć jego zawartość.</string>
+  <string name="archive_file_detected_error">Plik jest skompresowany, aby go podejrzeć pobierz jego zawartość.</string>
   <string name="assign_myself">Przypisz do mnie</string>
   <string name="assigned">Przydzielone</string>
   <string name="assignee">Przydzielone do</string>
@@ -35,7 +35,7 @@
   <string name="basic_login">Proste logowanie</string>
   <string name="behavior">Zachowanie</string>
   <string name="big_file">Duży plik</string>
-  <string name="big_file_description">Plik jest zbyt duży żeby go otworzyć.\nWybierz \"Tak\" żeby go pobrać.</string>
+  <string name="big_file_description">Plik jest zbyt duży, aby go otworzyć.\nWybierz \"Tak\", aby go pobrać.</string>
   <string name="block">Zablokuj</string>
   <string name="bold">Pogrubienie</string>
   <string name="bullet">Lista punktorów</string>
@@ -60,7 +60,8 @@
   <string name="clear_search_keywords">Wyczyść historię wyszukiwania</string>
   <string name="click_file_option_hint">Poblierz plik lub udostępnij folder</string>
   <string name="click_here_to_download_release_hint">Pobierz wydania</string>
-  <string name="click_to_toggle_highlighting">Włącz lub wyłącz kolorowanie składni. \nPozostałe ikony edytora plików Markdown kontrolują więcej opcji.</string>
+  <string name="click_to_toggle_highlighting">Włącz lub wyłącz kolorowanie składni.
+ \nPozostałe ikony edytora plików Markdown kontrolują więcej opcji.</string>
   <string name="close">Zamknij</string>
   <string name="close_issue">Zamknij problem</string>
   <string name="closed">Zamknięte</string>
@@ -69,8 +70,9 @@
   <string name="colored_navbar_summary">Nie pozwalaj motywom zmieniać koloru paska nawigacji</string>
   <string name="colored_navbar_title">Przezroczysty pasek nawigacji</string>
   <string name="comment">Komentarz</string>
-  <string name="comment_hint">Kliknij na komentarzu, żeby otagować jego autora lub edytować swój komentarz. \nKliknij i przytrzymaj na swoim komentarzu, żeby usunąć komentarz.</string>
-  <string name="comment_is_too_far_to_paginate">Komentarz jest za długi, żeby podzielić go na strony</string>
+  <string name="comment_hint">Kliknij na komentarzu, aby otagować jego autora lub edytować swój komentarz.
+ \nKliknij i przytrzymaj na swoim komentarzu, aby usunąć komentarz.</string>
+  <string name="comment_is_too_far_to_paginate">Komentarz jest za długi, aby podzielić go na strony</string>
   <string name="commented_on_commit">Skomentowano commit</string>
   <string name="commented_on_issue">Skomentuj problem</string>
   <string name="comments">Komentarze</string>
@@ -126,7 +128,7 @@
   <string name="edit">Edytuj</string>
   <string name="edit_gist">Edytuj Gista</string>
   <string name="edited">• edytowany</string>
-  <string name="empty_pinned_repos">Brak przypiętych repozytoriów, przypnij jakieś żeby je tu zobaczyć.\nP.S: Im częściej odwiedzasz repo, tym wyżej będzie na liście.</string>
+  <string name="empty_pinned_repos">Brak przypiętych repozytoriów, przypnij jakieś, aby je tu zobaczyć.\nP.S: Im częściej odwiedzasz repo, tym wyżej będzie na liście.</string>
   <string name="empty_search_error">Pole wyszukiwania nie może być puste</string>
   <string name="enable_ads">Odblokuj reklamy</string>
   <string name="enable_notification_sound_summary">Odtwarzaj dźwięk, kiedy otrzymujesz powiadomienia.</string>
@@ -134,17 +136,19 @@
   <string name="enable_notification_title">Odblokuj powiadomienia</string>
   <string name="enable_signature">Odblokuj podpis</string>
   <string name="enable_signature_box">Odblokuj ramkę z podpisem</string>
-  <string name="enable_signature_box_summary">Odblokuj pole wyboru, żeby móc załączyć podpis w edytorze tekstu</string>
+  <string name="enable_signature_box_summary">Odblokuj pole wyboru, aby móc załączyć podpis w edytorze tekstu</string>
   <string name="enable_signature_summary">Odblokuj podpis \"wysłano przez\"</string>
   <string name="english_please">Proszę pisać w języku angielskim.</string>
-  <string name="enterprise_login_warning">Zaloguj się używając twojego loginu do konta GitHub, żeby uzyskać dostęp do wszystkiego co oferuje GitHub API, przeciwnie będzie cię wyrzucało za każdym razem jak spróbujesz uzyskać dostęp do czegokolwiek innego niż twój GitHub Enterprise, ponieważ token wysyłany do GitHub API pochodzi z twojego konta Enterprise.</string>
+  <string name="enterprise_login_warning">Zaloguj się używając twojego loginu do konta GitHub, aby uzyskać dostęp do wszystkiego co oferuje GitHub API,
+ przeciwnie będzie cię wyrzucało za każdym razem jak spróbujesz uzyskać dostęp do czegokolwiek innego niż twój GitHub Enterprise, ponieważ token
+ wysyłany do GitHub API pochodzi z twojego konta Enterprise.</string>
   <string name="error">Błąd</string>
   <string name="error_closing_issue">Błąd podczas zamykania problemu, spróbuj ponownie.</string>
   <string name="error_creating_issue">Błąd podczas tworzenia problemu</string>
   <string name="error_creating_milestone">Błąd podczas tworzenia kamienia milowego</string>
   <string name="error_deleting_comment">Błąd podczas usuwania komentarza</string>
   <string name="error_deleting_gist">Błąd podazcas usuwania Gista</string>
-  <string name="error_highlighting_editor">Wyłącz kolorowanie składni, żeby kontynuować edycję.</string>
+  <string name="error_highlighting_editor">Wyłącz kolorowanie składni, aby kontynuować edycję.</string>
   <string name="error_re_opening_issue">Błąd podczas ponownego otwierania problemu, spróbuj ponownie.</string>
   <string name="every">Co</string>
   <string name="expand">Rozwiń</string>
@@ -172,12 +176,12 @@
         Możesz również zalogować się za pomocą Tokena (<i>Access Token</i>).</p>
 
         <h5>• Mam kłopoty! / Chciałbym zasugerować zmiany!</h5>
-        <p>Wejdź na https://github.com/k0shk0sh/FastHub/issues/new i zgłoś Problem, żeby poinformować o błędach i propozycjach nowych funkcjonalności. Zanim zgłosisz swój problem, zachęcam
-        do użycia wyszukiwarki, żeby sprawdzić czy podobny problem nie został już stworzony. Każdy duplikat zgłoszenia zostanie oznaczony jako duplikat i takie zgłoszenie zostanie zamknięte.</p>
+        <p>Wejdź na https://github.com/k0shk0sh/FastHub/issues/new i zgłoś Problem, aby poinformować o błędach i propozycjach nowych funkcjonalności. Zanim zgłosisz swój problem, zachęcam
+        do użycia wyszukiwarki, aby sprawdzić czy podobny problem nie został już stworzony. Każdy duplikat zgłoszenia zostanie oznaczony jako duplikat i takie zgłoszenie zostanie zamknięte.</p>
     ]]></string>
   <string name="feed">Aktualności</string>
   <string name="feedback">Podziel się wrażeniami</string>
-  <string name="feeds_fork_hint">Kliknij i przytrzymaj fork event, żeby otworzyć oryginalne lub sforkowane repo.</string>
+  <string name="feeds_fork_hint">Kliknij i przytrzymaj fork event, aby otworzyć oryginalne lub sforkowane repo.</string>
   <string name="file">Plik</string>
   <string name="file_menu">Menu plików</string>
   <string name="file_name">Nazwa pliku</string>
@@ -201,7 +205,7 @@
   <string name="header_three">Trzeci nagłówek</string>
   <string name="header_two">Drugi nagłówek</string>
   <string name="home">Ekran powitalny</string>
-  <string name="home_long_click_hint">Kliknij i przytrzymaj, żeby przejść na Główną gdziekolwiek jesteś</string>
+  <string name="home_long_click_hint">Kliknij i przytrzymaj, aby przejść na Główną gdziekolwiek jesteś</string>
   <string name="image">Obraz</string>
   <string name="image_error">Błąd podczas wczytywaniu pliku obrazu, spróbuj ponownie.</string>
   <string name="in_progress">Wczytywanie, proszę czekać…</string>
@@ -220,12 +224,14 @@
   <string name="least_recent_updated">Dawno nieaktualizowane</string>
   <string name="link">Link</string>
   <string name="lock_issue">Zablokuj rozmowę</string>
-  <string name="lock_issue_details">Blokada rozmowy oznacza, że:\n·Inni użytkownicy nie będą mogli komentować tego problemu.\n·Ty i inni współtwórcy mający dostęp do tego repozytorium nadal będziecie mogli dodawać komentarze, które inni zobaczą.\n·Zawsze możesz później odblokować rozmowy dla tego problemu.\n</string>
+  <string name="lock_issue_details">Blokada rozmowy oznacza, że:\n·Inni użytkownicy nie będą mogli komentować tego problemu.\n·Ty i inni
+ współtwórcy mający dostęp do tego repozytorium nadal będziecie mogli dodawać komentarze, które inni zobaczą.\n·Zawsze możesz później
+ odblokować rozmowy dla tego problemu.\n</string>
   <string name="login">Login</string>
   <string name="login_using_your_default_browser">Zaloguj używając domyślnej przeglądarki internetowej (OAuth)</string>
   <string name="login_with_personal_token">Zaloguj się osobistym tokenem (Personal Token)</string>
   <string name="logout">Wyloguj</string>
-  <string name="long_press_repo_fab_hint">Kliknij i przytrzymaj, żeby szybko zgłosić problem</string>
+  <string name="long_press_repo_fab_hint">Kliknij i przytrzymaj, aby szybko zgłosić problem</string>
   <string name="mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
   <string name="mark_as_read">Oznacz jako przeczytane</string>
   <string name="mark_notification_summary">Zablokuj automatyczne oznaczanie powiadomienia jako przeczytanego, po kliknięciu na nim.</string>
@@ -267,7 +273,10 @@
   <string name="no_milestones">Brak kamieni milowych</string>
   <string name="no_notifications">Brak powiadomień</string>
   <string name="no_orgs">Brak organizacji</string>
-  <string name="no_orgs_description">Jeśli jesteś przypisany do organizacji, ale ich tutaj nie widzisz wejdź na poniższą stronę.\n https://help.github.com/articles/about-third-party-application-restrictions\nPS: Do logowania możesz użyć tokena dostępu (Access token), który zezwoli FastHub wyświetlać twoje organizacje.\nMożesz również wejść na https://github.com/settings/applications i wyszukać FastHub, wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\".</string>
+  <string name="no_orgs_description">Jeśli jesteś przypisany do organizacji, ale ich tutaj nie widzisz wejdź na poniższą stronę.\n
+ https://help.github.com/articles/about-third-party-application-restrictions\nPS: Do logowania możesz użyć tokena dostępu (Access token),
+ który zezwoli FastHub wyświetlać twoje organizacje.\nMożesz również wejść na https://github.com/settings/applications i wyszukać FastHub,
+ wejdź tam, przewiń do \"Organization access\" i kliknij przycisk \"Grant\".</string>
   <string name="no_orgs_dialog_title">Nie możesz znaleźć swoich organizacji\?</string>
   <string name="no_projects">Brak projektów</string>
   <string name="no_pull_requests">Brak pull requestów</string>
@@ -288,7 +297,7 @@
   <string name="notification_settings">Powiadomienia</string>
   <string name="notification_type">Typ powiadomienia</string>
   <string name="notifications">Powiadomienia</string>
-  <string name="notifications_hint">Kliknij żeby pokazać listę powiadomień, lub przesuń żeby je pominąć</string>
+  <string name="notifications_hint">Kliknij, aby pokazać listę powiadomień lub przesuń, aby je pominąć</string>
   <string name="now">Teraz</string>
   <string name="numbered_list">Lista numerowana</string>
   <string name="ok">OK</string>
@@ -317,7 +326,7 @@
   <string name="pin">Przypnij</string>
   <string name="pin_repo_hint">Przypnij repozytoria, aby uzyskać do nich szybki dostęp w menu bocznym.</string>
   <string name="pinned">Przypięte</string>
-  <string name="please_login">Zaloguj się, żeby zacząć korzystać z FastHub</string>
+  <string name="please_login">Zaloguj się, aby zacząć korzystać z FastHub</string>
   <string name="please_read">PRZECZYTAJ TO!</string>
   <string name="pr_comment_review">Skomentuj pull request</string>
   <string name="premium_theme">Motyw Premium</string>
@@ -335,7 +344,7 @@
   <string name="re_open">Otwórz ponownie</string>
   <string name="re_open_issue">Otwórz problem ponownie</string>
   <string name="reactions">Reakcje</string>
-  <string name="read_write_permission_explanation">Pozwól FastHub przechowywać pliki na twoim urządzeniu, żeby móc je wyświetlić</string>
+  <string name="read_write_permission_explanation">Pozwól FastHub przechowywać pliki na twoim urządzeniu, aby móc je wyświetlić</string>
   <string name="recently_updated">Ostatnio zaktualizowane</string>
   <string name="rect_avatar_summary">Wyświetlaj awatary w kwadratowej ramce zamiast w okrągłej</string>
   <string name="rect_avatar_title">Kwadratowe awatary</string>
@@ -348,7 +357,7 @@
   <string name="repo_chooser">Wybierz Repo</string>
   <string name="repo_issues_is_disabled">Problemy dla tego repo są zablokowane</string>
   <string name="report_issue">Zgłoś problem</string>
-  <string name="report_issue_here">Napotkałeś problem? Zgłoś go tutaj</string>
+  <string name="report_issue_here">Napotkałeś problem? Zgłoś go tutaj.</string>
   <string name="report_issue_warning">Problem zostnie zgłoszony do repozytorium FastHub w serwisie GitHub</string>
   <string name="request_changes">sugerowane zmiany</string>
   <string name="request_error">Brak połączenia z siecią</string>
@@ -374,7 +383,7 @@
   <string name="settings">Ustawienia</string>
   <string name="share">Udostępnij</string>
   <string name="sign_in">Zaloguj</string>
-  <string name="sign_in_to_github">Zaloguj się na twoje konto GitHub, żeby zacząć używać FastHub</string>
+  <string name="sign_in_to_github">Zaloguj się na twoje konto GitHub, aby zacząć używać FastHub</string>
   <string name="sort">Sortuj</string>
   <string name="sort_direction">Kryteria sortowania</string>
   <string name="sound_chooser_summary">Wybierz niestandardowy dźwięk powiadomień</string>
@@ -434,7 +443,8 @@
   <string name="unfollow">Przestań obserwować</string>
   <string name="unknown">Nieznane</string>
   <string name="unlock_issue">Odblokuj rozmowę</string>
-  <string name="unlock_issue_details">Odblokowanie rozmowy oznacza, że:\n·Każdy ponownie będzie mógł komentować ten problem.\n· Zawsze możesz później zablokować rozmowy dla tego problemu.\n</string>
+  <string name="unlock_issue_details">Odblokowanie rozmowy oznacza, że:\n·Każdy ponownie będzie mógł komentować ten problem.\n·
+ Zawsze możesz później zablokować rozmowy dla tego problemu.\n</string>
   <string name="unpin">Odepnij</string>
   <string name="unread">Nowe</string>
   <string name="unread_notification">Masz nieprzeczytane powiadomienia</string>
